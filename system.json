@@ -2,15 +2,13 @@
   "name": "symbaroum",
   "title": "Symbaroum",
   "description": "Twilight falls. Davokar darkens.",
-  "version": "2.10.0",
+  "version": "2.10.1",
   "minimumCoreVersion": "0.7.5",
-  "compatibleCoreVersion": "0.7.7",
+  "compatibleCoreVersion": "0.7.8",
   "templateVersion": 2,
-  "author": "Perfectro",
+  "author": "Paul Watson",
   "scripts": [],
-  "esmodules": [
-    "script/common/hooks.js"
-  ],
+  "esmodules": ["script/common/hooks.js"],
   "styles": [
     "style/common/variable.css",
     "style/common/actor.css",
@@ -66,9 +64,9 @@
   "gridUnits": "m",
   "primaryTokenAttribute": "health.toughness",
   "secondaryTokenAttribute": "combat.defense",
-  "url": "https://github.com/Perfectro/symbaroum-foundry-vtt",
   "socket": true,
-  "manifest": "https://raw.githubusercontent.com/Perfectro/symbaroum-foundry-vtt/master/system.json",
-  "download": "https://github.com/Perfectro/symbaroum-foundry-vtt/archive/v2.10.zip",
+  "url": "https://github.com/pwatson100/symbaroum",
+  "manifest": "https://raw.githubusercontent.com/pwatson100/symbaroum//releases/latest/download/system.json",
+  "download": "https://github.com/pwatson100/symbaroum/releases/latest/download/master.zip",
   "license": "LICENSE.txt"
 }
