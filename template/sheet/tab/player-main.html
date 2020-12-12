@@ -1,0 +1,107 @@
+<div class="main">
+    <div class="attributes foreground border">
+        <h1>{{localize "TITLE.ATTRIBUTES"}}</h1>
+        {{#each data.attributes as |attribute key|}}
+            <div class="attribute">
+                <button class="roll-attribute" data-attribute="{{key}}">{{localize attribute.label}}</button>
+                <input name="data.attributes.{{key}}.value" type="number" value="{{attribute.value}}" data-dtype="Number" />
+            </div>
+        {{/each}}
+    </div>
+
+    <div class="health foreground border">
+        <h1>{{localize "TITLE.HEALTH"}}</h1>
+        <label class="toughness">{{localize "HEALTH.TOUGHNESS"}}</label>
+        <div class="toughness-current">
+            <label>{{localize "HEALTH.TOUGHNESS_CURRENT"}}</label>
+            <input name="data.health.toughness.value" type="number" value="{{data.health.toughness.value}}" data-dtype="Number"/>
+        </div>
+        <div class="toughness-total">
+            <label>{{localize "HEALTH.TOUGHNESS_TOTAL"}}</label>
+            <input type="number" value="{{data.health.toughness.max}}" data-dtype="Number" disabled/>
+        </div>
+        <div class="toughness-threshold">
+            <label>{{localize "HEALTH.TOUGHNESS_THRESHOLD"}}</label>
+            <input type="number" value="{{data.health.toughness.threshold}}" data-dtype="Number" disabled/>
+        </div>
+        <label class="corruption">{{localize "HEALTH.CORRUPTION"}}</label>
+        <div class="corruption-temporary">
+            <label>{{localize "HEALTH.CORRUPTION_TEMPORARY"}}</label>
+            <input name="data.health.corruption.temporary" type="number" value="{{data.health.corruption.temporary}}" data-dtype="Number"/>
+        </div>
+        <div class="corruption-permanent">
+            <label>{{localize "HEALTH.CORRUPTION_PERMANENT"}}</label>
+            <input name="data.health.corruption.permanent" type="number" value="{{data.health.corruption.permanent}}" data-dtype="Number"/>
+        </div>
+        <div class="corruption-threshold">
+            <label>{{localize "HEALTH.CORRUPTION_THRESHOLD"}}</label>
+            <input type="number" value="{{data.health.corruption.threshold}}" data-dtype="Number" disabled/>
+        </div>
+    </div>
+
+    <div class="combat foreground border">
+        <h1>{{localize "TITLE.COMBAT"}}</h1>
+        <div class="armor">
+            <button class="roll-armor">{{data.combat.armor}}</button>
+            <div class="protection">
+                <label>{{localize "ARMOR.PROTECTION"}}</label>
+                <input type="text" value="{{data.combat.protection}}" disabled />
+            </div>
+            <div class="defense">
+                <label>{{localize "ARMOR.DEFENSE"}}</label>
+                <input type="number" value="{{data.combat.defense}}" data-dtype="Number" disabled />
+            </div>
+            <div class="quality">
+                <label>{{localize "ARMOR.QUALITY"}}</label>
+                <input type="text" value="{{data.combat.quality}}" disabled />
+            </div>
+        </div>
+        <div class="weapons">
+            <div class="item-list">
+                <div class="item-header" style="margin-bottom: 5px">
+                    <b class="name">{{localize "WEAPON.HEADER"}}</b>
+                    <b class="damage">{{localize "WEAPON.DAMAGE"}}</b>
+                </div>
+                <div class="items">
+                    {{#each actor.items as |item|}}
+                        {{#if item.isWeapon}}
+                            {{#if item.isActive}}
+                                <div class="weapon item" data-item-id="{{item._id}}">
+                                    <div class="name">
+                                        <div class="image-container">
+                                            <div class="image" style="background-image: url('{{item.img}}')"></div>
+                                        </div>
+                                        <button class="roll-weapon ellipsis" style="width: 153px">{{item.name}}</button>
+                                    </div>
+                                    <div class="damage">{{item.data.damage}}</div>
+                                </div>
+                            {{/if}}
+                        {{/if}}
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="abilities-powers foreground border">
+        <h1>{{localize "TITLE.ABILITIES_POWERS"}}</h1>
+        <div class="traits">
+            {{#each actor.items as |item|}}
+                {{#if item.isPower}}
+                    <div class="trait item" data-item-id="{{item._id}}">
+                        <div class="name">
+                            <div class="image-container">
+                                <div class="image" style="background-image: url('{{item.img}}'); height: 36px; width: 36px; background-size: 36px"></div>
+                            </div>
+                            <button class="item-edit ellipsis" style="width: 198px">{{item.name}}</button>
+                        </div>
+                        <div class="actions">{{item.data.actions}}</div>
+                        <div class="button">
+                            <a class="item-control item-delete" title="Delete Trait"><i class="fas fa-trash"></i></a>
+                        </div>
+                    </div>
+                {{/if}}
+            {{/each}}
+        </div>
+    </div>
+</div>

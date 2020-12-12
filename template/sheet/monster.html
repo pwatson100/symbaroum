@@ -1,0 +1,48 @@
+<form class="{{cssClass}}" autocomplete="off">
+  <div class="monster">
+    <div class="sheet-header foreground border">
+      <div class="avatar">
+        <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
+      </div>
+      <div class="wrapper-column">
+        <div class="wrapper-row">
+          <div class="name">
+            <label>{{localize "BIO.NAME"}}</label>
+            <input name="name" type="text" value="{{actor.name}}" />
+          </div>
+          <div class="race">
+            <label>{{localize "BIO.RACE"}}</label>
+            <input name="data.bio.race" type="text" value="{{data.bio.race}}" />
+          </div>
+        </div>
+        <div class="wrapper-row">
+          <div class="manner">
+            <label>{{localize "BIO.MANNER"}}</label>
+            <input name="data.bio.manner" type="text" value="{{data.bio.manner}}" />
+          </div>
+        </div>
+        <div class="wrapper-row">
+          <div class="shadow">
+            <label>{{localize "BIO.SHADOW"}}</label>
+            <input name="data.bio.shadow" type="text" value="{{data.bio.shadow}}" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sheet-tabs tabs" data-group="primary">
+      <b class="item" data-tab="main">{{localize "TAB.MAIN"}}</b>
+      <b class="item" data-tab="gear">{{localize "TAB.GEAR"}}</b>
+      <b class="item" data-tab="bio">{{localize "TAB.BIO"}}</b>
+      <b class="item" data-tab="note">{{localize "TAB.NOTES"}}</b>
+    </div>
+
+    <div class="sheet-body">
+      <div class="tab" data-group="primary" data-tab="main">{{> systems/symbaroum/template/sheet/tab/monster-main.html}}</div>
+      <div class="tab" data-group="primary" data-tab="gear">{{> systems/symbaroum/template/sheet/tab/monster-gear.html}}</div>
+      <div class="tab" data-group="primary" data-tab="bio">{{> systems/symbaroum/template/sheet/tab/monster-bio.html}}</div>
+      <div class="tab" data-group="primary" data-tab="note">{{> systems/symbaroum/template/sheet/tab/monster-note.html}}</div>
+    </div>
+  </div>
+  {{log "CONTEXT!!!!"}} {{log this}}
+</form>

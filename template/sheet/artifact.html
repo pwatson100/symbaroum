@@ -1,0 +1,57 @@
+<form class="{{cssClass}}" autocomplete="off">
+    <div class="artifact">
+        <div class="sheet-header foreground border">
+            <div class="avatar">
+                <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+            </div>
+            <div class="wrapper-column">
+                <div class="name">
+                    <label>{{localize "ARTIFACT.NAME"}}</label>
+                    <input name="name" type="text" value="{{item.name}}"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="sheet-tabs tabs" data-group="primary">
+            <b class="item" data-tab="description">{{localize "TAB.DESCRIPTION"}}</b>
+            <b class="item" data-tab="power">{{localize "TAB.POWER"}}</b>
+            <b class="item" data-tab="bonus">{{localize "TAB.BONUS"}}</b>
+        </div>
+
+        <div class="sheet-body">
+            <div class="tab" data-group="primary" data-tab="description">
+                <div class="description foreground border">
+                    <h1>{{localize "TITLE.DESCRIPTION"}}</h1>
+                    {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+                </div>
+            </div>
+            <div class="tab" data-group="primary" data-tab="power">
+                <div class="power foreground border">
+                    <h1>{{localize "TITLE.POWER"}}</h1>
+                    <div class="action">
+                        <label>{{localize "ARTIFACT.ACTION"}}</label>
+                        <select name="data.action">
+                            {{#select data.action}}
+                            <option value="A">{{localize "ACTION.ACTIVE"}}</option>
+                            <option value="M">{{localize "ACTION.MOVEMENT"}}</option>
+                            <option value="T">{{localize "ACTION.FULL_TURN"}}</option>
+                            <option value="F">{{localize "ACTION.FREE"}}</option>
+                            <option value="P">{{localize "ACTION.PASSIVE"}}</option>
+                            <option value="R">{{localize "ACTION.REACTION"}}</option>
+                            <option value="S">{{localize "ACTION.SPECIAL"}}</option>
+                            {{/select}}
+                        </select>
+                    </div>
+                    <div class="corruption">
+                        <label>{{localize "ARTIFACT.CORRUPTION"}}</label>
+                        <input name="data.corruption" type="text" value="{{data.corruption}}" />
+                    </div>
+                    {{editor content=data.powers target="data.powers" button=true owner=owner editable=editable}}
+                </div>
+            </div>
+            <div class="tab" data-group="primary" data-tab="bonus">
+                {{> systems/symbaroum/template/sheet/tab/bonus.html}}
+            </div>
+        </div>
+    </div>
+</form>

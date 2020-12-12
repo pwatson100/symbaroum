@@ -1,0 +1,20 @@
+<div class="symbaroum chat roll">
+    <div class="foreground border">
+        <h3>{{name}}</h3>
+        {{#if hasSucceed}}
+        <h4>{{localize "CHAT.SUCCEED"}} ({{diceResult}})</h4>
+
+        {{#if hasWeapon}}
+        <p style="margin-top: 5px"><strong>{{localize "WEAPON.DAMAGE"}}:</strong> {{weapon.value}}</p>
+        <p><strong>{{localize "WEAPON.QUALITY"}}:</strong> {{weapon.quality}}</p>
+        {{/if}}
+
+        {{else}}
+        <h4>{{localize "CHAT.FAILED"}} ({{diceResult}})</h4>
+        {{#if hasArmor}}
+        <p style="margin-top: 5px"><strong>{{localize "ARMOR.PROTECTION"}}:</strong> {{armor.value}}</p>
+        <p><strong>{{localize "ARMOR.QUALITY"}}:</strong> {{armor.quality}}</p>
+        {{/if}}
+        {{/if}}
+    </div>
+</div>

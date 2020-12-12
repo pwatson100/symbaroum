@@ -1,0 +1,50 @@
+.symbaroum.sheet.actor .player .note {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-basis: 100%;
+}
+
+.symbaroum.sheet.actor .player .note .wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-top: none;
+    flex-basis: 100%;
+    height: 754px;
+}
+
+.symbaroum.sheet.actor .player .note .wrapper .editor,
+.symbaroum.sheet.actor .player .note .wrapper .editor-content {
+    font-family: var(--font-text);
+    font-size: 14px;
+    color: var(--color-text);
+    height: 100%;
+    width: 100%;
+    background: url(../../../asset/image/editable.jpg) repeat;
+    box-shadow: inset 0 0 6px black;
+}
+
+.symbaroum.sheet.actor .player .note .wrapper .editor {
+    margin: 10px;
+    border: 1px solid var(--color-border);
+    height: 694px;
+}
+
+.symbaroum.sheet.actor .player .note .wrapper .editor-content {
+    padding: 5px;
+}
+
+.symbaroum.sheet.actor .player .note .wrapper .editor .tox .tox-tbtn svg {
+    fill: var(--color-title);
+}
+
+.symbaroum.sheet.actor .player .note .wrapper .editor .tox .tox-toolbar__primary {
+    background: url(../../../asset/image/title.jpg) repeat;
+}
+
+.symbaroum.sheet.actor .player .note .wrapper .editor .tox .tox-tbtn svg:hover {
+    fill: var(--color-active);
+    text-shadow: 0 0 10px var(--color-active);
+    box-shadow: none;
+}

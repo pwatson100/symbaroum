@@ -1,0 +1,18 @@
+<div class="symbaroum chat roll">
+    <div class="foreground border">
+        <h3>{{localize "CHAT.DEATH_ROLL"}}</h3>
+        {{#if isCriticalSuccess}}
+        <h4>{{localize "CHAT.CRITICAL_SUCCESS"}}</h4>
+        <h4>{{localize "CHAT.RECOVER"}} {{healing}} {{localize "CHAT.TOUGHNESS"}}</h4>
+        {{/if}}
+        {{#if hasSucceed}}
+        <h4>{{localize "CHAT.STAY_ALIVE"}}</h4>
+        {{else}}
+        {{#if isCriticalFailure}}
+        <h4>{{localize "CHAT.DEAD"}}</h4>
+        {{else}}
+        <h4>{{localize "CHAT.NEAR_DEATH"}} ({{nbrOfFailure}}/3) !</h4>
+        {{/if}}
+        {{/if}}
+    </div>
+</div>

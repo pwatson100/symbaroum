@@ -1,0 +1,56 @@
+.symbaroum.chat.item {
+    color: var(--color-text);
+    font-family: var(--font-text);
+    font-size: 12px;
+    line-height: 16px;
+    padding: 5px;
+}
+
+.symbaroum.chat.item .foreground {
+    background: url(../../asset/image/editable.jpg) repeat;
+    padding: 10px;
+}
+
+.symbaroum.chat.item .border {
+    border: 1px solid transparent;
+    border-image: url(../../asset/image/title.jpg) 20/5px round;
+}
+
+.symbaroum.chat.item strong {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.symbaroum.chat.item h3 {
+    font-family: var(--font-text);
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 0 8px;
+    text-align: center;
+}
+
+.symbaroum.chat.item h4 {
+    font-family: var(--font-text);
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 0 8px;
+    text-align: center;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.symbaroum.chat.item h3 + h4 {
+    margin-top: -8px;
+}
+
+.symbaroum.chat.item img {
+    border: 0;
+    display: block;
+    margin: 0 auto 8px;
+    max-height: 64px;
+    width: auto;
+}
+
+.symbaroum.chat.item p {
+    margin: 0 0 4px;
+}

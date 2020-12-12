@@ -1,0 +1,16 @@
+@font-face {
+    font-family: "Philosopher";
+    src: url("../../asset/font/philosopher-bold.ttf");
+    font-weight: bold;
+}
+
+:root {
+    --color-title: white;
+    --color-label: white;
+    --color-active: #a48b02;
+    --color-text: black;
+    --color-border: black;
+    --color-shadow: #a48b02;
+
+    --font-text: "Philosopher", serif;
+}

@@ -1,0 +1,87 @@
+<div class="symbaroum chat item">
+    <div class="foreground border">
+        <h3>{{name}}</h3>
+        {{#if isTrait}}
+        <h4>{{localize "ITEM.TRAIT"}}</h4>
+        {{/if}}
+        {{#if isAbility}}
+        <h4>{{localize "ITEM.ABILITY"}}</h4>
+        {{/if}}
+        {{#if isMysticalPower}}
+        <h4>{{localize "ITEM.MYSTICAL_POWER"}}</h4>
+        {{/if}}
+        {{#if isRitual}}
+        <h4>{{localize "ITEM.RITUAL"}}</h4>
+        {{/if}}
+        {{#if isWeapon}}
+        <h4>{{localize "ITEM.WEAPON"}}</h4>
+        {{/if}}
+        {{#if isArmor}}
+        <h4>{{localize "ITEM.ARMOR"}}</h4>
+        {{/if}}
+        {{#if isEquipment}}
+        <h4>{{localize "ITEM.EQUIPMENT"}}</h4>
+        {{/if}}
+        {{#if isArtifact}}
+        <h4>{{localize "ITEM.ARTIFACT"}}</h4>
+        {{/if}}
+
+
+        {{#if img}}
+        <img src="{{img}}" title="{{name}}"/>
+        {{/if}}
+
+        {{#if isTrait}}
+        <p><strong>{{localize "TRAIT.DESCRIPTION"}}:</strong> {{data.description}}</p>
+        <p><strong>{{localize "TITLE.NOVICE"}} [{{data.novice.action}}]:</strong> {{removeMarkup data.novice.description}}</p>
+        <p><strong>{{localize "TITLE.ADEPT"}} [{{data.adept.action}}]:</strong> {{removeMarkup data.adept.description}}</p>
+        <p><strong>{{localize "TITLE.MASTER"}} [{{data.master.action}}]:</strong> {{removeMarkup data.master.description}}</p>
+        {{/if}}
+
+        {{#if isAbility}}
+        <p><strong>{{localize "ABILITY.DESCRIPTION"}}:</strong> {{data.description}}</p>
+        <p><strong>{{localize "TITLE.NOVICE"}} [{{data.novice.action}}]:</strong> {{removeMarkup data.novice.description}}</p>
+        <p><strong>{{localize "TITLE.ADEPT"}} [{{data.adept.action}}]:</strong> {{removeMarkup data.adept.description}}</p>
+        <p><strong>{{localize "TITLE.MASTER"}} [{{data.master.action}}]:</strong> {{removeMarkup data.master.description}}</p>
+        {{/if}}
+
+        {{#if isMysticalPower}}
+        <p><strong>{{localize "MYSTICAL_POWER.MATERIAL"}}:</strong> {{data.material}}</p>
+        <p><strong>{{localize "MYSTICAL_POWER.DESCRIPTION"}}:</strong> {{removeMarkup data.description}}</p>
+        <p><strong>{{localize "TITLE.NOVICE"}} [{{data.novice.action}}]:</strong> {{removeMarkup data.novice.description}}</p>
+        <p><strong>{{localize "TITLE.ADEPT"}} [{{data.adept.action}}]:</strong> {{removeMarkup data.adept.description}}</p>
+        <p><strong>{{localize "TITLE.MASTER"}} [{{data.master.action}}]:</strong> {{removeMarkup data.master.description}}</p>
+        {{/if}}
+
+        {{#if isRitual}}
+        <p><strong>{{localize "RITUAL.TRADITION"}}:</strong> {{data.tradition}}</p>
+        <p><strong>{{localize "RITUAL.DESCRIPTION"}}:</strong> {{removeMarkup data.description}}</p>
+        {{/if}}
+
+        {{#if isWeapon}}
+        <p><strong>{{localize "WEAPON.DAMAGE"}}:</strong> {{data.damage}}</p>
+        <p><strong>{{localize "WEAPON.QUALITY"}}:</strong> {{data.quality}}</p>
+        <p><strong>{{localize "WEAPON.COST"}}:</strong> {{data.cost}}</p>
+        <p><strong>{{localize "WEAPON.DESCRIPTION"}}:</strong> {{removeMarkup data.description}}</p>
+        {{/if}}
+
+        {{#if isArmor}}
+        <p><strong>{{localize "ARMOR.PROTECTION"}}:</strong> {{data.protection}}</p>
+        <p><strong>{{localize "ARMOR.IMPEDING"}}:</strong> {{data.impeding}}</p>
+        <p><strong>{{localize "ARMOR.QUALITY"}}:</strong> {{data.quality}}</p>
+        <p><strong>{{localize "ARMOR.COST"}}:</strong> {{data.cost}}</p>
+        <p><strong>{{localize "ARMOR.DESCRIPTION"}}:</strong> {{removeMarkup data.description}}</p>
+        {{/if}}
+
+        {{#if isEquipment}}
+        <p><strong>{{localize "EQUIPMENT.COST"}}:</strong> {{data.cost}}</p>
+        <p><strong>{{localize "EQUIPMENT.DESCRIPTION"}}:</strong> {{removeMarkup data.description}}</p>
+        {{/if}}
+
+        {{#if isArtifact}}
+        <p><strong>{{localize "ARTIFACT.DESCRIPTION"}}:</strong> {{data.description}}</p>
+        <p><strong>{{localize "ARTIFACT.POWER"}} [{{data.action}}]:</strong> {{data.powers}}</p>
+        <p><strong>{{localize "ARTIFACT.CORRUPTION"}}:</strong> {{data.corruption}}</p>
+        {{/if}}
+    </div>
+</div>

@@ -1,0 +1,62 @@
+.symbaroum.sheet.item .weapon {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    height: 100%;
+    width: 100%;
+}
+
+.symbaroum.sheet.item .weapon .description,
+.symbaroum.sheet.item .weapon .stats,
+.symbaroum.sheet.item .weapon .bonus {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-basis: 100%;
+    border-top: none;
+}
+
+.symbaroum.sheet.item .weapon .description .editor {
+    height: 134px;
+}
+
+.symbaroum.sheet.item .weapon .tab .stats .quality,
+.symbaroum.sheet.item .weapon .tab .stats .damage,
+.symbaroum.sheet.item .weapon .tab .stats .cost,
+.symbaroum.sheet.item .weapon .tab .stats .attribute {
+    display: flex;
+    flex-direction: row;
+    flex-basis: 100%;
+    margin: 5px 10px;
+}
+
+.symbaroum.sheet.item .weapon .tab .stats .attribute {
+    margin-top: 10px;
+}
+
+.symbaroum.sheet.item .weapon .tab .stats .quality {
+    margin-bottom: 10px;
+}
+
+.symbaroum.sheet.item .weapon .tab .bonus .scroll {
+    overflow-y: scroll;
+    height: 154px;
+    display: flex;
+    flex-basis: 100%;
+    flex-wrap: wrap;
+}
+
+.symbaroum.sheet.item .weapon .tab .bonus .attribute {
+    display: flex;
+    flex-direction: row;
+    flex-basis: 100%;
+    margin: 5px 10px;
+}
+
+.symbaroum.sheet.item .weapon .tab .bonus .attribute:first-child {
+    margin-top: 10px;
+}
+
+.symbaroum.sheet.item .weapon .tab .bonus .attribute:last-child {
+    margin-bottom: 10px;
+}

@@ -1,0 +1,43 @@
+.symbaroum.sheet.item .boon {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    height: 100%;
+    width: 100%;
+}
+
+.symbaroum.sheet.item .boon .description,
+.symbaroum.sheet.item .boon .bonus {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-basis: 100%;
+    border-top: none;
+}
+
+.symbaroum.sheet.item .boon .description .editor {
+    height: 166px;
+}
+
+.symbaroum.sheet.item .boon .tab .bonus .scroll {
+    overflow-y: scroll;
+    height: 186px;
+    display: flex;
+    flex-basis: 100%;
+    flex-wrap: wrap;
+}
+
+.symbaroum.sheet.item .boon .tab .bonus .attribute {
+    display: flex;
+    flex-direction: row;
+    flex-basis: 100%;
+    margin: 5px 10px;
+}
+
+.symbaroum.sheet.item .boon .tab .bonus .attribute:first-child {
+    margin-top: 10px;
+}
+
+.symbaroum.sheet.item .boon .tab .bonus .attribute:last-child {
+    margin-bottom: 10px;
+}

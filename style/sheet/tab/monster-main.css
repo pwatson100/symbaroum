@@ -1,0 +1,239 @@
+.symbaroum.sheet.actor .monster .main {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-basis: 100%;
+}
+
+.symbaroum.sheet.actor .monster .main .attributes {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-basis: calc(25% - 5px);
+    border-top: none;
+    margin-right: 5px;
+}
+
+.symbaroum.sheet.actor .monster .main .attributes .attribute {
+    display: flex;
+    flex-direction: row;
+    margin: 10px 10px 0 10px;
+}
+
+.symbaroum.sheet.actor .monster .main .attributes .attribute:last-child {
+    margin-bottom: 10px;
+}
+
+.symbaroum.sheet.actor .monster .main .attributes .attribute button {
+    flex-basis: 70%;
+}
+
+.symbaroum.sheet.actor .monster .main .attributes .attribute input {
+    flex-basis: 30%;
+}
+
+.symbaroum.sheet.actor .monster .main .health {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-basis: calc(25% - 5px);
+    border-top: none;
+    margin-left: 5px;
+}
+
+.symbaroum.sheet.actor .monster .main .health .toughness,
+.symbaroum.sheet.actor .monster .main .health .toughness-current,
+.symbaroum.sheet.actor .monster .main .health .toughness-total,
+.symbaroum.sheet.actor .monster .main .health .toughness-threshold,
+.symbaroum.sheet.actor .monster .main .health .corruption,
+.symbaroum.sheet.actor .monster .main .health .corruption-temporary,
+.symbaroum.sheet.actor .monster .main .health .corruption-permanent,
+.symbaroum.sheet.actor .monster .main .health .corruption-threshold {
+    display: flex;
+    flex-direction: row;
+    flex-basis: 100%;
+    margin: 10px 10px 0 10px;
+    justify-content: center;
+}
+
+.symbaroum.sheet.actor .monster .main .health .corruption-threshold {
+    margin-bottom: 10px;
+}
+
+.symbaroum.sheet.actor .monster .main .health .toughness-current label,
+.symbaroum.sheet.actor .monster .main .health .toughness-total label,
+.symbaroum.sheet.actor .monster .main .health .toughness-threshold label,
+.symbaroum.sheet.actor .monster .main .health .corruption-temporary label,
+.symbaroum.sheet.actor .monster .main .health .corruption-permanent label,
+.symbaroum.sheet.actor .monster .main .health .corruption-threshold label {
+    flex-basis: 70%;
+}
+
+.symbaroum.sheet.actor .monster .main .health .toughness-current input,
+.symbaroum.sheet.actor .monster .main .health .toughness-total input,
+.symbaroum.sheet.actor .monster .main .health .toughness-threshold input,
+.symbaroum.sheet.actor .monster .main .health .corruption-temporary input,
+.symbaroum.sheet.actor .monster .main .health .corruption-permanent input,
+.symbaroum.sheet.actor .monster .main .health .corruption-threshold input {
+    flex-basis: 30%;
+}
+
+.symbaroum.sheet.actor .monster .main .combat {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    flex-basis: 40%;
+    border-top: none;
+    margin-left: 10px;
+}
+
+.symbaroum.sheet.actor .monster .main .combat .armor {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-basis: 100%;
+    margin: 10px;
+}
+
+.symbaroum.sheet.actor .monster .main .combat .armor .roll-armor,
+.symbaroum.sheet.actor .monster .main .combat .armor .protection,
+.symbaroum.sheet.actor .monster .main .combat .armor .defense,
+.symbaroum.sheet.actor .monster .main .combat .armor .quality {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.symbaroum.sheet.actor .monster .main .combat .armor .roll-armor,
+.symbaroum.sheet.actor .monster .main .combat .armor .quality {
+    flex-basis: 100%;
+}
+
+.symbaroum.sheet.actor .monster .main .combat .armor .quality {
+    margin-top: 10px;
+}
+
+.symbaroum.sheet.actor .monster .main .combat .armor .protection {
+    flex-basis: calc(50% - 5px);
+    margin-top: 10px;
+    margin-right: 5px;
+}
+
+.symbaroum.sheet.actor .monster .main .combat .armor .defense {
+    flex-basis: calc(50% - 5px);
+    margin-top: 10px;
+    margin-left: 5px;
+}
+
+.symbaroum.sheet.actor .monster .main .combat .armor .protection label,
+.symbaroum.sheet.actor .monster .main .combat .armor .defense label {
+    width: 105px;
+}
+
+.symbaroum.sheet.actor .monster .main .combat .armor .protection input,
+.symbaroum.sheet.actor .monster .main .combat .armor .defense input {
+    flex-basis: 30%;
+}
+
+.symbaroum.sheet.actor .monster .main .combat .weapons {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+    margin: 0 10px 10px 10px;
+    height: 184px;
+}
+
+.symbaroum.sheet.actor .monster .main .combat .weapons .item-list .name {
+    display: flex;
+    flex-basis: 70%;
+    justify-content: center;
+}
+
+.symbaroum.sheet.actor .monster .main .combat .weapons .item-list .damage {
+    flex-basis: 30%;
+}
+
+.symbaroum.sheet.actor .monster .main .combat .weapons .item-list .weapon {
+    display: flex;
+    flex-direction: row;
+    flex-basis: 100%;
+}
+
+.symbaroum.sheet.actor .monster .main .combat .weapons .item-list .weapon .damage {
+    background: url(../../../asset/image/editable.jpg) repeat;
+    border: 1px solid var(--color-border);
+    border-left: none;
+    box-shadow: inset 0 0 6px black;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+}
+
+.symbaroum.sheet.actor .monster .main .abilities-powers {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-basis: 100%;
+    border-top: none;
+    margin-top: 10px;
+    height: 390px;
+}
+
+.symbaroum.sheet.actor .monster .main .abilities-powers .button.item-create {
+    position: relative;
+    top: 57px;
+    left: 618px;
+    font-size: 32px;
+    color: var(--color-text);
+    background: url(../../../asset/image/editable.jpg) repeat;
+    height: 36px;
+    width: 36px;
+    text-align: center;
+}
+
+.symbaroum.sheet.actor .monster .main .abilities-powers .traits {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-basis: 100%;
+    height: 350px;
+    overflow-y: scroll;
+    align-content: baseline;
+}
+
+.symbaroum.sheet.actor .monster .main .abilities-powers .traits .trait {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: calc(50% - 10px);
+    margin: 5px;
+    height: 38px;
+}
+
+.symbaroum.sheet.actor .monster .main .abilities-powers .traits .trait .name {
+    display: flex;
+    flex-basis: 75%;
+}
+
+.symbaroum.sheet.actor .monster .main .abilities-powers .traits .trait .actions {
+    flex-basis: 15%;
+    color: var(--color-text);
+    background: url(../../../asset/image/editable.jpg) repeat;
+    height: 38px;
+    text-align: center;
+    border: 1px solid var(--color-border);
+    border-left: none;
+    box-shadow: inset 0 0 6px black;
+    line-height: 38px;
+}
+
+.symbaroum.sheet.actor .monster .main .abilities-powers .traits .trait .button {
+    color: var(--color-text);
+    text-align: center;
+    flex-basis: 9%;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

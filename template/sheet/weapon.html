@@ -1,0 +1,65 @@
+<form class="{{cssClass}}" autocomplete="off">
+    <div class="weapon">
+        <div class="sheet-header foreground border">
+            <div class="avatar">
+                <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+            </div>
+            <div class="wrapper-column">
+                <div class="name">
+                    <label>{{localize "WEAPON.NAME"}}</label>
+                    <input name="name" type="text" value="{{item.name}}"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="sheet-tabs tabs" data-group="primary">
+            <b class="item" data-tab="description">{{localize "TAB.DESCRIPTION"}}</b>
+            <b class="item" data-tab="stats">{{localize "TAB.STATS"}}</b>
+            <b class="item" data-tab="bonus">{{localize "TAB.BONUS"}}</b>
+        </div>
+
+        <div class="sheet-body">
+            <div class="tab" data-group="primary" data-tab="description">
+                <div class="description foreground border">
+                    <h1>{{localize "TITLE.DESCRIPTION"}}</h1>
+                    {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+                </div>
+            </div>
+            <div class="tab" data-group="primary" data-tab="stats">
+                <div class="stats foreground border">
+                    <h1>{{localize "TITLE.STATS"}}</h1>
+                    <div class="attribute">
+                        <label>{{localize "WEAPON.ATTRIBUTE"}}</label>
+                        <select name="data.attribute">
+                            {{#select data.attribute}}
+                            <option value="accurate">{{localize "ATTRIBUTE.ACCURATE"}}</option>
+                            <option value="cunning">{{localize "ATTRIBUTE.CUNNING"}}</option>
+                            <option value="discreet">{{localize "ATTRIBUTE.DISCREET"}}</option>
+                            <option value="persuasive">{{localize "ATTRIBUTE.PERSUASIVE"}}</option>
+                            <option value="quick">{{localize "ATTRIBUTE.QUICK"}}</option>
+                            <option value="resolute">{{localize "ATTRIBUTE.RESOLUTE"}}</option>
+                            <option value="strong">{{localize "ATTRIBUTE.STRONG"}}</option>
+                            <option value="vigilant">{{localize "ATTRIBUTE.VIGILANT"}}</option>
+                            {{/select}}
+                        </select>
+                    </div>
+                    <div class="damage">
+                        <label>{{localize "WEAPON.DAMAGE"}}</label>
+                        <input name="data.damage" type="text" value="{{data.damage}}"/>
+                    </div>
+                    <div class="cost">
+                        <label>{{localize "WEAPON.COST"}}</label>
+                        <input name="data.cost" type="text" value="{{data.cost}}"/>
+                    </div>
+                    <div class="quality">
+                        <label>{{localize "WEAPON.QUALITY"}}</label>
+                        <input name="data.quality" type="text" value="{{data.quality}}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="tab" data-group="primary" data-tab="bonus">
+                {{> systems/symbaroum/template/sheet/tab/bonus.html}}
+            </div>
+        </div>
+    </div>
+</form>

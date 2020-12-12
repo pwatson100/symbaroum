@@ -1,0 +1,61 @@
+.symbaroum.sheet.item .trait {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    height: 100%;
+    width: 100%;
+}
+
+.symbaroum.sheet.item .trait .description,
+.symbaroum.sheet.item .trait .novice,
+.symbaroum.sheet.item .trait .adept,
+.symbaroum.sheet.item .trait .master,
+.symbaroum.sheet.item .trait .bonus {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-basis: 100%;
+    border-top: none;
+}
+
+.symbaroum.sheet.item .trait .description .editor {
+    height: 166px;
+}
+
+.symbaroum.sheet.item .trait .tab .active,
+.symbaroum.sheet.item .trait .tab .action {
+    display: flex;
+    flex-direction: row;
+    flex-basis: calc(50% - 15px);
+}
+
+.symbaroum.sheet.item .trait .tab .action {
+    margin: 10px 5px 0 10px;
+}
+
+.symbaroum.sheet.item .trait .tab .active {
+    margin: 10px 10px 0 5px;
+}
+
+.symbaroum.sheet.item .trait .tab .bonus .scroll {
+    overflow-y: scroll;
+    height: 186px;
+    display: flex;
+    flex-basis: 100%;
+    flex-wrap: wrap;
+}
+
+.symbaroum.sheet.item .trait .tab .bonus .attribute {
+    display: flex;
+    flex-direction: row;
+    flex-basis: 100%;
+    margin: 5px 10px;
+}
+
+.symbaroum.sheet.item .trait .tab .bonus .attribute:first-child {
+    margin-top: 10px;
+}
+
+.symbaroum.sheet.item .trait .tab .bonus .attribute:last-child {
+    margin-bottom: 10px;
+}
