@@ -9,8 +9,8 @@ Should you wish to populate the system with game content for your own use please
 
 ## Install
 
-1. Go to the setup page and choose **Game Systems**.
-2. Click the **Install System** button, search for Symbaroum or paste in this [manifest link](https://raw.githubusercontent.com/pwatson100/symbaroum/master/system.json)
+1. Go to the setup page in Foundry and choose **Game Systems**.
+2. Click the **Install System** button, search for Symbaroum.
 3. Create a Game World using the Symbaroum system.
 
 ## Preview
