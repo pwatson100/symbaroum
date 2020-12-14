@@ -39,6 +39,36 @@
     </div>
     <div class="combat foreground border">
         <h1>{{localize "TITLE.COMBAT"}}</h1>
+        <div class="initiative">
+            <label>{{localize "INITIATIVE"}}</label>
+            <select name="data.initiative.attribute" class="attribute">
+                {{#select data.initiative.attribute}}
+                <option value="quick">{{localize "ATTRIBUTE.QUICK"}}</option>
+                <option value="accurate">{{localize "ATTRIBUTE.ACCURATE"}}</option>
+                <option value="cunning">{{localize "ATTRIBUTE.CUNNING"}}</option>
+                <option value="discreet">{{localize "ATTRIBUTE.DISCREET"}}</option>
+                <option value="persuasive">{{localize "ATTRIBUTE.PERSUASIVE"}}</option>
+                <option value="resolute">{{localize "ATTRIBUTE.RESOLUTE"}}</option>
+                <option value="strong">{{localize "ATTRIBUTE.STRONG"}}</option>
+                <option value="vigilant">{{localize "ATTRIBUTE.VIGILANT"}}</option>
+                {{/select}}
+            </select>
+        </div>
+        <div class="defenseAttr">
+            <label>{{localize "ARMOR.DEFENSE"}}</label>
+            <select name="data.defense.attribute" class="attribute">
+                {{#select data.defense.attribute}}
+                <option value="quick">{{localize "ATTRIBUTE.QUICK"}}</option>
+                <option value="accurate">{{localize "ATTRIBUTE.ACCURATE"}}</option>
+                <option value="cunning">{{localize "ATTRIBUTE.CUNNING"}}</option>
+                <option value="discreet">{{localize "ATTRIBUTE.DISCREET"}}</option>
+                <option value="persuasive">{{localize "ATTRIBUTE.PERSUASIVE"}}</option>
+                <option value="resolute">{{localize "ATTRIBUTE.RESOLUTE"}}</option>
+                <option value="strong">{{localize "ATTRIBUTE.STRONG"}}</option>
+                <option value="vigilant">{{localize "ATTRIBUTE.VIGILANT"}}</option>
+                {{/select}}
+            </select>
+        </div>
         <div class="armor">
             <button class="roll-armor disable">{{data.combat.armor}}</button>
             <div class="protection">

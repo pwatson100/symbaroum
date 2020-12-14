@@ -88,6 +88,16 @@
     margin-left: 10px;
 }
 
+.symbaroum.sheet.actor .player .main .combat .initiative, 
+.symbaroum.sheet.actor .player .main .combat .defenseAttr {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    flex-basis: 100%;
+    margin: 10px 0px 0px 0px;
+}
+
 .symbaroum.sheet.actor .player .main .combat .armor {
     display: flex;
     flex-direction: row;

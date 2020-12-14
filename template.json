@@ -61,13 +61,26 @@
           "shilling": 0,
           "orteg": 0
         }
+      },
+      "defense": {
+        "defense": {
+          "attribute": "quick"
+        }
+      },
+      "initiative": {
+        "initiative": {
+          "attribute": "quick",
+          "value": 10
+        }
       }
     },
     "player": {
       "templates": [
         "attributes",
         "health",
-        "money"
+        "money",
+        "defense",
+        "initiative"
       ],
       "bio": {
         "race": "",
@@ -92,7 +105,9 @@
       "templates": [
         "attributes",
         "health",
-        "money"
+        "money",
+        "defense",
+        "initiative"
       ],
       "bio": {
         "race": "",
@@ -237,6 +252,26 @@
       "description": "",
       "damage": "",
       "quality": "",
+      "qualities": {
+        "bastard": false,
+        "returning": false,
+        "blunt": false,        
+        "short": false,
+        "unwieldy": false,
+        "wrecking": false,
+        "concealed": false,
+        "balanced": false,
+        "deepImpact": false,
+        "jointed": false,
+        "ensnaring": false,
+        "long": false,
+        "massive": false,
+        "precise": false,
+        "bloodLetting": false,
+        "areaMeleeRadius": false,
+        "areaShortRadius": false,
+        "areaCone": false
+      },
       "cost": "",
       "attribute": "",
       "state": "other"
