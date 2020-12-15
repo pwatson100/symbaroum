@@ -102,6 +102,8 @@
   "HEALTH.CORRUPTION_PERMANENT": "Permanente",
   "HEALTH.CORRUPTION_THRESHOLD": "Seuil",
   "HEALTH.CORRUPTION_THRESHOLD_MAX": "Seuil de Cor.",
+  
+  "INITIATIVE": "Initiative",
 
   "ITEM.TRAIT": "Trait",
   "ITEM.ABILITY": "Talent",
@@ -122,6 +124,30 @@
   "MYSTICAL_POWER.MATERIAL": "Matériel",
   "MYSTICAL_POWER.DESCRIPTION": "Description",
 
+  "QUALITY.AREAMRR": "Zone d’effet - rayon portée mélée",
+  "QUALITY.AREASRR": "Zone d’effet - rayon portée courte",
+  "QUALITY.AREAC": "Zone d'effet - cône",
+  "QUALITY.BALANCED": "Équilibrée",
+  "QUALITY.BASTARD": "Arme bâtarde",
+  "QUALITY.BLOODLETTING": "Saigneur",
+  "QUALITY.BLUNT": "Contondante",
+  "QUALITY.CONCEALED": "Dissimulée",
+  "QUALITY.CUMBERSOME": "Encombrante",
+  "QUALITY.DEEPIMPACT": "Éventreur",
+  "QUALITY.ENSNARING": "Immobilisant",
+  "QUALITY.FLEXIBLE": "Pratique",
+  "QUALITY.IMPEDING": "Gênante",
+  "QUALITY.JOINTED": "Flexible",
+  "QUALITY.LONG": "Longue",
+  "QUALITY.MASSIVE": "Massive",
+  "QUALITY.PRECISE": "Précise",
+  "QUALITY.REINFORCED": "Renforcée",
+  "QUALITY.RETURNING": "Boomerang",
+  "QUALITY.SCREENING": "Écran",
+  "QUALITY.SHORT": "Courte",
+  "QUALITY.UNWIELDY": "Déséquilibrée",
+  "QUALITY.WRECKING": "Destructeur",
+
   "RITUAL.TRADITION": "Tradition",
   "RITUAL.DESCRIPTION": "Description",
 
@@ -133,9 +159,10 @@
   "TAB.NOVICE": "NOVICE",
   "TAB.ADEPT": "ADEPTE",
   "TAB.MASTER": "MAÎTRE",
-  "TAB.STATS": "STATISTIQUES",
+  "TAB.STATS": "STATS",
   "TAB.POWER": "POUVOIR",
   "TAB.BONUS": "BONUS",
+  "TAB.QUALITIES":"QUALITÉS",
 
   "TITLE.ABILITIES_POWERS": "TALENTS & POUVOIRS",
   "TITLE.HEALTH": "SANTÉ",
@@ -153,6 +180,7 @@
   "TITLE.STATS": "STATISTIQUES",
   "TITLE.POWER": "POUVOIR",
   "TITLE.MONEY": "ARGENT",
+  "TITLE.QUALITIES":"QUALITÉS",
 
   "TRAIT.NAME": "Nom",
   "TRAIT.ACTIVE": "Actif",
@@ -166,8 +194,13 @@
   "WEAPON.QUALITY": "Qualité",
   "WEAPON.COST": "Prix",
   "WEAPON.ATTRIBUTE": "Attribut",
+<<<<<<< HEAD
   "WEAPON.DESCRIPTION": "Description",
 
   "SYMBAROUM.OPTIONAL_CRIT": "Optional Critical Rolls",
   "SYMBAROUM.OPTIONAL_CRIT_HINT": "Check to enable Hit bonus and Defence fumbles on dice rolls of 1 and 20"
 }
+=======
+  "WEAPON.DESCRIPTION": "Description"
+  }
+>>>>>>> bd85b408c660f7b9ab488030607b7ddfd81bf98c

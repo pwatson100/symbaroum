@@ -43,6 +43,17 @@ export const migrateWorld = async () => {
 
 const migrateActorData = (actor, worldSchemaVersion) => {
     const update = {};
+    if (worldSchemaVersion < 2.11) {
+        update["data.data.initiative"] = {
+            attribute: "quick",
+            value: 0
+        }
+    }
+    if (worldSchemaVersion < 2.13) {
+        update["data.data.defense"] = {
+            attribute: "quick"
+        }
+    }
     let itemsChanged = false;
     const items = actor.items.map((item) => {
         const itemUpdate = migrateItemData(item, worldSchemaVersion);
@@ -80,6 +91,30 @@ const migrateItemData = (item, worldSchemaVersion) => {
         } else if (gearType.includes(item.type)) {
             update["data.bonus.toughness"] = { max:0, threshold: 0 };
             update["data.bonus.corruption"] = { threshold: 0 };
+        }
+    }
+    if (worldSchemaVersion < 2.12) {
+        if (item.type === "weapon") {
+                update["data.qualities"] = {
+                bastard: false,
+                returning: false,
+                blunt: false,        
+                short: false,
+                unwieldy: false,
+                wrecking: false,
+                concealed: false,
+                balanced: false,
+                deepImpact: false,
+                jointed: false,
+                ensnaring: false,
+                long: false,
+                massive: false,
+                precise: false,
+                bloodLetting: false,
+                areaMeleeRadius: false,
+                areaShortRadius: false,
+                areaCone: false
+            };
         }
     }
     if (!isObjectEmpty(update)) {

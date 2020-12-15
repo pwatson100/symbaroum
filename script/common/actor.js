@@ -55,13 +55,16 @@ export class SymbaroumActor extends Actor {
         data.data.health.toughness.threshold = Math.ceil(data.data.attributes.strong.value / 2) + data.data.bonus.toughness.threshold;
         data.data.health.corruption.threshold = Math.ceil(data.data.attributes.resolute.value / 2) + data.data.bonus.corruption.threshold;
         const activeArmor = this._getActiveArmor(data);
+        let attributeDef = data.data.defense.attribute.toLowerCase();
         data.data.combat = {
             id: activeArmor._id,
             armor: activeArmor.name,
             protection: activeArmor.data.protection,
             quality: activeArmor.data.quality,
-            defense: data.data.attributes.quick.value - activeArmor.data.impeding + data.data.bonus.defense
+            defense: data.data.attributes[attributeDef].value - activeArmor.data.impeding + data.data.bonus.defense
         };
+        let attributeInit = data.data.initiative.attribute.toLowerCase();
+        data.data.initiative.value = (data.data.attributes[attributeInit].value * 1000) + (data.data.attributes.vigilant.value * 10);
     }
 
     _computePower(data, item) {
