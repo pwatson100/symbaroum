@@ -68,6 +68,9 @@
   "CHAT.SUCCEED": "Succeed",
   "CHAT.FAILED": "Failed",
   "CHAT.CRITICAL_SUCCESS": "Critical Success",
+  "CHAT.CRITICAL_FAILURE": "Critical Failure - Free Attack",
+  "CHAT.CRITICAL_FREEATTACK": "Critical Success - Free Attack",
+  "CHAT.CRITICAL_PLUS3DAMAGE": "Critical Failure +3 Damage",
   "CHAT.RECOVER": "Recover",
   "CHAT.TOUGHNESS": "toughness",
   "CHAT.STAY_ALIVE": "You may stay alive for now !",
@@ -191,5 +194,8 @@
   "WEAPON.QUALITY": "Quality",
   "WEAPON.COST": "Cost",
   "WEAPON.ATTRIBUTE": "Attribute",
-  "WEAPON.DESCRIPTION": "Description"
+  "WEAPON.DESCRIPTION": "Description",
+
+  "SYMBAROUM.OPTIONAL_CRIT": "Optional Critical Rolls",
+  "SYMBAROUM.OPTIONAL_CRIT_HINT": "Check to enable Hit bonus and Defence fumbles on dice rolls of 1 and 20"
 }
