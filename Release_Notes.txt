@@ -1,2 +1,12 @@
-Version 1.10.1
+Version 2.10.1
 Re Release of the system. 
+
+Version 2.10.2
+Added Language file for German. Thanks to @Rico M#8744
+Updated Spanish Language file. Thanks to @Nerfyon Ban Solo#3091
+Updated Swedish Language file. Thanks to @Sajkiq#5977
+
+Added optional Critical rolls as a system setting.  This is part of the Optional rules to:
+On Hits - add 1d6 damage of a roll of 1 and display a critical failure message on a roll of 20 (free hit for opponent)
+On Defence - display a critical Success message on a roll of 1 (free hit for character) and display a critical failure message on a roll of 20 (+3 Damage)
+See page 179 of the core rulebook for further details. 

@@ -68,6 +68,9 @@
   "CHAT.SUCCEED": "Succeed",
   "CHAT.FAILED": "Failed",
   "CHAT.CRITICAL_SUCCESS": "Critical Success",
+  "CHAT.CRITICAL_FAILURE": "Critical Failure - Free Attack",
+  "CHAT.CRITICAL_FREEATTACK": "Critical Success - Free Attack",
+  "CHAT.CRITICAL_PLUS3DAMAGE": "Critical Failure +3 Damage",
   "CHAT.RECOVER": "Recover",
   "CHAT.TOUGHNESS": "toughness",
   "CHAT.STAY_ALIVE": "You may stay alive for now !",
@@ -100,6 +103,8 @@
   "HEALTH.CORRUPTION_THRESHOLD": "Threshold",
   "HEALTH.CORRUPTION_THRESHOLD_MAX": "Cor. Threshold",
 
+  "INITIATIVE": "Initiative",
+
   "ITEM.TRAIT": "Trait",
   "ITEM.ABILITY": "Ability",
   "ITEM.ARMOR": "Armor",
@@ -119,6 +124,30 @@
   "MYSTICAL_POWER.MATERIAL": "Material",
   "MYSTICAL_POWER.DESCRIPTION": "Description",
 
+  "QUALITY.AREAMRR": "Area Effect - melee range radius",
+  "QUALITY.AREASRR": "Area Effect - short range radius", 
+  "QUALITY.AREAC": "Area Effect - cone",
+  "QUALITY.BALANCED": "Balanced",
+  "QUALITY.BASTARD": "Bastard Weapon", 
+  "QUALITY.BLOODLETTING": "Blood-letting",
+  "QUALITY.BLUNT": "Blunt",
+  "QUALITY.CONCEALED": "Concealed", 
+  "QUALITY.CUMBERSOME": "Cumbersome", 
+  "QUALITY.DEEPIMPACT": "Deep Impact",
+  "QUALITY.ENSNARING": "Ensnaring",
+  "QUALITY.FLEXIBLE": "flexible",
+  "QUALITY.IMPEDING": "Impeding", 
+  "QUALITY.JOINTED": "Jointed", 
+  "QUALITY.LONG": "Long",
+  "QUALITY.MASSIVE": "Massive",
+  "QUALITY.PRECISE": "Precise",
+  "QUALITY.REINFORCED": "Reinforced",
+  "QUALITY.RETURNING": "Returning", 
+  "QUALITY.SCREENING": "Screening",
+  "QUALITY.SHORT": "Short",
+  "QUALITY.UNWIELDY": "Unwieldy",
+  "QUALITY.WRECKING": "Wrecking",
+
   "RITUAL.TRADITION": "Tradition",
   "RITUAL.DESCRIPTION": "Description",
 
@@ -133,6 +162,7 @@
   "TAB.STATS": "STATS",
   "TAB.POWER": "POWER",
   "TAB.BONUS": "BONUS",
+  "TAB.QUALITIES":"QUALITIES",
 
   "TITLE.ABILITIES_POWERS": "ABILITIES & POWERS",
   "TITLE.HEALTH": "HEALTH",
@@ -150,12 +180,13 @@
   "TITLE.STATS": "STATS",
   "TITLE.POWER": "POWER",
   "TITLE.MONEY": "MONEY",
+  "TITLE.QUALITIES":"QUALITIES",
 
   "TRAIT.NAME": "Name",
   "TRAIT.ACTIVE": "Is Active",
   "TRAIT.ACTION": "Action",
   "TRAIT.DESCRIPTION": "Description",
-
+  
   "WEAPON.HEADER": "Weapon",
   "WEAPON.NAME": "Name",
   "WEAPON.DAMAGE": "Damage",
@@ -163,5 +194,8 @@
   "WEAPON.QUALITY": "Quality",
   "WEAPON.COST": "Cost",
   "WEAPON.ATTRIBUTE": "Attribute",
-  "WEAPON.DESCRIPTION": "Description"
+  "WEAPON.DESCRIPTION": "Description",
+
+  "SYMBAROUM.OPTIONAL_CRIT": "Optional Critical Rolls",
+  "SYMBAROUM.OPTIONAL_CRIT_HINT": "Check to enable Hit bonus and Defence fumbles on dice rolls of 1 and 20"
 }
