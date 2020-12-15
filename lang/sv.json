@@ -101,13 +101,9 @@
   "HEALTH.CORRUPTION_TEMPORARY": "Temporär",
   "HEALTH.CORRUPTION_PERMANENT": "Permanent",
   "HEALTH.CORRUPTION_THRESHOLD": "Tröskel",
-<<<<<<< HEAD:lang/sv.json
-  "HEALTH.CORRUPTION_THRESHOLD_MAX": "Korr. Tröskel",
-=======
   "HEALTH.CORRUPTION_THRESHOLD_MAX": "Korrupt. Tröskel",
   
   "INITIATIVE": "",
->>>>>>> bd85b408c660f7b9ab488030607b7ddfd81bf98c:lang/swe.json
 
   "ITEM.TRAIT": "Kvalité",
   "ITEM.ABILITY": "Förmåga",

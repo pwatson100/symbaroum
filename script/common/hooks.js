@@ -15,9 +15,7 @@ import { ArtifactSheet } from '../sheet/artifact.js';
 import { initializeHandlebars } from './handlebars.js';
 import { migrateWorld } from './migration.js';
 
-<<<<<<< HEAD
 Hooks.once('init', () => {
-  CONFIG.Combat.initiative = { formula: '@attributes.quick.value + @attributes.vigilant.value / 100', decimals: 2 };
   CONFIG.Actor.entityClass = SymbaroumActor;
   CONFIG.Item.entityClass = SymbaroumItem;
   Actors.unregisterSheet('core', ActorSheet);
@@ -43,35 +41,6 @@ Hooks.once('init', () => {
     default: 0,
     type: Number,
   });
-=======
-Hooks.once("init", () => {
-    CONFIG.Actor.entityClass = SymbaroumActor;
-    CONFIG.Item.entityClass = SymbaroumItem;
-    Actors.unregisterSheet("core", ActorSheet);
-    Actors.registerSheet("symbaroum", PlayerSheet, { types: ["player"], makeDefault: true });
-    Actors.registerSheet("symbaroum", MonsterSheet, { types: ["monster"], makeDefault: true });
-    Items.unregisterSheet("core", ItemSheet);
-    Items.registerSheet("symbaroum", TraitSheet, { types: ["trait"], makeDefault: true });
-    Items.registerSheet("symbaroum", AbilitySheet, { types: ["ability"], makeDefault: true });
-    Items.registerSheet("symbaroum", MysticalPowerSheet, { types: ["mysticalPower"], makeDefault: true });
-    Items.registerSheet("symbaroum", RitualSheet, { types: ["ritual"], makeDefault: true });
-    Items.registerSheet("symbaroum", BurdenSheet, { types: ["burden"], makeDefault: true });
-    Items.registerSheet("symbaroum", BoonSheet, { types: ["boon"], makeDefault: true });
-    Items.registerSheet("symbaroum", WeaponSheet, { types: ["weapon"], makeDefault: true });
-    Items.registerSheet("symbaroum", ArmorSheet, { types: ["armor"], makeDefault: true });
-    Items.registerSheet("symbaroum", EquipmentSheet, { types: ["equipment"], makeDefault: true });
-    Items.registerSheet("symbaroum", ArtifactSheet, { types: ["artifact"], makeDefault: true });
-    initializeHandlebars();
-    game.settings.register("symbaroum", "worldSchemaVersion", {
-        name: "World Version",
-        hint: "Used to automatically upgrade worlds data when the system is upgraded.",
-        scope: "world",
-        config: true,
-        default: 0,
-        type: Number,
-    });
-});
->>>>>>> bd85b408c660f7b9ab488030607b7ddfd81bf98c
 
   game.settings.register('symbaroum', 'optionalCrit', {
     name: 'SYMBAROUM.OPTIONAL_CRIT',

@@ -194,13 +194,8 @@
   "WEAPON.QUALITY": "Qualité",
   "WEAPON.COST": "Prix",
   "WEAPON.ATTRIBUTE": "Attribut",
-<<<<<<< HEAD
   "WEAPON.DESCRIPTION": "Description",
 
   "SYMBAROUM.OPTIONAL_CRIT": "Optional Critical Rolls",
   "SYMBAROUM.OPTIONAL_CRIT_HINT": "Check to enable Hit bonus and Defence fumbles on dice rolls of 1 and 20"
 }
-=======
-  "WEAPON.DESCRIPTION": "Description"
-  }
->>>>>>> bd85b408c660f7b9ab488030607b7ddfd81bf98c

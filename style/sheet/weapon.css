@@ -116,7 +116,7 @@
 .symbaroum.sheet.item .weapon .tab .qualities .areaMeleeRadius label,
 .symbaroum.sheet.item .weapon .tab .qualities .areaShortRadius label,
 .symbaroum.sheet.item .weapon .tab .qualities .areaCone label {
-    width: 105px;
+    /* width: 105px; */
 }
 
 
