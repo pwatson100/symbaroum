@@ -2,7 +2,7 @@
   "name": "symbaroum",
   "title": "Symbaroum",
   "description": "Twilight falls. Davokar darkens.",
-  "version": "2.10.1",
+  "version": "2.10.2",
   "minimumCoreVersion": "0.7.5",
   "compatibleCoreVersion": "0.7.8",
   "templateVersion": 2,
@@ -55,9 +55,9 @@
       "path": "lang/es.json"
     },
     {
-      "lang": "swe",
+      "lang": "sv",
       "name": "Svenska ",
-      "path": "lang/swe.json"
+      "path": "lang/sv.json"
     }
   ],
   "gridDistance": 1,

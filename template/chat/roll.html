@@ -1,20 +1,36 @@
 <div class="symbaroum chat roll">
-    <div class="foreground border">
-        <h3>{{name}}</h3>
-        {{#if hasSucceed}}
-        <h4>{{localize "CHAT.SUCCEED"}} ({{diceResult}})</h4>
+  <div class="foreground border">
+    <h3>{{name}}</h3>
+    {{#if hasSucceed}}
+    <h4>{{localize "CHAT.SUCCEED"}} ({{diceResult}})</h4>
 
-        {{#if hasWeapon}}
-        <p style="margin-top: 5px"><strong>{{localize "WEAPON.DAMAGE"}}:</strong> {{weapon.value}}</p>
-        <p><strong>{{localize "WEAPON.QUALITY"}}:</strong> {{weapon.quality}}</p>
-        {{/if}}
+    {{#if hasWeapon}} 
+    {{#if critAtSuccess}}
+    <h4>{{localize "CHAT.CRITICAL_SUCCESS"}}</h4>
 
-        {{else}}
+    {{/if}}
+    <p style="margin-top: 5px"><strong>{{localize "WEAPON.DAMAGE"}}:</strong> {{weapon.value}}</p>
+    <p><strong>{{localize "WEAPON.QUALITY"}}:</strong> {{weapon.quality}}</p>
+
+    {{/if}} 
+    {{else}} 
+    {{#if critAtFail}}
+    <h4>{{localize "CHAT.CRITICAL_FAILURE"}}</h4>
+    {{/if}}
+
+    
         <h4>{{localize "CHAT.FAILED"}} ({{diceResult}})</h4>
-        {{#if hasArmor}}
-        <p style="margin-top: 5px"><strong>{{localize "ARMOR.PROTECTION"}}:</strong> {{armor.value}}</p>
-        <p><strong>{{localize "ARMOR.QUALITY"}}:</strong> {{armor.quality}}</p>
-        {{/if}}
-        {{/if}}
-    </div>
+
+    {{#if hasArmor}}
+    <p style="margin-top: 5px"><strong>{{localize "ARMOR.PROTECTION"}}:</strong> {{armor.value}}</p>
+    <p><strong>{{localize "ARMOR.QUALITY"}}:</strong> {{armor.quality}}</p>
+    {{/if}}
+     {{/if}}
+     {{#if critDfSuccess}}
+    <h4>{{localize "CHAT.CRITICAL_FREEATTACK"}}</h4>
+    {{/if}} 
+    {{#if critDfFail}}
+    <h4>{{localize "CHAT.CRITICAL_PLUS3DAMAGE"}}</h4>
+    {{/if}}
+  </div>
 </div>
