@@ -16,7 +16,6 @@ import { initializeHandlebars } from "./handlebars.js";
 import { migrateWorld } from "./migration.js";
 
 Hooks.once("init", () => {
-    CONFIG.Combat.initiative = { formula: "@attributes.quick.value + @attributes.vigilant.value / 100", decimals: 2 };
     CONFIG.Actor.entityClass = SymbaroumActor;
     CONFIG.Item.entityClass = SymbaroumItem;
     Actors.unregisterSheet("core", ActorSheet);
