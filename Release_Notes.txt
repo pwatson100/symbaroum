@@ -14,3 +14,8 @@ Controlling attributes for Initiative and Defence are now selectable.
 Added Qualities tab to Weapons with checkboxes for each quality. 
 Currently these do not add modifiers but will enable those changes in the future.   
 The existing Quality text field on the Stats tab still controls what appears on the character sheet. 
+
+Version 2.13.1
+Corrected issue where Boons were being shown as Bane on the Character sheet.
+Updated Swedish language pack. Thanks to @Sajkiq#5977 
+Chat message adjustments (font size and boldness). Thanks to @Sajkiq#5977
