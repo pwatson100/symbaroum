@@ -19,15 +19,18 @@
 .symbaroum.chat.roll strong {
     text-transform: uppercase;
     font-weight: bold;
+    color: #606060;
     font-size: 14px;
 }
 
 .symbaroum.chat.roll h3 {
     font-family: var(--font-text);
-    font-size: 18px;
+    font-size: 14px;
     font-weight: bold;
+    color: #606060;
     margin: 0 0 8px;
     text-align: center;
+    border-bottom: 1px solid var(--color-border);
 }
 
 .symbaroum.chat.roll h4 {
@@ -36,9 +39,11 @@
     font-weight: bold;
     margin: 0;
     text-align: center;
-    border-top: 1px solid var(--color-border);
+
 }
 
 .symbaroum.chat.roll p {
+    font-size: 16px;
+    font-weight: bold;
     margin: 0 0 4px;
 }

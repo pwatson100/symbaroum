@@ -1,12 +1,21 @@
 Version 2.10.1
 Re Release of the system. 
 
-Version 2.10.2
-Added Language file for German. Thanks to @Rico M#8744
+Version 2.13.0
 Updated Spanish Language file. Thanks to @Nerfyon Ban Solo#3091
 Updated Swedish Language file. Thanks to @Sajkiq#5977
-
 Added optional Critical rolls as a system setting.  This is part of the Optional rules to:
 On Hits - add 1d6 damage of a roll of 1 and display a critical failure message on a roll of 20 (free hit for opponent)
 On Defence - display a critical Success message on a roll of 1 (free hit for character) and display a critical failure message on a roll of 20 (+3 Damage)
 See page 179 of the core rulebook for further details. 
+
+Thanks to @khaali#8262: 
+Controlling attributes for Initiative and Defence are now selectable.  
+Added Qualities tab to Weapons with checkboxes for each quality. 
+Currently these do not add modifiers but will enable those changes in the future.   
+The existing Quality text field on the Stats tab still controls what appears on the character sheet. 
+
+Version 2.13.1
+Corrected issue where Boons were being shown as Bane on the Character sheet.
+Updated Swedish language pack. Thanks to @Sajkiq#5977 
+Chat message adjustments (font size and boldness). Thanks to @Sajkiq#5977
