@@ -82,6 +82,7 @@
 
   "EQUIPMENT.NAME": "Nom",
   "EQUIPMENT.COST": "Prix",
+  "EQUIPMENT.NUMBER": "Nombre",
   "EQUIPMENT.DESCRIPTION": "Description",
 
   "EXPERIENCE": "Expérience",
@@ -195,6 +196,7 @@
   "WEAPON.COST": "Prix",
   "WEAPON.ATTRIBUTE": "Attribut",
   "WEAPON.DESCRIPTION": "Description",
+  "WEAPON.NUMBER": "Nombre",
 
   "SYMBAROUM.OPTIONAL_CRIT": "Optional Critical Rolls",
   "SYMBAROUM.OPTIONAL_CRIT_HINT": "Check to enable Hit bonus and Defence fumbles on dice rolls of 1 and 20"

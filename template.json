@@ -273,6 +273,7 @@
         "areaCone": false
       },
       "cost": "",
+      "number": 1,
       "attribute": "",
       "state": "other"
     },
@@ -293,17 +294,35 @@
       ],
       "description": "",
       "cost": "",
+      "number" : 1,
       "state": "other"
     },
     "artifact": {
       "templates": [
         "bonus"
       ],
-      "description": "",
-      "powers": "",
-      "action": "",
-      "corruption": "",
+      "power1": {
+        "name": "",
+        "description": "",
+        "action": "",
+        "corruption": ""
+      },
+      "power2": {
+        "name": "",
+        "description": "",
+        "action": "",
+        "corruption": ""
+      },
+      "power3": {
+        "name": "",
+        "description": "",
+        "action": "",
+        "corruption": ""
+      },
       "state": "other"
+
+
+
     }
   }
 }

@@ -16,7 +16,8 @@
 }
 
 
-.symbaroum.sheet.item .equipment .tab .cost {
+.symbaroum.sheet.item .equipment .tab .cost,
+.symbaroum.sheet.item .equipment .tab .number {
     display: flex;
     flex-direction: row;
     flex-basis: 100%;

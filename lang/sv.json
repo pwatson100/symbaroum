@@ -82,6 +82,7 @@
 
   "EQUIPMENT.NAME": "Namn",
   "EQUIPMENT.COST": "Kostnad",
+  "EQUIPMENT.NUMBER": "",
   "EQUIPMENT.DESCRIPTION": "Beskrivning",
 
   "EXPERIENCE": "Erfarenhet",
@@ -195,6 +196,7 @@
   "WEAPON.COST": "Kostnad",
   "WEAPON.ATTRIBUTE": "Karaktärsdrag",
   "WEAPON.DESCRIPTION": "Beskrivning",
+  "WEAPON.NUMBER": "",
 
   "SYMBAROUM.OPTIONAL_CRIT": "Optional Critical Rolls",
   "SYMBAROUM.OPTIONAL_CRIT_HINT": "Check to enable Hit bonus and Defence fumbles on dice rolls of 1 and 20"
