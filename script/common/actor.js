@@ -73,7 +73,7 @@ export class SymbaroumActor extends Actor {
         } else if (item.isBurden) {
             item.data.actions = "Burden"
         } else if (item.isBoon) {
-            item.data.actions = "Bane"
+            item.data.actions = "Boon"
         } else {
             let novice = "-";
             let adept = "-";
