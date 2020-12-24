@@ -15,7 +15,7 @@
   "ARMOR.NAME": "Namn",
   "ARMOR.PROTECTION": "Bepansring",
   "ARMOR.PROTECTION_SHORT": "Skydd",
-  "ARMOR.IMPENDING": "Begränsande",
+  "ARMOR.IMPEDING": "Begränsande",
   "ARMOR.DEFENSE": "Försvar",
   "ARMOR.COST": "Kostnad",
   "ARMOR.QUALITY": "Kvalité",
@@ -84,6 +84,7 @@
   "EQUIPMENT.COST": "Kostnad",
   "EQUIPMENT.NUMBER": "",
   "EQUIPMENT.DESCRIPTION": "Beskrivning",
+  "EQUIPMENT.QUANTITY_SHORT": "Qty.",
 
   "EXPERIENCE": "Erfarenhet",
 
