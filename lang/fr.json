@@ -198,6 +198,6 @@
   "WEAPON.DESCRIPTION": "Description",
   "WEAPON.NUMBER": "Nombre",
 
-  "SYMBAROUM.OPTIONAL_CRIT": "Optional Critical Rolls",
-  "SYMBAROUM.OPTIONAL_CRIT_HINT": "Check to enable Hit bonus and Defence fumbles on dice rolls of 1 and 20"
+  "SYMBAROUM.OPTIONAL_CRIT": "Option jets de dés critiques",
+  "SYMBAROUM.OPTIONAL_CRIT_HINT": "Activer les bonus de dégâts et désastres de défense sur un résultat du dé de 1 ou 20"
 }
