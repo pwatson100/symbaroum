@@ -9,7 +9,7 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    flex-basis: calc(65% - 5px);
+    flex-basis: calc(60% - 5px);
     border-top: none;
     margin-right: 5px;
 }
@@ -18,7 +18,7 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    flex-basis: calc(35% - 5px);
+    flex-basis: calc(40% - 5px);
     border-top: none;
     margin-left: 5px;
 }
@@ -87,20 +87,25 @@
 
 .symbaroum.sheet.actor .player .gear .wrapper-left .armors .item-list .protection,
 .symbaroum.sheet.actor .player .gear .wrapper-left .weapons .item-list .damage,
-.symbaroum.sheet.actor .player .gear .wrapper-left .artifacts .item-list .action {
-    flex-basis: 10%;
+.symbaroum.sheet.actor .player .gear .wrapper-left .artifacts .item-list .action
+
+ {
+    flex-basis: 12%;
 }
 
 .symbaroum.sheet.actor .player .gear .wrapper-left .armors .item-list .quality,
 .symbaroum.sheet.actor .player .gear .wrapper-left .weapons .item-list .quality,
-.symbaroum.sheet.actor .player .gear .wrapper-left .artifacts .item-list .corruption {
+.symbaroum.sheet.actor .player .gear .wrapper-left .artifacts .item-list .corruption,
+.symbaroum.sheet.actor .player .gear .wrapper-right .equipments .item-list .quantity 
+ {
     flex-basis: 30%;
 }
 
 .symbaroum.sheet.actor .player .gear .wrapper-left .armors .item-list .state,
 .symbaroum.sheet.actor .player .gear .wrapper-left .weapons .item-list .state,
 .symbaroum.sheet.actor .player .gear .wrapper-left .artifacts .item-list .state,
-.symbaroum.sheet.actor .player .gear .wrapper-right .equipments .item-list .state {
+.symbaroum.sheet.actor .player .gear .wrapper-right .equipments .item-list .state 
+{
     flex-basis: 10%;
     margin-left: 5px;
 }
@@ -147,7 +152,9 @@
 .symbaroum.sheet.actor .player .gear .wrapper-left .weapons .item-list .weapon .damage,
 .symbaroum.sheet.actor .player .gear .wrapper-left .weapons .item-list .weapon .quality,
 .symbaroum.sheet.actor .player .gear .wrapper-left .artifacts .item-list .artifact .action,
-.symbaroum.sheet.actor .player .gear .wrapper-left .artifacts .item-list .artifact .corruption {
+.symbaroum.sheet.actor .player .gear .wrapper-left .artifacts .item-list .artifact .corruption,
+.symbaroum.sheet.actor .player .gear .wrapper-right .equipments .item-list .quantity 
+{
     background: url(../../../asset/image/editable.jpg) repeat;
     border: 1px solid var(--color-border);
     box-shadow: inset 0 0 6px black;
@@ -158,7 +165,9 @@
 
 .symbaroum.sheet.actor .player .gear .wrapper-left .armors .item-list .armor .protection,
 .symbaroum.sheet.actor .player .gear .wrapper-left .weapons .item-list .weapon .damage,
-.symbaroum.sheet.actor .player .gear .wrapper-left .artifacts .item-list .artifact .action {
+.symbaroum.sheet.actor .player .gear .wrapper-left .artifacts .item-list .artifact .action,
+.symbaroum.sheet.actor .player .gear .wrapper-right .equipments .item-list .quantity 
+{
     border-left: none;
     border-right: none;
 }
@@ -172,10 +181,10 @@
 .symbaroum.sheet.actor .player .gear .wrapper-left .armors .item-list .armor .state,
 .symbaroum.sheet.actor .player .gear .wrapper-left .weapons .item-list .weapon .state,
 .symbaroum.sheet.actor .player .gear .wrapper-left .artifacts .item-list .artifact .state,
-.symbaroum.sheet.actor .player .gear .wrapper-right .equipments .item-list .equipment .state {
+.symbaroum.sheet.actor .player .gear .wrapper-right .equipments .item-list .equipment .state
+{
     text-align: center;
     align-items: center;
-    justify-content: center;
 }
 
 .symbaroum.sheet.actor .player .gear .wrapper-right .money .thaler,
