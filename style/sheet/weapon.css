@@ -18,12 +18,13 @@
 }
 
 .symbaroum.sheet.item .weapon .description .editor {
-    height: 134px;
+    height: 166px;
 }
 
 .symbaroum.sheet.item .weapon .tab .stats .quality,
 .symbaroum.sheet.item .weapon .tab .stats .damage,
 .symbaroum.sheet.item .weapon .tab .stats .cost,
+.symbaroum.sheet.item .weapon .tab .stats .number,
 .symbaroum.sheet.item .weapon .tab .stats .attribute {
     display: flex;
     flex-direction: row;
@@ -122,7 +123,7 @@
 
 .symbaroum.sheet.item .weapon .tab .bonus .scroll {
     overflow-y: scroll;
-    height: 154px;
+    height: 188px;
     display: flex;
     flex-basis: 100%;
     flex-wrap: wrap;

@@ -15,7 +15,7 @@
   "ARMOR.NAME": "Namn",
   "ARMOR.PROTECTION": "Bepansring",
   "ARMOR.PROTECTION_SHORT": "Skydd",
-  "ARMOR.IMPENDING": "Begränsande",
+  "ARMOR.IMPEDING": "Begränsande",
   "ARMOR.DEFENSE": "Försvar",
   "ARMOR.COST": "Kostnad",
   "ARMOR.QUALITY": "Kvalité",
@@ -82,7 +82,9 @@
 
   "EQUIPMENT.NAME": "Namn",
   "EQUIPMENT.COST": "Kostnad",
+  "EQUIPMENT.NUMBER": "",
   "EQUIPMENT.DESCRIPTION": "Beskrivning",
+  "EQUIPMENT.QUANTITY_SHORT": "Qty.",
 
   "EXPERIENCE": "Erfarenhet",
 
@@ -195,6 +197,7 @@
   "WEAPON.COST": "Kostnad",
   "WEAPON.ATTRIBUTE": "Karaktärsdrag",
   "WEAPON.DESCRIPTION": "Beskrivning",
+  "WEAPON.NUMBER": "",
 
   "SYMBAROUM.OPTIONAL_CRIT": "Valbara Kritiska Tärningsslag",
   "SYMBAROUM.OPTIONAL_CRIT_HINT": "Välj för att använda Träff-bonus och Försvars-fummel vid tärningsslag 1 och 20."

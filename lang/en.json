@@ -15,7 +15,7 @@
   "ARMOR.NAME": "Name",
   "ARMOR.PROTECTION": "Protection",
   "ARMOR.PROTECTION_SHORT": "Prot.",
-  "ARMOR.IMPENDING": "Impending",
+  "ARMOR.IMPEDING": "Impeding",
   "ARMOR.DEFENSE": "Defense",
   "ARMOR.COST": "Cost",
   "ARMOR.QUALITY": "Quality",
@@ -82,7 +82,9 @@
 
   "EQUIPMENT.NAME": "Name",
   "EQUIPMENT.COST": "Cost",
+  "EQUIPMENT.NUMBER": "Number",
   "EQUIPMENT.DESCRIPTION": "Description",
+  "EQUIPMENT.QUANTITY_SHORT": "Qty.",
 
   "EXPERIENCE": "Experience",
 
@@ -169,10 +171,10 @@
   "TITLE.ATTRIBUTES": "ATTRIBUTES",
   "TITLE.COMBAT": "COMBAT",
   "TITLE.NOTES": "NOTES",
-  "TITLE.ARMORS": "ARMORS",
+  "TITLE.ARMORS": "ARMOR",
   "TITLE.WEAPONS": "WEAPONS",
   "TITLE.ARTIFACTS": "ARTIFACTS",
-  "TITLE.EQUIPMENTS": "EQUIPMENTS",
+  "TITLE.EQUIPMENTS": "EQUIPMENT",
   "TITLE.DESCRIPTION": "DESCRIPTION",
   "TITLE.NOVICE": "NOVICE",
   "TITLE.ADEPT": "ADEPT",
@@ -195,6 +197,7 @@
   "WEAPON.COST": "Cost",
   "WEAPON.ATTRIBUTE": "Attribute",
   "WEAPON.DESCRIPTION": "Description",
+  "WEAPON.NUMBER": "Number",
 
   "SYMBAROUM.OPTIONAL_CRIT": "Optional Critical Rolls",
   "SYMBAROUM.OPTIONAL_CRIT_HINT": "Check to enable Hit bonus and Defence fumbles on dice rolls of 1 and 20"

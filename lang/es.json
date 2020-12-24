@@ -15,7 +15,7 @@
   "ARMOR.NAME": "Nombre",
   "ARMOR.PROTECTION": "Protección",
   "ARMOR.PROTECTION_SHORT": "Prot.",
-  "ARMOR.IMPENDING": "Incomodidad",
+  "ARMOR.IMPEDING": "Incomodidad",
   "ARMOR.DEFENSE": "Defensa",
   "ARMOR.COST": "Precio",
   "ARMOR.QUALITY": "Calidad",
@@ -82,7 +82,10 @@
 
   "EQUIPMENT.NAME": "Nombre",
   "EQUIPMENT.COST": "Precio",
+  "EQUIPMENT.NUMBER": "",
   "EQUIPMENT.DESCRIPTION": "Descripción",
+  "EQUIPMENT.QUANTITY_SHORT": "Qty.",
+
 
   "EXPERIENCE": "Experiencia",
 
@@ -195,6 +198,7 @@
   "WEAPON.COST": "Precio",
   "WEAPON.ATTRIBUTE": "Atributo",
   "WEAPON.DESCRIPTION": "Descripción",
+  "WEAPON.NUMBER": "",
 
   "SYMBAROUM.OPTIONAL_CRIT": "Optional Critical Rolls",
   "SYMBAROUM.OPTIONAL_CRIT_HINT": "Check to enable Hit bonus and Defence fumbles on dice rolls of 1 and 20"
