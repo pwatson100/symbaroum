@@ -82,6 +82,7 @@
 
   "EQUIPMENT.NAME": "Namn",
   "EQUIPMENT.COST": "Kostnad",
+  "EQUIPMENT.NUMBER": "",
   "EQUIPMENT.DESCRIPTION": "Beskrivning",
 
   "EXPERIENCE": "Erfarenhet",
@@ -195,6 +196,7 @@
   "WEAPON.COST": "Kostnad",
   "WEAPON.ATTRIBUTE": "Karaktärsdrag",
   "WEAPON.DESCRIPTION": "Beskrivning",
+  "WEAPON.NUMBER": "",
 
   "SYMBAROUM.OPTIONAL_CRIT": "Valbara Kritiska Tärningsslag",
   "SYMBAROUM.OPTIONAL_CRIT_HINT": "Välj för att använda Träff-bonus och Försvars-fummel vid tärningsslag 1 och 20."

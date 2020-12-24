@@ -117,6 +117,24 @@ const migrateItemData = (item, worldSchemaVersion) => {
             };
         }
     }
+    if (worldSchemaVersion < 2.14) {
+        if ((item.type === "equipment") || (item.type === "weapon")) {
+            update["data.number"] = 1
+        }
+    }
+    if (worldSchemaVersion < 2.14) {
+        if (item.type === "artifact") {
+            update["data.power1.description"] = "";
+            update["data.power1.action"] = "";
+            update["data.power1.corruption"] = "0";
+            update["data.power2.description"] = "";
+            update["data.power2.action"] = "";
+            update["data.power2.corruption"] = "0";
+            update["data.power3.description"] = "";
+            update["data.power3.action"] = "";
+            update["data.power3.corruption"] = "0"
+        }
+    }
     if (!isObjectEmpty(update)) {
         update._id = item._id;
     }

@@ -6,9 +6,10 @@
     width: 100%;
 }
 
-
 .symbaroum.sheet.item .artifact .description,
-.symbaroum.sheet.item .artifact .power,
+.symbaroum.sheet.item .artifact .power1,
+.symbaroum.sheet.item .artifact .power2,
+.symbaroum.sheet.item .artifact .power3,
 .symbaroum.sheet.item .artifact .bonus {
     display: flex;
     flex-direction: row;
@@ -20,6 +21,7 @@
 .symbaroum.sheet.item .artifact .description .editor {
     height: 166px;
 }
+
 
 .symbaroum.sheet.item .artifact .tab .corruption,
 .symbaroum.sheet.item .artifact .tab .action {
