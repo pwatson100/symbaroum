@@ -51,9 +51,13 @@ export class SymbaroumActor extends Actor {
     }
 
     _computeSecondaryAttributes(data) {
-        data.data.health.toughness.max = (data.data.attributes.strong.value > 10 ? data.data.attributes.strong.value : 10) + data.data.bonus.toughness.max;
-        data.data.health.toughness.threshold = Math.ceil(data.data.attributes.strong.value / 2) + data.data.bonus.toughness.threshold;
-        data.data.health.corruption.threshold = Math.ceil(data.data.attributes.resolute.value / 2) + data.data.bonus.corruption.threshold;
+		let strong = data.data.attributes.strong.value + data.data.bonus.strong;
+        data.data.health.toughness.max = (strong > 10 ? strong : 10) + data.data.bonus.toughness.max;       
+        data.data.health.toughness.threshold = Math.ceil(strong / 2) + data.data.bonus.toughness.threshold;
+        
+        let resolute = data.data.attributes.resolute.value + data.data.bonus.resolute;        
+        data.data.health.corruption.threshold = Math.ceil(resolute / 2) + data.data.bonus.corruption.threshold;
+        
         const activeArmor = this._getActiveArmor(data);
         let attributeDef = data.data.defense.attribute.toLowerCase();
         data.data.combat = {
@@ -61,7 +65,7 @@ export class SymbaroumActor extends Actor {
             armor: activeArmor.name,
             protection: activeArmor.data.protection,
             quality: activeArmor.data.quality,
-            defense: data.data.attributes[attributeDef].value - activeArmor.data.impeding + data.data.bonus.defense
+            defense: data.data.attributes[attributeDef].value + data.data.bonus[attributeDef] - activeArmor.data.impeding + data.data.bonus.defense
         };
         let attributeInit = data.data.initiative.attribute.toLowerCase();
         data.data.initiative.value = (data.data.attributes[attributeInit].value * 1000) + (data.data.attributes.vigilant.value * 10);

@@ -19,3 +19,18 @@ Version 2.13.1
 Corrected issue where Boons were being shown as Bane on the Character sheet.
 Updated Swedish language pack. Thanks to @Sajkiq#5977 
 Chat message adjustments (font size and boldness). Thanks to @Sajkiq#5977
+
+Version 2.14.0
+With Thanks to @khaali#8262 :
+Changed artifact sheet. An artifact always has several powers, usually 2 or 3, each with its specific status (active, passive, reactive...) and its specific corruption gain. 
+Added 3 power tabs, with 3 power descriptions, active status, and corruption gain.
+Added a field 'number' on equipment and weapons, in order to keep track of consumables. 
+
+With thanks to @Bithir#2454 :
+Typo Impending -> Impeding
+Bonus to stats was not taken into consideration when calculating toughness, corruption threshold and abomination, and defence.
+
+My bit:
+Updated Character and Monster sheets Gear tab to display new Artifact format and the equipment quantity field.
+
+

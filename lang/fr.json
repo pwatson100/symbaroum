@@ -15,7 +15,7 @@
   "ARMOR.NAME": "Nom",
   "ARMOR.PROTECTION": "Protection",
   "ARMOR.PROTECTION_SHORT": "Prot.",
-  "ARMOR.IMPENDING": "Gênante",
+  "ARMOR.IMPEDING": "Gênante",
   "ARMOR.DEFENSE": "Défense",
   "ARMOR.COST": "Prix",
   "ARMOR.QUALITY": "Qualité",
@@ -84,6 +84,8 @@
   "EQUIPMENT.COST": "Prix",
   "EQUIPMENT.NUMBER": "Nombre",
   "EQUIPMENT.DESCRIPTION": "Description",
+  "EQUIPMENT.QUANTITY_SHORT":"Qté",
+
 
   "EXPERIENCE": "Expérience",
 
