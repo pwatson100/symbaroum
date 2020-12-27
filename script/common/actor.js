@@ -27,7 +27,8 @@ export class SymbaroumActor extends Actor {
             strong: 0,
             vigilant: 0,
             toughness: { max: 0, threshold: 0 },
-            corruption: { threshold: 0 }
+            corruption: { max: 0, threshold: 0 },
+            experience: { value: 0, cost: 0 }
         };
     }
 
@@ -57,6 +58,7 @@ export class SymbaroumActor extends Actor {
         
         let resolute = data.data.attributes.resolute.value + data.data.bonus.resolute;        
         data.data.health.corruption.threshold = Math.ceil(resolute / 2) + data.data.bonus.corruption.threshold;
+        data.data.health.corruption.max = resolute + data.data.bonus.corruption.max;
         
         const activeArmor = this._getActiveArmor(data);
         let attributeDef = data.data.defense.attribute.toLowerCase();
@@ -69,24 +71,45 @@ export class SymbaroumActor extends Actor {
         };
         let attributeInit = data.data.initiative.attribute.toLowerCase();
         data.data.initiative.value = (data.data.attributes[attributeInit].value * 1000) + (data.data.attributes.vigilant.value * 10);
+        
+        data.data.experience.spent = data.data.bonus.experience.cost - data.data.bonus.experience.value;
+        data.data.experience.available = data.data.experience.total - data.data.experience.artifactrr - data.data.experience.spent;
     }
 
     _computePower(data, item) {
+		let expCost = 0;
         if (item.isRitual) {
-            item.data.actions = "Ritual"
+            item.data.actions = "Ritual";
+            // This needs to check if running with alternative rules for additional rituals, APG p.102
+            // Regardless, someone needs to change either the ritual or the ability (Ritualist) to refund experience pending which rule that is used         
+            expCost = 10;
         } else if (item.isBurden) {
-            item.data.actions = "Burden"
+            item.data.actions = "Burden";
+            expCost = -5 * item.data.level;
         } else if (item.isBoon) {
-            item.data.actions = "Boon"
+            item.data.actions = "Boon";            
+            expCost = 5 * item.data.level;
         } else {
+			
             let novice = "-";
             let adept = "-";
             let master = "-";
-            if (item.data.novice.isActive) novice = item.data.novice.action;
-            if (item.data.adept.isActive) adept = item.data.adept.action;
-            if (item.data.master.isActive) master = item.data.master.action;
+            if (item.data.novice.isActive) { 
+				novice = item.data.novice.action;
+				expCost += 10;
+			}
+            if (item.data.adept.isActive) { 
+				adept = item.data.adept.action;
+				expCost += 20;
+			}
+            if (item.data.master.isActive) {
+				master = item.data.master.action;
+				expCost += 30;
+			}
             item.data.actions = `${novice}/${adept}/${master}`;
         }
+        item.data.bonus.experience.cost = expCost;
+        
         this._addBonus(data, item);
     }
 
@@ -131,8 +154,13 @@ export class SymbaroumActor extends Actor {
                 threshold: data.data.bonus.toughness.threshold + item.data.bonus.toughness.threshold
             },
             corruption: {
+				max: data.data.bonus.corruption.max + item.data.bonus.corruption.max,
                 threshold: data.data.bonus.corruption.threshold + item.data.bonus.corruption.threshold
             },
+            experience: { 
+				cost: data.data.bonus.experience.cost + item.data.bonus.experience.cost,
+				value: data.data.bonus.experience.value + item.data.bonus.experience.value
+			}
         };
     }
 }

@@ -1,6 +1,6 @@
 {
   "ABILITY.NAME": "Name",
-  "ABILITY.ACTIVE": "Is Active",
+  "ABILITY.ACTIVE": "Learned",
   "ABILITY.ACTION": "Action",
   "ABILITY.DESCRIPTION": "Description",
 
@@ -100,10 +100,14 @@
   "HEALTH.TOUGHNESS_THRESHOLD": "Threshold",
   "HEALTH.TOUGHNESS_THRESHOLD_MAX": "Tgh. Threshold",
   "HEALTH.CORRUPTION": "Corruption",
+  "HEALTH.CORRUPTION_CURRENT": "Current",
   "HEALTH.CORRUPTION_TEMPORARY": "Temporary",
+  "HEALTH.CORRUPTION_LONGTERM": "Daily",
   "HEALTH.CORRUPTION_PERMANENT": "Permanent",
   "HEALTH.CORRUPTION_THRESHOLD": "Threshold",
   "HEALTH.CORRUPTION_THRESHOLD_MAX": "Cor. Threshold",
+  "HEALTH.CORRUPTION_MAX": "Abom.",
+  
 
   "INITIATIVE": "Initiative",
 
@@ -121,7 +125,7 @@
   "MONEY.ORTEG": "Orteg",
 
   "MYSTICAL_POWER.NAME": "Name",
-  "MYSTICAL_POWER.ACTIVE": "Is Active",
+  "MYSTICAL_POWER.ACTIVE": "Learned",
   "MYSTICAL_POWER.ACTION": "Action",
   "MYSTICAL_POWER.MATERIAL": "Material",
   "MYSTICAL_POWER.DESCRIPTION": "Description",
@@ -185,7 +189,7 @@
   "TITLE.QUALITIES":"QUALITIES",
 
   "TRAIT.NAME": "Name",
-  "TRAIT.ACTIVE": "Is Active",
+  "TRAIT.ACTIVE": "Acquired",
   "TRAIT.ACTION": "Action",
   "TRAIT.DESCRIPTION": "Description",
   

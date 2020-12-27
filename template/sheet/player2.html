@@ -1,0 +1,64 @@
+<form class="{{cssClass}}" autocomplete="off">
+    <div class="player">
+        <div class="sheet-header foreground border">
+            <div class="avatar">
+                <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
+            </div>
+            <div class="wrapper-column">
+                <div class="wrapper-row">
+                    <div class="name">
+                        <label>{{localize "BIO.NAME"}}</label>
+                        <input name="name" type="text" value="{{actor.name}}"/>
+                    </div>
+                    <div class="experience">
+                        <label>{{localize "EXPERIENCE"}}</label>
+                        <input name="data.experience.total" type="number" value="{{data.experience.total}}" data-dtype="Number" />
+                        <input name="data.experience.artifactrr" type="number" value="{{data.experience.artifactrr}}" data-dtype="Number" />
+                        <input name="data.experience.spent" type="number" value="{{data.experience.spent}}" data-dtype="Number" disabled />
+                        <input name="data.experience.available" type="number" value="{{data.experience.available}}" data-dtype="Number" disabled />
+
+                    </div>
+                    
+                </div>
+                <div class="wrapper-row">
+                    <div class="race">
+                        <label>{{localize "BIO.RACE"}}</label>
+                        <input name="data.bio.race" type="text" value="{{data.bio.race}}"/>
+                    </div>
+                    <div class="occupation">
+                        <label>{{localize "BIO.OCCUPATION"}}</label>
+                        <input name="data.bio.occupation" type="text" value="{{data.bio.occupation}}"/>
+                    </div>
+                </div>
+                <div class="wrapper-row">
+                    <div class="quote">
+                        <label>{{localize "BIO.QUOTE"}}</label>
+                        <input name="data.bio.quote" type="text" value="{{data.bio.quote}}"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sheet-tabs tabs" data-group="primary">
+            <b class="item" data-tab="main">{{localize "TAB.MAIN"}}</b>
+            <b class="item" data-tab="gear">{{localize "TAB.GEAR"}}</b>
+            <b class="item" data-tab="bio">{{localize "TAB.BIO"}}</b>
+            <b class="item" data-tab="note">{{localize "TAB.NOTES"}}</b>
+        </div>
+
+        <div class="sheet-body">
+            <div class="tab" data-group="primary" data-tab="main">
+                {{> systems/symbaroum/template/sheet/tab/player2-main.html}}
+            </div>
+            <div class="tab" data-group="primary" data-tab="gear">
+                {{> systems/symbaroum/template/sheet/tab/player-gear.html}}
+            </div>
+            <div class="tab" data-group="primary" data-tab="bio">
+                {{> systems/symbaroum/template/sheet/tab/player-bio.html}}
+            </div>
+            <div class="tab" data-group="primary" data-tab="note">
+                {{> systems/symbaroum/template/sheet/tab/player-note.html}}
+            </div>
+        </div>
+    </div>
+</form>

@@ -5,13 +5,67 @@
     flex-basis: 100%;
 }
 
-.symbaroum.sheet.actor .player .main .attributes {
+
+.symbaroum.sheet.actor .player .section1
+{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    flex-basis: 100%;
+}
+
+.symbaroum.sheet.actor .health-toughnesscol {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    flex-basis: calc(25% - 5px);
+    flex-basis: calc(30% - 5px);
     border-top: none;
     margin-right: 5px;
+}
+
+.symbaroum.sheet.actor .health-corruptioncol {
+    display: flex;
+    flex-direction: initial;    
+    flex-basis: calc(60% - 5px);
+    flex-grow: 2;
+    border-top: none;
+}
+
+.symbaroum.sheet.actor .corruption-col1,
+.symbaroum.sheet.actor .corruption-col2 {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-basis: calc(50% - 5px);
+    border-top: none;
+    margin-right: 5px;
+}
+.symbaroum.sheet.actor .toughness {
+    display: flex;
+    flex-direction: row;
+    flex-basis: calc(25% - 5px);
+    justify-content: center;
+}
+
+.symbaroum.sheet.actor .nonattributes {
+    display: flex;
+    flex-direction: column;
+    flex-basis: calc(60% - 5px);
+    flex-grow: 1;
+}
+
+.symbaroum.sheet.actor .corruption {
+    display: flex;
+    flex-direction: column;
+    flex-basis: calc(40% - 5px);    
+    justify-content: center;
+}
+
+.symbaroum.sheet.actor .player .main .attributes {   
+    border-top: none;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    width: calc(25% - 5px);
 }
 
 .symbaroum.sheet.actor .player .main .attributes .attribute {
@@ -41,6 +95,25 @@
     margin-left: 5px;
 }
 
+
+.symbaroum.sheet.actor .player .main .health2 {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    flex-basis: calc(70% - 5px);
+    border-top: none;
+    margin-left: 10px;
+    margin-bottom: 5px;
+}
+
+.symbaroum.sheet.actor .player .main .stat-modifiers {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
 .symbaroum.sheet.actor .player .main .health .toughness,
 .symbaroum.sheet.actor .player .main .health .toughness-current,
 .symbaroum.sheet.actor .player .main .health .toughness-total,
@@ -48,7 +121,16 @@
 .symbaroum.sheet.actor .player .main .health .corruption,
 .symbaroum.sheet.actor .player .main .health .corruption-temporary,
 .symbaroum.sheet.actor .player .main .health .corruption-permanent,
-.symbaroum.sheet.actor .player .main .health .corruption-threshold {
+.symbaroum.sheet.actor .player .main .health .corruption-threshold,
+.symbaroum.sheet.actor .player .main .health2 .toughness-current,
+.symbaroum.sheet.actor .player .main .health2 .toughness-total,
+.symbaroum.sheet.actor .player .main .health2 .toughness-threshold,
+.symbaroum.sheet.actor .player .main .health2 .corruption-current,
+.symbaroum.sheet.actor .player .main .health2 .corruption-temporary,
+.symbaroum.sheet.actor .player .main .health2 .corruption-longterm,
+.symbaroum.sheet.actor .player .main .health2 .corruption-permanent,
+.symbaroum.sheet.actor .player .main .health2 .corruption-threshold,
+.symbaroum.sheet.actor .player .main .health2 .corruption-max {
     display: flex;
     flex-direction: row;
     flex-basis: 100%;
@@ -65,18 +147,44 @@
 .symbaroum.sheet.actor .player .main .health .toughness-threshold label,
 .symbaroum.sheet.actor .player .main .health .corruption-temporary label,
 .symbaroum.sheet.actor .player .main .health .corruption-permanent label,
-.symbaroum.sheet.actor .player .main .health .corruption-threshold label {
+.symbaroum.sheet.actor .player .main .health .corruption-threshold label,
+.symbaroum.sheet.actor .player .main .health2 .toughness-current label,
+.symbaroum.sheet.actor .player .main .health2 .toughness-total label,
+.symbaroum.sheet.actor .player .main .health2 .toughness-threshold label,
+.symbaroum.sheet.actor .player .main .health2 .corruption-current label,
+.symbaroum.sheet.actor .player .main .health2 .corruption-temporary label,
+.symbaroum.sheet.actor .player .main .health2 .corruption-longterm label,
+.symbaroum.sheet.actor .player .main .health2 .corruption-permanent label,
+.symbaroum.sheet.actor .player .main .health2 .corruption-threshold label,
+.symbaroum.sheet.actor .player .main .health2 .corruption-max label {
     flex-basis: 70%;
+    padding: 0px;
 }
 
 .symbaroum.sheet.actor .player .main .health .toughness-current input,
 .symbaroum.sheet.actor .player .main .health .toughness-total input,
 .symbaroum.sheet.actor .player .main .health .toughness-threshold input,
-.symbaroum.sheet.actor .player .main .health .corruption-temporary input,
 .symbaroum.sheet.actor .player .main .health .corruption-permanent input,
-.symbaroum.sheet.actor .player .main .health .corruption-threshold input {
+.symbaroum.sheet.actor .player .main .health .corruption-threshold input,
+.symbaroum.sheet.actor .player .main .health .corruption-max input,
+.symbaroum.sheet.actor .player .main .health2 .toughness-current input,
+.symbaroum.sheet.actor .player .main .health2 .toughness-total input,
+.symbaroum.sheet.actor .player .main .health2 .toughness-threshold input,
+.symbaroum.sheet.actor .player .main .health2 .corruption-current input,
+.symbaroum.sheet.actor .player .main .health2 .corruption-temporary input,
+.symbaroum.sheet.actor .player .main .health2 .corruption-longterm input,
+.symbaroum.sheet.actor .player .main .health2 .corruption-permanent input,
+.symbaroum.sheet.actor .player .main .health2 .corruption-threshold input,
+.symbaroum.sheet.actor .player .main .health2 .corruption-max input {
     flex-basis: 30%;
 }
+
+.symbaroum.sheet.actor .player .main .health2 .toughness-threshold,
+.symbaroum.sheet.actor .player .main .health2 .corruption-longterm,
+.symbaroum.sheet.actor .player .main .health2 .corruption-max {
+    margin-bottom: 10px;
+}
+
 
 .symbaroum.sheet.actor .player .main .combat {
     display: flex;
@@ -96,6 +204,11 @@
     flex-wrap: wrap;
     flex-basis: 100%;
     margin: 10px 0px 0px 0px;
+}
+
+.symbaroum.sheet.actor .player .main .combat .stat-modifiers .initiative, 
+.symbaroum.sheet.actor .player .main .combat .stat-modifiers .defenseAttr {
+	flex-wrap: nowrap;
 }
 
 .symbaroum.sheet.actor .player .main .combat .armor {
