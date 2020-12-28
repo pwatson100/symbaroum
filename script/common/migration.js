@@ -54,6 +54,15 @@ const migrateActorData = (actor, worldSchemaVersion) => {
             attribute: "quick"
         }
     }
+    if  (worldSchemaVersion < 2.15) { 
+		update["data.data.corruption.max"] = 0;
+		update["data.data.experience.spent"] = 0;
+		update["data.data.experience.available"] = 0;
+		update["data.data.experience.artifactrr"] = 0;
+		update["data.data.health.corruption.value"] = 0;
+		update["data.data.health.corruption.longterm"] = 0;
+	}            
+		
     let itemsChanged = false;
     const items = actor.items.map((item) => {
         const itemUpdate = migrateItemData(item, worldSchemaVersion);
@@ -135,7 +144,7 @@ const migrateItemData = (item, worldSchemaVersion) => {
             update["data.power3.corruption"] = "0"
         }
     }
-    if  (worldSchemaVersion < 2.14) { 
+    if  (worldSchemaVersion < 2.15) { 
 		const boonType = [ "burden", "boon" ];
         update["data.bonus.corruption"] = { max:0, threshold: 0 };
         update["data.bonus.experience"] = 0;
