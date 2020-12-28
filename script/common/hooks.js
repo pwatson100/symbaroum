@@ -1,7 +1,6 @@
 import { SymbaroumActor } from './actor.js';
 import { SymbaroumItem } from './item.js';
 import { PlayerSheet } from '../sheet/player.js';
-import { PlayerSheet2 } from '../sheet/player2.js';
 import { MonsterSheet } from '../sheet/monster.js';
 import { TraitSheet } from '../sheet/trait.js';
 import { AbilitySheet } from '../sheet/ability.js';
@@ -21,7 +20,6 @@ Hooks.once('init', () => {
   CONFIG.Item.entityClass = SymbaroumItem;
   Actors.unregisterSheet('core', ActorSheet);
   Actors.registerSheet('symbaroum', PlayerSheet, { types: ['player'], makeDefault: true });
-  Actors.registerSheet('symbaroum', PlayerSheet2, { types: ['player'], makeDefault: false });
   Actors.registerSheet('symbaroum', MonsterSheet, { types: ['monster'], makeDefault: true });
   Items.unregisterSheet('core', ItemSheet);
   Items.registerSheet('symbaroum', TraitSheet, { types: ['trait'], makeDefault: true });

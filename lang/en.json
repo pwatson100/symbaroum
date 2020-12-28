@@ -1,6 +1,6 @@
 {
   "ABILITY.NAME": "Name",
-  "ABILITY.ACTIVE": "Learned",
+  "ABILITY.ACTIVE": "Is Active",
   "ABILITY.ACTION": "Action",
   "ABILITY.DESCRIPTION": "Description",
 
@@ -100,14 +100,10 @@
   "HEALTH.TOUGHNESS_THRESHOLD": "Threshold",
   "HEALTH.TOUGHNESS_THRESHOLD_MAX": "Tgh. Threshold",
   "HEALTH.CORRUPTION": "Corruption",
-  "HEALTH.CORRUPTION_CURRENT": "Current",
   "HEALTH.CORRUPTION_TEMPORARY": "Temporary",
-  "HEALTH.CORRUPTION_LONGTERM": "Daily",
   "HEALTH.CORRUPTION_PERMANENT": "Permanent",
   "HEALTH.CORRUPTION_THRESHOLD": "Threshold",
   "HEALTH.CORRUPTION_THRESHOLD_MAX": "Cor. Threshold",
-  "HEALTH.CORRUPTION_MAX": "Abom.",
-  
 
   "INITIATIVE": "Initiative",
 
@@ -125,7 +121,7 @@
   "MONEY.ORTEG": "Orteg",
 
   "MYSTICAL_POWER.NAME": "Name",
-  "MYSTICAL_POWER.ACTIVE": "Learned",
+  "MYSTICAL_POWER.ACTIVE": "Is Active",
   "MYSTICAL_POWER.ACTION": "Action",
   "MYSTICAL_POWER.MATERIAL": "Material",
   "MYSTICAL_POWER.DESCRIPTION": "Description",
@@ -187,31 +183,9 @@
   "TITLE.POWER": "POWER",
   "TITLE.MONEY": "MONEY",
   "TITLE.QUALITIES":"QUALITIES",
-  
-  "TOOLTIP.EXPERIENCE_CURRENT": "Your current available (unspent) experience points",
-  "TOOLTIP.EXPERIENCE_TOTAL": "The total amount of experience that you earnt",
-  "TOOLTIP.EXPERIENCE_ARTIFACTRR": "Experience spent on artifacts and/or re-rolls",
-  "TOOLTIP.EXPERIENCE_SPENT": "Total experience spent on abilities, traits, boons and burdens",
-  "TOOLTIP.EXPERIENCE_AVAILABLE": "Your current available (unspent) experience points",
-  
-  "TOOLTIP.HEALTH.CORRUPTION_CURRENT": "Your current total corruption",
-  "TOOLTIP.HEALTH.CORRUPTION_TEMPORARY": "Your temporary (scene) corruption",
-  "TOOLTIP.HEALTH.CORRUPTION_LONGTERM": "Your corruption that lasts longer than a scene",
-  "TOOLTIP.HEALTH.CORRUPTION_PERMANENT": "Permanent corruption gained",
-  "TOOLTIP.HEALTH.CORRUPTION_THRESHOLD": "Your corruption threshold",
-  "TOOLTIP.HEALTH.CORRUPTION_MAX": "Your abomination threshold",
-  
-  "TOOLTIP.HEALTH.TOUGHNESS_CURRENT": "Your current toughness",
-  "TOOLTIP.HEALTH.TOUGHNESS_TOTAL": "The amount of thoughness damage that will cause you to die",
-  "TOOLTIP.HEALTH.TOUGHNESS_THRESHOLD": "Your pain threshold",
-  
-  "TOOLTIP.COMBAT.INITIATIVE": "The attribute that your initiative is based on",
-  "TOOLTIP.COMBAT.DEFENSE": "The attribute that your defense is based on",
-  
-  "TOOLTIP.POWER_ACTIONS" : "Type of activation (A - active, P - passive, S - special, etc)",
 
   "TRAIT.NAME": "Name",
-  "TRAIT.ACTIVE": "Acquired",
+  "TRAIT.ACTIVE": "Is Active",
   "TRAIT.ACTION": "Action",
   "TRAIT.DESCRIPTION": "Description",
   

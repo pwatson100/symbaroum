@@ -49,15 +49,9 @@
             "threshold": 0
           },
           "corruption": {
-	        "max": 0,
             "permanent": 0,
             "temporary": 0,
-            "threshold": 0,
-
-            "value":0,
-            "longterm": 0
-
-
+            "threshold": 0
           }
         }
       },
@@ -103,11 +97,7 @@
       },
       "experience": {
         "current": 0,
-        "total": 0,
-
-        "spent": 0,
-        "available": 0,
-        "artifactrr": 0
+        "total": 0
       },
       "notes": ""
     },
@@ -167,12 +157,7 @@
             "threshold": 0
           },
           "corruption": {
-	    "max": 0,
             "threshold": 0
-          },
-          "experience": {
-            "value": 0,
-            "cost": 0
           }
         }
       }
@@ -252,15 +237,13 @@
       "templates": [
         "bonus"
       ],
-      "description": "",
-      "level": 1
+      "description": ""
     },
     "boon": {
       "templates": [
         "bonus"
       ],
-      "description": "",
-      "level": 1
+      "description": ""
     },
     "weapon": {
       "templates": [

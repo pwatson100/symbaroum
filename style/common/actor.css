@@ -98,13 +98,6 @@
     margin: 0;
 }
 
-.symbaroum.sheet.actor input[type="text"][disabled],
-.symbaroum.sheet.actor input[type="number"][disabled] {
-    background: url(../../asset/image/not-editable.jpg) repeat;
-}
-
-
-
 .symbaroum.sheet.actor .item-list {
     display: flex;
     flex-direction: column;
