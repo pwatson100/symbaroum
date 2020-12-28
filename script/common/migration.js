@@ -86,11 +86,11 @@ const migrateItemData = (item, worldSchemaVersion) => {
                 strong: 0,
                 vigilant: 0,
                 toughness: { max: 0, threshold: 0 },
-                corruption: { threshold: 0 }
+                corruption: { max:0, threshold: 0 },                
             }
         } else if (gearType.includes(item.type)) {
             update["data.bonus.toughness"] = { max:0, threshold: 0 };
-            update["data.bonus.corruption"] = { threshold: 0 };
+            update["data.bonus.corruption"] = { max:0, threshold: 0 };
         }
     }
     if (worldSchemaVersion < 2.12) {
@@ -135,6 +135,14 @@ const migrateItemData = (item, worldSchemaVersion) => {
             update["data.power3.corruption"] = "0"
         }
     }
+    if  (worldSchemaVersion < 2.14) { 
+		const boonType = [ "burden", "boon" ];
+        update["data.bonus.corruption"] = { max:0, threshold: 0 };
+        update["data.bonus.experience"] = 0;
+		if ( boonType.includes(item.type) ) {
+			update["data.level"] = 1;
+		}            
+	}
     if (!isObjectEmpty(update)) {
         update._id = item._id;
     }

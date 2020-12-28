@@ -1,5 +1,9 @@
 <div class="main">
-    <div class="attributes foreground border">
+	<div class="player2main">
+		
+	<div class="section1">
+		
+    <div class="attributes foreground">
         <h1>{{localize "TITLE.ATTRIBUTES"}}</h1>
         {{#each data.attributes as |attribute key|}}
             <div class="attribute">
@@ -9,12 +13,16 @@
         {{/each}}
     </div>
 
-    <div class="health foreground border">
-        <h1>{{localize "TITLE.HEALTH"}}</h1>
-        <label class="toughness">{{localize "HEALTH.TOUGHNESS"}}</label>
+	<div class="nonattributes">
+		
+    <div class="health2">
+        <!-- <h1 style="width>{{localize "TITLE.HEALTH"}}</h1> -->
+        <div class="toughness ">
+        <div class="health-toughnesscol foreground">
+        <h1>{{localize "HEALTH.TOUGHNESS"}}</h1>
         <div class="toughness-current" title="{{localize "TOOLTIP.HEALTH.TOUGHNESS_CURRENT"}}">
             <label>{{localize "HEALTH.TOUGHNESS_CURRENT"}}</label>
-            <input name="data.health.toughness.value" type="number" value="{{data.health.toughness.value}}" data-dtype="Number"/>
+            <input name="data.health.toughness.value" type="number" value="{{data.health.toughness.value}}" data-dtype="Number" />
         </div>
         <div class="toughness-total" title="{{localize "TOOLTIP.HEALTH.TOUGHNESS_TOTAL"}}">
             <label>{{localize "HEALTH.TOUGHNESS_TOTAL"}}</label>
@@ -24,23 +32,46 @@
             <label>{{localize "HEALTH.TOUGHNESS_THRESHOLD"}}</label>
             <input type="number" value="{{data.health.toughness.threshold}}" data-dtype="Number" disabled/>
         </div>
-        <label class="corruption">{{localize "HEALTH.CORRUPTION"}}</label>
-        <div class="corruption-temporary"  title="{{localize "TOOLTIP.HEALTH.CORRUPTION_CURRENT"}}">
+         </div>
+        </div>
+        
+        <div class="corruption foreground">
+        <h1>{{localize "HEALTH.CORRUPTION"}}</h1>
+        <div class="health-corruptioncol">
+			
+        <div class="corruption-col1">
+        <div class="corruption-current" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_CURRENT"}}">
+            <label>{{localize "HEALTH.CORRUPTION_CURRENT"}}</label>
+            <input name="data.health.corruption.value" type="number" value="{{data.health.corruption.value}}" data-dtype="Number" disabled/>
+        </div>
+        <div class="corruption-temporary" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_TEMPORARY"}}">
             <label>{{localize "HEALTH.CORRUPTION_TEMPORARY"}}</label>
             <input name="data.health.corruption.temporary" type="number" value="{{data.health.corruption.temporary}}" data-dtype="Number"/>
         </div>
+        <div class="corruption-longterm" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_LONGTERM"}}">
+            <label>{{localize "HEALTH.CORRUPTION_LONGTERM"}}</label>
+            <input type="number" name="data.health.corruption.longterm" value="{{data.health.corruption.longterm}}" data-dtype="Number" />
+        </div>
+        </div> <!-- end of col 1 -->
+        <div class="corruption-col2">
         <div class="corruption-permanent" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_PERMANENT"}}">
             <label>{{localize "HEALTH.CORRUPTION_PERMANENT"}}</label>
             <input name="data.health.corruption.permanent" type="number" value="{{data.health.corruption.permanent}}" data-dtype="Number"/>
         </div>
         <div class="corruption-threshold" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_THRESHOLD"}}">
             <label>{{localize "HEALTH.CORRUPTION_THRESHOLD"}}</label>
-            <input type="number" value="{{data.health.corruption.threshold}}" data-dtype="Number" disabled/>
+            <input name="data.health.corruption.threshold" type="number" value="{{data.health.corruption.threshold}}" data-dtype="Number" disabled/>
         </div>
+        <div class="corruption-max" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_MAX"}}">
+            <label>{{localize "HEALTH.CORRUPTION_MAX"}}</label>
+            <input name="data.health.corruption.max" type="number" value="{{data.health.corruption.max}}" data-dtype="Number" disabled/>
+        </div>
+        </div> <!-- end of col 2 --> </div> <!-- end of corruptioncol --></div>        
     </div>
 
-    <div class="combat foreground border">
+    <div class="combat foreground">
         <h1>{{localize "TITLE.COMBAT"}}</h1>
+        <div class="stat-modifiers">
         <div class="initiative" title="{{localize "TOOLTIP.COMBAT.INITIATIVE"}}">
             <label>{{localize "INITIATIVE"}}</label>
             <select name="data.initiative.attribute" class="attribute">
@@ -48,7 +79,7 @@
                 <option value="quick">{{localize "ATTRIBUTE.QUICK"}}</option>
                 <option value="accurate">{{localize "ATTRIBUTE.ACCURATE"}}</option>
                 <option value="cunning">{{localize "ATTRIBUTE.CUNNING"}}</option>
-                <option value="discreet">{{localize "ATTRIBUTE.DISCREET"}}</option>
+                <option value="discree	t">{{localize "ATTRIBUTE.DISCREET"}}</option>
                 <option value="persuasive">{{localize "ATTRIBUTE.PERSUASIVE"}}</option>
                 <option value="resolute">{{localize "ATTRIBUTE.RESOLUTE"}}</option>
                 <option value="strong">{{localize "ATTRIBUTE.STRONG"}}</option>
@@ -70,6 +101,7 @@
                 <option value="vigilant">{{localize "ATTRIBUTE.VIGILANT"}}</option>
                 {{/select}}
             </select>
+        </div>
         </div>
         <div class="armor">
             <button class="roll-armor">{{data.combat.armor}}</button>
@@ -101,7 +133,7 @@
                                         <div class="image-container">
                                             <div class="image" style="background-image: url('{{item.img}}')"></div>
                                         </div>
-                                        <button class="roll-weapon ellipsis" style="width: 153px">{{item.name}}</button>
+                                        <button class="roll-weapon">{{item.name}}</button>
                                     </div>
                                     <div class="damage">{{item.data.damage}}</div>
                                 </div>
@@ -112,6 +144,11 @@
             </div>
         </div>
     </div>
+    </div> <!-- End of non-attributes -->
+    
+	</div> <!-- end of section 1 -->
+    </div> <!-- end of frustration -->
+
 
     <div class="abilities-powers foreground border">
         <h1>{{localize "TITLE.ABILITIES_POWERS"}}</h1>
@@ -123,7 +160,7 @@
                             <div class="image-container">
                                 <div class="image" style="background-image: url('{{item.img}}'); height: 36px; width: 36px; background-size: 36px"></div>
                             </div>
-                            <button class="item-edit ellipsis" style="width: 198px">{{item.name}}</button>
+                            <button class="item-edit">{{item.name}}</button>
                         </div>
                         <div class="actions" title="{{localize "TOOLTIP.POWER_ACTIONS"}}">{{item.data.actions}}</div>
                         <div class="button">
