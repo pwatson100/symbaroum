@@ -20,15 +20,15 @@
         <div class="toughness ">
         <div class="health-toughnesscol foreground">
         <h1>{{localize "HEALTH.TOUGHNESS"}}</h1>
-        <div class="toughness-current">
+        <div class="toughness-current" title="{{localize "TOOLTIP.HEALTH.TOUGHNESS_CURRENT"}}">
             <label>{{localize "HEALTH.TOUGHNESS_CURRENT"}}</label>
             <input name="data.health.toughness.value" type="number" value="{{data.health.toughness.value}}" data-dtype="Number" />
         </div>
-        <div class="toughness-total">
+        <div class="toughness-total" title="{{localize "TOOLTIP.HEALTH.TOUGHNESS_TOTAL"}}">
             <label>{{localize "HEALTH.TOUGHNESS_TOTAL"}}</label>
             <input type="number" value="{{data.health.toughness.max}}" data-dtype="Number" disabled/>
         </div>
-        <div class="toughness-threshold">
+        <div class="toughness-threshold" title="{{localize "TOOLTIP.HEALTH.TOUGHNESS_THRESHOLD"}}">
             <label>{{localize "HEALTH.TOUGHNESS_THRESHOLD"}}</label>
             <input type="number" value="{{data.health.toughness.threshold}}" data-dtype="Number" disabled/>
         </div>
@@ -40,29 +40,29 @@
         <div class="health-corruptioncol">
 			
         <div class="corruption-col1">
-        <div class="corruption-current">
+        <div class="corruption-current" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_CURRENT"}}">
             <label>{{localize "HEALTH.CORRUPTION_CURRENT"}}</label>
             <input name="data.health.corruption.value" type="number" value="{{data.health.corruption.value}}" data-dtype="Number" disabled/>
         </div>
-        <div class="corruption-temporary">
+        <div class="corruption-temporary" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_TEMPORARY"}}">
             <label>{{localize "HEALTH.CORRUPTION_TEMPORARY"}}</label>
             <input name="data.health.corruption.temporary" type="number" value="{{data.health.corruption.temporary}}" data-dtype="Number"/>
         </div>
-        <div class="corruption-longterm">
+        <div class="corruption-longterm" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_LONGTERM"}}">
             <label>{{localize "HEALTH.CORRUPTION_LONGTERM"}}</label>
             <input type="number" name="data.health.corruption.longterm" value="{{data.health.corruption.longterm}}" data-dtype="Number" />
         </div>
         </div> <!-- end of col 1 -->
         <div class="corruption-col2">
-        <div class="corruption-permanent">
+        <div class="corruption-permanent" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_PERMANENT"}}">
             <label>{{localize "HEALTH.CORRUPTION_PERMANENT"}}</label>
             <input name="data.health.corruption.permanent" type="number" value="{{data.health.corruption.permanent}}" data-dtype="Number"/>
         </div>
-        <div class="corruption-threshold">
+        <div class="corruption-threshold" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_THRESHOLD"}}">
             <label>{{localize "HEALTH.CORRUPTION_THRESHOLD"}}</label>
             <input name="data.health.corruption.threshold" type="number" value="{{data.health.corruption.threshold}}" data-dtype="Number" disabled/>
         </div>
-        <div class="corruption-max">
+        <div class="corruption-max" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_MAX"}}">
             <label>{{localize "HEALTH.CORRUPTION_MAX"}}</label>
             <input name="data.health.corruption.max" type="number" value="{{data.health.corruption.max}}" data-dtype="Number" disabled/>
         </div>
@@ -72,7 +72,7 @@
     <div class="combat foreground">
         <h1>{{localize "TITLE.COMBAT"}}</h1>
         <div class="stat-modifiers">
-        <div class="initiative">
+        <div class="initiative" title="{{localize "TOOLTIP.COMBAT.INITIATIVE"}}">
             <label>{{localize "INITIATIVE"}}</label>
             <select name="data.initiative.attribute" class="attribute">
                 {{#select data.initiative.attribute}}
@@ -87,7 +87,7 @@
                 {{/select}}
             </select>
         </div>
-        <div class="defenseAttr">
+        <div class="defenseAttr" title="{{localize "TOOLTIP.COMBAT.DEFENSE"}}">
             <label>{{localize "ARMOR.DEFENSE"}}</label>
             <select name="data.defense.attribute" class="attribute">
                 {{#select data.defense.attribute}}
@@ -162,7 +162,7 @@
                             </div>
                             <button class="item-edit">{{item.name}}</button>
                         </div>
-                        <div class="actions">{{item.data.actions}}</div>
+                        <div class="actions" title="{{localize "TOOLTIP.POWER_ACTIONS"}}">{{item.data.actions}}</div>
                         <div class="button">
                             <a class="item-control item-delete" title="Delete Trait"><i class="fas fa-trash"></i></a>
                         </div>

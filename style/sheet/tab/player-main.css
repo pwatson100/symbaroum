@@ -61,10 +61,11 @@
     justify-content: center;
 }
 
+
 .symbaroum.sheet.actor .player .main .attributes {   
     border-top: none;
     margin-right: 5px;
-    margin-bottom: 5px;
+    margin-bottom: 0px;
     width: calc(25% - 5px);
 }
 
@@ -164,6 +165,7 @@
 .symbaroum.sheet.actor .player .main .health .toughness-current input,
 .symbaroum.sheet.actor .player .main .health .toughness-total input,
 .symbaroum.sheet.actor .player .main .health .toughness-threshold input,
+.symbaroum.sheet.actor .player .main .health .corruption-temporary input,
 .symbaroum.sheet.actor .player .main .health .corruption-permanent input,
 .symbaroum.sheet.actor .player .main .health .corruption-threshold input,
 .symbaroum.sheet.actor .player .main .health .corruption-max input,
@@ -284,7 +286,7 @@
 }
 
 .symbaroum.sheet.actor .player .main .combat .weapons .item-list .weapon .damage {
-    background: url(../../../asset/image/editable.jpg) repeat;
+    background: url(../../../asset/image/not-editable.jpg) repeat;
     border: 1px solid var(--color-border);
     border-left: none;
     box-shadow: inset 0 0 6px black;
@@ -342,7 +344,7 @@
 .symbaroum.sheet.actor .player .main .abilities-powers .traits .trait .actions {
     flex-basis: 15%;
     color: var(--color-text);
-    background: url(../../../asset/image/editable.jpg) repeat;
+    background: url(../../../asset/image/not-editable.jpg) repeat;
     height: 38px;
     text-align: center;
     border: 1px solid var(--color-border);

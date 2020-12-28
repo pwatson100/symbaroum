@@ -187,6 +187,28 @@
   "TITLE.MONEY": "PENGAR",
   "TITLE.QUALITIES":"KVALITETER",
 
+  "TOOLTIP.EXPERIENCE_CURRENT": "Tillgänglig erfarenhetspoäng",
+  "TOOLTIP.EXPERIENCE_TOTAL": "Alla förjänade erfarenhetspoäng",
+  "TOOLTIP.EXPERIENCE_ARTIFACTRR": "Erfarenhetspoäng som använts på artefakter eller slå om tärningarna",
+  "TOOLTIP.EXPERIENCE_SPENT": "Alla erfarenhetspoäng som spenderats på färdigheter, mystiska krafter, etc",
+  "TOOLTIP.EXPERIENCE_AVAILABLE": "Dina nuvarande tillgängliga erfarenehtspoäng",
+  
+  "TOOLTIP.HEALTH.CORRUPTION_CURRENT": "Nuvarande korruption",
+  "TOOLTIP.HEALTH.CORRUPTION_TEMPORARY": "Din temporarä (scen) korruption",
+  "TOOLTIP.HEALTH.CORRUPTION_LONGTERM": "Korruption som varar längre än en scen",
+  "TOOLTIP.HEALTH.CORRUPTION_PERMANENT": "Permanent korruption",
+  "TOOLTIP.HEALTH.CORRUPTION_THRESHOLD": "Din korruptionsgräns",
+  "TOOLTIP.HEALTH.CORRUPTION_MAX": "Din abominationgräns",
+  
+  "TOOLTIP.HEALTH.TOUGHNESS_CURRENT": "Your current toughness",
+  "TOOLTIP.HEALTH.TOUGHNESS_TOTAL": "The amount of thoughness damage that will cause you to die",
+  "TOOLTIP.HEALTH.TOUGHNESS_THRESHOLD": "Your pain threshold",
+  
+  "TOOLTIP.COMBAT.INITIATIVE": "The attribute that your initiative is based on",
+  "TOOLTIP.COMBAT.DEFENSE": "The attribute that your defense is based on",
+  
+  "TOOLTIP.POWER_ACTIONS" : "Typ av aktivering (A - Aktiv, P - Passiv, S - special, etc)",
+
   "TRAIT.NAME": "Namn",
   "TRAIT.ACTIVE": "Aktiv",
   "TRAIT.ACTION": "Handling",
