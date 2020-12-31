@@ -1,4 +1,4 @@
-export async function rollAttribute(attribute, modifier, armor, weapon) {
+export async function rollAttribute(character, attribute, modifier, armor, weapon) {
   let attributeRoll = new Roll('1d20', {});
   attributeRoll.roll();
   if (game.dice3d != null) {
@@ -81,6 +81,9 @@ export async function rollAttribute(attribute, modifier, armor, weapon) {
   const html = await renderTemplate('systems/symbaroum/template/chat/roll.html', rollData);
   let chatData = {
     user: game.user._id,
+    speaker: {
+			actor: character.id
+	},
     rollMode: game.settings.get('core', 'rollMode'),
     content: html,
   };
