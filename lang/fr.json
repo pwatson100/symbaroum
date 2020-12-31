@@ -1,6 +1,6 @@
 {
   "ABILITY.NAME": "Nom",
-  "ABILITY.ACTIVE": "Actif",
+  "ABILITY.ACTIVE": "Appris",
   "ABILITY.ACTION": "Action",
   "ABILITY.DESCRIPTION": "Description",
 
@@ -103,11 +103,11 @@
   "HEALTH.CORRUPTION": "Corruption",
   "HEALTH.CORRUPTION_CURRENT": "Actuelle",
   "HEALTH.CORRUPTION_TEMPORARY": "Temporaire",
-  "HEALTH.CORRUPTION_LONGTERM": "Daily",
+  "HEALTH.CORRUPTION_LONGTERM": "Longue",
   "HEALTH.CORRUPTION_PERMANENT": "Permanente",
   "HEALTH.CORRUPTION_THRESHOLD": "Seuil",
   "HEALTH.CORRUPTION_THRESHOLD_MAX": "Seuil de Cor.",
-  "HEALTH.CORRUPTION_MAX": "Abom. Threshold",
+  "HEALTH.CORRUPTION_MAX": "Maximale",
   
   "INITIATIVE": "Initiative",
 
@@ -125,7 +125,7 @@
   "MONEY.ORTEG": "Orteg",
 
   "MYSTICAL_POWER.NAME": "Nom",
-  "MYSTICAL_POWER.ACTIVE": "Actif",
+  "MYSTICAL_POWER.ACTIVE": "Appris",
   "MYSTICAL_POWER.ACTION": "Action",
   "MYSTICAL_POWER.MATERIAL": "Matériel",
   "MYSTICAL_POWER.DESCRIPTION": "Description",
@@ -188,30 +188,30 @@
   "TITLE.MONEY": "ARGENT",
   "TITLE.QUALITIES":"QUALITÉS",
   
-  "TOOLTIP.EXPERIENCE_CURRENT": "Your current available (unspent) experience points",
-  "TOOLTIP.EXPERIENCE_TOTAL": "The total amount of experience that you earnt",
-  "TOOLTIP.EXPERIENCE_ARTIFACTRR": "Experience spent on artifacts and/or re-rolls",
-  "TOOLTIP.EXPERIENCE_SPENT": "Total experience spent on abilities, traits, boons and burdens",
-  "TOOLTIP.EXPERIENCE_AVAILABLE": "Your current available (unspent) experience points",
+  "TOOLTIP.EXPERIENCE_CURRENT": "Vos points d'expérience non dépensés",
+  "TOOLTIP.EXPERIENCE_TOTAL": "Total des points d'expériences acquis",
+  "TOOLTIP.EXPERIENCE_ARTIFACTRR": "Points d'expérience dépensés pour les artefacts et relances",
+  "TOOLTIP.EXPERIENCE_SPENT": "Points d'expérience dépensés sur les talents, traits, atouts et fardeaux",
+  "TOOLTIP.EXPERIENCE_AVAILABLE": "Vos points d'expérience disponibles (non dépensés)",
   
-  "TOOLTIP.HEALTH.CORRUPTION_CURRENT": "Your current total corruption",
-  "TOOLTIP.HEALTH.CORRUPTION_TEMPORARY": "Your temporary (scene) corruption",
-  "TOOLTIP.HEALTH.CORRUPTION_LONGTERM": "Your corruption that lasts longer than a scene",
-  "TOOLTIP.HEALTH.CORRUPTION_PERMANENT": "Permanent corruption gained",
-  "TOOLTIP.HEALTH.CORRUPTION_THRESHOLD": "Your corruption threshold",
-  "TOOLTIP.HEALTH.CORRUPTION_MAX": "Your abomination threshold",
+  "TOOLTIP.HEALTH.CORRUPTION_CURRENT": "Votre total de corruption actuel",
+  "TOOLTIP.HEALTH.CORRUPTION_TEMPORARY": "Votre corruption temporaire (pour cette scène)",
+  "TOOLTIP.HEALTH.CORRUPTION_LONGTERM": "Votre corruption long-terme (au-delà de la scène)",
+  "TOOLTIP.HEALTH.CORRUPTION_PERMANENT": "Corruption permanente",
+  "TOOLTIP.HEALTH.CORRUPTION_THRESHOLD": "Votre seuil de corruption",
+  "TOOLTIP.HEALTH.CORRUPTION_MAX": "Votre niveau de corruption maximal",
   
-  "TOOLTIP.HEALTH.TOUGHNESS_CURRENT": "Your current toughness",
-  "TOOLTIP.HEALTH.TOUGHNESS_TOTAL": "The amount of thoughness damage that will cause you to die",
-  "TOOLTIP.HEALTH.TOUGHNESS_THRESHOLD": "Your pain threshold",
+  "TOOLTIP.HEALTH.TOUGHNESS_CURRENT": "Votre endurance actuelle",
+  "TOOLTIP.HEALTH.TOUGHNESS_TOTAL": "Votre endurance maximale",
+  "TOOLTIP.HEALTH.TOUGHNESS_THRESHOLD": "Votre seuil de douleur",
   
-  "TOOLTIP.COMBAT.INITIATIVE": "The attribute that your initiative is based on",
-  "TOOLTIP.COMBAT.DEFENSE": "The attribute that your defense is based on",
+  "TOOLTIP.COMBAT.INITIATIVE": "L'attribut principal utilisé pour calculer votre initiative",
+  "TOOLTIP.COMBAT.DEFENSE": "L'attribut utilisé pour calculer votre défense",
   
-  "TOOLTIP.POWER_ACTIONS" : "Type of activation (A - active, P - passive, S - special, etc)",
+  "TOOLTIP.POWER_ACTIONS" : "Type d'action (A - active, P - passive, S - spéciale, etc)",
 
   "TRAIT.NAME": "Nom",
-  "TRAIT.ACTIVE": "Actif",
+  "TRAIT.ACTIVE": "Acquis",
   "TRAIT.ACTION": "Action",
   "TRAIT.DESCRIPTION": "Description",
 
@@ -225,6 +225,6 @@
   "WEAPON.DESCRIPTION": "Description",
   "WEAPON.NUMBER": "Nombre",
 
-  "SYMBAROUM.OPTIONAL_CRIT": "Optional Critical Rolls",
-  "SYMBAROUM.OPTIONAL_CRIT_HINT": "Check to enable Hit bonus and Defence fumbles on dice rolls of 1 and 20"
+  "SYMBAROUM.OPTIONAL_CRIT": "Option jets de dés critiques",
+  "SYMBAROUM.OPTIONAL_CRIT_HINT": "Activer les bonus de dégâts et désastres de défense sur un résultat du dé de 1 ou 20"
 }
