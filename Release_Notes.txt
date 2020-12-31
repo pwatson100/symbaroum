@@ -33,4 +33,13 @@ Bonus to stats was not taken into consideration when calculating toughness, corr
 My bit:
 Updated Character and Monster sheets Gear tab to display new Artifact format and the equipment quantity field.
 
-
+Version 2.15.0
+Thanks to @Bithir :
+Text alterations to avoid "Is Active" for abilities/traits/mystical abilities as it confuses people with Core book term "Active" - instead use "Learned" (abilities, mystical powers) or "Acquired" (traits)
+Bonus alterations includes:
+Allowance for bonus on max corruption (as is in the case of Strong gift)
+Experience - for rebated abilities/boons/burdens
+Alternative sheet has support for:
+Automatic calculations for experience spend
+Separation of exp gained & spent on re-rolls/artifacts
+Alternate Character sheet shows experience calculations for Traits/Boons/Burden. Currently this is not set by default.
