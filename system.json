@@ -6,7 +6,7 @@
   "minimumCoreVersion": "0.7.5",
   "compatibleCoreVersion": "0.7.8",
   "templateVersion": 2,
-  "author": "Paul Watson, Bithir",
+  "author": "Paul Watson, Bithir, Khaali",
   "scripts": [],
   "esmodules": [
     "script/common/hooks.js"
