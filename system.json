@@ -6,9 +6,11 @@
   "minimumCoreVersion": "0.7.5",
   "compatibleCoreVersion": "0.7.8",
   "templateVersion": 2,
-  "author": "Paul Watson",
+  "author": "Paul Watson, Bithir",
   "scripts": [],
-  "esmodules": ["script/common/hooks.js"],
+  "esmodules": [
+    "script/common/hooks.js"
+  ],
   "styles": [
     "style/common/variable.css",
     "style/common/actor.css",
