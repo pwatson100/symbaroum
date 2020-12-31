@@ -1,6 +1,6 @@
 import { rollAttribute } from './roll.js';
 
-export async function prepareRollAttribute(attribute, armor, weapon) {
+export async function prepareRollAttribute(character, attribute, armor, weapon) {
     const html = await renderTemplate('systems/symbaroum/template/chat/dialog.html', {});
     let dialog = new Dialog({
         title: attribute.name,
@@ -13,7 +13,7 @@ export async function prepareRollAttribute(attribute, armor, weapon) {
                     const modifierName = html.find('#modifier')[0].value;
                     const bonus = html.find('#bonus')[0].value;
                     const modifier = getTargetAttribute(modifierName, bonus);
-                    await rollAttribute(attribute, modifier, armor, weapon);
+                    await rollAttribute(character, attribute, modifier, armor, weapon);
                 },
             },
             cancel: {
