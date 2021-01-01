@@ -248,13 +248,13 @@ function medicus(ability, actor) {
 }
        
 async function medicusHeal(ability, actor, targetData, powerLvl, herbalCure, healFormula, healFormulaMasterFailed) {
-    console.log(ability);
-    console.log(actor);
+
     const attribute = actor.data.data.attributes["cunning"];
     const bonus = actor.data.data.bonus["cunning"];
     const attributeData = {name: game.i18n.localize(attribute.label), value: attribute.value + bonus};
-    let rollData = rollAttribute(attributeData, 10, null, null);
-    let effectChatMessage = `<p> ${this.actor.data.name} ${game.i18n.localize('ABILITY_MEDICUS.CHAT_INTRO')} </p>`;
+    let rollData = await rollAttribute(actor, attributeData, 0, { value: 10, name: "custom" }, null, null, null);
+    console.log(rollData);
+    let effectChatMessage = `<p> ${actor.data.name} ${game.i18n.localize('ABILITY_MEDICUS.CHAT_INTRO')} </p>`;
     let targetName = game.i18n.localize('ABILITY_MEDICUS.CHAT_NONAME');
     if(targetData.haveTarget){targetName = targetData.actor.data.name}
     if(rollData.hasSucceed){
