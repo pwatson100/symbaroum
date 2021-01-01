@@ -32,14 +32,14 @@
         {{/if}}
 
         {{#if isTrait}}
-        <p><strong>{{localize "TRAIT.DESCRIPTION"}}:</strong> {{data.description}}</p>
+        <p><strong>{{localize "TRAIT.DESCRIPTION"}}:</strong> {{removeMarkup data.description}}</p>
         <p><strong>{{localize "TITLE.NOVICE"}} [{{data.novice.action}}]:</strong> {{removeMarkup data.novice.description}}</p>
         <p><strong>{{localize "TITLE.ADEPT"}} [{{data.adept.action}}]:</strong> {{removeMarkup data.adept.description}}</p>
         <p><strong>{{localize "TITLE.MASTER"}} [{{data.master.action}}]:</strong> {{removeMarkup data.master.description}}</p>
         {{/if}}
 
         {{#if isAbility}}
-        <p><strong>{{localize "ABILITY.DESCRIPTION"}}:</strong> {{data.description}}</p>
+        <p><strong>{{localize "ABILITY.DESCRIPTION"}}:</strong> {{removeMarkup data.description}}</p>
         <p><strong>{{localize "TITLE.NOVICE"}} [{{data.novice.action}}]:</strong> {{removeMarkup data.novice.description}}</p>
         <p><strong>{{localize "TITLE.ADEPT"}} [{{data.adept.action}}]:</strong> {{removeMarkup data.adept.description}}</p>
         <p><strong>{{localize "TITLE.MASTER"}} [{{data.master.action}}]:</strong> {{removeMarkup data.master.description}}</p>
@@ -79,7 +79,7 @@
         {{/if}}
 
         {{#if isArtifact}}
-        <p><strong>{{localize "ARTIFACT.DESCRIPTION"}}:</strong> {{data.description}}</p>
+        <p><strong>{{localize "ARTIFACT.DESCRIPTION"}}:</strong> {{removeMarkup data.description}}</p>
         <p><strong>{{localize "ARTIFACT.POWER"}} [{{data.action}}]:</strong> {{data.powers}}</p>
         <p><strong>{{localize "ARTIFACT.CORRUPTION"}}:</strong> {{data.corruption}}</p>
         {{/if}}

@@ -36,6 +36,6 @@ function preloadHandlebarsTemplates() {
 function registerHandlebarsHelpers() {
   Handlebars.registerHelper("removeMarkup", function (text) {
     const markup = /<(.*?)>/gi;
-    return text.replace(markup, "");
+    return new Handlebars.SafeString(text.replace(markup, ""));
   });
 }
