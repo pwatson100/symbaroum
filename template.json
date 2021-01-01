@@ -56,8 +56,6 @@
 
             "value":0,
             "longterm": 0
-
-
           }
         }
       },
@@ -78,7 +76,17 @@
           "attribute": "quick",
           "value": 10
         }
-      }
+      },
+      "experience": {
+        "experience": {
+          "current": 0,
+          "total": 0,
+
+          "spent": 0,
+          "available": 0,
+          "artifactrr": 0
+        }
+      }      
     },
     "player": {
       "templates": [
@@ -86,7 +94,8 @@
         "health",
         "money",
         "defense",
-        "initiative"
+        "initiative",
+        "experience"
       ],
       "bio": {
         "race": "",
@@ -101,14 +110,6 @@
         "personalGoal": "",
         "stigmas": ""
       },
-      "experience": {
-        "current": 0,
-        "total": 0,
-
-        "spent": 0,
-        "available": 0,
-        "artifactrr": 0
-      },
       "notes": ""
     },
     "monster": {
@@ -117,7 +118,8 @@
         "health",
         "money",
         "defense",
-        "initiative"
+        "initiative",
+        "experience"
       ],
       "bio": {
         "race": "",
@@ -133,8 +135,7 @@
         "personalGoal": "",
         "tactics": "",
         "manner": ""
-      },
-      "notes": ""
+      }
     }
   },
   "Item": {
@@ -347,9 +348,6 @@
       },
       "reference": "",
       "state": "other"
-
-
-
     }
   }
 }

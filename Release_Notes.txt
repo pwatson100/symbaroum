@@ -43,3 +43,18 @@ Alternative sheet has support for:
 Automatic calculations for experience spend
 Separation of exp gained & spent on re-rolls/artifacts
 Alternate Character sheet shows experience calculations for Traits/Boons/Burden. Currently this is not set by default.
+
+
+Version 2.1.16
+Great news @Bithir and @khaali have joined the development team and have a lot of great things planned for the future.  
+Bug fix for Monster not registering experience requirements after initial login
+Configurable options:
+- Rare crit
+- No guaranteed success/failure flag
+- Crit/fail for non-combat elements
+- Damage modifiers in roll dialogue
+- Allowance of favour/disfavour in roll dialogue
+- Automated Support for quality Precise & deep impact
+- Hide fields when not in use (no target selected, etc. etc)
+
+NOTE: Configuration options are unset by default. 

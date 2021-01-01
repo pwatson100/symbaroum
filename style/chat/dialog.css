@@ -5,6 +5,17 @@
     flex-basis: 100%;
 }
 
+.symbaroum.dialog .lblfavour {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--color-label);
+    font-family: var(--font-text);
+    background: url(../../asset/image/title.jpg) repeat;
+    width: 100%;
+    text-align: center;
+    padding: 5px;
+}
+
 .symbaroum.dialog label {
     font-size: 14px;
     font-weight: bold;
@@ -16,6 +27,16 @@
     padding: 5px;
 }
 
+.symbaroum.dialog input[type="checkbox"] {
+    background: url(../../asset/image/editable.jpg) repeat;
+    border: 1px solid var(--color-border);
+    box-shadow: inset 0 0 6px black;
+    color: var(--color-text);
+    width: 100%;
+    height: auto;
+}
+
+.symbaroum.dialog input[type="text"]
 .symbaroum.dialog input[type="number"],
 .symbaroum.dialog select {
     background: url(../../asset/image/editable.jpg) repeat;
@@ -39,6 +60,9 @@
     margin: 0;
 }
 
+.symbaroum.dialog .damagemodifier,
+.symbaroum.dialog .advantage,
+.symbaroum.dialog .favour,
 .symbaroum.dialog .attribute,
 .symbaroum.dialog .bonus {
     display: flex;

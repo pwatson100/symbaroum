@@ -54,7 +54,7 @@ const migrateActorData = (actor, worldSchemaVersion) => {
             attribute: "quick"
         }
     }
-    if  (worldSchemaVersion < 2.15) { 
+    if  (worldSchemaVersion < 2.16) { 
 		update["data.data.corruption.max"] = 0;
 		update["data.data.experience.spent"] = 0;
 		update["data.data.experience.available"] = 0;
