@@ -43,6 +43,15 @@ Hooks.once('init', () => {
     default: 0,
     type: Number,
   });
+  
+  game.settings.register('symbaroum', 'alwaysSucceedOnOne', {
+    name: 'SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE',
+    hint: 'SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });  
 
   game.settings.register('symbaroum', 'optionalCrit', {
     name: 'SYMBAROUM.OPTIONAL_CRIT',
@@ -52,6 +61,36 @@ Hooks.once('init', () => {
     default: false,
     config: true,
   });
+  
+  game.settings.register('symbaroum', 'optionalRareCrit', {
+    name: 'SYMBAROUM.OPTIONAL_RARECRIT',
+    hint: 'SYMBAROUM.OPTIONAL_RARECRIT_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });  
+ 
+  game.settings.register('symbaroum', 'critsApplyToAllTests', {
+    name: 'SYMBAROUM.OPTIONAL_ALWAYSUSECRIT',
+    hint: 'SYMBAROUM.OPTIONAL_ALWAYSUSECRIT_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });  
+
+  game.settings.register('symbaroum', 'optionalMoreRituals', {
+    name: 'SYMBAROUM.OPTIONAL_MORERITUALS',
+    hint: 'SYMBAROUM.OPTIONAL_MORERITUALS_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });  
+  
+  
+ 
 });
 
 Hooks.once('ready', () => {

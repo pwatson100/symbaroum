@@ -79,7 +79,13 @@
 
   "DIALOG.ATTRIBUTE": "Attribut",
   "DIALOG.MODIFIER": "Modificateur",
-
+  "DIALOG.ADVANTAGE": "Advantage",
+  "DIALOG.DISADVANTAGE": "Disadvantage",
+  "DIALOG.FAVOUR_NORMAL": "Normal",
+  "DIALOG.FAVOUR_FAVOUR": "Favour", 
+  "DIALOG.FAVOUR_DISFAVOUR": "Disfavour",
+  "DIALOG.DAMAGE_MODIFIER": "Dam. mod.",
+  
   "EQUIPMENT.NAME": "Nom",
   "EQUIPMENT.COST": "Prix",
   "EQUIPMENT.NUMBER": "Nombre",
@@ -226,5 +232,13 @@
   "WEAPON.NUMBER": "Nombre",
 
   "SYMBAROUM.OPTIONAL_CRIT": "Option jets de dés critiques",
-  "SYMBAROUM.OPTIONAL_CRIT_HINT": "Activer les bonus de dégâts et désastres de défense sur un résultat du dé de 1 ou 20"
+  "SYMBAROUM.OPTIONAL_CRIT_HINT": "Activer les bonus de dégâts et désastres de défense sur un résultat du dé de 1 ou 20",
+  "SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE": "Always able to succeed of fail",
+  "SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE_HINT": "Check to always succeed on a 1 and fail on a 20",
+  "SYMBAROUM.OPTIONAL_RARECRIT": "Optional Rare Critical Rolls",
+  "SYMBAROUM.OPTIONAL_RARECRIT_HINT": "Check to enable rarer critical rolls as detailed Core Book p. 179",
+  "SYMBAROUM.OPTIONAL_ALWAYSUSECRIT": "Allow crits for non-combat",
+  "SYMBAROUM.OPTIONAL_ALWAYSUSECRIT_HINT": "Check to enable critical success and failure on non-combat rolls - automatically enabled if crits are selected",
+  "SYMBAROUM.OPTIONAL_MORERITUALS": "Allow more rituals",
+  "SYMBAROUM.OPTIONAL_MORERITUALS_HINT": "Check to enable more rituals as described on Advanced Players Guide p. 103"  
 }
