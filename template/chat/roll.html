@@ -28,14 +28,17 @@
     <p><strong>{{localize "ARMOR.QUALITY"}}:</strong> {{armor.quality}}</p>
     {{/if}}
     {{/if}}
-     
-   {{#if hasWeapon}}      
+    
+   {{#if hasWeapon}}
+   {{#if critFail}}
+   <h4>{{localize "CHAT.CRITICAL_FAILURE_FREEATTACK"}}</h4>
+   {{/if}}
+   {{/if}}
+   
+   {{#if hasArmor}}      
    {{#if critSuccess}}
     <h4>{{localize "CHAT.CRITICAL_FREEATTACK"}}</h4>
     {{/if}} 
-    {{/if}}
-    
-    {{#if hasArmor}}    
     {{#if critFail}}
     <h4>{{localize "CHAT.CRITICAL_PLUS3DAMAGE"}}</h4>
     {{/if}}
