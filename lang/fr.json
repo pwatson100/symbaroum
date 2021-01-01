@@ -232,7 +232,7 @@
   "WEAPON.NUMBER": "Nombre",
 
   "SYMBAROUM.OPTIONAL_CRIT": "Option jets de dés critiques",
-  "SYMBAROUM.OPTIONAL_CRIT_HINT": "Activer les bonus de dégâts et désastres de défense sur un résultat du dé de 1 ou 20"
+  "SYMBAROUM.OPTIONAL_CRIT_HINT": "Activer les bonus de dégâts et désastres de défense sur un résultat du dé de 1 ou 20",
   "SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE": "Always able to succeed of fail",
   "SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE_HINT": "Check to always succeed on a 1 and fail on a 20",
   "SYMBAROUM.OPTIONAL_RARECRIT": "Optional Rare Critical Rolls",
