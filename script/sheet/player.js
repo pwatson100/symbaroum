@@ -63,14 +63,14 @@ export class PlayerSheet extends SymbaroumActorSheet {
         const attribute = this.actor.data.data.attributes[attributeName];
         const bonus = this.actor.data.data.bonus[attributeName];
         const attributeData = {name: game.i18n.localize(attribute.label), value: attribute.value + bonus};
-        await prepareRollAttribute(attributeData, null, null);
+        await prepareRollAttribute(this.actor, attributeData, null, null);
     }
 
     async _prepareRollArmor(event) {
         event.preventDefault();
         const attributeData = {name: this.actor.data.data.combat.armor, value: this.actor.data.data.combat.defense};
         const armor = { protection: this.actor.data.data.combat.protection, quality: this.actor.data.data.combat.quality }
-        await prepareRollAttribute(attributeData, armor, null);
+        await prepareRollAttribute(this.actor, attributeData, armor, null);
     }
 
     async _prepareRollWeapon(event) {
@@ -81,7 +81,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
         const bonus = this.actor.data.data.bonus[weapon.data.data.attribute];
         const attributeData = { name: game.i18n.localize(attribute.label), value: attribute.value + bonus };
         const weaponData = { damage: weapon.data.data.damage, quality: weapon.data.data.quality }
-        await prepareRollAttribute(attributeData, null, weaponData);
+        await prepareRollAttribute(this.actor, attributeData, null, weaponData);
     }
 
     async _prepareActivateAbility(event) {
