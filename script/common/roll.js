@@ -76,8 +76,10 @@ export async function rollAttribute(character, attribute, favourmod, modifier, a
       if( weapon.qualities.deepImpact ) { dam += "+1"; }
       if( damModifier !== '') { dam = dam+"+"+damModifier; }
       
+
       let weaponRoll = new Roll(dam, {});
       weaponRoll.roll();
+      
       if (game.dice3d != null) {
         await game.dice3d.showForRoll(weaponRoll);
       }
