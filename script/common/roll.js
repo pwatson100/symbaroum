@@ -1,17 +1,63 @@
-export async function rollAttribute(character, attribute, modifier, armor, weapon) {
-  let attributeRoll = new Roll('1d20', {});
+export async function rollAttribute(character, attribute, favourmod, modifier, armor, weapon, advantage, damModifier) {
+  let d20str = "1d20";
+  let detailedRoll = "";
+  let dam = "";
+  let isMultiDice = favourmod != 0;
+  let isMultiDiceCombat = false;
+  let critGood = false;
+  let critBad = false;
+	
+	if(favourmod == 1) d20str="2d20kl";
+	else if(favourmod == -1) d20str="2d20kh";
+  
+	let attributeRoll = new Roll(d20str, {});  
+  
   attributeRoll.roll();
+  
   if (game.dice3d != null) {
     await game.dice3d.showForRoll(attributeRoll);
   }
 
   let mod = (modifier.value - 10) * -1;
-  let diceTarget = attribute.value + mod;
 
-  let hasArmor = armor != null;
+	let advantagemod = 0;
+	let hasWeapon = weapon != null;
+	let hasArmor = armor != null;
+		 
+
+	if(hasWeapon && advantage ) { advantagemod=2 }
+	else if (hasArmor && advantage) { advantagemod=-2; }  
+
+	if(hasWeapon && weapon.qualities.precise) {		
+		mod++;
+	}
+	
+  let diceTarget = attribute.value + mod;
+   
+  // Check option - always succeed on 1, always fail on 20
+	if(game.settings.get('symbaroum', 'alwaysSucceedOnOne') || game.settings.get('symbaroum', 'optionalCrit') || game.settings.get('symbaroum', 'optionalRareCrit') ) { 
+		diceTarget = Math.min(Math.max(1,attribute.value + mod + advantagemod), 19);
+    
+    if( attributeRoll._total === 1 || attributeRoll._total === 20 ) {
+      if( game.settings.get('symbaroum', 'optionalCrit') ) {
+        critGood = attributeRoll._total === 1;
+        critBad = attributeRoll._total === 20;
+      }    
+      if( game.settings.get('symbaroum', 'optionalRareCrit') ) {
+        let secondRoll = new Roll("1d20",{});
+        secondRoll.roll();
+        critGood = critGood && secondRoll._total <= diceTarget;
+        critBad = critBad && secondRoll._total > diceTarget;
+      }
+    }
+	}
+
   if (hasArmor && attributeRoll._total >= diceTarget) {
     if (armor.protection !== '') {
-      let armorRoll = new Roll(armor.protection, {});
+      let prot = armor.protection;
+      // if( armor.qualties.reinforced ) { prot += "+1"; }
+      let armorRoll = new Roll(prot, {});
+      
       armorRoll.roll();
       if (game.dice3d != null) {
         await game.dice3d.showForRoll(armorRoll);
@@ -22,11 +68,18 @@ export async function rollAttribute(character, attribute, modifier, armor, weapo
     }
   }
 
-  let hasWeapon = weapon != null;
   if (hasWeapon && attributeRoll._total <= diceTarget) {
-    if (weapon.damage !== '') {
-      let weaponRoll = new Roll(weapon.damage, {});
+    dam = weapon.damage;
+    if (dam !== '') {
+      if ( advantage ) { dam += "+1d4"; }
+      if ( critGood ) { dam += "+1d6"; }
+      if( weapon.qualities.deepImpact ) { dam += "+1"; }
+      if( damModifier !== '') { dam = dam+"+"+damModifier; }
+      
+
+      let weaponRoll = new Roll(dam, {});
       weaponRoll.roll();
+      
       if (game.dice3d != null) {
         await game.dice3d.showForRoll(weaponRoll);
       }
@@ -35,35 +88,11 @@ export async function rollAttribute(character, attribute, modifier, armor, weapo
       weapon.value = 0;
     }
   }
-  // Initilise as false so they are ignored if the GM does not want to use the optional crit rules
-  let critAtGood = false;
-  let critAtBad = false;
-  let critDfGood = false;
-  let critDfBad = false;
-
-  // Critical hit code
-  if (game.settings.get('symbaroum', 'optionalCrit')) {
-    if (hasWeapon && attributeRoll.total === 1) {
-      let critSucc = new Roll('1d6');
-      critSucc.roll();
-      if (game.dice3d != null) {
-        await game.dice3d.showForRoll(critSucc);
-      }
-      weapon.value = weapon.value + critSucc.total;
-      critAtGood = true;
-    } else if (hasWeapon && attributeRoll.total === 20) {
-      critAtBad = true;
-    }
-    // End Critical Hit code
-
-    // Crit Defence code
-    if (hasArmor && attributeRoll.total === 1) {
-      critDfGood = true;
-    } else if (hasArmor && attributeRoll.total === 20) {
-      critDfBad = true;
-    }
-    // Crit Defence code end
-  }
+  
+  if( !hasWeapon && !hasArmor && !game.settings.get('symbaroum', 'critsApplyToAllTests') ) {
+    critGood = false;
+    critBad = false;
+  } 
 
   let rollData = {
     name: `${attribute.name} (${diceTarget}) ⬅ ${modifier.name} (${mod})`,
@@ -73,10 +102,8 @@ export async function rollAttribute(character, attribute, modifier, armor, weapo
     hasWeapon: hasWeapon,
     armor: armor,
     weapon: weapon,
-    critAtSuccess: critAtGood,
-    critAtFail: critAtBad,
-    critDfSuccess: critDfGood,
-    critDfFail: critDfBad,
+    critSuccess: critGood,
+    critFail: critBad,
   };
   const html = await renderTemplate('systems/symbaroum/template/chat/roll.html', rollData);
   let chatData = {

@@ -1,7 +1,9 @@
 export class SymbaroumActor extends Actor {
+  
     prepareData() {
         super.prepareData();
         this._initializeData(this.data);
+        this.data.data.numRituals = 0;
         this._computeItems(this.data);
         this._computeSecondaryAttributes(this.data);
     }
@@ -52,7 +54,7 @@ export class SymbaroumActor extends Actor {
     }
 
     _computeSecondaryAttributes(data) {
-		let strong = data.data.attributes.strong.value + data.data.bonus.strong;
+        let strong = data.data.attributes.strong.value + data.data.bonus.strong;
         data.data.health.toughness.max = (strong > 10 ? strong : 10) + data.data.bonus.toughness.max;       
         data.data.health.toughness.threshold = Math.ceil(strong / 2) + data.data.bonus.toughness.threshold;
         
@@ -77,12 +79,14 @@ export class SymbaroumActor extends Actor {
     }
 
     _computePower(data, item) {
-		let expCost = 0;
+        let expCost = 0;
         if (item.isRitual) {
             item.data.actions = "Ritual";
-            // This needs to check if running with alternative rules for additional rituals, APG p.102
-            // Regardless, someone needs to change either the ritual or the ability (Ritualist) to refund experience pending which rule that is used         
-            expCost = 10;
+            this.data.data.numRituals = this.data.data.numRituals + 1;
+            if( this.data.data.numRituals > 6 ) {
+            // This needs to check if running with alternative rules for additional rituals, APG p.102                
+              expCost = game.settings.get('symbaroum', 'optionalMoreRituals') ? 10 : 0;
+            }
         } else if (item.isBurden) {
             item.data.actions = "Burden";
             expCost = -5 * item.data.level;
@@ -94,18 +98,18 @@ export class SymbaroumActor extends Actor {
             let novice = "-";
             let adept = "-";
             let master = "-";
-            if (item.data.novice.isActive) { 
-				novice = item.data.novice.action;
-				expCost += 10;
-			}
+            if (item.data.novice.isActive) {
+              novice = item.data.novice.action;
+              expCost += 10;
+            }
             if (item.data.adept.isActive) { 
-				adept = item.data.adept.action;
-				expCost += 20;
-			}
+              adept = item.data.adept.action;
+              expCost += 20;
+            }
             if (item.data.master.isActive) {
-				master = item.data.master.action;
-				expCost += 30;
-			}
+              master = item.data.master.action;
+              expCost += 30;
+            }
             item.data.actions = `${novice}/${adept}/${master}`;
         }
         item.data.bonus.experience.cost = expCost;
@@ -150,17 +154,17 @@ export class SymbaroumActor extends Actor {
             strong: data.data.bonus.strong + item.data.bonus.strong,
             vigilant: data.data.bonus.vigilant + item.data.bonus.vigilant,
             toughness: {
-                max: data.data.bonus.toughness.max + item.data.bonus.toughness.max,
-                threshold: data.data.bonus.toughness.threshold + item.data.bonus.toughness.threshold
+              max: data.data.bonus.toughness.max + item.data.bonus.toughness.max,
+              threshold: data.data.bonus.toughness.threshold + item.data.bonus.toughness.threshold
             },
             corruption: {
-				max: data.data.bonus.corruption.max + item.data.bonus.corruption.max,
-                threshold: data.data.bonus.corruption.threshold + item.data.bonus.corruption.threshold
+              max: data.data.bonus.corruption.max + item.data.bonus.corruption.max,
+              threshold: data.data.bonus.corruption.threshold + item.data.bonus.corruption.threshold
             },
             experience: { 
-				cost: data.data.bonus.experience.cost + item.data.bonus.experience.cost,
-				value: data.data.bonus.experience.value + item.data.bonus.experience.value
-			}
+              cost: data.data.bonus.experience.cost + item.data.bonus.experience.cost,
+              value: data.data.bonus.experience.value + item.data.bonus.experience.value
+            }
         };
     }
 }
