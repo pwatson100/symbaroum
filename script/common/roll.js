@@ -90,6 +90,7 @@ export async function rollAttribute(attribute, modifier, armor, weapon) {
     chatData.whisper = [game.user];
   }
   ChatMessage.create(chatData);
+  return(rollData);
 }
 
 export async function deathRoll(sheet) {

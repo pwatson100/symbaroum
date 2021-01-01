@@ -182,6 +182,7 @@
         "bonus"
       ],
       "description": "",
+      "reference": "",
       "novice": {
         "isActive": false,
         "action": "",
@@ -203,6 +204,7 @@
         "bonus"
       ],
       "description": "",
+      "reference": "",
       "novice": {
         "isActive": false,
         "action": "",
@@ -225,6 +227,7 @@
       ],
       "material": "",
       "description": "",
+      "reference": "",
       "novice": {
         "isActive": false,
         "action": "",
@@ -246,13 +249,15 @@
         "bonus"
       ],
       "tradition": "",
-      "description": ""
+      "description": "",
+      "reference": ""
     },
     "burden": {
       "templates": [
         "bonus"
       ],
       "description": "",
+      "reference": "",
       "level": 1
     },
     "boon": {
@@ -260,6 +265,7 @@
         "bonus"
       ],
       "description": "",
+      "reference": "",
       "level": 1
     },
     "weapon": {
@@ -267,6 +273,7 @@
         "bonus"
       ],
       "description": "",
+      "reference": "",
       "damage": "",
       "quality": "",
       "qualities": {
@@ -299,6 +306,7 @@
         "bonus"
       ],
       "description": "",
+      "reference": "",
       "protection": "",
       "impeding": 0,
       "quality": "",
@@ -310,6 +318,7 @@
         "bonus"
       ],
       "description": "",
+      "reference": "",
       "cost": "",
       "number" : 1,
       "state": "other"
@@ -336,6 +345,7 @@
         "action": "",
         "corruption": ""
       },
+      "reference": "",
       "state": "other"
 
 

@@ -151,7 +151,11 @@ const migrateItemData = (item, worldSchemaVersion) => {
 		if ( boonType.includes(item.type) ) {
 			update["data.level"] = 1;
 		}            
-	}
+    }
+    if  (worldSchemaVersion < 2.16) { 
+            update["data.reference"] = "";
+        }            
+		
     if (!isObjectEmpty(update)) {
         update._id = item._id;
     }
