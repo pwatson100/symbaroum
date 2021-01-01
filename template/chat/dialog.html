@@ -1,7 +1,9 @@
 <div class="symbaroum dialog">
+	{{#if hasTarget}}
     <div class="attribute">
         <label>{{localize "DIALOG.ATTRIBUTE"}}</label>
         <select id="modifier">
+              
             <option value="custom">{{localize "ATTRIBUTE.CUSTOM"}}</option>
             <option value="defense">{{localize "ARMOR.DEFENSE"}}</option>
             <option value="accurate">{{localize "ATTRIBUTE.ACCURATE"}}</option>
@@ -14,8 +16,29 @@
             <option value="vigilant">{{localize "ATTRIBUTE.VIGILANT"}}</option>
         </select>
     </div>
+    {{/if}}
+    
+    {{#if isWeaponRoll}}
+    <div class="advantage">
+      <label>{{localize "DIALOG.ADVANTAGE"}}</label> <span class="lblfavour"><input type="checkbox" {{roll_defaults.advantage}} id="advantage" value="1" data-dtype="Number"> </span>
+    </div>
+    <div class="damagemodifier">
+		<label>{{localize "DIALOG.DAMAGE_MODIFIER"}}</label> <input id="dammodifier" value="{{roll_defaults.additionalModifier}}" type="text" data-dtype="Text"/> 
+    </div>
+    {{/if}}
+      
+    {{#if isArmorRoll}}
+    <div class="advantage">
+      <label>{{localize "DIALOG.DISADVANTAGE"}}</label> <span class="lblfavour"><input type="checkbox" {{roll_defaults.advantage}} id="advantage" value="1" data-dtype="Number"> </span>
+    </div>
+    {{/if}}    		
+    
+    <div class="favour">
+        <label class="lblfavour">{{radioBoxes groupName choices checked=roll_defaults.selectedFavour localize=true}}</label>
+    </div>
+        
     <div class="bonus">
         <label>{{localize "DIALOG.MODIFIER"}}</label>
-        <input id="bonus" type="number" value="0" data-dtype="Number"/>
+        <input id="bonus" type="number" value="{{roll_defaults.bonus}}" data-dtype="Number"/>
     </div>
 </div>
