@@ -182,7 +182,7 @@ function getPowerLevel(ability){
         powerLvl = 2;
         lvlName = game.i18n.localize('ABILITY.ADEPT');
     }
-    return{level : powerLvl, levelName : lvlName}
+    return{level : powerLvl, lvlName : lvlName}
 }
 function bendWill(ability, actor) {
 }
