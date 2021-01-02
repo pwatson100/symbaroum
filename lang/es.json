@@ -19,15 +19,18 @@
 
   "ABILITY_ERROR.TARGET": "Too many targets",
 
-  "ABILITY_MEDICUS.CHAT_INTRO": " uses the medicus ability as a ",
-  "ABILITY_MEDICUS.CHAT_HC_SUCCESS": "${this.actor.data.name} tends ${targetName}'s wounds with an herbal cure and restores ${healed} toughness.",
-  "ABILITY_MEDICUS.CHAT_NOHC_SUCCESS": "${this.actor.data.name} tends ${targetName}'s wounds with an herbal cure and restores ${healed} toughness (no herbal cure)",
-  "ABILITY_MEDICUS.CHAT_FAILURE": "Ouch! That hurts!.",
-  "ABILITY_MEDICUS.CHAT_NONAME": "someone",
-  "ABILITY_MEDICUS.DIALOG": "Do you use a herbal cure?",
-  "ABILITY_MEDICUS.DIALOG_TITLE": "Herbal cure",
-  "ABILITY_MEDICUS.DIALOG_YES": "Use",
-  "ABILITY_MEDICUS.DIALOG_NO": "Don't use",
+  "ABILITY_MEDICUS.CHAT_INTRO": " heals wounds",
+  "ABILITY_MEDICUS.CHAT_SUCCESS": " tends the wounds successfully.",
+  "ABILITY_MEDICUS.CHAT_FAILURE": "Failure. Ouch! That hurts!",
+  "ABILITY_MEDICUS.DIALOG": "Will you use an herbal cure?",
+  "ABILITY_MEDICUS.HERBALCURE": "Herbal cure",
+  "ABILITY_MEDICUS.NOHERBALCURE": "No herbal cure",
+  "ABILITY_MEDICUS.CHAT_FINAL": "Toughness healed : ",
+
+  "ABILITY.NOVICE":"Novice",
+  "ABILITY.ADEPT":"Adept",
+  "ABILITY.MASTER":"Master",
+  "ABILITY.ROLL_RESULT": "Dice roll result : ",
   
   "ACTION.ACTIVE": "Activa",
   "ACTION.FREE": "Gratuita",

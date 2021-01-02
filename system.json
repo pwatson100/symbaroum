@@ -37,7 +37,8 @@
     "style/sheet/artifact.css",
     "style/chat/item.css",
     "style/chat/dialog.css",
-    "style/chat/roll.css"
+    "style/chat/roll.css",
+    "style/chat/ability.css"
   ],
   "packs": [],
   "languages": [

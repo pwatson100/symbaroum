@@ -18,16 +18,19 @@
   "ABILITYREF.MEDICUS": "Medicus",
 
   "ABILITY_ERROR.TARGET": "Trop de cibles selectionnées",
-  
-  "ABILITY_MEDICUS.CHAT_INTRO": "utilise le talent médicus au niveau",
-  "ABILITY_MEDICUS.CHAT_HC_SUCCESS": "${this.actor.data.name} soigne ${targetName} avec un remède à base de plantes pour ${healed} points d'endurance.",
-  "ABILITY_MEDICUS.CHAT_NOHC_SUCCESS": "${this.actor.data.name} soigne ${targetName} pour ${healed} points d'endurance. (sans remède)",
-  "ABILITY_MEDICUS.CHAT_FAILURE": "Aie! Quelle brute.",
-  "ABILITY_MEDICUS.CHAT_NONAME": "quelqu'un",
+
+  "ABILITY_MEDICUS.CHAT_INTRO": " soigne des blessures",
+  "ABILITY_MEDICUS.CHAT_SUCCESS": " applique ses soins correctement.",
+  "ABILITY_MEDICUS.CHAT_FAILURE": "Echec. Aie! Quelle brute.",
   "ABILITY_MEDICUS.DIALOG": "Voulez-vous utiliser un remède à base de plantes?",
-  "ABILITY_MEDICUS.DIALOG_TITLE": "Remède à base de plantes",
-  "ABILITY_MEDICUS.DIALOG_YES": "Avec remède",
-  "ABILITY_MEDICUS.DIALOG_NO": "Sans remède",
+  "ABILITY_MEDICUS.HERBALCURE": "Remède à base de plantes",
+  "ABILITY_MEDICUS.NOHERBALCURE": "sans remède",
+  "ABILITY_MEDICUS.CHAT_FINAL": "Points d'endurance soignés : ",
+
+  "ABILITY.NOVICE":"Novice",
+  "ABILITY.ADEPT":"Adepte",
+  "ABILITY.MASTER":"Maître",
+  "ABILITY.ROLL_RESULT": "Résultat du jet : ",
 
   "ACTION.ACTIVE": "Active",
   "ACTION.FREE": "Gratuite",
