@@ -1,7 +1,6 @@
 import { SymbaroumActorSheet } from "./actor.js";
 import { prepareRollAttribute } from "../common/dialog.js";
 import { deathRoll } from "../common/roll.js";
-import { activateAbility } from "../common/item.js";
 
 export class PlayerSheet extends SymbaroumActorSheet {
 
@@ -33,7 +32,6 @@ export class PlayerSheet extends SymbaroumActorSheet {
         html.find(".roll-attribute").click(async ev => await this._prepareRollAttribute(ev));
         html.find(".roll-armor").click(async ev => await this._prepareRollArmor(ev));
         html.find(".roll-weapon").click(async ev => await this._prepareRollWeapon(ev));
-        html.find(".activate-ability").click(async ev => await this._prepareActivateAbility(ev));
     }
 
     _getHeaderButtons() {
@@ -82,12 +80,5 @@ export class PlayerSheet extends SymbaroumActorSheet {
         const attributeData = { name: game.i18n.localize(attribute.label), value: attribute.value + bonus };
         const weaponData = { damage: weapon.data.data.damage, quality: weapon.data.data.quality, qualities: weapon.data.data.qualities }
         await prepareRollAttribute(this.actor, attributeData, null, weaponData);
-    }
-
-    async _prepareActivateAbility(event) {
-        event.preventDefault();
-        const div = $(event.currentTarget).parents(".item");
-        const ability = this.actor.getOwnedItem(div.data("itemId"));
-        await activateAbility(ability, this.actor);
     }
 }

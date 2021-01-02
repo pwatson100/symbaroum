@@ -25,6 +25,5 @@ export class MonsterSheet extends SymbaroumActorSheet {
     }
 
     activateListeners(html) {
-        super.activateListeners(html);
     }
 }

@@ -37,6 +37,15 @@
     height: 60px; min-height: 60px;
 }
 
+.symbaroum.chat.ability .targetText {
+    display: flex; 
+    flex-direction: row-reverse;
+    flex-grow: 100;
+    vertical-align: middle; 
+    text-align: center; 
+    font-size:12px;
+}
+
 .symbaroum.chat.ability .introTxt {
     display: table-cell; 
     color: black; 
@@ -52,7 +61,7 @@
     font-family: 'Signika';
     text-align: center;
     vertical-align: middle;
-    margin-top: 20px;
+    margin: 15px 0 0 5px;
 }
 
 .symbaroum.chat.ability .subText {
@@ -62,6 +71,7 @@
     font-family: 'Signika';
     text-align: center;
     vertical-align: middle;
+    margin: 15px 0  5px 0;
 }
 
 
