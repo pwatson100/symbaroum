@@ -17,9 +17,10 @@
 }
 
 .symbaroum.chat.ability strong {
-    text-transform: uppercase;
     font-weight: bold;
     font-size: 14px;
+    text-align: center; 
+    vertical-align: middle;
 }
 
 .symbaroum.chat.ability .introImg {
@@ -51,7 +52,7 @@
     font-family: 'Signika';
     text-align: center;
     vertical-align: middle;
-    margin-top: -8px;
+    margin-top: 20px;
 }
 
 .symbaroum.chat.ability .subText {

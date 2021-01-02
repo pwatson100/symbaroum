@@ -20,7 +20,7 @@
   "ABILITY_ERROR.TARGET": "Trop de cibles selectionnées",
 
   "ABILITY_MEDICUS.CHAT_INTRO": " soigne des blessures",
-  "ABILITY_MEDICUS.CHAT_SUCCESS": " applique ses soins correctement.",
+  "ABILITY_MEDICUS.CHAT_SUCCESS": " applique les soins correctement.",
   "ABILITY_MEDICUS.CHAT_FAILURE": "Echec. Aie! Quelle brute.",
   "ABILITY_MEDICUS.DIALOG": "Voulez-vous utiliser un remède à base de plantes?",
   "ABILITY_MEDICUS.HERBALCURE": "Remède à base de plantes",
