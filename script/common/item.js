@@ -173,14 +173,14 @@ function getTarget(targetAttributeName) {
 //get the max level learned by the actor
 function getPowerLevel(ability){
     let powerLvl = 1;
-    let lvlName = game.i18n.localize('TITLE.NOVICE');
+    let lvlName = game.i18n.localize('ABILITY.NOVICE');
     if(ability.data.data.master.isActive){
         powerLvl = 3;
-        lvlName = game.i18n.localize('TITLE.MASTER');
+        lvlName = game.i18n.localize('ABILITY.MASTER');
     }
     else if(ability.data.data.adept.isActive){
         powerLvl = 2;
-        lvlName = game.i18n.localize('TITLE.ADEPT');
+        lvlName = game.i18n.localize('ABILITY.ADEPT');
     }
     return{level : powerLvl, levelName : lvlName}
 }
@@ -201,11 +201,11 @@ function medicus(ability, actor) {
     let powerLvl = getPowerLevel(ability);
 
     new Dialog({
-        title: game.i18n.localize('ABILITY_MEDICUS.DIALOG'), 
+        title: game.i18n.localize('ABILITY_MEDICUS.HERBALCURE'), 
         content: hCureDialogTemplate,
         buttons: {
             chooseRem: {
-                label: game.i18n.localize('ABILITY_MEDICUS.DIALOG_YES'),
+                label: game.i18n.localize('ABILITY_MEDICUS.HERBALCURE'),
                 callback: (html) => {                 
                     herbalCure = true;
 
@@ -224,7 +224,7 @@ function medicus(ability, actor) {
             }, 
 
             chooseNotRem: {
-                label: game.i18n.localize('ABILITY_MEDICUS.DIALOG_NO'), 
+                label: game.i18n.localize('ABILITY_MEDICUS.NOHERBALCURE'), 
                 callback: (html) => {             
                     herbalCure = false;
                     if(powerLvl.level == 1){
@@ -254,61 +254,51 @@ async function medicusHeal(ability, actor, targetData, powerLvl, herbalCure, hea
     const attributeData = {name: game.i18n.localize(attribute.label), value: attribute.value + bonus};
     let rollData = await rollAttribute(actor, attributeData, 0, { value: 10, name: "custom" }, null, null, null);
     console.log(rollData);
-    let effectChatMessage = `<p> ${actor.data.name} ${game.i18n.localize('ABILITY_MEDICUS.CHAT_INTRO')} </p>`;
-    let targetName = game.i18n.localize('ABILITY_MEDICUS.CHAT_NONAME');
+    let healed = 0;
     if(targetData.haveTarget){targetName = targetData.actor.data.name}
     if(rollData.hasSucceed){
 
         let healRoll = new Roll(healFormula).evaluate();
         healRoll.toMessage();
-        let healed = healRoll.total;
+        healed = healRoll.total;
         if(targetData.haveTarget){
             healed = Math.min(healRoll.total, targetData.actor.data.data.health.toughness.max - targetData.actor.data.data.health.toughness.value);
             //kept for future auto apply option
             //await targetData.actor.update({"data.health.toughness.value" : targetData.actor.data.data.health.toughness.value + healed});
-        }
- 
-        if(herbalCure){
-            effectChatMessage +=`
-            <p> ${game.i18n.localize('ABILITY_MEDICUS.CHAT_HC_SUCCESS')} </p>
-            `
-        }
-        else{
-            effectChatMessage += `
-            <p> ${game.i18n.localize('ABILITY_MEDICUS.CHAT_NOHC_SUCCESS')} </p>
-            `
         }
     }
     else{
         if(powerLvl.level == 3){
             let healRoll = new Roll(healFormulaMasterFailed).evaluate();
             healRoll.toMessage();
-            let healed = healRoll.total;
+            healed = healRoll.total;
             if(targetData.haveTarget){
                 healed = Math.min(healRoll.total, targetData.actor.data.data.health.toughness.max - targetData.actor.data.data.health.toughness.value);
                 //kept for future auto apply option
                 //await targetData.actor.update({"data.health.toughness.value" : targetData.actor.data.data.health.toughness.value + healed});
             }
-            if(herbalCure){
-                effectChatMessage +=`
-                <p> ${game.i18n.localize('ABILITY_MEDICUS.CHAT_HC_SUCCESS')} </p>
-                `
-            }
-            else{
-                effectChatMessage += `
-                <p> ${game.i18n.localize('ABILITY_MEDICUS.CHAT_NOHC_SUCCESS')} </p>
-                `
-            }
-        }
-        else{
-            effectChatMessage += ` ${game.i18n.localize('ABILITY_MEDICUS.CHAT_FAILURE')}
-            `
         }
     }
     //kept for future auto apply option
     //await targetData.token.drawBars();
-    ChatMessage.create({
+    let templateData = {
+        introText: actor.data.name + game.i18n.localize('ABILITY_MEDICUS.CHAT_INTRO'),
+        introImg: actor.data.img,
+        subText: ability.name + ", " + powerLvl.lvlName,
+        subImg: ability.img,
+        rollString: rollData.name,
+        rollResult : game.i18n.localize('ABILITY.ROLL_RESULT') + rollData.diceResult.toString(),
+        resultText: actor.data.name + game.i18n.localize('ABILITY_MEDICUS.CHAT_SUCCESS'),
+        finalText: game.i18n.localize('ABILITY_MEDICUS.CHAT_FINAL') + healed.toString()
+    };
+    if(herbalCure){templateData.subText += ", " + game.i18n.localize('ABILITY_MEDICUS.HERBALCURE')}
+    else{templateData.subText += ", " + game.i18n.localize('ABILITY_MEDICUS.NOHERBALCURE')};
+    if(!rollData.hasSucceed){templateData.resultText = game.i18n.localize('ABILITY_MEDICUS.CHAT_FAILURE')}
+    
+    const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
+    const chatData = {
         user: game.user._id,
-        content: effectChatMessage
-    });
+        content: html,
+    }
+    ChatMessage.create(chatData);
 }
