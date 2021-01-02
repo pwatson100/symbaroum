@@ -2,8 +2,12 @@
     <div class="foreground border">
         <div class="introImg" style="background-image: url('{{introImg}}')">
             <div class="introTxt">{{removeMarkup introText}}</div>
+            {{#if haveTarget}}
+            <div class="introImg" style="background-image: url('{{targetData.actor.data.img}}')"></div>
         </div>
-
+        <div class="targetText">{{removeMarkup targetText}}
+        {{/if}}
+        </div>
         <div class="subText">{{removeMarkup subText}}</div>            
         <img src="{{subImg}}"/>
 

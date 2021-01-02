@@ -59,14 +59,16 @@ export class SymbaroumItem extends Item {
 }
 
 export async function activateAbility(ability, actor){
-    const powerName = ability.data.data.reference;
-    console.log("ref");
-    console.log(powerName);
-    console.log(ability);
-    
+    const powerName = ability.data.data.reference;    
     if(powerName == undefined || powerName === ""){
         /* No reference for a system ability on this item, ask for one */
-        await affectReferenceOnAbility(ability);
+        if(ability.data.type == "ability"){
+            await affectReferenceOnAbility(ability);
+        }
+        else if(ability.data.type == "mysticalPower"){
+            await affectReferenceOnPower(ability);
+        }
+        else{return}
     }
     else{
         if(actor != null){
@@ -74,17 +76,23 @@ export async function activateAbility(ability, actor){
                 case 'none':
                     return;
                 break;
+/*                case 'bend will':
+                    try{bendWill(ability, actor)} catch(error){
+                        ui.notifications.error(error);
+                        return;
+                };
+                break;*/
+                case 'loremaster':
+                    try{loremaster(ability, actor)} catch(error){
+                        ui.notifications.error(error);
+                        return;
+                };
+                break;
                 case 'medicus':
                     try{medicus(ability, actor)} catch(error){
                         ui.notifications.error(error);
                         return;
                     };
-                break;
-                case 'bendwill':
-                    try{bendWill(ability, actor)} catch(error){
-                        ui.notifications.error(error);
-                        return;
-                };
                 break;
                 default:
                     ui.notifications.error("Not yet implemented");
@@ -96,16 +104,73 @@ export async function activateAbility(ability, actor){
 /* affect reference for a system ability on this item */
 async function affectReferenceOnAbility(ability){
     const abilitiesList = [
-        {label: game.i18n.localize('ABILITYREF.DEFAULT'), value: "none"},
-        /*{label: game.i18n.localize('ABILITYREF.ACROBATICS'), value: "acrobatics"},
-        {label: game.i18n.localize('ABILITYREF.ALCHEMY'), value: "alchemy"},
-        {label: game.i18n.localize('ABILITYREF.BACKSTAB'), value: "backstab"},
-        {label: game.i18n.localize('ABILITYREF.BEASTLORE'), value: "beastlore"},
-        {label: game.i18n.localize('ABILITYREF.BERSERKER'), value: "berserker"},
-        {label: game.i18n.localize('ABILITYREF.BODYGUARD'), value: "bodyguard"},
-        {label: game.i18n.localize('ABILITYREF.DOMINATE'), value: "dominate"},
-        {label: game.i18n.localize('ABILITYREF.EQUESTRIAN'), value: "equestrian"},*/
-        {label: game.i18n.localize('ABILITYREF.MEDICUS'), value: "medicus"}
+        {label: game.i18n.localize('ABILITY_LABEL.DEFAULT'), value: "none"},
+        {label: game.i18n.localize('ABILITY_LABEL.ACROBATICS'), value: "acrobatics"},
+        {label: game.i18n.localize('ABILITY_LABEL.ALCHEMY'), value: "alchemy "},
+        {label: game.i18n.localize('ABILITY_LABEL.AGILE_COMBAT'), value: "agile combat"},
+        {label: game.i18n.localize('ABILITY_LABEL.ARMORED_MYSTIC'), value: "armored mystic"},
+        {label: game.i18n.localize('ABILITY_LABEL.ARROW_JAB'), value: "arrow jab"},
+        {label: game.i18n.localize('ABILITY_LABEL.ARTIFACT_CRAFTING'), value: "artifact crafting"},
+        {label: game.i18n.localize('ABILITY_LABEL.AXE_ARTIST'), value: "axe artist "},
+        {label: game.i18n.localize('ABILITY_LABEL.BACKSTAB'), value: "backstab "},
+        {label: game.i18n.localize('ABILITY_LABEL.BEAST_LORE'), value: "beast lore "},
+        {label: game.i18n.localize('ABILITY_LABEL.BERSERKER'), value: "berserker "},
+        {label: game.i18n.localize('ABILITY_LABEL.BLACKSMITH'), value: "blacksmith all"},
+        {label: game.i18n.localize('ABILITY_LABEL.BLOOD_COMBAT'), value: "blood combat"},
+        {label: game.i18n.localize('ABILITY_LABEL.BODYGUARD'), value: "bodyguard "},
+        {label: game.i18n.localize('ABILITY_LABEL.CHANNELING'), value: "channeling "},
+        {label: game.i18n.localize('ABILITY_LABEL.CHEAP_SHOT'), value: "cheap shot "},
+        {label: game.i18n.localize('ABILITY_LABEL.DOMINATE'), value: "dominate"},
+        {label: game.i18n.localize('ABILITY_LABEL.ENSNARE'), value: "ensnare"},
+        {label: game.i18n.localize('ABILITY_LABEL.EQUESTRIAN'), value: "equestrian"},
+        {label: game.i18n.localize('ABILITY_LABEL.EX_ATTRIBUTE'), value: "exceptional attribute"},
+        {label: game.i18n.localize('ABILITY_LABEL.FEAT_STRENGTH'), value: "feat of strength"},
+        {label: game.i18n.localize('ABILITY_LABEL.FEINT'), value: "feint "},
+        {label: game.i18n.localize('ABILITY_LABEL.FLAILER'), value: "flailer"},
+        {label: game.i18n.localize('ABILITY_LABEL.HAMMER_RHYTHM'), value: "hammer rhythm"},
+        {label: game.i18n.localize('ABILITY_LABEL.HUNTER_INSTINCT'), value: "hunter’s instinct"},
+        {label: game.i18n.localize('ABILITY_LABEL.IRON_FIST'), value: "iron fist "},
+        {label: game.i18n.localize('ABILITY_LABEL.KNIFE_PLAY'), value: "knife play "},
+        {label: game.i18n.localize('ABILITY_LABEL.LEADER'), value: "leader"},
+        {label: game.i18n.localize('ABILITY_LABEL.LOREMASTER'), value: "loremaster "},
+        {label: game.i18n.localize('ABILITY_LABEL.MAN-AT-ARMS'), value: "man-at-arms "},
+        {label: game.i18n.localize('ABILITY_LABEL.MANTLE_DANCE'), value: "mantle dance"},
+        {label: game.i18n.localize('ABILITY_LABEL.MARKSMAN'), value: "marksman"},
+        {label: game.i18n.localize('ABILITY_LABEL.MEDICUS'), value: "medicus "},
+        {label: game.i18n.localize('ABILITY_LABEL.NATURAL_WARRIOR'), value: "natural warrior"},
+        {label: game.i18n.localize('ABILITY_LABEL.OPPORTUNIST'), value: "opportunist"},
+        {label: game.i18n.localize('ABILITY_LABEL.POISONER'), value: "poisoner "},
+        {label: game.i18n.localize('ABILITY_LABEL.POLEARM_MASTERY'), value: "polearm mastery"},
+        {label: game.i18n.localize('ABILITY_LABEL.PYROTECHNICS'), value: "pyrotechnics"},
+        {label: game.i18n.localize('ABILITY_LABEL.QUICK_DRAW'), value: "quick draw"},
+        {label: game.i18n.localize('ABILITY_LABEL.RAPID_FIRE'), value: "rapid fire "},
+        {label: game.i18n.localize('ABILITY_LABEL.RAPID_REFLEXES'), value: "rapid reflexes"},
+        {label: game.i18n.localize('ABILITY_LABEL.RECOVERY'), value: "recovery"},
+        {label: game.i18n.localize('ABILITY_LABEL.RITUALIST'), value: "ritualist"},
+        {label: game.i18n.localize('ABILITY_LABEL.RUNE_TATTOO'), value: "rune tattoo "},
+        {label: game.i18n.localize('ABILITY_LABEL.SHIELD_FIGHTER'), value: "shield fighter "},
+        {label: game.i18n.localize('ABILITY_LABEL.SIEGE_EXPERT'), value: "siege expert"},
+        {label: game.i18n.localize('ABILITY_LABEL.SIXTH_SENSE'), value: "sixth sense"},
+        {label: game.i18n.localize('ABILITY_LABEL.SORCERY'), value: "sorcery"},
+        {label: game.i18n.localize('ABILITY_LABEL.STAFF_FIGHTING'), value: "staff fighting "},
+        {label: game.i18n.localize('ABILITY_LABEL.STAFF_MAGIC'), value: "staff magic"},
+        {label: game.i18n.localize('ABILITY_LABEL.STEADFAST'), value: "steadfast"},
+        {label: game.i18n.localize('ABILITY_LABEL.STEEL_THROW'), value: "steel throw"},
+        {label: game.i18n.localize('ABILITY_LABEL.STRANGLER'), value: "strangler "},
+        {label: game.i18n.localize('ABILITY_LABEL.STRONG_GIFT'), value: "strong gift"},
+        {label: game.i18n.localize('ABILITY_LABEL.SWORD_SAINT'), value: "sword saint "},
+        {label: game.i18n.localize('ABILITY_LABEL.SYMBOLISM'), value: "symbolism"},
+        {label: game.i18n.localize('ABILITY_LABEL.TACTICIAN'), value: "tactician "},
+        {label: game.i18n.localize('ABILITY_LABEL.THEURGY'), value: "theurgy"},
+        {label: game.i18n.localize('ABILITY_LABEL.TRAPPER'), value: "trapper "},
+        {label: game.i18n.localize('ABILITY_LABEL.TRICK_ARCHERY'), value: "trick archery"},
+        {label: game.i18n.localize('ABILITY_LABEL.TROLL_SINGING'), value: "troll singing"},
+        {label: game.i18n.localize('ABILITY_LABEL.TWIN_ATTACK'), value: "twin attack"},
+        {label: game.i18n.localize('ABILITY_LABEL.2HANDED_FORCE'), value: "two-handed force "},
+        {label: game.i18n.localize('ABILITY_LABEL.WITCHCRAFT'), value: "witchcraft"},
+        {label: game.i18n.localize('ABILITY_LABEL.WITCHSIGHT'), value: "witchsight "},
+        {label: game.i18n.localize('ABILITY_LABEL.WIZARDRY'), value: "wizardry"},
+        {label: game.i18n.localize('ABILITY_LABEL.WRESTLING'), value: "wrestling "},
     ];
     let referenceOptions = "";
     for(let referenceEntry of abilitiesList){
@@ -135,6 +200,90 @@ async function affectReferenceOnAbility(ability){
         }
     }).render(true);
 }
+
+/* affect reference for a system ability on this item */
+async function affectReferenceOnPower(ability){
+    const abilitiesList = [
+        {label: game.i18n.localize('ABILITY_LABEL.DEFAULT'), value: "none"},        
+        {label: game.i18n.localize('POWER_LABEL.ANATHEMA'), value: "anathema"},
+        {label: game.i18n.localize('POWER_LABEL.BANISHING_SEAL'), value: "banishing seal"},
+        {label: game.i18n.localize('POWER_LABEL.BEND_WILL'), value: "bend will"},
+        {label: game.i18n.localize('POWER_LABEL.BLACK_BOLT'), value: "black bolt"},
+        {label: game.i18n.localize('POWER_LABEL.BLACK_BREATH'), value: "black breath"},
+        {label: game.i18n.localize('POWER_LABEL.BLESSED_SHIELD'), value: "blessed shield"},
+        {label: game.i18n.localize('POWER_LABEL.BLINDING_SYMBOL'), value: "blinding symbol"},
+        {label: game.i18n.localize('POWER_LABEL.BRIMSTONE_CASCADE'), value: "brimstone cascade"},
+        {label: game.i18n.localize('POWER_LABEL.COMBAT_HYMN'), value: "combat hymn"},
+        {label: game.i18n.localize('POWER_LABEL.CONFUSION'), value: "confusion"},
+        {label: game.i18n.localize('POWER_LABEL.CURSE'), value: "curse"},
+        {label: game.i18n.localize('POWER_LABEL.DANCING_WEAPON'), value: "dancing weapon"},
+        {label: game.i18n.localize('POWER_LABEL.DRAINING_GLYPH'), value: "draining glyph"},
+        {label: game.i18n.localize('POWER_LABEL.ENTANGLING_VINES'), value: "entangling vines"},
+        {label: game.i18n.localize('POWER_LABEL.EXORCIZE'), value: "exorcize"},
+        {label: game.i18n.localize('POWER_LABEL.FIRE_SOUL'), value: "fire soul"},
+        {label: game.i18n.localize('POWER_LABEL.FLAME_WALL'), value: "flame wall"},
+        {label: game.i18n.localize('POWER_LABEL.HEROIC_HYMN'), value: "heroic hymn"},
+        {label: game.i18n.localize('POWER_LABEL.HOLY_AURA'), value: "holy aura"},
+        {label: game.i18n.localize('POWER_LABEL.ILLUSORY_CORRECTION'), value: "illusory correction"},
+        {label: game.i18n.localize('POWER_LABEL.INHERIT_WOUND'), value: "inherit wound"},
+        {label: game.i18n.localize('POWER_LABEL.LARVAE_BOILS'), value: "larvae boils"},
+        {label: game.i18n.localize('POWER_LABEL.LAY_ON_HANDS'), value: "lay on hands"},
+        {label: game.i18n.localize('POWER_LABEL.LEVITATE'), value: "levitate"},
+        {label: game.i18n.localize('POWER_LABEL.LIFEGIVER'), value: "lifegiver"},
+        {label: game.i18n.localize('POWER_LABEL.MALTRANSFORMATION'), value: "maltransformation"},
+        {label: game.i18n.localize('POWER_LABEL.MIND-THROW'), value: "mind-throw"},
+        {label: game.i18n.localize('POWER_LABEL.MIRRORING'), value: "mirroring"},
+        {label: game.i18n.localize('POWER_LABEL.NATURES_EMBRACE'), value: "natures embrace"},
+        {label: game.i18n.localize('POWER_LABEL.PRIOS_BURNING_GLASS'), value: "prios burning glass"},
+        {label: game.i18n.localize('POWER_LABEL.PROTECTIVE_RUNES'), value: "protective runes"},
+        {label: game.i18n.localize('POWER_LABEL.PSYCHIC_THRUST'), value: "psychic thrust"},
+        {label: game.i18n.localize('POWER_LABEL.PURGATORY'), value: "purgatory"},
+        {label: game.i18n.localize('POWER_LABEL.RETRIBUTION'), value: "retribution"},
+        {label: game.i18n.localize('POWER_LABEL.REVENANT_STRIKE'), value: "revenant strike"},
+        {label: game.i18n.localize('POWER_LABEL.SHAPESHIFT'), value: "shapeshift"},
+        {label: game.i18n.localize('POWER_LABEL.SPHERE'), value: "sphere"},
+        {label: game.i18n.localize('POWER_LABEL.SPIRIT_WALK'), value: "spirit walk"},
+        {label: game.i18n.localize('POWER_LABEL.STAFF_PROJECTILE'), value: "staff projectile"},
+        {label: game.i18n.localize('POWER_LABEL.STORM_ARROW'), value: "storm arrow"},
+        {label: game.i18n.localize('POWER_LABEL.TELEPORT'), value: "teleport"},
+        {label: game.i18n.localize('POWER_LABEL.THORN_CLOAK'), value: "thorn cloak"},
+        {label: game.i18n.localize('POWER_LABEL.TORMENTING_SPIRITS'), value: "tormenting spirits"},
+        {label: game.i18n.localize('POWER_LABEL.TRUE_FORM'), value: "true form"},
+        {label: game.i18n.localize('POWER_LABEL.UNHOLY_AURA'), value: "unholy aura"},
+        {label: game.i18n.localize('POWER_LABEL.UNNOTICEABLE'), value: "unnoticeable"},
+        {label: game.i18n.localize('POWER_LABEL.WEAKENING_HYMN'), value: "weakening hymn"},
+        {label: game.i18n.localize('POWER_LABEL.WILD_HUNT'), value: "wild hunt"},
+        {label: game.i18n.localize('POWER_LABEL.WITCH_HAMMER'), value: "witch hammer"}
+    ];
+    let referenceOptions = "";
+    for(let referenceEntry of abilitiesList){
+        referenceOptions += `<option value=${referenceEntry.value}>${referenceEntry.label} </option>`
+      }
+    
+    let htmlTemplate = `
+    <h1> ${game.i18n.localize('ABILITYREF.DIALOG_TITLE')} </h1>
+    <p> ${game.i18n.localize('ABILITYREF.DIALOG')}</p>
+    <div style="display:flex">
+      <div  style="flex:1"><select id="reference">${referenceOptions}</select></div>
+    </div>`;
+    new Dialog({
+        title: game.i18n.localize('ABILITYREF.DIALOG_TITLE'), 
+        content: htmlTemplate,
+        buttons: {
+            validate: {
+                label: "Validate",
+                callback: (html) => {
+                    let selectedRef = html.find("#reference")[0].value;
+                    ability.update({"data.reference": selectedRef});
+                }
+            }, 
+            close: {
+                label: "Close"
+            }
+        }
+    }).render(true);
+}
+
 
 //get the target token, its actor, and evaluate which attribute this actor will use for opposition
 function getTarget(targetAttributeName) {
@@ -184,7 +333,113 @@ function getPowerLevel(ability){
     }
     return{level : powerLvl, lvlName : lvlName}
 }
+
+// WIP
 function bendWill(ability, actor) {
+    let targetData;
+    try{targetData = getTarget("resolute")} catch(error){      
+        ui.notifications.error(error);
+        return;
+    }
+    let powerLvl = getPowerLevel(ability);
+
+    let usedAttribute = actor.data.data.attributes["resolute"];
+    let bonus = actor.data.data.bonus["resolute"];
+    let useLeader = false;
+    let attributeValue = usedAttribute.value;
+    let hasLeader = actor.items.filter(item => item.data?.reference === "Leader");
+    if(hasLeader.length > 0){
+        let persuasiveV = actor.data.data.attributes["persuasive"].value + actor.data.data.bonus["persuasive"];
+        if(attributeValue + bonus < persuasiveV) {
+            usedAttribute = actor.data.data.attributes["persuasive"];
+            attributeValue = usedAttribute.value;
+            bonus = actor.data.data.bonus["persuasive"];
+            useLeader = true;
+        }
+    }
+    /*
+    const attributeData = {name: game.i18n.localize(usedAttribute.label), value: attributeValue + bonus};
+    const targetAttributeData = { value: 10, name: "custom" }
+    let rollData = await rollAttribute(actor, attributeData, 0, { value: 10, name: "custom" }, null, null, null);
+    console.log(rollData);
+    let healed = 0;
+    if(rollData.hasSucceed){
+    
+    let rolled = rollPwr(selectedActor, Pwr, powerLvl, rollData, targetData);
+    rolled.toMessage();
+    let effectChatMessage = "";
+    // if the actor performing the action is a player
+    if (selectedActor.hasPlayerOwner){
+
+        let difficulty = rollData.selectedAttribute.value - targetData.resistValue + 10 + rollData.modifier;
+        effectChatMessage =`
+        <p> Difficulté = ${difficulty}</p> 
+        `;
+        if(rolled.total <= difficulty){
+            effectChatMessage +=`
+                <p> ${selectedActor.data.name} parvient à imposer sa volonté à ${targetData.actor.data.name}.</p>
+                `
+        }
+        else{
+            effectChatMessage +=`
+                <p> ${selectedActor.data.name} ne parvient pas à vaincre briser la volonté de ${targetData.actor.data.name}.</p>
+                `
+        }
+    }
+    else{
+        let difficulty = targetData.resistValue - rollData.selectedAttribute.value + 10 - rollData.modifier;
+        effectChatMessage =`
+        <p> Difficulté = ${difficulty}</p> 
+        `;      
+        if(rolled.total <= difficulty){
+            effectChatMessage +=`
+                <p> ${targetData.actor.data.name} parvient à résister à la tentative de soumission par ${selectedActor.data.name}.</p>
+                `
+        }
+        else{
+            effectChatMessage +=`
+                <p> ${targetData.actor.data.name} est contrôlé par ${selectedActor.data.name}.</p>
+                `
+        }
+    }
+    ChatMessage.create({
+        speaker: {
+        alias: selectedActor.name
+        },
+        content: effectChatMessage
+    })*/
+}
+
+async function loremaster(ability, actor) {
+    
+    let targetData = {haveTarget : false};
+    let powerLvl = getPowerLevel(ability);
+    const attribute = actor.data.data.attributes["cunning"];
+    const bonus = actor.data.data.bonus["cunning"];
+    const attributeData = {name: game.i18n.localize(attribute.label), value: attribute.value + bonus};
+    let rollData = await rollAttribute(actor, attributeData, 0, { value: 10, name: "None" }, null, null, null);
+
+    let templateData = {
+        targetData : targetData,
+        haveTarget : targetData.haveTarget,
+        introText: actor.data.name + game.i18n.localize('ABILITY_LOREMASTER.CHAT_INTRO'),
+        introImg: actor.data.img,
+        targetText: "",
+        subText: ability.name + ", " + powerLvl.lvlName,
+        subImg: ability.img,
+        rollString: rollData.name,
+        rollResult : game.i18n.localize('ABILITY.ROLL_RESULT') + rollData.diceResult.toString(),
+        resultText: actor.data.name + game.i18n.localize('ABILITY_LOREMASTER.CHAT_SUCCESS'),
+        finalText: ""
+    }; 
+    if(!rollData.hasSucceed){templateData.resultText = game.i18n.localize('ABILITY_LOREMASTER.CHAT_FAILURE')};
+
+    const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
+    const chatData = {
+        user: game.user._id,
+        content: html,
+    }
+    ChatMessage.create(chatData);
 }
 
 function medicus(ability, actor) {
@@ -252,10 +507,9 @@ async function medicusHeal(ability, actor, targetData, powerLvl, herbalCure, hea
     const attribute = actor.data.data.attributes["cunning"];
     const bonus = actor.data.data.bonus["cunning"];
     const attributeData = {name: game.i18n.localize(attribute.label), value: attribute.value + bonus};
-    let rollData = await rollAttribute(actor, attributeData, 0, { value: 10, name: "custom" }, null, null, null);
+    let rollData = await rollAttribute(actor, attributeData, 0, { value: 10, name: "None" }, null, null, null);
     console.log(rollData);
     let healed = 0;
-    if(targetData.haveTarget){targetName = targetData.actor.data.name}
     if(rollData.hasSucceed){
 
         let healRoll = new Roll(healFormula).evaluate();
@@ -282,8 +536,11 @@ async function medicusHeal(ability, actor, targetData, powerLvl, herbalCure, hea
     //kept for future auto apply option
     //await targetData.token.drawBars();
     let templateData = {
+        targetData : targetData,
+        haveTarget : targetData.haveTarget,
         introText: actor.data.name + game.i18n.localize('ABILITY_MEDICUS.CHAT_INTRO'),
         introImg: actor.data.img,
+        targetText: "",
         subText: ability.name + ", " + powerLvl.lvlName,
         subImg: ability.img,
         rollString: rollData.name,
@@ -291,6 +548,10 @@ async function medicusHeal(ability, actor, targetData, powerLvl, herbalCure, hea
         resultText: actor.data.name + game.i18n.localize('ABILITY_MEDICUS.CHAT_SUCCESS'),
         finalText: game.i18n.localize('ABILITY_MEDICUS.CHAT_FINAL') + healed.toString()
     };
+    if(targetData.haveTarget){
+        templateData.targetText = game.i18n.localize('ABILITY_MEDICUS.CHAT_TARGET') + targetData.actor.data.name;
+    }
+
     if(herbalCure){templateData.subText += ", " + game.i18n.localize('ABILITY_MEDICUS.HERBALCURE')}
     else{templateData.subText += ", " + game.i18n.localize('ABILITY_MEDICUS.NOHERBALCURE')};
     if(!rollData.hasSucceed){templateData.resultText = game.i18n.localize('ABILITY_MEDICUS.CHAT_FAILURE')}
