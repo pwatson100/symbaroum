@@ -1,6 +1,9 @@
+import { activateAbility } from "../common/item.js";
+
 export class SymbaroumItemSheet extends ItemSheet {
   activateListeners(html) {
     super.activateListeners(html);
+    html.find(".register-ability").click(async ev => await this._prepareRegisterAbility(ev));
   }
 
   _getHeaderButtons() {
@@ -14,5 +17,11 @@ export class SymbaroumItemSheet extends ItemSheet {
       }
     ].concat(buttons);
     return buttons;
+  }
+
+  async _prepareRegisterAbility(event) {
+    event.preventDefault();
+    const ability = this.object;
+    await activateAbility(ability, null);
   }
 }
