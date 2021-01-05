@@ -158,3 +158,104 @@ export async function deathRoll(sheet) {
   }
   ChatMessage.create(chatData);
 }
+
+//this function returns the value of the attribute, modified by the its bonus, and also accept defense.
+export function getAttributeValue(actor, attributeName) {
+  if (attributeName === 'defense') {
+    let defense = actor.data.data.combat.defense + actor.data.data.bonus.defense;
+    return (defense);
+  } else {
+      let attribute = actor.data.data?.attributes[attributeName];
+      let value = attribute.value + actor.data.data.bonus[attributeName];
+      return (value);
+  }
+}
+
+/*Base roll, to be use for self rolls, resisted rolls, attack rolls, defense rolls...
+actor is the actor that do the roll (usually a PC)
+actingAttribute is the name of the attribute used for action, and can also be "defense"
+targetactor is the resisting actor, or null for a self roll
+targetAttribute is the attribute used for resisting, and can also be defense, or null for a self roll.
+Favour is for situation where you roll 2d20 and keep one:
+    favour < 0 means keep the worst (for example, actor is cursed)
+    favour > 0 means keep the best (for exemple, actor uses hunter's instinct, or target is cursed)
+    favour = 0 is the usual situation, just roll 1d20
+modifier is the modifier to the roll. Must be a number. A negative modifier is an hindrance, a positive one is a boon*/
+/*returns:
+    actingAttributeValue, //final acting attribute value
+    resistAttributeValue, //final opposing attribute value or 0
+    hasSucceed,  // boolean, true = success
+    diceResult,  // the result of the kept dice
+    dicesResult,  //if favour/unfavour, an array of the results of the 2 thrown dice, or null
+    critSuccess, //boolean
+    critFail, //boolean */
+export async function baseRoll(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier) {
+  let d20str = "1d20";
+  let hasSucceed = false;
+  let critGood = false;
+  let critBad = false;
+  let hasTarget = false;
+  if(modifier == null){modifier = 0};
+  
+	if(favour > 0) d20str="2d20kl";
+	else if(favour < 0) d20str="2d20kh";
+  
+  let attributeRoll = new Roll(d20str).evaluate();  
+  
+  let dicesResult;
+  if(favour != 0){ 
+    dicesResult = [attributeRoll.terms[0].results[0].result, attributeRoll.terms[0].results[1].result]
+  };
+  
+  if (game.dice3d != null) {
+    await game.dice3d.showForRoll(attributeRoll);
+  }
+  
+  let actingAttributeValue = getAttributeValue(actor, actingAttributeName);
+
+  let diceTarget = actingAttributeValue + modifier;
+  
+  let resistAttributeValue = 0;
+  if(targetActor != null){
+    hasTarget = true;
+    resistAttributeValue = getAttributeValue(targetActor, targetAttributeName);
+    diceTarget += (10 - resistAttributeValue);
+  }
+
+  if(attributeRoll.total <= diceTarget){
+    hasSucceed = true;
+  }
+   
+  // Check option - always succeed on 1, always fail on 20
+	if(game.settings.get('symbaroum', 'alwaysSucceedOnOne') || game.settings.get('symbaroum', 'optionalCrit') || game.settings.get('symbaroum', 'optionalRareCrit') ) { 
+		let critDiceTarget = Math.min(Math.max(1,diceTarget), 19);
+    
+    if( attributeRoll._total === 1 || attributeRoll._total === 20 ) {
+      if( game.settings.get('symbaroum', 'optionalCrit') ) {
+        if(attributeRoll.total === 1){
+          hasSucceed = false;
+          critBad = true;
+        }
+        else{
+          hasSucceed = true;
+          critGood = true
+        }
+      }    
+      if( game.settings.get('symbaroum', 'optionalRareCrit') ) {
+        let secondRoll = new Roll("1d20").evaluate();
+        critGood = critGood && secondRoll._total <= critDiceTarget;
+        critBad = critBad && secondRoll._total > critDiceTarget;
+      }
+    }
+	}
+
+  return({
+    actingAttributeValue: actingAttributeValue, //final acting attribute value
+    resistAttributeValue: resistAttributeValue, //final opposing attribute value or 0
+    hasSucceed: hasSucceed,  // boolean, true = success
+    diceResult: attributeRoll.total,  // the result of the kept dice
+    dicesResult: dicesResult,  //if favour/unfavour, an array of the results of the 2 thrown dice, or null
+    critSuccess: critGood, //boolean
+    critFail: critBad, //boolean
+  });
+}

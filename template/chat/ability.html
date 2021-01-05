@@ -10,10 +10,10 @@
         </div>
         <div class="subText">{{removeMarkup subText}}</div>            
         <img src="{{subImg}}"/>
-
+        {{#if haveRoll}}
         <p><strong>{{removeMarkup rollString}}</strong></p>
         <p><strong>{{removeMarkup rollResult}}</strong></p>
-        
+        {{/if}}
         <div class="finalTxt">
             <p>{{removeMarkup resultText}}</p>
             <p>{{removeMarkup finalText}}</p>

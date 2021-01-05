@@ -4,6 +4,7 @@
   "ABILITY.ACTION": "Handling",
   "ABILITY.DESCRIPTION": "Beskrivning",
 
+  "ABILITY.CHAT_TARGET_VICTIM": "Victim: ",
   "ABILITYREF.DIALOG_TITLE": "Choose corresponding integrated ability",
   "ABILITYREF.DIALOG": "This will allow you to use integrated rolls for this specific ability. If it's a homebrew ability or if you do not want to use the scripts, select \"No reference\". Warning : you won't be able to reference after that, if you want to you'll have to create a new ability.",
   "ABILITY_LABEL.DEFAULT": "Other",
@@ -176,6 +177,8 @@
   "DIALOG.FAVOUR_FAVOUR": "Favour", 
   "DIALOG.FAVOUR_DISFAVOUR": "Disfavour",
   "DIALOG.DAMAGE_MODIFIER": "Dam. mod.",
+  "DIALOG.CASTING": "Initial casting",
+  "DIALOG.MAINTAINING": "Maintening ability",
   
   "EQUIPMENT.NAME": "Namn",
   "EQUIPMENT.COST": "Kostnad",
@@ -275,6 +278,20 @@
   "POWER_LABEL.WEAKENING_HYMN":"Weakening Hymn",
   "POWER_LABEL.WILD_HUNT":"Wild Hunt",
   "POWER_LABEL.WITCH_HAMMER":"Witch Hammer",
+
+  "POWER_BENDWILL.CHAT_INTRO": " try to bend the victim's will.",
+  "POWER_BENDWILL.CHAT_INTRO_M": " maintains Bend Will.",
+  "POWER_BENDWILL.CHAT_SUCCESS": " controls ",
+  "POWER_BENDWILL.CHAT_FAILURE": " resist the attempt.",
+
+
+  "POWER_CURSE.CHAT_INTRO": " cast a curse.",
+  "POWER_CURSE.CHAT_INTRO_M": " maintain a curse.",
+  "POWER_CURSE.CHAT_SUCCESS_N": " is cursed (has unfavour against mystic).",
+  "POWER_CURSE.CHAT_SUCCESS_A": " is cursed (has unfavour).",
+  "POWER_CURSE.CHAT_SUCCESS_M": " is heavily cursed (1d6 damage for each action).",
+  "POWER_CURSE.CHAT_FAILURE": " can't maintain the curse.",
+  "POWER_CURSE.CHAT_FAIL_FINAL": "The curse has no more effect on ",
 
   "QUALITY.AREAMRR": "Effektområde - Närstids-radie",
   "QUALITY.AREASRR": "Effektområde - Kort-radie", 
