@@ -1,8 +1,9 @@
-{  "ABILITY.NAME": "Nom",
+{ "ABILITY.NAME": "Nom",
   "ABILITY.ACTIVE": "Appris",
   "ABILITY.ACTION": "Action",
   "ABILITY.DESCRIPTION": "Description",
 
+  "ABILITY.CHAT_TARGET_VICTIM": "Victime: ",
   "ABILITYREF.DIALOG_TITLE": "Indiquez le talent ou le pouvoir correspondant",
   "ABILITYREF.DIALOG": "Cette référence vous permettra d'utiliser les jets et fenêtres de dialogues intégrés au système pour les talents, pouvoirs et traits. S'il s'agit d'un talent personnalisé ou si vous ne souhaitez pas utiliser ces options du système, choisissez \"Aucun\". Attention: vous ne pourrez plus changer la référence de cet objet par la suite. Pour ce faire, il vous faudra supprimer l'objet et en créer un nouveau.",
   "ABILITY_LABEL.DEFAULT": "Autre",
@@ -168,13 +169,18 @@
   "CHAT.DEAD": "Tu es mort !",
 
   "DIALOG.ATTRIBUTE": "Attribut",
-  "DIALOG.MODIFIER": "Modificateur",
+  "DIALOG.MODIFIER": "Mod. jet d'attribut",
   "DIALOG.ADVANTAGE": "Avantage",
   "DIALOG.DISADVANTAGE": "Désavantage",
   "DIALOG.FAVOUR_NORMAL": "Normal",
   "DIALOG.FAVOUR_FAVOUR": "Faveur", 
   "DIALOG.FAVOUR_DISFAVOUR": "Défaveur",
   "DIALOG.DAMAGE_MODIFIER": "Mod. dégâts",
+  "DIALOG.CASTING": "Lancement du talent",
+  "DIALOG.MAINTAINING": "Jet pour maintenir le talent",
+
+  "DIALOG.CASTING_ATTRIBUTE": "Attribut utilisé",
+  "DIALOG.RESIST_ATTRIBUTE": "Attribut résisté",
   
   "EQUIPMENT.NAME": "Nom",
   "EQUIPMENT.COST": "Prix",
@@ -276,6 +282,19 @@
   "POWER_LABEL.WILD_HUNT":"Traque sauvage",
   "POWER_LABEL.WITCH_HAMMER":"Marteau à sorcière",
 
+  "POWER_BENDWILL.CHAT_INTRO": " utilise le pouvoir de Soumission.",
+  "POWER_BENDWILL.CHAT_INTRO_M": " maintient le pouvoir Soumission.",
+  "POWER_BENDWILL.CHAT_SUCCESS": " parvient à soumettre ",
+  "POWER_BENDWILL.CHAT_FAILURE": " résiste à la soumission.",
+
+  "POWER_CURSE.CHAT_INTRO": " lance une malédiction.",
+  "POWER_CURSE.CHAT_INTRO_M": " maintient une malédiction.",
+  "POWER_CURSE.CHAT_SUCCESS_N": " est maudit (pour chaque action contre le mystique, il jette 2d20 et garde le moins avantageux).",
+  "POWER_CURSE.CHAT_SUCCESS_A": " est maudit (pour chaque action, il jette 2d20 et garde le moins avantageux).",
+  "POWER_CURSE.CHAT_SUCCESS_M": " est maudit (pour chaque action, il subit 1d6 points de dégâts).",
+  "POWER_CURSE.CHAT_FAILURE": " ne parvient pas à maintenir la malédiction.",
+  "POWER_CURSE.CHAT_FAIL_FINAL": "La malédiction n'a plus d'effet sur ",
+  
   "QUALITY.AREAMRR": "Zone d’effet - rayon portée mélée",
   "QUALITY.AREASRR": "Zone d’effet - rayon portée courte",
   "QUALITY.AREAC": "Zone d'effet - cône",

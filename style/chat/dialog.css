@@ -64,6 +64,7 @@
 .symbaroum.dialog .advantage,
 .symbaroum.dialog .favour,
 .symbaroum.dialog .attribute,
+.symbaroum.dialog .maintain,
 .symbaroum.dialog .bonus {
     display: flex;
     flex-direction: row;
