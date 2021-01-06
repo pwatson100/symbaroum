@@ -1,4 +1,4 @@
-import { rollAttribute, baseRoll, getAttributeValue } from './roll.js';
+import { rollAttribute, baseRoll, getAttributeValue, createModifyTokenChatButton } from './roll.js';
 
 export class SymbaroumItem extends Item {
     static async create(data, options) {
@@ -290,7 +290,9 @@ async function affectReferenceOnPower(ability){
     }).render(true);
 }
 
-//get the target token, its actor, and evaluate which attribute this actor will use for opposition
+/*get the target token, its actor, and evaluate which attribute this actor will use for opposition
+@Params: {string}   targetAttributeName : the name of the resist attribute. Can be defence, and can be null.
+@returns:  {targetData object}*/
 function getTarget(targetAttributeName) {
     let targets = Array.from(game.user.targets)
     if(targets.length == 0 || targets.length > 1 ){
@@ -316,20 +318,21 @@ function getTarget(targetAttributeName) {
     }
 }
 
-function formatAttributeforRoll(actor, attributeName) {
-    if (attributeName === 'custom') {
-        return { name: game.i18n.localize('ATTRIBUTE.CUSTOM'), value: 10};
-    } else if (attributeName === 'defense') {
-        let defense = actor.data.data.combat.defense + actor.data.data.bonus.defense;
-        return { name: game.i18n.localize('ARMOR.DEFENSE'), value: defense};
-    } else {
-        let attribute = actor.data.data.attributes[attributeName];
-        let attributeValue = attribute.value + actor.data.data.bonus[attributeName];
-        return { name: game.i18n.localize(attribute.label), value: attributeValue};
+/* format the string to print the roll result, including the 2 dice if favour was involved
+@Params: {object}  rollData the object that the baseRoll function returns 
+@returns:  {string} the formated and localized string*/
+function formatRollResult(rollData){
+    let rollResult = game.i18n.localize('ABILITY.ROLL_RESULT') + rollData.diceResult.toString();
+    if(rollData.favour != 0){
+        rollResult += "   (" + rollData.dicesResult[0].toString() + "  ,  " + rollData.dicesResult[1].toString() + ")";
     }
+    return(rollResult);
 }
 
-//get the max level learned by the actor
+/*get the max level learned by the actor
+@Params: {item}   ability : the ability or mysticalPower item 
+@returns:  {{number} level
+            {lvlName} the localized label (novice, adpet or master)}*/
 function getPowerLevel(ability){
     let powerLvl = 1;
     let lvlName = game.i18n.localize('ABILITY.NOVICE');
@@ -353,11 +356,11 @@ will send to screen a windows asking for modifiers for the roll, then roll, then
    * @param {string} targetAttributeName Can be null (no opposition attribute to roll)
    * @param {string} autoParams Can be null. The list of parameters, passive abilities and such, that are already included (to inform the player he doesn't have to type them in)
    * @param {number} modifier  A modifier for the roll
-   * @param {string} defaultFavour: "0", "-1", "1"
+   * @param {string}  favour: "0", "-1", "1"
    * @param {boolean} checkMaintain: if true, ask the pleyr whether the roll is for casting the ability or maintaining it 
    * @param {string} abilityResultFunction  The function to call in order to process the results
    * @param {any}   abilityResultFunctionStuff  an object of parameters not used in the dialog function, but useful for abilityResultFunction */
-async function modifierDialog(ability, actor, castingAttributeName, targetData, autoParams, modifier, defaultFavour, checkMaintain, abilityResultFunction, abilityResultFunctionStuff){
+async function modifierDialog(ability, actor, castingAttributeName, targetData, askTargetAttribute, autoParams, modifier, favour, checkMaintain, abilityResultFunction, abilityResultFunctionStuff){
 
     let askCastingAttribute = true;
     if(castingAttributeName != null){
@@ -365,13 +368,10 @@ async function modifierDialog(ability, actor, castingAttributeName, targetData, 
     }
        
     let targetAttributeName = null;
-    let askTargetAttribute = false;
     let hasTarget = false;
     if(targetData != null){
         hasTarget = true;
-        askTargetAttribute = true;
         if(targetData.resistAttributeName != null){
-            askTargetAttribute = false;
             targetAttributeName = targetData.resistAttributeName
         }
     }
@@ -383,7 +383,7 @@ async function modifierDialog(ability, actor, castingAttributeName, targetData, 
         isArmorRoll : null,
         choices: { "0": game.i18n.localize("DIALOG.FAVOUR_NORMAL"), "-1":game.i18n.localize("DIALOG.FAVOUR_DISFAVOUR"), "1":game.i18n.localize("DIALOG.FAVOUR_FAVOUR")},
         groupName:"favour",
-        defaultFavour: defaultFavour,
+        defaultFavour: 0,
         defaultModifier: modifier,
         defaultAdvantage: "",
         defaultDamModifier: "",
@@ -418,9 +418,11 @@ async function modifierDialog(ability, actor, castingAttributeName, targetData, 
                 let favours = html.find("input[name='favour']");
                 let fvalue = 0;
                 for ( let f of favours) {						
-                    if( f.checked ) fvalue = f.value;
+                    if( f.checked ) fvalue = parseInt(f.value, 10);
                 }			
-                const favour = fvalue;
+                const finalavour = fvalue + favour;
+                console.log(finalavour);
+
 
                 //Power/Ability has already been started and is maintained or chained
                 let isMaintained = false;
@@ -448,13 +450,13 @@ async function modifierDialog(ability, actor, castingAttributeName, targetData, 
                 }*/
                 let rollData;
                 if(hasTarget){
-                    rollData = await baseRoll(actor, castingAttributeName, targetData.actor, targetAttributeName, favour, modifierCustom);
+                    rollData = await baseRoll(actor, castingAttributeName, targetData.actor, targetAttributeName, finalavour, modifierCustom);
                 }
                 else{
-                    rollData = await baseRoll(actor, castingAttributeName, null, null, favour, modifierCustom);
+                    rollData = await baseRoll(actor, castingAttributeName, null, null, finalavour, modifierCustom);
                 }
                 
-                await abilityResultFunction(rollData, ability, actor, castingAttributeName, targetData, favour, modifierCustom, isMaintained, autoParams, abilityResultFunctionStuff);
+                await abilityResultFunction(rollData, ability, actor, castingAttributeName, targetData, finalavour, modifierCustom, isMaintained, autoParams, abilityResultFunctionStuff);
                 },
           },
           cancel: {
@@ -470,23 +472,24 @@ async function modifierDialog(ability, actor, castingAttributeName, targetData, 
 
 }
 
-/*a character that uses resolute, or a target that defend with resolut, mays have ability modifiers
+/*a character that uses resolute, or a target that defend with resolute, mays have ability modifiers
 This function checks : 
 - leader novice (may use persuasive in place of resolute).
 - steadfast adept (favour) or master (counter attack)
-returns:
+* @param {actor} actor       The actor
+* @param {string} autoParams    the list of abilities and parameters automaticaly taken care for this actor
+returns:{
     bestAttributeName {string} , //final attribute 
     favour {-1, 0, 1}, 
-    useLeader {boolean}, 
+    useLeader {boolean},  (the novice level, if persuasive > resolute)
     useSteadfastAdept {boolean},
     useSteadfastMaster {boolean}
-    autoParams {string} list of detected and used abilities*/
-function checkResoluteModifiers(actor){
+    autoParams {string} detected and used abilities have been appended to autoParams}*/
+function checkResoluteModifiers(actor, autoParams){
     let useLeader = false;
     let useSteadfastAdept = false;
     let useSteadfastMaster = false;
     let favour = 0;
-    let autoParams = "";
     let bestAttributeName = "resolute";
     let bestAttributeValue = actor.data.data.attributes["resolute"].value + actor.data.data.bonus["resolute"];
     let hasLeader = actor.items.filter(item => item.data.data?.reference === "leader");
@@ -524,7 +527,7 @@ function checkResoluteModifiers(actor){
         autoParams: autoParams
     }
 }
-// WIP
+
 async function bendWillPrepare(ability, actor) {
     let targetData;
     try{targetData = getTarget("resolute")} catch(error){      
@@ -532,18 +535,18 @@ async function bendWillPrepare(ability, actor) {
         return;
     }
     let powerLvl = getPowerLevel(ability);
-    let actorResMod = checkResoluteModifiers(actor);
-    let targetResMod = checkResoluteModifiers(targetData.actor);
-    let favour = actorResMod.favour - targetResMod.favour;
+    let actorResMod = checkResoluteModifiers(actor, "");
+    let targetResMod = checkResoluteModifiers(targetData.actor, targetData.autoParams);
+    let favour = -1*targetResMod.favour;
     let castingAttributeName = actorResMod.bestAttributeName;
     targetData.resistAttributeName = targetResMod.bestAttributeName;
     targetData.resistAttributeValue = targetResMod.bestAttributeValue;
     let autoParams = actorResMod.autoParams;
-    targetData.autoParams += targetResMod.autoParams;
+    targetData.autoParams = targetResMod.autoParams;
     let bendWillStuff = {
         powerLvl: powerLvl
     }
-    await modifierDialog(ability, actor, castingAttributeName, targetData, autoParams, 0, favour, true, bendWillResult, bendWillStuff)
+    await modifierDialog(ability, actor, castingAttributeName, targetData, false, autoParams, 0, favour, true, bendWillResult, bendWillStuff)
 }
 
 async function bendWillResult(rollData, ability, actor, castingAttributeName, targetData, favour, modifierCustom, isMaintained, autoParams, bendWillStuff){
@@ -573,7 +576,7 @@ async function bendWillResult(rollData, ability, actor, castingAttributeName, ta
         subImg: ability.img,
         haveRoll: true,
         rollString: `${game.i18n.localize(castingAttribute.label)} : (${rollData.actingAttributeValue})`,
-        rollResult : game.i18n.localize('ABILITY.ROLL_RESULT') + rollData.diceResult.toString(),
+        rollResult : formatRollResult(rollData),
         resultText: resultText,
         finalText: ""
     }
@@ -583,19 +586,21 @@ async function bendWillResult(rollData, ability, actor, castingAttributeName, ta
         user: game.user._id,
         content: html,
     }
-    ChatMessage.create(chatData);
+    let NewMessage = await ChatMessage.create(chatData);
     if(rollData.hasSucceed && !isMaintained){
-        const effect = "icons/svg/daze.svg";
-        let statusEffect = new EffectCounter(1, effect, targetData.token, false);
-        await statusEffect.update();
+        let flagData = {
+            tokenId: targetData.token.data._id,
+            addEffect: "icons/svg/daze.svg",
+            effectDuration: 1
+        };
+        await createModifyTokenChatButton(flagData);
     }
-    else if(!rollData.hasSucceed){    
-        const effect = "icons/svg/daze.svg";
-        let statusEffectCounter = EffectCounter.findCounter(targetData.token, effect);
-        if(statusEffectCounter != undefined){
-            statusEffectCounter.setValue(0, targetData.token, false);
-            await statusEffectCounter.update();
-        }
+    else if(!rollData.hasSucceed){   
+        let flagData = {
+            tokenId: targetData.token.data._id,
+            removeEffect: "icons/svg/daze.svg"
+        };
+        await createModifyTokenChatButton(flagData);
     }
 }
 
@@ -608,13 +613,13 @@ async function cursePrepare(ability, actor) {
     }
     let hasTarget = false;
     let powerLvl = getPowerLevel(ability);
-    let resMod = checkResoluteModifiers(actor);
+    let resMod = checkResoluteModifiers(actor, "");
     let castingAttributeName = resMod.bestAttributeName;
     let autoParams = resMod.autoParams;
     let curseStuff = {
         powerLvl: powerLvl
     }
-    await modifierDialog(ability, actor, castingAttributeName, targetData, autoParams, 0, 0, true, curseResult, curseStuff)
+    await modifierDialog(ability, actor, castingAttributeName, targetData, false, autoParams, 0, 0, true, curseResult, curseStuff)
 }
 
 async function curseResult(rollData, ability, actor, castingAttributeName, targetData, favour, modifierCustom, isMaintained, autoParams, curseStuff){
@@ -645,7 +650,7 @@ async function curseResult(rollData, ability, actor, castingAttributeName, targe
         subImg: ability.img,
         haveRoll: haveRoll,
         rollString: `${game.i18n.localize(castingAttribute.label)} : (${rollData.actingAttributeValue})`,
-        rollResult : game.i18n.localize('ABILITY.ROLL_RESULT') + rollData.diceResult.toString(),
+        rollResult : formatRollResult(rollData),
         resultText: resultText,
         finalText: ""
     }
@@ -662,17 +667,19 @@ async function curseResult(rollData, ability, actor, castingAttributeName, targe
     }
     ChatMessage.create(chatData);
     if(!isMaintained){
-        const effect = "icons/svg/sun.svg";
-        let cursedEffect = new EffectCounter(1, effect, targetData.token, false);
-        await cursedEffect.update();
+        let flagData = {
+            tokenId: targetData.token.data._id,
+            addEffect: "icons/svg/sun.svg",
+            effectDuration: 1
+        };
+        await createModifyTokenChatButton(flagData);
     }
-    else if(!rollData.hasSucceed){    
-        const effect = "icons/svg/sun.svg";
-        let cursedEffectCounter = EffectCounter.findCounter(targetData.token, effect);
-        if(cursedEffectCounter != undefined){
-            cursedEffectCounter.setValue(0, targetData.token, false);
-            await cursedEffectCounter.update();
+    else if(!rollData.hasSucceed){   
+        let flagData = {
+            tokenId: targetData.token.data._id,
+            removeEffect: "icons/svg/sun.svg"
         }
+        await createModifyTokenChatButton(flagData);
     }
 }
 
@@ -693,7 +700,7 @@ async function loremaster(ability, actor) {
         subImg: ability.img,
         haveRoll: true,
         rollString: `${game.i18n.localize(attribute.label)} : (${rollData.actingAttributeValue})`,
-        rollResult : game.i18n.localize('ABILITY.ROLL_RESULT') + rollData.diceResult.toString(),
+        rollResult : formatRollResult(rollData),
         resultText: actor.data.name + game.i18n.localize('ABILITY_LOREMASTER.CHAT_SUCCESS'),
         finalText: ""
     }; 
@@ -773,6 +780,7 @@ async function medicusHeal(ability, actor, targetData, powerLvl, herbalCure, hea
     let rollData = await baseRoll(actor, "cunning", null, null, 0, 0);
     console.log(rollData);
     let healed = 0;
+    let flagData;
     if(rollData.hasSucceed){
 
         let healRoll = new Roll(healFormula).evaluate();
@@ -780,8 +788,10 @@ async function medicusHeal(ability, actor, targetData, powerLvl, herbalCure, hea
         healed = healRoll.total;
         if(targetData.haveTarget){
             healed = Math.min(healRoll.total, targetData.actor.data.data.health.toughness.max - targetData.actor.data.data.health.toughness.value);
-            //kept for future auto apply option
-            //await targetData.actor.update({"data.health.toughness.value" : targetData.actor.data.data.health.toughness.value + healed});
+            flagData = {
+                tokenId: targetData.token.data._id,
+                toughnessChange: healed
+            }
         }
     }
     else{
@@ -791,13 +801,14 @@ async function medicusHeal(ability, actor, targetData, powerLvl, herbalCure, hea
             healed = healRoll.total;
             if(targetData.haveTarget){
                 healed = Math.min(healRoll.total, targetData.actor.data.data.health.toughness.max - targetData.actor.data.data.health.toughness.value);
-                //kept for future auto apply option
-                //await targetData.actor.update({"data.health.toughness.value" : targetData.actor.data.data.health.toughness.value + healed});
+                flagData = {
+                    tokenId: targetData.token.data._id,
+                    toughnessChange: healed
+                }
             }
         }
     }
-    //kept for future auto apply option
-    //await targetData.token.drawBars();
+
     let templateData = {
         targetData : targetData,
         haveTarget : targetData.haveTarget,
@@ -808,7 +819,7 @@ async function medicusHeal(ability, actor, targetData, powerLvl, herbalCure, hea
         subImg: ability.img,
         haveRoll: true,
         rollString: `${game.i18n.localize(attribute.label)} : (${rollData.actingAttributeValue})`,
-        rollResult : game.i18n.localize('ABILITY.ROLL_RESULT') + rollData.diceResult.toString(),
+        rollResult : formatRollResult(rollData),
         resultText: actor.data.name + game.i18n.localize('ABILITY_MEDICUS.CHAT_SUCCESS'),
         finalText: game.i18n.localize('ABILITY_MEDICUS.CHAT_FINAL') + healed.toString()
     };
@@ -825,5 +836,8 @@ async function medicusHeal(ability, actor, targetData, powerLvl, herbalCure, hea
         user: game.user._id,
         content: html,
     }
-    ChatMessage.create(chatData);
+    await ChatMessage.create(chatData);
+    if(flagData){
+        await createModifyTokenChatButton(flagData);
+    }
 }
