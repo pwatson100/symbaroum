@@ -155,6 +155,7 @@
   "BUTTON.ROLL": "Lanzar",
   "BUTTON.CANCEL": "Cancelar",
 
+  "CHAT.APPLY_BUTTON": "Apply results to the token",
   "CHAT.DEATH_ROLL": "Tirada de Muerte",
   "CHAT.SUCCEED": "Éxito",
   "CHAT.FAILED": "Fallo",

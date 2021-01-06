@@ -29,7 +29,8 @@ function preloadHandlebarsTemplates() {
     "systems/symbaroum/template/sheet/artifact.html",
     "systems/symbaroum/template/sheet/tab/bonus.html",
     "systems/symbaroum/template/chat/item.html",
-    "systems/symbaroum/template/chat/ability.html"
+    "systems/symbaroum/template/chat/ability.html",
+    "systems/symbaroum/template/chat/applyEffectsButton.html"
   ];
   return loadTemplates(templatePaths);
 }

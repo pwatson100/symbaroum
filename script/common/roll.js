@@ -172,29 +172,30 @@ export function getAttributeValue(actor, attributeName) {
 }
 
 /*Base roll, to be use for self rolls, resisted rolls, attack rolls, defense rolls...
-actor is the actor that do the roll (usually a PC)
-actingAttribute is the name of the attribute used for action, and can also be "defense"
-targetactor is the resisting actor, or null for a self roll
-targetAttribute is the attribute used for resisting, and can also be defense, or null for a self roll.
-Favour is for situation where you roll 2d20 and keep one:
+* @param {actor object} actor is the actor that do the roll (usually a PC)
+* @param {string} actingAttribute is the name of the attribute used for action, and can also be "defense"
+* @param {actor object} targetactor is the resisting actor, or null for a self roll
+* @param {string} targetAttribute is the attribute used for resisting, and can also be defense, or null for a self roll.
+* @param {number} Favour is for situation where you roll 2d20 and keep one:
     favour < 0 means keep the worst (for example, actor is cursed)
     favour > 0 means keep the best (for exemple, actor uses hunter's instinct, or target is cursed)
     favour = 0 is the usual situation, just roll 1d20
-modifier is the modifier to the roll. Must be a number. A negative modifier is an hindrance, a positive one is a boon*/
-/*returns:
-    actingAttributeValue, //final acting attribute value
-    resistAttributeValue, //final opposing attribute value or 0
-    hasSucceed,  // boolean, true = success
-    diceResult,  // the result of the kept dice
-    dicesResult,  //if favour/unfavour, an array of the results of the 2 thrown dice, or null
-    critSuccess, //boolean
-    critFail, //boolean */
+* @param {number} modifier is the modifier to the roll. A negative modifier is an hindrance, a positive one is a boon*/
+/*@returns:
+  {number}   actingAttributeValue, //final acting attribute value
+  {number}   resistAttributeValue, //final opposing attribute value or 0
+  {boolean}   hasSucceed,  // true = success
+  {number}   diceResult,  // the result of the kept dice
+  {number}   favour (same as @Params)
+  {number}   modifier (same as @Param)
+  {array}   dicesResult,  //if favour/unfavour, an array of the results of the 2 thrown dice, or null
+  {boolean}  critSuccess,
+  {boolean}  critFail, */
 export async function baseRoll(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier) {
   let d20str = "1d20";
   let hasSucceed = false;
   let critGood = false;
   let critBad = false;
-  let hasTarget = false;
   if(modifier == null){modifier = 0};
   
 	if(favour > 0) d20str="2d20kl";
@@ -216,8 +217,7 @@ export async function baseRoll(actor, actingAttributeName, targetActor, targetAt
   let diceTarget = actingAttributeValue + modifier;
   
   let resistAttributeValue = 0;
-  if(targetActor != null){
-    hasTarget = true;
+  if(targetActor && targetAttributeName){
     resistAttributeValue = getAttributeValue(targetActor, targetAttributeName);
     diceTarget += (10 - resistAttributeValue);
   }
@@ -250,12 +250,51 @@ export async function baseRoll(actor, actingAttributeName, targetActor, targetAt
 	}
 
   return({
-    actingAttributeValue: actingAttributeValue, //final acting attribute value
-    resistAttributeValue: resistAttributeValue, //final opposing attribute value or 0
-    hasSucceed: hasSucceed,  // boolean, true = success
-    diceResult: attributeRoll.total,  // the result of the kept dice
-    dicesResult: dicesResult,  //if favour/unfavour, an array of the results of the 2 thrown dice, or null
-    critSuccess: critGood, //boolean
-    critFail: critBad, //boolean
+    actingAttributeValue: actingAttributeValue,
+    resistAttributeValue: resistAttributeValue,
+    hasSucceed: hasSucceed,
+    diceResult: attributeRoll.total,
+    favour: favour,
+    modifier: modifier,
+    dicesResult: dicesResult,
+    critSuccess: critGood,
+    critFail: critBad
   });
 }
+
+/*chatMessage that contain a button for the GM to apply status icons or damage to a token.
+will be intercepted by a hook (see hook.js)
+The actions to do on the token and its actor have to be detailled in the actionsData object:
+* @param actionsData = {
+    tokenId: {string} the id of the token that will be modified (ex: token.data._id),
+    
+To add a status effect    
+    addEffect: {string}  Path to the icon (ex:"icons/svg/daze.svg"),
+    effectDuration: (number)  Duration of the effect (default: 1),
+
+To remove a status effect    
+    removeEffect: {string}  Path to the icon (ex:"icons/svg/daze.svg"),
+
+To apply damage or healing on the token
+    toughnessChange: {number}   the value to add to toughness: >0 for healing, <0 for damage
+
+To apply temporary corruption on the token
+    corruptionChange: {number}   the value to add to temporary corruption
+}
+*/
+export async function createModifyTokenChatButton(actionsData){
+
+  const html = await renderTemplate("systems/symbaroum/template/chat/applyEffectsButton.html");
+  let gmList =  ChatMessage.getWhisperRecipients('GM');
+  if(gmList.length > 0){
+    const chatData = {
+        user: game.user._id,
+        content: html,
+        whisper: gmList,
+        blind: true
+    }
+    let NewMessage = await ChatMessage.create(chatData);
+    await NewMessage.setFlag(game.system.id, 'abilityRoll', actionsData);
+  }
+}
+
