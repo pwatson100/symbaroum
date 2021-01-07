@@ -169,6 +169,8 @@
   "CHAT.NEAR_DEATH": "La fin est proche :",
   "CHAT.DEAD": "Tu es mort !",
 
+  "COMBAT.DAMAGE": "Dégâts infligés: ",
+
   "DIALOG.ATTRIBUTE": "Attribut",
   "DIALOG.MODIFIER": "Mod. jet d'attribut",
   "DIALOG.ADVANTAGE": "Avantage",
@@ -189,6 +191,7 @@
   "EQUIPMENT.DESCRIPTION": "Description",
   "EQUIPMENT.QUANTITY_SHORT":"Qté",
 
+  "ERROR.NO_TOKEN_SELECTED": "Selectionnez le token concerné, et uniquement ce token.",
 
   "EXPERIENCE": "Expérience",
 
@@ -283,6 +286,10 @@
   "POWER_LABEL.WILD_HUNT":"Traque sauvage",
   "POWER_LABEL.WITCH_HAMMER":"Marteau à sorcière",
 
+  "POWER_ANATHEMA.CHAT_INTRO": " essaie de dissiper l'effet d'un pouvoir.",
+  "POWER_ANATHEMA.CHAT_SUCCESS": " parvient à dissiper l'effet.",
+  "POWER_ANATHEMA.CHAT_FAILURE": " échoue dans sa tentative.",
+
   "POWER_BENDWILL.CHAT_INTRO": " utilise le pouvoir de Soumission.",
   "POWER_BENDWILL.CHAT_INTRO_M": " maintient le pouvoir Soumission.",
   "POWER_BENDWILL.CHAT_SUCCESS": " parvient à soumettre ",
@@ -296,6 +303,24 @@
   "POWER_CURSE.CHAT_FAILURE": " ne parvient pas à maintenir la malédiction.",
   "POWER_CURSE.CHAT_FAIL_FINAL": "La malédiction n'a plus d'effet sur ",
   
+    "POWER_HOLYAURA.CHAT_INTRO": " tente de canaliser la lumière de Prios.",
+    "POWER_HOLYAURA.CHAT_SUCCESS": " est entourée d'une aura lumineuse bienfaisante.",
+    "POWER_HOLYAURA.CHAT_FAILURE": " ne parvient pas à canaliser la lumière de Prios.",
+    "POWER_HOLYAURA.CHAT_FAILURE_M": " ne parvient plus à canaliser la lumière de Prios.",
+    "POWER_HOLYAURA.HEALING": ",  Soins accordés: ",
+
+    "POWER_INHERITWOUND.CHAT_INTRO": " essaie de prendre sur elle les blessures.",
+    "POWER_INHERITWOUND.CHAT_SUCCESS": " parvient à transférer les blessures.",
+    "POWER_INHERITWOUND.CHAT_FAILURE": " ne parvient pas à transférer les blessures.",
+    "POWER_INHERITWOUND.CHAT_HEALED": " voit son endurance soignée de: ",
+    "POWER_INHERITWOUND.CHAT_DAMAGE": " reçoit des dégâts: ",
+
+
+    "POWER_LARVAEBOILS.CHAT_INTRO": " lance des larves grouillantes sur sa victime.",
+    "POWER_LARVAEBOILS.CHAT_INTRO_M": " tente de maintenir les larves grouillantes.",
+    "POWER_LARVAEBOILS.CHAT_SUCCESS": " est dévoré de l'intérieur par des larves.",
+    "POWER_LARVAEBOILS.CHAT_FAILURE": " résiste à l'invasion de larves.",
+
   "QUALITY.AREAMRR": "Zone d’effet - rayon portée mélée",
   "QUALITY.AREASRR": "Zone d’effet - rayon portée courte",
   "QUALITY.AREAC": "Zone d'effet - cône",

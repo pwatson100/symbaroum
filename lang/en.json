@@ -78,7 +78,7 @@
   
   "ABILITY_ERROR.TARGET": "Too many targets",
 
-  "ABILITY_LOREMASTER.CHAT_INTRO": " spout some lore.",
+  "ABILITY_LOREMASTER.CHAT_INTRO": " spouts some lore.",
   "ABILITY_LOREMASTER.CHAT_SUCCESS": " knows something about this.",
   "ABILITY_LOREMASTER.CHAT_FAILURE": " doesn't have a clue.",
 
@@ -171,6 +171,8 @@
   "CHAT.NEAR_DEATH": "The end is near :",
   "CHAT.DEAD": "You die !",
 
+  "COMBAT.DAMAGE": "Inflicted damage: ",
+
   "DIALOG.ATTRIBUTE": "Attribute",
   "DIALOG.MODIFIER": "Modifier",
   "DIALOG.ADVANTAGE": "Advantage",
@@ -187,6 +189,8 @@
   "EQUIPMENT.NUMBER": "Number",
   "EQUIPMENT.DESCRIPTION": "Description",
   "EQUIPMENT.QUANTITY_SHORT": "Qty.",
+
+  "ERROR.NO_TOKEN_SELECTED": "Select the acting token.",
 
   "EXPERIENCE": "Experience",
 
@@ -210,7 +214,6 @@
   "HEALTH.CORRUPTION_THRESHOLD_MAX": "Cor. Threshold",
   "HEALTH.CORRUPTION_MAX": "Abom.",
   
-
   "INITIATIVE": "Initiative",
 
   "ITEM.TRAIT": "Trait",
@@ -282,18 +285,39 @@
   "POWER_LABEL.WILD_HUNT":"Wild Hunt",
   "POWER_LABEL.WITCH_HAMMER":"Witch Hammer",
 
+  "POWER_ANATHEMA.CHAT_INTRO": " tries to dissipate a power.",
+  "POWER_ANATHEMA.CHAT_SUCCESS": " cancels the power.",
+  "POWER_ANATHEMA.CHAT_FAILURE": " fails.",
+
   "POWER_BENDWILL.CHAT_INTRO": " try to bend the victim's will.",
   "POWER_BENDWILL.CHAT_INTRO_M": " maintains Bend Will.",
   "POWER_BENDWILL.CHAT_SUCCESS": " controls ",
-  "POWER_BENDWILL.CHAT_FAILURE": " resist the attempt.",
+  "POWER_BENDWILL.CHAT_FAILURE": " resists the attempt.",
 
-  "POWER_CURSE.CHAT_INTRO": " cast a curse.",
-  "POWER_CURSE.CHAT_INTRO_M": " maintain a curse.",
+  "POWER_CURSE.CHAT_INTRO": " casts a curse.",
+  "POWER_CURSE.CHAT_INTRO_M": " maintains a curse.",
   "POWER_CURSE.CHAT_SUCCESS_N": " is cursed (has unfavour against mystic).",
   "POWER_CURSE.CHAT_SUCCESS_A": " is cursed (has unfavour).",
   "POWER_CURSE.CHAT_SUCCESS_M": " is heavily cursed (1d6 damage for each action).",
   "POWER_CURSE.CHAT_FAILURE": " can't maintain the curse.",
   "POWER_CURSE.CHAT_FAIL_FINAL": "The curse has no more effect on ",
+
+"POWER_HOLYAURA.CHAT_INTRO": " tries to channel the Light of Prios.",
+"POWER_HOLYAURA.CHAT_SUCCESS": " emits a holy light.",
+"POWER_HOLYAURA.CHAT_FAILURE": " can't channel the light of Prios.",
+"POWER_HOLYAURA.CHAT_FAILURE_M": " can't channel the light anymore.",
+"POWER_HOLYAURA.HEALING": ",  toughness healed: ",
+
+"POWER_INHERITWOUND.CHAT_INTRO": " tries to inherit the wounds.",
+"POWER_INHERITWOUND.CHAT_SUCCESS": " transfers part of the wounds.",
+"POWER_INHERITWOUND.CHAT_FAILURE": " can't transfer the wounds.",
+"POWER_INHERITWOUND.CHAT_HEALED": " receives toughness healing for: ",
+"POWER_INHERITWOUND.CHAT_DAMAGE": " recieved damage: ",
+
+"POWER_LARVAEBOILS.CHAT_INTRO": " throws larvaes.",
+"POWER_LARVAEBOILS.CHAT_INTRO_M": " maintains the larvaes surge.",
+"POWER_LARVAEBOILS.CHAT_SUCCESS": " is eaten from the inside by the larvaes.",
+"POWER_LARVAEBOILS.CHAT_FAILURE": " résists to the larvaes.",
   
   "QUALITY.AREAMRR": "Area Effect - melee range radius",
   "QUALITY.AREASRR": "Area Effect - short range radius", 

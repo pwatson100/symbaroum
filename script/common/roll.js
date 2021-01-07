@@ -159,6 +159,15 @@ export async function deathRoll(sheet) {
   ChatMessage.create(chatData);
 }
 
+//this function returns the localized name, and also accept defense.
+export function getAttributeLabel(actor, attributeName) {
+  if (attributeName === 'defense') {
+    return (game.i18n.localize("ARMOR.DEFENSE"));
+  } else {
+      return (game.i18n.localize(actor.data.data?.attributes[attributeName].label));
+  }
+}
+
 //this function returns the value of the attribute, modified by the its bonus, and also accept defense.
 export function getAttributeValue(actor, attributeName) {
   if (attributeName === 'defense') {
@@ -183,7 +192,9 @@ export function getAttributeValue(actor, attributeName) {
 * @param {number} modifier is the modifier to the roll. A negative modifier is an hindrance, a positive one is a boon*/
 /*@returns:
   {number}   actingAttributeValue, //final acting attribute value
+  {string}  actingAttributeLabel   //
   {number}   resistAttributeValue, //final opposing attribute value or 0
+  {string}  targetAttributeLabel
   {boolean}   hasSucceed,  // true = success
   {number}   diceResult,  // the result of the kept dice
   {number}   favour (same as @Params)
@@ -213,12 +224,15 @@ export async function baseRoll(actor, actingAttributeName, targetActor, targetAt
   }
   
   let actingAttributeValue = getAttributeValue(actor, actingAttributeName);
+  let actingAttributeLabel = getAttributeLabel(actor, actingAttributeName);
 
   let diceTarget = actingAttributeValue + modifier;
   
+  let targetAttributeLabel;
   let resistAttributeValue = 0;
   if(targetActor && targetAttributeName){
     resistAttributeValue = getAttributeValue(targetActor, targetAttributeName);
+    targetAttributeLabel = getAttributeLabel(targetActor, actingAttributeName);
     diceTarget += (10 - resistAttributeValue);
   }
 
@@ -251,7 +265,9 @@ export async function baseRoll(actor, actingAttributeName, targetActor, targetAt
 
   return({
     actingAttributeValue: actingAttributeValue,
+    actingAttributeLabel: actingAttributeLabel,
     resistAttributeValue: resistAttributeValue,
+    targetAttributeLabel: targetAttributeLabel,
     hasSucceed: hasSucceed,
     diceResult: attributeRoll.total,
     favour: favour,
@@ -265,7 +281,8 @@ export async function baseRoll(actor, actingAttributeName, targetActor, targetAt
 /*chatMessage that contain a button for the GM to apply status icons or damage to a token.
 will be intercepted by a hook (see hook.js)
 The actions to do on the token and its actor have to be detailled in the actionsData object:
-* @param actionsData = {
+* @param actionsDataArray is an array of actionData
+ActionData = {
     tokenId: {string} the id of the token that will be modified (ex: token.data._id),
     
 To add a status effect    
@@ -282,7 +299,7 @@ To apply temporary corruption on the token
     corruptionChange: {number}   the value to add to temporary corruption
 }
 */
-export async function createModifyTokenChatButton(actionsData){
+export async function createModifyTokenChatButton(actionsDataArray){
 
   const html = await renderTemplate("systems/symbaroum/template/chat/applyEffectsButton.html");
   let gmList =  ChatMessage.getWhisperRecipients('GM');
@@ -294,7 +311,7 @@ export async function createModifyTokenChatButton(actionsData){
         blind: true
     }
     let NewMessage = await ChatMessage.create(chatData);
-    await NewMessage.setFlag(game.system.id, 'abilityRoll', actionsData);
+    await NewMessage.setFlag(game.system.id, 'abilityRoll', actionsDataArray);
   }
 }
 
