@@ -865,7 +865,6 @@ async function attackResult(rollData, weapon, actor, castingAttributeName, targe
         content: html,
     }
     let NewMessage = await ChatMessage.create(chatData);
-    ChatMessage.create(chatData);
     if(flagDataArray.length > 0){
         await createModifyTokenChatButton(flagDataArray);
     }
