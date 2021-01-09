@@ -40,14 +40,38 @@
   </div>
       
     {{#if isWeaponRoll}}
-    <div class="advantage">
-      <label>{{localize "DIALOG.ADVANTAGE"}}</label> <span class="lblfavour"><input type="checkbox" {{defaultAdvantage}} id="advantage" value="1" data-dtype="Number"> </span>
+    <div class="infotext">
+      <p>{{removeMarkup autoparamsText}}</p>
+    </div>
+    <div class="checkbox">
+      <label>{{localize "DIALOG.ADVANTAGE"}}</label> <span class="lblfavour"><input type="checkbox" id="advantage" unchecked> </span>
+    </div>
+    <div class="checkbox">
+      <label>{{localize "DIALOG.IGNORE_ARMOR"}}</label> <span class="lblfavour"><input type="checkbox" id="ignarm" unchecked> </span>
     </div>
     <div class="damagemodifier">
 		<label>{{localize "DIALOG.DAMAGE_MODIFIER"}}</label> <input id="dammodifier" value="{{defaultDamModifier}}" type="text" data-dtype="Text"/> 
     </div>
+    <div class="bonus">
+      <label>{{localize "DIALOG.USE_POISON"}}</label>
+      <select id="poison">
+        <option value="0">{{localize "DIALOG.NO_POISON"}}</option>
+        <option value="1">{{localize "DIALOG.LIGHT_POISON"}}</option>
+        <option value="2">{{localize "DIALOG.MEDIUM_POISON"}}</option>
+        <option value="3">{{localize "DIALOG.STRONG_POISON"}}</option>
+    </select>
+    </div>
     {{/if}}
-      
+    {{#if askBackstab}}
+    <div class="checkbox">
+      <label>{{localize "DIALOG.BACKSTAB"}}</label> <span class="lblfavour"><input type="checkbox" id="usebackstab" unchecked> </span>
+    </div>
+    {{/if}}
+    {{#if askHuntersInstinct}}
+    <div class="checkbox">
+      <label>{{localize "DIALOG.HUNTERS_INSTINCT"}}</label> <span class="lblfavour"><input type="checkbox" id="usehunter" unchecked> </span>
+  </div>
+    {{/if}}
     {{#if isArmorRoll}}
     <div class="advantage">
       <label>{{localize "DIALOG.DISADVANTAGE"}}</label> <span class="lblfavour"><input type="checkbox" {{defaultAdvantage}} id="advantage" value="1" data-dtype="Number"> </span>
@@ -56,7 +80,7 @@
     
     {{#if checkMaintain}}
     <div class="maintain">
-      <label></label>
+      <label>{{localize "DIALOG.ISMAINTAINED"}}</label>
       <select id="maintain">
           <option  value="C" selected >{{localize "DIALOG.CASTING"}}</option>
           <option  value="M" >{{localize "DIALOG.MAINTAINING"}}</option>

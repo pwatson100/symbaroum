@@ -163,6 +163,12 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
             }
           }
 
+          if(flagData.modifyEffectDuration){
+            let statusEffectCounter = await EffectCounter.findCounter(token, flagData.modifyEffectDuration);
+            await statusEffectCounter.setValue(effectDuration,token, false);
+            await statusEffectCounter.update();
+          }
+
           if(flagData.toughnessChange){
             let newToughness = Math.max(0, Math.min(token.actor.data.data.health.toughness.max, token.actor.data.data.health.toughness.value + flagData.toughnessChange))
             await token.actor.update({"data.health.toughness.value" : newToughness}); 
