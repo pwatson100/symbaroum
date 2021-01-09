@@ -1,3 +1,6 @@
+import { activateAbility, attackRoll } from './item.js';
+import { prepareRollAttribute } from "../common/dialog.js";
+
 export class SymbaroumActor extends Actor {
   
     prepareData() {
@@ -167,4 +170,30 @@ export class SymbaroumActor extends Actor {
             }
         };
     }
+
+    async usePower(powerItem){
+       await activateAbility(powerItem, this);
+    }
+
+    async rollArmor() {
+        const attributeData = {name: this.data.data.combat.armor, value: this.data.data.combat.defense};
+        const armor = { protection: this.data.data.combat.protection, quality: this.data.data.combat.quality }
+        await prepareRollAttribute(this, attributeData, armor, null);
+    }
+
+    async rollWeapon(weapon){
+        const attribute = this.data.data.attributes[weapon.data.data.attribute];
+        const bonus = this.data.data.bonus[weapon.data.data.attribute];
+        const attributeData = { name: game.i18n.localize(attribute.label), value: attribute.value + bonus };
+        const weaponData = { damage: weapon.data.data.damage, quality: weapon.data.data.quality, qualities: weapon.data.data.qualities }
+        await attackRoll(this, weapon, null);
+    }
+
+    /*async rollWeapon(weapon){
+        const attribute = this.data.data.attributes[weapon.data.data.attribute];
+        const bonus = this.data.data.bonus[weapon.data.data.attribute];
+        const attributeData = { name: game.i18n.localize(attribute.label), value: attribute.value + bonus };
+        const weaponData = { damage: weapon.data.data.damage, quality: weapon.data.data.quality, qualities: weapon.data.data.qualities }
+        await prepareRollAttribute(this, attributeData, null, weaponData);
+    }*/
 }
