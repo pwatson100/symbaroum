@@ -1,0 +1,90 @@
+<div class="symbaroum dialog">
+  {{#if askCastingAttribute}}
+  <div class="attribute">
+      <label>{{localize "DIALOG.CASTING_ATTRIBUTE"}}</label>
+      <select id="castAt">
+        <option value="accurate">{{localize "ATTRIBUTE.ACCURATE"}}</option>
+        <option value="cunning">{{localize "ATTRIBUTE.CUNNING"}}</option>
+        <option value="discreet">{{localize "ATTRIBUTE.DISCREET"}}</option>
+        <option value="persuasive">{{localize "ATTRIBUTE.PERSUASIVE"}}</option>
+        <option value="quick">{{localize "ATTRIBUTE.QUICK"}}</option>
+        <option value="resolute" selected>{{localize "ATTRIBUTE.RESOLUTE"}}</option>
+        <option value="strong">{{localize "ATTRIBUTE.STRONG"}}</option>
+        <option value="vigilant">{{localize "ATTRIBUTE.VIGILANT"}}</option>
+        <option value="defense">{{localize "ARMOR.DEFENSE"}}</option>
+    </select>
+  </div>
+  {{/if}}
+	{{#if askTargetAttribute}}
+    <div class="attribute">
+        <label>{{localize "DIALOG.RESIST_ATTRIBUTE"}}</label>
+        <select id="resistAtt">
+            <option value="accurate">{{localize "ATTRIBUTE.ACCURATE"}}</option>
+            <option value="cunning">{{localize "ATTRIBUTE.CUNNING"}}</option>
+            <option value="discreet">{{localize "ATTRIBUTE.DISCREET"}}</option>
+            <option value="persuasive">{{localize "ATTRIBUTE.PERSUASIVE"}}</option>
+            <option value="quick">{{localize "ATTRIBUTE.QUICK"}}</option>
+            <option value="resolute" selected>{{localize "ATTRIBUTE.RESOLUTE"}}</option>
+            <option value="strong">{{localize "ATTRIBUTE.STRONG"}}</option>
+            <option value="vigilant">{{localize "ATTRIBUTE.VIGILANT"}}</option>
+            <option value="defense">{{localize "ARMOR.DEFENSE"}}</option>
+        </select>
+    </div>
+    {{/if}}
+    <div class="bonus">
+      <label>{{localize "DIALOG.MODIFIER"}}</label>
+      <input id="bonus" type="number" value="{{defaultModifier}}" data-dtype="Number"/>
+  </div>
+    <div class="favour">
+      <label class="lblfavour">{{radioBoxes groupName choices checked=defaultFavour localize=true}}</label>
+  </div>
+      
+    {{#if isWeaponRoll}}
+    <div class="infotext">
+      <p>{{removeMarkup autoparamsText}}</p>
+    </div>
+    <div class="checkbox">
+      <label>{{localize "DIALOG.ADVANTAGE"}}</label> <span class="lblfavour"><input type="checkbox" id="advantage" unchecked> </span>
+    </div>
+    <div class="checkbox">
+      <label>{{localize "DIALOG.IGNORE_ARMOR"}}</label> <span class="lblfavour"><input type="checkbox" id="ignarm" unchecked> </span>
+    </div>
+    <div class="damagemodifier">
+		<label>{{localize "DIALOG.DAMAGE_MODIFIER"}}</label> <input id="dammodifier" value="{{defaultDamModifier}}" type="text" data-dtype="Text"/> 
+    </div>
+    <div class="bonus">
+      <label>{{localize "DIALOG.USE_POISON"}}</label>
+      <select id="poison">
+        <option value="0">{{localize "DIALOG.NO_POISON"}}</option>
+        <option value="1">{{localize "DIALOG.LIGHT_POISON"}}</option>
+        <option value="2">{{localize "DIALOG.MEDIUM_POISON"}}</option>
+        <option value="3">{{localize "DIALOG.STRONG_POISON"}}</option>
+    </select>
+    </div>
+    {{/if}}
+    {{#if askBackstab}}
+    <div class="checkbox">
+      <label>{{localize "DIALOG.BACKSTAB"}}</label> <span class="lblfavour"><input type="checkbox" id="usebackstab" unchecked> </span>
+    </div>
+    {{/if}}
+    {{#if askHuntersInstinct}}
+    <div class="checkbox">
+      <label>{{localize "DIALOG.HUNTERS_INSTINCT"}}</label> <span class="lblfavour"><input type="checkbox" id="usehunter" unchecked> </span>
+  </div>
+    {{/if}}
+    {{#if isArmorRoll}}
+    <div class="advantage">
+      <label>{{localize "DIALOG.DISADVANTAGE"}}</label> <span class="lblfavour"><input type="checkbox" {{defaultAdvantage}} id="advantage" value="1" data-dtype="Number"> </span>
+    </div>
+    {{/if}}
+    
+    {{#if checkMaintain}}
+    <div class="maintain">
+      <label>{{localize "DIALOG.ISMAINTAINED"}}</label>
+      <select id="maintain">
+          <option  value="C" selected >{{localize "DIALOG.CASTING"}}</option>
+          <option  value="M" >{{localize "DIALOG.MAINTAINING"}}</option>
+      </select>
+    </div>
+    {{/if}}
+</div>

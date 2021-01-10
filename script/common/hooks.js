@@ -133,3 +133,55 @@ Hooks.once('diceSoNiceReady', (dice3d) => {
     'default'
   );
 });
+
+/*Hook for the chatMessage that contain a button for the GM to apply status icons or damage to a token.*/
+Hooks.on('renderChatMessage', async (chatItem, html, data) => {
+  console.log("ping");
+  const flagDataArray = await chatItem.getFlag(game.system.id, 'abilityRoll');
+  if(flagDataArray){
+    console.log(flagDataArray);
+    await html.find("#applyEffect").click(async () => {
+      for(let flagData of flagDataArray){
+
+        if(flagData.tokenId){
+          let token = canvas.tokens.objects.children.find(token => token.data._id === flagData.tokenId);
+          
+          if(flagData.addEffect){
+            if(token == undefined){return}
+            let duration = 1;
+            if(flagData.effectDuration){duration = flagData.effectDuration}
+            let statusEffect = new EffectCounter(duration, flagData.addEffect, token, false);
+            await statusEffect.update();
+          }
+          
+          if(flagData.removeEffect){
+            let statusEffectCounter = await EffectCounter.findCounter(token, flagData.removeEffect);
+            console.log(statusEffectCounter);
+            if(statusEffectCounter != undefined){
+                statusEffectCounter.setValue(0, token, false);
+                await statusEffectCounter.update();
+            }
+          }
+
+          if(flagData.modifyEffectDuration){
+            let statusEffectCounter = await EffectCounter.findCounter(token, flagData.modifyEffectDuration);
+            await statusEffectCounter.setValue(effectDuration,token, false);
+            await statusEffectCounter.update();
+          }
+
+          if(flagData.toughnessChange){
+            let newToughness = Math.max(0, Math.min(token.actor.data.data.health.toughness.max, token.actor.data.data.health.toughness.value + flagData.toughnessChange))
+            await token.actor.update({"data.health.toughness.value" : newToughness}); 
+          }
+
+          if(flagData.corruptionChange){
+            let newCorruption = token.actor.data.data.health.corruption.temporary + flagData.corruptionChange;
+            await token.actor.update({"data.health.corruption.temporary" : newCorruption}); 
+          }
+        }
+      }
+      await chatItem.unsetFlag(game.system.id, 'abilityRoll');
+      return;
+    })
+  }
+})
