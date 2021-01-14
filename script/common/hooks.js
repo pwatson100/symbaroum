@@ -136,10 +136,8 @@ Hooks.once('diceSoNiceReady', (dice3d) => {
 
 /*Hook for the chatMessage that contain a button for the GM to apply status icons or damage to a token.*/
 Hooks.on('renderChatMessage', async (chatItem, html, data) => {
-  console.log("ping");
   const flagDataArray = await chatItem.getFlag(game.system.id, 'abilityRoll');
   if(flagDataArray){
-    console.log(flagDataArray);
     await html.find("#applyEffect").click(async () => {
       for(let flagData of flagDataArray){
 
@@ -156,7 +154,6 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
           
           if(flagData.removeEffect){
             let statusEffectCounter = await EffectCounter.findCounter(token, flagData.removeEffect);
-            console.log(statusEffectCounter);
             if(statusEffectCounter != undefined){
                 statusEffectCounter.setValue(0, token, false);
                 await statusEffectCounter.update();
@@ -165,8 +162,10 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
 
           if(flagData.modifyEffectDuration){
             let statusEffectCounter = await EffectCounter.findCounter(token, flagData.modifyEffectDuration);
-            await statusEffectCounter.setValue(effectDuration,token, false);
-            await statusEffectCounter.update();
+            if(statusEffectCounter != undefined){
+              await statusEffectCounter.setValue(effectDuration,token, false);
+              await statusEffectCounter.update();
+            }
           }
 
           if(flagData.toughnessChange){
