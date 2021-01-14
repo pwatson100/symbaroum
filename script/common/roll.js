@@ -340,12 +340,12 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
     damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_CUSTOM');
   }
 
-  if(dmgData.isRanged){
+  //if(dmgData.isRanged){
     if(dmgData.hunterIDmg){
       dmgData.modifier += " + 1d4";
       damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_HUNTER');
     }
-  }
+  
   if(dmgData.hasAdvantage){
     if(dmgData.useBackstab){
       dmgData.modifier += " + 1d4 + 1d4";
