@@ -186,6 +186,7 @@
   "COMBAT.CHAT_POISON_NOTEXTEND": "Victim was already poisoned.",
   "COMBAT.CHAT_POISON_SUCCESS1": " is poisoned. Damage per round : ",
   "COMBAT.CHAT_POISON_SUCCESS2": ",  duration: ",
+  "COMBAT.CHAT_MODIFIER": "Mod: ",
   "COMBAT.CHAT_DMG_PARAMS": "Damage modifiers: ",
   "COMBAT.CHAT_DMG_PARAMS_HUNTER": "[Hunter's instinct] ",
   "COMBAT.CHAT_DMG_PARAMS_CUSTOM": "[Custom] ",
@@ -210,6 +211,9 @@
   "DIALOG.MEDIUM_POISON": "Medium poison",
   "DIALOG.STRONG_POISON": "Strong poison",
   "DIALOG.IGNORE_ARMOR": "Ignore armour?",
+  "DIALOG.DAMAGE_IF_MODIFIER": "Iron fist damage bonus",
+  "DIALOG.2ATTACKS": "Attack twice?",
+  "DIALOG.3ATTACKS": "Attack three times?",
 
   "DIALOG.CASTING_ATTRIBUTE": "Casting attribute",
   "DIALOG.RESIST_ATTRIBUTE": "Opposition attribute",
@@ -325,6 +329,10 @@
   "POWER_LABEL.WILD_HUNT":"Wild Hunt",
   "POWER_LABEL.WITCH_HAMMER":"Witch Hammer",
 
+  "POWER.CHAT_INTRO": " tries to cast the mystical power \" ",
+  "POWER.CHAT_INTRO_M": " tries to maintain the mystical power \" ",
+  "POWER.CHAT_SUCCESS": " is successfull.",
+  "POWER.CHAT_FAILURE": " fails.",
   "POWER.CHAT_CORRUPTION": "Temporary corruption received: ",
 
   "POWER_ANATHEMA.CHAT_INTRO": " tries to dissipate a power.",

@@ -328,27 +328,27 @@ It won't work with NPC fixed values as input
 * @param {object} targetData is information on the target that will receive the damage (as returned by the getTarget function)*/
 
 export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgData, targetData){
-  
+  console.log(dmgData);
+  console.log("dmgData");
   let newRollDmgString = "";
   let wepDmg = weapon.data.data.damage;
   let modDmg = 0;
   let armorProt = targetData.actor.data.data.combat.protection;   
 
   let damageAutoParams = game.i18n.localize('COMBAT.CHAT_DMG_PARAMS');
+  if(dmgData.modifier != ""){
+    damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_CUSTOM');
+  }
+
   if(dmgData.isRanged){
     if(dmgData.hunterIDmg){
       dmgData.modifier += " + 1d4";
       damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_HUNTER');
     }
   }
-
-  if(dmgData.modifier != "0"){
-    damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_CUSTOM');
-  }
-
   if(dmgData.hasAdvantage){
     if(dmgData.useBackstab){
-      dmgData.modifier += " + 2d4";
+      dmgData.modifier += " + 1d4 + 1d4";
       damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_BACKSTAB');
     }
     else
@@ -368,7 +368,6 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
   if(dmgData.ignoreArm){
     damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_IGN_ARMOR');
   }
-
   // If the attack is made by a PC, roll damage and substract static value for armor (=max armor/2)
   if(attackFromPC){
     // evaluate NPC armor value
@@ -395,7 +394,6 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
   }
   // final damage
   let dmgRoll= new Roll(newRollDmgString).evaluate();
-
   return{
     roll : dmgRoll,
     diceResult: dmgRoll.total,

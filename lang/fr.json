@@ -184,6 +184,7 @@
   "COMBAT.CHAT_POISON_NOTEXTEND": "La victime était déjà empoisonnée.",
   "COMBAT.CHAT_POISON_SUCCESS1": " est empoisonnée. Dégats par round : ",
   "COMBAT.CHAT_POISON_SUCCESS2": ",  durée: ",
+  "COMBAT.CHAT_MODIFIER": "Mod: ",
   "COMBAT.CHAT_DMG_PARAMS": "Modificateurs aux dégâts: ",
   "COMBAT.CHAT_DMG_PARAMS_HUNTER": "[marque du chasseur] ",
   "COMBAT.CHAT_DMG_PARAMS_CUSTOM": "[modificateur libre] ",
@@ -219,6 +220,9 @@
   "DIALOG.MEDIUM_POISON": "Poison moyen",
   "DIALOG.STRONG_POISON": "Poison fort",
   "DIALOG.IGNORE_ARMOR": "Ignorer l'armure?",
+  "DIALOG.DAMAGE_IF_MODIFIER": "Bonus dégâts Poigne de fer",
+  "DIALOG.2ATTACKS": "Deux attaques?",
+  "DIALOG.3ATTACKS": "Trois attaques?",
   "DIALOG.CASTING_ATTRIBUTE": "Attribut utilisé",
   "DIALOG.RESIST_ATTRIBUTE": "Attribut résisté",
 
@@ -323,6 +327,10 @@
   "POWER_LABEL.WILD_HUNT":"Traque sauvage",
   "POWER_LABEL.WITCH_HAMMER":"Marteau à sorcière",
 
+  "POWER.CHAT_INTRO": " essaye de lancer le pouvoir mystique \" ",
+  "POWER.CHAT_INTRO_M": " essaye de maintenir le pouvoir mystique \" ",
+  "POWER.CHAT_SUCCESS": " réussit.",
+  "POWER.CHAT_FAILURE": " n'y parvient pas.",
   "POWER.CHAT_CORRUPTION": "Points de Corruption temporaire reçus: ",
 
   "POWER_ANATHEMA.CHAT_INTRO": " essaie de dissiper l'effet d'un pouvoir.",
@@ -353,7 +361,6 @@
   "POWER_INHERITWOUND.CHAT_FAILURE": " ne parvient pas à transférer les blessures.",
   "POWER_INHERITWOUND.CHAT_HEALED": " voit son endurance soignée de: ",
   "POWER_INHERITWOUND.CHAT_DAMAGE": " reçoit des dégâts: ",
-
 
   "POWER_LARVAEBOILS.CHAT_INTRO": " lance des larves grouillantes sur sa victime.",
   "POWER_LARVAEBOILS.CHAT_INTRO_M": " tente de maintenir les larves grouillantes.",
