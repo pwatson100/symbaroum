@@ -497,8 +497,7 @@ async function modifierDialog(ability, actor, castingAttributeName, targetData, 
                 for ( let f of favours) {						
                     if( f.checked ) fvalue = parseInt(f.value, 10);
                 }			
-                const finalavour = fvalue + favour;
-                console.log(finalavour);
+                let finalFavour = fvalue + favour;
 
 
                 //Power/Ability has already been started and is maintained or chained
@@ -538,34 +537,37 @@ async function modifierDialog(ability, actor, castingAttributeName, targetData, 
                     }
                     if(askHuntersInstinct){
                         abilityResultFunctionStuff.useHuntersInstinct = html.find("#usehunter")[0].checked;
-                        if(!abilityResultFunctionStuff.useHuntersInstinct){
-                                combatStuff.dmgData.hunterIDmg = false;
+                        if(abilityResultFunctionStuff.useHuntersInstinct){
+                            finalFavour += 1;
+                        }
+                        else{
+                            combatStuff.dmgData.hunterIDmg = false;
                         }
                     }
                 }
                 let rollData = [];
                 if(hasTarget){
-                    rollData.push(await baseRoll(actor, castingAttributeName, targetData.actor, targetAttributeName, finalavour, modifier));
+                    rollData.push(await baseRoll(actor, castingAttributeName, targetData.actor, targetAttributeName, finalFavour, modifier));
                     if(isWeaponRoll && abilityResultFunctionStuff.dmgData.do3attacks){
-                        rollData.push(await baseRoll(actor, castingAttributeName, targetData.actor, targetAttributeName, finalavour, modifier));  
-                        rollData.push(await baseRoll(actor, castingAttributeName, targetData.actor, targetAttributeName, finalavour, modifier));                      
+                        rollData.push(await baseRoll(actor, castingAttributeName, targetData.actor, targetAttributeName, finalFavour, modifier));  
+                        rollData.push(await baseRoll(actor, castingAttributeName, targetData.actor, targetAttributeName, finalFavour, modifier));                      
                     }
                     else if(isWeaponRoll && abilityResultFunctionStuff.dmgData.do2attacks){
-                        rollData.push(await baseRoll(actor, castingAttributeName, targetData.actor, targetAttributeName, finalavour, modifier));                        
+                        rollData.push(await baseRoll(actor, castingAttributeName, targetData.actor, targetAttributeName, finalFavour, modifier));                        
                     }
                 }
                 else{
-                    rollData.push(await baseRoll(actor, castingAttributeName, null, null, finalavour, modifier));
+                    rollData.push(await baseRoll(actor, castingAttributeName, null, null, finalFavour, modifier));
                     if(isWeaponRoll && abilityResultFunctionStuff.dmgData.do3attacks){
-                        rollData.push(await baseRoll(actor, castingAttributeName, null, null, finalavour, modifier));  
-                        rollData.push(await baseRoll(actor, castingAttributeName, null, null, finalavour, modifier));                      
+                        rollData.push(await baseRoll(actor, castingAttributeName, null, null, finalFavour, modifier));  
+                        rollData.push(await baseRoll(actor, castingAttributeName, null, null, finalFavour, modifier));                      
                     }
                     else if(isWeaponRoll && abilityResultFunctionStuff.dmgData.do2attacks){
-                        rollData.push(await baseRoll(actor, castingAttributeName, null, null, finalavour, modifier));                        
+                        rollData.push(await baseRoll(actor, castingAttributeName, null, null, finalFavour, modifier));                        
                     }
                 }
                 console.log(rollData);
-                await abilityResultFunction(rollData, ability, actor, castingAttributeName, targetData, finalavour, modifierCustom, isMaintained, autoParams, abilityResultFunctionStuff);
+                await abilityResultFunction(rollData, ability, actor, castingAttributeName, targetData, finalFavour, modifierCustom, isMaintained, autoParams, abilityResultFunctionStuff);
                 },
           },
           cancel: {
@@ -726,6 +728,7 @@ export async function attackRoll(actor, weapon, rollParams, combatStuff){
     }
     let hunterInstinct = actor.items.filter(item => item.data.data?.reference === "huntersinstinct");
     if(hunterInstinct.length != 0){
+        combatStuff.askHuntersInstinct = true;
         if(hunterInstinct[0].data.data.adept.isActive){
             combatStuff.dmgData.hunterIDmg = true;
         }
