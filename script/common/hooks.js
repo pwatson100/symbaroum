@@ -155,7 +155,7 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
           if(flagData.removeEffect){
             let statusEffectCounter = await EffectCounter.findCounter(token, flagData.removeEffect);
             if(statusEffectCounter != undefined){
-                statusEffectCounter.setValue(0, token, false);
+                statusEffectCounter.setValue(0);
                 await statusEffectCounter.update();
             }
           }
@@ -163,7 +163,7 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
           if(flagData.modifyEffectDuration){
             let statusEffectCounter = await EffectCounter.findCounter(token, flagData.modifyEffectDuration);
             if(statusEffectCounter != undefined){
-              await statusEffectCounter.setValue(effectDuration,token, false);
+              await statusEffectCounter.setValue(effectDuration);
               await statusEffectCounter.update();
             }
           }

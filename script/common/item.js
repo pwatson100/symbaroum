@@ -812,7 +812,6 @@ async function attackResult(rollData, weapon, actor, castingAttributeName, targe
             damageRollResult += await formatRollResult([damage]) + "\n";
             dmgFormulaTooltip += damage.roll._formula + "    ";
             damageTooltip += damage.roll.result + "    ";
-            console.log(damageRollMod);
         }
         else{
             resultText += actor.data.name + game.i18n.localize('COMBAT.CHAT_FAILURE') + " \n";
@@ -838,7 +837,7 @@ async function attackResult(rollData, weapon, actor, castingAttributeName, targe
             effectDuration: 1
         })
     }
-    else{
+    else if(hasDamage){
         damageText = targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
         flagDataArray.push({
             tokenId: targetData.token.data._id,
@@ -966,7 +965,7 @@ async function attackResult(rollData, weapon, actor, castingAttributeName, targe
         }
         templateData.printPoison = true;
         templateData.poisonRollString = await formatRollString(poisonRoll, targetData.hasTarget, 0);
-        templateData.poisonRollResultString = await formatRollResult(poisonRoll);
+        templateData.poisonRollResultString = await formatRollResult([poisonRoll]);
     }
     const html = await renderTemplate("systems/symbaroum/template/chat/combat.html", templateData);
     const chatData = {
@@ -1437,7 +1436,8 @@ async function inheritWound(ability, actor){
     let favour = 0;
     let castingAttributeName = actorResMod.bestAttributeName;
 
-    let rollData = await baseRoll(actor, castingAttributeName, null, null, favour, 0);
+    let rollData = [];
+    rollData.push(await baseRoll(actor, castingAttributeName, null, null, favour, 0));
     let healDice = "1d6";
     if(powerLvl.level >= 2){
         healDice = "1d8"
@@ -1652,7 +1652,7 @@ async function loremaster(ability, actor) {
     let powerLvl = getPowerLevel(ability);
     const attribute = actor.data.data.attributes["cunning"];
     let rollData = [];
-    rolldata.push(await baseRoll(actor, "cunning", null, null, 0, 0));
+    rollData.push(await baseRoll(actor, "cunning", null, null, 0, 0));
 
     let templateData = {
         targetData : targetData,
@@ -1668,7 +1668,7 @@ async function loremaster(ability, actor) {
         resultText: actor.data.name + game.i18n.localize('ABILITY_LOREMASTER.CHAT_SUCCESS'),
         finalText: ""
     }; 
-    if(!rolldata[0].hasSucceed){templateData.resultText = actor.data.name + game.i18n.localize('ABILITY_LOREMASTER.CHAT_FAILURE')};
+    if(!rollData[0].hasSucceed){templateData.resultText = actor.data.name + game.i18n.localize('ABILITY_LOREMASTER.CHAT_FAILURE')};
 
     const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
     const chatData = {
@@ -1745,7 +1745,7 @@ async function medicusHeal(ability, actor, targetData, powerLvl, herbalCure, hea
     rollData.push(await baseRoll(actor, "cunning", null, null, 0, 0));
     let healed = 0;
     let flagData;
-    if(rolldata[0].hasSucceed){
+    if(rollData[0].hasSucceed){
 
         let healRoll = new Roll(healFormula).evaluate();
         healRoll.toMessage();
@@ -1782,7 +1782,7 @@ async function medicusHeal(ability, actor, targetData, powerLvl, herbalCure, hea
         subText: ability.name + ", " + powerLvl.lvlName,
         subImg: ability.img,
         hasRoll: true,
-        rollString: `${game.i18n.localize(rolldata[0].actingAttributeLabel)} : (${rolldata[0].actingAttributeValue})`,
+        rollString: `${game.i18n.localize(rollData[0].actingAttributeLabel)} : (${rollData[0].actingAttributeValue})`,
         rollResult : formatRollResult(rollData),
         resultText: actor.data.name + game.i18n.localize('ABILITY_MEDICUS.CHAT_SUCCESS'),
         finalText: game.i18n.localize('ABILITY_MEDICUS.CHAT_FINAL') + healed.toString()
@@ -1793,7 +1793,7 @@ async function medicusHeal(ability, actor, targetData, powerLvl, herbalCure, hea
 
     if(herbalCure){templateData.subText += ", " + game.i18n.localize('ABILITY_MEDICUS.HERBALCURE')}
     else{templateData.subText += ", " + game.i18n.localize('ABILITY_MEDICUS.NOHERBALCURE')};
-    if(!rolldata[0].hasSucceed){templateData.resultText = game.i18n.localize('ABILITY_MEDICUS.CHAT_FAILURE')}
+    if(!rollData[0].hasSucceed){templateData.resultText = game.i18n.localize('ABILITY_MEDICUS.CHAT_FAILURE')}
     
     const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
     const chatData = {
@@ -1837,7 +1837,7 @@ async function witchsight(ability, actor) {
         subText: ability.name + ", " + powerLvl.lvlName,
         subImg: ability.img,
         hasRoll: true,
-        rollString: `${game.i18n.localize(rolldata[0].actingAttributeLabel)} : (${rolldata[0].actingAttributeValue})`,
+        rollString: `${game.i18n.localize(rollData[0].actingAttributeLabel)} : (${rollData[0].actingAttributeValue})`,
         rollResult : formatRollResult(rollData),
         resultText: actor.data.name + game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_SUCCESS'),
         finalText: "",
@@ -1846,7 +1846,7 @@ async function witchsight(ability, actor) {
     };
     if(targetData.hasTarget){
         templateData.targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + targetData.actor.data.name;
-        if(rolldata[0].hasSucceed){
+        if(rollData[0].hasSucceed){
             templateData.finalText = game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_FINAL1') + targetData.actor.data.name + game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_FINAL2') +  targetData.actor.data.data.bio.shadow;
         }
     }
@@ -1854,7 +1854,7 @@ async function witchsight(ability, actor) {
     corruptionRoll.toMessage();
     templateData.corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruptionRoll.total.toString();
 
-    if(!rolldata[0].hasSucceed){templateData.resultText = game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_FAILURE')}
+    if(!rollData[0].hasSucceed){templateData.resultText = actor.data.name + game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_FAILURE')}
     
     const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
     const chatData = {
