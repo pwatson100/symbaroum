@@ -15,12 +15,12 @@
         <p><strong>{{removeMarkup rollResult}}</strong></p>
         {{/if}}
         <div class="finalTxt">
-            <p>{{resultText}}</p>
+            <p>{{removeMarkup resultText}}</p>
             <p>{{removeMarkup finalText}}</p>
         </div>
         {{#if hasDamage}}
         <div class="tooltip">
-            <p>{{removeMarkup damageRollMod}}</p>
+            <p><strong>{{removeMarkup damageRollMod}}</strong></p>
             <span class="tooltiptext">{{dmgFormulaTooltip}}</span>
         </div>
         <div class="tooltip">
