@@ -40,7 +40,50 @@
     "style/chat/roll.css",
     "style/chat/ability.css"
   ],
-  "packs": [],
+  "packs": [
+    {
+      "name": "symbaroumabilitiesen",
+      "label": "Symbaroum Abilities EN",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumabilitiesen.db",
+      "entity": "Item"
+    },
+    {
+      "name": "symbaroumabilitiesfr",
+      "label": "Talents Symbaroum FR",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumabilitiesfr.db",
+      "entity": "Item"
+    },
+    {
+      "name": "symbaroumpowersen",
+      "label": "Symbaroum Powers EN",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumpowersen.db",
+      "entity": "Item"
+    },
+    {
+      "name": "symbaroumpowersfr",
+      "label": "Pouvoirs Symbaroum FR",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumpowersfr.db",
+      "entity": "Item"
+    },
+    {
+      "name": "symbaroumtraitsen",
+      "label": "Symbaroum Traits EN",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumtraitsen.db",
+      "entity": "Item"
+    },
+    {
+      "name": "symbaroumtraitsfr",
+      "label": "Traits Symbaroum FR",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumtraitsfr.db",
+      "entity": "Item"
+    }
+  ],
   "languages": [
     {
       "lang": "en",
