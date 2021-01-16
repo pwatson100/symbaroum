@@ -94,12 +94,16 @@
   "ABILITY_MEDICUS.CHAT_FINAL": "Toughness healed : ",
   "ABILITY_MEDICUS.CHAT_TARGET": "Patient : ",
 
+  "ABILITY_STRANGLER.CHAT_INTRO": " tries to seize its target.",
+  "ABILITY_STRANGLER.CHAT_INTRO_M": " tries to maintain the stranglehold.",
+  "ABILITY_STRANGLER.CHAT_SUCCESS": " strangles its victim.",
+  "ABILITY_STRANGLER.CHAT_FAILURE": " escapes the stranglehold.",
+
   "ABILITY_WITCHSIGHT.CHAT_INTRO": " tries to perceive the shadows.",
   "ABILITY_WITCHSIGHT.CHAT_SUCCESS": " pierces the veil of shadows.",
   "ABILITY_WITCHSIGHT.CHAT_FAILURE": " can't discern the shadows.",
   "ABILITY_WITCHSIGHT.CHAT_FINAL1": "The color of the shadow of ",
   "ABILITY_WITCHSIGHT.CHAT_FINAL2": " is: ",
-
 
   "ABILITY.NOVICE":"Novice",
   "ABILITY.ADEPT":"Adept",
@@ -352,6 +356,10 @@
   "POWER_BENDWILL.CHAT_INTRO_M": " maintains Bend Will.",
   "POWER_BENDWILL.CHAT_SUCCESS": " controls ",
   "POWER_BENDWILL.CHAT_FAILURE": " resists the attempt.",
+  
+  "POWER_BRIMSTONECASC.CHAT_INTRO": " throws fire at its target.",
+  "POWER_BRIMSTONECASC.CHAT_SUCCESS": " gets burned.",  
+  "POWER_BRIMSTONECASC.CHAT_FAILURE": " avoids part of the damage.",
 
   "POWER_CURSE.CHAT_INTRO": " casts a curse.",
   "POWER_CURSE.CHAT_INTRO_M": " maintains a curse.",
@@ -372,7 +380,6 @@
   "POWER_INHERITWOUND.CHAT_FAILURE": " can't transfer the wounds.",
   "POWER_INHERITWOUND.CHAT_HEALED": " receives toughness healing for: ",
   "POWER_INHERITWOUND.CHAT_DAMAGE": " recieved damage: ",
-
 
   "POWER_LARVAEBOILS.CHAT_INTRO": " throws larvaes.",
   "POWER_LARVAEBOILS.CHAT_INTRO_M": " maintains the larvaes surge.",

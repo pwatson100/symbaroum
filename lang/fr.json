@@ -93,6 +93,11 @@
     "ABILITY_MEDICUS.CHAT_FINAL": "Points d'endurance soignés : ",
     "ABILITY_MEDICUS.CHAT_TARGET": "Bénéficiaire : ",
 
+    "ABILITY_STRANGLER.CHAT_INTRO": " tente une prise de strangulation.",
+    "ABILITY_STRANGLER.CHAT_INTRO_M": " essaye de maintenir sa prise.",
+    "ABILITY_STRANGLER.CHAT_SUCCESS": " étrangle sa victime.",
+    "ABILITY_STRANGLER.CHAT_FAILURE": " se libère de la prise.",
+
     "ABILITY_WITCHSIGHT.CHAT_INTRO": " essaye d'observer les ombres.",
     "ABILITY_WITCHSIGHT.CHAT_SUCCESS": " perçoit les ombres.",
     "ABILITY_WITCHSIGHT.CHAT_FAILURE": " n'arrive pas à discerner les ombres.",
@@ -350,6 +355,10 @@
     "POWER_BENDWILL.CHAT_INTRO_M": " maintient le pouvoir Soumission.",
     "POWER_BENDWILL.CHAT_SUCCESS": " parvient à soumettre ",
     "POWER_BENDWILL.CHAT_FAILURE": " résiste à la soumission.",
+  
+    "POWER_BRIMSTONECASC.CHAT_INTRO": " déchaine le feu vers sa cible.",
+    "POWER_BRIMSTONECASC.CHAT_SUCCESS": " est brûlé.", 
+    "POWER_BRIMSTONECASC.CHAT_FAILURE": " évite une partie des flammes.",
 
     "POWER_CURSE.CHAT_INTRO": " lance une malédiction.",
     "POWER_CURSE.CHAT_INTRO_M": " maintient une malédiction.",
