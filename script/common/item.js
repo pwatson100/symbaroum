@@ -212,7 +212,10 @@ async function affectReferenceOnAbility(ability){
         {label: game.i18n.localize('ABILITY_LABEL.WITCHCRAFT'), value: "witchcraft"},
         {label: game.i18n.localize('ABILITY_LABEL.WITCHSIGHT'), value: "witchsight"},
         {label: game.i18n.localize('ABILITY_LABEL.WIZARDRY'), value: "wizardry"},
+        {label: game.i18n.localize('ABILITY_LABEL.WHIPFIGHTER'), value: "whipfighter"},
         {label: game.i18n.localize('ABILITY_LABEL.WRESTLING'), value: "wrestling"},
+        {label: game.i18n.localize('ABILITY_LABEL.2HANDED_FINESSE'), value: "twohandedfinesse"},
+        {label: game.i18n.localize('ABILITY_LABEL.BLESSINGS'), value: "blessings"}
     ];
     let referenceOptions = "";
     for(let referenceEntry of abilitiesList){
@@ -295,6 +298,11 @@ async function affectReferenceOnPower(ability){
         {label: game.i18n.localize('POWER_LABEL.UNNOTICEABLE'), value: "unnoticeable"},
         {label: game.i18n.localize('POWER_LABEL.WEAKENING_HYMN'), value: "weakeninghymn"},
         {label: game.i18n.localize('POWER_LABEL.WILD_HUNT'), value: "wildhunt"},
+        {label: game.i18n.localize('POWER_LABEL.BATTLE_SYMBOL'), value: "battlesymbol"},
+        {label: game.i18n.localize('POWER_LABEL.EARTH_BINDING'), value: "earthbinding"},
+        {label: game.i18n.localize('POWER_LABEL.MARK_OF_TORMENT'), value: "markoftorment"},
+        {label: game.i18n.localize('POWER_LABEL.SERENITY'), value: "serenity"},
+        {label: game.i18n.localize('POWER_LABEL.EARTH_SHOT'), value: "earthshot"},
         {label: game.i18n.localize('POWER_LABEL.WITCH_HAMMER'), value: "witchhammer"}
     ];
     let referenceOptions = "";
