@@ -418,6 +418,8 @@
   "TITLE.MONEY": "ARGENT",
   "TITLE.QUALITIES":"QUALITÉS",
   
+  "TOOLTIP.BONUS_TOTAL": "Total",
+  
   "TOOLTIP.EXPERIENCE_CURRENT": "Vos points d'expérience non dépensés",
   "TOOLTIP.EXPERIENCE_TOTAL": "Total des points d'expériences acquis",
   "TOOLTIP.EXPERIENCE_ARTIFACTRR": "Points d'expérience dépensés pour les artefacts et relances",

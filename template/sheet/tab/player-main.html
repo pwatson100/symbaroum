@@ -4,7 +4,7 @@
         {{#each data.attributes as |attribute key|}}
             <div class="attribute">
                 <button class="roll-attribute" data-attribute="{{key}}">{{localize attribute.label}}</button>
-                <input name="data.attributes.{{key}}.value" type="number" value="{{attribute.value}}" data-dtype="Number" />
+                <input class="input" name="data.attributes.{{key}}.value" type="number" value="{{attribute.value}}" data-dtype="Number" />
             </div>
         {{/each}}
     </div>
@@ -123,7 +123,7 @@
                             <div class="image-container">
                                 <button class="activate-ability" style="background-image: url('{{item.img}}'); height: 36px; width: 36px; background-size: 36px"></button>
                             </div>
-                            <button class="item-edit ellipsis" style="width: 198px">{{item.name}}</button>
+                            <button class="item-edit ellipsis">{{item.name}}</button>
                         </div>
                         <div class="actions" title="{{localize "TOOLTIP.POWER_ACTIONS"}}">{{item.data.actions}}</div>
                         <div class="button">

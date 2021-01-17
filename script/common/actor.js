@@ -23,17 +23,41 @@ export class SymbaroumActor extends Actor {
         };
         data.data.bonus = {
             defense: 0,
+            defense_msg: "",
             accurate: 0,
+            accurate_msg: "",
             cunning: 0,
+            cunning_msg: "",
             discreet: 0,
+            discreet_msg: "",
             persuasive: 0,
+            persuasive_msg: "",
             quick: 0,
+            quick_msg: "",
             resolute: 0,
+            resolute_msg: "",
             strong: 0,
+            strong_msg: "",
             vigilant: 0,
-            toughness: { max: 0, threshold: 0 },
-            corruption: { max: 0, threshold: 0 },
-            experience: { value: 0, cost: 0 }
+            vigilant_msg: "",
+            toughness: { 
+              max: 0, 
+              max_msg: "",
+              threshold: 0,
+              threshold_msg: "" 
+            },
+            corruption: { 
+              max: 0, 
+              max_msg: "",
+              threshold: 0,
+              threshold_msg: ""
+            },
+            experience: { 
+              value: 0,
+              value_msg: "",
+              cost: 0,
+              cost_msg: ""
+            }
         };
     }
 
@@ -57,11 +81,16 @@ export class SymbaroumActor extends Actor {
     }
 
     _computeSecondaryAttributes(data) {
-        let strong = data.data.attributes.strong.value + data.data.bonus.strong;
+        for (var aKey in data.data.attributes) {
+          data.data.attributes[aKey].total = data.data.attributes[aKey].value + data.data.bonus[aKey];
+          data.data.attributes[aKey].msg = "Total "+data.data.attributes[aKey].total+ data.data.bonus[aKey + "_msg"];
+        }
+        
+        let strong = data.data.attributes.strong.total;
         data.data.health.toughness.max = (strong > 10 ? strong : 10) + data.data.bonus.toughness.max;       
         data.data.health.toughness.threshold = Math.ceil(strong / 2) + data.data.bonus.toughness.threshold;
         
-        let resolute = data.data.attributes.resolute.value + data.data.bonus.resolute;        
+        let resolute = data.data.attributes.resolute.total;        
         data.data.health.corruption.threshold = Math.ceil(resolute / 2) + data.data.bonus.corruption.threshold;
         data.data.health.corruption.max = resolute + data.data.bonus.corruption.max;
         
@@ -72,13 +101,17 @@ export class SymbaroumActor extends Actor {
             armor: activeArmor.name,
             protection: activeArmor.data.protection,
             quality: activeArmor.data.quality,
-            defense: data.data.attributes[attributeDef].value + data.data.bonus[attributeDef] - activeArmor.data.impeding + data.data.bonus.defense
+            defense: data.data.attributes[attributeDef].total - activeArmor.data.impeding + data.data.bonus.defense,
+            msg: "Total "+data.data.attributes[attributeDef].total + data.data.bonus.defense_msg
         };
         let attributeInit = data.data.initiative.attribute.toLowerCase();
         data.data.initiative.value = (data.data.attributes[attributeInit].value * 1000) + (data.data.attributes.vigilant.value * 10);
         
         data.data.experience.spent = data.data.bonus.experience.cost - data.data.bonus.experience.value;
         data.data.experience.available = data.data.experience.total - data.data.experience.artifactrr - data.data.experience.spent;
+        
+
+
     }
 
     _computePower(data, item) {
@@ -145,31 +178,43 @@ export class SymbaroumActor extends Actor {
         };
     }
 
-    _addBonus(data, item) {
-        data.data.bonus = {
-            defense: data.data.bonus.defense + item.data.bonus.defense,
-            accurate: data.data.bonus.accurate + item.data.bonus.accurate,
-            cunning: data.data.bonus.cunning + item.data.bonus.cunning,
-            discreet: data.data.bonus.discreet + item.data.bonus.discreet,
-            persuasive: data.data.bonus.persuasive + item.data.bonus.persuasive,
-            quick: data.data.bonus.quick + item.data.bonus.quick,
-            resolute: data.data.bonus.resolute + item.data.bonus.resolute,
-            strong: data.data.bonus.strong + item.data.bonus.strong,
-            vigilant: data.data.bonus.vigilant + item.data.bonus.vigilant,
-            toughness: {
-              max: data.data.bonus.toughness.max + item.data.bonus.toughness.max,
-              threshold: data.data.bonus.toughness.threshold + item.data.bonus.toughness.threshold
-            },
-            corruption: {
-              max: data.data.bonus.corruption.max + item.data.bonus.corruption.max,
-              threshold: data.data.bonus.corruption.threshold + item.data.bonus.corruption.threshold
-            },
-            experience: { 
-              cost: data.data.bonus.experience.cost + item.data.bonus.experience.cost,
-              value: data.data.bonus.experience.value + item.data.bonus.experience.value
-            }
-        };
+    _addBonusData(currentb, item, itemb, bonusType) {
+      if(itemb[bonusType] != 0 ) {
+        currentb[bonusType] += itemb[bonusType];
+        currentb[bonusType+"_msg"] += "<br />"+item.name+"("+itemb[bonusType]+")";
+      }
     }
+
+    _addBonus(data, item) {
+      let currentBonus = data.data.bonus;
+      let currentBonusToughness = currentBonus.toughness;
+      let currentBonusCorruption = currentBonus.corruption;
+      let currentBonusExperience = currentBonus.experience;
+      let itemBonus = item.data.bonus;
+      let itemBonusToughness = itemBonus.toughness;
+      let itemtBonusCorruption = itemBonus.corruption;
+      let itemBonusExperience = itemBonus.experience;
+      
+      this._addBonusData(currentBonus, item, itemBonus, "defense");
+      this._addBonusData(currentBonus, item, itemBonus, "accurate");
+      this._addBonusData(currentBonus, item, itemBonus, "cunning");
+      this._addBonusData(currentBonus, item, itemBonus, "discreet");
+      this._addBonusData(currentBonus, item, itemBonus, "persuasive");
+      this._addBonusData(currentBonus, item, itemBonus, "quick");
+      this._addBonusData(currentBonus, item, itemBonus, "resolute");
+      this._addBonusData(currentBonus, item, itemBonus, "strong");
+      this._addBonusData(currentBonus, item, itemBonus, "vigilant");
+      
+      this._addBonusData(currentBonusToughness, item, itemBonusToughness, "max");
+      this._addBonusData(currentBonusToughness, item, itemBonusToughness, "threshold");
+      this._addBonusData(currentBonusCorruption, item, itemtBonusCorruption, "max");
+      this._addBonusData(currentBonusCorruption, item, itemtBonusCorruption, "threshold");
+      this._addBonusData(currentBonusExperience, item, itemBonusExperience, "cost");
+      this._addBonusData(currentBonusExperience, item, itemBonusExperience, "value");
+
+    }
+    
+
 
     async usePower(powerItem){
        await activateAbility(powerItem, this);
@@ -189,11 +234,4 @@ export class SymbaroumActor extends Actor {
         await attackRoll(this, weapon, null);
     }
 
-    /*async rollWeapon(weapon){
-        const attribute = this.data.data.attributes[weapon.data.data.attribute];
-        const bonus = this.data.data.bonus[weapon.data.data.attribute];
-        const attributeData = { name: game.i18n.localize(attribute.label), value: attribute.value + bonus };
-        const weaponData = { damage: weapon.data.data.damage, quality: weapon.data.data.quality, qualities: weapon.data.data.qualities }
-        await prepareRollAttribute(this, attributeData, null, weaponData);
-    }*/
 }
