@@ -3,6 +3,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     flex-basis: 100%;
+    margin-bottom: 5px;
 }
 
 .symbaroum.dialog .lblfavour {
@@ -76,10 +77,10 @@
     margin: 0;
 }
 
-.symbaroum.dialog .damagemodifier,
 .symbaroum.dialog .advantage,
+.symbaroum.dialog .damagemodifier,
 .symbaroum.dialog .favour,
-.symbaroum.dialog .checkbox,
+.symbaroum.dialog .simplebox,
 .symbaroum.dialog .attribute,
 .symbaroum.dialog .maintain,
 .symbaroum.dialog .bonus {
