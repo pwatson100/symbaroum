@@ -8,7 +8,7 @@ export class PlayerSheet2 extends PlayerSheet {
         return mergeObject(super.defaultOptions, {
             classes: ["symbaroum", "sheet", "actor"],
             template: "systems/symbaroum/template/sheet/player2.html",
-            width: 700,
+            width: 800,
             height: 1000,
             resizable: false,
             tabs: [

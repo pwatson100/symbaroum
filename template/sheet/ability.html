@@ -6,7 +6,7 @@
             </div>
             <div class="wrapper-column">
                 <div class="name">
-                    <label>{{localize "ABILITY.NAME"}}</label>
+                    <button class="register-ability">{{localize "ABILITY.NAME"}}</button>
                     <input name="name" type="text" value="{{item.name}}"/>
                 </div>
             </div>
@@ -52,6 +52,8 @@
                         <input name="data.novice.isActive" type="checkbox" value="active"/>
                         {{/if}}
                     </div>
+                     <button class="activate-ability" title="Roll"></button>
+                    
                     {{editor content=data.novice.description target="data.novice.description" button=true owner=owner editable=editable}}
                 </div>
             </div>
