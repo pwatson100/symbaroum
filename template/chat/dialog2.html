@@ -40,10 +40,10 @@
   </div>
       
     {{#if isWeaponRoll}}
-    <div class="checkbox">
+    <div class="simplebox">
       <label>{{localize "DIALOG.ADVANTAGE"}}</label><span class="lblfavour"><input type="checkbox" id="advantage" unchecked></span>
     </div>
-    <div class="checkbox">
+    <div class="simplebox">
       <label>{{localize "DIALOG.IGNORE_ARMOR"}}</label><span class="lblfavour"><input type="checkbox" id="ignarm" unchecked></span>
     </div>
     <div class="damagemodifier">
@@ -64,22 +64,22 @@
     </select>
     </div>
     {{#if askBackstab}}
-    <div class="checkbox">
+    <div class="simplebox">
       <label>{{localize "DIALOG.BACKSTAB"}}</label> <span class="lblfavour"><input type="checkbox" id="usebackstab" unchecked></span>
     </div>
     {{/if}}
     {{#if askHuntersInstinct}}
-    <div class="checkbox">
+    <div class="simplebox">
       <label>{{localize "DIALOG.HUNTERS_INSTINCT"}}</label> <span class="lblfavour"><input type="checkbox" id="usehunter" unchecked></span>
   </div>
     {{/if}}
     {{#if askTwoAttacks}}
-    <div class="checkbox">
+    <div class="simplebox">
       <label>{{localize "DIALOG.2ATTACKS"}}</label> <span class="lblfavour"><input type="checkbox" id="do2attacks" unchecked></span>
     </div>
     {{/if}}
     {{#if askThreeAttacks}}
-    <div class="checkbox">
+    <div class="simplebox">
       <label>{{localize "DIALOG.3ATTACKS"}}</label> <span class="lblfavour"><input type="checkbox" id="do3attacks" unchecked></span>
     </div>
     {{/if}}
