@@ -646,7 +646,7 @@ async function modifierDialog(ability, actor, castingAttributeName, targetData, 
                             finalFavour += 1;
                         }
                         else{
-                            combatStuff.dmgData.hunterIDmg = false;
+                            abilityResultFunctionStuff.dmgData.hunterIDmg = false;
                         }
                     }
                 }
@@ -912,7 +912,7 @@ async function attackResult(rollData, weapon, actor, castingAttributeName, targe
     for(let rollDataElement of rollData){
 
         if(rollDataElement.hasSucceed){
-            resultText += actor.data.name + game.i18n.localize('COMBAT.CHAT_SUCCESS') + targetData.actor.data.name + "\n";
+            resultText += actor.data.name + game.i18n.localize('COMBAT.CHAT_SUCCESS') + targetData.actor.data.name + " <br>";
             hasDamage = true;
             damage = await damageRollWithDiceParams(functionStuff.attackFromPC, actor, weapon, functionStuff.dmgData, targetData);
             damageTot += damage.roll.total;
@@ -922,7 +922,7 @@ async function attackResult(rollData, weapon, actor, castingAttributeName, targe
             damageTooltip += damage.roll.result + "    ";
         }
         else{
-            resultText += actor.data.name + game.i18n.localize('COMBAT.CHAT_FAILURE') + " \n";
+            resultText += actor.data.name + game.i18n.localize('COMBAT.CHAT_FAILURE') + " <br>";
         }
     }
     
@@ -1919,12 +1919,10 @@ async function loremaster(ability, actor) {
     const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
     const chatData = {
         user: game.user._id,
-        content: html,
+        content: html
     }
     ChatMessage.create(chatData);
 }
-
-
 async function strangler(ability, actor){
 
     let rollData = [];
