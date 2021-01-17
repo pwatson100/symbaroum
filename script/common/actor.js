@@ -234,4 +234,10 @@ export class SymbaroumActor extends Actor {
         await attackRoll(this, weapon, null);
     }
 
+    async rollAttribute(attributeName) {
+        const attribute = this.data.data.attributes[attributeName];
+        const bonus = this.data.data.bonus[attributeName];
+        const attributeData = {name: game.i18n.localize(attribute.label), value: attribute.value + bonus};
+        await prepareRollAttribute(this, attributeData, null, null);
+    }
 }
