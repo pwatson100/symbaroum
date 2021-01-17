@@ -109,3 +109,51 @@
     flex-basis: 100%;
     margin: 5px;
 }
+
+.symbaroum.sheet.actor .tooltip {
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+}
+  
+/* Tooltip text */
+.symbaroum.sheet.actor .tooltip .tooltiptext {
+    /* visibility: hidden; */
+    display: none;
+    width: 10em;
+    background-color: black;
+    color: #fff;
+    padding: 5px 5px;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+}
+
+.symbaroum.sheet.actor .flex30 {
+    flex-basis: 30%;
+}
+
+.symbaroum.sheet.actor .tooltip .right {
+    top: -15%;
+    left: 105%;
+}
+
+.symbaroum.sheet.actor .tooltip .down {
+    top: 100%;
+    left: 0%;
+}
+
+.symbaroum.sheet.actor .tooltip .downleft {
+    top: -105%;
+    left: calc(-5% - 10em);
+}
+
+.symbaroum.sheet.actor .tooltip .up {
+    top: -105%;
+    left: 0%;
+}
+
+.symbaroum.sheet.actor .tooltip:hover .tooltiptext {
+    display:block;
+    /* visibility: visible; */
+}

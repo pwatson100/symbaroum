@@ -3,6 +3,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     flex-basis: 100%;
+    margin-bottom: 5px;
 }
 
 .symbaroum.dialog .lblfavour {
@@ -36,7 +37,7 @@
     height: auto;
 }
 
-.symbaroum.dialog input[type="text"]
+.symbaroum.dialog input[type="text"],
 .symbaroum.dialog input[type="number"],
 .symbaroum.dialog select {
     background: url(../../asset/image/editable.jpg) repeat;
@@ -60,8 +61,8 @@
     margin: 0;
 }
 
+.symbaroum.dialog .advantage,
 .symbaroum.dialog .damagemodifier,
-.symbaroum.dialog .checkbox,
 .symbaroum.dialog .favour,
 .symbaroum.dialog .attribute,
 .symbaroum.dialog .maintain,

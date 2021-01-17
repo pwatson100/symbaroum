@@ -420,6 +420,8 @@
   "TITLE.MONEY": "PENGAR",
   "TITLE.QUALITIES":"KVALITETER",
 
+  "TOOLTIP.BONUS_TOTAL": "Totalt",
+
   "TOOLTIP.EXPERIENCE_CURRENT": "Tillgänglig erfarenhetspoäng",
   "TOOLTIP.EXPERIENCE_TOTAL": "Alla förjänade erfarenhetspoäng",
   "TOOLTIP.EXPERIENCE_ARTIFACTRR": "Erfarenhetspoäng som använts på artefakter eller slå om tärningarna",
