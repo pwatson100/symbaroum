@@ -446,6 +446,8 @@
   "TITLE.MONEY": "MONEY",
   "TITLE.QUALITIES":"QUALITIES",
   
+  "TOOLTIP.BONUS_TOTAL": "Total",
+  
   "TOOLTIP.EXPERIENCE_CURRENT": "Your current available (unspent) experience points",
   "TOOLTIP.EXPERIENCE_TOTAL": "The total amount of experience that you earnt",
   "TOOLTIP.EXPERIENCE_ARTIFACTRR": "Experience spent on artifacts and/or re-rolls",

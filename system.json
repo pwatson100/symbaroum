@@ -104,7 +104,12 @@
       "lang": "sv",
       "name": "Svenska ",
       "path": "lang/sv.json"
-    }
+    },
+    {
+      "lang": "de",
+      "name": "Deutsche ",
+      "path": "lang/de.json"
+    }    
   ],
   "gridDistance": 1,
   "gridUnits": "m",
