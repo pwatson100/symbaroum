@@ -357,7 +357,7 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
       damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_ADVANTAGE');
     }
   }
-  if(targetData.leaderTarget){
+  if(dmgData.leaderTarget){
     dmgData.modifier += " + 1d4";
     damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
   }

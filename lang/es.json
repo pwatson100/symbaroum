@@ -342,8 +342,8 @@
   "POWER_LABEL.WILD_HUNT":"Wild Hunt",
   "POWER_LABEL.WITCH_HAMMER":"Witch Hammer",
 
-  "POWER.CHAT_INTRO": " tries to cast the mystical power \" ",
-  "POWER.CHAT_INTRO_M": " tries to maintain the mystical power \" ",
+  "POWER.CHAT_INTRO": " tries to use \" ",
+  "POWER.CHAT_INTRO_M": " tries to maintain \" ",
   "POWER.CHAT_SUCCESS": " is successfull.",
   "POWER.CHAT_FAILURE": " fails.",
   "POWER.CHAT_CORRUPTION": "Temporary corruption received: ",
