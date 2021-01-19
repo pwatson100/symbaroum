@@ -143,28 +143,42 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
 
         if(flagData.tokenId){
           let token = canvas.tokens.objects.children.find(token => token.data._id === flagData.tokenId);
-          
+          let statusCounterMod = false;
+          if(game.modules.get("statuscounter")?.active){
+            statusCounterMod = true;
+          }
           if(flagData.addEffect){
             if(token == undefined){return}
             let duration = 1;
             if(flagData.effectDuration){duration = flagData.effectDuration}
-            let statusEffect = new EffectCounter(duration, flagData.addEffect, token, false);
-            await statusEffect.update();
+            if(statusCounterMod){
+              let alreadyHereEffect = await EffectCounter.findCounter(token, flagData.addEffect);
+              if(alreadyHereEffect == undefined){
+                let statusEffect = new EffectCounter(duration, flagData.addEffect, token, false);
+                await statusEffect.update();
+              }
+            }
+            else {token.toggleEffect(flagData.addEffect)}
           }
           
           if(flagData.removeEffect){
-            let statusEffectCounter = await EffectCounter.findCounter(token, flagData.removeEffect);
-            if(statusEffectCounter != undefined){
-                statusEffectCounter.setValue(0);
-                await statusEffectCounter.update();
+            if(statusCounterMod){
+              let statusEffectCounter = await EffectCounter.findCounter(token, flagData.removeEffect);
+              if(statusEffectCounter != undefined){
+                  statusEffectCounter.setValue(0);
+                  await statusEffectCounter.update();
+              }
             }
+            else {token.toggleEffect(flagData.removeEffect)}
           }
 
           if(flagData.modifyEffectDuration){
-            let statusEffectCounter = await EffectCounter.findCounter(token, flagData.modifyEffectDuration);
-            if(statusEffectCounter != undefined){
-              await statusEffectCounter.setValue(effectDuration);
-              await statusEffectCounter.update();
+            if(statusCounterMod){
+              let statusEffectCounter = await EffectCounter.findCounter(token, flagData.modifyEffectDuration);
+              if(statusEffectCounter != undefined){
+                await statusEffectCounter.setValue(effectDuration);
+                await statusEffectCounter.update();
+              }
             }
           }
 

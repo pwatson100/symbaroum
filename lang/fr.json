@@ -341,8 +341,8 @@
     "POWER_LABEL.WILD_HUNT":"Traque sauvage",
     "POWER_LABEL.WITCH_HAMMER":"Marteau à sorcière",
 
-    "POWER.CHAT_INTRO": " essaye de lancer le pouvoir mystique \" ",
-    "POWER.CHAT_INTRO_M": " essaye de maintenir le pouvoir mystique \" ",
+    "POWER.CHAT_INTRO": " essaye d'utiliser \"",
+    "POWER.CHAT_INTRO_M": " essaye de maintenir \" ",
     "POWER.CHAT_SUCCESS": " réussit.",
     "POWER.CHAT_FAILURE": " n'y parvient pas.",
     "POWER.CHAT_CORRUPTION": "Points de Corruption temporaire reçus: ",
