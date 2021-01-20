@@ -57,11 +57,11 @@ export class SymbaroumItem extends Item {
         ChatMessage.create(chatData);
     }
 }
-
+/*
 export async function activateAbility(ability, actor){
     const powerName = ability.data.data.reference;    
     if(powerName == undefined || powerName === ""){
-        /* No reference for a system ability on this item, ask for one */
+        // No reference for a system ability on this item, ask for one
         powerName = await ability.affectReference();
     }
 
@@ -83,7 +83,7 @@ export async function activateAbility(ability, actor){
             }
         }
         else {ui.notifications.error("Not yet implemented")}
-        /*
+        
         switch (powerName) {
             case 'none':
                 return;
@@ -168,9 +168,9 @@ export async function activateAbility(ability, actor){
             break;
             default:
                 ui.notifications.error("Not yet implemented");
-        }*/
+        }
     }
-}
+}*/
 /*
 // affect reference for a system ability on this item 
 async function affectReferenceOnAbility(ability){
