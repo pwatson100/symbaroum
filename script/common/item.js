@@ -62,21 +62,28 @@ export async function activateAbility(ability, actor){
     const powerName = ability.data.data.reference;    
     if(powerName == undefined || powerName === ""){
         /* No reference for a system ability on this item, ask for one */
-        let newRef;
-        if(ability.data.type == "ability"){
-            newRef = await affectReferenceOnAbility(ability);
-        }
-        else if(ability.data.type == "mysticalPower"){
-            newRef= await affectReferenceOnPower(ability);
-        }
-        else{return}
-        if(newRef){
-            powerName = newRef
-        }
-        else{return}
+        powerName = await ability.affectReference();
     }
-    
+
+
+    if(ability.data.type == "ability"){
+    const scriptedAbilities =
+        [["leader", leaderPrepare],
+        ["loremaster", loremaster],
+        ["medicus", medicus],
+        ["strangler", strangler],
+        ["witchsight", witchsight]];
+
     if(actor != null){
+        const powerfunction = array1.find(element => element[0] === powerName);
+        if(powerfunction){
+            try{await powerfunction(ability, actor)} catch(error){
+                ui.notifications.error(error);
+                return;
+            }
+        }
+        else {ui.notifications.error("Not yet implemented")}
+        /*
         switch (powerName) {
             case 'none':
                 return;
@@ -161,11 +168,11 @@ export async function activateAbility(ability, actor){
             break;
             default:
                 ui.notifications.error("Not yet implemented");
-        }
+        }*/
     }
 }
-
-/* affect reference for a system ability on this item */
+/*
+// affect reference for a system ability on this item 
 async function affectReferenceOnAbility(ability){
     const abilitiesList = [
         {label: game.i18n.localize('ABILITY_LABEL.DEFAULT'), value: "none"},
@@ -269,7 +276,7 @@ async function affectReferenceOnAbility(ability){
     }).render(true);
 }
 
-/* affect reference for a system ability on this item */
+// affect reference for a system ability on this item 
 async function affectReferenceOnPower(ability){
     const abilitiesList = [
         {label: game.i18n.localize('ABILITY_LABEL.DEFAULT'), value: "none"},        
@@ -357,7 +364,7 @@ async function affectReferenceOnPower(ability){
             }
         }
     }).render(true);
-}
+}*/
 
 /*get the target token, its actor, and evaluate which attribute this actor will use for opposition
 @Params: {string}   targetAttributeName : the name of the resist attribute. Can be defence, and can be null.
@@ -429,6 +436,7 @@ async function getMysticAbilities(actor){
         "blessings",
         "channeling",
         "sorcery",
+        "staffmagic",
         "stronggift",
         "symbolism",
         "theurgy",
@@ -454,6 +462,11 @@ async function getMysticAbilities(actor){
             lvlName: ""
         },
         sorcery: {
+            hasAbility: false,
+            level: 0,
+            lvlName: ""
+        },
+        staffmagic: {
             hasAbility: false,
             level: 0,
             lvlName: ""
@@ -700,7 +713,6 @@ async function modifierDialog(ability, actor, castingAttributeName, targetData, 
                         rollData.push(await baseRoll(actor, castingAttributeName, null, null, finalFavour, modifier));                        
                     }
                 }
-                console.log(rollData);
                 await abilityResultFunction(rollData, ability, actor, castingAttributeName, targetData, finalFavour, modifierCustom, isMaintained, autoParams, abilityResultFunctionStuff);
                 },
           },
@@ -1249,6 +1261,8 @@ async function anathemaPrepare(ability, actor) {
     let autoParams = actorResMod.autoParams;
     let anathemaStuff = {
         combat: false,
+        corruption: true,
+        tradition: [wizardry, staffmagic, theurgy],
         powerLvl: powerLvl,
         hasTarget : hasTarget,
         checkMaintain: true
@@ -1320,6 +1334,8 @@ async function brimstoneCascadePrepare(ability, actor) {
         attackFromPC: attackFromPC,
         powerLvl: powerLvl,
         checkMaintain: true,
+        corruption: true,
+        tradition: [wizardry],
         casterMysticAbilities: casterMysticAbilities,
         targetHasRapidReflexes: targetHasRapidReflexes
     }
@@ -1449,6 +1465,8 @@ async function bendWillPrepare(ability, actor) {
     let bendWillStuff = {
         combat: false,
         powerLvl: powerLvl,
+        corruption: true,
+        tradition: [witchcraft, wizardry],
         checkMaintain: true
     }
     await modifierDialog(ability, actor, castingAttributeName, targetData, false, autoParams, 0, favour, bendWillResult, bendWillStuff)
@@ -1523,6 +1541,8 @@ async function cursePrepare(ability, actor) {
     let autoParams = resMod.autoParams;
     let curseStuff = {
         combat: false,
+        corruption: true,
+        tradition: [witchcraft],
         powerLvl: powerLvl,
         checkMaintain: true
     }
@@ -1605,6 +1625,8 @@ async function holyAuraPrepare(ability, actor) {
     let fctStuff = {
         combat: false,
         selectedToken: selectedToken,
+        corruption: true,
+        tradition: [theurgy],
         powerLvl: powerLvl,
         checkMaintain: true
     }
@@ -1702,6 +1724,7 @@ async function inheritWound(ability, actor){
     if(powerLvl.level >= 2){
         healDice = "1d8"
     }
+    let tradition = [witchcraft, theurgy];
 
     let templateData = {
         targetData : targetData,
@@ -1813,6 +1836,8 @@ async function larvaeBoilsPrepare(ability, actor) {
     let fctStuff = {
         combat: false,
         powerLvl: powerLvl,
+        corruption: true,
+        tradition: [witchcraft],
         checkMaintain: true
     }
     await modifierDialog(ability, actor, castingAttributeName, targetData, false, autoParams, 0, favour, larvaeBoilsResult, fctStuff)
@@ -2306,6 +2331,8 @@ async function unnoticeablePrepare(ability, actor) {
         targetResitAttribute: null,
         checkTargetSteadfast: false,
         checkMaintain: false,
+        corruption: true,
+        tradition: [wizardry, theurgy],
         addCasterEffect: "systems/symbaroum/asset/image/invisible.png"
     }
     await standardPowerActivation(ability, actor, unnoticeableStuff);
