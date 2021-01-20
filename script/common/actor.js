@@ -1,4 +1,4 @@
-import { activateAbility, attackRoll } from './item.js';
+import { attackRoll } from './item.js';
 import { prepareRollAttribute } from "../common/dialog.js";
 
 export class SymbaroumActor extends Actor {
@@ -101,6 +101,7 @@ export class SymbaroumActor extends Actor {
             armor: activeArmor.name,
             protection: activeArmor.data.protection,
             quality: activeArmor.data.quality,
+            impeding: activeArmor.data.impeding,
             defense: data.data.attributes[attributeDef].total - activeArmor.data.impeding + data.data.bonus.defense,
             msg: "Total "+data.data.attributes[attributeDef].total + data.data.bonus.defense_msg
         };
@@ -217,7 +218,8 @@ export class SymbaroumActor extends Actor {
 
 
     async usePower(powerItem){
-       await activateAbility(powerItem, this);
+        console.log(powerItem);
+       await powerItem.makeAction(this);
     }
 
     async rollArmor() {

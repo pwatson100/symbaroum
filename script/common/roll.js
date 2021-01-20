@@ -95,7 +95,7 @@ export async function rollAttribute(character, attribute, favourmod, modifier, a
   } 
 
   let rollData = {
-    name: `${attribute.name} (${diceTarget}) ⬅ ${modifier.name} (${mod})`,
+    name: `${attribute.name} (${attribute.value}) ⬅ ${modifier.name} (${mod})`,
     hasSucceed: attributeRoll._total <= diceTarget,
     diceResult: attributeRoll._total,
     hasArmor: hasArmor,
@@ -438,4 +438,3 @@ export async function simpleDamageRoll(attackFromPC, actor, damageFormula, targe
     favour: 0
   }
 }
-

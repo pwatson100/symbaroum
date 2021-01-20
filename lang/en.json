@@ -236,6 +236,7 @@
   "DIALOG.FAVOUR_DISFAVOUR": "Disfavour",
   "DIALOG.DAMAGE_MODIFIER": "Dam. mod.",  
   "DIALOG.CASTING": "Initial casting",
+  "DIALOG.IMPEDING": "Include impeding malus?",
   "DIALOG.MAINTAINING": "Maintening ability",
 
   "EQUIPMENT.NAME": "Name",
