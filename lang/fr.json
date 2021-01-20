@@ -232,6 +232,7 @@
     "DIALOG.DAMAGE_IF_MODIFIER": "Bonus dégâts Poigne de fer",
     "DIALOG.2ATTACKS": "Deux attaques?",
     "DIALOG.3ATTACKS": "Trois attaques?",
+    "DIALOG.IMPEDING": "Inclure malus d'armure?",
     "DIALOG.CASTING_ATTRIBUTE": "Attribut utilisé",
     "DIALOG.RESIST_ATTRIBUTE": "Attribut résisté",
 

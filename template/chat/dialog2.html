@@ -38,7 +38,11 @@
     <div class="favour">
       <label class="lblfavour">{{radioBoxes groupName choices checked=defaultFavour localize=true}}</label>
   </div>
-      
+  {{#if askImpeding}}
+  <div class="simplebox">
+    <label>{{localize "DIALOG.IMPEDING"}}</label> <span class="lblfavour"><input type="checkbox" id="impeding" checked></span>
+  </div>
+  {{/if}}
     {{#if isWeaponRoll}}
     <div class="simplebox">
       <label>{{localize "DIALOG.ADVANTAGE"}}</label><span class="lblfavour"><input type="checkbox" id="advantage" unchecked></span>

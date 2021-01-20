@@ -234,6 +234,7 @@
   "DIALOG.FAVOUR_FAVOUR": "Favour", 
   "DIALOG.FAVOUR_DISFAVOUR": "Disfavour",
   "DIALOG.DAMAGE_MODIFIER": "Dam. mod.",
+  "DIALOG.IMPEDING": "Include impeding malus?",
   "DIALOG.CASTING": "Initial casting",
   "DIALOG.MAINTAINING": "Maintening ability",
   
@@ -383,10 +384,10 @@
   "POWER_INHERITWOUND.CHAT_DAMAGE": " recieved damage: ",
 
 
-"POWER_LARVAEBOILS.CHAT_INTRO": " throws larvaes.",
-"POWER_LARVAEBOILS.CHAT_INTRO_M": " maintains the larvaes surge.",
-"POWER_LARVAEBOILS.CHAT_SUCCESS": " is eaten from the inside by the larvaes.",
-"POWER_LARVAEBOILS.CHAT_FAILURE": " résists to the larvaes.",
+  "POWER_LARVAEBOILS.CHAT_INTRO": " throws larvaes.",
+  "POWER_LARVAEBOILS.CHAT_INTRO_M": " maintains the larvaes surge.",
+  "POWER_LARVAEBOILS.CHAT_SUCCESS": " is eaten from the inside by the larvaes.",
+  "POWER_LARVAEBOILS.CHAT_FAILURE": " résists to the larvaes.",
 
   "QUALITY.AREAMRR": "Effektområde - Närstids-radie",
   "QUALITY.AREASRR": "Effektområde - Kort-radie", 

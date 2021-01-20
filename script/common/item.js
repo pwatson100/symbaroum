@@ -56,315 +56,220 @@ export class SymbaroumItem extends Item {
         }
         ChatMessage.create(chatData);
     }
-}
-/*
-export async function activateAbility(ability, actor){
-    const powerName = ability.data.data.reference;    
-    if(powerName == undefined || powerName === ""){
-        // No reference for a system ability on this item, ask for one
-        powerName = await ability.affectReference();
+
+    /* affect reference on this item */
+    async affectReference(){
+        const abilitiesList = [
+            {label: game.i18n.localize('ABILITY_LABEL.DEFAULT'), value: "none"},
+            {label: game.i18n.localize('ABILITY_LABEL.ACROBATICS'), value: "acrobatics"},
+            {label: game.i18n.localize('ABILITY_LABEL.ALCHEMY'), value: "alchemy"},
+            {label: game.i18n.localize('ABILITY_LABEL.AGILE_COMBAT'), value: "agilecombat"},
+            {label: game.i18n.localize('ABILITY_LABEL.ARMORED_MYSTIC'), value: "armoredmystic"},
+            {label: game.i18n.localize('ABILITY_LABEL.ARROW_JAB'), value: "arrowjab"},
+            {label: game.i18n.localize('ABILITY_LABEL.ARTIFACT_CRAFTING'), value: "artifactcrafting"},
+            {label: game.i18n.localize('ABILITY_LABEL.AXE_ARTIST'), value: "axeartist"},
+            {label: game.i18n.localize('ABILITY_LABEL.BACKSTAB'), value: "backstab"},
+            {label: game.i18n.localize('ABILITY_LABEL.BEAST_LORE'), value: "beastlore"},
+            {label: game.i18n.localize('ABILITY_LABEL.BERSERKER'), value: "berserker"},
+            {label: game.i18n.localize('ABILITY_LABEL.BLACKSMITH'), value: "blacksmith"},
+            {label: game.i18n.localize('ABILITY_LABEL.BLOOD_COMBAT'), value: "bloodcombat"},
+            {label: game.i18n.localize('ABILITY_LABEL.BODYGUARD'), value: "bodyguard"},
+            {label: game.i18n.localize('ABILITY_LABEL.CHANNELING'), value: "channeling"},
+            {label: game.i18n.localize('ABILITY_LABEL.CHEAP_SHOT'), value: "cheapshot"},
+            {label: game.i18n.localize('ABILITY_LABEL.DOMINATE'), value: "dominate"},
+            {label: game.i18n.localize('ABILITY_LABEL.ENSNARE'), value: "ensnare"},
+            {label: game.i18n.localize('ABILITY_LABEL.EQUESTRIAN'), value: "equestrian"},
+            {label: game.i18n.localize('ABILITY_LABEL.EX_ATTRIBUTE'), value: "exceptionalattribute"},
+            {label: game.i18n.localize('ABILITY_LABEL.FEAT_STRENGTH'), value: "featofstrength"},
+            {label: game.i18n.localize('ABILITY_LABEL.FEINT'), value: "feint"},
+            {label: game.i18n.localize('ABILITY_LABEL.FLAILER'), value: "flailer"},
+            {label: game.i18n.localize('ABILITY_LABEL.HAMMER_RHYTHM'), value: "hammerrhythm"},
+            {label: game.i18n.localize('ABILITY_LABEL.HUNTER_INSTINCT'), value: "huntersinstinct"},
+            {label: game.i18n.localize('ABILITY_LABEL.IRON_FIST'), value: "ironfist"},
+            {label: game.i18n.localize('ABILITY_LABEL.KNIFE_PLAY'), value: "knifeplay"},
+            {label: game.i18n.localize('ABILITY_LABEL.LEADER'), value: "leader"},
+            {label: game.i18n.localize('ABILITY_LABEL.LOREMASTER'), value: "loremaster"},
+            {label: game.i18n.localize('ABILITY_LABEL.MAN-AT-ARMS'), value: "manatarms"},
+            {label: game.i18n.localize('ABILITY_LABEL.MANTLE_DANCE'), value: "mantledance"},
+            {label: game.i18n.localize('ABILITY_LABEL.MARKSMAN'), value: "marksman"},
+            {label: game.i18n.localize('ABILITY_LABEL.MEDICUS'), value: "medicus"},
+            {label: game.i18n.localize('ABILITY_LABEL.NATURAL_WARRIOR'), value: "naturalwarrior"},
+            {label: game.i18n.localize('ABILITY_LABEL.OPPORTUNIST'), value: "opportunist"},
+            {label: game.i18n.localize('ABILITY_LABEL.POISONER'), value: "poisoner"},
+            {label: game.i18n.localize('ABILITY_LABEL.POLEARM_MASTERY'), value: "polearmmastery"},
+            {label: game.i18n.localize('ABILITY_LABEL.PYROTECHNICS'), value: "pyrotechnics"},
+            {label: game.i18n.localize('ABILITY_LABEL.QUICK_DRAW'), value: "quickdraw"},
+            {label: game.i18n.localize('ABILITY_LABEL.RAPID_FIRE'), value: "rapidfire "},
+            {label: game.i18n.localize('ABILITY_LABEL.RAPID_REFLEXES'), value: "rapidreflexes"},
+            {label: game.i18n.localize('ABILITY_LABEL.RECOVERY'), value: "recovery"},
+            {label: game.i18n.localize('ABILITY_LABEL.RITUALIST'), value: "ritualist"},
+            {label: game.i18n.localize('ABILITY_LABEL.RUNE_TATTOO'), value: "runetattoo"},
+            {label: game.i18n.localize('ABILITY_LABEL.SHIELD_FIGHTER'), value: "shieldfighter"},
+            {label: game.i18n.localize('ABILITY_LABEL.SIEGE_EXPERT'), value: "siegeexpert"},
+            {label: game.i18n.localize('ABILITY_LABEL.SIXTH_SENSE'), value: "sixthsense"},
+            {label: game.i18n.localize('ABILITY_LABEL.SORCERY'), value: "sorcery"},
+            {label: game.i18n.localize('ABILITY_LABEL.STAFF_FIGHTING'), value: "stafffighting"},
+            {label: game.i18n.localize('ABILITY_LABEL.STAFF_MAGIC'), value: "staffmagic"},
+            {label: game.i18n.localize('ABILITY_LABEL.STEADFAST'), value: "steadfast"},
+            {label: game.i18n.localize('ABILITY_LABEL.STEEL_THROW'), value: "steelthrow"},
+            {label: game.i18n.localize('ABILITY_LABEL.STRANGLER'), value: "strangler"},
+            {label: game.i18n.localize('ABILITY_LABEL.STRONG_GIFT'), value: "stronggift"},
+            {label: game.i18n.localize('ABILITY_LABEL.SWORD_SAINT'), value: "swordsaint"},
+            {label: game.i18n.localize('ABILITY_LABEL.SYMBOLISM'), value: "symbolism"},
+            {label: game.i18n.localize('ABILITY_LABEL.TACTICIAN'), value: "tactician"},
+            {label: game.i18n.localize('ABILITY_LABEL.THEURGY'), value: "theurgy"},
+            {label: game.i18n.localize('ABILITY_LABEL.TRAPPER'), value: "trapper"},
+            {label: game.i18n.localize('ABILITY_LABEL.TRICK_ARCHERY'), value: "trickarchery"},
+            {label: game.i18n.localize('ABILITY_LABEL.TROLL_SINGING'), value: "trollsinging"},
+            {label: game.i18n.localize('ABILITY_LABEL.TWIN_ATTACK'), value: "twinattack"},
+            {label: game.i18n.localize('ABILITY_LABEL.2HANDED_FORCE'), value: "twohandedforce "},
+            {label: game.i18n.localize('ABILITY_LABEL.WITCHCRAFT'), value: "witchcraft"},
+            {label: game.i18n.localize('ABILITY_LABEL.WITCHSIGHT'), value: "witchsight"},
+            {label: game.i18n.localize('ABILITY_LABEL.WIZARDRY'), value: "wizardry"},
+            {label: game.i18n.localize('ABILITY_LABEL.WHIPFIGHTER'), value: "whipfighter"},
+            {label: game.i18n.localize('ABILITY_LABEL.WRESTLING'), value: "wrestling"},
+            {label: game.i18n.localize('ABILITY_LABEL.2HANDED_FINESSE'), value: "twohandedfinesse"},
+            {label: game.i18n.localize('ABILITY_LABEL.BLESSINGS'), value: "blessings"}
+        ];
+        const powersList = [
+            {label: game.i18n.localize('ABILITY_LABEL.DEFAULT'), value: "none"},        
+            {label: game.i18n.localize('POWER_LABEL.ANATHEMA'), value: "anathema"},
+            {label: game.i18n.localize('POWER_LABEL.BANISHING_SEAL'), value: "banishingseal"},
+            {label: game.i18n.localize('POWER_LABEL.BEND_WILL'), value: "bendwill"},
+            {label: game.i18n.localize('POWER_LABEL.BLACK_BOLT'), value: "blackbolt"},
+            {label: game.i18n.localize('POWER_LABEL.BLACK_BREATH'), value: "blackbreath"},
+            {label: game.i18n.localize('POWER_LABEL.BLESSED_SHIELD'), value: "blessedshield"},
+            {label: game.i18n.localize('POWER_LABEL.BLINDING_SYMBOL'), value: "blindingsymbol"},
+            {label: game.i18n.localize('POWER_LABEL.BRIMSTONE_CASCADE'), value: "brimstonecascade"},
+            {label: game.i18n.localize('POWER_LABEL.COMBAT_HYMN'), value: "combathymn"},
+            {label: game.i18n.localize('POWER_LABEL.CONFUSION'), value: "confusion"},
+            {label: game.i18n.localize('POWER_LABEL.CURSE'), value: "curse"},
+            {label: game.i18n.localize('POWER_LABEL.DANCING_WEAPON'), value: "dancingweapon"},
+            {label: game.i18n.localize('POWER_LABEL.DRAINING_GLYPH'), value: "drainingglyph"},
+            {label: game.i18n.localize('POWER_LABEL.ENTANGLING_VINES'), value: "entanglingvines"},
+            {label: game.i18n.localize('POWER_LABEL.EXORCIZE'), value: "exorcize"},
+            {label: game.i18n.localize('POWER_LABEL.FIRE_SOUL'), value: "firesoul"},
+            {label: game.i18n.localize('POWER_LABEL.FLAME_WALL'), value: "flamewall"},
+            {label: game.i18n.localize('POWER_LABEL.HEROIC_HYMN'), value: "heroichymn"},
+            {label: game.i18n.localize('POWER_LABEL.HOLY_AURA'), value: "holyaura"},
+            {label: game.i18n.localize('POWER_LABEL.ILLUSORY_CORRECTION'), value: "illusorycorrection"},
+            {label: game.i18n.localize('POWER_LABEL.INHERIT_WOUND'), value: "inheritwound"},
+            {label: game.i18n.localize('POWER_LABEL.LARVAE_BOILS'), value: "larvaeboils"},
+            {label: game.i18n.localize('POWER_LABEL.LAY_ON_HANDS'), value: "layonhands"},
+            {label: game.i18n.localize('POWER_LABEL.LEVITATE'), value: "levitate"},
+            {label: game.i18n.localize('POWER_LABEL.LIFEGIVER'), value: "lifegiver"},
+            {label: game.i18n.localize('POWER_LABEL.MALTRANSFORMATION'), value: "maltransformation"},
+            {label: game.i18n.localize('POWER_LABEL.MIND-THROW'), value: "mindthrow"},
+            {label: game.i18n.localize('POWER_LABEL.MIRRORING'), value: "mirroring"},
+            {label: game.i18n.localize('POWER_LABEL.NATURES_EMBRACE'), value: "naturesembrace"},
+            {label: game.i18n.localize('POWER_LABEL.PRIOS_BURNING_GLASS'), value: "priosburningglass"},
+            {label: game.i18n.localize('POWER_LABEL.PROTECTIVE_RUNES'), value: "protectiverunes"},
+            {label: game.i18n.localize('POWER_LABEL.PSYCHIC_THRUST'), value: "psychicthrust"},
+            {label: game.i18n.localize('POWER_LABEL.PURGATORY'), value: "purgatory"},
+            {label: game.i18n.localize('POWER_LABEL.RETRIBUTION'), value: "retribution"},
+            {label: game.i18n.localize('POWER_LABEL.REVENANT_STRIKE'), value: "revenantstrike"},
+            {label: game.i18n.localize('POWER_LABEL.SHAPESHIFT'), value: "shapeshift"},
+            {label: game.i18n.localize('POWER_LABEL.SPHERE'), value: "sphere"},
+            {label: game.i18n.localize('POWER_LABEL.SPIRIT_WALK'), value: "spiritwalk"},
+            {label: game.i18n.localize('POWER_LABEL.STAFF_PROJECTILE'), value: "staffprojectile"},
+            {label: game.i18n.localize('POWER_LABEL.STORM_ARROW'), value: "stormarrow"},
+            {label: game.i18n.localize('POWER_LABEL.TELEPORT'), value: "teleport"},
+            {label: game.i18n.localize('POWER_LABEL.THORN_CLOAK'), value: "thorncloak"},
+            {label: game.i18n.localize('POWER_LABEL.TORMENTING_SPIRITS'), value: "tormentingspirits"},
+            {label: game.i18n.localize('POWER_LABEL.TRUE_FORM'), value: "trueform"},
+            {label: game.i18n.localize('POWER_LABEL.UNHOLY_AURA'), value: "unholyaura"},
+            {label: game.i18n.localize('POWER_LABEL.UNNOTICEABLE'), value: "unnoticeable"},
+            {label: game.i18n.localize('POWER_LABEL.WEAKENING_HYMN'), value: "weakeninghymn"},
+            {label: game.i18n.localize('POWER_LABEL.WILD_HUNT'), value: "wildhunt"},
+            {label: game.i18n.localize('POWER_LABEL.BATTLE_SYMBOL'), value: "battlesymbol"},
+            {label: game.i18n.localize('POWER_LABEL.EARTH_BINDING'), value: "earthbinding"},
+            {label: game.i18n.localize('POWER_LABEL.MARK_OF_TORMENT'), value: "markoftorment"},
+            {label: game.i18n.localize('POWER_LABEL.SERENITY'), value: "serenity"},
+            {label: game.i18n.localize('POWER_LABEL.EARTH_SHOT'), value: "earthshot"},
+            {label: game.i18n.localize('POWER_LABEL.WITCH_HAMMER'), value: "witchhammer"}
+        ];
+        let list;
+        if(this.data.type === "ability"){
+            list = abilitiesList;
+        }
+        else if(this.data.type === "mysticalPower"){
+            list = powersList;
+        }
+        else{return}
+        let referenceOptions = "";
+        for(let referenceEntry of list){
+            referenceOptions += `<option value=${referenceEntry.value}>${referenceEntry.label} </option>`
+        }
+        
+        let htmlTemplate = `
+        <h1> ${game.i18n.localize('ABILITYREF.DIALOG_TITLE')} </h1>
+        <p> ${game.i18n.localize('ABILITYREF.DIALOG')}</p>
+        <div style="display:flex">
+        <div  style="flex:1"><select id="reference">${referenceOptions}</select></div>
+        </div>`;
+        new Dialog({
+            title: game.i18n.localize('ABILITYREF.DIALOG_TITLE'), 
+            content: htmlTemplate,
+            buttons: {
+                validate: {
+                    label: "Validate",
+                    callback: (html) => {
+                        let selectedRef = html.find("#reference")[0].value;
+                        this.update({"data.reference": selectedRef});
+                        return(selectedRef)
+                    }
+                }, 
+                close: {
+                    label: "Close"
+                }
+            }
+        }).render(true);
     }
+    
+    async makeAction(actor, level = 1){
 
+        if(this.data.data.reference === ""){this.affectReference()};
 
-    if(ability.data.type == "ability"){
-    const scriptedAbilities =
-        [["leader", leaderPrepare],
-        ["loremaster", loremaster],
-        ["medicus", medicus],
-        ["strangler", strangler],
-        ["witchsight", witchsight]];
+        const scriptedAbilities =
+        [{reference: "leader", level: [1, 2, 3], function: leaderPrepare},
+        {reference: "loremaster", level: [1, 2, 3], function: loremaster},
+        {reference: "medicus", level: [1, 2, 3], function: medicus},
+        {reference: "strangler", level: [1, 2, 3], function: strangler},
+        {reference: "witchsight", level: [1, 2, 3], function: witchsight}];
 
-    if(actor != null){
-        const powerfunction = array1.find(element => element[0] === powerName);
-        if(powerfunction){
-            try{await powerfunction(ability, actor)} catch(error){
+        const scriptedPowers = 
+        [{reference: "anathema", level: [1, 2, 3], function: anathemaPrepare},
+        {reference: "brimstonecascade", level: [1, 2, 3], function: brimstoneCascadePrepare},
+        {reference: "bendwill", level: [1, 2, 3], function: bendWillPrepare},
+        {reference: "curse", level: [1, 2, 3], function: cursePrepare},
+        {reference: "holyaura", level: [1, 2, 3], function: holyAuraPrepare},
+        {reference: "inheritwound", level: [1, 2, 3], function: inheritWound},
+        {reference: "larvaeboils", level: [1, 2, 3], function: larvaeBoilsPrepare},
+        {reference: "unnoticeable", level: [1, 2, 3], function: unnoticeablePrepare}];
+
+        let list;
+        if(this.data.type === "ability"){
+            list = scriptedAbilities;
+        }
+        else if(this.data.type === "mysticalPower"){
+            list = scriptedPowers;
+        }
+        else{return}
+
+        const ability = list.find(element => (element.reference === this.data.data.reference && element.level.includes(level)));
+        if(ability){
+            try{ability.function(this, actor)} catch(error){
                 ui.notifications.error(error);
                 return;
             }
         }
-        else {ui.notifications.error("Not yet implemented")}
-        
-        switch (powerName) {
-            case 'none':
-                return;
-            break;
-            case 'anathema':
-                try{anathemaPrepare(ability, actor)} catch(error){
-                    ui.notifications.error(error);
-                    return;
-            };
-            break;
-            case 'bendwill':
-                try{bendWillPrepare(ability, actor)} catch(error){
-                    ui.notifications.error(error);
-                    return;
-            };
-            break;
-            case 'brimstonecascade':
-                try{brimstoneCascadePrepare(ability, actor)} catch(error){
-                    ui.notifications.error(error);
-                    return;
-            };
-            break;
-            case 'curse':
-                try{cursePrepare(ability, actor)} catch(error){
-                    ui.notifications.error(error);
-                    return;
-            };
-            break;
-            case 'holyaura':
-                try{holyAuraPrepare(ability, actor)} catch(error){
-                    ui.notifications.error(error);
-                    return;
-            };
-            break;
-            case 'inheritwound':
-                try{inheritWound(ability, actor)} catch(error){
-                    ui.notifications.error(error);
-                    return;
-            };
-            break;
-            case 'larvaeboils':
-                try{larvaeBoilsPrepare(ability, actor)} catch(error){
-                    ui.notifications.error(error);
-                    return;
-            };
-            break;
-            case 'leader':
-                try{leaderPrepare(ability, actor)} catch(error){
-                    ui.notifications.error(error);
-                    return;
-            };
-            break;
-            case 'loremaster':
-                try{loremaster(ability, actor)} catch(error){
-                    ui.notifications.error(error);
-                    return;
-            };
-            break;
-            case 'medicus':
-                try{medicus(ability, actor)} catch(error){
-                    ui.notifications.error(error);
-                    return;
-                };
-            break;
-            case 'unnoticeable':
-                try{unnoticeablePrepare(ability, actor)} catch(error){
-                    ui.notifications.error(error);
-                    return;
-                };
-            break;
-            case 'strangler':
-                try{strangler(ability, actor)} catch(error){
-                    ui.notifications.error(error);
-                    return;
-                };
-            break;
-            case 'witchsight':
-                try{witchsight(ability, actor)} catch(error){
-                    ui.notifications.error(error);
-                    return;
-                };
-            break;
-            default:
-                ui.notifications.error("Not yet implemented");
+        else{
+            ui.notifications.error("Not yet implemented");
+            return;
         }
     }
-}*/
-/*
-// affect reference for a system ability on this item 
-async function affectReferenceOnAbility(ability){
-    const abilitiesList = [
-        {label: game.i18n.localize('ABILITY_LABEL.DEFAULT'), value: "none"},
-        {label: game.i18n.localize('ABILITY_LABEL.ACROBATICS'), value: "acrobatics"},
-        {label: game.i18n.localize('ABILITY_LABEL.ALCHEMY'), value: "alchemy"},
-        {label: game.i18n.localize('ABILITY_LABEL.AGILE_COMBAT'), value: "agilecombat"},
-        {label: game.i18n.localize('ABILITY_LABEL.ARMORED_MYSTIC'), value: "armoredmystic"},
-        {label: game.i18n.localize('ABILITY_LABEL.ARROW_JAB'), value: "arrowjab"},
-        {label: game.i18n.localize('ABILITY_LABEL.ARTIFACT_CRAFTING'), value: "artifactcrafting"},
-        {label: game.i18n.localize('ABILITY_LABEL.AXE_ARTIST'), value: "axeartist"},
-        {label: game.i18n.localize('ABILITY_LABEL.BACKSTAB'), value: "backstab"},
-        {label: game.i18n.localize('ABILITY_LABEL.BEAST_LORE'), value: "beastlore"},
-        {label: game.i18n.localize('ABILITY_LABEL.BERSERKER'), value: "berserker"},
-        {label: game.i18n.localize('ABILITY_LABEL.BLACKSMITH'), value: "blacksmith"},
-        {label: game.i18n.localize('ABILITY_LABEL.BLOOD_COMBAT'), value: "bloodcombat"},
-        {label: game.i18n.localize('ABILITY_LABEL.BODYGUARD'), value: "bodyguard"},
-        {label: game.i18n.localize('ABILITY_LABEL.CHANNELING'), value: "channeling"},
-        {label: game.i18n.localize('ABILITY_LABEL.CHEAP_SHOT'), value: "cheapshot"},
-        {label: game.i18n.localize('ABILITY_LABEL.DOMINATE'), value: "dominate"},
-        {label: game.i18n.localize('ABILITY_LABEL.ENSNARE'), value: "ensnare"},
-        {label: game.i18n.localize('ABILITY_LABEL.EQUESTRIAN'), value: "equestrian"},
-        {label: game.i18n.localize('ABILITY_LABEL.EX_ATTRIBUTE'), value: "exceptionalattribute"},
-        {label: game.i18n.localize('ABILITY_LABEL.FEAT_STRENGTH'), value: "featofstrength"},
-        {label: game.i18n.localize('ABILITY_LABEL.FEINT'), value: "feint"},
-        {label: game.i18n.localize('ABILITY_LABEL.FLAILER'), value: "flailer"},
-        {label: game.i18n.localize('ABILITY_LABEL.HAMMER_RHYTHM'), value: "hammerrhythm"},
-        {label: game.i18n.localize('ABILITY_LABEL.HUNTER_INSTINCT'), value: "huntersinstinct"},
-        {label: game.i18n.localize('ABILITY_LABEL.IRON_FIST'), value: "ironfist"},
-        {label: game.i18n.localize('ABILITY_LABEL.KNIFE_PLAY'), value: "knifeplay"},
-        {label: game.i18n.localize('ABILITY_LABEL.LEADER'), value: "leader"},
-        {label: game.i18n.localize('ABILITY_LABEL.LOREMASTER'), value: "loremaster"},
-        {label: game.i18n.localize('ABILITY_LABEL.MAN-AT-ARMS'), value: "manatarms"},
-        {label: game.i18n.localize('ABILITY_LABEL.MANTLE_DANCE'), value: "mantledance"},
-        {label: game.i18n.localize('ABILITY_LABEL.MARKSMAN'), value: "marksman"},
-        {label: game.i18n.localize('ABILITY_LABEL.MEDICUS'), value: "medicus"},
-        {label: game.i18n.localize('ABILITY_LABEL.NATURAL_WARRIOR'), value: "naturalwarrior"},
-        {label: game.i18n.localize('ABILITY_LABEL.OPPORTUNIST'), value: "opportunist"},
-        {label: game.i18n.localize('ABILITY_LABEL.POISONER'), value: "poisoner"},
-        {label: game.i18n.localize('ABILITY_LABEL.POLEARM_MASTERY'), value: "polearmmastery"},
-        {label: game.i18n.localize('ABILITY_LABEL.PYROTECHNICS'), value: "pyrotechnics"},
-        {label: game.i18n.localize('ABILITY_LABEL.QUICK_DRAW'), value: "quickdraw"},
-        {label: game.i18n.localize('ABILITY_LABEL.RAPID_FIRE'), value: "rapidfire "},
-        {label: game.i18n.localize('ABILITY_LABEL.RAPID_REFLEXES'), value: "rapidreflexes"},
-        {label: game.i18n.localize('ABILITY_LABEL.RECOVERY'), value: "recovery"},
-        {label: game.i18n.localize('ABILITY_LABEL.RITUALIST'), value: "ritualist"},
-        {label: game.i18n.localize('ABILITY_LABEL.RUNE_TATTOO'), value: "runetattoo"},
-        {label: game.i18n.localize('ABILITY_LABEL.SHIELD_FIGHTER'), value: "shieldfighter"},
-        {label: game.i18n.localize('ABILITY_LABEL.SIEGE_EXPERT'), value: "siegeexpert"},
-        {label: game.i18n.localize('ABILITY_LABEL.SIXTH_SENSE'), value: "sixthsense"},
-        {label: game.i18n.localize('ABILITY_LABEL.SORCERY'), value: "sorcery"},
-        {label: game.i18n.localize('ABILITY_LABEL.STAFF_FIGHTING'), value: "stafffighting"},
-        {label: game.i18n.localize('ABILITY_LABEL.STAFF_MAGIC'), value: "staffmagic"},
-        {label: game.i18n.localize('ABILITY_LABEL.STEADFAST'), value: "steadfast"},
-        {label: game.i18n.localize('ABILITY_LABEL.STEEL_THROW'), value: "steelthrow"},
-        {label: game.i18n.localize('ABILITY_LABEL.STRANGLER'), value: "strangler"},
-        {label: game.i18n.localize('ABILITY_LABEL.STRONG_GIFT'), value: "stronggift"},
-        {label: game.i18n.localize('ABILITY_LABEL.SWORD_SAINT'), value: "swordsaint"},
-        {label: game.i18n.localize('ABILITY_LABEL.SYMBOLISM'), value: "symbolism"},
-        {label: game.i18n.localize('ABILITY_LABEL.TACTICIAN'), value: "tactician"},
-        {label: game.i18n.localize('ABILITY_LABEL.THEURGY'), value: "theurgy"},
-        {label: game.i18n.localize('ABILITY_LABEL.TRAPPER'), value: "trapper"},
-        {label: game.i18n.localize('ABILITY_LABEL.TRICK_ARCHERY'), value: "trickarchery"},
-        {label: game.i18n.localize('ABILITY_LABEL.TROLL_SINGING'), value: "trollsinging"},
-        {label: game.i18n.localize('ABILITY_LABEL.TWIN_ATTACK'), value: "twinattack"},
-        {label: game.i18n.localize('ABILITY_LABEL.2HANDED_FORCE'), value: "twohandedforce "},
-        {label: game.i18n.localize('ABILITY_LABEL.WITCHCRAFT'), value: "witchcraft"},
-        {label: game.i18n.localize('ABILITY_LABEL.WITCHSIGHT'), value: "witchsight"},
-        {label: game.i18n.localize('ABILITY_LABEL.WIZARDRY'), value: "wizardry"},
-        {label: game.i18n.localize('ABILITY_LABEL.WHIPFIGHTER'), value: "whipfighter"},
-        {label: game.i18n.localize('ABILITY_LABEL.WRESTLING'), value: "wrestling"},
-        {label: game.i18n.localize('ABILITY_LABEL.2HANDED_FINESSE'), value: "twohandedfinesse"},
-        {label: game.i18n.localize('ABILITY_LABEL.BLESSINGS'), value: "blessings"}
-    ];
-    let referenceOptions = "";
-    for(let referenceEntry of abilitiesList){
-        referenceOptions += `<option value=${referenceEntry.value}>${referenceEntry.label} </option>`
-      }
-    
-    let htmlTemplate = `
-    <h1> ${game.i18n.localize('ABILITYREF.DIALOG_TITLE')} </h1>
-    <p> ${game.i18n.localize('ABILITYREF.DIALOG')}</p>
-    <div style="display:flex">
-      <div  style="flex:1"><select id="reference">${referenceOptions}</select></div>
-    </div>`;
-    new Dialog({
-        title: game.i18n.localize('ABILITYREF.DIALOG_TITLE'), 
-        content: htmlTemplate,
-        buttons: {
-            validate: {
-                label: "Validate",
-                callback: (html) => {
-                    let selectedRef = html.find("#reference")[0].value;
-                    ability.update({"data.reference": selectedRef});
-                    return(selectedRef)
-                }
-            }, 
-            close: {
-                label: "Close"
-            }
-        }
-    }).render(true);
-}
 
-// affect reference for a system ability on this item 
-async function affectReferenceOnPower(ability){
-    const abilitiesList = [
-        {label: game.i18n.localize('ABILITY_LABEL.DEFAULT'), value: "none"},        
-        {label: game.i18n.localize('POWER_LABEL.ANATHEMA'), value: "anathema"},
-        {label: game.i18n.localize('POWER_LABEL.BANISHING_SEAL'), value: "banishingseal"},
-        {label: game.i18n.localize('POWER_LABEL.BEND_WILL'), value: "bendwill"},
-        {label: game.i18n.localize('POWER_LABEL.BLACK_BOLT'), value: "blackbolt"},
-        {label: game.i18n.localize('POWER_LABEL.BLACK_BREATH'), value: "blackbreath"},
-        {label: game.i18n.localize('POWER_LABEL.BLESSED_SHIELD'), value: "blessedshield"},
-        {label: game.i18n.localize('POWER_LABEL.BLINDING_SYMBOL'), value: "blindingsymbol"},
-        {label: game.i18n.localize('POWER_LABEL.BRIMSTONE_CASCADE'), value: "brimstonecascade"},
-        {label: game.i18n.localize('POWER_LABEL.COMBAT_HYMN'), value: "combathymn"},
-        {label: game.i18n.localize('POWER_LABEL.CONFUSION'), value: "confusion"},
-        {label: game.i18n.localize('POWER_LABEL.CURSE'), value: "curse"},
-        {label: game.i18n.localize('POWER_LABEL.DANCING_WEAPON'), value: "dancingweapon"},
-        {label: game.i18n.localize('POWER_LABEL.DRAINING_GLYPH'), value: "drainingglyph"},
-        {label: game.i18n.localize('POWER_LABEL.ENTANGLING_VINES'), value: "entanglingvines"},
-        {label: game.i18n.localize('POWER_LABEL.EXORCIZE'), value: "exorcize"},
-        {label: game.i18n.localize('POWER_LABEL.FIRE_SOUL'), value: "firesoul"},
-        {label: game.i18n.localize('POWER_LABEL.FLAME_WALL'), value: "flamewall"},
-        {label: game.i18n.localize('POWER_LABEL.HEROIC_HYMN'), value: "heroichymn"},
-        {label: game.i18n.localize('POWER_LABEL.HOLY_AURA'), value: "holyaura"},
-        {label: game.i18n.localize('POWER_LABEL.ILLUSORY_CORRECTION'), value: "illusorycorrection"},
-        {label: game.i18n.localize('POWER_LABEL.INHERIT_WOUND'), value: "inheritwound"},
-        {label: game.i18n.localize('POWER_LABEL.LARVAE_BOILS'), value: "larvaeboils"},
-        {label: game.i18n.localize('POWER_LABEL.LAY_ON_HANDS'), value: "layonhands"},
-        {label: game.i18n.localize('POWER_LABEL.LEVITATE'), value: "levitate"},
-        {label: game.i18n.localize('POWER_LABEL.LIFEGIVER'), value: "lifegiver"},
-        {label: game.i18n.localize('POWER_LABEL.MALTRANSFORMATION'), value: "maltransformation"},
-        {label: game.i18n.localize('POWER_LABEL.MIND-THROW'), value: "mindthrow"},
-        {label: game.i18n.localize('POWER_LABEL.MIRRORING'), value: "mirroring"},
-        {label: game.i18n.localize('POWER_LABEL.NATURES_EMBRACE'), value: "naturesembrace"},
-        {label: game.i18n.localize('POWER_LABEL.PRIOS_BURNING_GLASS'), value: "priosburningglass"},
-        {label: game.i18n.localize('POWER_LABEL.PROTECTIVE_RUNES'), value: "protectiverunes"},
-        {label: game.i18n.localize('POWER_LABEL.PSYCHIC_THRUST'), value: "psychicthrust"},
-        {label: game.i18n.localize('POWER_LABEL.PURGATORY'), value: "purgatory"},
-        {label: game.i18n.localize('POWER_LABEL.RETRIBUTION'), value: "retribution"},
-        {label: game.i18n.localize('POWER_LABEL.REVENANT_STRIKE'), value: "revenantstrike"},
-        {label: game.i18n.localize('POWER_LABEL.SHAPESHIFT'), value: "shapeshift"},
-        {label: game.i18n.localize('POWER_LABEL.SPHERE'), value: "sphere"},
-        {label: game.i18n.localize('POWER_LABEL.SPIRIT_WALK'), value: "spiritwalk"},
-        {label: game.i18n.localize('POWER_LABEL.STAFF_PROJECTILE'), value: "staffprojectile"},
-        {label: game.i18n.localize('POWER_LABEL.STORM_ARROW'), value: "stormarrow"},
-        {label: game.i18n.localize('POWER_LABEL.TELEPORT'), value: "teleport"},
-        {label: game.i18n.localize('POWER_LABEL.THORN_CLOAK'), value: "thorncloak"},
-        {label: game.i18n.localize('POWER_LABEL.TORMENTING_SPIRITS'), value: "tormentingspirits"},
-        {label: game.i18n.localize('POWER_LABEL.TRUE_FORM'), value: "trueform"},
-        {label: game.i18n.localize('POWER_LABEL.UNHOLY_AURA'), value: "unholyaura"},
-        {label: game.i18n.localize('POWER_LABEL.UNNOTICEABLE'), value: "unnoticeable"},
-        {label: game.i18n.localize('POWER_LABEL.WEAKENING_HYMN'), value: "weakeninghymn"},
-        {label: game.i18n.localize('POWER_LABEL.WILD_HUNT'), value: "wildhunt"},
-        {label: game.i18n.localize('POWER_LABEL.BATTLE_SYMBOL'), value: "battlesymbol"},
-        {label: game.i18n.localize('POWER_LABEL.EARTH_BINDING'), value: "earthbinding"},
-        {label: game.i18n.localize('POWER_LABEL.MARK_OF_TORMENT'), value: "markoftorment"},
-        {label: game.i18n.localize('POWER_LABEL.SERENITY'), value: "serenity"},
-        {label: game.i18n.localize('POWER_LABEL.EARTH_SHOT'), value: "earthshot"},
-        {label: game.i18n.localize('POWER_LABEL.WITCH_HAMMER'), value: "witchhammer"}
-    ];
-    let referenceOptions = "";
-    let selectedRef;
-    for(let referenceEntry of abilitiesList){
-        referenceOptions += `<option value=${referenceEntry.value}>${referenceEntry.label} </option>`
-      }
-    
-    let htmlTemplate = `
-    <h1> ${game.i18n.localize('ABILITYREF.DIALOG_TITLE')} </h1>
-    <p> ${game.i18n.localize('ABILITYREF.DIALOG')}</p>
-    <div style="display:flex">
-      <div  style="flex:1"><select id="reference">${referenceOptions}</select></div>
-    </div>`;
-    new Dialog({
-        title: game.i18n.localize('ABILITYREF.DIALOG_TITLE'), 
-        content: htmlTemplate,
-        buttons: {
-            validate: {
-                label: "Validate",
-                callback: (html) => {
-                    selectedRef = html.find("#reference")[0].value;
-                    ability.update({"data.reference": selectedRef});
-                    return(selectedRef)
-                }
-            }, 
-            close: {
-                label: "Close"
-            }
-        }
-    }).render(true);
-}*/
+}
 
 /*get the target token, its actor, and evaluate which attribute this actor will use for opposition
 @Params: {string}   targetAttributeName : the name of the resist attribute. Can be defence, and can be null.
@@ -568,12 +473,16 @@ async function modifierDialog(ability, actor, castingAttributeName, targetData, 
     if(castingAttributeName != null){
         askCastingAttribute = false;
     }
+    let askImpeding = false;
     let isWeaponRoll = false;
     let askBackstab = false;
     let askHuntersInstinct = false;
     let askIronFistMaster = false;
     let askTwoAttacks = false;
     let askThreeAttacks = false;
+    if(abilityResultFunctionStuff?.impeding){
+        askImpeding = true;
+    }
     let checkMaintain = abilityResultFunctionStuff.checkMaintain;
     if(abilityResultFunctionStuff?.combat)
     {
@@ -604,6 +513,7 @@ async function modifierDialog(ability, actor, castingAttributeName, targetData, 
         askHuntersInstinct: askHuntersInstinct,
         askThreeAttacks: askThreeAttacks,
         askTwoAttacks: askTwoAttacks,
+        askImpeding: askImpeding,
         choices: { "0": game.i18n.localize("DIALOG.FAVOUR_NORMAL"), "-1":game.i18n.localize("DIALOG.FAVOUR_DISFAVOUR"), "1":game.i18n.localize("DIALOG.FAVOUR_FAVOUR")},
         groupName:"favour",
         defaultFavour: 0,
@@ -652,6 +562,12 @@ async function modifierDialog(ability, actor, castingAttributeName, targetData, 
                 if( html.find("#maintain").length > 0) {
                     let valueM = html.find("#maintain")[0].value;	
                     if(valueM === "M"){isMaintained = true}								
+                }
+                if(askImpeding){
+                        if(html.find("#impeding")[0].checked){
+                        modifier += -abilityResultFunctionStuff.impeding;
+                        autoParams += game.i18n.localize("ARMOR.IMPEDING") + ", ";
+                    }
                 }
                 
                 //combat roll stuff
@@ -1262,10 +1178,11 @@ async function anathemaPrepare(ability, actor) {
     let anathemaStuff = {
         combat: false,
         corruption: true,
-        tradition: [wizardry, staffmagic, theurgy],
+        tradition: ["wizardry", "staffmagic", "theurgy"],
         powerLvl: powerLvl,
         hasTarget : hasTarget,
-        checkMaintain: true
+        checkMaintain: true,
+        impeding: actor.data.data.combat.impeding
     }
     await modifierDialog(ability, actor, castingAttributeName, targetData, false, autoParams, 0, favour, anathemaResult, anathemaStuff)
 }
@@ -1335,9 +1252,10 @@ async function brimstoneCascadePrepare(ability, actor) {
         powerLvl: powerLvl,
         checkMaintain: true,
         corruption: true,
-        tradition: [wizardry],
+        tradition: ["wizardry"],
         casterMysticAbilities: casterMysticAbilities,
-        targetHasRapidReflexes: targetHasRapidReflexes
+        targetHasRapidReflexes: targetHasRapidReflexes,
+        impeding: actor.data.data.combat.impeding
     }
     await modifierDialog(ability, actor, castingAttributeName, targetData, false, autoParams, 0, favour, brimstoneCascadeResult, functionStuff)
 }
@@ -1466,8 +1384,9 @@ async function bendWillPrepare(ability, actor) {
         combat: false,
         powerLvl: powerLvl,
         corruption: true,
-        tradition: [witchcraft, wizardry],
-        checkMaintain: true
+        tradition: ["witchcraft", "wizardry"],
+        checkMaintain: true,
+        impeding: actor.data.data.combat.impeding
     }
     await modifierDialog(ability, actor, castingAttributeName, targetData, false, autoParams, 0, favour, bendWillResult, bendWillStuff)
 }
@@ -1542,9 +1461,10 @@ async function cursePrepare(ability, actor) {
     let curseStuff = {
         combat: false,
         corruption: true,
-        tradition: [witchcraft],
+        tradition: ["witchcraft"],
         powerLvl: powerLvl,
-        checkMaintain: true
+        checkMaintain: true,
+        impeding: actor.data.data.combat.impeding
     }
     await modifierDialog(ability, actor, castingAttributeName, targetData, false, autoParams, 0, 0, curseResult, curseStuff)
 }
@@ -1626,9 +1546,10 @@ async function holyAuraPrepare(ability, actor) {
         combat: false,
         selectedToken: selectedToken,
         corruption: true,
-        tradition: [theurgy],
+        tradition: ["theurgy"],
         powerLvl: powerLvl,
-        checkMaintain: true
+        checkMaintain: true,
+        impeding: actor.data.data.combat.impeding
     }
     await modifierDialog(ability, actor, castingAttributeName, targetData, false, autoParams, 0, 0, holyAuraResult, fctStuff);
 }
@@ -1724,7 +1645,7 @@ async function inheritWound(ability, actor){
     if(powerLvl.level >= 2){
         healDice = "1d8"
     }
-    let tradition = [witchcraft, theurgy];
+    let tradition = ["witchcraft", "theurgy"];
 
     let templateData = {
         targetData : targetData,
@@ -1837,8 +1758,9 @@ async function larvaeBoilsPrepare(ability, actor) {
         combat: false,
         powerLvl: powerLvl,
         corruption: true,
-        tradition: [witchcraft],
-        checkMaintain: true
+        tradition: ["witchcraft"],
+        checkMaintain: true,
+        impeding: actor.data.data.combat.impeding
     }
     await modifierDialog(ability, actor, castingAttributeName, targetData, false, autoParams, 0, favour, larvaeBoilsResult, fctStuff)
 }
@@ -2332,8 +2254,9 @@ async function unnoticeablePrepare(ability, actor) {
         checkTargetSteadfast: false,
         checkMaintain: false,
         corruption: true,
-        tradition: [wizardry, theurgy],
-        addCasterEffect: "systems/symbaroum/asset/image/invisible.png"
+        tradition: ["wizardry", "theurgy"],
+        addCasterEffect: "systems/symbaroum/asset/image/invisible.png",
+        impeding: actor.data.data.combat.impeding
     }
     await standardPowerActivation(ability, actor, unnoticeableStuff);
 }
