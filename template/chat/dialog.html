@@ -17,7 +17,11 @@
         </select>
     </div>
     {{/if}}
-    
+    {{#if askImpeding}}
+    <div class="simplebox">
+      <label>{{localize "DIALOG.IMPEDING"}}</label> <span class="lblfavour"><input type="checkbox" id="impeding" checked></span>
+    </div>
+    {{/if}}
     {{#if isWeaponRoll}}
     <div class="advantage">
       <label>{{localize "DIALOG.ADVANTAGE"}}</label> <span class="lblfavour"><input type="checkbox" {{roll_defaults.advantage}} id="advantage" value="1" data-dtype="Number"> </span>
