@@ -1,8 +1,10 @@
 <div class="symbaroum chat roll">
-  <div class="foreground border">
-    <h3>{{name}}</h3>
+    <div class="foreground border">
+      <img src="{{subImg}}"/>
+        <h3>{{removeMarkup name}}</h3>
     {{#if hasSucceed}}
     <h4>{{localize "CHAT.SUCCEED"}} ({{diceResult}})</h4>
+    <h4>{{margin}}</h4>
 
     {{#if critSuccess}}
     <h4>{{localize "CHAT.CRITICAL_SUCCESS"}}</h4>
@@ -10,6 +12,7 @@
     
     {{#if hasWeapon}} 
 
+    <img src={{wepImg}}/>
     <p style="margin-top: 5px"><strong>{{localize "WEAPON.DAMAGE"}}:</strong> {{weapon.value}}</p>
     <p><strong>{{localize "WEAPON.QUALITY"}}:</strong> {{weapon.quality}}</p>
 
@@ -17,6 +20,7 @@
     {{else}} 
     
     <h4>{{localize "CHAT.FAILED"}} ({{diceResult}})</h4>
+    <h4>{{margin}}</h4>
     
     {{#if critFail}}
     <h4>{{localize "CHAT.CRITICAL_FAILURE"}}</h4>

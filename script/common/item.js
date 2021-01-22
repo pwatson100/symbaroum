@@ -228,10 +228,15 @@ export class SymbaroumItem extends Item {
     
     async makeAction(actor, level = 1){
 
-        if(this.data.data.reference === ""){this.affectReference()};
+        if(this.data.data.reference === ""){await this.affectReference()};
+
+        if(actor == undefined || actor == null){
+            return;
+        }
 
         const scriptedAbilities =
-        [{reference: "leader", level: [1, 2, 3], function: leaderPrepare},
+        [{reference: "acrobatics", level: [1, 2, 3], function: acrobatics},
+        {reference: "leader", level: [1, 2, 3], function: leaderPrepare},
         {reference: "loremaster", level: [1, 2, 3], function: loremaster},
         {reference: "medicus", level: [1, 2, 3], function: medicus},
         {reference: "strangler", level: [1, 2, 3], function: strangler},
@@ -329,6 +334,17 @@ function formatRollResult(rollData){
     return(rollResult);
 }
 
+function initializeFunctionStuff({
+    actor: actor,
+    combat: false,
+    corruption: true,
+    tradition: ["wizardry", "staffmagic", "theurgy"],
+    powerLvl: powerLvl,
+    hasTarget : hasTarget,
+    checkMaintain: true,
+    impeding: actor.data.data.combat.impeding
+})
+
 /*check the mystic traditions of the actor
 @Params: {array}    referenceList : an array of the references of the mystic tradition abilities that are relevant.
                     Sorcery is always relevant and therefore checked. 
@@ -420,6 +436,38 @@ async function getMysticAbilities(actor){
     return(actorMysticAbilities)
 }
 
+/*evaluate the temmporary corruption to be received by the actor*/
+async function getCorruption({actor, traditions, casterMysticAbilities, corruptionFormula = "1d4"}){
+    let sorceryRoll;
+    let tradition;
+    if(traditions){
+        for(let trad of traditions){
+            if(casterMysticAbilities[trad].hasAbility){
+                if(casterMysticAbilities[trad].level > 1){
+                    return({value: 1, tradition: trad})
+                }
+            }
+        } 
+    }
+    if(functionStuff.casterMysticAbilities.sorcery.hasAbility){
+        let castingAttribute = (await checkResoluteModifiers({actor: actor})).bestAttributeName;
+        let tradition ="sorcery";
+        sorceryRoll = baseRoll(actor, castingAttribute, null, null, 0, 0);
+        if(sorceryRoll.hasSucceed){
+            return({value: 1, tradition: "sorcery", sorceryRoll: sorceryRoll})
+        }
+    }
+     
+    if(functionStuff.attackFromPC){
+        let corRoll= new Roll(corruptionFormula).evaluate();
+        return({value: corRoll.total, tradition: tradition, sorceryRoll: sorceryRoll, corruptionRoll: corRoll})
+    }
+     
+    let corRoll= new Roll(corruptionFormula).evaluate({maximize: true});
+    let value = Math.ceil(corRoll.total/2);
+    return({value: value, tradition: tradition, sorceryRoll: sorceryRoll, corruptionRoll: corRoll})
+}
+
 /*get the max level learned by the actor
 @Params: {item}   ability : the ability or mysticalPower item 
 @returns:  {{number} level
@@ -483,7 +531,7 @@ async function modifierDialog(ability, actor, castingAttributeName, targetData, 
     if(abilityResultFunctionStuff?.impeding){
         askImpeding = true;
     }
-    let checkMaintain = abilityResultFunctionStuff.checkMaintain;
+    let checkMaintain = abilityResultFunctionStuff.checkMaintain ?? false;
     if(abilityResultFunctionStuff?.combat)
     {
         askBackstab = abilityResultFunctionStuff.askBackstab;
@@ -661,7 +709,7 @@ returns:{
     useSteadfastAdept {boolean},
     useSteadfastMaster {boolean}
     autoParams {string} detected and used abilities have been appended to autoParams}*/
-function checkResoluteModifiers(actor, autoParams, checkLeader, checkSteadfast){
+async function checkResoluteModifiers({actor, autoParams = "", checkLeader = false, checkSteadfast = false}){
     let useLeader = false;
     let hasSteadfast = false;
     let useSteadfastAdept = false;
@@ -855,10 +903,10 @@ async function attackResult(rollData, weapon, actor, castingAttributeName, targe
     let resultText = "";
     let damageText = "";
     let damageFinalText = "";
-    let damageRollResult= "";
+    let dmgFormula = "";
     let damageTooltip = "";
     let damageRollMod = "";
-    let dmgFormulaTooltip="";
+    let hasDmgMod = "false";
 
     for(let rollDataElement of rollData){
 
@@ -866,19 +914,17 @@ async function attackResult(rollData, weapon, actor, castingAttributeName, targe
             resultText += actor.data.name + game.i18n.localize('COMBAT.CHAT_SUCCESS') + targetData.actor.data.name + " <br>";
             hasDamage = true;
             damage = await damageRollWithDiceParams(functionStuff.attackFromPC, actor, weapon, functionStuff.dmgData, targetData);
-            damageTot += damage.roll.total;
             if(damage.roll.total > targetData.actor.data.data.health.toughness.threshold){pain = true}
-            damageRollResult += await formatRollResult([damage]) + "\n";
-            dmgFormulaTooltip += damage.roll._formula + "    ";
+            dmgFormula = game.i18n.localize('WEAPON.DAMAGE') + ": " + damage.roll._formula;
             damageTooltip += damage.roll.result + "    ";
+            damageRollMod = game.i18n.localize('COMBAT.CHAT_DMG_PARAMS') + damage.autoParams;
+            hasDmgMod = (damage.autoParams.length >0) ? true : false;
+            damageTot += Math.max(0, damage.roll.total);
         }
         else{
             resultText += actor.data.name + game.i18n.localize('COMBAT.CHAT_FAILURE') + " <br>";
         }
     }
-    
-    if (hasDamage) {damageRollMod = damage.autoParams};
-
     if(damageTot <= 0){
         damageTot = 0;
         damageText = targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_NUL');
@@ -928,11 +974,10 @@ async function attackResult(rollData, weapon, actor, castingAttributeName, targe
         rollString: await formatRollString(rollData[0], targetData.hasTarget, rollData[0].modifier),
         rollResult : await formatRollResult(rollData),
         resultText: resultText,
-        finalText: "",
         hasDamage: hasDamage,
         damageText: damageText,
-        damageRollResult: damageRollResult,
-        dmgFormulaTooltip: dmgFormulaTooltip,
+        dmgFormula: dmgFormula,
+        hasDmgMod: hasDmgMod,
         damageRollMod: damageRollMod,
         damageTooltip: damageTooltip,
         damageFinalText: damageFinalText,
@@ -1080,6 +1125,27 @@ async function standardPowerActivation(ability, actor, powerStuff) {
     await modifierDialog(ability, actor, castingAttributeName, targetData, false, autoParams, 0, favour, standardPowerResult, powerStuff)
 }
 
+async function standardAbilityActivation(ability, actor, functionStuff) {
+    let autoParams = functionStuff.autoParams ?? "";
+    let modifier =functionStuff.modifier ?? 0;
+    let targetData;
+    let favour = 0;
+    if(functionStuff.hasTarget){
+        try{targetData = getTarget(functionStuff.targetResitAttribute)} catch(error){
+            if(functionStuff.targetMandatory){
+                ui.notifications.error(error);
+                return;
+            }
+            else {
+                functionStuff.hasTarget = false;
+                targetData = {hasTarget : false}
+            }
+        }
+    }
+    else {targetData = {hasTarget : false}}
+    await modifierDialog(ability, actor, functionStuff.castingAttributeName, targetData, false, autoParams, modifier, favour, standardPowerResult, functionStuff)
+}
+
 async function standardPowerResult(rollData, ability, actor, castingAttributeName, targetData, favour, modifierCustom, isMaintained, autoParams, functionStuff){
     let introText = actor.data.name
     if(isMaintained){
@@ -1107,6 +1173,13 @@ async function standardPowerResult(rollData, ability, actor, castingAttributeNam
         targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + targetData.actor.data.name;
         if (targetData.autoParams != ""){targetText += ": " + targetData.autoParams}
     }
+
+    if(functionStuff?.corruption){
+        corruption = getCorruption(functionStuff)
+    }
+
+
+
     let templateData = {
         targetData : targetData,
         hasTarget : targetData.hasTarget,
@@ -1175,7 +1248,8 @@ async function anathemaPrepare(ability, actor) {
     else {targetData = {hasTarget : false}}
     let castingAttributeName = actorResMod.bestAttributeName;
     let autoParams = actorResMod.autoParams;
-    let anathemaStuff = {
+    let anathemaStuff = initializeFunctionStuff({
+        actor: actor,
         combat: false,
         corruption: true,
         tradition: ["wizardry", "staffmagic", "theurgy"],
@@ -1183,7 +1257,7 @@ async function anathemaPrepare(ability, actor) {
         hasTarget : hasTarget,
         checkMaintain: true,
         impeding: actor.data.data.combat.impeding
-    }
+    })
     await modifierDialog(ability, actor, castingAttributeName, targetData, false, autoParams, 0, favour, anathemaResult, anathemaStuff)
 }
 
@@ -1268,7 +1342,6 @@ async function brimstoneCascadeResult(rollData, ability, actor, castingAttribute
     let damageRollResult= "";
     let damageTooltip = "";
     let flagDataArray = [];
-    let dmgFormulaTooltip="";
     let pain = false;
 
     let introText = actor.data.name + game.i18n.localize('POWER_BRIMSTONECASC.CHAT_INTRO');
@@ -1295,7 +1368,7 @@ async function brimstoneCascadeResult(rollData, ability, actor, castingAttribute
     damageTot = damage.roll.total;
     if(damage.roll.total > targetData.actor.data.data.health.toughness.threshold){pain = true}
     damageRollResult += await formatRollResult([damage]);
-    dmgFormulaTooltip += damage.roll._formula;
+    let dmgFormula = game.i18n.localize('WEAPON.DAMAGE') + ": " + damage.roll._formula;
     damageTooltip += damage.roll.result;
 
     if(damageTot <= 0){
@@ -1347,7 +1420,7 @@ async function brimstoneCascadeResult(rollData, ability, actor, castingAttribute
         hasDamage: true,
         damageText: damageText,
         damageRollResult: damageRollResult,
-        dmgFormulaTooltip: dmgFormulaTooltip,
+        dmgFormula: dmgFormula,
         damageRollMod: "",
         damageTooltip: damageTooltip,
         damageFinalText: damageFinalText,
@@ -1416,7 +1489,7 @@ async function bendWillResult(rollData, ability, actor, castingAttributeName, ta
         subText: ability.name + " (" + functionStuff.powerLvl.lvlName + ")",
         subImg: ability.img,
         hasRoll: true,
-        rollString: `${rollData[0].actingAttributeLabel} : (${rollData[0].actingAttributeValue})`,
+        rollString: await formatRollString(rollData[0], targetData.hasTarget, rollData[0].modifier),
         rollResult : formatRollResult(rollData),
         resultText: resultText,
         finalText: ""
@@ -1859,6 +1932,23 @@ async function larvaeBoilsResult(rollData, ability, actor, castingAttributeName,
     await createModifyTokenChatButton(flagDataArray);
 }
 
+async function unnoticeablePrepare(ability, actor) {
+    let unnoticeableStuff = {
+        combat: false,
+        powerLvl: 0,
+        hasTarget : false,
+        targetMandatory: false,
+        targetResitAttribute: null,
+        checkTargetSteadfast: false,
+        checkMaintain: false,
+        corruption: true,
+        tradition: ["wizardry", "theurgy"],
+        addCasterEffect: "systems/symbaroum/asset/image/invisible.png",
+        impeding: actor.data.data.combat.impeding
+    }
+    await standardPowerActivation(ability, actor, unnoticeableStuff);
+}
+
 async function leaderPrepare(ability, actor) {
 
     let powerLvl = getPowerLevel(ability);
@@ -1919,6 +2009,22 @@ async function loremaster(ability, actor) {
         content: html
     }
     ChatMessage.create(chatData);
+}
+
+async function acrobatics(ability, actor) {
+    
+    let powerLvl = getPowerLevel(ability);
+
+    let functionStuff = {
+        castingAttributeName: "quick",
+        combat: false,
+        powerLvl: powerLvl,
+        hasTarget : false,
+        targetMandatory: false,
+        checkMaintain: false,
+        modifier: actor.data.data.combat.impeding*-1
+    }
+    await standardAbilityActivation(ability, actor, functionStuff)
 }
 
 function medicus(ability, actor) {
@@ -2242,23 +2348,6 @@ async function strangler(ability, actor){
             }
         }
     }).render(true);
-}
-
-async function unnoticeablePrepare(ability, actor) {
-    let unnoticeableStuff = {
-        combat: false,
-        powerLvl: 0,
-        hasTarget : false,
-        targetMandatory: false,
-        targetResitAttribute: null,
-        checkTargetSteadfast: false,
-        checkMaintain: false,
-        corruption: true,
-        tradition: ["wizardry", "theurgy"],
-        addCasterEffect: "systems/symbaroum/asset/image/invisible.png",
-        impeding: actor.data.data.combat.impeding
-    }
-    await standardPowerActivation(ability, actor, unnoticeableStuff);
 }
 
 async function witchsight(ability, actor) {
