@@ -205,7 +205,7 @@ export async function baseRoll(actor, actingAttributeName, targetActor, targetAt
   if (game.dice3d != null) {
     await game.dice3d.showForRoll(attributeRoll);
   }
-  console.log("Arribute roll is:"+JSON.stringify(attributeRoll)+":");
+  
   diceBreakdown = formatDice(attributeRoll.terms,"+");
 
   let actingAttributeValue = getAttributeValue(actor, actingAttributeName);
@@ -311,7 +311,7 @@ function formatDice(diceResult, separator) {
 			rolls += dd;
 		} else {
       let tmpSep = separator;
-      console.log("dd"+JSON.stringify(dd));
+      
       if( dd.modifiers.includes("kl") || dd.modifiers.includes("kh") ) {
         tmpSep = " | ";
       }
