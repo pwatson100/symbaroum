@@ -4,11 +4,13 @@ let roll_defaults = {};
 
 export async function prepareRollAttribute(actor, attributeName, armor, weapon) {
 	let attri_defaults = getRollDefaults(attributeName,armor != null, weapon != null);
+  let askImpeding = character.data.data.combat.impeding;
 
   const html = await renderTemplate('systems/symbaroum/template/chat/dialog.html', {
     "hasTarget": game.user.targets.values().next().value !== undefined,
     "isWeaponRoll" : weapon !== null,
     "isArmorRoll" : armor !== null,
+    "askImpeding" : askImpeding,
     "choices": { "0": game.i18n.localize("DIALOG.FAVOUR_NORMAL"), "-1":game.i18n.localize("DIALOG.FAVOUR_DISFAVOUR"), "1":game.i18n.localize("DIALOG.FAVOUR_FAVOUR")},
     "groupName":"favour",
     "roll_defaults": attri_defaults	
@@ -54,6 +56,11 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon) 
           
           const modifier = html.find("#modifier")[0].value;   
           attri_defaults.modifier = modifier;              
+          if(askImpeding){
+            if(html.find("#impeding")[0].checked){
+              modifier.value += askImpeding;
+            }
+          }                 
                               
           await rollAttribute(actor, attributeName, getTarget(), targetAttributeName, favour,parseInt(modifier), armor, weapon, advantage, damModifier);
           },

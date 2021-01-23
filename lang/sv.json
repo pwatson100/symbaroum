@@ -176,6 +176,7 @@
   "CHAT.DEATH_ROLL": "Dödsslag",
   "CHAT.SUCCEED": "Lyckat",
   "CHAT.FAILED": "Misslyckat",
+  "CHAT.MARGIN": "Result Margin : ",
   "CHAT.CRITICAL_SUCCESS": "Kritiskt Framgång!",
   "CHAT.CRITICAL_FAILURE": "Kritiskt Misslyckande!",
   "CHAT.CRITICAL_FREEATTACK": "Fri Attack",
@@ -191,6 +192,7 @@
   "COMBAT.CHAT_INTRO": " attackerar med ",
   "COMBAT.CHAT_SUCCESS": " träffar ",
   "COMBAT.CHAT_FAILURE": " miss.",
+  "COMBAT.CHAT_BLEED": " blöder och förlorar tålighet varje runda: ",
   "COMBAT.CHAT_POISON": " försöker förgifta ",
   "COMBAT.CHAT_POISON_FAILURE": "Inte förgiftad.",
   "COMBAT.CHAT_POISON_EXTEND": "Målet var redan förgiftad, ny varaktighet: rundor: ",
@@ -239,7 +241,7 @@
   "DIALOG.IMPEDING": "Inkludera begränsande avdrag?",
   "DIALOG.CASTING": "Initial besvärjelse",
   "DIALOG.MAINTAINING": "Upprätthålla förmåga/kraft",
-  
+
   "EQUIPMENT.NAME": "Namn",
   "EQUIPMENT.COST": "Kostnad",
   "EQUIPMENT.NUMBER": "Nr",
@@ -387,7 +389,6 @@
   "POWER_INHERITWOUND.CHAT_HEALED": " tar emot Tålighetsläkning för: ",
   "POWER_INHERITWOUND.CHAT_DAMAGE": " mottagen skada: ",
 
-
   "POWER_LARVAEBOILS.CHAT_INTRO": " kastar larver.",
   "POWER_LARVAEBOILS.CHAT_INTRO_M": " upprätthåller larvernas framfart.",
   "POWER_LARVAEBOILS.CHAT_SUCCESS": " äts upp inifrån av larverna.",
@@ -395,6 +396,7 @@
 
   "QUALITY.AREAMRR": "Effektområde - Närstidsradie",
   "QUALITY.AREASRR": "Effektområde - Kort radie", 
+
   "QUALITY.AREAC": "Effektområde - Kon",
   "QUALITY.BALANCED": "Balanserat",
   "QUALITY.BASTARD": "Bastardvapen", 

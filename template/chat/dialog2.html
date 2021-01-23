@@ -1,4 +1,14 @@
 <div class="symbaroum dialog">
+  {{#if askWeapon}}
+  <div class="attribute">
+    <label>Choose weapon</label>
+    <select id="weapon">
+        {{#each weapons}}
+        <option value={{this.id}}>{{this.name}} | Attribut: {{this.data.data.attribute}} </option>
+        {{/each}}
+    </select>
+</div>
+  {{/if}}
   {{#if askCastingAttribute}}
   <div class="attribute">
       <label>{{localize "DIALOG.CASTING_ATTRIBUTE"}}</label>
@@ -38,20 +48,26 @@
     <div class="favour">
       <label class="lblfavour">{{radioBoxes groupName choices checked=defaultFavour localize=true}}</label>
   </div>
-      
+  {{#if askImpeding}}
+  <div class="simplebox">
+    <label>{{localize "DIALOG.IMPEDING"}}</label> <span class="lblfavour"><input type="checkbox" id="impeding" checked></span>
+  </div>
+  {{/if}}
     {{#if isWeaponRoll}}
-    <div class="infotext">
-      <p>{{removeMarkup autoparamsText}}</p>
+    <div class="simplebox">
+      <label>{{localize "DIALOG.ADVANTAGE"}}</label><span class="lblfavour"><input type="checkbox" id="advantage" unchecked></span>
     </div>
-    <div class="checkbox">
-      <label>{{localize "DIALOG.ADVANTAGE"}}</label> <span class="lblfavour"><input type="checkbox" id="advantage" unchecked> </span>
-    </div>
-    <div class="checkbox">
-      <label>{{localize "DIALOG.IGNORE_ARMOR"}}</label> <span class="lblfavour"><input type="checkbox" id="ignarm" unchecked> </span>
+    <div class="simplebox">
+      <label>{{localize "DIALOG.IGNORE_ARMOR"}}</label><span class="lblfavour"><input type="checkbox" id="ignarm" unchecked></span>
     </div>
     <div class="damagemodifier">
-		<label>{{localize "DIALOG.DAMAGE_MODIFIER"}}</label> <input id="dammodifier" value="{{defaultDamModifier}}" type="text" data-dtype="Text"/> 
+		<label>{{localize "DIALOG.DAMAGE_MODIFIER"}}</label><input id="dammodifier" value="{{defaultDamModifier}}" type="text" data-dtype="Text"/>
     </div>
+    {{#if askIronFistMaster}}
+    <div class="damagemodifier">
+      <label>{{localize "DIALOG.DAMAGE_IF_MODIFIER"}}</label> <input id="ironfistmodifier" value="1d8" type="text" data-dtype="Text"/> 
+      </div>
+      {{/if}}
     <div class="bonus">
       <label>{{localize "DIALOG.USE_POISON"}}</label>
       <select id="poison">
@@ -61,16 +77,29 @@
         <option value="3">{{localize "DIALOG.STRONG_POISON"}}</option>
     </select>
     </div>
-    {{/if}}
     {{#if askBackstab}}
-    <div class="checkbox">
-      <label>{{localize "DIALOG.BACKSTAB"}}</label> <span class="lblfavour"><input type="checkbox" id="usebackstab" unchecked> </span>
+    <div class="simplebox">
+      <label>{{localize "DIALOG.BACKSTAB"}}</label> <span class="lblfavour"><input type="checkbox" id="usebackstab" unchecked></span>
     </div>
     {{/if}}
     {{#if askHuntersInstinct}}
-    <div class="checkbox">
-      <label>{{localize "DIALOG.HUNTERS_INSTINCT"}}</label> <span class="lblfavour"><input type="checkbox" id="usehunter" unchecked> </span>
+    <div class="simplebox">
+      <label>{{localize "DIALOG.HUNTERS_INSTINCT"}}</label> <span class="lblfavour"><input type="checkbox" id="usehunter" unchecked></span>
   </div>
+    {{/if}}
+    {{#if askTwoAttacks}}
+    <div class="simplebox">
+      <label>{{localize "DIALOG.2ATTACKS"}}</label> <span class="lblfavour"><input type="checkbox" id="do2attacks" unchecked></span>
+    </div>
+    {{/if}}
+    {{#if askThreeAttacks}}
+    <div class="simplebox">
+      <label>{{localize "DIALOG.3ATTACKS"}}</label> <span class="lblfavour"><input type="checkbox" id="do3attacks" unchecked></span>
+    </div>
+    {{/if}}
+    <div class="infotext">
+      <p><span class="infotext"></span>{{removeMarkup autoparamsText}}</span></p>
+    </div>
     {{/if}}
     {{#if isArmorRoll}}
     <div class="advantage">

@@ -93,7 +93,34 @@
     width: auto;
 }
 
-.symbaroum.chat.combat p,
-.symbaroum.chat.ability p {
-    margin: 0 0 4px;
+.symbaroum.chat.combat h4,
+.symbaroum.chat.ability h4 {
+    font-family: var(--font-text);
+    font-size: 16px;
+    font-weight: bold;
+    margin: 10px 0  10px 0;
+    text-align: center;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+  
+/* Tooltip text */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+
+    position: absolute;
+    z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
 }

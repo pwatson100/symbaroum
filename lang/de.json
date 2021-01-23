@@ -73,6 +73,7 @@
 "CHAT.DEATH_ROLL": "Todesprobe",
 "CHAT.SUCCEED": "Erfolg",
 "CHAT.FAILED": "Misserfolg",
+"CHAT.MARGIN": "Result Margin : ",
 "CHAT.CRITICAL_SUCCESS": "Kritischer Erfolg",
 "CHAT.CRITICAL_FAILURE": "Kritischer Misserfolg",
 "CHAT.CRITICAL_FREEATTACK": "Freier Angriff",

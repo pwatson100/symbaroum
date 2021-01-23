@@ -63,3 +63,5 @@ I would like to thank him for his excellent work in putting the system together.
 [foundry-shield-066]: https://img.shields.io/badge/Foundry-v0.6.6-informational
 [foundry-shield-078]: https://img.shields.io/badge/Foundry-v0.7.8-informational
 [foundry-url]: https://foundryvtt.com/
+
+- Additional art under Creative Commons 3.0 BY license: icons by Delapouite and Lorc

@@ -1,4 +1,4 @@
-import { activateAbility, attackRoll } from './item.js';
+import { attackRoll } from './item.js';
 import { prepareRollAttribute } from "../common/dialog.js";
 
 export class SymbaroumActor extends Actor {
@@ -106,6 +106,7 @@ export class SymbaroumActor extends Actor {
             protection: activeArmor.data.protection,
             quality: activeArmor.data.quality,
             qualities: activeArmor.data.qualities,
+            impeding: activeArmor.data.impeding,
             defense: data.data.attributes[attributeDef].total - activeArmor.data.impeding + data.data.bonus.defense,
             msg: `${game.i18n.localize(data.data.attributes[attributeDef].label)} ${data.data.attributes[attributeDef].total}<br/>${game.i18n.localize("ARMOR.IMPEDING")}(${-1 * activeArmor.data.impeding})${data.data.bonus.defense_msg}`
         };
@@ -222,7 +223,8 @@ export class SymbaroumActor extends Actor {
 
 
     async usePower(powerItem){
-       await activateAbility(powerItem, this);
+        console.log(powerItem);
+       await powerItem.makeAction(this);
     }
 
     async rollArmor() {
@@ -236,7 +238,13 @@ export class SymbaroumActor extends Actor {
         const bonus = this.data.data.bonus[weapon.data.data.attribute];
         const attributeData = { name: game.i18n.localize(attribute.label), value: attribute.value + bonus };
         const weaponData = { damage: weapon.data.data.damage, quality: weapon.data.data.quality, qualities: weapon.data.data.qualities }
-        await attackRoll(this, weapon, null);
+        await attackRoll(weapon, this);
     }
 
+    async rollAttribute(attributeName) {
+        const attribute = this.data.data.attributes[attributeName];
+        const bonus = this.data.data.bonus[attributeName];
+        const attributeData = {name: game.i18n.localize(attribute.label), value: attribute.value + bonus};
+        await prepareRollAttribute(this, attributeData, null, null);
+    }
 }

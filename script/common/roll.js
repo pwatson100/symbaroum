@@ -62,6 +62,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
       weaponResults.value = weaponRoll.total;
       weaponResults.name = weapon.name; 
       weaponResults.diceBreakdown = formatDice(weaponRoll.terms,"+");
+      weaponResults.img = weapon.data.img;
     }
   }
   
@@ -73,7 +74,9 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   let finalMod = modifier - getAttributeValue(targetActor, targetAttributeName) + 10;
 
   let rollData = {
+    subImg: actor.data.img,
     name: `${getAttributeLabel(actor, actingAttributeName) } (${ getAttributeValue(actor, actingAttributeName) }) ⬅ ${getAttributeLabel(targetActor, targetAttributeName)} (${finalMod})`,
+    margin: game.i18n.localize('CHAT.MARGIN') + (rollResults. - attributeRoll._total).toString(),
     hasSucceed: rollResults.hasSucceed,
     diceResult: rollResults.diceResult,
     diceBreakdown: rollResults.diceBreakdown,
@@ -81,6 +84,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
     hasWeapon: hasWeapon,
     armor: armorResults,
     weapon: weaponResults,
+    wepImg: weaponResults.img,
     critSuccess: rollResults.critSuccess,
     critFail: rollResults.critFail
   };
@@ -348,27 +352,25 @@ It won't work with NPC fixed values as input
 * @param {object} targetData is information on the target that will receive the damage (as returned by the getTarget function)*/
 
 export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgData, targetData){
-  
   let newRollDmgString = "";
   let wepDmg = weapon.data.data.damage;
   let modDmg = 0;
   let armorProt = targetData.actor.data.data.combat.protection;   
 
-  let damageAutoParams = game.i18n.localize('COMBAT.CHAT_DMG_PARAMS');
-  if(dmgData.isRanged){
+  let damageAutoParams = "";
+  if(dmgData.modifier != ""){
+    damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_CUSTOM');
+  }
+
+  //if(dmgData.isRanged){
     if(dmgData.hunterIDmg){
       dmgData.modifier += " + 1d4";
       damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_HUNTER');
     }
-  }
-
-  if(dmgData.modifier != "0"){
-    damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_CUSTOM');
-  }
-
+  
   if(dmgData.hasAdvantage){
     if(dmgData.useBackstab){
-      dmgData.modifier += " + 2d4";
+      dmgData.modifier += " + 1d4 + 1d4";
       damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_BACKSTAB');
     }
     else
@@ -377,7 +379,7 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
       damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_ADVANTAGE');
     }
   }
-  if(targetData.leaderTarget){
+  if(dmgData.leaderTarget){
     dmgData.modifier += " + 1d4";
     damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
   }
@@ -388,38 +390,73 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
   if(dmgData.ignoreArm){
     damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_IGN_ARMOR');
   }
+    // If the attack is made by a PC, roll damage and substract static value for armor (=max armor/2)
+    if(attackFromPC){
+      // evaluate NPC armor value
+      let armorRoll= new Roll(armorProt).evaluate({maximize: true});
+      let armorValue = Math.ceil(armorRoll.total/2);
+  
+      //build roll string
+      newRollDmgString = wepDmg + " + " + dmgData.modifier + " + " + modDmg;
+      if(!dmgData.ignoreArm){
+        newRollDmgString += " - " + armorValue;
+      }
+    }
+    else{
+      // If the attack is made by a NPC, evaluate static value for damage (=max damage/2) then roll armor and substract
+      wepDmg += " + " + dmgData.modifier;
+      let weaponRoll= new Roll(wepDmg).evaluate({maximize: true});
+      let weaponDmgValue = Math.ceil(weaponRoll.total/2);
+  
+     //build roll string
+      newRollDmgString = weaponDmgValue + " + " + modDmg.toString(); 
+      if(!dmgData.ignoreArm){
+        newRollDmgString += " - " + armorProt;
+      }
+    }
+    // final damage
+    let dmgRoll= new Roll(newRollDmgString).evaluate();
 
+    return{
+    roll : dmgRoll,
+    diceResult: dmgRoll.total,
+    autoParams : damageAutoParams,
+    favour: 0
+  }
+}
+
+/* like damageRollWithDiceParams, but for spell damage and such */
+export async function simpleDamageRoll(attackFromPC, actor, damageFormula, targetData, ignoreArmor){
   // If the attack is made by a PC, roll damage and substract static value for armor (=max armor/2)
+  let armorProt = targetData.actor.data.data.combat.protection;
+  let newRollDmgString = "";
   if(attackFromPC){
     // evaluate NPC armor value
     let armorRoll= new Roll(armorProt).evaluate({maximize: true});
     let armorValue = Math.ceil(armorRoll.total/2);
-
+    newRollDmgString = damageFormula;
     //build roll string
-    newRollDmgString = wepDmg + " + " + dmgData.modifier + " + " + modDmg;
-    if(!dmgData.ignoreArm){
+    if(!ignoreArmor){
       newRollDmgString += " - " + armorValue;
     }
   }
   else{
     // If the attack is made by a NPC, evaluate static value for damage (=max damage/2) then roll armor and substract
-    wepDmg += " + " + dmgData.modifier;
-    let weaponRoll= new Roll(wepDmg).evaluate({maximize: true});
+    let weaponRoll= new Roll(damageFormula).evaluate({maximize: true});
     let weaponDmgValue = Math.ceil(weaponRoll.total/2);
 
    //build roll string
-    newRollDmgString = weaponDmgValue + " + " + modDmg.toString(); 
-    if(!dmgData.ignoreArm){
+    newRollDmgString = weaponDmgValue;
+    if(!ignoreArmor){
       newRollDmgString += " - " + armorProt;
     }
   }
   // final damage
   let dmgRoll= new Roll(newRollDmgString).evaluate();
-
   return{
     roll : dmgRoll,
     diceResult: dmgRoll.total,
-    autoParams : damageAutoParams,
+    autoParams : "",
     favour: 0
   }
 }
