@@ -47,7 +47,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
     if (dam !== '') {
       if ( advantage ) { dam += "+1d4[advantage]"; }
       if ( rollResults.critSuccess ) { dam += "+1d6[critical]"; }
-      if( weapon.data.data.qualities.deepImpact ) { dam += "+1[deep impact]"; }
+      if( weapon.data.data.qualities.deepImpact ) { dam += "+1"; } // Of note - can't classify this damage as Deep Impact unless you do "1d1[deep impact]"
       if( damModifier !== '') { dam = dam+"+"+damModifier; }
       
 
@@ -57,9 +57,10 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
       if (game.dice3d != null) {
         await game.dice3d.showForRoll(weaponRoll);
       }
-      console.log("Weapon roll is:"+JSON.stringify(weapon)+":");
+      
       weaponResults.value = weaponRoll.total;
-      weaponResults.name = weapon.name;      
+      weaponResults.name = weapon.name; 
+      weaponResults.diceBreakdown = formatDice(weaponRoll.terms,"+");
     }
   }
   
@@ -74,6 +75,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
     name: `${getAttributeLabel(actor, actingAttributeName) } (${ getAttributeValue(actor, actingAttributeName) }) ⬅ ${getAttributeLabel(targetActor, targetAttributeName)} (${finalMod})`,
     hasSucceed: rollResults.hasSucceed,
     diceResult: rollResults.diceResult,
+    diceBreakdown: rollResults.diceBreakdown,
     hasArmor: hasArmor,
     hasWeapon: hasWeapon,
     armor: armorResults,
@@ -179,6 +181,7 @@ export function getAttributeValue(actor, attributeName) {
   {number}   favour (same as @Params)
   {number}   modifier (same as @Param)
   {array}   dicesResult,  //if favour/unfavour, an array of the results of the 2 thrown dice, or null
+  {string}  diceBreakdown, //HTML formatted string
   {boolean}  critSuccess,
   {boolean}  critFail, */
 export async function baseRoll(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier) {
@@ -202,7 +205,9 @@ export async function baseRoll(actor, actingAttributeName, targetActor, targetAt
   if (game.dice3d != null) {
     await game.dice3d.showForRoll(attributeRoll);
   }
-  
+  console.log("Arribute roll is:"+JSON.stringify(attributeRoll)+":");
+  diceBreakdown = formatDice(attributeRoll.terms,"+");
+
   let actingAttributeValue = getAttributeValue(actor, actingAttributeName);
   let actingAttributeLabel = getAttributeLabel(actor, actingAttributeName);
 
@@ -217,7 +222,7 @@ export async function baseRoll(actor, actingAttributeName, targetActor, targetAt
     diceTarget += (10 - resistAttributeValue);
   }
 
-  if(game.settings.get('symbaroum', 'alwaysSucceedOnOne') ) {
+  if(game.settings.get('symbaroum', 'alwaysSucceedOnOne') || game.settings.get('symbaroum', 'optionalCrit') || game.settings.get('symbaroum', 'optionalRareCrit')  ) {
     diceTarget = Math.min(Math.max(1,diceTarget), 19);
   }  
 
@@ -233,9 +238,10 @@ export async function baseRoll(actor, actingAttributeName, targetActor, targetAt
           critGood = !critBad;
       }    
       if( game.settings.get('symbaroum', 'optionalRareCrit') ) {
-        let secondRoll = new Roll("1d20").evaluate();
+        let secondRoll = new Roll("1d20").evaluate();        
         critGood = critGood && secondRoll.total <= diceTarget;
         critBad = critBad && secondRoll.total > diceTarget;
+        diceBreakdown = `${diceBreakdown} &amp; <span class="${critGood?"critical":critBad?"fumble":"normal"}">${secondRoll.results}</span>`;
       }
     }
 	}
@@ -250,6 +256,7 @@ export async function baseRoll(actor, actingAttributeName, targetActor, targetAt
     favour: favour,
     modifier: modifier,
     dicesResult: dicesResult,
+    diceBreakdown: diceBreakdown,    
     critSuccess: critGood,
     critFail: critBad
   });
@@ -293,7 +300,7 @@ export async function createModifyTokenChatButton(actionsDataArray){
 }
 
 /*formatDice produces a string of any rolls with any ignored dice within a css class of .strike
-@param diceResults is the dice results containing all the dice rolled, including rare crit notifier
+@param diceResults is the dice terms containing all the dice rolled, including rare crit notifier
 @param separator the chosen separator to use between dice
 
 */
@@ -303,13 +310,18 @@ function formatDice(diceResult, separator) {
 		if (typeof dd === 'string' || Number.isInteger(dd) ) {
 			rolls += dd;
 		} else {
+      let tmpSep = separator;
+      console.log("dd"+JSON.stringify(dd));
+      if( dd.modifiers.includes("kl") || dd.modifiers.includes("kh") ) {
+        tmpSep = " | ";
+      }
 			let j = 0;
 			for( let diceDetails of dd.results) {
-				if( j > 0 && separator != null) {
-					rolls += separator;
+				if( j > 0 && tmpSep != null) {
+					rolls += tmpSep;
 				}
 				if(diceDetails.active ) {
-					rolls += diceDetails["result"];				
+          rolls += diceDetails["result"];	
 				} else {
 					rolls += "<span class='strike'>"+diceDetails["result"]+"</span>";
 				}

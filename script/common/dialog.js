@@ -53,7 +53,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon) 
           const favour = fvalue;
           
           const modifier = html.find("#modifier")[0].value;   
-          attri_defaults.bonus = modifier;              
+          attri_defaults.modifier = modifier;              
                               
           await rollAttribute(actor, attributeName, getTarget(), targetAttributeName, favour,parseInt(modifier), armor, weapon, advantage, damModifier);
           },
@@ -83,7 +83,7 @@ function createDefaults() {
 		targetAttributeName: "custom",
 		additionalModifier: "",
 		selectedFavour: "0",
-		modifier: 0,
+		modifier: "0",
 		advantage: "",
 	};
 }

@@ -47,3 +47,64 @@
     font-weight: bold;
     margin: 0 0 4px;
 }
+
+.symbaroum.chat.roll .tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+  
+/* Tooltip text */
+.symbaroum.chat.roll .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 10em;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+   
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+
+.symbaroum.chat.roll .right {
+    top: -15%;
+    left: 105%;
+}
+
+.symbaroum.chat.roll .tooltip .down {
+    top: 100%;
+    left: 0%;
+}
+
+.symbaroum.chat.roll .tooltip .downleft {
+    top: -105%;
+    left: calc(-5% - 10em);
+}
+
+.symbaroum.chat.roll .tooltip .up {
+    top: -105%;
+    left: 0%;
+}
+
+.symbaroum.chat.roll .tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+.symbaroum.chat.roll .strike {
+    color: grey;
+    text-decoration: line-through;
+}
+
+.symbaroum.chat.roll .fumble {
+    color: red;
+    font-weight: bold;
+}
+
+.symbaroum.chat.roll .critical {
+    color: yellow;
+    font-weight: bold;
+
+}

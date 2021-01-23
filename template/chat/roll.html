@@ -2,7 +2,10 @@
   <div class="foreground border">
     <h3>{{name}}</h3>
     {{#if hasSucceed}}
-    <h4>{{localize "CHAT.SUCCEED"}} ({{diceResult}})</h4>
+    <div class="tooltip" style="width: 100%;">
+      <h4>{{localize "CHAT.SUCCEED"}} ({{diceResult}})</h4>
+      <div class="tooltiptext">{{{diceBreakdown}}}</div>
+    </div>
 
     {{#if critSuccess}}
     <h4>{{localize "CHAT.CRITICAL_SUCCESS"}}</h4>
@@ -11,13 +14,17 @@
     {{#if hasWeapon}} 
 
     <p style="margin-top: 5px;text-align:center">{{weapon.name}}</p>
-    <p style="margin-top: 5px"><strong>{{localize "WEAPON.DAMAGE"}}:</strong> {{weapon.value}}</p>
+    <div class="tooltip"><p style="margin-top: 5px"><strong>{{localize "WEAPON.DAMAGE"}}:</strong> {{weapon.value}}</p>
+      <div class="tooltiptext">{{{weapon.diceBreakdown}}}</div>
+    </div>
     <p><strong>{{localize "WEAPON.QUALITY"}}:</strong> {{weapon.quality}}</p>
 
     {{/if}} 
     {{else}} 
-    
-    <h4>{{localize "CHAT.FAILED"}} ({{diceResult}})</h4>
+    <div class="tooltip" style="width: 100%;">
+      <h4>{{localize "CHAT.FAILED"}} ({{diceResult}})</h4>
+      <div class="tooltiptext">{{{diceBreakdown}}}</div>
+    </div>
     
     {{#if critFail}}
     <h4>{{localize "CHAT.CRITICAL_FAILURE"}}</h4>
