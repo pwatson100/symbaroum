@@ -105,6 +105,7 @@ export class SymbaroumActor extends Actor {
             armor: activeArmor.name,
             protection: activeArmor.data.protection,
             quality: activeArmor.data.quality,
+            qualities: activeArmor.data.qualities,
             defense: data.data.attributes[attributeDef].total - activeArmor.data.impeding + data.data.bonus.defense,
             msg: `${game.i18n.localize("TOOLTIP.BONUS_TOTAL")} ${data.data.attributes[attributeDef].total} ${data.data.bonus.defense_msg}`
         };

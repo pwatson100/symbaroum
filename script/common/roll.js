@@ -1,79 +1,53 @@
-export async function rollAttribute(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier, armor, weapon, advantage, daqmModifier) {
-  let d20str = "1d20";
-  let detailedRoll = "";
-  let dam = "";
-  let isMultiDice = favourmod != 0;
-  let isMultiDiceCombat = false;
-  let critGood = false;
-  let critBad = false;
-	
-	if(favourmod == 1) d20str="2d20kl";
-	else if(favourmod == -1) d20str="2d20kh";
+export async function rollAttribute(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier, armor, weapon, advantage, damModifier) {
+  let dam = "";	
+
+  let hasWeapon = weapon != null;
+  let weaponResults = {
+    value:0,
+    name: "",
+    message: "",
+    diceBreakdown: ""
+
+  };
+  let hasArmor = armor != null;
+  let armorResults = {
+    value: 0,
+    name: "",
+    message: "",
+    diceBreakdown: ""
+  };
+
+	if(hasWeapon && advantage ) { modifier +=2 }
+  else if (hasArmor && advantage) { modifier =-2; }
   
-	let attributeRoll = new Roll(d20str, {});  
-  
-  attributeRoll.roll();
-  
-  if (game.dice3d != null) {
-    await game.dice3d.showForRoll(attributeRoll);
-  }
-
-  let mod = (modifier.value - 10) * -1;
-
-	let hasWeapon = weapon != null;
-	let hasArmor = armor != null;
-
-  baseRoll(actor, actingAttributeName, targetActor, targetAttributeName, favour, mod);
-
-	if(hasWeapon && advantage ) { advantagemod=2 }
-	else if (hasArmor && advantage) { advantagemod=-2; }  
-
 	if(hasWeapon && weapon.qualities.precise) {		
-		mod++;
-	}
-	
-  let diceTarget = attribute.value + mod;
-   
-  // Check option - always succeed on 1, always fail on 20
-	if(game.settings.get('symbaroum', 'alwaysSucceedOnOne') || game.settings.get('symbaroum', 'optionalCrit') || game.settings.get('symbaroum', 'optionalRareCrit') ) { 
-		diceTarget = Math.min(Math.max(1,attribute.value + mod + advantagemod), 19);
-    
-    if( attributeRoll._total === 1 || attributeRoll._total === 20 ) {
-      if( game.settings.get('symbaroum', 'optionalCrit') ) {
-        critGood = attributeRoll._total === 1;
-        critBad = attributeRoll._total === 20;
-      }    
-      if( game.settings.get('symbaroum', 'optionalRareCrit') ) {
-        let secondRoll = new Roll("1d20",{});
-        secondRoll.roll();
-        critGood = critGood && secondRoll._total <= diceTarget;
-        critBad = critBad && secondRoll._total > diceTarget;
-      }
-    }
-	}
-
-  if (hasArmor && attributeRoll._total >= diceTarget) {
+		modifier++;
+  }
+  
+  let rollResults = await baseRoll(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier);
+  
+  if (hasArmor && !rollResults.hasSucceed) {
     if (armor.protection !== '') {
       let prot = armor.protection;
-      // if( armor.qualties.reinforced ) { prot += "+1"; }
+      /* if( armor.qualties.reinforced ) { prot += "+1[reinforced]"; } */
       let armorRoll = new Roll(prot, {});
       
       armorRoll.roll();
       if (game.dice3d != null) {
         await game.dice3d.showForRoll(armorRoll);
       }
-      armor.value = armorRoll._total;
-    } else {
-      armor.value = 0;
+      
+      armorResults.name = armor.armor;
+      armorResults.value = armorRoll.total;
     }
   }
 
-  if (hasWeapon && attributeRoll._total <= diceTarget) {
+  if (hasWeapon && rollResults.hasSucceed) {
     dam = weapon.damage;
     if (dam !== '') {
-      if ( advantage ) { dam += "+1d4"; }
-      if ( critGood ) { dam += "+1d6"; }
-      if( weapon.qualities.deepImpact ) { dam += "+1"; }
+      if ( advantage ) { dam += "+1d4[advantage]"; }
+      if ( rollResults.critSuccess ) { dam += "+1d6[critical]"; }
+      if( weapon.qualities.deepImpact ) { dam += "+1[deep impact]"; }
       if( damModifier !== '') { dam = dam+"+"+damModifier; }
       
 
@@ -83,33 +57,35 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
       if (game.dice3d != null) {
         await game.dice3d.showForRoll(weaponRoll);
       }
-      weapon.value = weaponRoll._total;
-    } else {
-      weapon.value = 0;
+      console.log("Weapon roll is:"+JSON.stringify(weaponRoll)+":");
+      weaponResults.value = weaponRoll.total;
+      weaponResults.name = weapon.name;      
     }
   }
   
-  if( !hasWeapon && !hasArmor && !game.settings.get('symbaroum', 'critsApplyToAllTests') ) {
-    critGood = false;
-    critBad = false;
+
+ if( !hasWeapon && !hasArmor && !game.settings.get('symbaroum', 'critsApplyToAllTests') ) {
+    rollResults.critSuccess = rollResults.critFail = false;
   } 
+  
+  let finalMod = modifier - getAttributeValue(targetActor, targetAttributeName) + 10;
 
   let rollData = {
-    name: `${attribute.name} (${diceTarget}) ⬅ ${modifier.name} (${mod})`,
-    hasSucceed: attributeRoll._total <= diceTarget,
-    diceResult: attributeRoll._total,
+    name: `${getAttributeLabel(actor, actingAttributeName) } (${ getAttributeValue(actor, actingAttributeName) }) ⬅ ${getAttributeLabel(targetActor, targetAttributeName)} (${finalMod})`,
+    hasSucceed: rollResults.hasSucceed,
+    diceResult: rollResults.diceResult,
     hasArmor: hasArmor,
     hasWeapon: hasWeapon,
-    armor: armor,
-    weapon: weapon,
-    critSuccess: critGood,
-    critFail: critBad,
+    armor: armorResults,
+    weapon: weaponResults,
+    critSuccess: rollResults.critSuccess,
+    critFail: rollResults.critFail
   };
   const html = await renderTemplate('systems/symbaroum/template/chat/roll.html', rollData);
   let chatData = {
     user: game.user._id,
     speaker: {
-			actor: character.id
+			actor: actor.id
 	},
     rollMode: game.settings.get('core', 'rollMode'),
     content: html,
@@ -161,7 +137,10 @@ export async function deathRoll(sheet) {
 
 //this function returns the localized name, and also accept defense.
 export function getAttributeLabel(actor, attributeName) {
-  if (attributeName === 'defense') {
+  if (attributeName === 'custom') {
+    return (game.i18n.localize("ATTRIBUTE.CUSTOM"));
+  }
+  else if (attributeName === 'defense') {
     return (game.i18n.localize("ARMOR.DEFENSE"));
   } else {
       return (game.i18n.localize(actor.data.data?.attributes[attributeName].label));
@@ -170,6 +149,9 @@ export function getAttributeLabel(actor, attributeName) {
 
 //this function returns the value of the attribute, modified by the its bonus, and also accept defense.
 export function getAttributeValue(actor, attributeName) {
+  if (attributeName === 'custom') {
+    return 10;
+  }
   if (attributeName === 'defense') {
     let defense = actor.data.data.combat.defense + actor.data.data.bonus.defense;
     return (defense);
@@ -231,35 +213,32 @@ export async function baseRoll(actor, actingAttributeName, targetActor, targetAt
   
   let targetAttributeLabel;
   let resistAttributeValue = 0;
+
   if(targetActor && targetAttributeName){
     resistAttributeValue = getAttributeValue(targetActor, targetAttributeName);
     targetAttributeLabel = getAttributeLabel(targetActor, targetAttributeName);
     diceTarget += (10 - resistAttributeValue);
   }
 
+  if(game.settings.get('symbaroum', 'alwaysSucceedOnOne') ) {
+    diceTarget = Math.min(Math.max(1,diceTarget), 19);
+  }  
+
   if(attributeRoll.total <= diceTarget){
     hasSucceed = true;
   }
    
   // Check option - always succeed on 1, always fail on 20
-	if(game.settings.get('symbaroum', 'alwaysSucceedOnOne') || game.settings.get('symbaroum', 'optionalCrit') || game.settings.get('symbaroum', 'optionalRareCrit') ) { 
-		let critDiceTarget = Math.min(Math.max(1,diceTarget), 19);
-    
-    if( attributeRoll._total === 1 || attributeRoll._total === 20 ) {
+	if(game.settings.get('symbaroum', 'optionalCrit') || game.settings.get('symbaroum', 'optionalRareCrit') ) {     
+    if( attributeRoll.total === 1 || attributeRoll.total === 20 ) {
       if( game.settings.get('symbaroum', 'optionalCrit') ) {
-        if(attributeRoll.total === 1){
-          hasSucceed = false;
-          critBad = true;
-        }
-        else{
-          hasSucceed = true;
-          critGood = true
-        }
+          critBad = attributeRoll.total === 20;
+          critGood = !critBad;
       }    
       if( game.settings.get('symbaroum', 'optionalRareCrit') ) {
         let secondRoll = new Roll("1d20").evaluate();
-        critGood = critGood && secondRoll._total <= critDiceTarget;
-        critBad = critBad && secondRoll._total > critDiceTarget;
+        critGood = critGood && secondRoll.total <= diceTarget;
+        critBad = critBad && secondRoll.total > diceTarget;
       }
     }
 	}

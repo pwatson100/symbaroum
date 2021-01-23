@@ -1,4 +1,4 @@
-import { rollAttribute } from './roll.js';
+import { rollAttribute, getAttributeLabel } from './roll.js';
 
 let roll_defaults = {};
 
@@ -15,7 +15,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon) 
   });
   
   let dialog = new Dialog({
-    title: attribute.name,
+    title: getAttributeLabel(actor, attributeName),
     content: html,
     buttons: {
       roll: {
@@ -23,8 +23,8 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon) 
         label: game.i18n.localize('BUTTON.ROLL'),
         callback: async (html) => {
           let dummyMod = "custom";			
-          if( html.find("#modifier").length > 0) {
-            dummyMod = html.find("#modifier")[0].value;											
+          if( html.find("#targetAttribute").length > 0) {
+            dummyMod = html.find("#targetAttribute")[0].value;											
           }
           attri_defaults.targetAttributeName = dummyMod;
           const targetAttributeName = dummyMod;
@@ -52,11 +52,10 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon) 
           attri_defaults.selectedFavour = ""+fvalue;			
           const favour = fvalue;
           
-          const modifier = html.find("#bonus")[0].value;   
+          const modifier = html.find("#modifier")[0].value;   
           attri_defaults.bonus = modifier;              
-                    
-
-          await rollAttribute(actor, attributeName, getTarget(), targetAttributeName, favour, modifier, armor, weapon, advantage, damModifier);
+                              
+          await rollAttribute(actor, attributeName, getTarget(), targetAttributeName, favour,parseInt(modifier), armor, weapon, advantage, damModifier);
           },
       },
       cancel: {
@@ -90,7 +89,12 @@ function createDefaults() {
 }
 
 function getTarget() {
-  const target = game.user.targets.values().next().value;    
+  const target = game.user.targets.values().next().value;
+  if (target === undefined) {
+    return null;
+  } else {
+    return target.actor;
+  }
 }
 
 function getTargetAttribute(attributeName, bonus) {
@@ -99,7 +103,7 @@ function getTargetAttribute(attributeName, bonus) {
     if (target === undefined || attributeName === 'custom') {
         return { name: game.i18n.localize('ATTRIBUTE.CUSTOM'), value: 10 - bonus };
     } else if (attributeName === 'defense') {
-        let defense = target.actor.data.data.combat.defense + target.actor.data.data.bonus.defense;
+        let defense = target.actor.data.data.combat.defense;
         return { name: game.i18n.localize('ARMOR.DEFENSE'), value: defense - bonus };
     } else {
         console.log(target.actor.data.data);

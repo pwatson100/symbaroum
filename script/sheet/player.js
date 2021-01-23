@@ -57,14 +57,14 @@ export class PlayerSheet extends SymbaroumActorSheet {
 
     async _prepareRollAttribute(event) {
         event.preventDefault();
-        const attributeName = $(event.currentTarget).data("attribute");    
+        const attributeName = $(event.currentTarget).data("attribute");        
         await prepareRollAttribute(this.actor, attributeName, null, null);
     }
 
     async _prepareRollArmor(event) {
         event.preventDefault();
         const armor = this.actor.data.data.combat;
-        await prepareRollAttribute(this.actor, this.actor.data.data.defense.attribute.toLowerCase(), combat, null);
+        await prepareRollAttribute(this.actor, "defense", armor, null);
     }
 
     async _prepareRollWeapon(event) {
