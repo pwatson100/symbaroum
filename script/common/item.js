@@ -2292,7 +2292,7 @@ async function strangler(ability, actor){
                 let damageRollResult= "";
                 let damageTooltip = "";
                 let flagDataArray = [];
-                let dmgFormulaTooltip="";
+                let dmgFormula="";
                 let pain = false;
                 let hasDamage = true;
 
@@ -2302,7 +2302,7 @@ async function strangler(ability, actor){
                     damageTot = damage.roll.total;
                     if(damage.roll.total > targetData.actor.data.data.health.toughness.threshold){pain = true}
                     damageRollResult += await formatRollResult([damage]);
-                    dmgFormulaTooltip += damage.roll._formula;
+                    dmgFormula = game.i18n.localize('WEAPON.DAMAGE') + ": " + damage.roll._formula;
                     damageTooltip += damage.roll.result;
                 
                     if(damageTot <= 0){
@@ -2367,16 +2367,17 @@ async function strangler(ability, actor){
                     subImg: ability.img,
                     hasRoll: true,
                     rollString: await formatRollString(rollData[0], targetData.hasTarget, rollData[0].modifier),
-                    rollResult : formatRollResult(rollData),
+                    rollResult : await formatRollResult(rollData),
                     resultText: resultText,
                     finalText: "",
                     hasDamage: hasDamage,
                     damageText: damageText,
                     damageRollResult: damageRollResult,
-                    dmgFormulaTooltip: dmgFormulaTooltip,
+                    dmgFormula: dmgFormula,
                     damageRollMod: "",
-                    damageTooltip: dmgFormulaTooltip,
+                    damageTooltip: damageTooltip,
                     damageFinalText: damageFinalText,
+                    haveCorruption: false
                 }
             
                 const chathtml = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
