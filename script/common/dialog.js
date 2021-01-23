@@ -2,8 +2,8 @@ import { rollAttribute } from './roll.js';
 
 let roll_defaults = {};
 
-export async function prepareRollAttribute(character, attribute, armor, weapon) {
-	let attri_defaults = getRollDefaults(attribute.name,armor != null, weapon != null);
+export async function prepareRollAttribute(actor, attributeName, armor, weapon) {
+	let attri_defaults = getRollDefaults(attributeName,armor != null, weapon != null);
 
   const html = await renderTemplate('systems/symbaroum/template/chat/dialog.html', {
     "hasTarget": game.user.targets.values().next().value !== undefined,
@@ -26,8 +26,8 @@ export async function prepareRollAttribute(character, attribute, armor, weapon) 
           if( html.find("#modifier").length > 0) {
             dummyMod = html.find("#modifier")[0].value;											
           }
-          attri_defaults.targetAttribute = dummyMod;
-          const modifierName = dummyMod;
+          attri_defaults.targetAttributeName = dummyMod;
+          const targetAttributeName = dummyMod;
 
           let hasAdvantage = html.find("#advantage").length > 0;
           if( hasAdvantage ) {
@@ -52,12 +52,11 @@ export async function prepareRollAttribute(character, attribute, armor, weapon) 
           attri_defaults.selectedFavour = ""+fvalue;			
           const favour = fvalue;
           
-          const bonus = html.find("#bonus")[0].value;   
-          attri_defaults.bonus = bonus;              
-          
-          const modifier = getTargetAttribute(modifierName, bonus);                   
+          const modifier = html.find("#bonus")[0].value;   
+          attri_defaults.bonus = modifier;              
+                    
 
-          await rollAttribute(character, attribute, favour, modifier, armor, weapon, advantage, damModifier);
+          await rollAttribute(actor, attributeName, getTarget(), targetAttributeName, favour, modifier, armor, weapon, advantage, damModifier);
           },
       },
       cancel: {
@@ -82,14 +81,17 @@ function getRollDefaults(attributeName, isArmor, isWeapon) {
 
 function createDefaults() {
 	return {
-		targetAttribute: game.i18n.localize('ATTRIBUTE.CUSTOM'),
+		targetAttributeName: "custom",
 		additionalModifier: "",
 		selectedFavour: "0",
-		bonus: 0,
+		modifier: 0,
 		advantage: "",
 	};
 }
 
+function getTarget() {
+  const target = game.user.targets.values().next().value;    
+}
 
 function getTargetAttribute(attributeName, bonus) {
     const target = game.user.targets.values().next().value;

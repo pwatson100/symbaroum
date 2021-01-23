@@ -83,7 +83,7 @@ export class SymbaroumActor extends Actor {
     _computeSecondaryAttributes(data) {
         for (var aKey in data.data.attributes) {
           data.data.attributes[aKey].total = data.data.attributes[aKey].value + data.data.bonus[aKey];
-          data.data.attributes[aKey].msg = game.i18n.localize("TOOLTIP.BONUS_TOTAL")+" " +data.data.attributes[aKey].total+ data.data.bonus[aKey + "_msg"];
+          data.data.attributes[aKey].msg = `${game.i18n.localize("TOOLTIP.BONUS_TOTAL")} ${data.data.attributes[aKey].total} ${data.data.bonus[aKey + "_msg"]}`;
         }
         
         let strong = data.data.attributes.strong.total;
@@ -106,7 +106,7 @@ export class SymbaroumActor extends Actor {
             protection: activeArmor.data.protection,
             quality: activeArmor.data.quality,
             defense: data.data.attributes[attributeDef].total - activeArmor.data.impeding + data.data.bonus.defense,
-            msg: `${game.i18n.localize("TOOLTIP.BONUS_TOTAL")} ${data.data.attributes[attributeDef].total}${data.data.bonus.defense_msg}`
+            msg: `${game.i18n.localize("TOOLTIP.BONUS_TOTAL")} ${data.data.attributes[attributeDef].total} ${data.data.bonus.defense_msg}`
         };
         let attributeInit = data.data.initiative.attribute.toLowerCase();
         data.data.initiative.value = (data.data.attributes[attributeInit].value * 1000) + (data.data.attributes.vigilant.value * 10);

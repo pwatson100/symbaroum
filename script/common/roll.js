@@ -1,4 +1,4 @@
-export async function rollAttribute(character, attribute, favourmod, modifier, armor, weapon, advantage, damModifier) {
+export async function rollAttribute(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier, armor, weapon, advantage, daqmModifier) {
   let d20str = "1d20";
   let detailedRoll = "";
   let dam = "";
@@ -20,10 +20,10 @@ export async function rollAttribute(character, attribute, favourmod, modifier, a
 
   let mod = (modifier.value - 10) * -1;
 
-	let advantagemod = 0;
 	let hasWeapon = weapon != null;
 	let hasArmor = armor != null;
-		 
+
+  baseRoll(actor, actingAttributeName, targetActor, targetAttributeName, favour, mod);
 
 	if(hasWeapon && advantage ) { advantagemod=2 }
 	else if (hasArmor && advantage) { advantagemod=-2; }  
@@ -207,6 +207,7 @@ export async function baseRoll(actor, actingAttributeName, targetActor, targetAt
   let hasSucceed = false;
   let critGood = false;
   let critBad = false;
+  let diceBreakdown = "";
   if(modifier == null){modifier = 0};
   
 	if(favour > 0) d20str="2d20kl";
@@ -314,6 +315,36 @@ export async function createModifyTokenChatButton(actionsDataArray){
     await NewMessage.setFlag(game.system.id, 'abilityRoll', actionsDataArray);
   }
 }
+
+/*formatDice produces a string of any rolls with any ignored dice within a css class of .strike
+@param diceResults is the dice results containing all the dice rolled, including rare crit notifier
+@param separator the chosen separator to use between dice
+
+*/
+function formatDice(diceResult, separator) {
+	let rolls = "";
+	for( let dd of diceResult ) {
+		if (typeof dd === 'string' || Number.isInteger(dd) ) {
+			rolls += dd;
+		} else {
+			let j = 0;
+			for( let diceDetails of dd.results) {
+				if( j > 0 && separator != null) {
+					rolls += separator;
+				}
+				if(diceDetails.active ) {
+					rolls += diceDetails["result"];				
+				} else {
+					rolls += "<span class='strike'>"+diceDetails["result"]+"</span>";
+				}
+				j++;
+			}
+		}
+		
+	}
+	return rolls;
+}
+
 
 /*function for evaluating Damage
 
