@@ -78,7 +78,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
         const attribute = this.actor.data.data.attributes[weapon.data.data.attribute];
         const bonus = this.actor.data.data.bonus[weapon.data.data.attribute];
         const attributeData = { name: game.i18n.localize(attribute.label), value: attribute.value + bonus };
-        const weaponData = { damage: weapon.data.data.damage, quality: weapon.data.data.quality, qualities: weapon.data.data.qualities }
+        const weaponData = { damage: weapon.data.data.damage, quality: weapon.data.data.quality, qualities: weapon.data.data.qualities, img: weapon.data.img }
         await prepareRollAttribute(this.actor, attributeData, null, weaponData);
     }
 }

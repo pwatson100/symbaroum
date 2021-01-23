@@ -95,13 +95,16 @@ export async function rollAttribute(character, attribute, favourmod, modifier, a
   } 
 
   let rollData = {
-    name: `${attribute.name} (${attribute.value}) ⬅ ${modifier.name} (${mod})`,
+    subImg: character.data.img,
+    name: `${attribute.name} (${attribute.value}) ⬅ ` + game.i18n.localize('COMBAT.CHAT_MODIFIER') + `(${mod})`,
+    margin: game.i18n.localize('CHAT.MARGIN') + (diceTarget - attributeRoll._total).toString(),
     hasSucceed: attributeRoll._total <= diceTarget,
     diceResult: attributeRoll._total,
     hasArmor: hasArmor,
     hasWeapon: hasWeapon,
     armor: armor,
     weapon: weapon,
+    wepImg: weapon?.img,
     critSuccess: critGood,
     critFail: critBad,
   };
@@ -328,14 +331,12 @@ It won't work with NPC fixed values as input
 * @param {object} targetData is information on the target that will receive the damage (as returned by the getTarget function)*/
 
 export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgData, targetData){
-  console.log(dmgData);
-  console.log("dmgData");
   let newRollDmgString = "";
   let wepDmg = weapon.data.data.damage;
   let modDmg = 0;
   let armorProt = targetData.actor.data.data.combat.protection;   
 
-  let damageAutoParams = game.i18n.localize('COMBAT.CHAT_DMG_PARAMS');
+  let damageAutoParams = "";
   if(dmgData.modifier != ""){
     damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_CUSTOM');
   }
