@@ -20,7 +20,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
 	if(hasWeapon && advantage ) { modifier +=2 }
   else if (hasArmor && advantage) { modifier =-2; }
   
-	if(hasWeapon && weapon.qualities.precise) {		
+	if(hasWeapon && weapon.data.data.qualities.precise) {		
 		modifier++;
   }
   
@@ -43,11 +43,11 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   }
 
   if (hasWeapon && rollResults.hasSucceed) {
-    dam = weapon.damage;
+    dam = weapon.data.data.damage;
     if (dam !== '') {
       if ( advantage ) { dam += "+1d4[advantage]"; }
       if ( rollResults.critSuccess ) { dam += "+1d6[critical]"; }
-      if( weapon.qualities.deepImpact ) { dam += "+1[deep impact]"; }
+      if( weapon.data.data.qualities.deepImpact ) { dam += "+1[deep impact]"; }
       if( damModifier !== '') { dam = dam+"+"+damModifier; }
       
 
@@ -57,7 +57,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
       if (game.dice3d != null) {
         await game.dice3d.showForRoll(weaponRoll);
       }
-      console.log("Weapon roll is:"+JSON.stringify(weaponRoll)+":");
+      console.log("Weapon roll is:"+JSON.stringify(weapon)+":");
       weaponResults.value = weaponRoll.total;
       weaponResults.name = weapon.name;      
     }
@@ -152,13 +152,10 @@ export function getAttributeValue(actor, attributeName) {
   if (attributeName === 'custom') {
     return 10;
   }
-  if (attributeName === 'defense') {
-    let defense = actor.data.data.combat.defense + actor.data.data.bonus.defense;
-    return (defense);
+  if (attributeName === 'defense') {    
+    return actor.data.data.combat.defense;
   } else {
-      let attribute = actor.data.data?.attributes[attributeName];
-      let value = attribute.value + actor.data.data.bonus[attributeName];
-      return (value);
+    return actor.data.data?.attributes[attributeName].total;
   }
 }
 

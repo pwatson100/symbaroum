@@ -107,7 +107,7 @@ export class SymbaroumActor extends Actor {
             quality: activeArmor.data.quality,
             qualities: activeArmor.data.qualities,
             defense: data.data.attributes[attributeDef].total - activeArmor.data.impeding + data.data.bonus.defense,
-            msg: `${game.i18n.localize("TOOLTIP.BONUS_TOTAL")} ${data.data.attributes[attributeDef].total} ${data.data.bonus.defense_msg}`
+            msg: `${game.i18n.localize(data.data.attributes[attributeDef].label)} ${data.data.attributes[attributeDef].total}<br/>${game.i18n.localize("ARMOR.IMPEDING")}(${-1 * activeArmor.data.impeding})${data.data.bonus.defense_msg}`
         };
         let attributeInit = data.data.initiative.attribute.toLowerCase();
         data.data.initiative.value = (data.data.attributes[attributeInit].value * 1000) + (data.data.attributes.vigilant.value * 10);

@@ -10,8 +10,8 @@
     
     {{#if hasWeapon}} 
 
-    <p style="margin-top: 5px"><strong>{{weapon.name}}</strong></p>
-      <p style="margin-top: 5px"><strong>{{localize "WEAPON.DAMAGE"}}:</strong> {{weapon.value}}</p>
+    <p style="margin-top: 5px;text-align:center">{{weapon.name}}</p>
+    <p style="margin-top: 5px"><strong>{{localize "WEAPON.DAMAGE"}}:</strong> {{weapon.value}}</p>
     <p><strong>{{localize "WEAPON.QUALITY"}}:</strong> {{weapon.quality}}</p>
 
     {{/if}} 
@@ -25,7 +25,7 @@
 
     
     {{#if hasArmor}}
-    <p style="margin-top: 5px"><strong>{{armor.name}}</strong>}</p>
+    <p style="margin-top: 5px;text-align:center">{{armor.name}}</p>
     <p style="margin-top: 5px"><strong>{{localize "ARMOR.PROTECTION"}}:</strong> {{armor.value}}</p>
     {{/if}}
     {{/if}}

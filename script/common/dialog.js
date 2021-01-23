@@ -96,19 +96,3 @@ function getTarget() {
     return target.actor;
   }
 }
-
-function getTargetAttribute(attributeName, bonus) {
-    const target = game.user.targets.values().next().value;
-    console.log('🚀 ~ file: dialog.js ~ line 33 ~ getTargetAttribute ~ target', target);
-    if (target === undefined || attributeName === 'custom') {
-        return { name: game.i18n.localize('ATTRIBUTE.CUSTOM'), value: 10 - bonus };
-    } else if (attributeName === 'defense') {
-        let defense = target.actor.data.data.combat.defense;
-        return { name: game.i18n.localize('ARMOR.DEFENSE'), value: defense - bonus };
-    } else {
-        console.log(target.actor.data.data);
-        const attribute = target.actor.data.data.attributes[attributeName];
-        const attributeValue = attribute.value + target.actor.data.data.bonus[attributeName];
-        return { name: game.i18n.localize(attribute.label), value: attributeValue - bonus };
-    }
-}
