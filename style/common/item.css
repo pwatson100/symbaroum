@@ -34,29 +34,21 @@
     color: var(--color-label);
     font-family: var(--font-text);
     background: url(../../asset/image/title.jpg) repeat;
-    width: 10em;
+    width: 100%;
     text-align: center;
     padding: 5px;
 }
 
 .symbaroum.sheet.item button {
-    font-size: 14px;
-    font-weight: bold;
-    color: var(--color-label);
-    font-family: var(--font-text);
-    background: url(../../asset/image/title.jpg) repeat;
-    text-align: center;
-    padding: 0;
-    cursor: pointer;
-    border: none;
-    border-radius: 0;
-    margin: 0;
+    border: 0 none;
+    width: 100px;
+    height: 100px;
+    margin: auto;
 }
 
 .symbaroum.sheet.item button:hover {
-    color: var(--color-active);
-    text-shadow: 0 0 10px var(--color-active);
     box-shadow: none;
+    cursor: pointer;
 }
 
 .symbaroum.sheet.item input[type="text"],
@@ -140,10 +132,10 @@
 
 .symbaroum.sheet.item .sheet-header .name {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-basis: 100%;
     align-items: center;
-    margin-right: 5px;
+    margin: auto;
 }
 
 .symbaroum.sheet.item .sheet-header .name input {
