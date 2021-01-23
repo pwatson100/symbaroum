@@ -20,8 +20,8 @@ Hooks.once('init', () => {
   CONFIG.Actor.entityClass = SymbaroumActor;
   CONFIG.Item.entityClass = SymbaroumItem;
   Actors.unregisterSheet('core', ActorSheet);
-  Actors.registerSheet('symbaroum', PlayerSheet, { types: ['player'], makeDefault: true });
-  Actors.registerSheet('symbaroum', PlayerSheet2, { types: ['player'], makeDefault: false });
+  Actors.registerSheet('symbaroum', PlayerSheet2, { types: ['player'], makeDefault: true });
+  Actors.registerSheet('symbaroum', PlayerSheet, { types: ['player'], makeDefault: false });
   Actors.registerSheet('symbaroum', MonsterSheet, { types: ['monster'], makeDefault: true });
   Items.unregisterSheet('core', ItemSheet);
   Items.registerSheet('symbaroum', TraitSheet, { types: ['trait'], makeDefault: true });
