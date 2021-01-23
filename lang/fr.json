@@ -150,9 +150,11 @@
 
   "BOON.NAME": "Nom",
   "BOON.DESCRIPTION": "Description",
+  "BOON.LEVEL": "Niveau",
 
   "BURDEN.NAME": "Nom",
   "BURDEN.DESCRIPTION": "Description",
+  "BURDEN.LEVEL": "Niveau",
 
   "BUTTON.DEATH": "Mort",
   "BUTTON.RECOVER": "Récupérer",

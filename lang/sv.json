@@ -160,9 +160,11 @@
 
   "BOON.NAME": "Namn",
   "BOON.DESCRIPTION": "Beskrivning",
+  "BOON.LEVEL": "Nivå",
 
   "BURDEN.NAME": "Namn",
   "BURDEN.DESCRIPTION": "Beskrivning",
+  "BURDEN.LEVEL": "Nivå",
 
   "BUTTON.DEATH": "Döende",
   "BUTTON.RECOVER": "Återhämtning",
