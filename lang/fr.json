@@ -1,4 +1,4 @@
-{ 
+{
     "ABILITY.NAME": "Nom",
     "ABILITY.ACTIVE": "Appris",
     "ABILITY.ACTION": "Action",
@@ -159,9 +159,11 @@
 
     "BOON.NAME": "Nom",
     "BOON.DESCRIPTION": "Description",
+    "BOON.LEVEL": "Niveau",
 
     "BURDEN.NAME": "Nom",
     "BURDEN.DESCRIPTION": "Description",
+    "BURDEN.LEVEL": "Niveau",
 
     "BUTTON.DEATH": "Mort",
     "BUTTON.RECOVER": "Récupérer",
@@ -550,4 +552,6 @@
     "SYMBAROUM.OPTIONAL_ALWAYSUSECRIT": "Allow crits for non-combat",
     "SYMBAROUM.OPTIONAL_ALWAYSUSECRIT_HINT": "Check to enable critical success and failure on non-combat rolls - automatically enabled if crits are selected",
     "SYMBAROUM.OPTIONAL_MORERITUALS": "Allow more rituals",
-    "SYMBAROUM.OPTIONAL_MORERITUALS_HINT": "Check to enable more rituals as described on Advanced Players Guide p. 103"}
+    "SYMBAROUM.OPTIONAL_MORERITUALS_HINT": "Check to enable more rituals as described on Advanced Players Guide p. 103"
+}
+

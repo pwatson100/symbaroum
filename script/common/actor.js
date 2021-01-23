@@ -83,7 +83,7 @@ export class SymbaroumActor extends Actor {
     _computeSecondaryAttributes(data) {
         for (var aKey in data.data.attributes) {
           data.data.attributes[aKey].total = data.data.attributes[aKey].value + data.data.bonus[aKey];
-          data.data.attributes[aKey].msg = "Total "+data.data.attributes[aKey].total+ data.data.bonus[aKey + "_msg"];
+          data.data.attributes[aKey].msg = `${game.i18n.localize("TOOLTIP.BONUS_TOTAL")} ${data.data.attributes[aKey].total} ${data.data.bonus[aKey + "_msg"]}`;
         }
         
         let strong = data.data.attributes.strong.total;
@@ -94,6 +94,10 @@ export class SymbaroumActor extends Actor {
         data.data.health.corruption.threshold = Math.ceil(resolute / 2) + data.data.bonus.corruption.threshold;
         data.data.health.corruption.max = resolute + data.data.bonus.corruption.max;
         
+        let corr = data.data.health.corruption;
+        corr.value = corr.temporary + corr.longterm + corr.permanent;
+        
+
         const activeArmor = this._getActiveArmor(data);
         let attributeDef = data.data.defense.attribute.toLowerCase();
         data.data.combat = {
@@ -101,9 +105,10 @@ export class SymbaroumActor extends Actor {
             armor: activeArmor.name,
             protection: activeArmor.data.protection,
             quality: activeArmor.data.quality,
+            qualities: activeArmor.data.qualities,
             impeding: activeArmor.data.impeding,
             defense: data.data.attributes[attributeDef].total - activeArmor.data.impeding + data.data.bonus.defense,
-            msg: "Total "+data.data.attributes[attributeDef].total + data.data.bonus.defense_msg
+            msg: `${game.i18n.localize(data.data.attributes[attributeDef].label)} ${data.data.attributes[attributeDef].total}<br/>${game.i18n.localize("ARMOR.IMPEDING")}(${-1 * activeArmor.data.impeding})${data.data.bonus.defense_msg}`
         };
         let attributeInit = data.data.initiative.attribute.toLowerCase();
         data.data.initiative.value = (data.data.attributes[attributeInit].value * 1000) + (data.data.attributes.vigilant.value * 10);
