@@ -76,7 +76,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   let rollData = {
     subImg: actor.data.img,
     name: `${getAttributeLabel(actor, actingAttributeName) } (${ getAttributeValue(actor, actingAttributeName) }) ⬅ ${getAttributeLabel(targetActor, targetAttributeName)} (${finalMod})`,
-    margin: game.i18n.localize('CHAT.MARGIN') + (rollResults. - attributeRoll._total).toString(),
+    margin: game.i18n.localize('CHAT.MARGIN') + (rollResults.diceTarget - rollResults.diceResult).toString(),
     hasSucceed: rollResults.hasSucceed,
     diceResult: rollResults.diceResult,
     diceBreakdown: rollResults.diceBreakdown,
@@ -257,6 +257,7 @@ export async function baseRoll(actor, actingAttributeName, targetActor, targetAt
     resistAttributeValue: resistAttributeValue,
     targetAttributeLabel: targetAttributeLabel,
     hasSucceed: hasSucceed,
+    diceTarget: diceTarget,
     diceResult: attributeRoll.total,
     favour: favour,
     modifier: modifier,

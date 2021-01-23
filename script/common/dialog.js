@@ -4,7 +4,7 @@ let roll_defaults = {};
 
 export async function prepareRollAttribute(actor, attributeName, armor, weapon) {
 	let attri_defaults = getRollDefaults(attributeName,armor != null, weapon != null);
-  let askImpeding = character.data.data.combat.impeding;
+  let askImpeding = actor.data.data.combat.impeding;
 
   const html = await renderTemplate('systems/symbaroum/template/chat/dialog.html', {
     "hasTarget": game.user.targets.values().next().value !== undefined,
