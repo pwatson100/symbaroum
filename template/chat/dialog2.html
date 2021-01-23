@@ -1,4 +1,14 @@
 <div class="symbaroum dialog">
+  {{#if askWeapon}}
+  <div class="attribute">
+    <label>Choose weapon</label>
+    <select id="weapon">
+        {{#each weapons}}
+        <option value={{this.id}}>{{this.name}} | Attribut: {{this.data.data.attribute}} </option>
+        {{/each}}
+    </select>
+</div>
+  {{/if}}
   {{#if askCastingAttribute}}
   <div class="attribute">
       <label>{{localize "DIALOG.CASTING_ATTRIBUTE"}}</label>

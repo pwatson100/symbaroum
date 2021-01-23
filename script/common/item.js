@@ -228,7 +228,9 @@ export class SymbaroumItem extends Item {
     
     async makeAction(actor, level = 1){
 
-        if(this.data.data.reference === ""){await this.affectReference()};
+        if(this.data.data.reference === ""){
+            await this.affectReference();
+            return};
 
         if(actor == undefined || actor == null){
             return;
@@ -236,9 +238,12 @@ export class SymbaroumItem extends Item {
 
         const scriptedAbilities =
         [{reference: "acrobatics", level: [1, 2, 3], function: acrobatics},
+        {reference: "backstab", level: [1, 2, 3], function: attackRoll},
+        {reference: "huntersinstinct", level: [1, 2, 3], function: attackRoll},
         {reference: "leader", level: [1, 2, 3], function: leaderPrepare},
         {reference: "loremaster", level: [1, 2, 3], function: loremaster},
         {reference: "medicus", level: [1, 2, 3], function: medicus},
+        {reference: "shieldfighter", level: [1, 2, 3], function: attackRoll},
         {reference: "strangler", level: [1, 2, 3], function: strangler},
         {reference: "witchsight", level: [1, 2, 3], function: witchsight}];
 
@@ -273,7 +278,6 @@ export class SymbaroumItem extends Item {
             return;
         }
     }
-
 }
 
 /*get the target token, its actor, and evaluate which attribute this actor will use for opposition
@@ -336,6 +340,8 @@ function formatRollResult(rollData){
 
 async function buildFunctionStuffDefault(ability, actor) {
     let functionStuff = {
+        actor: actor,
+        ability: ability,
         askTargetAttribute: false,
         askCastingAttribute: false,
         attackFromPC: actor.hasPlayerOwner,
@@ -350,27 +356,16 @@ async function buildFunctionStuffDefault(ability, actor) {
         checkMaintain: false,
         resultFunction: standardPowerResult
     };
-    if(ability.data.type = "mysticPower"){
-        let actorResMod = checkResoluteModifiers(actor, functionStuff.autoParams, true, false);
+    if(ability.data.type === "mysticalPower"){
+        let actorResMod = await checkResoluteModifiers(actor, functionStuff.autoParams, true, false);
         functionStuff.castingAttributeName = actorResMod.bestAttributeName;
         functionStuff.autoParams = actorResMod.autoParams;
         functionStuff.corruption = true;
         functionStuff.castingAttributeName
         functionStuff.impeding = actor.data.data.combat.impeding;
         functionStuff.casterMysticAbilities = await getMysticAbilities(actor);
-
-
-        /*    let fsDefault = await buildFunctionStuffDefault(ability, actor);
-    let specificStuff = {
-        checkMaintain: true,
-        corruption: true,
-        tradition: ["wizardry"],
-        targetHasRapidReflexes: targetHasRapidReflexes,
-        targetData: targetData,
-        resultFunction: brimstoneCascadeResult
     }
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);*/
-    }
+    return(functionStuff)
 }
 
 /*check the mystic traditions of the actor
@@ -464,23 +459,29 @@ async function getMysticAbilities(actor){
     return(actorMysticAbilities)
 }
 
-/*evaluate the temmporary corruption to be received by the actor*/
-async function getCorruption({actor, traditions, casterMysticAbilities, corruptionFormula = "1d4"}){
+/*evaluate the temmporary corruption to be received by the actor
+@Params: {functionStuff.array}    traditions : an array of the references of the mystic tradition abilities that may decrease this roll
+        {functionStuff.object}    returned by getMysticAbilities()
+        {functionStuff.actor}     the actor
+        {functionStuff.attackFromPC}  wehther the acting character ic PC (rolls dice) or NPC (fixed result)
+        {corruptionFormula}      formula for base corruption roll
+@returns: array of  {boolean} has(ability)
+                    {number} level
+                    {string} levelname the localized label (novice, adpet or master)}*/
+async function getCorruption(functionStuff, corruptionFormula = "1d4"){
     let sorceryRoll;
-    let tradition;
-    if(traditions){
-        for(let trad of traditions){
-            if(casterMysticAbilities[trad].hasAbility){
-                if(casterMysticAbilities[trad].level > 1){
+    if(functionStuff?.traditions){
+        for(let trad of functionStuff.traditions){
+            if(functionStuff.casterMysticAbilities[trad].hasAbility){
+                if(functionStuff.casterMysticAbilities[trad].level > 1){
                     return({value: 1, tradition: trad})
                 }
             }
         } 
     }
     if(functionStuff.casterMysticAbilities.sorcery.hasAbility){
-        let castingAttribute = (await checkResoluteModifiers({actor: actor})).bestAttributeName;
-        let tradition ="sorcery";
-        sorceryRoll = baseRoll(actor, castingAttribute, null, null, 0, 0);
+        let castingAttribute = (await checkResoluteModifiers(functionStuff.actor)).bestAttributeName;
+        sorceryRoll = baseRoll(functionStuff.actor, castingAttribute, null, null, 0, 0);
         if(sorceryRoll.hasSucceed){
             return({value: 1, tradition: "sorcery", sorceryRoll: sorceryRoll})
         }
@@ -488,12 +489,12 @@ async function getCorruption({actor, traditions, casterMysticAbilities, corrupti
      
     if(functionStuff.attackFromPC){
         let corRoll= new Roll(corruptionFormula).evaluate();
-        return({value: corRoll.total, tradition: tradition, sorceryRoll: sorceryRoll, corruptionRoll: corRoll})
+        return({value: corRoll.total, sorceryRoll: sorceryRoll, corruptionRoll: corRoll})
     }
      
     let corRoll= new Roll(corruptionFormula).evaluate({maximize: true});
     let value = Math.ceil(corRoll.total/2);
-    return({value: value, tradition: tradition, sorceryRoll: sorceryRoll, corruptionRoll: corRoll})
+    return({value: value, sorceryRoll: sorceryRoll, corruptionRoll: corRoll})
 }
 
 /*get the max level learned by the actor
@@ -541,10 +542,9 @@ will send to screen a windows asking for modifiers for the roll, then roll, then
    * @param {number} modifier  A modifier for the roll
    * @param {string}  favour: "0", "-1", "1"
    * @param {boolean} checkMaintain: if true, ask the player whether the roll is for casting the ability or maintaining it 
-   * @param {string} abilityResultFunction  The function to call in order to process the results
-   * @param {any}   functionStuff  an object of parameters not used in the dialog function, but useful for abilityResultFunction */
+   * @param {string} resultFunction  The function to call in order to process the results
+   * @param {any}   functionStuff  an object of parameters not used in the dialog function, but useful for resultFunction */
 async function modifierDialog(functionStuff){
-    
     let askImpeding = false;
     let isWeaponRoll = false;
     let askBackstab = false;
@@ -552,8 +552,16 @@ async function modifierDialog(functionStuff){
     let askIronFistMaster = false;
     let askTwoAttacks = false;
     let askThreeAttacks = false;
+    let actorWeapons;
     if(functionStuff?.impeding){
         askImpeding = true;
+    }
+    if(functionStuff.askWeapon){
+        actorWeapons = functionStuff.actor.items.filter(item => item.data?.type == "weapon")
+        if(actorWeapons.length == 0){
+            ui.notifications.error("No weapon in hand.");
+            return;
+        }
     }
     let checkMaintain = functionStuff.checkMaintain ?? false;
     if(functionStuff?.combat)
@@ -570,6 +578,8 @@ async function modifierDialog(functionStuff){
     if(functionStuff.targetData.resistAttributeName){
         targetAttributeName = functionStuff.targetData.resistAttributeName
     }
+
+
     const html = await renderTemplate('systems/symbaroum/template/chat/dialog2.html', {
         hasTarget: hasTarget,
         askCastingAttribute: functionStuff.askCastingAttribute,
@@ -589,23 +599,37 @@ async function modifierDialog(functionStuff){
         defaultModifier: functionStuff.modifier,
         defaultAdvantage: "",
         defaultDamModifier: "",
-        checkMaintain: functionStuff.checkMaintain
+        checkMaintain: functionStuff.checkMaintain,
+        askWeapon: functionStuff.askWeapon,
+        weapons : actorWeapons
     });
+    let title;
+    if(functionStuff.ability){title = functionStuff.ability.name}
+    else{title = functionStuff.weapon.name}
     let dialog = new Dialog({
-        title: functionStuff.ability.name,
+        title: title,
         content: html,
         buttons: {
           roll: {
             icon: '<i class="fas fa-check"></i>',
             label: game.i18n.localize('BUTTON.ROLL'),
             callback: async (html) => {
+                if(functionStuff.askWeapon){
+                    let wepID = html.find("#weapon")[0].value;
+                    functionStuff.weapon = functionStuff.actor.items.find(item => item.id == wepID);
+                    functionStuff.castingAttributeName = functionStuff.weapon.data.data.attribute;
+                    if(functionStuff.weapon.data.data.qualities.precise){
+                        functionStuff.modifier += 1;
+                        functionStuff.autoParams += game.i18n.localize('COMBAT.PARAMS_PRECISE');
+                    };
+                }
                 // acting attribute for d20roll
                 if(functionStuff.askCastingAttribute) {
                     functionStuff.castingAttributeName = html.find("#castAt")[0].value;										
                 }
 
                 //resist attribute for d20roll
-                if(askTargetAttribute){
+                if(functionStuff.askTargetAttribute){
                     if( html.find("#resistAtt").length > 0) {
                         targetAttributeName = html.find("#resistAtt")[0].value;	
                         functionStuff.targetData.resistAttributeName = targetAttributeName;
@@ -633,8 +657,8 @@ async function modifierDialog(functionStuff){
                     if(valueM === "M"){functionStuff.isMaintained = true}								
                 }
                 if(askImpeding){
-                        if(html.find("#impeding")[0].checked){
-                        modifier += -functionStuff.impeding;
+                    if(html.find("#impeding")[0].checked){
+                        functionStuff.modifier += -functionStuff.impeding;
                         functionStuff.autoParams += game.i18n.localize("ARMOR.IMPEDING") + ", ";
                     }
                 }
@@ -654,12 +678,16 @@ async function modifierDialog(functionStuff){
                         //advantage situation
                     functionStuff.dmgData.hasAdvantage = html.find("#advantage")[0].checked;
                     if(functionStuff.dmgData.hasAdvantage){
-                        modifier += 2;
+                        functionStuff.modifier += 2;
                         functionStuff.autoParams += game.i18n.localize('DIALOG.ADVANTAGE') + ", "
                     }
                     
                     if(askBackstab){
                         functionStuff.dmgData.useBackstab = html.find("#usebackstab")[0].checked;
+                        if(functionStuff.dmgData.useBackstab && functionStuff.dmgData.backstabBleed){    
+                            functionStuff.bleed = true;
+                            functionStuff.dmgData.bleed = "1d4"
+                        }
                     }
                     if(askTwoAttacks){
                         functionStuff.dmgData.do2attacks = html.find("#do2attacks")[0].checked;
@@ -680,26 +708,26 @@ async function modifierDialog(functionStuff){
                 let rollData = [];
                 functionStuff.favour = finalFavour;
                 if(hasTarget){
-                    rollData.push(await baseRoll(functionStuff.actor, functionStuff.castingAttributeName, functionStuff.targetData.actor, functionStuff.targetAttributeName, functionStuff.favour, functionStuff.modifier));
+                    rollData.push(await baseRoll(functionStuff.actor, functionStuff.castingAttributeName, functionStuff.targetData.actor, functionStuff.targetData.resistAttributeName, functionStuff.favour, functionStuff.modifier));
                     if(isWeaponRoll && functionStuff.dmgData.do3attacks){
-                        rollData.push(await baseRoll(functionStuff.actor, functionStuff.castingAttributeName, functionStuff.targetData.actor, functionStuff.targetAttributeName, functionStuff.favour, functionStuff.modifier));
-                        rollData.push(await baseRoll(functionStuff.actor, functionStuff.castingAttributeName, functionStuff.targetData.actor, functionStuff.targetAttributeName, functionStuff.favour, functionStuff.modifier));
+                        rollData.push(await baseRoll(functionStuff.actor, functionStuff.castingAttributeName, functionStuff.targetData.actor, functionStuff.targetData.resistAttributeName, functionStuff.favour, functionStuff.modifier));
+                        rollData.push(await baseRoll(functionStuff.actor, functionStuff.castingAttributeName, functionStuff.targetData.actor, functionStuff.targetData.resistAttributeName, functionStuff.favour, functionStuff.modifier));
                     }
                     else if(isWeaponRoll && functionStuff.dmgData.do2attacks){
-                        rollData.push(await baseRoll(functionStuff.actor, functionStuff.castingAttributeName, functionStuff.targetData.actor, functionStuff.targetAttributeName, functionStuff.favour, functionStuff.modifier));
+                        rollData.push(await baseRoll(functionStuff.actor, functionStuff.castingAttributeName, functionStuff.targetData.actor, functionStuff.targetData.resistAttributeName, functionStuff.favour, functionStuff.modifier));
                     }
                 }
                 else{
-                    rollData.push(await baseRoll(functionStuff.actor, functionStuff.castingAttributeName, null, null, functionStuff.finalFavour, functionStuff.modifier));
+                    rollData.push(await baseRoll(functionStuff.actor, functionStuff.castingAttributeName, null, null, functionStuff.favour, functionStuff.modifier));
                     if(isWeaponRoll && functionStuff.dmgData.do3attacks){
-                        rollData.push(await baseRoll(functionStuff.actor, functionStuff.castingAttributeName, null, null, functionStuff.finalFavour, functionStuff.modifier));
-                        rollData.push(await baseRoll(functionStuff.actor, functionStuff.castingAttributeName, null, null, functionStuff.finalFavour, functionStuff.modifier));
+                        rollData.push(await baseRoll(functionStuff.actor, functionStuff.castingAttributeName, null, null, functionStuff.favour, functionStuff.modifier));
+                        rollData.push(await baseRoll(functionStuff.actor, functionStuff.castingAttributeName, null, null, functionStuff.favour, functionStuff.modifier));
                     }
                     else if(isWeaponRoll && functionStuff.dmgData.do2attacks){
-                        rollData.push(await baseRoll(functionStuff.actor, functionStuff.castingAttributeName, null, null, functionStuff.finalFavour, functionStuff.modifier));
+                        rollData.push(await baseRoll(functionStuff.actor, functionStuff.castingAttributeName, null, null, functionStuff.favour, functionStuff.modifier));
                     }
                 }
-                await abilityResultFunction(rollData, functionStuff);
+                await functionStuff.resultFunction(rollData, functionStuff);
                 },
           },
           cancel: {
@@ -730,7 +758,7 @@ returns:{
     useSteadfastAdept {boolean},
     useSteadfastMaster {boolean}
     autoParams {string} detected and used abilities have been appended to autoParams}*/
-async function checkResoluteModifiers({actor, autoParams = "", checkLeader = false, checkSteadfast = false}){
+async function checkResoluteModifiers(actor, autoParams = "", checkLeader = false, checkSteadfast = false){
     let useLeader = false;
     let hasSteadfast = false;
     let useSteadfastAdept = false;
@@ -792,128 +820,159 @@ It won't work with NPC fixed values as input
 * @param {object} rollParams is an object of parameters.
 * @param {object} targetData is information on the target that will receive the damage (as returned by the getTarget function)*/
 
-export async function attackRoll(actor, weapon, rollParams, combatStuff){
+export async function attackRoll(item, actor){
 
     //check wether acting token is player controlled
-    let attackFromPC = actor.hasPlayerOwner;
     let targetData;
     // get target token, actor and defense value
     try{targetData = getTarget("defense")} catch(error){      
         ui.notifications.error(error);
         return;
     }
-    let modifier = 0;
-    let favour = 0;
-    let autoParams = "";
-    // is the actor cursed?
-    /*const CursedEffect = "icons/svg/sun.svg";
-    let cursedEffectCounter = EffectCounter.findCounter(rollData[0].selectedToken, CursedEffect);
-    if(cursedEffectCounter != undefined){
-        rollData[0].selectedCursed = true;
-        favour = favour - 1;
-        autoParams += game.i18n.localize('POWER_LABEL.CURSE') + ", "
-    }     */ 
-    if(combatStuff == undefined){
-        combatStuff = {
-            combat: true,
-            attackFromPC: attackFromPC,
-            poison: 0,
-            bleed: false,
-            askBackstab: false,
-            askHuntersInstinct: false,
-            useHuntersInstinct: false,
-            askTwoAttacks: false,
-            askThreeAttacks: false,
-            checkMaintain: false,
-            dmgData: {
-                askIronFistMaster: false,
-                isRanged: false,
-                hunterIDmg: false,
-                modifier: "",
-                hasAdvantage: false,
-                useBackstab: false,
-                leaderTarget: false,
-                ignoreArm: false
+    let fsDefault = {
+        actor: actor,
+        askTargetAttribute: false,
+        askCastingAttribute: false,
+        askBackstab: false,
+        askHuntersInstinct: false,
+        askTwoAttacks: false,
+        askThreeAttacks: false,
+        attackFromPC: actor.hasPlayerOwner,
+        autoParams: "",
+        bleed: false,
+        checkMaintain: false,
+        combat: true,
+        corruption: false,
+        favour: 0,
+        modifier: 0,
+        poison: 0,
+        resultFunction: attackResult,
+        targetData: targetData,
+        useHuntersInstinct: false,
+        dmgData: {
+            askIronFistMaster: false,
+            isRanged: false,
+            hunterIDmg: false,
+            modifier: "",
+            hasAdvantage: false,
+            useBackstab: false,
+            leaderTarget: false,
+            ignoreArm: false
+        }
+
+    }
+    let specificStuff;
+    if(item.data.type === "weapon"){
+        specificStuff = {
+            askWeapon: false,
+            castingAttributeName: item.data.data.attribute,
+            weapon: item,
+        }
+    }
+    if(item.data.type === "ability"){
+        specificStuff = {
+            ability: item,
+            askWeapon: true,
+            powerLvl: getPowerLevel(item)
+        }
+    }
+    let functionStuff = Object.assign({}, fsDefault , specificStuff)
+    if(item.data.type === "ability"){
+        if(item.data.data.reference === "huntersinstinct"){
+            functionStuff.useHuntersInstinct = true;
+            if(functionStuff.powerLvl > 1){specificStuff.dmgData.hunterIDmg = true}
+        }
+        if(item.data.data.reference === "backstab"){
+            functionStuff.dmgData.useBackstab = true;
+            if(functionStuff.powerLvl > 1){
+                functionStuff.backstabBleed = true;
+                functionStuff.bleed = true;
+                functionStuff.dmgData.bleed = "1d4"
             }
         }
     }
-
-    // target status effects
+    // check for leader adept ability effect on target
     const LeaderEffect = "icons/svg/eye.svg";
     let leaderEffect = getEffect(targetData.token, LeaderEffect);
     if(leaderEffect){
-        combatStuff.dmgData.leaderTarget = true;
-        targetData.autoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
+        functionStuff.dmgData.leaderTarget = true;
+        functionStuff.targetData.autoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
     };
 
-    //search for special attacks
-    let backstabAbil = actor.items.filter(item => item.data.data?.reference === "backstab");
-    if(backstabAbil.length != 0){
-        combatStuff.askBackstab = true;
+    //search for special attacks (if the attacker has abilities that can affect the roll or not, ask the player in the dialog)
+    if(!functionStuff.dmgData.useBackstab){
+        let backstabAbil = actor.items.filter(item => item.data.data?.reference === "backstab");
+        if(backstabAbil.length != 0){
+            functionStuff.askBackstab = true;
+            if(backstabAbil[0].data.data.adept.isActive){
+                functionStuff.dmgData.backstabBleed = true
+            }
+        }
     }
-    let hunterInstinct = actor.items.filter(item => item.data.data?.reference === "huntersinstinct");
-    if(hunterInstinct.length != 0){
-        combatStuff.askHuntersInstinct = true;
-        if(hunterInstinct[0].data.data.adept.isActive){
-            combatStuff.dmgData.hunterIDmg = true;
+    if(!functionStuff.useHuntersInstinct){
+        let hunterInstinct = actor.items.filter(item => item.data.data?.reference === "huntersinstinct");
+        if(hunterInstinct.length != 0){
+            functionStuff.askHuntersInstinct = true;
+            if(hunterInstinct[0].data.data.adept.isActive){
+                functionStuff.dmgData.hunterIDmg = true;
+            }
         }
     }
     //multiple attacks
     let naturalwarrior = actor.items.filter(item => item.data.data?.reference === "naturalwarrior");
     if(naturalwarrior.length != 0){
         if(naturalwarrior[0].data.data.adept.isActive){
-            combatStuff.askTwoAttacks = true;
+            functionStuff.askTwoAttacks = true;
         }
     }
     let rapidfire = actor.items.filter(item => item.data.data?.reference === "rapidfire");
     if(rapidfire.length != 0){
         if(rapidfire[0].data.data.master.isActive){
-            combatStuff.askThreeAttacks = true;
+            functionStuff.askThreeAttacks = true;
         }
         else{
-            combatStuff.askTwoAttacks = true;
+            functionStuff.askTwoAttacks = true;
         }
     }
     let knifeplay = actor.items.filter(item => item.data.data?.reference === "knifeplay");
     if(knifeplay.length != 0){
         if(knifeplay[0].data.data.adept.isActive){
-            combatStuff.askTwoAttacks = true;
+            functionStuff.askTwoAttacks = true;
         }
     }
     let steelthrow = actor.items.filter(item => item.data.data?.reference === "steelthrow");
     if(steelthrow.length != 0){
         if(steelthrow[0].data.data.adept.isActive){
-            combatStuff.askTwoAttacks = true;
+            functionStuff.askTwoAttacks = true;
         }
         if(steelthrow.data.data.master.isActive){
-            combatStuff.askThreeAttacks = true;
+            functionStuff.askThreeAttacks = true;
         }
     }
-    //other modifiers
-    if(weapon.data.data.qualities.precise){
-        modifier += 1;
-        autoParams += game.i18n.localize('COMBAT.PARAMS_PRECISE');
+    if(!functionStuff.askWeapon){
+        if(functionStuff.weapon.data.data.qualities.precise){
+            functionStuff.modifier += 1;
+            functionStuff.autoParams += game.i18n.localize('COMBAT.PARAMS_PRECISE')
+        }
     };
-
     //iron fist
     let ironFist = actor.items.filter(item => item.data.data?.reference === "ironfist");
     if(ironFist.length > 0){
         let powerLvl = getPowerLevel(ironFist[0]);
         if(powerLvl.level == 2){
-            combatStuff.dmgData.modifier += " + 1d4";
-            autoParams += game.i18n.localize('ABILITY_LABEL.IRON_FIST') + " (" + game.i18n.localize('ABILITY.ADEPT') + "), ";
+            functionStuff.dmgData.modifier += " + 1d4";
+            functionStuff.autoParams += game.i18n.localize('ABILITY_LABEL.IRON_FIST') + " (" + game.i18n.localize('ABILITY.ADEPT') + "), ";
         }
         if(powerLvl.level > 2){
-            combatStuff.dmgData.askIronFistMaster = true;
-            autoParams += game.i18n.localize('ABILITY_LABEL.IRON_FIST') + " (" + game.i18n.localize('ABILITY.MASTER') + "), ";
+            functionStuff.dmgData.askIronFistMaster = true;
+            functionStuff.autoParams += game.i18n.localize('ABILITY_LABEL.IRON_FIST') + " (" + game.i18n.localize('ABILITY.MASTER') + "), ";
         }
     }
-    const castingAttributeName = weapon.data.data.attribute;
 
-    await modifierDialog(weapon, actor, castingAttributeName, targetData, false, autoParams, modifier, favour, attackResult, combatStuff)
+    await modifierDialog(functionStuff)
 }
   
-async function attackResult(rollData, weapon, actor, castingAttributeName, targetData, favour, modifierCustom, isMaintained, autoParams, functionStuff){
+async function attackResult(rollData, functionStuff){
     
     let damage;
     let hasDamage = false;
@@ -932,10 +991,10 @@ async function attackResult(rollData, weapon, actor, castingAttributeName, targe
     for(let rollDataElement of rollData){
 
         if(rollDataElement.hasSucceed){
-            resultText += actor.data.name + game.i18n.localize('COMBAT.CHAT_SUCCESS') + targetData.actor.data.name + " <br>";
+            resultText += functionStuff.actor.data.name + game.i18n.localize('COMBAT.CHAT_SUCCESS') + functionStuff.targetData.actor.data.name + " <br>";
             hasDamage = true;
-            damage = await damageRollWithDiceParams(functionStuff.attackFromPC, actor, weapon, functionStuff.dmgData, targetData);
-            if(damage.roll.total > targetData.actor.data.data.health.toughness.threshold){pain = true}
+            damage = await damageRollWithDiceParams(functionStuff.attackFromPC, functionStuff.actor, functionStuff.weapon, functionStuff.dmgData, functionStuff.targetData);
+            if(damage.roll.total > functionStuff.targetData.actor.data.data.health.toughness.threshold){pain = true}
             dmgFormula = game.i18n.localize('WEAPON.DAMAGE') + ": " + damage.roll._formula;
             damageTooltip += damage.roll.result + "    ";
             damageRollMod = game.i18n.localize('COMBAT.CHAT_DMG_PARAMS') + damage.autoParams;
@@ -943,56 +1002,56 @@ async function attackResult(rollData, weapon, actor, castingAttributeName, targe
             damageTot += Math.max(0, damage.roll.total);
         }
         else{
-            resultText += actor.data.name + game.i18n.localize('COMBAT.CHAT_FAILURE') + " <br>";
+            resultText += functionStuff.actor.data.name + game.i18n.localize('COMBAT.CHAT_FAILURE') + " <br>";
         }
     }
     if(damageTot <= 0){
         damageTot = 0;
-        damageText = targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_NUL');
+        damageText = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_NUL');
     }
-    else if(damageTot > targetData.actor.data.data.health.toughness.value){
+    else if(damageTot > functionStuff.targetData.actor.data.data.health.toughness.value){
         targetDies = true;
-        damageText = targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
-        damageFinalText = targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_DYING');
+        damageText = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
+        damageFinalText = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_DYING');
         flagDataArray.push({
-            tokenId: targetData.token.data._id,
+            tokenId: functionStuff.targetData.token.data._id,
             toughnessChange: damageTot*-1
         }, {
-            tokenId: targetData.token.data._id,
+            tokenId: functionStuff.targetData.token.data._id,
             addEffect: "icons/svg/skull.svg",
             effectDuration: 1
         })
     }
     else if(hasDamage){
-        damageText = targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
+        damageText = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
         flagDataArray.push({
-            tokenId: targetData.token.data._id,
+            tokenId: functionStuff.targetData.token.data._id,
             toughnessChange: damageTot*-1
         })
         if(pain){
-            damageFinalText = targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_PAIN');
+            damageFinalText = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_PAIN');
             flagDataArray.push({
-                tokenId: targetData.token.data._id,
+                tokenId: functionStuff.targetData.token.data._id,
                 addEffect: "icons/svg/falling.svg",
                 effectDuration: 1
             })
         }
 
     }
-    let introText = actor.data.name + game.i18n.localize('COMBAT.CHAT_INTRO') + weapon.data.name;
-    let targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + targetData.actor.data.name;
-    if (targetData.autoParams != ""){targetText += ": " + targetData.autoParams}
+    let introText = functionStuff.actor.data.name + game.i18n.localize('COMBAT.CHAT_INTRO') + functionStuff.weapon.data.name;
+    let targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.actor.data.name;
+    if (functionStuff.targetData.autoParams != ""){targetText += ": " + functionStuff.targetData.autoParams}
     let templateData = {
-        targetData : targetData,
-        hasTarget : targetData.hasTarget,
+        targetData : functionStuff.targetData,
+        hasTarget : functionStuff.targetData.hasTarget,
         introText: introText,
-        introImg: actor.data.img,
+        introImg: functionStuff.actor.data.img,
         targetText: targetText,
-        subText: weapon.name,
-        subImg: weapon.img,
+        subText: functionStuff.weapon.name,
+        subImg: functionStuff.weapon.img,
         hasRoll: true,
         hasCorruption: false,
-        rollString: await formatRollString(rollData[0], targetData.hasTarget, rollData[0].modifier),
+        rollString: await formatRollString(rollData[0], functionStuff.targetData.hasTarget, rollData[0].modifier),
         rollResult : await formatRollResult(rollData),
         resultText: resultText,
         hasDamage: hasDamage,
@@ -1006,13 +1065,15 @@ async function attackResult(rollData, weapon, actor, castingAttributeName, targe
         poisonRollString: "",
         poisonRollResultString: "",
         poisonChatIntro: "",
-        poisonChatResult: ""
+        poisonChatResult: "",
+        printBleed: false,
+        bleedChat: "",
     }
-    if(autoParams != ""){templateData.subText += ", " + autoParams};
+    if(functionStuff.autoParams != ""){templateData.subText += ", " + functionStuff.autoParams};
 
     if(functionStuff.poison > 0 && !targetDies && damageTot > 0){
 
-        templateData.poisonChatIntro = actor.data.name + game.i18n.localize('COMBAT.CHAT_POISON') + targetData.actor.data.name;
+        templateData.poisonChatIntro = functionStuff.actor.data.name + game.i18n.localize('COMBAT.CHAT_POISON') + functionStuff.targetData.actor.data.name;
         let poisonChatResult;
         let poisonDamage = "0";
         let poisonRounds = "0";
@@ -1051,7 +1112,7 @@ async function attackResult(rollData, weapon, actor, castingAttributeName, targe
             break;
         }
       
-        let poisonRoll = await baseRoll(actor, "cunning", targetData.actor, "strong", 0, 0);
+        let poisonRoll = await baseRoll(functionStuff.actor, "cunning", functionStuff.targetData.actor, "strong", 0, 0);
             
         if(!poisonRoll.hasSucceed){
             templateData.poisonChatResult = game.i18n.localize('COMBAT.CHAT_POISON_FAILURE');     
@@ -1059,15 +1120,15 @@ async function attackResult(rollData, weapon, actor, castingAttributeName, targe
         else{
         let PoisonRoundsRoll= new Roll(poisonRounds).evaluate();
         let NewPoisonRounds = PoisonRoundsRoll.total;
-        let poisonedEffectCounter = getEffect(targetData.token, effect);
+        let poisonedEffectCounter = getEffect(functionStuff.targetData.token, effect);
         if(poisonedEffectCounter){
             //target already poisoned
             //get the number of rounds left
             if(game.modules.get("statuscounter")?.active){
-                poisonedTimeLeft = await EffectCounter.findCounterValue(targetData.token, effect);  
+                poisonedTimeLeft = await EffectCounter.findCounterValue(functionStuff.targetData.token, effect);  
                 if(NewPoisonRounds > poisonedTimeLeft){
                     flagDataArray.push({
-                        tokenId: targetData.token.data._id,
+                        tokenId: functionStuff.targetData.token.data._id,
                         modifyEffectDuration: "icons/svg/poison.svg",
                         effectDuration: NewPoisonRounds
                     })
@@ -1083,17 +1144,24 @@ async function attackResult(rollData, weapon, actor, castingAttributeName, targe
           else{
             //new poisonning  
             flagDataArray.push({
-                tokenId: targetData.token.data._id,
+                tokenId: functionStuff.targetData.token.data._id,
                 addEffect: "icons/svg/poison.svg",
                 effectDuration: NewPoisonRounds
             });
-            templateData.poisonChatResult = targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_POISON_SUCCESS1') + poisonDamage  + game.i18n.localize('COMBAT.CHAT_POISON_SUCCESS2')  + NewPoisonRounds.toString();
-     
+            templateData.poisonChatResult = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_POISON_SUCCESS1') + poisonDamage  + game.i18n.localize('COMBAT.CHAT_POISON_SUCCESS2')  + NewPoisonRounds.toString();
           }
         }
         templateData.printPoison = true;
-        templateData.poisonRollString = await formatRollString(poisonRoll, targetData.hasTarget, 0);
+        templateData.poisonRollString = await formatRollString(poisonRoll, functionStuff.targetData.hasTarget, 0);
         templateData.poisonRollResultString = await formatRollResult([poisonRoll]);
+    }
+    if(functionStuff.bleed > 0 && !targetDies && damageTot > 0){
+        templateData.printBleed = true;
+        templateData.bleedChat = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_BLEED') + "1d4";
+        flagDataArray.push({
+            tokenId: functionStuff.targetData.token.data._id,
+            addEffect: "icons/svg/blood.svg"
+        });
     }
     const html = await renderTemplate("systems/symbaroum/template/chat/combat.html", templateData);
     const chatData = {
@@ -1117,33 +1185,29 @@ async function formatRollString(rollDataElement, hasTarget, modifier){
     return(rollString)
 }
 
-async function standardPowerActivation(ability, actor, powerStuff) {
-    let targetData;
-    let favour = 0;
-    if(powerStuff.hasTarget){
-        try{targetData = getTarget(powerStuff.targetResitAttribute)} catch(error){
-            if(powerStuff.targetMandatory){
+async function standardPowerActivation(functionStuff) {
+    if(functionStuff.targetData.hasTarget){
+        try{functionStuff.targetData = getTarget(functionStuff.targetResitAttribute)} catch(error){
+            if(functionStuff.targetMandatory){
                 ui.notifications.error(error);
                 return;
             }
-            else powerStuff.hasTarget = false;
+            else {
+                functionStuff.targetData = {hasTarget : false}
+            }
         }
     }
-    powerStuff.powerLvl = getPowerLevel(ability);
-    let actorResMod = checkResoluteModifiers(actor, "", true, false);
-    if (powerStuff.hasTarget){
+    if (functionStuff.targetData.hasTarget){
         let targetResMod = checkResoluteModifiers(targetData.actor, targetData.autoParams, true, powerStuff.checkTargetSteadfast);
-        if (powerStuff.targetResitAttribute === "resolute"){
-            targetData.resistAttributeName = targetResMod.bestAttributeName;
-            targetData.resistAttributeValue = targetResMod.bestAttributeValue;
-            targetData.autoParams = targetResMod.autoParams;
+        if (functionStuff.targetData.resistAttributeName === "resolute"){
+            functionStuff.targetData.resistAttributeName = targetResMod.bestAttributeName;
+            functionStuff.targetData.resistAttributeValue = targetResMod.bestAttributeValue;
+            functionStuff.targetData.autoParams = targetResMod.autoParams;
         }
-        favour += targetResMod.favour*(-1);
+        functionStuff.favour += targetResMod.favour*(-1);
     }
-    else {targetData = {hasTarget : false}}
-    let castingAttributeName = actorResMod.bestAttributeName;
-    let autoParams = actorResMod.autoParams;
-    await modifierDialog(ability, actor, castingAttributeName, targetData, false, autoParams, 0, favour, standardPowerResult, powerStuff)
+    else {functionStuff.targetData = {hasTarget : false}}
+    await modifierDialog(functionStuff)
 }
 
 async function standardAbilityActivation(functionStuff) {
@@ -1162,13 +1226,14 @@ async function standardAbilityActivation(functionStuff) {
     await modifierDialog(functionStuff)
 }
 
-async function standardPowerResult(rollData, ability, actor, castingAttributeName, targetData, favour, modifierCustom, isMaintained, autoParams, functionStuff){
-    let introText = actor.data.name
-    if(isMaintained){
-        introText += game.i18n.localize('POWER.CHAT_INTRO_M') + ability.name + " \".";
+async function standardPowerResult(rollData, functionStuff){
+    let introText = functionStuff.actor.data.name
+    let corruption;
+    if(functionStuff.isMaintained){
+        introText += game.i18n.localize('POWER.CHAT_INTRO_M') + functionStuff.ability.name + " \".";
     }
     else{
-        introText += game.i18n.localize('POWER.CHAT_INTRO') + ability.name + " \".";
+        introText += game.i18n.localize('POWER.CHAT_INTRO') + functionStuff.ability.name + " \".";
     }
     let hasRoll = false;
     let hasSucceed = true;
@@ -1180,17 +1245,17 @@ async function standardPowerResult(rollData, ability, actor, castingAttributeNam
         rollString = `${rollData[0].actingAttributeLabel} : (${rollData[0].actingAttributeValue})`;
         rollResult = formatRollResult(rollData)
     }
-    let resultText = actor.data.name + game.i18n.localize('POWER.CHAT_SUCCESS');
+    let resultText = functionStuff.actor.data.name + game.i18n.localize('POWER.CHAT_SUCCESS');
     if(!hasSucceed){
-        resultText = actor.data.name + game.i18n.localize('POWER.CHAT_FAILURE');
+        resultText = functionStuff.actor.data.name + game.i18n.localize('POWER.CHAT_FAILURE');
     }
     let targetText = "";
-    if(targetData.hasTarget){
-        targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + targetData.actor.data.name;
-        if (targetData.autoParams != ""){targetText += ": " + targetData.autoParams}
+    if(functionStuff.targetData.hasTarget){
+        targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.actor.data.name;
+        if (functionStuff.targetData.autoParams != ""){targetText += ": " + functionStuff.targetData.autoParams}
     }
 
-    if(functionStuff?.corruption){
+    if(functionStuff.corruption){
         corruption = getCorruption(functionStuff)
     }
 
@@ -1253,14 +1318,14 @@ async function anathemaPrepare(ability, actor) {
         hasTarget= false;
     }
     if (hasTarget){
-        let targetResMod = checkResoluteModifiers(targetData.actor, targetData.autoParams, true, false);
+        let targetResMod = await checkResoluteModifiers(targetData.actor, targetData.autoParams, true, false);
         targetData.resistAttributeName = targetResMod.bestAttributeName;
         targetData.resistAttributeValue = targetResMod.bestAttributeValue;
         targetData.autoParams = targetResMod.autoParams;
-        favour += targetResMod.favour*(-1);
+        favour += targetResMod.favour*-1;
+        console.log(targetResMod)
     }
     else {targetData = {hasTarget : false}}
-    
     let fsDefault = await buildFunctionStuffDefault(ability, actor)
     let specificStuff = {
         actor: actor,
@@ -1304,7 +1369,7 @@ async function anathemaResult(rollData, functionStuff){
         resultText: resultText,
         finalText: ""
     }
-    if(autoParams != ""){templateData.subText += ", " + functionStuff.autoParams};
+    if(functionStuff.autoParams != ""){templateData.subText += ", " + functionStuff.autoParams};
 
     const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
     const chatData = {
@@ -1324,7 +1389,8 @@ async function brimstoneCascadePrepare(ability, actor) {
     //check wether acting token is player controlled
     //check rapid reflexes
     let targetHasRapidReflexes = false;
-    let rrAbility = actor.items.filter(item => item.data.data.reference === "rapidreflexes");
+    let rrAbility = targetData.actor.items.filter(item => item.data.data.reference === "rapidreflexes");
+    console.log(rrAbility)
     if(rrAbility.length != 0){
         targetHasRapidReflexes = true;
         targetData.autoParams += "Rapid Reflexes, ";
@@ -1452,7 +1518,7 @@ async function bendWillPrepare(ability, actor) {
         ui.notifications.error(error);
         return;
     }
-    let targetResMod = checkResoluteModifiers(targetData.actor, targetData.autoParams, true, true);
+    let targetResMod = await checkResoluteModifiers(targetData.actor, targetData.autoParams, true, true);
     let favour = -1*targetResMod.favour;
     targetData.resistAttributeName = targetResMod.bestAttributeName;
     targetData.resistAttributeValue = targetResMod.bestAttributeValue;
@@ -1551,7 +1617,7 @@ async function curseResult(rollData, functionStuff){
 
     let introText = "";
     let hasRoll;
-    if(isMaintained){
+    if(functionStuff.isMaintained){
         introText = functionStuff.actor.data.name + game.i18n.localize('POWER_CURSE.CHAT_INTRO_M');
         hasRoll = true;
     }
@@ -1591,7 +1657,7 @@ async function curseResult(rollData, functionStuff){
         content: html,
     }
     ChatMessage.create(chatData);
-    if(!isMaintained){
+    if(!functionStuff.isMaintained){
         let flagData = {
             tokenId: functionStuff.targetData.token.data._id,
             addEffect: "icons/svg/sun.svg",
@@ -1619,7 +1685,6 @@ async function holyAuraPrepare(ability, actor) {
     let specificStuff = {
         checkMaintain: true,
         corruption: true,
-        targetData: targetData,
         resultFunction: holyAuraResult,
         selectedToken: selectedToken,
         tradition: ["theurgy"]
@@ -1652,8 +1717,7 @@ async function holyAuraResult(rollData, fctStuff){
         if(fctStuff.powerLvl.level == 2){auraDamage = "1d8"}
         else if(fctStuff.powerLvl.level == 3){auraDamage = "1d10"; auraHeal = "1d6"}
         
-        let abTheurgy = actor.items.filter(item => item.data.data?.reference === "theurgy");
-        console.log(abTheurgy);
+        let abTheurgy = fctStuff.actor.items.filter(item => item.data.data?.reference === "theurgy");
         if(abTheurgy.length > 0){
             if(abTheurgy[0].data.data.master.isActive){
                 auraDamage += " + 1d4";
@@ -1709,7 +1773,7 @@ async function inheritWound(ability, actor){
         return;
     }
     let powerLvl = getPowerLevel(ability);
-    let actorResMod = checkResoluteModifiers(actor, "", true, false);
+    let actorResMod = await checkResoluteModifiers(actor, "", true, false);
     let favour = 0;
     let castingAttributeName = actorResMod.bestAttributeName;
 
@@ -1831,7 +1895,7 @@ async function larvaeBoilsPrepare(ability, actor) {
         tradition: ["witchcraft"]
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff)
-    await modifierDialog(specificStuff)
+    await modifierDialog(functionStuff)
 }
 
 async function larvaeBoilsResult(rollData, functionStuff){
@@ -1938,7 +2002,7 @@ async function unnoticeablePrepare(ability, actor) {
         tradition: ["wizardry", "theurgy"],
         addCasterEffect: "systems/symbaroum/asset/image/invisible.png"
     }
-    let functionStuff = Object.assign({}, fsDefault , specificStuff)
+    let functionStuff = Object.assign({}, fsDefault , specificStuff);
     await standardPowerActivation(functionStuff);
 }
 
@@ -1949,8 +2013,6 @@ async function leaderPrepare(ability, actor) {
         ui.notifications.error("Need Leader Adept level");
         return;
     }
-
-
     let targetData;
     try{targetData = getTarget()} catch(error){      
         ui.notifications.error(error);
@@ -1961,7 +2023,6 @@ async function leaderPrepare(ability, actor) {
     let specificStuff = {
         targetMandatory: true,
         targetData: targetData,
-        targetResitAttribute: null,
         checkTargetSteadfast: false,
         checkMaintain: false,
         isMaintained: false,
@@ -2005,9 +2066,7 @@ async function loremaster(ability, actor) {
 }
 
 async function acrobatics(ability, actor) {
-    
-    
-    let fsDefault = await buildFunctionStuffDefault(ability, actor);
+        let fsDefault = await buildFunctionStuffDefault(ability, actor);
     let specificStuff = {
         castingAttributeName: "quick",
         combat: false,

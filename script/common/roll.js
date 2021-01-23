@@ -331,8 +331,6 @@ It won't work with NPC fixed values as input
 * @param {object} targetData is information on the target that will receive the damage (as returned by the getTarget function)*/
 
 export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgData, targetData){
-  console.log(dmgData);
-  console.log("dmgData");
   let newRollDmgString = "";
   let wepDmg = weapon.data.data.damage;
   let modDmg = 0;
