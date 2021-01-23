@@ -33,7 +33,9 @@
     
     {{#if hasArmor}}
     <p style="margin-top: 5px;text-align:center">{{armor.name}}</p>
-    <p style="margin-top: 5px"><strong>{{localize "ARMOR.PROTECTION"}}:</strong> {{armor.value}}</p>
+    <div class="tooltip"><p style="margin-top: 5px"><strong>{{localize "ARMOR.PROTECTION"}}:</strong> {{armor.value}}</p>
+      <div class="tooltiptext">{{{armor.diceBreakdown}}}</div>
+    </div>
     {{/if}}
     {{/if}}
     
