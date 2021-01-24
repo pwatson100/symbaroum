@@ -146,7 +146,6 @@
 
 .symbaroum.sheet.item .editor,
 .symbaroum.sheet.item .editor-content {
-    font-family: var(--font-text);
     font-size: 14px;
     color: var(--color-text);
     height: 100%;
