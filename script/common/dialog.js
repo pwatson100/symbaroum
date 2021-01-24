@@ -13,7 +13,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon) 
     "askImpeding" : askImpeding,
     "choices": { "0": game.i18n.localize("DIALOG.FAVOUR_NORMAL"), "-1":game.i18n.localize("DIALOG.FAVOUR_DISFAVOUR"), "1":game.i18n.localize("DIALOG.FAVOUR_FAVOUR")},
     "groupName":"favour",
-    "roll_defaults": attri_defaults	
+    "roll_defaults": attri_defaults,
   });
   
   let dialog = new Dialog({

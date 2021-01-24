@@ -6,7 +6,8 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
     value:0,
     name: "",
     message: "",
-    diceBreakdown: ""
+    diceBreakdown: "",
+    img: ""
 
   };
   let hasArmor = armor != null;
