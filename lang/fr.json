@@ -1,4 +1,4 @@
-{ 
+{
     "ABILITY.NAME": "Nom",
     "ABILITY.ACTIVE": "Appris",
     "ABILITY.ACTION": "Action",
@@ -159,9 +159,11 @@
 
     "BOON.NAME": "Nom",
     "BOON.DESCRIPTION": "Description",
+    "BOON.LEVEL": "Niveau",
 
     "BURDEN.NAME": "Nom",
     "BURDEN.DESCRIPTION": "Description",
+    "BURDEN.LEVEL": "Niveau",
 
     "BUTTON.DEATH": "Mort",
     "BUTTON.RECOVER": "Récupérer",
@@ -173,6 +175,7 @@
     "CHAT.DEATH_ROLL": "Test de Mort",
     "CHAT.SUCCEED": "Réussite",
     "CHAT.FAILED": "Echec",
+    "CHAT.MARGIN": "Marge du résultat : ",
     "CHAT.CRITICAL_SUCCESS": "Réussite Critique",
     "CHAT.CRITICAL_FAILURE": "Echec Critique",
     "CHAT.CRITICAL_FREEATTACK": "Attaque gratuite",
@@ -187,6 +190,7 @@
     "COMBAT.CHAT_INTRO": " attaque avec ",
     "COMBAT.CHAT_SUCCESS": " touche ",
     "COMBAT.CHAT_FAILURE": " rate son coup.",
+    "COMBAT.CHAT_BLEED": " reçoit une blessure hémorragique et subit des dégâts chaque round : ",
     "COMBAT.CHAT_POISON": " tenter d'empoisonner ",
     "COMBAT.CHAT_POISON_FAILURE": "Echec de l'empoisonnement.",
     "COMBAT.CHAT_POISON_EXTEND": "La victime était déjà empoisonnée, nouvelle durée: rounds: ",
@@ -232,6 +236,7 @@
     "DIALOG.DAMAGE_IF_MODIFIER": "Bonus dégâts Poigne de fer",
     "DIALOG.2ATTACKS": "Deux attaques?",
     "DIALOG.3ATTACKS": "Trois attaques?",
+    "DIALOG.IMPEDING": "Inclure malus d'armure?",
     "DIALOG.CASTING_ATTRIBUTE": "Attribut utilisé",
     "DIALOG.RESIST_ATTRIBUTE": "Attribut résisté",
 
@@ -341,8 +346,8 @@
     "POWER_LABEL.WILD_HUNT":"Traque sauvage",
     "POWER_LABEL.WITCH_HAMMER":"Marteau à sorcière",
 
-    "POWER.CHAT_INTRO": " essaye de lancer le pouvoir mystique \" ",
-    "POWER.CHAT_INTRO_M": " essaye de maintenir le pouvoir mystique \" ",
+    "POWER.CHAT_INTRO": " essaye d'utiliser \"",
+    "POWER.CHAT_INTRO_M": " essaye de maintenir \" ",
     "POWER.CHAT_SUCCESS": " réussit.",
     "POWER.CHAT_FAILURE": " n'y parvient pas.",
     "POWER.CHAT_CORRUPTION": "Points de Corruption temporaire reçus: ",
@@ -547,4 +552,6 @@
     "SYMBAROUM.OPTIONAL_ALWAYSUSECRIT": "Allow crits for non-combat",
     "SYMBAROUM.OPTIONAL_ALWAYSUSECRIT_HINT": "Check to enable critical success and failure on non-combat rolls - automatically enabled if crits are selected",
     "SYMBAROUM.OPTIONAL_MORERITUALS": "Allow more rituals",
-    "SYMBAROUM.OPTIONAL_MORERITUALS_HINT": "Check to enable more rituals as described on Advanced Players Guide p. 103"}
+    "SYMBAROUM.OPTIONAL_MORERITUALS_HINT": "Check to enable more rituals as described on Advanced Players Guide p. 103"
+}
+

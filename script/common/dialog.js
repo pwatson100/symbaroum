@@ -1,21 +1,23 @@
-import { rollAttribute } from './roll.js';
+import { rollAttribute, getAttributeLabel } from './roll.js';
 
 let roll_defaults = {};
 
-export async function prepareRollAttribute(character, attribute, armor, weapon) {
-	let attri_defaults = getRollDefaults(attribute.name,armor != null, weapon != null);
+export async function prepareRollAttribute(actor, attributeName, armor, weapon) {
+	let attri_defaults = getRollDefaults(attributeName,armor != null, weapon != null);
+  let askImpeding = actor.data.data.combat.impeding;
 
   const html = await renderTemplate('systems/symbaroum/template/chat/dialog.html', {
     "hasTarget": game.user.targets.values().next().value !== undefined,
     "isWeaponRoll" : weapon !== null,
     "isArmorRoll" : armor !== null,
+    "askImpeding" : askImpeding,
     "choices": { "0": game.i18n.localize("DIALOG.FAVOUR_NORMAL"), "-1":game.i18n.localize("DIALOG.FAVOUR_DISFAVOUR"), "1":game.i18n.localize("DIALOG.FAVOUR_FAVOUR")},
     "groupName":"favour",
     "roll_defaults": attri_defaults	
   });
   
   let dialog = new Dialog({
-    title: attribute.name,
+    title: getAttributeLabel(actor, attributeName),
     content: html,
     buttons: {
       roll: {
@@ -23,11 +25,11 @@ export async function prepareRollAttribute(character, attribute, armor, weapon) 
         label: game.i18n.localize('BUTTON.ROLL'),
         callback: async (html) => {
           let dummyMod = "custom";			
-          if( html.find("#modifier").length > 0) {
-            dummyMod = html.find("#modifier")[0].value;											
+          if( html.find("#targetAttribute").length > 0) {
+            dummyMod = html.find("#targetAttribute")[0].value;											
           }
-          attri_defaults.targetAttribute = dummyMod;
-          const modifierName = dummyMod;
+          attri_defaults.targetAttributeName = dummyMod;
+          const targetAttributeName = dummyMod;
 
           let hasAdvantage = html.find("#advantage").length > 0;
           if( hasAdvantage ) {
@@ -52,12 +54,15 @@ export async function prepareRollAttribute(character, attribute, armor, weapon) 
           attri_defaults.selectedFavour = ""+fvalue;			
           const favour = fvalue;
           
-          const bonus = html.find("#bonus")[0].value;   
-          attri_defaults.bonus = bonus;              
-          
-          const modifier = getTargetAttribute(modifierName, bonus);                   
-
-          await rollAttribute(character, attribute, favour, modifier, armor, weapon, advantage, damModifier);
+          const modifier = html.find("#modifier")[0].value;   
+          attri_defaults.modifier = modifier;              
+          if(askImpeding){
+            if(html.find("#impeding")[0].checked){
+              modifier.value += askImpeding;
+            }
+          }                 
+                              
+          await rollAttribute(actor, attributeName, getTarget(), targetAttributeName, favour,parseInt(modifier), armor, weapon, advantage, damModifier);
           },
       },
       cancel: {
@@ -82,27 +87,19 @@ function getRollDefaults(attributeName, isArmor, isWeapon) {
 
 function createDefaults() {
 	return {
-		targetAttribute: game.i18n.localize('ATTRIBUTE.CUSTOM'),
+		targetAttributeName: "custom",
 		additionalModifier: "",
 		selectedFavour: "0",
-		bonus: 0,
+		modifier: "0",
 		advantage: "",
 	};
 }
 
-
-function getTargetAttribute(attributeName, bonus) {
-    const target = game.user.targets.values().next().value;
-    console.log('🚀 ~ file: dialog.js ~ line 33 ~ getTargetAttribute ~ target', target);
-    if (target === undefined || attributeName === 'custom') {
-        return { name: game.i18n.localize('ATTRIBUTE.CUSTOM'), value: 10 - bonus };
-    } else if (attributeName === 'defense') {
-        let defense = target.actor.data.data.combat.defense + target.actor.data.data.bonus.defense;
-        return { name: game.i18n.localize('ARMOR.DEFENSE'), value: defense - bonus };
-    } else {
-        console.log(target.actor.data.data);
-        const attribute = target.actor.data.data.attributes[attributeName];
-        const attributeValue = attribute.value + target.actor.data.data.bonus[attributeName];
-        return { name: game.i18n.localize(attribute.label), value: attributeValue - bonus };
-    }
+function getTarget() {
+  const target = game.user.targets.values().next().value;
+  if (target === undefined) {
+    return null;
+  } else {
+    return target.actor;
+  }
 }

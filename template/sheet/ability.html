@@ -6,9 +6,12 @@
             </div>
             <div class="wrapper-column">
                 <div class="name">
-                    <button class="register-ability">{{localize "ABILITY.NAME"}}</button>
+                    <label>{{localize "ABILITY.NAME"}}</label>
                     <input name="name" type="text" value="{{item.name}}"/>
                 </div>
+            </div>
+            <div class="avatar">
+                    <button class="activate-ability" ><img src="icons/vtt-512.png" /></button>
             </div>
         </div>
 
@@ -52,8 +55,6 @@
                         <input name="data.novice.isActive" type="checkbox" value="active"/>
                         {{/if}}
                     </div>
-                     <button class="activate-ability" title="Roll"></button>
-                    
                     {{editor content=data.novice.description target="data.novice.description" button=true owner=owner editable=editable}}
                 </div>
             </div>

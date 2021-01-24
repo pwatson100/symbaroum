@@ -1,5 +1,3 @@
-import { activateAbility } from "../common/item.js";
-
 export class SymbaroumActorSheet extends ActorSheet {
     nbrOfFailedDeathRoll = 0;
 
@@ -94,6 +92,6 @@ export class SymbaroumActorSheet extends ActorSheet {
         event.preventDefault();
         const div = $(event.currentTarget).parents(".item");
         const ability = this.actor.getOwnedItem(div.data("itemId"));
-        await activateAbility(ability, this.actor);
+        await ability.makeAction(this.actor);
     }
 }

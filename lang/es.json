@@ -160,9 +160,11 @@
 
   "BOON.NAME": "Nombre",
   "BOON.DESCRIPTION": "Descripción",
+  "BOON.LEVEL": "Nivel",
 
   "BURDEN.NAME": "Nombre",
   "BURDEN.DESCRIPTION": "Descripción",
+  "BURDEN.LEVEL": "Nivel",
 
   "BUTTON.DEATH": "Muerte",
   "BUTTON.RECOVER": "Recuperación",
@@ -174,6 +176,7 @@
   "CHAT.DEATH_ROLL": "Tirada de Muerte",
   "CHAT.SUCCEED": "Éxito",
   "CHAT.FAILED": "Fallo",
+  "CHAT.MARGIN": "Result Margin : ",
   "CHAT.CRITICAL_SUCCESS": "Éxito Crítico",
   "CHAT.CRITICAL_FAILURE": "Fallo Crítico",
   "CHAT.CRITICAL_FREEATTACK": "Ataque libre",
@@ -189,6 +192,7 @@
   "COMBAT.CHAT_INTRO": " attacks with ",
   "COMBAT.CHAT_SUCCESS": " hits ",
   "COMBAT.CHAT_FAILURE": " miss.",
+  "COMBAT.CHAT_BLEED": " bleeds and loses toughness each round: ",
   "COMBAT.CHAT_POISON": " tries to poison ",
   "COMBAT.CHAT_POISON_FAILURE": "No poisonning.",
   "COMBAT.CHAT_POISON_EXTEND": "Target was already poisoned, new duration: rounds: ",
@@ -234,6 +238,7 @@
   "DIALOG.FAVOUR_FAVOUR": "Favour", 
   "DIALOG.FAVOUR_DISFAVOUR": "Disfavour",
   "DIALOG.DAMAGE_MODIFIER": "Dam. mod.",
+  "DIALOG.IMPEDING": "Include impeding malus?",
   "DIALOG.CASTING": "Initial casting",
   "DIALOG.MAINTAINING": "Maintening ability",
   
@@ -342,8 +347,8 @@
   "POWER_LABEL.WILD_HUNT":"Wild Hunt",
   "POWER_LABEL.WITCH_HAMMER":"Witch Hammer",
 
-  "POWER.CHAT_INTRO": " tries to cast the mystical power \" ",
-  "POWER.CHAT_INTRO_M": " tries to maintain the mystical power \" ",
+  "POWER.CHAT_INTRO": " tries to use \" ",
+  "POWER.CHAT_INTRO_M": " tries to maintain \" ",
   "POWER.CHAT_SUCCESS": " is successfull.",
   "POWER.CHAT_FAILURE": " fails.",
   "POWER.CHAT_CORRUPTION": "Temporary corruption received: ",

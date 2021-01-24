@@ -11,23 +11,22 @@
         <div class="subText">{{removeMarkup subText}}</div>            
         <img src="{{subImg}}"/>
         {{#if hasRoll}}
-        <p><strong>{{removeMarkup rollString}}</strong></p>
-        <p><strong>{{removeMarkup rollResult}}</strong></p>
+        <h4>{{removeMarkup rollString}}</h4>
+        <h4>{{removeMarkup rollResult}}</h4>
         {{/if}}
         <div class="finalTxt">
             <p>{{removeMarkup resultText}}</p>
             <p>{{removeMarkup finalText}}</p>
             {{#if hasDamage}}
-            <div class="tooltip">
-                <p><strong>{{removeMarkup damageRollMod}}</strong></p>
-                <span class="tooltiptext">{{dmgFormulaTooltip}}</span>
-            </div>
-            <div class="tooltip">
-                <p><strong>{{removeMarkup damageRollResult}}</strong></p>
-                <span class="tooltiptext">{{damageTooltip}}</span>
+            <div class="finalTxt">{{removeMarkup dmgFormula}}
             </div>
             <div class="finalTxt">
-                <p>{{removeMarkup damageText}}</p>
+                <div class="tooltip">
+                    <p>{{removeMarkup damageText}}</p>
+                    <span class="tooltiptext">{{damageTooltip}}</span>
+                </div>
+            </div>
+            <div class="finalTxt">
                 <p>{{removeMarkup damageFinalText}}</p>
             </div>
             {{/if}}

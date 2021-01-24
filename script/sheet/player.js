@@ -57,28 +57,20 @@ export class PlayerSheet extends SymbaroumActorSheet {
 
     async _prepareRollAttribute(event) {
         event.preventDefault();
-        const attributeName = $(event.currentTarget).data("attribute");
-        const attribute = this.actor.data.data.attributes[attributeName];
-        const bonus = this.actor.data.data.bonus[attributeName];
-        const attributeData = {name: game.i18n.localize(attribute.label), value: attribute.value + bonus};
-        await prepareRollAttribute(this.actor, attributeData, null, null);
+        const attributeName = $(event.currentTarget).data("attribute");        
+        await prepareRollAttribute(this.actor, attributeName, null, null);
     }
 
     async _prepareRollArmor(event) {
         event.preventDefault();
-        const attributeData = {name: this.actor.data.data.combat.armor, value: this.actor.data.data.combat.defense};
-        const armor = { protection: this.actor.data.data.combat.protection, quality: this.actor.data.data.combat.quality }
-        await prepareRollAttribute(this.actor, attributeData, armor, null);
+        const armor = this.actor.data.data.combat;
+        await prepareRollAttribute(this.actor, "defense", armor, null);
     }
 
     async _prepareRollWeapon(event) {
         event.preventDefault();
         const div = $(event.currentTarget).parents(".item");
         const weapon = this.actor.getOwnedItem(div.data("itemId"));
-        const attribute = this.actor.data.data.attributes[weapon.data.data.attribute];
-        const bonus = this.actor.data.data.bonus[weapon.data.data.attribute];
-        const attributeData = { name: game.i18n.localize(attribute.label), value: attribute.value + bonus };
-        const weaponData = { damage: weapon.data.data.damage, quality: weapon.data.data.quality, qualities: weapon.data.data.qualities }
-        await prepareRollAttribute(this.actor, attributeData, null, weaponData);
+        await prepareRollAttribute(this.actor, weapon.data.data.attribute, null, weapon);
     }
 }

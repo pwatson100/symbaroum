@@ -1,4 +1,14 @@
 <div class="symbaroum dialog">
+  {{#if askWeapon}}
+  <div class="attribute">
+    <label>Choose weapon</label>
+    <select id="weapon">
+        {{#each weapons}}
+        <option value={{this.id}}>{{this.name}} | Attribut: {{this.data.data.attribute}} </option>
+        {{/each}}
+    </select>
+</div>
+  {{/if}}
   {{#if askCastingAttribute}}
   <div class="attribute">
       <label>{{localize "DIALOG.CASTING_ATTRIBUTE"}}</label>
@@ -38,7 +48,11 @@
     <div class="favour">
       <label class="lblfavour">{{radioBoxes groupName choices checked=defaultFavour localize=true}}</label>
   </div>
-      
+  {{#if askImpeding}}
+  <div class="simplebox">
+    <label>{{localize "DIALOG.IMPEDING"}}</label> <span class="lblfavour"><input type="checkbox" id="impeding" checked></span>
+  </div>
+  {{/if}}
     {{#if isWeaponRoll}}
     <div class="simplebox">
       <label>{{localize "DIALOG.ADVANTAGE"}}</label><span class="lblfavour"><input type="checkbox" id="advantage" unchecked></span>

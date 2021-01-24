@@ -58,9 +58,11 @@
 
 "BOON.NAME": "Name",
 "BOON.DESCRIPTION": "Beschreibung",
+"BOON.LEVEL": "Niveau",
 
 "BURDEN.NAME": "Name",
 "BURDEN.DESCRIPTION": "Beschreibung",
+"BURDEN.LEVEL": "Niveau",
 
 "BUTTON.DEATH": "Tod",
 "BUTTON.RECOVER": "Erholung",
@@ -71,6 +73,7 @@
 "CHAT.DEATH_ROLL": "Todesprobe",
 "CHAT.SUCCEED": "Erfolg",
 "CHAT.FAILED": "Misserfolg",
+"CHAT.MARGIN": "Result Margin : ",
 "CHAT.CRITICAL_SUCCESS": "Kritischer Erfolg",
 "CHAT.CRITICAL_FAILURE": "Kritischer Misserfolg",
 "CHAT.CRITICAL_FREEATTACK": "Freier Angriff",

@@ -4,31 +4,28 @@
             <div class="introTxt">{{removeMarkup introText}}</div>
             {{#if hasTarget}}
             <div class="introImg" style="background-image: url('{{targetData.actor.data.img}}')"></div>
-            </div>
-            <div class="targetText">{{removeMarkup targetText}}
-            {{/if}}
+        </div>
+        <div class="targetText">{{removeMarkup targetText}}
+        {{/if}}
         </div>
         <div class="subText">{{removeMarkup subText}}</div>            
         <img src="{{subImg}}"/>
         {{#if hasRoll}}
-        <p><strong>{{removeMarkup rollString}}</strong></p>
-        <p><strong>{{removeMarkup rollResult}}</strong></p>
+        <h4>{{removeMarkup rollString}}</h4>
+        <h4>{{removeMarkup rollResult}}</h4>
         {{/if}}
-        <div class="finalTxt">
-            <p>{{removeMarkup resultText}}</p>
-            <p>{{removeMarkup finalText}}</p>
-        </div>
+        <h4>{{removeMarkup resultText}}</h4>
         {{#if hasDamage}}
-        <div class="tooltip">
-            <p><strong>{{removeMarkup damageRollMod}}</strong></p>
-            <span class="tooltiptext">{{dmgFormulaTooltip}}</span>
-        </div>
-        <div class="tooltip">
-            <p><strong>{{removeMarkup damageRollResult}}</strong></p>
-            <span class="tooltiptext">{{damageTooltip}}</span>
+        {{#if hasDmgMod}}
+        <h4>{{removeMarkup damageRollMod}}</h4>
+        {{/if}}
+        <div class="finalTxt">{{removeMarkup dmgFormula}}
         </div>
         <div class="finalTxt">
-            <p>{{removeMarkup damageText}}</p>
+            <div class="tooltip">
+                <p>{{removeMarkup damageText}}</p>
+                <span class="tooltiptext">{{damageTooltip}}</span>
+            </div>
             <p>{{removeMarkup damageFinalText}}</p>
         </div>
         {{/if}}
@@ -37,9 +34,12 @@
         {{/if}}
         {{#if printPoison}}
         <div class="finalTxt">{{removeMarkup poisonChatIntro}}</div>
-        <p><strong>{{removeMarkup poisonRollString}}</strong></p>
-        <p><strong>{{removeMarkup poisonRollResultString}}</strong></p>
+        <h4>{{removeMarkup poisonRollString}}</h4>
+        <h4>{{removeMarkup poisonRollResultString}}</h4>
         <div class="finalTxt">{{removeMarkup poisonChatResult}}</div>
+        {{/if}}
+        {{#if printBleed}}
+        <div class="finalTxt">{{removeMarkup bleedChat}}</div>
         {{/if}}
     </div>
 </div>
