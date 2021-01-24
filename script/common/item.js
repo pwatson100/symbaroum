@@ -475,9 +475,10 @@ async function getMysticAbilities(actor){
                     {number} level
                     {string} levelname the localized label (novice, adpet or master)}*/
 async function getCorruption(functionStuff, corruptionFormula = "1d4"){
+    console.log(functionStuff)
     let sorceryRoll;
-    if(functionStuff?.traditions){
-        for(let trad of functionStuff.traditions){
+    if(functionStuff?.tradition){
+        for(let trad of functionStuff.tradition){
             if(functionStuff.casterMysticAbilities[trad].hasAbility){
                 if(functionStuff.casterMysticAbilities[trad].level > 1){
                     return({value: 1, tradition: trad})
@@ -485,6 +486,7 @@ async function getCorruption(functionStuff, corruptionFormula = "1d4"){
             }
         } 
     }
+    console.log(functionStuff)
     if(functionStuff.casterMysticAbilities.sorcery.hasAbility){
         let castingAttribute = (await checkResoluteModifiers(functionStuff.actor)).bestAttributeName;
         sorceryRoll = await baseRoll(functionStuff.actor, castingAttribute, null, null, 0, 0);
@@ -1183,7 +1185,8 @@ async function attackResult(rollData, functionStuff){
 async function formatRollString(rollDataElement, hasTarget, modifier){
     let rollString = `${rollDataElement.actingAttributeLabel} : (${rollDataElement.actingAttributeValue})`;
     if(hasTarget){
-        rollString += `  ⬅  ${rollDataElement.targetAttributeLabel} : (${rollDataElement.resistAttributeValue})`
+        let attributeMod = 10 - rollDataElement.resistAttributeValue
+        rollString += `  ⬅  ${rollDataElement.targetAttributeLabel} : (${attributeMod})`
     }
     if(modifier){
         rollString += "  " + game.i18n.localize('COMBAT.CHAT_MODIFIER') + modifier.toString();
@@ -1747,7 +1750,7 @@ async function holyAuraPrepare(ability, actor) {
     await modifierDialog(functionStuff);
 }
 
-async function holyAuraResult(rollData, fctStuff){
+async function holyAuraResult(rollData, functionStuff){
     let flagDataArray = [];
     let haveCorruption = false;
     let corruptionText = "";
@@ -1762,30 +1765,30 @@ async function holyAuraResult(rollData, fctStuff){
         });
     }
     let templateData = {
-        targetData : fctStuff.targetData,
+        targetData : functionStuff.targetData,
         hasTarget : false,
-        introText: fctStuff.actor.data.name + game.i18n.localize('POWER_HOLYAURA.CHAT_INTRO'),
-        introImg: fctStuff.actor.data.img,
+        introText: functionStuff.actor.data.name + game.i18n.localize('POWER_HOLYAURA.CHAT_INTRO'),
+        introImg: functionStuff.actor.data.img,
         targetText: "",
-        subText: fctStuff.ability.name + ", " + fctStuff.powerLvl.lvlName,
-        subImg: fctStuff.ability.img,
+        subText: functionStuff.ability.name + ", " + functionStuff.powerLvl.lvlName,
+        subImg: functionStuff.ability.img,
         hasRoll: true,
         rollString: `${rollData[0].actingAttributeLabel} : (${rollData[0].actingAttributeValue})`,
         rollResult : formatRollResult(rollData),
-        resultText: fctStuff.actor.data.name + game.i18n.localize('POWER_HOLYAURA.CHAT_SUCCESS'),
+        resultText: functionStuff.actor.data.name + game.i18n.localize('POWER_HOLYAURA.CHAT_SUCCESS'),
         finalText: "",
         haveCorruption: haveCorruption,
         corruptionText: corruptionText
     };
-    if(fctStuff.autoParams != ""){templateData.subText += ", " + fctStuff.autoParams};
+    if(functionStuff.autoParams != ""){templateData.subText += ", " + functionStuff.autoParams};
 
     if(rollData[0].hasSucceed){
         let auraDamage = "1d6";
         let auraHeal = "1d4";
-        if(fctStuff.powerLvl.level == 2){auraDamage = "1d8"}
-        else if(fctStuff.powerLvl.level == 3){auraDamage = "1d10"; auraHeal = "1d6"}
+        if(functionStuff.powerLvl.level == 2){auraDamage = "1d8"}
+        else if(functionStuff.powerLvl.level == 3){auraDamage = "1d10"; auraHeal = "1d6"}
         
-        let abTheurgy = fctStuff.actor.items.filter(item => item.data.data?.reference === "theurgy");
+        let abTheurgy = functionStuff.actor.items.filter(item => item.data.data?.reference === "theurgy");
         if(abTheurgy.length > 0){
             if(abTheurgy[0].data.data.master.isActive){
                 auraDamage += " + 1d4";
@@ -1793,16 +1796,16 @@ async function holyAuraResult(rollData, fctStuff){
             }
         }
         templateData.finalText  += game.i18n.localize('COMBAT.DAMAGE') + auraDamage;
-        if(fctStuff.powerLvl.level > 1){
+        if(functionStuff.powerLvl.level > 1){
             templateData.finalText += game.i18n.localize('POWER_HOLYAURA.HEALING') + auraHeal;
         }
     }
     else{
         if(rollData[0].isMaintained){
-            templateData.resultText = fctStuff.actor.data.name + game.i18n.localize('POWER_HOLYAURA.CHAT_FAILURE_M')
+            templateData.resultText = functionStuff.actor.data.name + game.i18n.localize('POWER_HOLYAURA.CHAT_FAILURE_M')
         }
         else{
-            templateData.resultText = fctStuff.actor.data.name + game.i18n.localize('POWER_HOLYAURA.CHAT_FAILURE')
+            templateData.resultText = functionStuff.actor.data.name + game.i18n.localize('POWER_HOLYAURA.CHAT_FAILURE')
         };
     }
     const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
@@ -1812,16 +1815,16 @@ async function holyAuraResult(rollData, fctStuff){
     }
     ChatMessage.create(chatData);
 
-    if(rollData[0].hasSucceed && !fctStuff.isMaintained){
+    if(rollData[0].hasSucceed && !functionStuff.isMaintained){
         flagDataArray.push({
-            tokenId: fctStuff.token.data._id,
+            tokenId: functionStuff.token.data._id,
             addEffect: "icons/svg/aura.svg",
             effectDuration: 1
         })
     }
-    else if(!rollData[0].hasSucceed && fctStuff.isMaintained){   
+    else if(!rollData[0].hasSucceed && functionStuff.isMaintained){   
         flagDataArray.push({
-            tokenId: fctStuff.token.data._id,
+            tokenId: functionStuff.token.data._id,
             removeEffect: "icons/svg/aura.svg"
         })
     }
@@ -1859,7 +1862,7 @@ async function inheritWound(ability, actor){
     }
     let tradition = ["witchcraft", "theurgy"];
     let casterMysticAbilities = await getMysticAbilities(actor);
-    corruption = await getCorruption({traditions: tradition, casterMysticAbilities: casterMysticAbilities, actor: actor, attackFromPC: attackFromPC});
+    corruption = await getCorruption({tradition: tradition, casterMysticAbilities: casterMysticAbilities, actor: actor, attackFromPC: attackFromPC});
     corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
     flagDataArray.push({
         tokenId: selectedToken.data._id,
