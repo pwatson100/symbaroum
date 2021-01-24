@@ -6,7 +6,8 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
     value:0,
     name: "",
     message: "",
-    diceBreakdown: ""
+    diceBreakdown: "",
+    img: ""
 
   };
   let hasArmor = armor != null;
@@ -84,7 +85,6 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
     hasWeapon: hasWeapon,
     armor: armorResults,
     weapon: weaponResults,
-    wepImg: weaponResults.img,
     critSuccess: rollResults.critSuccess,
     critFail: rollResults.critFail
   };
