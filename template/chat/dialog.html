@@ -2,8 +2,8 @@
 	{{#if hasTarget}}
     <div class="attribute">
         <label>{{localize "DIALOG.ATTRIBUTE"}}</label>
-        <select id="modifier">
-              
+        <select id="targetAttribute">
+            
             <option value="custom">{{localize "ATTRIBUTE.CUSTOM"}}</option>
             <option value="defense">{{localize "ARMOR.DEFENSE"}}</option>
             <option value="accurate">{{localize "ATTRIBUTE.ACCURATE"}}</option>
@@ -43,6 +43,6 @@
         
     <div class="bonus">
         <label>{{localize "DIALOG.MODIFIER"}}</label>
-        <input id="bonus" type="number" value="{{roll_defaults.bonus}}" data-dtype="Number"/>
+        <input id="modifier" type="number" value="{{roll_defaults.modifier}}" data-dtype="Number"/>
     </div>
 </div>
