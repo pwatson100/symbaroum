@@ -84,7 +84,6 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
     hasWeapon: hasWeapon,
     armor: armorResults,
     weapon: weaponResults,
-    wepImg: weaponResults.img,
     critSuccess: rollResults.critSuccess,
     critFail: rollResults.critFail
   };

@@ -58,7 +58,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon) 
           attri_defaults.modifier = modifier;              
           if(askImpeding){
             if(html.find("#impeding")[0].checked){
-              modifier = modifier + actor.data.data.combat.impeding;
+              modifier = modifier - actor.data.data.combat.impeding;
             }            
             attri_defaults.impeding = html.find("#impeding")[0].checked ? "checked":"";
           }
