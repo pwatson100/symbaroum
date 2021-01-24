@@ -3,8 +3,8 @@ import { rollAttribute, getAttributeLabel } from './roll.js';
 let roll_defaults = {};
 
 export async function prepareRollAttribute(actor, attributeName, armor, weapon) {
-	let attri_defaults = getRollDefaults(attributeName,armor != null, weapon != null);
-  let askImpeding = actor.data.data.combat.impeding;
+	let attri_defaults = getRollDefaults(attributeName,armor !== null, weapon !== null);
+  let askImpeding = actor.data.data.combat.impeding !== 0 && weapon === null;
 
   const html = await renderTemplate('systems/symbaroum/template/chat/dialog.html', {
     "hasTarget": game.user.targets.values().next().value !== undefined,
@@ -54,15 +54,17 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon) 
           attri_defaults.selectedFavour = ""+fvalue;			
           const favour = fvalue;
           
-          const modifier = html.find("#modifier")[0].value;   
+          let modifier = html.find("#modifier")[0].value;   
           attri_defaults.modifier = modifier;              
           if(askImpeding){
             if(html.find("#impeding")[0].checked){
-              modifier.value += askImpeding;
+              modifier = parseInt(modifier) + actor.data.data.combat.impeding;
             }
-          }                 
+            attri_defaults.impeding = html.find("#impeding")[0].checked ? "checked":"";
+          }
+
                               
-          await rollAttribute(actor, attributeName, getTarget(), targetAttributeName, favour,parseInt(modifier), armor, weapon, advantage, damModifier);
+          await rollAttribute(actor, attributeName, getTarget(), targetAttributeName, favour, modifier, armor, weapon, advantage, damModifier);
           },
       },
       cancel: {
@@ -91,7 +93,8 @@ function createDefaults() {
 		additionalModifier: "",
 		selectedFavour: "0",
 		modifier: "0",
-		advantage: "",
+    advantage: "",
+    impeding: ""
 	};
 }
 
