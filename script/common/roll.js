@@ -412,7 +412,7 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
      //build roll string
       newRollDmgString = weaponDmgValue + " + " + modDmg.toString(); 
       if(!dmgData.ignoreArm){
-        newRollDmgString += " - " + armorProt;
+        newRollDmgString += " - (" + armorProt + ")";
       }
     }
     // final damage

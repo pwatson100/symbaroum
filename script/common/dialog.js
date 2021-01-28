@@ -54,11 +54,11 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon) 
           attri_defaults.selectedFavour = ""+fvalue;			
           const favour = fvalue;
           
-          const modifier = html.find("#modifier")[0].value;   
+          let modifier = html.find("#modifier")[0].value;   
           attri_defaults.modifier = modifier;              
           if(askImpeding){
             if(html.find("#impeding")[0].checked){
-              modifier.value += askImpeding;
+              modifier += askImpeding;
             }
           }                 
                               

@@ -6,7 +6,7 @@
 
   "ABILITY.CHAT_TARGET_VICTIM": "Måltavla: ",
   "ABILITYREF.DIALOG_TITLE": "Välj motsvarande integrerade förmåga",
-  "ABILITYREF.DIALOG": "Detta gör att du kan använda integrerade framgångsslag för denna specifika förmåga. Om det är en homebrew-förmåga eller om du inte vill använda skripten, välj \ "Ingen referens \". Varning: du kommer inte att kunna referera efter det, om du vill det måste du skapa en ny förmåga.",
+  "ABILITYREF.DIALOG": "Detta gör att du kan använda integrerade framgångsslag för denna specifika förmåga. Om det är en homebrew-förmåga eller om du inte vill använda skripten, välj \"Ingen referens \". Varning: du kommer inte att kunna referera efter det, om du vill det måste du skapa en ny förmåga.",
  
   "ABILITY_LABEL.DEFAULT": "Annat",
   "ABILITY_LABEL.ACROBATICS": "Akrobatik",
@@ -80,6 +80,11 @@
   "ABILITY_LABEL.WRESTLING":"Brottning",
 
   "ABILITY_ERROR.TARGET": "För många mål",
+
+  "ABILITY_DOMINATE_ADEPT.CHAT_INTRO": " tries to indimidate his target.",
+  "ABILITY_DOMINATE_MASTER.CHAT_INTRO": " tries to subdue his target.",
+  "ABILITY_DOMINATE_ADEPT.CHAT_SUCCESS": " makes is target hesitate.",
+  "ABILITY_DOMINATE_MASTER.CHAT_SUCCESS": " subdues his ennemy.",
 
   "ABILITY_LOREMASTER.CHAT_INTRO": " gräver djupt i sin samlade kunskap.",
   "ABILITY_LOREMASTER.CHAT_SUCCESS": " känner till något om detta.",
@@ -559,6 +564,8 @@
   "SYMBAROUM.OPTIONAL_ALWAYSUSECRIT": "Tillåt kritiska slag vid icke-strid",
   "SYMBAROUM.OPTIONAL_ALWAYSUSECRIT_HINT": "Välj för att aktivera kritisk framgång och misslyckande på slag utanför strid",
   "SYMBAROUM.OPTIONAL_MORERITUALS": "Tillåt fler ritualer",
-  "SYMBAROUM.OPTIONAL_MORERITUALS_HINT": "Välj för att tillåta fler ritualer, som det beskrivs i Spelarens Handbok s. 102."  
+  "SYMBAROUM.OPTIONAL_MORERITUALS_HINT": "Välj för att tillåta fler ritualer, som det beskrivs i Spelarens Handbok s. 102.",
+  "SYMBAROUM.OPTIONAL_AUTOCOMBAT": "Combat enhancement",
+  "SYMBAROUM.OPTIONAL_AUTOCOMBAT_HINT": "Check to enable QoL enhancement for smooth combat. Read the Symbaroum system guide for FoundryVTT in the compendium section for more info"
     
 }
