@@ -6,7 +6,8 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
     value:0,
     name: "",
     message: "",
-    diceBreakdown: ""
+    diceBreakdown: "",
+    img: ""
 
   };
   let hasArmor = armor != null;
@@ -84,7 +85,6 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
     hasWeapon: hasWeapon,
     armor: armorResults,
     weapon: weaponResults,
-    wepImg: weaponResults.img,
     critSuccess: rollResults.critSuccess,
     critFail: rollResults.critFail
   };
@@ -412,7 +412,7 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
      //build roll string
       newRollDmgString = weaponDmgValue + " + " + modDmg.toString(); 
       if(!dmgData.ignoreArm){
-        newRollDmgString += " - " + armorProt;
+        newRollDmgString += " - (" + armorProt + ")";
       }
     }
     // final damage

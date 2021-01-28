@@ -80,6 +80,11 @@
 
     "ABILITY_ERROR.TARGET": "Selectionez une cible",
 
+    "ABILITY_DOMINATE_ADEPT.CHAT_INTRO": " essaye d'intimider sa cible.",
+    "ABILITY_DOMINATE_MASTER.CHAT_INTRO": " essaye de soumettre sa cible.",
+    "ABILITY_DOMINATE_ADEPT.CHAT_SUCCESS": " intimide sa cible, qui ne l'attaquera pas ce tour-ci.",
+    "ABILITY_DOMINATE_MASTER.CHAT_SUCCESS": " soumet sa cible, qui renonce au combat.",
+
     "ABILITY_LOREMASTER.CHAT_INTRO": " étale ses connaissances.",
     "ABILITY_LOREMASTER.CHAT_SUCCESS": " sait quelque chose sur ce sujet.",
     "ABILITY_LOREMASTER.CHAT_FAILURE": " ne sait pas grand chose à ce sujet.",
@@ -545,13 +550,15 @@
 
     "SYMBAROUM.OPTIONAL_CRIT": "Option jets de dés critiques",
     "SYMBAROUM.OPTIONAL_CRIT_HINT": "Activer les bonus de dégâts et désastres de défense sur un résultat du dé de 1 ou 20",
-    "SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE": "Always able to succeed of fail",
-    "SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE_HINT": "Check to always succeed on a 1 and fail on a 20",
-    "SYMBAROUM.OPTIONAL_RARECRIT": "Optional Rare Critical Rolls",
-    "SYMBAROUM.OPTIONAL_RARECRIT_HINT": "Check to enable rarer critical rolls as detailed Core Book p. 179",
-    "SYMBAROUM.OPTIONAL_ALWAYSUSECRIT": "Allow crits for non-combat",
-    "SYMBAROUM.OPTIONAL_ALWAYSUSECRIT_HINT": "Check to enable critical success and failure on non-combat rolls - automatically enabled if crits are selected",
-    "SYMBAROUM.OPTIONAL_MORERITUALS": "Allow more rituals",
-    "SYMBAROUM.OPTIONAL_MORERITUALS_HINT": "Check to enable more rituals as described on Advanced Players Guide p. 103"
+    "SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE": "Echec et réussite toujours possible",
+    "SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE_HINT": "Cochez pour activer le succès automatique sur 1 et echec automatique sur 20",
+    "SYMBAROUM.OPTIONAL_RARECRIT": "Option pour jets critiques plus rares",
+    "SYMBAROUM.OPTIONAL_RARECRIT_HINT": "Cochez pour activer les jets critiques plus rares, comme décrit p. 183 du LdB",
+    "SYMBAROUM.OPTIONAL_ALWAYSUSECRIT": "Active les critiques hors combat.",
+    "SYMBAROUM.OPTIONAL_ALWAYSUSECRIT_HINT": "Cochez pour activer les réussites et echec sur 1 et 20 - activé automatiquement si les critiques sont choisis",
+    "SYMBAROUM.OPTIONAL_MORERITUALS": "Permet d'apprendre plus de rituels.",
+    "SYMBAROUM.OPTIONAL_MORERITUALS_HINT": "Cochez pour permettre d'apprendre plus de rituels, comme décrit dans le Guide du joueur p. 102",
+    "SYMBAROUM.OPTIONAL_AUTOCOMBAT": "Combats accélérés",
+    "SYMBAROUM.OPTIONAL_AUTOCOMBAT_HINT": "Cochez pour activer l'utilisation les combats semi-automatisés. Cette option est décrite en détail dans le Guide du système Symbaroum pour FoundryVTT dans la section compendium."
 }
 

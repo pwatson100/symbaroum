@@ -42,6 +42,13 @@
   ],
   "packs": [
     {
+      "name": "systemuserguides",
+      "label": "Symbaroum for FVTT system user guides",
+      "system": "symbaroum",
+      "path": "./packs/systemuserguides.db",
+      "entity": "JournalEntry"
+    },
+    {
       "name": "symbaroumabilitiesen",
       "label": "Symbaroum Abilities EN",
       "system": "symbaroum",
