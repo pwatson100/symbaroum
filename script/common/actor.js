@@ -1,4 +1,4 @@
-import { attackRoll } from './item.js';
+import { attackRoll, getPowerLevel } from './item.js';
 import { prepareRollAttribute } from "../common/dialog.js";
 
 export class SymbaroumActor extends Actor {
@@ -87,7 +87,13 @@ export class SymbaroumActor extends Actor {
         }
         
         let strong = data.data.attributes.strong.total;
-        data.data.health.toughness.max = (strong > 10 ? strong : 10) + data.data.bonus.toughness.max;       
+        let sturdy = this.items.filter(item => item.data.data.reference === "sturdy");
+        if(sturdy.length != 0){
+            let sturdyLvl = getPowerLevel(sturdy[0]).level;
+            if(sturdyLvl == 1) data.data.health.toughness.max = Math.ceil(strong*(1.5));
+            else data.data.health.toughness.max = strong*(sturdyLvl)
+        }
+        else data.data.health.toughness.max = (strong > 10 ? strong : 10) + data.data.bonus.toughness.max;       
         data.data.health.toughness.threshold = Math.ceil(strong / 2) + data.data.bonus.toughness.threshold;
         
         let resolute = data.data.attributes.resolute.total;        
@@ -100,10 +106,16 @@ export class SymbaroumActor extends Actor {
 
         const activeArmor = this._getActiveArmor(data);
         let attributeDef = data.data.defense.attribute.toLowerCase();
+        let robust = this.items.filter(item => item.data.data.reference === "robust");
+        let protection = activeArmor.data.protection;
+        if(robust.length != 0){
+            let robustProt = getPowerLevel(robust[0]).level +1;
+            protection += "+" + robustProt.toString();
+        }
         data.data.combat = {
             id: activeArmor._id,
             armor: activeArmor.name,
-            protection: activeArmor.data.protection,
+            protection: protection,
             quality: activeArmor.data.quality,
             qualities: activeArmor.data.qualities,
             impeding: activeArmor.data.impeding,
@@ -115,9 +127,6 @@ export class SymbaroumActor extends Actor {
         
         data.data.experience.spent = data.data.bonus.experience.cost - data.data.bonus.experience.value;
         data.data.experience.available = data.data.experience.total - data.data.experience.artifactrr - data.data.experience.spent;
-        
-
-
     }
 
     _computePower(data, item) {
@@ -242,9 +251,6 @@ export class SymbaroumActor extends Actor {
     }
 
     async rollAttribute(attributeName) {
-        const attribute = this.data.data.attributes[attributeName];
-        const bonus = this.data.data.bonus[attributeName];
-        const attributeData = {name: game.i18n.localize(attribute.label), value: attribute.value + bonus};
-        await prepareRollAttribute(this, attributeData, null, null);
+        await prepareRollAttribute(this, attributeName, null, null);
     }
 }

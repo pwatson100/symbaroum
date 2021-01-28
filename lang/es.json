@@ -81,6 +81,11 @@
   
   "ABILITY_ERROR.TARGET": "Too many targets",
 
+  "ABILITY_DOMINATE_ADEPT.CHAT_INTRO": " tries to indimidate his target.",
+  "ABILITY_DOMINATE_MASTER.CHAT_INTRO": " tries to subdue his target.",
+  "ABILITY_DOMINATE_ADEPT.CHAT_SUCCESS": " makes is target hesitate.",
+  "ABILITY_DOMINATE_MASTER.CHAT_SUCCESS": " subdues his ennemy.",
+
   "ABILITY_LOREMASTER.CHAT_INTRO": " spouts some lore.",
   "ABILITY_LOREMASTER.CHAT_SUCCESS": " knows something about this.",
   "ABILITY_LOREMASTER.CHAT_FAILURE": " doesn't have a clue.",
@@ -555,6 +560,8 @@
   "SYMBAROUM.OPTIONAL_ALWAYSUSECRIT": "Allow crits for non-combat",
   "SYMBAROUM.OPTIONAL_ALWAYSUSECRIT_HINT": "Check to enable critical success and failure on non-combat rolls - automatically enabled if crits are selected",
   "SYMBAROUM.OPTIONAL_MORERITUALS": "Allow more rituals",
-  "SYMBAROUM.OPTIONAL_MORERITUALS_HINT": "Check to enable more rituals as described on Advanced Players Guide p. 103"  
+  "SYMBAROUM.OPTIONAL_MORERITUALS_HINT": "Check to enable more rituals as described on Advanced Players Guide p. 103",
+  "SYMBAROUM.OPTIONAL_AUTOCOMBAT": "Combat enhancement",
+  "SYMBAROUM.OPTIONAL_AUTOCOMBAT_HINT": "Check to enable QoL enhancement for smooth combat. Read the Symbaroum system guide for FoundryVTT in the compendium section for more info"
   
 }
