@@ -239,6 +239,7 @@ export class SymbaroumItem extends Item {
         const scriptedAbilities =
         [{reference: "acrobatics", level: [1, 2, 3], function: acrobatics},
         {reference: "backstab", level: [1, 2, 3], function: attackRoll},
+        {reference: "dominate", level: [1, 2, 3], function: dominatePrepare},
         {reference: "huntersinstinct", level: [1, 2, 3], function: attackRoll},
         {reference: "leader", level: [1, 2, 3], function: leaderPrepare},
         {reference: "loremaster", level: [1, 2, 3], function: loremaster},
@@ -367,7 +368,6 @@ async function buildFunctionStuffDefault(ability, actor) {
         functionStuff.castingAttributeName = actorResMod.bestAttributeName;
         functionStuff.autoParams = actorResMod.autoParams;
         functionStuff.corruption = true;
-        functionStuff.castingAttributeName
         functionStuff.impeding = actor.data.data.combat.impeding;
         functionStuff.casterMysticAbilities = await getMysticAbilities(actor);
     }
@@ -509,7 +509,7 @@ async function getCorruption(functionStuff, corruptionFormula = "1d4"){
 @Params: {item}   ability : the ability or mysticalPower item 
 @returns:  {{number} level
             {lvlName} the localized label (novice, adpet or master)}*/
-function getPowerLevel(ability){
+export function getPowerLevel(ability){
     let powerLvl = 1;
     let lvlName = game.i18n.localize('ABILITY.NOVICE');
     if(ability.data.data.master.isActive){
@@ -1205,17 +1205,14 @@ async function standardPowerActivation(functionStuff) {
                 functionStuff.targetData = {hasTarget : false}
             }
         }
-    }
-    if (functionStuff.targetData.hasTarget){
-        let targetResMod = checkResoluteModifiers(targetData.actor, targetData.autoParams, true, powerStuff.checkTargetSteadfast);
+        let targetResMod = await checkResoluteModifiers(functionStuff.targetData.actor, functionStuff.targetData.autoParams, true, functionStuff.checkTargetSteadfast);
         if (functionStuff.targetData.resistAttributeName === "resolute"){
             functionStuff.targetData.resistAttributeName = targetResMod.bestAttributeName;
             functionStuff.targetData.resistAttributeValue = targetResMod.bestAttributeValue;
             functionStuff.targetData.autoParams = targetResMod.autoParams;
+            functionStuff.favour += targetResMod.favour*(-1);
         }
-        functionStuff.favour += targetResMod.favour*(-1);
     }
-    else {functionStuff.targetData = {hasTarget : false}}
     await modifierDialog(functionStuff)
 }
 
@@ -1240,19 +1237,21 @@ async function standardPowerResult(rollData, functionStuff){
     let haveCorruption = false;
     let corruptionText = "";
     let corruption;
-    let introText = functionStuff.actor.data.name;
+    let introText;
     if(functionStuff.isMaintained){
-        introText += game.i18n.localize('POWER.CHAT_INTRO_M') + functionStuff.ability.name + " \".";
+        introText = functionStuff.introTextMaintain ?? functionStuff.actor.data.name + game.i18n.localize('POWER.CHAT_INTRO_M') + functionStuff.ability.name + " \".";
     }
     else{
-        introText += game.i18n.localize('POWER.CHAT_INTRO') + functionStuff.ability.name + " \".";
-        haveCorruption = true;
-        corruption = await getCorruption(functionStuff);
-        corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
-        flagDataArray.push({
-            tokenId: functionStuff.token.data._id,
-            corruptionChange: corruption.value
-        });
+        introText = functionStuff.introText ?? functionStuff.actor.data.name + game.i18n.localize('POWER.CHAT_INTRO') + functionStuff.ability.name + " \".";
+        if(functionStuff.corruption){
+            haveCorruption = true;
+            corruption = await getCorruption(functionStuff);
+            corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
+            flagDataArray.push({
+                tokenId: functionStuff.token.data._id,
+                corruptionChange: corruption.value
+            });
+        }
     }
 
     let hasRoll = false;
@@ -1262,12 +1261,12 @@ async function standardPowerResult(rollData, functionStuff){
     if(rollData!=null){
         hasRoll = true;
         hasSucceed = rollData[0].hasSucceed;
-        rollString = `${rollData[0].actingAttributeLabel} : (${rollData[0].actingAttributeValue})`;
+        rollString = await formatRollString(rollData[0], functionStuff.targetData.hasTarget, functionStuff.modifier);
         rollResult = formatRollResult(rollData)
     }
-    let resultText = functionStuff.actor.data.name + game.i18n.localize('POWER.CHAT_SUCCESS');
+    let resultText = functionStuff.resultTextSuccess ?? functionStuff.actor.data.name + game.i18n.localize('POWER.CHAT_SUCCESS');
     if(!hasSucceed){
-        resultText = functionStuff.actor.data.name + game.i18n.localize('POWER.CHAT_FAILURE');
+        resultText = functionStuff.resultTextFail ?? functionStuff.actor.data.name + game.i18n.localize('POWER.CHAT_FAILURE');
     }
     let targetText = "";
     if(functionStuff.targetData.hasTarget){
@@ -2103,10 +2102,41 @@ async function unnoticeablePrepare(ability, actor) {
     await standardPowerActivation(functionStuff);
 }
 
+
+async function dominatePrepare(ability, actor) {
+    let powerLvl = getPowerLevel(ability);
+    if (powerLvl.level<2){
+        ui.notifications.error("Need dominate Adept level");
+        return;
+    }
+    
+    let fsDefault = await buildFunctionStuffDefault(ability, actor);
+    let specificStuff = {
+        castingAttributeName: "persuasive",
+        targetMandatory: true,
+        targetResitAttribute: "resolute",
+        checkTargetSteadfast: true,
+        checkMaintain: false,
+        isMaintained: false,
+        addTargetEffect: "icons/svg/terror.svg",
+    }
+    let functionStuff = Object.assign({}, fsDefault , specificStuff);
+    functionStuff.targetData = {hasTarget : true}
+    if(powerLvl.level == 2){
+        functionStuff.introText = functionStuff.actor.data.name + game.i18n.localize('ABILITY_DOMINATE_ADEPT.CHAT_INTRO');
+        functionStuff.resultTextSuccess = functionStuff.actor.data.name + game.i18n.localize('ABILITY_DOMINATE_ADEPT.CHAT_SUCCESS');
+    }
+    else{
+        functionStuff.introText = functionStuff.actor.data.name + game.i18n.localize('ABILITY_DOMINATE_MASTER.CHAT_INTRO');
+        functionStuff.resultTextSuccess = functionStuff.actor.data.name + game.i18n.localize('ABILITY_DOMINATE_MASTER.CHAT_SUCCESS');
+    }
+    await standardPowerActivation(functionStuff)
+}
+
 async function leaderPrepare(ability, actor) {
 
     let powerLvl = getPowerLevel(ability);
-    if (powerLvl.lvl<2){
+    if (powerLvl.level<2){
         ui.notifications.error("Need Leader Adept level");
         return;
     }
@@ -2124,7 +2154,6 @@ async function leaderPrepare(ability, actor) {
         checkMaintain: false,
         isMaintained: false,
         addTargetEffect: "icons/svg/eye.svg",
-
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
     await standardPowerResult(null, functionStuff)

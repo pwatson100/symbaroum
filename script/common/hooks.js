@@ -44,6 +44,15 @@ Hooks.once('init', () => {
     type: Number,
   });
   
+  game.settings.register('symbaroum', 'combatAutomation', {
+    name: 'SYMBAROUM.OPTIONAL_AUTOCOMBAT',
+    hint: 'SYMBAROUM.OPTIONAL_AUTOCOMBAT_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  }); 
+
   game.settings.register('symbaroum', 'alwaysSucceedOnOne', {
     name: 'SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE',
     hint: 'SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE_HINT',

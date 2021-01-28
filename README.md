@@ -64,4 +64,4 @@ I would like to thank him for his excellent work in putting the system together.
 [foundry-shield-078]: https://img.shields.io/badge/Foundry-v0.7.8-informational
 [foundry-url]: https://foundryvtt.com/
 
-- Additional art under Creative Commons 3.0 BY license: icons by Delapouite and Lorc
+- Additional art under Creative Commons 3.0 BY license: icons by Delapouite and Lorc - More info available at https://game-icons.net
