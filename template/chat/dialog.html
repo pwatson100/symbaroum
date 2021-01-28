@@ -3,7 +3,7 @@
     <div class="attribute">
         <label>{{localize "DIALOG.ATTRIBUTE"}}</label>
         <select id="targetAttribute">
-            
+            {{#select roll_defaults.targetAttributeName}}
             <option value="custom">{{localize "ATTRIBUTE.CUSTOM"}}</option>
             <option value="defense">{{localize "ARMOR.DEFENSE"}}</option>
             <option value="accurate">{{localize "ATTRIBUTE.ACCURATE"}}</option>
@@ -14,12 +14,13 @@
             <option value="resolute">{{localize "ATTRIBUTE.RESOLUTE"}}</option>
             <option value="strong">{{localize "ATTRIBUTE.STRONG"}}</option>
             <option value="vigilant">{{localize "ATTRIBUTE.VIGILANT"}}</option>
+            {{/select}}
         </select>
     </div>
     {{/if}}
     {{#if askImpeding}}
     <div class="simplebox">
-      <label>{{localize "DIALOG.IMPEDING"}}</label> <span class="lblfavour"><input type="checkbox" id="impeding" checked></span>
+      <label style="width: 90%;">{{localize "DIALOG.IMPEDING"}}</label> <span class="lblfavour" style="width: 40%;"><input type="checkbox" id="impeding" {{roll_defaults.impeding}}></span>
     </div>
     {{/if}}
     {{#if isWeaponRoll}}
