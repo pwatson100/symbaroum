@@ -397,6 +397,14 @@
   "POWER_LARVAEBOILS.CHAT_INTRO_M": " maintains the larvaes surge.",
   "POWER_LARVAEBOILS.CHAT_SUCCESS": " is eaten from the inside by the larvaes.",
   "POWER_LARVAEBOILS.CHAT_FAILURE": " résists to the larvaes.",
+    
+  "POWER_LAYONHANDS.DIALOG":"How close is your target?",
+  "POWER_LAYONHANDS.TOUCH":"Touch",
+  "POWER_LAYONHANDS.REMOTE":"Line of sight",
+  "POWER_LAYONHANDS.CHAT_INTRO":" awakes the lifeforce.",
+  "POWER_LAYONHANDS.CHAT_SUCCESS":" heals ",
+  "POWER_LAYONHANDS.CHAT_FINAL":"Toughness healed: ",
+  "POWER_LAYONHANDS.CHAT_FAILURE":" fails to heal ",
   
   "QUALITY.AREAMRR": "Area Effect - melee range radius",
   "QUALITY.AREASRR": "Area Effect - short range radius", 
