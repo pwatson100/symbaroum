@@ -256,6 +256,7 @@ export class SymbaroumItem extends Item {
         {reference: "holyaura", level: [1, 2, 3], function: holyAuraPrepare},
         {reference: "inheritwound", level: [1, 2, 3], function: inheritWound},
         {reference: "larvaeboils", level: [1, 2, 3], function: larvaeBoilsPrepare},
+        {reference: "layonhands", level: [1, 2, 3], function: layonhandsPrepare},
         {reference: "unnoticeable", level: [1, 2, 3], function: unnoticeablePrepare}];
 
         let list;
@@ -1299,19 +1300,39 @@ async function standardPowerResult(rollData, functionStuff){
     }
     let NewMessage = await ChatMessage.create(chatData);
 
-    if(hasSucceed && functionStuff.addTargetEffect){
+    if(hasSucceed && (functionStuff.addTargetEffect.length >0)){
+        for(let effect of functionStuff.addTargetEffect){
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data._id,
-            addEffect: functionStuff.addTargetEffect,
-            effectDuration: 1
-        });
+                tokenId: functionStuff.targetData.token.data._id,
+                addEffect: effect,
+                effectDuration: 1
+            });
+        }
     }
-    if(hasSucceed && functionStuff.addCasterEffect){    
+    if(hasSucceed && (functionStuff.addCasterEffect.length >0)){ 
+        for(let effect of functionStuff.addTargetEffect){   
+            flagDataArray.push({
+                tokenId: functionStuff.token.data._id,
+                addEffect: effect,
+                effectDuration: 1
+            });
+        }
+    }
+    if(hasSucceed && (functionStuff.removeTargetEffect.length >0)){
+        for(let effect of functionStuff.removeTargetEffect){
         flagDataArray.push({
-            tokenId: functionStuff.token.data._id,
-            addEffect: functionStuff.addCasterEffect,
-            effectDuration: 1
-        });
+                tokenId: functionStuff.targetData.token.data._id,
+                removeEffect: effect
+            });
+        }
+    }
+    if(hasSucceed && (functionStuff.removeCasterEffect.length >0)){ 
+        for(let effect of functionStuff.removeCasterEffect){   
+            flagDataArray.push({
+                tokenId: functionStuff.token.data._id,
+                removeEffect: effect
+            });
+        }
     }
     if(flagDataArray.length){
         await createModifyTokenChatButton(flagDataArray);
@@ -2088,6 +2109,133 @@ async function larvaeBoilsResult(rollData, functionStuff){
     await createModifyTokenChatButton(flagDataArray);
 }
 
+async function layonhandsPrepare(ability, actor) {
+    let fsDefault = await buildFunctionStuffDefault(ability, actor);
+    let specificStuff = {
+        combat: false,
+        targetMandatory: true,
+        checkMaintain: false,
+        corruption: true,
+        tradition: ["witchcraft", "theurgy"],
+        resultFunction: layonhandsResult
+    }
+    
+    specificStuff.healFormula = "1d6";
+    if(fsDefault.powerLvl.level > 1){
+        specificStuff.healFormula = "1d8";
+        specificStuff.removeTargetEffect = ["icons/svg/poison.svg", "icons/svg/blood.svg"]
+    }
+    let functionStuff = Object.assign({}, fsDefault , specificStuff);
+
+    try{functionStuff.targetData = getTarget()} catch(error){
+        ui.notifications.error(error);
+        return;
+    }
+
+    if(fsDefault.powerLvl.level > 2){
+        let layHandsDialogTemplate = `
+        <h1> ${game.i18n.localize('POWER_LAYONHANDS.DIALOG')} </h1>
+        `;
+        new Dialog({
+            title: game.i18n.localize('POWER_LABEL.LAY_ON_HAND'), 
+            content: layHandsDialogTemplate,
+            buttons: {
+                touch: {
+                    label: game.i18n.localize('POWER_LAYONHANDS.TOUCH'),
+                    callback: (html) => {
+                        functionStuff.healFormula = "1d12";
+                        functionStuff.touch=true;
+                        layonhandsResult(functionStuff);
+                    }
+                }, 
+
+                lineofSight: {
+                    label: game.i18n.localize('POWER_LAYONHANDS.REMOTE'), 
+                    callback: (html) => {
+                        functionStuff.touch=false;
+                        layonhandsResult(functionStuff);
+                    }
+                },
+                close: {
+                    label: "Close"
+                }
+            }
+        }).render(true);
+    }
+    else{
+        layonhandsResult(functionStuff);
+    }
+}
+
+async function layonhandsResult(functionStuff) {
+    let flagDataArray= [];
+    let rollData = [];
+    rollData.push(await baseRoll(functionStuff.actor, functionStuff.castingAttributeName, null, null, functionStuff.favour, functionStuff.modifier));
+    let healed = 0;
+
+    if(functionStuff.casterMysticAbilities.theurgy == 3 || functionStuff.casterMysticAbilities.blessings == 3 ){
+        functionStuff.healFormula += " + 1d4";
+    }
+
+    if(rollData[0].hasSucceed){
+
+        let healRoll = new Roll(functionStuff.healFormula).evaluate();
+        healRoll.toMessage();
+        healed = Math.min(healRoll.total, functionStuff.targetData.actor.data.data.health.toughness.max - functionStuff.targetData.actor.data.data.health.toughness.value);
+        flagDataArray.push({
+            tokenId: functionStuff.targetData.token.data._id,
+            toughnessChange: healed
+        });
+        if(functionStuff.powerLvl.level > 1){   
+            flagDataArray.push({
+                tokenId: functionStuff.targetData.token.data._id,
+                removeEffect: "icons/svg/poison.svg"
+            },{
+                tokenId: functionStuff.targetData.token.data._id,
+                removeEffect: "icons/svg/blood.svg"
+            })
+        }
+    }
+
+    let corruption = await getCorruption(functionStuff);
+    let corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
+
+    flagDataArray.push({
+        tokenId: functionStuff.token.data._id,
+        corruptionChange: corruption.value
+    });
+
+    let templateData = {
+        targetData : functionStuff.targetData,
+        hasTarget : true,
+        introText: functionStuff.actor.data.name + game.i18n.localize('POWER_LAYONHANDS.CHAT_INTRO'),
+        introImg: functionStuff.actor.data.img,
+        targetText: game.i18n.localize('ABILITY_MEDICUS.CHAT_TARGET') + functionStuff.targetData.actor.data.name,
+        subText: functionStuff.ability.name + ", " + functionStuff.powerLvl.lvlName,
+        subImg: functionStuff.ability.img,
+        hasRoll: true,
+        rollString: `${game.i18n.localize(rollData[0].actingAttributeLabel)} : (${rollData[0].actingAttributeValue})`,
+        rollResult : formatRollResult(rollData),
+        resultText: functionStuff.actor.data.name + game.i18n.localize('POWER_LAYONHANDS.CHAT_SUCCESS') + functionStuff.targetData.actor.data.name,
+        finalText: game.i18n.localize('POWER_LAYONHANDS.CHAT_FINAL') + healed.toString(),
+        haveCorruption: true,
+        corruptionText: corruptionText
+    }
+
+    if(!rollData[0].hasSucceed){templateData.resultText = game.i18n.localize('POWER_LAYONHANDS.CHAT_FAILURE') + functionStuff.targetData.actor.data.name}
+
+    
+    const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
+    const chatData = {
+        user: game.user._id,
+        content: html,
+    }
+    await ChatMessage.create(chatData);
+    if(flagDataArray.length > 0){
+        await createModifyTokenChatButton(flagDataArray);
+    }
+}
+
 async function unnoticeablePrepare(ability, actor) {
     let fsDefault = await buildFunctionStuffDefault(ability, actor);
     let specificStuff = {
@@ -2096,7 +2244,7 @@ async function unnoticeablePrepare(ability, actor) {
         checkMaintain: false,
         corruption: true,
         tradition: ["wizardry", "theurgy"],
-        addCasterEffect: "systems/symbaroum/asset/image/invisible.png"
+        addCasterEffect: ["systems/symbaroum/asset/image/invisible.png"]
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
     await standardPowerActivation(functionStuff);
@@ -2118,7 +2266,7 @@ async function dominatePrepare(ability, actor) {
         checkTargetSteadfast: true,
         checkMaintain: false,
         isMaintained: false,
-        addTargetEffect: "icons/svg/terror.svg",
+        addTargetEffect: ["icons/svg/terror.svg"],
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
     functionStuff.targetData = {hasTarget : true}
@@ -2153,7 +2301,7 @@ async function leaderPrepare(ability, actor) {
         checkTargetSteadfast: false,
         checkMaintain: false,
         isMaintained: false,
-        addTargetEffect: "icons/svg/eye.svg",
+        addTargetEffect: ["icons/svg/eye.svg"],
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
     await standardPowerResult(null, functionStuff)
@@ -2235,7 +2383,7 @@ function medicus(ability, actor) {
                         healFormula = "1d10";
                         healFormulaMasterFailed = "1d6";
                     }
-                    medicusHeal(ability, actor, targetData, powerLvl, herbalCure, healFormula, healFormulaMasterFailed);
+                    medicusResult(ability, actor, targetData, powerLvl, herbalCure, healFormula, healFormulaMasterFailed);
                 }
             }, 
 
@@ -2253,7 +2401,7 @@ function medicus(ability, actor) {
                         healFormula = "1d8";
                         healFormulaMasterFailed = "1d4";
                     }
-                    medicusHeal(ability, actor, targetData, powerLvl, herbalCure, healFormula, healFormulaMasterFailed);
+                    medicusResult(ability, actor, targetData, powerLvl, herbalCure, healFormula, healFormulaMasterFailed);
                 }
             },
             close: {
@@ -2263,7 +2411,7 @@ function medicus(ability, actor) {
     }).render(true);
 }
        
-async function medicusHeal(ability, actor, targetData, powerLvl, herbalCure, healFormula, healFormulaMasterFailed) {
+async function medicusResult(ability, actor, targetData, powerLvl, herbalCure, healFormula, healFormulaMasterFailed) {
 
     let rollData = [];
     rollData.push(await baseRoll(actor, "cunning", null, null, 0, 0));
