@@ -58,3 +58,20 @@ Configurable options:
 - Hide fields when not in use (no target selected, etc. etc)
 
 NOTE: Configuration options are unset by default. 
+
+Version 2.16.0
+First major update to the Symbaroum system by Bithir and Khaali who have been working hard to improve the GM and user Experience and make the system overall easier to use and more informative.   
+1) Character sheet v2 made as default.  Character sheet 1 will stay, but will be less maintained going forward
+2) Tooltips for various character sheet input fields, including breakdowns if there is bonus or malus applicable
+3) German language additions, a big thank you to @DasTorfu on Symbaroum Discord
+4) Swedish language additions, a big thank you to @Weymyss and @Krister Persson on The Foundry Discord.
+5) Dice breakdowns added on tooltips
+6) Boons and burdens now support levels
+7) Some quality-of-life enhancements for rolling attribute dice
+8) Compendiums in French, German and English for Abilities, Powers and Traits (no descriptions)
+9) Abilities and Powers now have a Roll button which (currently for some of them. More to come.) takes into account all modifiers on the roll and can affect damage, healing, corruption and status icons. This is the first step in automating abilities.
+10) Improved chat messages and effects buttons.
+11) Spanish language additions, a big thank you to kufferino.
+12) Enhanced combat chat and effects on characters and Monsters.
+
+Please see the User Guide in the Symbaroum for FVTT system users guides Compendium for more information.
