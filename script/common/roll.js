@@ -380,6 +380,10 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
       damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_ADVANTAGE');
     }
   }
+  if(dmgData.useBeastlore){
+    dmgData.modifier += " + " + dmgData.beastLoreDmg;
+    damageAutoParams += " [" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "] ";
+  }
   if(dmgData.leaderTarget){
     dmgData.modifier += " + 1d4";
     damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');

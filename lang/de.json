@@ -172,6 +172,7 @@
   "BUTTON.ROLL": "Würfel",
   "BUTTON.CANCEL": "Abbruch",
 
+  "CHAT.GMTEXT_BUTTON": "This button is for GM use only. It will apply the effects to the tokens.",
   "CHAT.APPLY_BUTTON": "Wenden Sie die Ergebnisse auf das Token an",
   "CHAT.DEATH_ROLL": "Todesprobe",
   "CHAT.SUCCEED": "Erfolg",
@@ -216,6 +217,7 @@
 
   "DIALOG.AUTOPARAMS": "einbezogene Modifikatoren: ",
   "DIALOG.BACKSTAB": "Hinterhältiger Angriff?",
+  "DIALOG.BEASTLORE": "Beast Lore dmg?",
   "DIALOG.HUNTERS_INSTINCT": "Hunter's Instinct Target?",
   "DIALOG.ISMAINTAINED": "Neuer Zauber oder anhaltend?",
   "DIALOG.USE_POISON": "Gift aufgetragen?",
