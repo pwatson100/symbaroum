@@ -168,7 +168,7 @@
   "initiative": "1d8 + @initiative.value",
   "socket": true,
   "url": "https://github.com/pwatson100/symbaroum",
-  "manifest": "https://github.com/pwatson100/symbaroum/releases/latest/download/system.json",
-  "download": "https://github.com/pwatson100/symbaroum/releases/latest/download/master.zip",
+  "manifest": "https://github.com/pwatson100/symbaroum/releasesdownload/2.17.0/system.json",
+  "download": "https://github.com/pwatson100/symbaroum/releasesdownload/2.17.0/master.zip",
   "license": "LICENSE.txt"
 }
