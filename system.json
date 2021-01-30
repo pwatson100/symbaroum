@@ -15,6 +15,7 @@
     "style/common/variable.css",
     "style/common/actor.css",
     "style/common/item.css",
+    "style/common/system-guide.css",
     "style/sheet/player.css",
     "style/sheet/tab/player-main.css",
     "style/sheet/tab/player-gear.css",
@@ -116,7 +117,7 @@
       "lang": "de",
       "name": "Deutsche ",
       "path": "lang/de.json"
-    }    
+    }
   ],
   "gridDistance": 1,
   "gridUnits": "m",
