@@ -362,6 +362,10 @@ async function buildFunctionStuffDefault(ability, actor) {
         targetData: {hasTarget : false},
         corruption: false,
         checkMaintain: false,
+        addCasterEffect: [],
+        addTargetEffect: [],
+        removeTargetEffect: [],
+        removeCasterEffect: [],
         resultFunction: standardPowerResult
     };
     if(ability.data.type === "mysticalPower"){
@@ -557,7 +561,7 @@ async function modifierDialog(functionStuff){
     let isWeaponRoll = false;
     let askBackstab = functionStuff.askBackstab ?? false;
     let askHuntersInstinct = functionStuff.askHuntersInstinct ?? false;
-    let askIronFistMaster = functionStuff.dmgData.askIronFistMaster ?? false;
+    let askIronFistMaster = functionStuff.askIronFistMaster ?? false;
     let askTwoAttacks = functionStuff.askTwoAttacks ?? false;
     let askThreeAttacks = functionStuff.askThreeAttacks ?? false;
     let askBeastlore = functionStuff.askBeastlore ?? false;
@@ -846,6 +850,7 @@ export async function attackRoll(item, actor){
         askTwoAttacks: false,
         askThreeAttacks: false,
         askBeastlore: false,
+        askIronFistMaster: false,
         attackFromPC: actor.hasPlayerOwner,
         autoParams: "",
         bleed: false,
@@ -859,7 +864,6 @@ export async function attackRoll(item, actor){
         targetData: targetData,
         useHuntersInstinct: false,
         dmgData: {
-            askIronFistMaster: false,
             isRanged: false,
             hunterIDmg: false,
             modifier: "",
@@ -975,7 +979,7 @@ export async function attackRoll(item, actor){
             functionStuff.autoParams += game.i18n.localize('ABILITY_LABEL.IRON_FIST') + " (" + game.i18n.localize('ABILITY.ADEPT') + "), ";
         }
         if(powerLvl.level > 2){
-            functionStuff.dmgData.askIronFistMaster = true;
+            functionStuff.askIronFistMaster = true;
             functionStuff.autoParams += game.i18n.localize('ABILITY_LABEL.IRON_FIST') + " (" + game.i18n.localize('ABILITY.MASTER') + "), ";
         }
     }
@@ -1508,7 +1512,6 @@ async function brimstoneCascadeResult(rollData, functionStuff){
         damageText = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_NUL');
     }
     else if(damageTot > functionStuff.targetData.actor.data.data.health.toughness.value){
-        targetDies = true;
         damageText = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
         damageFinalText = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_DYING');
         flagDataArray.push({
