@@ -176,6 +176,7 @@
     "BUTTON.ROLL": "Lancer",
     "BUTTON.CANCEL": "Annuler",
 
+    "CHAT.GMTEXT_BUTTON": "Ce bouton ne peut être utilisé que par le MJ. Il affecte les résultats de l'action aux tokens.",
     "CHAT.APPLY_BUTTON": "Appliquer les résultats au token",
     "CHAT.DEATH_ROLL": "Test de Mort",
     "CHAT.SUCCEED": "Réussite",
@@ -231,6 +232,7 @@
     "DIALOG.AUTOPARAMS": "Modificateurs déjà comptés: ",
     "DIALOG.BACKSTAB": "Utiliser coup en traître?",
     "DIALOG.HUNTERS_INSTINCT": "Cible instinct du chasseur?",
+    "DIALOG.BEASTLORE": "+Dégâts Conn. des bêtes?",
     "DIALOG.ISMAINTAINED": "Lancement ou maintien?",
     "DIALOG.USE_POISON": "Poison appliqué?",
     "DIALOG.NO_POISON": "Pas de poison",
@@ -394,6 +396,14 @@
     "POWER_LARVAEBOILS.CHAT_INTRO_M": " tente de maintenir les larves grouillantes.",
     "POWER_LARVAEBOILS.CHAT_SUCCESS": " est dévoré de l'intérieur par des larves.",
     "POWER_LARVAEBOILS.CHAT_FAILURE": " résiste à l'invasion de larves.",
+
+    "POWER_LAYONHANDS.DIALOG":"A quelle distance est votre cible?",
+    "POWER_LAYONHANDS.TOUCH":"Toucher",
+    "POWER_LAYONHANDS.REMOTE":"Vue",
+    "POWER_LAYONHANDS.CHAT_INTRO":" réveille les forces de la vie.",
+    "POWER_LAYONHANDS.CHAT_SUCCESS":" parvient à soigner ",
+    "POWER_LAYONHANDS.CHAT_FINAL":"Points d'endurance soignés: ",
+    "POWER_LAYONHANDS.CHAT_FAILURE":" échoue à soigner ",
 
     "QUALITY.AREAMRR": "Zone d’effet - rayon portée mélée",
     "QUALITY.AREASRR": "Zone d’effet - rayon portée courte",

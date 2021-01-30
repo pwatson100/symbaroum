@@ -6,7 +6,8 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
     value:0,
     name: "",
     message: "",
-    diceBreakdown: ""
+    diceBreakdown: "",
+    img: ""
 
   };
   let hasArmor = armor != null;
@@ -84,7 +85,6 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
     hasWeapon: hasWeapon,
     armor: armorResults,
     weapon: weaponResults,
-    wepImg: weaponResults.img,
     critSuccess: rollResults.critSuccess,
     critFail: rollResults.critFail
   };
@@ -379,6 +379,10 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
       dmgData.modifier += " + 1d4";
       damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_ADVANTAGE');
     }
+  }
+  if(dmgData.useBeastlore){
+    dmgData.modifier += " + " + dmgData.beastLoreDmg;
+    damageAutoParams += " [" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "] ";
   }
   if(dmgData.leaderTarget){
     dmgData.modifier += " + 1d4";
