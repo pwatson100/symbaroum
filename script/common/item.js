@@ -362,6 +362,10 @@ async function buildFunctionStuffDefault(ability, actor) {
         targetData: {hasTarget : false},
         corruption: false,
         checkMaintain: false,
+        addCasterEffect: [],
+        addTargetEffect: [],
+        removeTargetEffect: [],
+        removeCasterEffect: [],
         resultFunction: standardPowerResult
     };
     if(ability.data.type === "mysticalPower"){
@@ -1508,7 +1512,6 @@ async function brimstoneCascadeResult(rollData, functionStuff){
         damageText = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_NUL');
     }
     else if(damageTot > functionStuff.targetData.actor.data.data.health.toughness.value){
-        targetDies = true;
         damageText = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
         damageFinalText = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_DYING');
         flagDataArray.push({
