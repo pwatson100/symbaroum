@@ -64,6 +64,20 @@
       "entity": "Item"
     },
     {
+      "name": "symbaroumabilitiesde",
+      "label": "Symbaroum Abilities DE",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumabilitiesde.db",
+      "entity": "Item"
+    },
+    {
+      "name": "symbaroumabilitiessv",
+      "label": "Symbaroum Abilities SV",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumabilitiessv.db",
+      "entity": "Item"
+    },
+    {
       "name": "symbaroumpowersen",
       "label": "Symbaroum Powers EN",
       "system": "symbaroum",
@@ -78,6 +92,20 @@
       "entity": "Item"
     },
     {
+      "name": "symbaroumpowersde",
+      "label": "Symbaroum Powers DE",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumpowersde.db",
+      "entity": "Item"
+    },
+    {
+      "name": "symbaroumpowerssv",
+      "label": "Symbaroum Powers SV",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumpowerssv.db",
+      "entity": "Item"
+    },
+    {
       "name": "symbaroumtraitsen",
       "label": "Symbaroum Traits EN",
       "system": "symbaroum",
@@ -89,6 +117,20 @@
       "label": "Traits Symbaroum FR",
       "system": "symbaroum",
       "path": "./packs/symbaroumtraitsfr.db",
+      "entity": "Item"
+    },
+    {
+      "name": "symbaroumtraitsde",
+      "label": "Symbaroum Traits DE",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumtraitsde.db",
+      "entity": "Item"
+    },
+    {
+      "name": "symbaroumtraitssv",
+      "label": "Symbaroum Traits SV",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumtraitssv.db",
       "entity": "Item"
     }
   ],
