@@ -1,0 +1,45 @@
+<div class="symbaroum chat combat">
+    <div class="foreground border">
+        <div class="introImg" style="background-image: url('{{introImg}}')">
+            <div class="introTxt">{{removeMarkup introText}}</div>
+            {{#if hasTarget}}
+            <div class="introImg" style="background-image: url('{{targetData.actor.data.img}}')"></div>
+        </div>
+        <div class="targetText">{{removeMarkup targetText}}
+        {{/if}}
+        </div>
+        <div class="subText">{{removeMarkup subText}}</div>            
+        <img src="{{subImg}}"/>
+        {{#if hasRoll}}
+        <h4>{{removeMarkup rollString}}</h4>
+        <h4>{{removeMarkup rollResult}}</h4>
+        {{/if}}
+        <h4>{{removeMarkup resultText}}</h4>
+        {{#if hasDamage}}
+        {{#if hasDmgMod}}
+        <h4>{{removeMarkup damageRollMod}}</h4>
+        {{/if}}
+        <div class="finalTxt">{{removeMarkup dmgFormula}}
+        </div>
+        <div class="finalTxt">
+            <div class="tooltip">
+                <p>{{removeMarkup damageText}}</p>
+                <span class="tooltiptext">{{damageTooltip}}</span>
+            </div>
+            <p>{{removeMarkup damageFinalText}}</p>
+        </div>
+        {{/if}}
+        {{#if hasCorruption}}
+        <p>{{removeMarkup corruptionText}}</p>
+        {{/if}}
+        {{#if printPoison}}
+        <div class="finalTxt">{{removeMarkup poisonChatIntro}}</div>
+        <h4>{{removeMarkup poisonRollString}}</h4>
+        <h4>{{removeMarkup poisonRollResultString}}</h4>
+        <div class="finalTxt">{{removeMarkup poisonChatResult}}</div>
+        {{/if}}
+        {{#if printBleed}}
+        <div class="finalTxt">{{removeMarkup bleedChat}}</div>
+        {{/if}}
+    </div>
+</div>

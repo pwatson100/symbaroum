@@ -1,6 +1,7 @@
 export class SymbaroumItemSheet extends ItemSheet {
   activateListeners(html) {
     super.activateListeners(html);
+    html.find(".activate-ability").click(async ev => await this._prepareActivateAbility(ev));
   }
 
   _getHeaderButtons() {
@@ -14,5 +15,19 @@ export class SymbaroumItemSheet extends ItemSheet {
       }
     ].concat(buttons);
     return buttons;
+  }
+
+  async _prepareRegisterAbility(event) {
+    event.preventDefault();
+    const ability = this.object;
+    await ability.affectReference();
+  }
+  
+  async _prepareActivateAbility(event) {
+    event.preventDefault();
+    const div = $(event.currentTarget).parents(".item");
+    //const ability = this.object.options.actor.getOwnedItem(div.data("itemId"));
+    const ability = this.object;
+    await ability.makeAction(this.object.options?.actor);
   }
 }

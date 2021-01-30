@@ -20,8 +20,8 @@ Hooks.once('init', () => {
   CONFIG.Actor.entityClass = SymbaroumActor;
   CONFIG.Item.entityClass = SymbaroumItem;
   Actors.unregisterSheet('core', ActorSheet);
-  Actors.registerSheet('symbaroum', PlayerSheet, { types: ['player'], makeDefault: true });
-  Actors.registerSheet('symbaroum', PlayerSheet2, { types: ['player'], makeDefault: false });
+  Actors.registerSheet('symbaroum', PlayerSheet2, { types: ['player'], makeDefault: true });
+  Actors.registerSheet('symbaroum', PlayerSheet, { types: ['player'], makeDefault: false });
   Actors.registerSheet('symbaroum', MonsterSheet, { types: ['monster'], makeDefault: true });
   Items.unregisterSheet('core', ItemSheet);
   Items.registerSheet('symbaroum', TraitSheet, { types: ['trait'], makeDefault: true });
@@ -44,6 +44,15 @@ Hooks.once('init', () => {
     type: Number,
   });
   
+  game.settings.register('symbaroum', 'combatAutomation', {
+    name: 'SYMBAROUM.OPTIONAL_AUTOCOMBAT',
+    hint: 'SYMBAROUM.OPTIONAL_AUTOCOMBAT_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  }); 
+
   game.settings.register('symbaroum', 'alwaysSucceedOnOne', {
     name: 'SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE',
     hint: 'SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE_HINT',
@@ -133,3 +142,68 @@ Hooks.once('diceSoNiceReady', (dice3d) => {
     'default'
   );
 });
+
+/*Hook for the chatMessage that contain a button for the GM to apply status icons or damage to a token.*/
+Hooks.on('renderChatMessage', async (chatItem, html, data) => {
+  const flagDataArray = await chatItem.getFlag(game.system.id, 'abilityRoll');
+  if(flagDataArray){
+    await html.find("#applyEffect").click(async () => {
+      for(let flagData of flagDataArray){
+
+        if(flagData.tokenId){
+          let token = canvas.tokens.objects.children.find(token => token.data._id === flagData.tokenId);
+          let statusCounterMod = false;
+          if(game.modules.get("statuscounter")?.active){
+            statusCounterMod = true;
+          }
+          if(flagData.addEffect){
+            if(token == undefined){return}
+            let duration = 1;
+            if(flagData.effectDuration){duration = flagData.effectDuration}
+            if(statusCounterMod){
+              let alreadyHereEffect = await EffectCounter.findCounter(token, flagData.addEffect);
+              if(alreadyHereEffect == undefined){
+                let statusEffect = new EffectCounter(duration, flagData.addEffect, token, false);
+                await statusEffect.update();
+              }
+            }
+            else {token.toggleEffect(flagData.addEffect)}
+          }
+          
+          if(flagData.removeEffect){
+            if(statusCounterMod){
+              let statusEffectCounter = await EffectCounter.findCounter(token, flagData.removeEffect);
+              if(statusEffectCounter != undefined){
+                  statusEffectCounter.setValue(0);
+                  await statusEffectCounter.update();
+              }
+            }
+            else {token.toggleEffect(flagData.removeEffect)}
+          }
+
+          if(flagData.modifyEffectDuration){
+            if(statusCounterMod){
+              let statusEffectCounter = await EffectCounter.findCounter(token, flagData.modifyEffectDuration);
+              if(statusEffectCounter != undefined){
+                await statusEffectCounter.setValue(effectDuration);
+                await statusEffectCounter.update();
+              }
+            }
+          }
+
+          if(flagData.toughnessChange){
+            let newToughness = Math.max(0, Math.min(token.actor.data.data.health.toughness.max, token.actor.data.data.health.toughness.value + flagData.toughnessChange))
+            await token.actor.update({"data.health.toughness.value" : newToughness}); 
+          }
+
+          if(flagData.corruptionChange){
+            let newCorruption = token.actor.data.data.health.corruption.temporary + flagData.corruptionChange;
+            await token.actor.update({"data.health.corruption.temporary" : newCorruption}); 
+          }
+        }
+      }
+      await chatItem.unsetFlag(game.system.id, 'abilityRoll');
+      return;
+    })
+  }
+})

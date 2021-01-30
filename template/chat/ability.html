@@ -1,0 +1,38 @@
+<div class="symbaroum chat ability">
+    <div class="foreground border">
+        <div class="introImg" style="background-image: url('{{introImg}}')">
+            <div class="introTxt">{{removeMarkup introText}}</div>
+            {{#if hasTarget}}
+            <div class="introImg" style="background-image: url('{{targetData.actor.data.img}}')"></div>
+        </div>
+        <div class="targetText">{{removeMarkup targetText}}
+        {{/if}}
+        </div>
+        <div class="subText">{{removeMarkup subText}}</div>            
+        <img src="{{subImg}}"/>
+        {{#if hasRoll}}
+        <h4>{{removeMarkup rollString}}</h4>
+        <h4>{{removeMarkup rollResult}}</h4>
+        {{/if}}
+        <div class="finalTxt">
+            <p>{{removeMarkup resultText}}</p>
+            <p>{{removeMarkup finalText}}</p>
+            {{#if hasDamage}}
+            <div class="finalTxt">{{removeMarkup dmgFormula}}
+            </div>
+            <div class="finalTxt">
+                <div class="tooltip">
+                    <p>{{removeMarkup damageText}}</p>
+                    <span class="tooltiptext">{{damageTooltip}}</span>
+                </div>
+            </div>
+            <div class="finalTxt">
+                <p>{{removeMarkup damageFinalText}}</p>
+            </div>
+            {{/if}}
+        {{#if haveCorruption}}
+        <p>{{removeMarkup corruptionText}}</p>
+        {{/if}}
+        </div>
+    </div>
+</div>

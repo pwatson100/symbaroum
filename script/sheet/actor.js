@@ -8,6 +8,7 @@ export class SymbaroumActorSheet extends ActorSheet {
         html.find(".item-delete").click(ev => this._onItemDelete(ev));
         html.find("input").focusin(ev => this._onFocusIn(ev));
         html.find(".item-state").click(async ev => await this._onItemStateUpdate(ev));
+        html.find(".activate-ability").click(async ev => await this._prepareActivateAbility(ev));
     }
 
     _getHeaderButtons() {
@@ -85,5 +86,12 @@ export class SymbaroumActorSheet extends ActorSheet {
         }
         await this.actor.updateOwnedItem(data);
         this._render();
+    }
+
+    async _prepareActivateAbility(event) {
+        event.preventDefault();
+        const div = $(event.currentTarget).parents(".item");
+        const ability = this.actor.getOwnedItem(div.data("itemId"));
+        await ability.makeAction(this.actor);
     }
 }

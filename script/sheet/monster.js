@@ -26,5 +26,15 @@ export class MonsterSheet extends SymbaroumActorSheet {
 
     activateListeners(html) {
         super.activateListeners(html);
+        if(game.settings.get('symbaroum', 'combatAutomation')){
+            html.find(".roll-weapon").click(async ev => await this._prepareRollWeapon(ev))
+        }
+    }
+
+    async _prepareRollWeapon(event) {
+        event.preventDefault();
+        const div = $(event.currentTarget).parents(".item");
+        const weapon = this.actor.getOwnedItem(div.data("itemId"));
+        await this.actor.rollWeapon(weapon)
     }
 }

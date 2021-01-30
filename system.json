@@ -2,7 +2,7 @@
   "name": "symbaroum",
   "title": "Symbaroum",
   "description": "Twilight falls. Davokar darkens.",
-  "version": "2.16.0",
+  "version": "2.17.0",
   "minimumCoreVersion": "0.7.5",
   "compatibleCoreVersion": "0.7.8",
   "templateVersion": 2,
@@ -15,6 +15,7 @@
     "style/common/variable.css",
     "style/common/actor.css",
     "style/common/item.css",
+    "style/common/system-guide.css",
     "style/sheet/player.css",
     "style/sheet/tab/player-main.css",
     "style/sheet/tab/player-gear.css",
@@ -37,9 +38,102 @@
     "style/sheet/artifact.css",
     "style/chat/item.css",
     "style/chat/dialog.css",
-    "style/chat/roll.css"
+    "style/chat/roll.css",
+    "style/chat/ability.css"
   ],
-  "packs": [],
+  "packs": [
+    {
+      "name": "systemuserguides",
+      "label": "Symbaroum for FVTT system user guides",
+      "system": "symbaroum",
+      "path": "./packs/systemuserguides.db",
+      "entity": "JournalEntry"
+    },
+    {
+      "name": "symbaroumabilitiesen",
+      "label": "Symbaroum Abilities EN",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumabilitiesen.db",
+      "entity": "Item"
+    },
+    {
+      "name": "symbaroumabilitiesfr",
+      "label": "Talents Symbaroum FR",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumabilitiesfr.db",
+      "entity": "Item"
+    },
+    {
+      "name": "symbaroumabilitiesde",
+      "label": "Symbaroum Abilities DE",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumabilitiesde.db",
+      "entity": "Item"
+    },
+    {
+      "name": "symbaroumabilitiessv",
+      "label": "Symbaroum Abilities SV",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumabilitiessv.db",
+      "entity": "Item"
+    },
+    {
+      "name": "symbaroumpowersen",
+      "label": "Symbaroum Powers EN",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumpowersen.db",
+      "entity": "Item"
+    },
+    {
+      "name": "symbaroumpowersfr",
+      "label": "Pouvoirs Symbaroum FR",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumpowersfr.db",
+      "entity": "Item"
+    },
+    {
+      "name": "symbaroumpowersde",
+      "label": "Symbaroum Powers DE",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumpowersde.db",
+      "entity": "Item"
+    },
+    {
+      "name": "symbaroumpowerssv",
+      "label": "Symbaroum Powers SV",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumpowerssv.db",
+      "entity": "Item"
+    },
+    {
+      "name": "symbaroumtraitsen",
+      "label": "Symbaroum Traits EN",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumtraitsen.db",
+      "entity": "Item"
+    },
+    {
+      "name": "symbaroumtraitsfr",
+      "label": "Traits Symbaroum FR",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumtraitsfr.db",
+      "entity": "Item"
+    },
+    {
+      "name": "symbaroumtraitsde",
+      "label": "Symbaroum Traits DE",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumtraitsde.db",
+      "entity": "Item"
+    },
+    {
+      "name": "symbaroumtraitssv",
+      "label": "Symbaroum Traits SV",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumtraitssv.db",
+      "entity": "Item"
+    }
+  ],
   "languages": [
     {
       "lang": "en",
@@ -60,6 +154,11 @@
       "lang": "sv",
       "name": "Svenska ",
       "path": "lang/sv.json"
+    },
+    {
+      "lang": "de",
+      "name": "Deutsche ",
+      "path": "lang/de.json"
     }
   ],
   "gridDistance": 1,
