@@ -176,6 +176,7 @@
     "BUTTON.ROLL": "Lancer",
     "BUTTON.CANCEL": "Annuler",
 
+    "CHAT.GMTEXT_BUTTON": "Ce bouton ne peut être utilisé que par le MJ. Il affecte les résultats de l'action aux tokens.",
     "CHAT.APPLY_BUTTON": "Appliquer les résultats au token",
     "CHAT.DEATH_ROLL": "Test de Mort",
     "CHAT.SUCCEED": "Réussite",
@@ -231,6 +232,7 @@
     "DIALOG.AUTOPARAMS": "Modificateurs déjà comptés: ",
     "DIALOG.BACKSTAB": "Utiliser coup en traître?",
     "DIALOG.HUNTERS_INSTINCT": "Cible instinct du chasseur?",
+    "DIALOG.BEASTLORE": "+Dégâts Conn. des bêtes?",
     "DIALOG.ISMAINTAINED": "Lancement ou maintien?",
     "DIALOG.USE_POISON": "Poison appliqué?",
     "DIALOG.NO_POISON": "Pas de poison",
