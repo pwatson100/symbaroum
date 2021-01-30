@@ -177,7 +177,11 @@
   "BUTTON.ROLL": "Lanzar",
   "BUTTON.CANCEL": "Cancelar",
 
+
   "CHAT.APPLY_BUTTON": "Aplicar los resultados al token",
+
+  "CHAT.GMTEXT_BUTTON": "This button is for GM use only. It will apply the effects to the tokens.",
+
   "CHAT.DEATH_ROLL": "Tirada de Muerte",
   "CHAT.SUCCEED": "Éxito",
   "CHAT.FAILED": "Fallo",
@@ -208,6 +212,7 @@
   "COMBAT.CHAT_MODIFIER": "Mod: ",
   "COMBAT.CHAT_DMG_PARAMS_HUNTER": "[Instinto de cazador] ",
   "COMBAT.CHAT_DMG_PARAMS_CUSTOM": "[Custom] ",
+
   "COMBAT.CHAT_DMG_PARAMS_BACKSTAB": "[Por la espalda] ",
   "COMBAT.CHAT_DMG_PARAMS_ADVANTAGE": "[Ventaja] ",
   "COMBAT.CHAT_DMG_PARAMS_LEADER": "[Objetivo del líder] ",
@@ -235,6 +240,7 @@
 
   "DIALOG.CASTING_ATTRIBUTE": "Atributo de origen",
   "DIALOG.RESIST_ATTRIBUTE": "Atributo de oposición",
+
   "DIALOG.ATTRIBUTE": "Atributo",
   "DIALOG.MODIFIER": "Modificador",
   "DIALOG.ADVANTAGE": "Ventaja",

@@ -82,6 +82,11 @@
       <label>{{localize "DIALOG.BACKSTAB"}}</label> <span class="lblfavour"><input type="checkbox" id="usebackstab" unchecked></span>
     </div>
     {{/if}}
+    {{#if askBeastlore}}
+    <div class="simplebox">
+      <label>{{localize "DIALOG.BEASTLORE"}}</label> <span class="lblfavour"><input type="checkbox" id="usebeastlore" unchecked></span>
+    </div>
+    {{/if}}
     {{#if askHuntersInstinct}}
     <div class="simplebox">
       <label>{{localize "DIALOG.HUNTERS_INSTINCT"}}</label> <span class="lblfavour"><input type="checkbox" id="usehunter" unchecked></span>
