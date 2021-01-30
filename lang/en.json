@@ -79,7 +79,7 @@
   "ABILITY_LABEL.WIZARDRY":"Wizardry",
   "ABILITY_LABEL.WRESTLING":"Wrestling",
   
-  "ABILITY_ERROR.TARGET": "Too many targets",
+  "ABILITY_ERROR.TARGET": "Choose one target",
 
   "ABILITY_DOMINATE_ADEPT.CHAT_INTRO": " tries to indimidate his target.",
   "ABILITY_DOMINATE_MASTER.CHAT_INTRO": " tries to subdue his target.",
@@ -177,6 +177,7 @@
   "BUTTON.ROLL": "Roll",
   "BUTTON.CANCEL": "Cancel",
 
+  "CHAT.GMTEXT_BUTTON": "This button is for GM use only. It will apply the effects to the tokens.",
   "CHAT.APPLY_BUTTON": "Apply results to the token",
   "CHAT.DEATH_ROLL": "Death Roll",
   "CHAT.SUCCEED": "Succeed",
@@ -221,6 +222,7 @@
 
   "DIALOG.AUTOPARAMS": "Included modifiers: ",
   "DIALOG.BACKSTAB": "Use Backstab?",
+  "DIALOG.BEASTLORE": "Beast Lore dmg?",
   "DIALOG.HUNTERS_INSTINCT": "Hunter's Instinct Target?",
   "DIALOG.ISMAINTAINED": "New cast or maintaining?",
   "DIALOG.USE_POISON": "Poison applied?",

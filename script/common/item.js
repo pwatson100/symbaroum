@@ -554,14 +554,15 @@ will send to screen a windows asking for modifiers for the roll, then roll, then
    * @param {string} resultFunction  The function to call in order to process the results
    * @param {any}   functionStuff  an object of parameters not used in the dialog function, but useful for resultFunction */
 async function modifierDialog(functionStuff){
-    let askImpeding = false;
     let isWeaponRoll = false;
-    let askBackstab = false;
-    let askHuntersInstinct = false;
-    let askIronFistMaster = false;
-    let askTwoAttacks = false;
-    let askThreeAttacks = false;
+    let askBackstab = functionStuff.askBackstab ?? false;
+    let askHuntersInstinct = functionStuff.askHuntersInstinct ?? false;
+    let askIronFistMaster = functionStuff.dmgData.askIronFistMaster ?? false;
+    let askTwoAttacks = functionStuff.askTwoAttacks ?? false;
+    let askThreeAttacks = functionStuff.askThreeAttacks ?? false;
+    let askBeastlore = functionStuff.askBeastlore ?? false;
     let actorWeapons;
+    let askImpeding = false;
     if(functionStuff?.impeding){
         askImpeding = true;
     }
@@ -572,14 +573,8 @@ async function modifierDialog(functionStuff){
             return;
         }
     }
-    let checkMaintain = functionStuff.checkMaintain ?? false;
     if(functionStuff?.combat)
     {
-        askBackstab = functionStuff.askBackstab ?? false;
-        askHuntersInstinct= functionStuff.askHuntersInstinct ?? false;
-        askIronFistMaster= functionStuff.dmgData.askIronFistMaster ?? false;
-        askTwoAttacks = functionStuff.askTwoAttacks ?? false;
-        askThreeAttacks = functionStuff.askThreeAttacks ?? false;
         isWeaponRoll = true
     }
     let targetAttributeName = null;
@@ -601,6 +596,7 @@ async function modifierDialog(functionStuff){
         askHuntersInstinct: askHuntersInstinct,
         askThreeAttacks: askThreeAttacks,
         askTwoAttacks: askTwoAttacks,
+        askBeastlore: askBeastlore,
         askImpeding: askImpeding,
         choices: { "0": game.i18n.localize("DIALOG.FAVOUR_NORMAL"), "-1":game.i18n.localize("DIALOG.FAVOUR_DISFAVOUR"), "1":game.i18n.localize("DIALOG.FAVOUR_FAVOUR")},
         groupName:"favour",
@@ -697,6 +693,9 @@ async function modifierDialog(functionStuff){
                             functionStuff.bleed = true;
                             functionStuff.dmgData.bleed = "1d4"
                         }
+                    }
+                    if(askBeastlore){
+                        functionStuff.dmgData.useBeastlore = html.find("#usebeastlore")[0].checked;
                     }
                     if(askTwoAttacks){
                         functionStuff.dmgData.do2attacks = html.find("#do2attacks")[0].checked;
@@ -846,6 +845,7 @@ export async function attackRoll(item, actor){
         askHuntersInstinct: false,
         askTwoAttacks: false,
         askThreeAttacks: false,
+        askBeastlore: false,
         attackFromPC: actor.hasPlayerOwner,
         autoParams: "",
         bleed: false,
@@ -865,6 +865,8 @@ export async function attackRoll(item, actor){
             modifier: "",
             hasAdvantage: false,
             useBackstab: false,
+            useBeastlore: false,
+            beastLoreDmg: "1d4",
             leaderTarget: false,
             ignoreArm: false
         }
@@ -975,6 +977,16 @@ export async function attackRoll(item, actor){
         if(powerLvl.level > 2){
             functionStuff.dmgData.askIronFistMaster = true;
             functionStuff.autoParams += game.i18n.localize('ABILITY_LABEL.IRON_FIST') + " (" + game.i18n.localize('ABILITY.MASTER') + "), ";
+        }
+    }
+    let beastlore = actor.items.filter(item => item.data.data?.reference === "beastlore");
+    if(beastlore.length != 0){
+        let beastLoreLvl = getPowerLevel(beastlore[0]).level;
+        if(beastLoreLvl > 1){
+            functionStuff.askBeastlore = true;
+        }
+        if(beastLoreLvl > 2){
+            functionStuff.dmgData.beastLoreDmg = "1d6";
         }
     }
 
@@ -2170,10 +2182,14 @@ async function layonhandsPrepare(ability, actor) {
 async function layonhandsResult(functionStuff) {
     let flagDataArray= [];
     let rollData = [];
+    let hasDamage = false;
+    let damageTooltip = "";
+    let dmgFormula = "";
+    let damageText = "";
     rollData.push(await baseRoll(functionStuff.actor, functionStuff.castingAttributeName, null, null, functionStuff.favour, functionStuff.modifier));
     let healed = 0;
 
-    if(functionStuff.casterMysticAbilities.theurgy == 3 || functionStuff.casterMysticAbilities.blessings == 3 ){
+    if(functionStuff.casterMysticAbilities.theurgy.level == 3 || functionStuff.casterMysticAbilities.blessings.level == 3 ){
         functionStuff.healFormula += " + 1d4";
     }
 
@@ -2195,6 +2211,10 @@ async function layonhandsResult(functionStuff) {
                 removeEffect: "icons/svg/blood.svg"
             })
         }
+        hasDamage = true;
+        dmgFormula = game.i18n.localize('POWER_LAYONHANDS.CHAT_FINAL') + functionStuff.healFormula;
+        damageText = game.i18n.localize('POWER_LAYONHANDS.CHAT_FINAL') + healed.toString();
+        damageTooltip += healRoll.result;
     }
 
     let corruption = await getCorruption(functionStuff);
@@ -2217,7 +2237,14 @@ async function layonhandsResult(functionStuff) {
         rollString: `${game.i18n.localize(rollData[0].actingAttributeLabel)} : (${rollData[0].actingAttributeValue})`,
         rollResult : formatRollResult(rollData),
         resultText: functionStuff.actor.data.name + game.i18n.localize('POWER_LAYONHANDS.CHAT_SUCCESS') + functionStuff.targetData.actor.data.name,
-        finalText: game.i18n.localize('POWER_LAYONHANDS.CHAT_FINAL') + healed.toString(),
+        finalText: "",
+        hasDamage: hasDamage,
+        damageText: damageText,
+        damageRollResult: "",
+        dmgFormula: dmgFormula,
+        damageRollMod: "",
+        damageTooltip: damageTooltip,
+        damageFinalText: "",
         haveCorruption: true,
         corruptionText: corruptionText
     }

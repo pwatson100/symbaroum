@@ -177,6 +177,7 @@
   "BUTTON.ROLL": "Rulla",
   "BUTTON.CANCEL": "Avbryt",
 
+  "CHAT.GMTEXT_BUTTON": "This button is for GM use only. It will apply the effects to the tokens.",
   "CHAT.APPLY_BUTTON": "Applicera resultat på valt token",
   "CHAT.DEATH_ROLL": "Dödsslag",
   "CHAT.SUCCEED": "Lyckat",
@@ -221,6 +222,7 @@
 
   "DIALOG.AUTOPARAMS": "Inkluderade modifieringar: ",
   "DIALOG.BACKSTAB": "Använda Lönnstöt?",
+  "DIALOG.BEASTLORE": "Beast Lore dmg?",
   "DIALOG.HUNTERS_INSTINCT": "Jaktinstinkt utsett mål?",
   "DIALOG.ISMAINTAINED": "Ny kraft eller bibehålla befintlig?",
   "DIALOG.USE_POISON": "Gift applicerat?",
