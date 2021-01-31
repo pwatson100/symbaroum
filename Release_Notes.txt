@@ -76,6 +76,13 @@ First major update to the Symbaroum system by Bithir and Khaali who have been wo
 
 Please see the User Guide in the Symbaroum for FVTT system users guides Compendium for more information.
 
-Version 2.18.o
+Version 2.18.0
 Updated comparability flag.
 Corrected issue where packs were not included in the zip package. 
+
+Verision 2.19.0
+I had a syntax error in the url for the download. 
+
+Verision 2.20.0
+Minor error in the spanish translation file, preventing spanish character sheet from showing.
+Updated monster sheet size.
