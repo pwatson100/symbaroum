@@ -558,6 +558,15 @@
     "WEAPON.DESCRIPTION": "Description",
     "WEAPON.NUMBER": "Nombre",
 
+    "WEAPON_CLASS.LABEL": "Type d'arme",
+    "WEAPON_CLASS.1HANDED": "Arme à une main",
+    "WEAPON_CLASS.SHORT": "Arme courte",
+    "WEAPON_CLASS.LONG": "Arme longue",
+    "WEAPON_CLASS.UNARMED": "Attaque sans arme",
+    "WEAPON_CLASS.HEAVY": "Arme lourde",
+    "WEAPON_CLASS.RANGED": "Arme de trait",
+    "WEAPON_CLASS.THROWN": "Arme de jet",
+
     "SYMBAROUM.OPTIONAL_CRIT": "Option jets de dés critiques",
     "SYMBAROUM.OPTIONAL_CRIT_HINT": "Activer les bonus de dégâts et désastres de défense sur un résultat du dé de 1 ou 20",
     "SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE": "Echec et réussite toujours possible",

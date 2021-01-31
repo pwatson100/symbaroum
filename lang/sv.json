@@ -557,6 +557,15 @@
   "WEAPON.DESCRIPTION": "Beskrivning",
   "WEAPON.NUMBER": "Nr",
 
+  "WEAPON_CLASS.LABEL": "Weapon type",
+  "WEAPON_CLASS.1HANDED": "Single-handed",
+  "WEAPON_CLASS.SHORT": "Short",
+  "WEAPON_CLASS.LONG": "Long",
+  "WEAPON_CLASS.UNARMED": "Unarmed Attack",
+  "WEAPON_CLASS.HEAVY": "Heavy",
+  "WEAPON_CLASS.RANGED": "Ranged",
+  "WEAPON_CLASS.THROWN": "Thrown",
+
   "SYMBAROUM.OPTIONAL_CRIT": "Kritiska slag (Perfekta och bortfumlade)",
   "SYMBAROUM.OPTIONAL_CRIT_HINT": "Välj för att använda regler för Perfekta och Bortfumlade slag vid tärningsslag 1 och 20. Se sida 179 i Regelboken.",
   "SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE": "Alltid möjligt at lyckas och misslyckas",

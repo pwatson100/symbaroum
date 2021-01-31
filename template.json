@@ -275,7 +275,15 @@
       ],
       "description": "",
       "reference": "",
+      "baseDamage": "1d8",
+      "bonusDamage": "",
       "damage": "",
+      "actorDamage": {
+        "base": "",
+        "bonus": "",
+        "pc": "",
+        "npc": 0
+      },
       "quality": "",
       "qualities": {
         "bastard": false,
@@ -295,7 +303,15 @@
         "bloodLetting": false,
         "areaMeleeRadius": false,
         "areaShortRadius": false,
-        "areaCone": false
+        "areaCone": false,
+        "acidcoated": false,
+        "bane": false,
+        "deathrune": false,
+        "desecrated": false,
+        "flaming": false,
+        "hallowed": false,
+        "poison": false,
+        "thundering": false
       },
       "cost": "",
       "number": 1,
@@ -311,6 +327,15 @@
       "protection": "",
       "impeding": 0,
       "quality": "",
+      "qualities": {
+        "flexible": false,
+        "cumbersome": false,
+        "concealed": false,
+        "reinforced": false,
+        "hallowed": false,
+        "retributive": false,
+        "desecrated": false
+      },
       "cost": "",
       "state": "other"
     },

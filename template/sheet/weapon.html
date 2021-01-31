@@ -10,6 +10,16 @@
                     <input name="name" type="text" value="{{item.name}}"/>
                 </div>
             </div>
+            <div class="wrapper-column">
+                <div class="name">
+                    <label>"NPC damage"</label>
+                    <input type="number" value="{{data.npcDamage}}" data-dtype="Number" disabled/>
+                </div>
+                <div class="name">
+                    <label>PC damage</label>
+                    <input type="text" value="{{data.pcDamage}}" data-dtype="Text" disabled/>
+                </div>
+            </div>
         </div>
 
         <div class="sheet-tabs tabs" data-group="primary">
@@ -44,9 +54,35 @@
                             {{/select}}
                         </select>
                     </div>
+                    <div class="reference">
+                        <label>{{localize "WEAPON_CLASS.LABEL"}}</label>
+                        <select name="data.reference">
+                            {{#select data.reference}}
+                            <option value="1handed">{{localize "WEAPON_CLASS.1HANDED"}}</option>
+                            <option value="short">{{localize "WEAPON_CLASS.SHORT"}}</option>
+                            <option value="long">{{localize "WEAPON_CLASS.LONG"}}</option>
+                            <option value="unarmed">{{localize "WEAPON_CLASS.UNARMED"}}</option>
+                            <option value="heavy">{{localize "WEAPON_CLASS.HEAVY"}}</option>
+                            <option value="ranged">{{localize "WEAPON_CLASS.RANGED"}}</option>
+                            <option value="thrown">{{localize "WEAPON_CLASS.THROWN"}}</option>
+                            {{/select}}
+                        </select>
+                    </div>
                     <div class="damage">
-                        <label>{{localize "WEAPON.DAMAGE"}}</label>
-                        <input name="data.damage" type="text" value="{{data.damage}}"/>
+                        <label>Base Damage</label>
+                        <select name="data.baseDamage">
+                            {{#select data.baseDamage}}
+                            <option value="1d4">1d4</option>
+                            <option value="1d6">1d6</option>
+                            <option value="1d8">1d8</option>
+                            <option value="1d10">1d10</option>
+                            <option value="1d12">1d12</option>
+                            {{/select}}
+                        </select>
+                    </div>
+                    <div class="damage">
+                        <label>damagebonus</label>
+                        <input name="data.bonusDamage" type="text" value="{{data.bonusDamage}}"/>
                     </div>
                     <div class="cost">
                         <label>{{localize "WEAPON.COST"}}</label>

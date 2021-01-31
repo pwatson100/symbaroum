@@ -550,6 +550,15 @@
   "WEAPON.DESCRIPTION": "Beschreibung",
   "WEAPON.NUMBER": "Nummer",
 
+  "WEAPON_CLASS.LABEL": "Weapon type",
+  "WEAPON_CLASS.1HANDED": "Single-handed",
+  "WEAPON_CLASS.SHORT": "Short",
+  "WEAPON_CLASS.LONG": "Long",
+  "WEAPON_CLASS.UNARMED": "Unarmed Attack",
+  "WEAPON_CLASS.HEAVY": "Heavy",
+  "WEAPON_CLASS.RANGED": "Ranged",
+  "WEAPON_CLASS.THROWN": "Thrown",
+
   "SYMBAROUM.OPTIONAL_CRIT": "Optional Kritischer Wurf",
   "SYMBAROUM.OPTIONAL_CRIT_HINT": "Aktiviere Angrifsboni und Verteidigungspatzer bei Würfen von   1 und 20 wie sie im Grundregelwerk auf Seite 195 beschrieben werden.",
   "SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE": "Es ist immer möglich erfolgreich zu scheitern",

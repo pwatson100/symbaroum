@@ -1,4 +1,4 @@
-import { rollAttribute, baseRoll, damageRollWithDiceParams, simpleDamageRoll, getAttributeValue, createModifyTokenChatButton } from './roll.js';
+import { upgradeDice, baseRoll, damageRollWithDiceParams, simpleDamageRoll, getAttributeValue, createModifyTokenChatButton } from './roll.js';
 
 export class SymbaroumItem extends Item {
     static async create(data, options) {
@@ -28,6 +28,73 @@ export class SymbaroumItem extends Item {
             }
         }
         super.create(data, options);
+    }
+
+    prepareData() {
+        super.prepareData();
+        this._initializeData(this.data);
+        this._computeCombatData(this.data);
+    }
+
+    _initializeData(data) {
+        data.data.bonusDamage = "";
+        data.data.pcDamage = "";
+        data.data.npcDamage = 0;
+        data.data.bonusProtection = "";
+        data.data.pcProtection = "";
+        data.data.npcProtection = 0;
+    }
+
+    _computeCombatData(data) {
+        if(data.type === "weapon"){
+            const meleeClass = [
+                "1handed",
+                "short",
+                "long",
+                "unarmed",
+                "heavy"
+            ];
+            if(!data.data?.baseDamage)
+            {
+                data.data.baseDamage = "1d8";    
+            }
+            if(!data.data?.reference)
+            {
+                data.data.reference = "1handed";    
+            }
+            if(meleeClass.includes(data.data.reference)){
+                data.data.isMelee = true;
+                data.data.isDistance = false;
+            }
+            else{
+                data.data.isMelee = false;
+                data.data.isDistance = true;
+            }
+            let baseDamage = data.data.baseDamage;
+            baseDamage += data.data.bonusDamage;
+            data.data.pcDamage += baseDamage;
+            if(data.data.qualities?.deepImpact){
+                data.data.pcDamage +=  "+1";
+            }
+            let weaponRoll= new Roll(baseDamage).evaluate({maximize: true});
+            data.data.npcDamage = Math.ceil(weaponRoll.total/2);
+            if(data.data.qualities?.deepImpact){
+                data.data.npcDamage +=  1;
+            }
+        }
+        else if(data.type === "armor"){
+            data.data.pcProtection = data.data.protection ?? "0";
+            if(data.data.qualities?.reinforced){
+                data.data.pcProtection +=  "+1";
+            }
+            let baseProt = data.data.protection ?? "0";
+
+            let armorRoll= new Roll(baseProt).evaluate({maximize: true});
+            data.data.npcProtection = Math.ceil(armorRoll.total/2);
+            if(data.data.qualities?.reinforced){
+                data.data.npcProtection +=  1;
+            }
+        }
     }
 
     async sendToChat() {
@@ -188,12 +255,74 @@ export class SymbaroumItem extends Item {
             {label: game.i18n.localize('POWER_LABEL.EARTH_SHOT'), value: "earthshot"},
             {label: game.i18n.localize('POWER_LABEL.WITCH_HAMMER'), value: "witchhammer"}
         ];
+        const traitsList = [
+            {label: game.i18n.localize('TRAIT_LABEL.ACIDICATTACK'), value: "acidicattack"},
+             {label: game.i18n.localize('TRAIT_LABEL.ACIDICBLOOD'), value: "acidicblood"},
+             {label: game.i18n.localize('TRAIT_LABEL.ALTERNATIVEDAMAGE'), value: "alternativedamage"},
+             {label: game.i18n.localize('TRAIT_LABEL.AMPHIBIAN'), value: "amphibian"},
+             {label: game.i18n.localize('TRAIT_LABEL.ARMORED'), value: "armored"},
+             {label: game.i18n.localize('TRAIT_LABEL.AVENGINGSUCCESSOR'), value: "avengingsuccessor"},
+             {label: game.i18n.localize('TRAIT_LABEL.BLOODLUST'), value: "bloodlust"},
+             {label: game.i18n.localize('TRAIT_LABEL.CARAPACE'), value: "carapace"},
+             {label: game.i18n.localize('TRAIT_LABEL.COLLECTIVEPOWER'), value: "collectivepower"},
+             {label: game.i18n.localize('TRAIT_LABEL.COLOSSAL'), value: "colossal"},
+             {label: game.i18n.localize('TRAIT_LABEL.COMPANIONS'), value: "companions"},
+             {label: game.i18n.localize('TRAIT_LABEL.CORRUPTINGATTACK'), value: "corruptingattack"},
+             {label: game.i18n.localize('TRAIT_LABEL.CORRUPTIONHOARDER'), value: "corruptionhoarder"},
+             {label: game.i18n.localize('TRAIT_LABEL.CORRUPTIONSENSITIVE'), value: "corruptionsensitive"},
+             {label: game.i18n.localize('TRAIT_LABEL.CRUSHINGEMBRACE'), value: "crushingembrace"},
+             {label: game.i18n.localize('TRAIT_LABEL.DEADLYBREATH'), value: "deadlybreath"},
+             {label: game.i18n.localize('TRAIT_LABEL.DEATHSTRUGGLE'), value: "deathstruggle"},
+             {label: game.i18n.localize('TRAIT_LABEL.DEVOUR'), value: "devour"},
+             {label: game.i18n.localize('TRAIT_LABEL.DIMINUTIVE'), value: "diminutive"},
+             {label: game.i18n.localize('TRAIT_LABEL.ENTHRALL'), value: "enthrall"},
+             {label: game.i18n.localize('TRAIT_LABEL.FREESPIRIT'), value: "freespirit"},
+             {label: game.i18n.localize('TRAIT_LABEL.GRAPPLINGTONGUE'), value: "grapplingtongue"},
+             {label: game.i18n.localize('TRAIT_LABEL.GRAVELYCOLD'), value: "gravelycold"},
+             {label: game.i18n.localize('TRAIT_LABEL.HARMFULAURA'), value: "harmfulaura"},
+             {label: game.i18n.localize('TRAIT_LABEL.HAUNTING'), value: "haunting"},
+             {label: game.i18n.localize('TRAIT_LABEL.INFECTIOUS'), value: "infectious"},
+             {label: game.i18n.localize('TRAIT_LABEL.INFESTATION'), value: "infestation"},
+             {label: game.i18n.localize('TRAIT_LABEL.INVISIBILITY'), value: "invisibility"},
+             {label: game.i18n.localize('TRAIT_LABEL.LEAP'), value: "leap"},
+             {label: game.i18n.localize('TRAIT_LABEL.LIFESENSE'), value: "lifesense"},
+             {label: game.i18n.localize('TRAIT_LABEL.MANIFESTATION'), value: "manifestation"},
+             {label: game.i18n.localize('TRAIT_LABEL.MANYHEADED'), value: "many-headed"},
+             {label: game.i18n.localize('TRAIT_LABEL.METAMORPHOSIS'), value: "metamorphosis"},
+             {label: game.i18n.localize('TRAIT_LABEL.MYSTICALRESISTANCE'), value: "mysticalresistance"},
+             {label: game.i18n.localize('TRAIT_LABEL.NATURALWEAPON'), value: "naturalweapon"},
+             {label: game.i18n.localize('TRAIT_LABEL.NIGHTPERCEPTION'), value: "nightperception"},
+             {label: game.i18n.localize('TRAIT_LABEL.OBSERVANT'), value: "observant"},
+             {label: game.i18n.localize('TRAIT_LABEL.PARALYZINGVENOM'), value: "paralyzingvenom"},
+             {label: game.i18n.localize('TRAIT_LABEL.PIERCINGATTACK'), value: "piercingattack"},
+             {label: game.i18n.localize('TRAIT_LABEL.POISONOUS'), value: "poisonous"},
+             {label: game.i18n.localize('TRAIT_LABEL.POISONSPIT'), value: "poisonspit"},
+             {label: game.i18n.localize('TRAIT_LABEL.PREHENSILECLAWS'), value: "prehensileclaws"},
+             {label: game.i18n.localize('TRAIT_LABEL.RAMPAGE'), value: "rampage"},
+             {label: game.i18n.localize('TRAIT_LABEL.REGENERATION'), value: "regeneration"},
+             {label: game.i18n.localize('TRAIT_LABEL.ROBUST'), value: "robust"},
+             {label: game.i18n.localize('TRAIT_LABEL.ROOTWALL'), value: "rootwall"},
+             {label: game.i18n.localize('TRAIT_LABEL.SPIRITFORM'), value: "spiritform"},
+             {label: game.i18n.localize('TRAIT_LABEL.STURDY'), value: "sturdy"},
+             {label: game.i18n.localize('TRAIT_LABEL.SUMMONER'), value: "summoner"},
+             {label: game.i18n.localize('TRAIT_LABEL.SWARM'), value: "swarm"},
+             {label: game.i18n.localize('TRAIT_LABEL.SWIFT'), value: "swift"},
+             {label: game.i18n.localize('TRAIT_LABEL.TERRIFY'), value: "terrify"},
+             {label: game.i18n.localize('TRAIT_LABEL.TUNNELER'), value: "tunneler"},
+             {label: game.i18n.localize('TRAIT_LABEL.UNDEAD'), value: "undead"},
+             {label: game.i18n.localize('TRAIT_LABEL.WEB'), value: "web"},
+             {label: game.i18n.localize('TRAIT_LABEL.WINGS'), value: "wings"},
+             {label: game.i18n.localize('TRAIT_LABEL.WRECKER'), value: "wrecker"}  
+        ];
         let list;
         if(this.data.type === "ability"){
             list = abilitiesList;
         }
         else if(this.data.type === "mysticalPower"){
             list = powersList;
+        }
+        else if(this.data.type === "trait"){
+            list = traitsList;
         }
         else{return}
         let referenceOptions = "";
@@ -237,8 +366,10 @@ export class SymbaroumItem extends Item {
         }
 
         const scriptedAbilities =
-        [{reference: "acrobatics", level: [1, 2, 3], function: acrobatics},
+        [{reference: "alchemy", level: [1, 2, 3], function: alchemy},
+        {reference: "acrobatics", level: [1, 2, 3], function: acrobatics},
         {reference: "backstab", level: [1, 2, 3], function: attackRoll},
+        {reference: "beastlore", level: [1, 2, 3], function: beastlore},
         {reference: "dominate", level: [1, 2, 3], function: dominatePrepare},
         {reference: "huntersinstinct", level: [1, 2, 3], function: attackRoll},
         {reference: "leader", level: [1, 2, 3], function: leaderPrepare},
@@ -259,12 +390,17 @@ export class SymbaroumItem extends Item {
         {reference: "layonhands", level: [1, 2, 3], function: layonhandsPrepare},
         {reference: "unnoticeable", level: [1, 2, 3], function: unnoticeablePrepare}];
 
+        const scriptedTraits = 
+        [];
         let list;
         if(this.data.type === "ability"){
             list = scriptedAbilities;
         }
         else if(this.data.type === "mysticalPower"){
             list = scriptedPowers;
+        }
+        else if(this.data.type === "trait"){
+            list = scriptedTraits;
         }
         else{return}
 
@@ -281,6 +417,17 @@ export class SymbaroumItem extends Item {
         }
     }
 }
+
+
+const weaponReferences = [
+    "1handed",
+    "short",
+    "long",
+    "unarmed",
+    "heavy",
+    "thrown",
+    "ranged"
+  ]
 
 /*get the target token, its actor, and evaluate which attribute this actor will use for opposition
 @Params: {string}   targetAttributeName : the name of the resist attribute. Can be defence, and can be null.
@@ -2280,6 +2427,25 @@ async function unnoticeablePrepare(ability, actor) {
     await standardPowerActivation(functionStuff);
 }
 
+async function alchemy(ability, actor) {
+    let fsDefault = await buildFunctionStuffDefault(ability, actor);
+    let specificStuff = {
+        castingAttributeName: "cunning",
+        combat: false
+    }
+    let functionStuff = Object.assign({}, fsDefault , specificStuff);
+    await standardAbilityActivation(functionStuff)
+}
+
+async function beastlore(ability, actor) {
+    let fsDefault = await buildFunctionStuffDefault(ability, actor);
+    let specificStuff = {
+        castingAttributeName: "cunning",
+        combat: false
+    }
+    let functionStuff = Object.assign({}, fsDefault , specificStuff);
+    await standardAbilityActivation(functionStuff)
+}
 
 async function dominatePrepare(ability, actor) {
     let powerLvl = getPowerLevel(ability);

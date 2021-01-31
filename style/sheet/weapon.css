@@ -25,7 +25,8 @@
 .symbaroum.sheet.item .weapon .tab .stats .damage,
 .symbaroum.sheet.item .weapon .tab .stats .cost,
 .symbaroum.sheet.item .weapon .tab .stats .number,
-.symbaroum.sheet.item .weapon .tab .stats .attribute {
+.symbaroum.sheet.item .weapon .tab .stats .attribute,
+.symbaroum.sheet.item .weapon .tab .stats .reference {
     display: flex;
     flex-direction: row;
     flex-basis: 100%;

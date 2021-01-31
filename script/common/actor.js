@@ -1,5 +1,6 @@
 import { attackRoll, getPowerLevel } from './item.js';
 import { prepareRollAttribute } from "../common/dialog.js";
+import { upgradeDice } from './roll.js';
 
 export class SymbaroumActor extends Actor {
   
@@ -106,22 +107,28 @@ export class SymbaroumActor extends Actor {
 
         const activeArmor = this._getActiveArmor(data);
         let attributeDef = data.data.defense.attribute.toLowerCase();
-        let robust = this.items.filter(item => item.data.data.reference === "robust");
-        let protection = activeArmor.data.protection;
-        if(robust.length != 0){
-            let robustProt = getPowerLevel(robust[0]).level +1;
-            protection += "+" + robustProt.toString();
-        }
+        let protection = this._evaluateProtection(activeArmor);
         data.data.combat = {
             id: activeArmor._id,
             armor: activeArmor.name,
-            protection: protection,
+            protection: protection.pc,
+            protectionData: protection,
             quality: activeArmor.data.quality,
             qualities: activeArmor.data.qualities,
             impeding: activeArmor.data.impeding,
             defense: data.data.attributes[attributeDef].total - activeArmor.data.impeding + data.data.bonus.defense,
             msg: `${game.i18n.localize(data.data.attributes[attributeDef].label)} ${data.data.attributes[attributeDef].total}<br/>${game.i18n.localize("ARMOR.IMPEDING")}(${-1 * activeArmor.data.impeding})${data.data.bonus.defense_msg}`
         };
+
+        const activeWeapons = this._getActiveWeapons(data);
+        if(activeWeapons.length > 0){
+            for(let weaponData of activeWeapons){
+                let damageFormulas = this.evaluateWeapon(weaponData);
+                weaponData.data.actorDamage = damageFormulas;
+                console.log("damage");
+                console.log(weaponData);
+            }
+        }
         let attributeInit = data.data.initiative.attribute.toLowerCase();
         data.data.initiative.value = (data.data.attributes[attributeInit].value * 1000) + (data.data.attributes.vigilant.value * 10);
         
@@ -176,6 +183,114 @@ export class SymbaroumActor extends Actor {
         }
     }
 
+    evaluateWeapon(item) {
+        const meleeClass = [
+            "1handed",
+            "short",
+            "long",
+            "unarmed",
+            "heavy"
+        ];
+        if(meleeClass.includes(item.data.reference)){
+            item.data.isMelee = true;
+            item.data.isDistance = false;
+        }
+        else{
+            item.data.isMelee = false;
+            item.data.isDistance = true;
+        }
+        let baseDamage = item.data.baseDamage ?? "";
+        let bonusDamage = item.data.bonusDamage ?? "";
+        if(item.data.isMelee){
+            let ironFist = this.items.filter(element => element.data.data?.reference === "ironfist");
+            if(ironFist.length > 0){
+                let powerLvl = getPowerLevel(ironFist[0]);
+                if(powerLvl.level == 2){
+                    bonusDamage += "+1d4";
+                }
+                else if(powerLvl.level > 2){
+                    bonusDamage += "+1d8";
+                }
+            }
+            let robust = this.items.filter(element => element.data.data?.reference === "robust");
+            console.log(robust);
+            if(robust.length > 0){
+                let powerLvl = getPowerLevel(robust[0]);
+                if(powerLvl.level == 2){
+                    bonusDamage += "+1d6";
+                }
+                else if(powerLvl.level > 2){
+                    bonusDamage += "+1d8";
+                }
+                else{
+                    bonusDamage += "+1d4";
+                }
+            }
+        }
+        if(item.data.reference === "unarmed"){
+            let naturalweapon = this.items.filter(element => element.data.data?.reference === "naturalweapon");
+            if(naturalweapon.length > 0){
+                let powerLvl = getPowerLevel(naturalweapon[0]);
+                let newdamage = upgradeDice(baseDamage, powerLvl.level);
+                baseDamage = newdamage;
+            }
+            let naturalwarrior = this.items.filter(element => element.data.data?.reference === "naturalwarrior");
+            if(naturalwarrior.length > 0){
+                let newdamage = upgradeDice(baseDamage, 1);
+                baseDamage = newdamage;
+            }
+        }
+        let pcDamage = baseDamage + bonusDamage;
+        console.log(pcDamage);
+        let DmgRoll= new Roll(pcDamage).evaluate({maximize: true});
+        let npcDamage = Math.ceil(DmgRoll.total/2);
+        
+        if(item.data?.qualities.deepImpact){
+            pcDamage += "+1";
+            npcDamage+= 1;
+        }
+        return({base: baseDamage, bonus: bonusDamage, pc: pcDamage, npc: npcDamage})
+    }
+
+    _evaluateProtection(item) {
+        let protection = item.data.protection;
+        let bonusProtection = item.data.bonusProtection ?? "";
+        let manatarms = this.items.filter(element => element.data.data?.reference === "manatarms");
+        if(manatarms.length > 0){
+            let newprot = upgradeDice(protection, 1);
+            protection = newprot;
+        }
+        let naturalarmor = this.items.filter(element => element.data.data?.reference === "armored");
+        if(naturalarmor.length > 0){
+            let powerLvl = getPowerLevel(naturalarmor[0]);
+            let newprot = upgradeDice(protection, powerLvl.level -1);
+            protection = newprot;
+        }
+        let robust = this.items.filter(element => element.data.data?.reference === "robust");
+        if(robust.length > 0){
+            let powerLvl = getPowerLevel(robust[0]);
+            if(powerLvl.level == 2){
+                bonusProtection += "+1d6";
+            }
+            else if(powerLvl.level > 2){
+                bonusProtection += "+1d8";
+            }
+            else{
+                bonusProtection += "+1d4";
+            }
+        }
+        let pcProt = protection + bonusProtection;
+        let armorRoll= new Roll(pcProt).evaluate({maximize: true});
+        let npcProt = Math.ceil(armorRoll.total/2);
+        
+        if(item.data?.qualities?.reinforced){
+            pcProt += "+1";
+            npcProt+= 1;
+        }
+        return({base: protection,
+            bonus: bonusProtection, pc: pcProt, npc: npcProt})
+    }
+
     _getActiveArmor(data) {
         for (let item of Object.values(data.items)) {
             if (item.isArmor && item.isActive) {
@@ -187,10 +302,21 @@ export class SymbaroumActor extends Actor {
             name: "Armor",
             data: {
                 protection: "0",
+                bonusProtection: "",
                 quality: "",
                 impeding: 0
             }
         };
+    }
+
+    _getActiveWeapons(data) {
+        let weaponArray = [];
+        for (let item of Object.values(data.items)) {
+            if (item.isWeapon && item.isActive) {
+                weaponArray.push(item);
+            }
+        }
+        return(weaponArray)
     }
 
     _addBonusData(currentb, item, itemb, bonusType) {
@@ -237,17 +363,23 @@ export class SymbaroumActor extends Actor {
     }
 
     async rollArmor() {
-        const attributeData = {name: this.data.data.combat.armor, value: this.data.data.combat.defense};
-        const armor = { protection: this.data.data.combat.protection, quality: this.data.data.combat.quality }
-        await prepareRollAttribute(this, attributeData, armor, null);
+        if(!game.settings.get('symbaroum', 'combatAutomation')){
+            const armor = this.data.data.combat;
+            await prepareRollAttribute(this, "defense", armor, null)
+        }
     }
 
     async rollWeapon(weapon){
-        const attribute = this.data.data.attributes[weapon.data.data.attribute];
-        const bonus = this.data.data.bonus[weapon.data.data.attribute];
-        const attributeData = { name: game.i18n.localize(attribute.label), value: attribute.value + bonus };
-        const weaponData = { damage: weapon.data.data.damage, quality: weapon.data.data.quality, qualities: weapon.data.data.qualities }
-        await attackRoll(weapon, this);
+        if(game.settings.get('symbaroum', 'combatAutomation')){
+            const attribute = this.data.data.attributes[weapon.data.data.attribute];
+            const bonus = this.data.data.bonus[weapon.data.data.attribute];
+            const attributeData = { name: game.i18n.localize(attribute.label), value: attribute.value + bonus };
+            const weaponData = { damage: weapon.data.data.damage, quality: weapon.data.data.quality, qualities: weapon.data.data.qualities }
+            await attackRoll(weapon, this);
+        }
+        else{
+            await prepareRollAttribute(this, weapon.data.data.attribute, null, weapon)
+        }
     }
 
     async rollAttribute(attributeName) {

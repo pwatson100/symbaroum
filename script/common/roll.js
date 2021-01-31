@@ -465,3 +465,19 @@ export async function simpleDamageRoll(attackFromPC, actor, damageFormula, targe
     favour: 0
   }
 }
+
+export function upgradeDice(formula, level){
+  let formulaArray = formula.split("d");
+  if(formulaArray.length != 2)
+  {
+    return(formula)
+  }
+  let formula2ndArray = formulaArray[1].split("k");
+  let diceValue = parseInt(formula2ndArray[0], 10);
+  diceValue += 2*level;
+  let NewFormula = formulaArray[0] + "d" + diceValue.toString();
+  if(formula2ndArray.length > 1){
+    NewFormula += "k" + formula2ndArray[1]
+  }
+  return(NewFormula)
+}

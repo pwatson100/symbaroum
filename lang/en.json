@@ -563,6 +563,15 @@
   "WEAPON.DESCRIPTION": "Description",
   "WEAPON.NUMBER": "Number",
 
+  "WEAPON_CLASS.LABEL": "Weapon type",
+  "WEAPON_CLASS.1HANDED": "Single-handed",
+  "WEAPON_CLASS.SHORT": "Short",
+  "WEAPON_CLASS.LONG": "Long",
+  "WEAPON_CLASS.UNARMED": "Unarmed Attack",
+  "WEAPON_CLASS.HEAVY": "Heavy",
+  "WEAPON_CLASS.RANGED": "Ranged",
+  "WEAPON_CLASS.THROWN": "Thrown",
+
   "SYMBAROUM.OPTIONAL_CRIT": "Optional Critical Rolls",
   "SYMBAROUM.OPTIONAL_CRIT_HINT": "Check to enable Hit bonus and Defence fumbles on dice rolls of 1 and 20 as detailed Core Book p. 179",
   "SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE": "Always able to succeed of fail",
