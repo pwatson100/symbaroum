@@ -566,7 +566,7 @@
   "SYMBAROUM.OPTIONAL_ALWAYSUSECRIT": "Permitir críticos fuera del combate",
   "SYMBAROUM.OPTIONAL_ALWAYSUSECRIT_HINT": "Marca para activar el éxito y el fracaso crítico en las tiradas que no son de combate - se activa automáticamente si se seleccionan los críticos",
   "SYMBAROUM.OPTIONAL_MORERITUALS": "Permitir más rituales",
-  "SYMBAROUM.OPTIONAL_MORERITUALS_HINT": "Marca para permitir más rituales, como se detalla en la Guía Avanzada del Jugador p. 103" 
+  "SYMBAROUM.OPTIONAL_MORERITUALS_HINT": "Marca para permitir más rituales, como se detalla en la Guía Avanzada del Jugador p. 103",
   "SYMBAROUM.OPTIONAL_AUTOCOMBAT": "Mejora del combate",
   "SYMBAROUM.OPTIONAL_AUTOCOMBAT_HINT": "Marca para permitir la mejora QoL del combate. Lee la guía del sistema Symbaroum de FoundryVTT en la sección del compedio para más información"
   
