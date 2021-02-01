@@ -274,17 +274,15 @@
         "bonus"
       ],
       "description": "",
-      "reference": "",
+      "reference": "1handed",
       "baseDamage": "1d8",
       "bonusDamage": "",
-      "damage": "",
       "actorDamage": {
         "base": "",
         "bonus": "",
         "pc": "",
         "npc": 0
       },
-      "quality": "",
       "qualities": {
         "bastard": false,
         "returning": false,
@@ -324,9 +322,10 @@
       ],
       "description": "",
       "reference": "",
+      "baseProtection": "1d4",
+      "bonusProtection": "",
       "protection": "",
       "impeding": 0,
-      "quality": "",
       "qualities": {
         "flexible": false,
         "cumbersome": false,

@@ -154,7 +154,44 @@ const migrateItemData = (item, worldSchemaVersion) => {
     }
     if  (worldSchemaVersion < 2.16) { 
             update["data.reference"] = "";
-        }            
+        }
+    if  (worldSchemaVersion < 2.20) { 
+        if (item.type === "weapon") {
+            update["data.reference"] = "1handed";
+            update["data.baseDamage"] = "1d8";
+            update["data.bonusDamage"] = "";
+            update["data.actorDamage"] = {
+                base: "1d8",
+                bonus: "",
+                pc: "1d8",
+                npc: 4
+            };
+            update["data.qualities.acidcoated"] = false;
+            update["data.qualities.bane"] = false;
+            update["data.qualities.deathrune"] = false;
+            update["data.qualities.desecrated"] = false;
+            update["data.qualities.flaming"] = false;
+            update["data.qualities.hallowed"] = false;
+            update["data.qualities.poison"] = false;
+            update["data.qualities.thundering"] = false
+        }
+        if (item.type === "armor") {
+            console.log(JSON.stringify(item));
+            update["data.baseProtection"] = "0";
+            let test = data.protection;
+            updateData[data.bonusProtection] = test;
+            console.log(test);
+            update["data.qualities"] = {
+                flexible: false,
+                cumbersome: false,
+                concealed: false,
+                reinforced: false,
+                hallowed: false,
+                retributive: false,
+                desecrated: false
+            };
+        }
+    }     
 		
     if (!isObjectEmpty(update)) {
         update._id = item._id;

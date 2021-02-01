@@ -38,6 +38,25 @@
     margin-bottom: 10px;
 }
 
+.symbaroum.sheet.item .armor .tab .qualities .leftcolumn,
+.symbaroum.sheet.item .armor .tab .qualities .rightcolumn {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.symbaroum.sheet.item .armor .tab .qualities .leftcolumn {
+    flex-basis: calc(50% - 5px);
+    margin-top: 10px;
+    margin-right: 5px;
+}
+
+.symbaroum.sheet.item .armor .tab .qualities .rightcolumn {
+    flex-basis: calc(50% - 5px);
+    margin-top: 10px;
+    margin-left: 5px;
+}
+
 .symbaroum.sheet.item .armor .tab .bonus .scroll {
     overflow-y: scroll;
     height: 154px;

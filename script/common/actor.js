@@ -104,7 +104,6 @@ export class SymbaroumActor extends Actor {
         let corr = data.data.health.corruption;
         corr.value = corr.temporary + corr.longterm + corr.permanent;
         
-
         const activeArmor = this._getActiveArmor(data);
         let attributeDef = data.data.defense.attribute.toLowerCase();
         let protection = this._evaluateProtection(activeArmor);
@@ -125,8 +124,6 @@ export class SymbaroumActor extends Actor {
             for(let weaponData of activeWeapons){
                 let damageFormulas = this.evaluateWeapon(weaponData);
                 weaponData.data.actorDamage = damageFormulas;
-                console.log("damage");
-                console.log(weaponData);
             }
         }
         let attributeInit = data.data.initiative.attribute.toLowerCase();
@@ -200,7 +197,7 @@ export class SymbaroumActor extends Actor {
             item.data.isDistance = true;
         }
         let baseDamage = item.data.baseDamage ?? "";
-        let bonusDamage = item.data.bonusDamage ?? "";
+        let bonusDamage = "+" + item.data.bonusDamage;
         if(item.data.isMelee){
             let ironFist = this.items.filter(element => element.data.data?.reference === "ironfist");
             if(ironFist.length > 0){
@@ -213,7 +210,6 @@ export class SymbaroumActor extends Actor {
                 }
             }
             let robust = this.items.filter(element => element.data.data?.reference === "robust");
-            console.log(robust);
             if(robust.length > 0){
                 let powerLvl = getPowerLevel(robust[0]);
                 if(powerLvl.level == 2){
@@ -241,7 +237,6 @@ export class SymbaroumActor extends Actor {
             }
         }
         let pcDamage = baseDamage + bonusDamage;
-        console.log(pcDamage);
         let DmgRoll= new Roll(pcDamage).evaluate({maximize: true});
         let npcDamage = Math.ceil(DmgRoll.total/2);
         
@@ -253,7 +248,7 @@ export class SymbaroumActor extends Actor {
     }
 
     _evaluateProtection(item) {
-        let protection = item.data.protection;
+        let protection = item.data.baseProtection;
         let bonusProtection = item.data.bonusProtection ?? "";
         let manatarms = this.items.filter(element => element.data.data?.reference === "manatarms");
         if(manatarms.length > 0){
@@ -301,10 +296,18 @@ export class SymbaroumActor extends Actor {
             id: null,
             name: "Armor",
             data: {
-                protection: "0",
+                baseProtection: "0",
                 bonusProtection: "",
-                quality: "",
-                impeding: 0
+                impeding: 0,
+                qualities: {
+                    flexible: false,
+                    cumbersome: false,
+                    concealed: false,
+                    reinforced: false,
+                    hallowed: false,
+                    retributive: false,
+                    desecrated: false
+                }
             }
         };
     }
@@ -358,7 +361,6 @@ export class SymbaroumActor extends Actor {
 
 
     async usePower(powerItem){
-        console.log(powerItem);
        await powerItem.makeAction(this);
     }
 

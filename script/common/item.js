@@ -37,12 +37,14 @@ export class SymbaroumItem extends Item {
     }
 
     _initializeData(data) {
-        data.data.bonusDamage = "";
-        data.data.pcDamage = "";
-        data.data.npcDamage = 0;
-        data.data.bonusProtection = "";
-        data.data.pcProtection = "";
-        data.data.npcProtection = 0;
+        if(data.type === "weapon"){
+            data.data.pcDamage = "";
+            data.data.npcDamage = 0;
+        }
+        else if(data.type === "armor"){
+            data.data.pcProtection = "";
+            data.data.npcProtection = 0;
+        }
     }
 
     _computeCombatData(data) {
@@ -54,14 +56,6 @@ export class SymbaroumItem extends Item {
                 "unarmed",
                 "heavy"
             ];
-            if(!data.data?.baseDamage)
-            {
-                data.data.baseDamage = "1d8";    
-            }
-            if(!data.data?.reference)
-            {
-                data.data.reference = "1handed";    
-            }
             if(meleeClass.includes(data.data.reference)){
                 data.data.isMelee = true;
                 data.data.isDistance = false;
@@ -71,7 +65,9 @@ export class SymbaroumItem extends Item {
                 data.data.isDistance = true;
             }
             let baseDamage = data.data.baseDamage;
-            baseDamage += data.data.bonusDamage;
+            if(data.data.bonusDamage != ""){
+                baseDamage += data.data.bonusDamage;;
+            }
             data.data.pcDamage += baseDamage;
             if(data.data.qualities?.deepImpact){
                 data.data.pcDamage +=  "+1";
@@ -83,13 +79,15 @@ export class SymbaroumItem extends Item {
             }
         }
         else if(data.type === "armor"){
-            data.data.pcProtection = data.data.protection ?? "0";
+            let protection = data.data.baseProtection;
+            if(data.data.bonusProtection && data.data.bonusProtection != ""){
+                protection += "+" + data.data.bonusProtection;
+            }
+            data.data.pcProtection = protection;
             if(data.data.qualities?.reinforced){
                 data.data.pcProtection +=  "+1";
             }
-            let baseProt = data.data.protection ?? "0";
-
-            let armorRoll= new Roll(baseProt).evaluate({maximize: true});
+            let armorRoll= new Roll(protection).evaluate({maximize: true});
             data.data.npcProtection = Math.ceil(armorRoll.total/2);
             if(data.data.qualities?.reinforced){
                 data.data.npcProtection +=  1;
@@ -627,7 +625,6 @@ async function getMysticAbilities(actor){
                     {number} level
                     {string} levelname the localized label (novice, adpet or master)}*/
 async function getCorruption(functionStuff, corruptionFormula = "1d4"){
-    console.log(functionStuff)
     let sorceryRoll;
     if(functionStuff?.tradition){
         for(let trad of functionStuff.tradition){
@@ -638,7 +635,6 @@ async function getCorruption(functionStuff, corruptionFormula = "1d4"){
             }
         } 
     }
-    console.log(functionStuff)
     if(functionStuff.casterMysticAbilities.sorcery.hasAbility){
         let castingAttribute = (await checkResoluteModifiers(functionStuff.actor)).bestAttributeName;
         sorceryRoll = await baseRoll(functionStuff.actor, castingAttribute, null, null, 0, 0);
@@ -1516,7 +1512,6 @@ async function anathemaPrepare(ability, actor) {
         targetData.resistAttributeValue = targetResMod.bestAttributeValue;
         targetData.autoParams = targetResMod.autoParams;
         favour += targetResMod.favour*-1;
-        console.log(targetResMod)
     }
     else {targetData = {hasTarget : false}}
     let fsDefault = await buildFunctionStuffDefault(ability, actor)
@@ -1596,7 +1591,6 @@ async function brimstoneCascadePrepare(ability, actor) {
     //check rapid reflexes
     let targetHasRapidReflexes = false;
     let rrAbility = targetData.actor.items.filter(item => item.data.data.reference === "rapidreflexes");
-    console.log(rrAbility)
     if(rrAbility.length != 0){
         targetHasRapidReflexes = true;
         targetData.autoParams += "Rapid Reflexes, ";

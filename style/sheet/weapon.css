@@ -49,78 +49,24 @@
     flex-wrap: wrap;
 }
 
-.symbaroum.sheet.item .weapon .tab .qualities .bastard,
-.symbaroum.sheet.item .weapon .tab .qualities .returning,
-.symbaroum.sheet.item .weapon .tab .qualities .blunt,
-.symbaroum.sheet.item .weapon .tab .qualities .short,
-.symbaroum.sheet.item .weapon .tab .qualities .wrecking,
-.symbaroum.sheet.item .weapon .tab .qualities .unwieldy,
-.symbaroum.sheet.item .weapon .tab .qualities .concealed,
-.symbaroum.sheet.item .weapon .tab .qualities .balanced,
-.symbaroum.sheet.item .weapon .tab .qualities .deepImpact,
-.symbaroum.sheet.item .weapon .tab .qualities .jointed,
-.symbaroum.sheet.item .weapon .tab .qualities .ensnaring,
-.symbaroum.sheet.item .weapon .tab .qualities .long,
-.symbaroum.sheet.item .weapon .tab .qualities .massive,
-.symbaroum.sheet.item .weapon .tab .qualities .precise,
-.symbaroum.sheet.item .weapon .tab .qualities .bloodLetting,
-.symbaroum.sheet.item .weapon .tab .qualities .areaMeleeRadius,
-.symbaroum.sheet.item .weapon .tab .qualities .areaShortRadius,
-.symbaroum.sheet.item .weapon .tab .qualities .areaCone {
+.symbaroum.sheet.item .weapon .tab .qualities .leftcolumn,
+.symbaroum.sheet.item .weapon .tab .qualities .rightcolumn {
     display: flex;
     flex-direction: row;
     justify-content: center;
 }
 
-.symbaroum.sheet.item .weapon .tab .qualities .short,
-.symbaroum.sheet.item .weapon .tab .qualities .precise,
-.symbaroum.sheet.item .weapon .tab .qualities .deepImpact,
-.symbaroum.sheet.item .weapon .tab .qualities .bastard,
-.symbaroum.sheet.item .weapon .tab .qualities .blunt,
-.symbaroum.sheet.item .weapon .tab .qualities .wrecking,
-.symbaroum.sheet.item .weapon .tab .qualities .ensnaring,
-.symbaroum.sheet.item .weapon .tab .qualities .bloodLetting,
-.symbaroum.sheet.item .weapon .tab .qualities .areaMeleeRadius {
+.symbaroum.sheet.item .weapon .tab .qualities .leftcolumn {
     flex-basis: calc(50% - 5px);
     margin-top: 10px;
     margin-right: 5px;
 }
 
-.symbaroum.sheet.item .weapon .tab .qualities .returning,
-.symbaroum.sheet.item .weapon .tab .qualities .balanced,
-.symbaroum.sheet.item .weapon .tab .qualities .jointed,
-.symbaroum.sheet.item .weapon .tab .qualities .long,
-.symbaroum.sheet.item .weapon .tab .qualities .unwieldy,
-.symbaroum.sheet.item .weapon .tab .qualities .concealed,
-.symbaroum.sheet.item .weapon .tab .qualities .massive,
-.symbaroum.sheet.item .weapon .tab .qualities .areaShortRadius,
-.symbaroum.sheet.item .weapon .tab .qualities .areaCone {
+.symbaroum.sheet.item .weapon .tab .qualities .rightcolumn {
     flex-basis: calc(50% - 5px);
     margin-top: 10px;
     margin-left: 5px;
 }
-
-.symbaroum.sheet.item .weapon .tab .qualities .bastard label,
-.symbaroum.sheet.item .weapon .tab .qualities .blunt label,
-.symbaroum.sheet.item .weapon .tab .qualities .short label,
-.symbaroum.sheet.item .weapon .tab .qualities .returning label,
-.symbaroum.sheet.item .weapon .tab .qualities .unwieldy label,
-.symbaroum.sheet.item .weapon .tab .qualities .wrecking label,
-.symbaroum.sheet.item .weapon .tab .qualities .concealed label,
-.symbaroum.sheet.item .weapon .tab .qualities .balanced label,
-.symbaroum.sheet.item .weapon .tab .qualities .deepImpact label,
-.symbaroum.sheet.item .weapon .tab .qualities .jointed label,
-.symbaroum.sheet.item .weapon .tab .qualities .ensnaring label,
-.symbaroum.sheet.item .weapon .tab .qualities .long label,
-.symbaroum.sheet.item .weapon .tab .qualities .massive label,
-.symbaroum.sheet.item .weapon .tab .qualities .precise label,
-.symbaroum.sheet.item .weapon .tab .qualities .bloodLetting label,
-.symbaroum.sheet.item .weapon .tab .qualities .areaMeleeRadius label,
-.symbaroum.sheet.item .weapon .tab .qualities .areaShortRadius label,
-.symbaroum.sheet.item .weapon .tab .qualities .areaCone label {
-    /* width: 105px; */
-}
-
 
 .symbaroum.sheet.item .weapon .tab .bonus .scroll {
     overflow-y: scroll;
