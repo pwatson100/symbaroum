@@ -147,7 +147,10 @@ const migrateItemData = (item, worldSchemaVersion) => {
     if  (worldSchemaVersion < 2.15) { 
 		const boonType = [ "burden", "boon" ];
         update["data.bonus.corruption"] = { max:0, threshold: 0 };
-        update["data.bonus.experience"] = 0;
+        update["data.bonus.experience"] = {
+            "value": 0,
+            "cost": 0
+        }
 		if ( boonType.includes(item.type) ) {
 			update["data.level"] = 1;
 		}            
