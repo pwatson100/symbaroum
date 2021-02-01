@@ -1,5 +1,5 @@
 export const migrateWorld = async () => {
-    const schemaVersion = 1;
+    const schemaVersion = 2;
     const worldSchemaVersion = Number(game.settings.get("symbaroum", "worldSchemaVersion"));
     if (worldSchemaVersion !== schemaVersion && game.user.isGM) {
         ui.notifications.info("Upgrading the world, please wait...");
@@ -155,16 +155,16 @@ const migrateItemData = (item, worldSchemaVersion) => {
     if  (worldSchemaVersion < 2.16) { 
             update["data.reference"] = "";
         }
-    if  (worldSchemaVersion < 2.20) { 
+    if  (worldSchemaVersion < 2.21) { 
         if (item.type === "weapon") {
             update["data.reference"] = "1handed";
-            update["data.baseDamage"] = "1d8";
-            update["data.bonusDamage"] = "";
+            update["data.baseDamage"] = "0";
+            update["data.bonusDamage"] = item.data.damage;
             update["data.actorDamage"] = {
-                base: "1d8",
+                base: "",
                 bonus: "",
-                pc: "1d8",
-                npc: 4
+                pc: "",
+                npc: 0
             };
             update["data.qualities.acidcoated"] = false;
             update["data.qualities.bane"] = false;
@@ -176,11 +176,8 @@ const migrateItemData = (item, worldSchemaVersion) => {
             update["data.qualities.thundering"] = false
         }
         if (item.type === "armor") {
-            console.log(JSON.stringify(item));
             update["data.baseProtection"] = "0";
-            let test = data.protection;
-            updateData[data.bonusProtection] = test;
-            console.log(test);
+            update["data.bonusProtection"] = item.data.protection;
             update["data.qualities"] = {
                 flexible: false,
                 cumbersome: false,

@@ -2908,7 +2908,11 @@ async function witchsight(ability, actor) {
             templateData.finalText = game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_FINAL1') + targetData.actor.data.name + game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_FINAL2') +  targetData.actor.data.data.bio.shadow;
         }
     }
-    let corruptionRoll = new Roll("1d4").evaluate();
+    let corruptionFormula = "1d1";
+    if(powerLvl.level == 2) corruptionFormula = "1d4";
+    if(powerLvl.level > 2) corruptionFormula = "1d6";
+
+    let corruptionRoll = new Roll(corruptionFormula).evaluate();
     corruptionRoll.toMessage();
     templateData.corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruptionRoll.total.toString();
 
