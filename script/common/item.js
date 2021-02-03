@@ -368,6 +368,7 @@ export class SymbaroumItem extends Item {
         {reference: "acrobatics", level: [1, 2, 3], function: acrobatics},
         {reference: "backstab", level: [1, 2, 3], function: attackRoll},
         {reference: "beastlore", level: [1, 2, 3], function: beastlore},
+        {reference: "berserker", level: [1, 2, 3], function: berserker},
         {reference: "dominate", level: [1, 2, 3], function: dominatePrepare},
         {reference: "huntersinstinct", level: [1, 2, 3], function: attackRoll},
         {reference: "leader", level: [1, 2, 3], function: leaderPrepare},
@@ -493,6 +494,7 @@ async function buildFunctionStuffDefault(ability, actor) {
     }
     let functionStuff = {
         actor: actor,
+        gmOnlyChatResult: false,
         token :selectedToken,
         ability: ability,
         askTargetAttribute: false,
@@ -1117,10 +1119,10 @@ export async function attackRoll(item, actor){
     let ironFist = actor.items.filter(item => item.data.data?.reference === "ironfist");
     if(ironFist.length > 0){
         let powerLvl = getPowerLevel(ironFist[0]);
-        if(powerLvl.level == 2){
+        /*if(powerLvl.level == 2){
             functionStuff.dmgData.modifier += " + 1d4";
             functionStuff.autoParams += game.i18n.localize('ABILITY_LABEL.IRON_FIST') + " (" + game.i18n.localize('ABILITY.ADEPT') + "), ";
-        }
+        }*/
         if(powerLvl.level > 2){
             functionStuff.askIronFistMaster = true;
             functionStuff.autoParams += game.i18n.localize('ABILITY_LABEL.IRON_FIST') + " (" + game.i18n.localize('ABILITY.MASTER') + "), ";
@@ -1457,6 +1459,12 @@ async function standardPowerResult(rollData, functionStuff){
         user: game.user._id,
         content: html,
     }
+    if(functionStuff?.gmOnlyChatResult){
+        let gmList =  ChatMessage.getWhisperRecipients('GM');
+        if(gmList.length > 0){
+            chatData.whisper = gmList
+          }
+    }
     let NewMessage = await ChatMessage.create(chatData);
 
     if(hasSucceed && (functionStuff.addTargetEffect.length >0)){
@@ -1469,7 +1477,7 @@ async function standardPowerResult(rollData, functionStuff){
         }
     }
     if(hasSucceed && (functionStuff.addCasterEffect.length >0)){ 
-        for(let effect of functionStuff.addTargetEffect){   
+        for(let effect of functionStuff.addCasterEffect){   
             flagDataArray.push({
                 tokenId: functionStuff.token.data._id,
                 addEffect: effect,
@@ -2439,6 +2447,35 @@ async function beastlore(ability, actor) {
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
     await standardAbilityActivation(functionStuff)
+}
+
+async function berserker(ability, actor) {
+    let fsDefault = await buildFunctionStuffDefault(ability, actor);
+    let specificStuff = {
+        isMaintained: false
+    };
+    let functionStuff = Object.assign({}, fsDefault , specificStuff);
+
+    if(!functionStuff.attackFromPC){
+        functionStuff.gmOnlyChatResult = true
+    }
+    let flagData = await actor.getFlag(game.system.id, 'berserker');
+    if(flagData){
+        await actor.unsetFlag(game.system.id, 'berserker');
+        functionStuff.introText = game.i18n.localize('ABILITY_BERSERKER.CHAT_DESACTIVATE');
+        functionStuff.resultTextSuccess = game.i18n.localize('ABILITY_BERSERKER.CHAT_RESULT_DESACTIVATE');
+        functionStuff.removeCasterEffect= ["systems/symbaroum/asset/image/berserker.svg"]
+    }
+    else{
+        flagData = functionStuff.powerLvl.level;
+        functionStuff.introText = game.i18n.localize('ABILITY_BERSERKER.CHAT_ACTIVATE');
+        await actor.setFlag(game.system.id, 'berserker', flagData);
+        functionStuff.addCasterEffect = ["systems/symbaroum/asset/image/berserker.svg"];
+        if(functionStuff.powerLvl.level == 2) functionStuff.resultTextSuccess = game.i18n.localize('ABILITY_BERSERKER.CHAT_RESULT_LVL2');
+        else if(functionStuff.powerLvl.level > 2) functionStuff.resultTextSuccess = game.i18n.localize('ABILITY_BERSERKER.CHAT_RESULT_LVL3');
+        else functionStuff.resultTextSuccess = game.i18n.localize('ABILITY_BERSERKER.CHAT_RESULT_LVL1');
+    }
+    await standardPowerResult(null, functionStuff);
 }
 
 async function dominatePrepare(ability, actor) {

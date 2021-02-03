@@ -354,9 +354,8 @@ It won't work with NPC fixed values as input
 
 export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgData, targetData){
   let newRollDmgString = "";
-  let wepDmg = weapon.data.data.damage;
-  let modDmg = 0;
-  let armorProt = targetData.actor.data.data.combat.protection;   
+  let wepDmg = weapon.data.actorDamage.base;
+  let modDmg = 0;  
 
   let damageAutoParams = "";
   if(dmgData.modifier != ""){
@@ -388,23 +387,16 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
     dmgData.modifier += " + 1d4";
     damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
   }
-  if(weapon.data.data.qualities.deepImpact){
-    modDmg = modDmg + 1;
-    damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_DEEPIMPACT');
-  }
+
   if(dmgData.ignoreArm){
     damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_IGN_ARMOR');
   }
     // If the attack is made by a PC, roll damage and substract static value for armor (=max armor/2)
-    if(attackFromPC){
-      // evaluate NPC armor value
-      let armorRoll= new Roll(armorProt).evaluate({maximize: true});
-      let armorValue = Math.ceil(armorRoll.total/2);
-  
+    if(attackFromPC){  
       //build roll string
       newRollDmgString = wepDmg + " + " + dmgData.modifier + " + " + modDmg;
       if(!dmgData.ignoreArm){
-        newRollDmgString += " - " + armorValue;
+        newRollDmgString += " - " + targetData.actor.data.data.combat.protectionData.npc;
       }
     }
     else{
@@ -416,10 +408,11 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
      //build roll string
       newRollDmgString = weaponDmgValue + " + " + modDmg.toString(); 
       if(!dmgData.ignoreArm){
-        newRollDmgString += " - (" + armorProt + ")";
+        newRollDmgString += " - (" + actor.data.data.combat.protectionData.pc + ")";
       }
     }
     // final damage
+    console.log(newRollDmgString);
     let dmgRoll= new Roll(newRollDmgString).evaluate();
 
     return{
@@ -433,7 +426,6 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
 /* like damageRollWithDiceParams, but for spell damage and such */
 export async function simpleDamageRoll(attackFromPC, actor, damageFormula, targetData, ignoreArmor){
   // If the attack is made by a PC, roll damage and substract static value for armor (=max armor/2)
-  let armorProt = targetData.actor.data.data.combat.protection;
   let newRollDmgString = "";
   if(attackFromPC){
     // evaluate NPC armor value
@@ -442,7 +434,7 @@ export async function simpleDamageRoll(attackFromPC, actor, damageFormula, targe
     newRollDmgString = damageFormula;
     //build roll string
     if(!ignoreArmor){
-      newRollDmgString += " - " + armorValue;
+      newRollDmgString += " - " + targetData.actor.data.data.combat.protectionData.npc;
     }
   }
   else{
@@ -453,7 +445,7 @@ export async function simpleDamageRoll(attackFromPC, actor, damageFormula, targe
    //build roll string
     newRollDmgString = weaponDmgValue;
     if(!ignoreArmor){
-      newRollDmgString += " - " + armorProt;
+      newRollDmgString += " - " + actor.data.data.combat.protectionData.pc;
     }
   }
   // final damage

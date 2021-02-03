@@ -174,8 +174,7 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
             if(statusCounterMod){
               let statusEffectCounter = await EffectCounter.findCounter(token, flagData.removeEffect);
               if(statusEffectCounter != undefined){
-                  statusEffectCounter.setValue(0);
-                  await statusEffectCounter.update();
+                  await statusEffectCounter.remove();
               }
             }
             else {token.toggleEffect(flagData.removeEffect)}

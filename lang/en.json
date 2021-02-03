@@ -80,6 +80,13 @@
   "ABILITY_LABEL.WRESTLING":"Wrestling",
   
   "ABILITY_ERROR.TARGET": "Choose one target",
+  
+  "ABILITY_BERSERKER.CHAT_ACTIVATE": " enters Berserker rage.",
+  "ABILITY_BERSERKER.CHAT_DESACTIVATE": " calms down and quits berserker rage.",
+  "ABILITY_BERSERKER.CHAT_RESULT_DESACTIVATE": "Combat stats revert to normal.",
+  "ABILITY_BERSERKER.CHAT_RESULT_LVL1": "Melee damage increased, base defense set to 5.",
+  "ABILITY_BERSERKER.CHAT_RESULT_LVL2": "Melee damage increased, armor bonus, base defense set to 5.",
+  "ABILITY_BERSERKER.CHAT_RESULT_LVL3": "Melee damage increased, armor bonus.",
 
   "ABILITY_DOMINATE_ADEPT.CHAT_INTRO": " tries to indimidate his target.",
   "ABILITY_DOMINATE_MASTER.CHAT_INTRO": " tries to subdue his target.",

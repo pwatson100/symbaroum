@@ -1,5 +1,5 @@
 export const migrateWorld = async () => {
-    const schemaVersion = 2;
+    const schemaVersion = 2.21;
     const worldSchemaVersion = Number(game.settings.get("symbaroum", "worldSchemaVersion"));
     if (worldSchemaVersion !== schemaVersion && game.user.isGM) {
         ui.notifications.info("Upgrading the world, please wait...");
@@ -155,20 +155,18 @@ const migrateItemData = (item, worldSchemaVersion) => {
 			update["data.level"] = 1;
 		}            
     }
-    if  (worldSchemaVersion < 2.16) { 
-            update["data.reference"] = "";
+
+        if  (worldSchemaVersion < 2.16) {
+            if (typeof item["data.reference"] === 'undefined'){
+                update["data.reference"] = "";
+            }
         }
+
     if  (worldSchemaVersion < 2.21) { 
         if (item.type === "weapon") {
             update["data.reference"] = "1handed";
             update["data.baseDamage"] = "0";
             update["data.bonusDamage"] = item.data.damage;
-            update["data.actorDamage"] = {
-                base: "",
-                bonus: "",
-                pc: "",
-                npc: 0
-            };
             update["data.qualities.acidcoated"] = false;
             update["data.qualities.bane"] = false;
             update["data.qualities.deathrune"] = false;
@@ -191,7 +189,7 @@ const migrateItemData = (item, worldSchemaVersion) => {
                 desecrated: false
             };
         }
-    }     
+    }  
 		
     if (!isObjectEmpty(update)) {
         update._id = item._id;

@@ -80,6 +80,13 @@
   "ABILITY_LABEL.WRESTLING":"Lucha",
   
   "ABILITY_ERROR.TARGET": "Demasiados objetivos",
+  
+  "ABILITY_BERSERKER.CHAT_ACTIVATE": " enters Berserker rage.",
+  "ABILITY_BERSERKER.CHAT_DESACTIVATE": " calms down and quits berserker rage.",
+  "ABILITY_BERSERKER.CHAT_RESULT_DESACTIVATE": "Combat stats revert to normal.",
+  "ABILITY_BERSERKER.CHAT_RESULT_LVL1": "Melee damage increased, base defense set to 5.",
+  "ABILITY_BERSERKER.CHAT_RESULT_LVL2": "Melee damage increased, armor bonus, base defense set to 5.",
+  "ABILITY_BERSERKER.CHAT_RESULT_LVL3": "Melee damage increased, armor bonus.",
 
   "ABILITY_DOMINATE_ADEPT.CHAT_INTRO": " intenta indimidar a su objetivo.",
   "ABILITY_DOMINATE_MASTER.CHAT_INTRO": " intenta someter a su objetivo.",

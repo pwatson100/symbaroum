@@ -277,12 +277,6 @@
       "reference": "1handed",
       "baseDamage": "1d8",
       "bonusDamage": "",
-      "actorDamage": {
-        "base": "",
-        "bonus": "",
-        "pc": "",
-        "npc": 0
-      },
       "qualities": {
         "bastard": false,
         "returning": false,
