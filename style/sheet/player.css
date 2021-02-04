@@ -133,6 +133,10 @@
     flex-basis: 30%;
 }
 
+.symbaroum.sheet.actor .flex50 {
+    flex-basis: 50%;
+}
+
 .symbaroum.sheet.actor .tooltip .right {
     top: -15%;
     left: 105%;

@@ -8,6 +8,7 @@
 
 .symbaroum.sheet.item .armor .description,
 .symbaroum.sheet.item .armor .stats,
+.symbaroum.sheet.item .armor .qualities,
 .symbaroum.sheet.item .armor .bonus {
     display: flex;
     flex-direction: row;
@@ -36,6 +37,33 @@
 
 .symbaroum.sheet.item .armor .tab .quality {
     margin-bottom: 10px;
+}
+
+.symbaroum.sheet.item .armor .tab .qualities .scroll {
+    overflow-y: scroll;
+    height: 154px;
+    display: flex;
+    flex-basis: 100%;
+    flex-wrap: wrap;
+}
+
+.symbaroum.sheet.item .armor .tab .qualities .leftcolumn,
+.symbaroum.sheet.item .armor .tab .qualities .rightcolumn {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.symbaroum.sheet.item .armor .tab .qualities .leftcolumn {
+    flex-basis: calc(50% - 5px);
+    margin-top: 10px;
+    margin-right: 5px;
+}
+
+.symbaroum.sheet.item .armor .tab .qualities .rightcolumn {
+    flex-basis: calc(50% - 5px);
+    margin-top: 10px;
+    margin-left: 5px;
 }
 
 .symbaroum.sheet.item .armor .tab .bonus .scroll {

@@ -80,6 +80,13 @@
   "ABILITY_LABEL.WRESTLING":"Lucha",
   
   "ABILITY_ERROR.TARGET": "Demasiados objetivos",
+  
+  "ABILITY_BERSERKER.CHAT_ACTIVATE": " enters Berserker rage.",
+  "ABILITY_BERSERKER.CHAT_DESACTIVATE": " calms down and quits berserker rage.",
+  "ABILITY_BERSERKER.CHAT_RESULT_DESACTIVATE": "Combat stats revert to normal.",
+  "ABILITY_BERSERKER.CHAT_RESULT_LVL1": "Melee damage increased, base defense set to 5.",
+  "ABILITY_BERSERKER.CHAT_RESULT_LVL2": "Melee damage increased, armor bonus, base defense set to 5.",
+  "ABILITY_BERSERKER.CHAT_RESULT_LVL3": "Melee damage increased, armor bonus.",
 
   "ABILITY_DOMINATE_ADEPT.CHAT_INTRO": " intenta indimidar a su objetivo.",
   "ABILITY_DOMINATE_MASTER.CHAT_INTRO": " intenta someter a su objetivo.",
@@ -546,6 +553,15 @@
   "TRAIT_LABEL.WEB": "Telaraña",
   "TRAIT_LABEL.WINGS": "Alado",
   "TRAIT_LABEL.WRECKER": "Demoledor",
+  "QUALITY.ACIDCOATED": "Acid coated",
+  "QUALITY.BANE": "Bane",
+  "QUALITY.DEATHRUNE": "Death Rune",
+  "QUALITY.DESECRATED": "Desecrated",
+  "QUALITY.FLAMING": "Flaming",
+  "QUALITY.HALLOWED": "Hallowed",
+  "QUALITY.POISON": "Poison",
+  "QUALITY.THUNDERING": "Thundering",
+  "QUALITY.RETRIBUTIVE": "Retributive",
  
   "WEAPON.HEADER": "Arma",
   "WEAPON.NAME": "Nombre",
@@ -557,6 +573,15 @@
   "WEAPON.DESCRIPTION": "Descr.",
   "WEAPON.NUMBER": "Número",
 
+  "WEAPON_CLASS.LABEL": "Weapon type",
+  "WEAPON_CLASS.1HANDED": "Single-handed",
+  "WEAPON_CLASS.SHORT": "Short",
+  "WEAPON_CLASS.LONG": "Long",
+  "WEAPON_CLASS.UNARMED": "Unarmed Attack",
+  "WEAPON_CLASS.HEAVY": "Heavy",
+  "WEAPON_CLASS.RANGED": "Ranged",
+  "WEAPON_CLASS.THROWN": "Thrown",
+
   "SYMBAROUM.OPTIONAL_CRIT": "Tiradas Críticas Opcionales",
   "SYMBAROUM.OPTIONAL_CRIT_HINT": "Marca para habilitar el bonus de Golpes y pifias en Defensa en tiradas de 1 y 20, como se detalla en el Libro Básico p. 179",
   "SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE": "Siempre permitir triunfar y fracasar",
@@ -566,7 +591,7 @@
   "SYMBAROUM.OPTIONAL_ALWAYSUSECRIT": "Permitir críticos fuera del combate",
   "SYMBAROUM.OPTIONAL_ALWAYSUSECRIT_HINT": "Marca para activar el éxito y el fracaso crítico en las tiradas que no son de combate - se activa automáticamente si se seleccionan los críticos",
   "SYMBAROUM.OPTIONAL_MORERITUALS": "Permitir más rituales",
-  "SYMBAROUM.OPTIONAL_MORERITUALS_HINT": "Marca para permitir más rituales, como se detalla en la Guía Avanzada del Jugador p. 103" 
+  "SYMBAROUM.OPTIONAL_MORERITUALS_HINT": "Marca para permitir más rituales, como se detalla en la Guía Avanzada del Jugador p. 103",
   "SYMBAROUM.OPTIONAL_AUTOCOMBAT": "Mejora del combate",
   "SYMBAROUM.OPTIONAL_AUTOCOMBAT_HINT": "Marca para permitir la mejora QoL del combate. Lee la guía del sistema Symbaroum de FoundryVTT en la sección del compedio para más información"
   

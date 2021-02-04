@@ -19,18 +19,17 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   };
 
 	if(hasWeapon && advantage ) { modifier +=2 }
-  else if (hasArmor && advantage) { modifier =-2; }
+  else if (hasArmor && advantage) { modifier -=2; }
   
-	if(hasWeapon && weapon.data.data.qualities.precise) {		
+	if(hasWeapon && weapon.qualities.precise) {		
 		modifier++;
   }
   
   let rollResults = await baseRoll(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier);
   
   if (hasArmor && !rollResults.hasSucceed) {
-    if (armor.protection !== '') {
-      let prot = armor.protection;
-      /* if( armor.qualties.reinforced ) { prot += "+1[reinforced]"; } */
+    if (armor.protectionPc !== '') {
+      let prot = armor.protectionPc;
       let armorRoll = new Roll(prot, {});
       
       armorRoll.roll();
@@ -45,16 +44,16 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   }
 
   if (hasWeapon && rollResults.hasSucceed) {
-    dam = weapon.data.data.damage;
+    dam = weapon.damage.pc;
     if (dam !== '') {
       if ( advantage ) { dam += "+1d4[advantage]"; }
       if ( rollResults.critSuccess ) { dam += "+1d6[critical]"; }
-      if( weapon.data.data.qualities.deepImpact ) { dam += "+1"; } // Of note - can't classify this damage as Deep Impact unless you do "1d1[deep impact]"
       if( damModifier !== '') { dam = dam+"+"+damModifier; }
       
 
       let weaponRoll = new Roll(dam, {});
       weaponRoll.roll();
+      let tooltip = await weaponRoll.getTooltip();
       
       if (game.dice3d != null) {
         await game.dice3d.showForRoll(weaponRoll);
@@ -62,8 +61,9 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
       
       weaponResults.value = weaponRoll.total;
       weaponResults.name = weapon.name; 
-      weaponResults.diceBreakdown = formatDice(weaponRoll.terms,"+");
-      weaponResults.img = weapon.data.img;
+    //  weaponResults.diceBreakdown = formatDice(weaponRoll.terms,"+");
+      weaponResults.diceBreakdown = tooltip;
+      weaponResults.img = weapon.img;
     }
   }
   
@@ -353,10 +353,8 @@ It won't work with NPC fixed values as input
 * @param {object} targetData is information on the target that will receive the damage (as returned by the getTarget function)*/
 
 export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgData, targetData){
-  let newRollDmgString = "";
-  let wepDmg = weapon.data.data.damage;
-  let modDmg = 0;
-  let armorProt = targetData.actor.data.data.combat.protection;   
+  let newRollDmgString = "";  // for dice modificators like +1d4
+  let modFixedDmg = 0;  // for fixed modificators like +1
 
   let damageAutoParams = "";
   if(dmgData.modifier != ""){
@@ -365,61 +363,57 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
 
   //if(dmgData.isRanged){
     if(dmgData.hunterIDmg){
-      dmgData.modifier += " + 1d4";
+      dmgData.modifier += " + 1d4["+game.i18n.localize("ABILITY_LABEL.HUNTER_INSTINCT")+"]";
       damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_HUNTER');
     }
   
   if(dmgData.hasAdvantage){
     if(dmgData.useBackstab){
-      dmgData.modifier += " + 1d4 + 1d4";
+      dmgData.modifier += " + 2d4["+game.i18n.localize("ABILITY_LABEL.BACKSTAB")+"]";
       damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_BACKSTAB');
     }
     else
     {
-      dmgData.modifier += " + 1d4";
+      dmgData.modifier += " + 1d4["+game.i18n.localize("COMBAT.CHAT_DMG_PARAMS_ADVANTAGE")+"]";
       damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_ADVANTAGE');
     }
   }
   if(dmgData.useBeastlore){
-    dmgData.modifier += " + " + dmgData.beastLoreDmg;
+    dmgData.modifier += " + " + dmgData.beastLoreDmg + "[" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "]";
     damageAutoParams += " [" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "] ";
   }
   if(dmgData.leaderTarget){
-    dmgData.modifier += " + 1d4";
+    dmgData.modifier += " + 1d4" + game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
     damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
   }
-  if(weapon.data.data.qualities.deepImpact){
-    modDmg = modDmg + 1;
-    damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_DEEPIMPACT');
-  }
+
   if(dmgData.ignoreArm){
     damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_IGN_ARMOR');
   }
     // If the attack is made by a PC, roll damage and substract static value for armor (=max armor/2)
-    if(attackFromPC){
-      // evaluate NPC armor value
-      let armorRoll= new Roll(armorProt).evaluate({maximize: true});
-      let armorValue = Math.ceil(armorRoll.total/2);
-  
+    if(attackFromPC){  
       //build roll string
-      newRollDmgString = wepDmg + " + " + dmgData.modifier + " + " + modDmg;
+      newRollDmgString = weapon.damage.pc + " + " + dmgData.modifier + " + " + modFixedDmg;
       if(!dmgData.ignoreArm){
-        newRollDmgString += " - " + armorValue;
+        newRollDmgString += " - " + targetData.actor.data.data.combat.protectionData.npc;
       }
     }
     else{
       // If the attack is made by a NPC, evaluate static value for damage (=max damage/2) then roll armor and substract
-      wepDmg += " + " + dmgData.modifier;
-      let weaponRoll= new Roll(wepDmg).evaluate({maximize: true});
-      let weaponDmgValue = Math.ceil(weaponRoll.total/2);
-  
      //build roll string
-      newRollDmgString = weaponDmgValue + " + " + modDmg.toString(); 
+      newRollDmgString = weapon.damage.npc.toString();
+      if(modFixedDmg) {newRollDmgString += "+"+ modFixedDmg.toString()};
+      if(dmgData.modifier != ""){
+        let weaponModRoll= new Roll(dmgData.modifier).evaluate({maximize: true});
+        let weaponModDmgValue = Math.ceil(weaponModRoll.total/2);
+        newRollDmgString += "+"+ weaponModDmgValue.toString(); 
+      }
       if(!dmgData.ignoreArm){
-        newRollDmgString += " - (" + armorProt + ")";
+        newRollDmgString += " - (" + targetData.actor.data.data.combat.protectionPc + ")";
       }
     }
     // final damage
+    console.log(newRollDmgString);
     let dmgRoll= new Roll(newRollDmgString).evaluate();
 
     return{
@@ -433,16 +427,12 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
 /* like damageRollWithDiceParams, but for spell damage and such */
 export async function simpleDamageRoll(attackFromPC, actor, damageFormula, targetData, ignoreArmor){
   // If the attack is made by a PC, roll damage and substract static value for armor (=max armor/2)
-  let armorProt = targetData.actor.data.data.combat.protection;
   let newRollDmgString = "";
   if(attackFromPC){
-    // evaluate NPC armor value
-    let armorRoll= new Roll(armorProt).evaluate({maximize: true});
-    let armorValue = Math.ceil(armorRoll.total/2);
     newRollDmgString = damageFormula;
     //build roll string
     if(!ignoreArmor){
-      newRollDmgString += " - " + armorValue;
+      newRollDmgString += " - " + targetData.actor.data.data.combat.protectionNpc + "["+targetData.actor.data.data.combat.armor+"]";
     }
   }
   else{
@@ -453,7 +443,7 @@ export async function simpleDamageRoll(attackFromPC, actor, damageFormula, targe
    //build roll string
     newRollDmgString = weaponDmgValue;
     if(!ignoreArmor){
-      newRollDmgString += " - " + armorProt;
+      newRollDmgString += " - " + targetData.actor.data.data.combat.protectionPc + "["+targetData.actor.data.data.combat.armor+"]";
     }
   }
   // final damage
@@ -464,4 +454,20 @@ export async function simpleDamageRoll(attackFromPC, actor, damageFormula, targe
     autoParams : "",
     favour: 0
   }
+}
+
+export function upgradeDice(formula, level){
+  let formulaArray = formula.split("d");
+  if(formulaArray.length != 2)
+  {
+    return(formula)
+  }
+  let formula2ndArray = formulaArray[1].split("k");
+  let diceValue = parseInt(formula2ndArray[0], 10);
+  diceValue += 2*level;
+  let NewFormula = formulaArray[0] + "d" + diceValue.toString();
+  if(formula2ndArray.length > 1){
+    NewFormula += "k" + formula2ndArray[1]
+  }
+  return(NewFormula)
 }

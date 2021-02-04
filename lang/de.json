@@ -80,6 +80,13 @@
   "ABILITY_LABEL.WRESTLING":"Wrestling",
   
   "ABILITY_ERROR.TARGET": "Zu viele Ziele",
+  
+  "ABILITY_BERSERKER.CHAT_ACTIVATE": " enters Berserker rage.",
+  "ABILITY_BERSERKER.CHAT_DESACTIVATE": " calms down and quits berserker rage.",
+  "ABILITY_BERSERKER.CHAT_RESULT_DESACTIVATE": "Combat stats revert to normal.",
+  "ABILITY_BERSERKER.CHAT_RESULT_LVL1": "Melee damage increased, base defense set to 5.",
+  "ABILITY_BERSERKER.CHAT_RESULT_LVL2": "Melee damage increased, armor bonus, base defense set to 5.",
+  "ABILITY_BERSERKER.CHAT_RESULT_LVL3": "Melee damage increased, armor bonus.",
 
   "ABILITY_LOREMASTER.CHAT_INTRO": " Weiss etwas über seine Geschichte.",
   "ABILITY_LOREMASTER.CHAT_SUCCESS": " Weiss nur wenig darüber.",
@@ -418,6 +425,15 @@
   "QUALITY.SHORT": "Kurz",
   "QUALITY.UNWIELDY": "Unhandlich",
   "QUALITY.WRECKING": "Zerstörend",
+  "QUALITY.ACIDCOATED": "Acid coated",
+  "QUALITY.BANE": "Bane",
+  "QUALITY.DEATHRUNE": "Death Rune",
+  "QUALITY.DESECRATED": "Desecrated",
+  "QUALITY.FLAMING": "Flaming",
+  "QUALITY.HALLOWED": "Hallowed",
+  "QUALITY.POISON": "Poison",
+  "QUALITY.THUNDERING": "Thundering",
+  "QUALITY.RETRIBUTIVE": "Retributive",
 
   "RITUAL.TRADITION": "Tradition",
   "RITUAL.DESCRIPTION": "Beschreibung",
@@ -549,6 +565,15 @@
   "WEAPON.ATTRIBUTE": "Eigenschaft",
   "WEAPON.DESCRIPTION": "Beschreibung",
   "WEAPON.NUMBER": "Nummer",
+
+  "WEAPON_CLASS.LABEL": "Weapon type",
+  "WEAPON_CLASS.1HANDED": "Single-handed",
+  "WEAPON_CLASS.SHORT": "Short",
+  "WEAPON_CLASS.LONG": "Long",
+  "WEAPON_CLASS.UNARMED": "Unarmed Attack",
+  "WEAPON_CLASS.HEAVY": "Heavy",
+  "WEAPON_CLASS.RANGED": "Ranged",
+  "WEAPON_CLASS.THROWN": "Thrown",
 
   "SYMBAROUM.OPTIONAL_CRIT": "Optional Kritischer Wurf",
   "SYMBAROUM.OPTIONAL_CRIT_HINT": "Aktiviere Angrifsboni und Verteidigungspatzer bei Würfen von   1 und 20 wie sie im Grundregelwerk auf Seite 195 beschrieben werden.",

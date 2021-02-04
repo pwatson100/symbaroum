@@ -122,7 +122,7 @@
             <button class="roll-armor">{{data.combat.armor}}</button>
             <div class="protection">
                 <label>{{localize "ARMOR.PROTECTION"}}</label>
-                <input type="text" value="{{data.combat.protection}}" disabled />
+                <input type="text" value="{{data.combat.protectionPc}}" disabled />
             </div>
             <div class="defense">
                 <label>{{localize "ARMOR.DEFENSE"}}</label>
@@ -133,8 +133,8 @@
               </span>
             </div>
             <div class="quality">
-                <label>{{localize "ARMOR.QUALITY"}}</label>
-                <input type="text" value="{{data.combat.quality}}" disabled />
+                <label>{{localize "ARMOR.IMPEDING"}}</label>
+                <input type="text" value="{{data.combat.impeding}}" disabled />
             </div>
         </div>
         <div class="weapons">
@@ -144,20 +144,16 @@
                     <b class="damage">{{localize "WEAPON.DAMAGE"}}</b>
                 </div>
                 <div class="items">
-                    {{#each actor.items as |item|}}
-                        {{#if item.isWeapon}}
-                            {{#if item.isActive}}
-                                <div class="weapon item" data-item-id="{{item._id}}">
-                                    <div class="name">
-                                        <div class="image-container">
-                                            <div class="image" style="background-image: url('{{item.img}}')"></div>
-                                        </div>
-                                        <button class="roll-weapon">{{item.name}}</button>
-                                    </div>
-                                    <div class="damage">{{item.data.damage}}</div>
+                    {{#each actor.data.weapons as |item|}}
+                        <div class="weapon item" data-item-id="{{item._id}}">
+                            <div class="name">
+                                <div class="image-container">
+                                    <div class="image" style="background-image: url('{{item.img}}')"></div>
                                 </div>
-                            {{/if}}
-                        {{/if}}
+                                <button class="roll-weapon">{{item.name}}</button>
+                            </div>
+                            <div class="damage">{{item.damage.pc}}</div>
+                        </div>
                     {{/each}}
                 </div>
             </div>
