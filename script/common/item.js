@@ -977,7 +977,7 @@ It won't work with NPC fixed values as input
 * @param {object} rollParams is an object of parameters.
 * @param {object} targetData is information on the target that will receive the damage (as returned by the getTarget function)*/
 
-export async function attackRoll(item, actor){
+export async function attackRoll(weapon, actor, ability){
 
     //check wether acting token is player controlled
     let targetData;
@@ -1022,27 +1022,27 @@ export async function attackRoll(item, actor){
 
     }
     let specificStuff;
-    if(item.data.type === "weapon"){
+    if(weapon){
         specificStuff = {
             askWeapon: false,
-            castingAttributeName: item.data.data.attribute,
-            weapon: item,
+            castingAttributeName: weapon.attribute,
+            weapon: weapon,
         }
     }
-    if(item.data.type === "ability"){
+    if(ability){
         specificStuff = {
-            ability: item,
+            ability: ability,
             askWeapon: true,
-            powerLvl: getPowerLevel(item)
+            powerLvl: getPowerLevel(ability)
         }
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff)
-    if(item.data.type === "ability"){
-        if(item.data.data.reference === "huntersinstinct"){
+    if(ability){
+        if(ability.data.data.reference === "huntersinstinct"){
             functionStuff.useHuntersInstinct = true;
             if(functionStuff.powerLvl > 1){specificStuff.dmgData.hunterIDmg = true}
         }
-        if(item.data.data.reference === "backstab"){
+        if(ability.data.data.reference === "backstab"){
             functionStuff.dmgData.useBackstab = true;
             if(functionStuff.powerLvl > 1){
                 functionStuff.backstabBleed = true;
@@ -1110,7 +1110,7 @@ export async function attackRoll(item, actor){
         }
     }
     if(!functionStuff.askWeapon){
-        if(functionStuff.weapon.data.data.qualities.precise){
+        if(functionStuff.weapon.qualities.precise){
             functionStuff.modifier += 1;
             functionStuff.autoParams += game.i18n.localize('COMBAT.PARAMS_PRECISE')
         }
@@ -1119,10 +1119,6 @@ export async function attackRoll(item, actor){
     let ironFist = actor.items.filter(item => item.data.data?.reference === "ironfist");
     if(ironFist.length > 0){
         let powerLvl = getPowerLevel(ironFist[0]);
-        /*if(powerLvl.level == 2){
-            functionStuff.dmgData.modifier += " + 1d4";
-            functionStuff.autoParams += game.i18n.localize('ABILITY_LABEL.IRON_FIST') + " (" + game.i18n.localize('ABILITY.ADEPT') + "), ";
-        }*/
         if(powerLvl.level > 2){
             functionStuff.askIronFistMaster = true;
             functionStuff.autoParams += game.i18n.localize('ABILITY_LABEL.IRON_FIST') + " (" + game.i18n.localize('ABILITY.MASTER') + "), ";
@@ -1166,7 +1162,8 @@ async function attackResult(rollData, functionStuff){
             damage = await damageRollWithDiceParams(functionStuff.attackFromPC, functionStuff.actor, functionStuff.weapon, functionStuff.dmgData, functionStuff.targetData);
             if(damage.roll.total > functionStuff.targetData.actor.data.data.health.toughness.threshold){pain = true}
             dmgFormula = game.i18n.localize('WEAPON.DAMAGE') + ": " + damage.roll._formula;
-            damageTooltip += damage.roll.result + "    ";
+            //damageTooltip += damage.roll.result + "    ";
+            damageTooltip = await damage.roll.getTooltip();
             damageRollMod = game.i18n.localize('COMBAT.CHAT_DMG_PARAMS') + damage.autoParams;
             hasDmgMod = (damage.autoParams.length >0) ? true : false;
             damageTot += Math.max(0, damage.roll.total);
@@ -1208,7 +1205,7 @@ async function attackResult(rollData, functionStuff){
         }
 
     }
-    let introText = functionStuff.actor.data.name + game.i18n.localize('COMBAT.CHAT_INTRO') + functionStuff.weapon.data.name;
+    let introText = functionStuff.actor.data.name + game.i18n.localize('COMBAT.CHAT_INTRO') + functionStuff.weapon.name;
     let targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.actor.data.name;
     if (functionStuff.targetData.autoParams != ""){targetText += ": " + functionStuff.targetData.autoParams}
     let templateData = {

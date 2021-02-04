@@ -114,13 +114,11 @@ export class SymbaroumActor extends Actor {
         corr.value = corr.temporary + corr.longterm + corr.permanent;
         
         let activeArmor = this._getActiveArmor(data);
-        console.log(activeArmor);
         let attributeDef = data.data.defense.attribute.toLowerCase();
         let attDefValue = data.data.attributes[attributeDef].total;
         let defMsg = `${game.i18n.localize(data.data.attributes[attributeDef].label)} ${data.data.attributes[attributeDef].total}`;
         let flagBerserk = this.getFlag(game.system.id, 'berserker');
         if(flagBerserk && flagBerserk < 3){
-            console.log("flagBerserk",flagBerserk);
             attDefValue = 5;
             defMsg = `${game.i18n.localize("ABILITY_LABEL.BERSERKER")} 5`;
         }
@@ -196,9 +194,11 @@ export class SymbaroumActor extends Actor {
     
     evaluateWeapons(activeWeapons) {
         let weaponArray = [];
+
+        // check for abilities that gives bonuses to rolls
         let ironFistLvl = 0;
         let ironFist = this.items.filter(element => element.data.data?.reference === "ironfist");
-        if(ironFist > 0){
+        if(ironFist.length > 0){
             let powerLvl = getPowerLevel(ironFist[0]);
             ironFistLvl = powerLvl.level;
         }
@@ -220,6 +220,8 @@ export class SymbaroumActor extends Actor {
         }
         let flagBerserk = this.getFlag(game.system.id, 'berserker');
 
+        // check for abilities that changes attack attribute
+
         for(let item of activeWeapons){
             let tooltip = "";
             let baseDamage = item.data.data.baseDamage;
@@ -229,27 +231,27 @@ export class SymbaroumActor extends Actor {
             }
             if(item.data.data?.isMelee){
                 if(ironFistLvl == 2){
-                    bonusDamage += "+1d4";
+                    bonusDamage += "+1d4["+game.i18n.localize("ABILITY_LABEL.IRON_FIST")+"]";
                     tooltip += game.i18n.localize("ABILITY_LABEL.IRON_FIST") + ironFistLvl.toString() + ", ";
                 }
                 else if(ironFistLvl > 2){
-                    bonusDamage += "+1d8";
+                    bonusDamage += "+1d8["+game.i18n.localize("ABILITY_LABEL.IRON_FIST")+"]";
                     tooltip += game.i18n.localize("ABILITY_LABEL.IRON_FIST") + ironFistLvl.toString() + ", ";
                 }
                 if(robustLvl == 1){
-                    bonusDamage += "+1d4";
+                    bonusDamage += "+1d4["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
                     tooltip += game.i18n.localize("TRAIT_LABEL.ROBUST") + robustLvl.toString() + ", ";
                 }
                 else if(robustLvl == 2){
-                    bonusDamage += "+1d6";
+                    bonusDamage += "+1d6["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
                     tooltip += game.i18n.localize("TRAIT_LABEL.ROBUST") + robustLvl.toString() + ", ";
                 }
                 else if(robustLvl > 2){
-                    bonusDamage += "+1d8";
+                    bonusDamage += "+1d8["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
                     tooltip += game.i18n.localize("TRAIT_LABEL.ROBUST") + robustLvl.toString() + ", ";
                 }
                 if(flagBerserk){
-                    bonusDamage += "+1d6";
+                    bonusDamage += "+1d6["+game.i18n.localize("ABILITY_LABEL.BERSERKER")+"]";
                     tooltip += game.i18n.localize("ABILITY_LABEL.BERSERKER") + ", ";
                 }
             }
@@ -265,7 +267,7 @@ export class SymbaroumActor extends Actor {
                     tooltip += game.i18n.localize("ABILITY_LABEL.NATURAL_WARRIOR") + naturalwarriorLvl.toString() + ", ";
                 }
                 if(naturalwarriorLvl > 2){
-                    bonusDamage += "+1d6";
+                    bonusDamage += "+1d6["+game.i18n.localize("ABILITY_LABEL.NATURAL_WARRIOR")+"]";
                 }
             }
             let pcDamage = baseDamage + bonusDamage;
@@ -281,12 +283,14 @@ export class SymbaroumActor extends Actor {
                 _id: itemID,
                 name : item.data.name,
                 img: item.data.img,
+                attribute: item.data.data.attribute, 
                 tooltip : tooltip,
                 isActive: item._data.isActive,
                 isEquipped: item._data.isEquipped,
                 reference: item.data.data.reference, 
                 isMelee: item.data.data.isMelee, 
                 isDistance: item.data.data.isDistance,
+                qualities: item.data.data.qualities,
                 damage: {
                     base: baseDamage, 
                     bonus: bonusDamage, 
@@ -301,7 +305,10 @@ export class SymbaroumActor extends Actor {
     _evaluateProtection(item) {
         let tooltip = "";
         let protection = item.data.data.baseProtection;
-        let bonusProtection = item.data.data.bonusProtection ?? "";
+        let bonusProtection = "";
+        if(item.data.data.bonusProtection != ""){
+            bonusProtection = "+" + item.data.data.bonusProtection;
+        }
         let manatarms = this.items.filter(element => element.data.data?.reference === "manatarms");
         if(manatarms.length > 0){
             let newprot = upgradeDice(protection, 1);
@@ -334,9 +341,7 @@ export class SymbaroumActor extends Actor {
             bonusProtection += "+1d4";
             tooltip += game.i18n.localize("ABILITY_LABEL.BERSERKER") + ", ";
         }
-        let pcProt = protection;
-        if(bonusProtection !=""){
-            pcProt += "+" + bonusProtection;}
+        let pcProt = protection + bonusProtection;
         let armorRoll= new Roll(pcProt).evaluate({maximize: true});
         let npcProt = Math.ceil(armorRoll.total/2);
         
@@ -456,15 +461,12 @@ export class SymbaroumActor extends Actor {
     }
 
     async rollWeapon(weapon){
+        console.log(weapon);
         if(game.settings.get('symbaroum', 'combatAutomation')){
-            const attribute = this.data.data.attributes[weapon.data.data.attribute];
-            const bonus = this.data.data.bonus[weapon.data.data.attribute];
-            const attributeData = { name: game.i18n.localize(attribute.label), value: attribute.value + bonus };
-            const weaponData = { damage: weapon.data.data.damage, quality: weapon.data.data.quality, qualities: weapon.data.data.qualities }
             await attackRoll(weapon, this);
         }
         else{
-            await prepareRollAttribute(this, weapon.data.data.attribute, null, weapon)
+            await prepareRollAttribute(this, weapon.attribute, null, weapon)
         }
     }
 

@@ -69,7 +69,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
     async _prepareRollWeapon(event) {
         event.preventDefault();
         const div = $(event.currentTarget).parents(".item");
-        const weapon = this.actor.getOwnedItem(div.data("itemId"));
+        const weapon = this.actor.data.data.weapons.filter(item => item._id == div.data("itemId"))[0];
         await this.actor.rollWeapon(weapon)
     }
 }
