@@ -53,16 +53,25 @@ export class SymbaroumItem extends Item {
                 "1handed",
                 "short",
                 "long",
+                "shield",
                 "unarmed",
                 "heavy"
+            ];
+            const distanceClass = [
+                "ranged",
+                "thrown"
             ];
             if(meleeClass.includes(data.data.reference)){
                 data.data.isMelee = true;
                 data.data.isDistance = false;
             }
-            else{
+            else if(distanceClass.includes(data.data.reference)){
                 data.data.isMelee = false;
                 data.data.isDistance = true;
+            }
+            else{
+                data.data.isMelee = false;
+                data.data.isDistance = false;
             }
             let baseDamage = data.data.baseDamage;
             if(data.data.bonusDamage != ""){
@@ -424,6 +433,7 @@ const weaponReferences = [
     "long",
     "unarmed",
     "heavy",
+    "shield",
     "thrown",
     "ranged"
   ]
@@ -1163,7 +1173,8 @@ async function attackResult(rollData, functionStuff){
             if(damage.roll.total > functionStuff.targetData.actor.data.data.health.toughness.threshold){pain = true}
             dmgFormula = game.i18n.localize('WEAPON.DAMAGE') + ": " + damage.roll._formula;
             //damageTooltip += damage.roll.result + "    ";
-            damageTooltip = await damage.roll.getTooltip();
+            //damageTooltip = await damage.roll.getTooltip();
+            damageTooltip = new Handlebars.SafeString(await damage.roll.getTooltip());
             damageRollMod = game.i18n.localize('COMBAT.CHAT_DMG_PARAMS') + damage.autoParams;
             hasDmgMod = (damage.autoParams.length >0) ? true : false;
             damageTot += Math.max(0, damage.roll.total);
@@ -1189,7 +1200,7 @@ async function attackResult(rollData, functionStuff){
             effectDuration: 1
         })
     }
-    else if(hasDamage){
+    else{
         damageText = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
         flagDataArray.push({
             tokenId: functionStuff.targetData.token.data._id,
@@ -1209,6 +1220,7 @@ async function attackResult(rollData, functionStuff){
     let targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.actor.data.name;
     if (functionStuff.targetData.autoParams != ""){targetText += ": " + functionStuff.targetData.autoParams}
     let templateData = {
+        rollData: rollData,
         targetData : functionStuff.targetData,
         hasTarget : functionStuff.targetData.hasTarget,
         introText: introText,

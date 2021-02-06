@@ -63,6 +63,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
       weaponResults.name = weapon.name; 
     //  weaponResults.diceBreakdown = formatDice(weaponRoll.terms,"+");
       weaponResults.diceBreakdown = tooltip;
+      console.log(tooltip);
       weaponResults.img = weapon.img;
     }
   }
@@ -355,7 +356,6 @@ It won't work with NPC fixed values as input
 export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgData, targetData){
   let newRollDmgString = "";  // for dice modificators like +1d4
   let modFixedDmg = 0;  // for fixed modificators like +1
-
   let damageAutoParams = "";
   if(dmgData.modifier != ""){
     damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_CUSTOM');
@@ -374,7 +374,7 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
     }
     else
     {
-      dmgData.modifier += " + 1d4["+game.i18n.localize("COMBAT.CHAT_DMG_PARAMS_ADVANTAGE")+"]";
+      dmgData.modifier += " + 1d4"+game.i18n.localize("COMBAT.CHAT_DMG_PARAMS_ADVANTAGE");
       damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_ADVANTAGE');
     }
   }
@@ -393,9 +393,13 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
     // If the attack is made by a PC, roll damage and substract static value for armor (=max armor/2)
     if(attackFromPC){  
       //build roll string
-      newRollDmgString = weapon.damage.pc + " + " + dmgData.modifier + " + " + modFixedDmg;
+      newRollDmgString = weapon.damage.pc;
+      if(dmgData.modifier != ""){
+        newRollDmgString += "+" + dmgData.modifier
+      }
+      if(modFixedDmg) {newRollDmgString += "+"+ modFixedDmg.toString()};
       if(!dmgData.ignoreArm){
-        newRollDmgString += " - " + targetData.actor.data.data.combat.protectionData.npc;
+        newRollDmgString += " - " + targetData.actor.data.data.combat.protectionNpc;
       }
     }
     else{

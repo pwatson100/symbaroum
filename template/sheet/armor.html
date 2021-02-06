@@ -9,15 +9,15 @@
                     <label>{{localize "ARMOR.NAME"}}</label>
                     <input name="name" type="text" value="{{item.name}}"/>
                 </div>
-            </div>
-            <div class="wrapper-column">
-                <div class="name">
-                    <label>"NPC prot"</label>
-                    <input type="number" value="{{data.npcProtection}}" data-dtype="Number" disabled/>
-                </div>
-                <div class="name">
-                    <label>PC prot</label>
-                    <input type="text" value="{{data.pcProtection}}" data-dtype="Text" disabled/>
+                <div class="computedvalues">
+                    <div class="wrapper-column">
+                        <label>{{localize "ARMOR.PC_PROTECTION"}}</label>
+                        <input type="text" value="{{data.pcProtection}}" data-dtype="Text" disabled/>
+                    </div>
+                    <div class="wrapper-column">
+                        <label>{{localize "ARMOR.NPC_PROTECTION"}}</label>
+                        <input type="number" value="{{data.npcProtection}}" data-dtype="Number" disabled/>
+                    </div>
                 </div>
             </div>
         </div>
@@ -69,16 +69,6 @@
                 </div>
             </div>
             <div class="tab" data-group="primary" data-tab="qualities">
-
-                "flexible": false,
-                "cumbersome": false,
-                "concealed": false,
-                "reinforced": false,
-                "hallowed": false,
-                "retributive": false,
-                "desecrated"
-
-
                 <div class="qualities foreground border">
                     <h1>{{localize "TITLE.QUALITIES"}}</h1>
                     <div class="leftcolumn">

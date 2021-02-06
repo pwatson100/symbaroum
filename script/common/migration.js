@@ -230,8 +230,6 @@ export const migrateCompendium = async function (pack, worldTemplateVersion) {
 
 const setValueIfNotExists = (update, object, property, newValue) => {
     if (typeof(getProperty(object,property)) === 'undefined'){
-        console.log(object);
-        console.log(property);
         update[property] = newValue;
     }
     return(update)

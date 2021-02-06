@@ -9,13 +9,15 @@
                     <label>{{localize "WEAPON.NAME"}}</label>
                     <input name="name" type="text" value="{{item.name}}"/>
                 </div>
-                <div class="name">
-                    <label>"NPC damage"</label>
-                    <input type="number" value="{{data.npcDamage}}" data-dtype="Number" disabled/>
-                </div>
-                <div class="name">
-                    <label>PC damage</label>
-                    <input type="text" value="{{data.pcDamage}}" data-dtype="Text" disabled/>
+                <div class="computedvalues">
+                    <div class="wrapper-column">
+                        <label>{{localize "WEAPON.PC_DAMAGE"}}</label>
+                        <input type="text" value="{{data.pcDamage}}" data-dtype="Text" disabled/>
+                    </div>
+                    <div class="wrapper-column">
+                        <label>{{localize "WEAPON.NPC_DAMAGE"}}</label>
+                        <input type="number" value="{{data.npcDamage}}" data-dtype="Number" disabled/>
+                    </div>
                 </div>
             </div>
         </div>
@@ -63,6 +65,8 @@
                             <option value="heavy">{{localize "WEAPON_CLASS.HEAVY"}}</option>
                             <option value="ranged">{{localize "WEAPON_CLASS.RANGED"}}</option>
                             <option value="thrown">{{localize "WEAPON_CLASS.THROWN"}}</option>
+                            <option value="shield">{{localize "WEAPON_CLASS.SHIELD"}}</option>
+                            <option value="other">{{localize "GEAR.OTHER"}}</option>
                             {{/select}}
                         </select>
                     </div>

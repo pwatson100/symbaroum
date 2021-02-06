@@ -46,7 +46,7 @@
                 <div class="item-header">
                     <b class="name">{{localize "WEAPON.NAME"}}</b>
                     <b class="damage">{{localize "WEAPON.DAMAGE_SHORT"}}</b>
-                    <b class="quality">{{localize "WEAPON.QUALITY"}}</b>
+                    <b class="quality">{{localize "WEAPON.ATTRIBUTE"}}</b>
                     <b class="state">{{localize "GEAR.STATE"}}</b>
                     <div class="button">
                         <a class="item-create" title="Add Weapon" data-type="weapon"><i class="fas fa-plus"></i></a>
@@ -62,7 +62,7 @@
                                     <button class="item-edit ellipsis" style="width: 131px">{{item.name}}</button>
                                 </div>
                                 <div class="damage">{{item.damage.npc}}</div>
-                                <div class="quality">{{item.reference}}</div>
+                                <div class="quality">{{item.attribute}}</div>
                                 <div class="state">
                                     {{#if item.isActive}}
                                         <a class="item-state" title="{{localize 'GEAR.ACTIVE'}}"><i class="fas fa-tshirt"></i></a>

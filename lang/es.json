@@ -133,6 +133,8 @@
   "ARMOR.NAME": "Nombre",
   "ARMOR.PROTECTION": "Protección",
   "ARMOR.PROTECTION_SHORT": "Prot.",
+  "ARMOR.PC_PROTECTION": "PC Prot.",
+  "ARMOR.NPC_PROTECTION": "NPC Prot.",
   "ARMOR.IMPEDING": "Incomodidad",
   "ARMOR.DEFENSE": "Defensa",
   "ARMOR.COST": "Precio",
@@ -265,7 +267,6 @@
   "EQUIPMENT.NUMBER": "Número",
   "EQUIPMENT.DESCRIPTION": "Descr.",
   "EQUIPMENT.QUANTITY_SHORT": "Cant.",
-
 
   "EXPERIENCE": "Experiencia",
 
@@ -567,6 +568,8 @@
   "WEAPON.NAME": "Nombre",
   "WEAPON.DAMAGE": "Daño",
   "WEAPON.DAMAGE_SHORT": "Daño",
+  "WEAPON.PC_DAMAGE": "PC Dmg",
+  "WEAPON.NPC_DAMAGE": "NPC Dmg",
   "WEAPON.QUALITY": "Calidad",
   "WEAPON.COST": "Precio",
   "WEAPON.ATTRIBUTE": "Atributo",
@@ -580,6 +583,7 @@
   "WEAPON_CLASS.UNARMED": "Unarmed Attack",
   "WEAPON_CLASS.HEAVY": "Heavy",
   "WEAPON_CLASS.RANGED": "Ranged",
+  "WEAPON_CLASS.SHIELD":"Shield",
   "WEAPON_CLASS.THROWN": "Thrown",
 
   "SYMBAROUM.OPTIONAL_CRIT": "Tiradas Críticas Opcionales",
