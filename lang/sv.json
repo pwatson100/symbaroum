@@ -81,10 +81,10 @@
 
   "ABILITY_ERROR.TARGET": "För många mål",
 
-  "ABILITY_DOMINATE_ADEPT.CHAT_INTRO": " tries to indimidate his target.",
-  "ABILITY_DOMINATE_MASTER.CHAT_INTRO": " tries to subdue his target.",
-  "ABILITY_DOMINATE_ADEPT.CHAT_SUCCESS": " makes is target hesitate.",
-  "ABILITY_DOMINATE_MASTER.CHAT_SUCCESS": " subdues his ennemy.",
+  "ABILITY_DOMINATE_ADEPT.CHAT_INTRO": " försöker skrämma sin fiende.",
+  "ABILITY_DOMINATE_MASTER.CHAT_INTRO": " försöker betvinga sin fiende.",
+  "ABILITY_DOMINATE_ADEPT.CHAT_SUCCESS": " får sin fiende att tveka.",
+  "ABILITY_DOMINATE_MASTER.CHAT_SUCCESS": " betvingar sin fiende.",
 
   "ABILITY_LOREMASTER.CHAT_INTRO": " gräver djupt i sin samlade kunskap.",
   "ABILITY_LOREMASTER.CHAT_SUCCESS": " känner till något om detta.",
@@ -177,7 +177,7 @@
   "BUTTON.ROLL": "Rulla",
   "BUTTON.CANCEL": "Avbryt",
 
-  "CHAT.GMTEXT_BUTTON": "This button is for GM use only. It will apply the effects to the tokens.",
+  "CHAT.GMTEXT_BUTTON": "Denna knapp är endast avsedd för SL. Det kommer att tillämpa effekterna på valda tokens.",
   "CHAT.APPLY_BUTTON": "Applicera resultat på valt token",
   "CHAT.DEATH_ROLL": "Dödsslag",
   "CHAT.SUCCEED": "Lyckat",
@@ -222,7 +222,7 @@
 
   "DIALOG.AUTOPARAMS": "Inkluderade modifieringar: ",
   "DIALOG.BACKSTAB": "Använda Lönnstöt?",
-  "DIALOG.BEASTLORE": "Beast Lore dmg?",
+  "DIALOG.BEASTLORE": "Monsterlärd extra skada?",
   "DIALOG.HUNTERS_INSTINCT": "Jaktinstinkt utsett mål?",
   "DIALOG.ISMAINTAINED": "Ny kraft eller bibehålla befintlig?",
   "DIALOG.USE_POISON": "Gift applicerat?",
@@ -242,8 +242,8 @@
   "DIALOG.ADVANTAGE": "Övertag",
   "DIALOG.DISADVANTAGE": "Underläge",
   "DIALOG.FAVOUR_NORMAL": "Normal",
-  "DIALOG.FAVOUR_FAVOUR": "Gynnsamt läge (bästa av två)", 
-  "DIALOG.FAVOUR_DISFAVOUR": "Ogynnsamt läge (sämsta av två)",
+  "DIALOG.FAVOUR_FAVOUR": "Bästa av två slag", 
+  "DIALOG.FAVOUR_DISFAVOUR": "Sämsta av två slag",
   "DIALOG.DAMAGE_MODIFIER": "Skademod.",
   "DIALOG.IMPEDING": "Inkludera begränsande avdrag?",
   "DIALOG.CASTING": "Initial besvärjelse",
@@ -277,7 +277,7 @@
   "HEALTH.CORRUPTION_PERMANENT": "Permanent",
   "HEALTH.CORRUPTION_THRESHOLD": "Tröskel",
   "HEALTH.CORRUPTION_THRESHOLD_MAX": "Korruptionströskel",
-  "HEALTH.CORRUPTION_MAX": "Styggelsetröskel",
+  "HEALTH.CORRUPTION_MAX": "Förstyggelse",
   
   "INITIATIVE": "Initiativ",
 
@@ -331,7 +331,7 @@
   "POWER_LABEL.LEVITATE":"Viljelyft",
   "POWER_LABEL.LIFEGIVER":"Livgivare",
   "POWER_LABEL.MALTRANSFORMATION":"Tvångsförvandling",
-  "POWER_LABEL.MARK_OF_TORMENT":"Mark of Torment",
+  "POWER_LABEL.MARK_OF_TORMENT":"Plågomärke",
   "POWER_LABEL.MIND-THROW":"Tankekast",
   "POWER_LABEL.MIRRORING":"Illusionskopia",
   "POWER_LABEL.NATURES_EMBRACE":"Naturens famn",
@@ -341,7 +341,7 @@
   "POWER_LABEL.PURGATORY":"Purgatorium",
   "POWER_LABEL.RETRIBUTION":"Vedergällning",
   "POWER_LABEL.REVENANT_STRIKE":"Vandråp",
-  "POWER_LABEL.SERENITY":"Serenity",
+  "POWER_LABEL.SERENITY":"Sinnesro",
   "POWER_LABEL.SHAPESHIFT":"Hamnskifte",
   "POWER_LABEL.SPHERE":"Sfär",
   "POWER_LABEL.SPIRIT_WALK":"Spökvandring",
@@ -378,8 +378,8 @@
 
   "POWER_CURSE.CHAT_INTRO": " förhäxar sitt mål.",
   "POWER_CURSE.CHAT_INTRO_M": " upprätthåller sin förhäxning.",
-  "POWER_CURSE.CHAT_SUCCESS_N": " är förhäxad (har Ogynnsamt läge mot mystikern).",
-  "POWER_CURSE.CHAT_SUCCESS_A": " är förhäxad (har Ogynnsamt läge).",
+  "POWER_CURSE.CHAT_SUCCESS_N": " är förhäxad (sämsta av två slag mot mystikern).",
+  "POWER_CURSE.CHAT_SUCCESS_A": " är förhäxad (sämsta av två slag mot alla).",
   "POWER_CURSE.CHAT_SUCCESS_M": " är kraftigt förhäxad (1d6 skada vid varje handling).",
   "POWER_CURSE.CHAT_FAILURE": " kan inte upprätthålla förhäxningen.",
   "POWER_CURSE.CHAT_FAIL_FINAL": "Förhäxningen har inte längre någon effekt på ",
@@ -396,7 +396,7 @@
   "POWER_INHERITWOUND.CHAT_HEALED": " tar emot Tålighetsläkning för: ",
   "POWER_INHERITWOUND.CHAT_DAMAGE": " mottagen skada: ",
 
-  "POWER_LARVAEBOILS.CHAT_INTRO": " kastar larver.",
+  "POWER_LARVAEBOILS.CHAT_INTRO": " planterar larver inuti fiendens kropp.",
   "POWER_LARVAEBOILS.CHAT_INTRO_M": " upprätthåller larvernas framfart.",
   "POWER_LARVAEBOILS.CHAT_SUCCESS": " äts upp inifrån av larverna.",
   "POWER_LARVAEBOILS.CHAT_FAILURE": " motstår larverna.",
@@ -469,7 +469,7 @@
   "TOOLTIP.EXPERIENCE_AVAILABLE": "Dina nuvarande tillgängliga erfarenehtspoäng",
   
   "TOOLTIP.HEALTH.CORRUPTION_CURRENT": "Din nuvarande totala korruption",
-  "TOOLTIP.HEALTH.CORRUPTION_TEMPORARY": "Din temporarä korruption - varar scenen ut",
+  "TOOLTIP.HEALTH.CORRUPTION_TEMPORARY": "Din temporära korruption - varar scenen ut",
   "TOOLTIP.HEALTH.CORRUPTION_LONGTERM": "Korruption som varar längre än en scen",
   "TOOLTIP.HEALTH.CORRUPTION_PERMANENT": "Permanent korruption",
   "TOOLTIP.HEALTH.CORRUPTION_THRESHOLD": "Din korruptionströskel - ger styggelsesmitta om den uppnås",
@@ -517,7 +517,7 @@
   "TRAIT_LABEL.INFECTIOUS": "Smittsam",
   "TRAIT_LABEL.INFESTATION": "Infestering",
   "TRAIT_LABEL.INVISIBILITY": "Osynlighet",
-  "TRAIT_LABEL.LEAP": "Leap",
+  "TRAIT_LABEL.LEAP": "Hoppförmåga",
   "TRAIT_LABEL.LIFESENSE": "Livssinne",
   "TRAIT_LABEL.MANIFESTATION": "Manifestering",
   "TRAIT_LABEL.MANYHEADED": "Månghövdad",
@@ -559,7 +559,7 @@
 
   "SYMBAROUM.OPTIONAL_CRIT": "Kritiska slag (Perfekta och bortfumlade)",
   "SYMBAROUM.OPTIONAL_CRIT_HINT": "Välj för att använda regler för Perfekta och Bortfumlade slag vid tärningsslag 1 och 20. Se sida 179 i Regelboken.",
-  "SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE": "Alltid möjligt at lyckas och misslyckas",
+  "SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE": "Alltid möjligt att lyckas och misslyckas",
   "SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE_HINT": "Välj för att alltid lyckas på 1 och misslyckas på 20 - automatiskt aktiverat om Kritiska slag har valts",
   "SYMBAROUM.OPTIONAL_RARECRIT": "Tillval: Mer sällsynt med kritiska slag",
   "SYMBAROUM.OPTIONAL_RARECRIT_HINT": "Välj för att aktivera mer sällsynta kritiska slag, som det beskrivs i marginalen på Regelboken s. 179",
@@ -567,7 +567,7 @@
   "SYMBAROUM.OPTIONAL_ALWAYSUSECRIT_HINT": "Välj för att aktivera kritisk framgång och misslyckande på slag utanför strid",
   "SYMBAROUM.OPTIONAL_MORERITUALS": "Tillåt fler ritualer",
   "SYMBAROUM.OPTIONAL_MORERITUALS_HINT": "Välj för att tillåta fler ritualer, som det beskrivs i Spelarens Handbok s. 102.",
-  "SYMBAROUM.OPTIONAL_AUTOCOMBAT": "Combat enhancement",
-  "SYMBAROUM.OPTIONAL_AUTOCOMBAT_HINT": "Check to enable QoL enhancement for smooth combat. Read the Symbaroum system guide for FoundryVTT in the compendium section for more info"
+  "SYMBAROUM.OPTIONAL_AUTOCOMBAT": "Stridsautomatisering",
+  "SYMBAROUM.OPTIONAL_AUTOCOMBAT_HINT": "Välj för att aktivera automatiserade förbättringar för smidiga strider. Läs Symbaroum systemguide för FoundryVTT i Compendium-sektionen för mer info."
     
 }
