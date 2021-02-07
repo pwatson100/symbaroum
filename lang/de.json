@@ -591,5 +591,10 @@
   "SYMBAROUM.OPTIONAL_MORERITUALS": "Erlaube more rituals",
   "SYMBAROUM.OPTIONAL_MORERITUALS_HINT": "Ermögliche  „more rituals“ wie sie im Advanced Players Guide auf Seite 103 beschrieben sind",
   "SYMBAROUM.OPTIONAL_AUTOCOMBAT": "Combat enhancement",
-  "SYMBAROUM.OPTIONAL_AUTOCOMBAT_HINT": "Check to enable QoL enhancement for smooth combat. Read the Symbaroum system guide for FoundryVTT in the compendium section for more info"
+  "SYMBAROUM.OPTIONAL_AUTOCOMBAT_HINT": "Check to enable QoL enhancement for smooth combat. Read the Symbaroum system guide for FoundryVTT in the compendium section for more info",
+  "SYMBAROUM.OPTIONAL_SAVECOMBATROLL": "Combat settings for rolls",
+  "SYMBAROUM.OPTIONAL_SAVECOMBATROLL_HINT": "Check to enable QoL enhancement for keeping all modifiers when rolling combat (weapon/defense)",
+  "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL": "Attribute settings for rolls",
+  "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT": "Check to enable QoL enhancement for keeping all modifiers when rolling attribute tests"
+
 }

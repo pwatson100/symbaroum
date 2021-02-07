@@ -122,7 +122,7 @@ export class SymbaroumActor extends Actor {
             attDefValue = 5;
             defMsg = `${game.i18n.localize("ABILITY_LABEL.BERSERKER")} 5`;
         }
-        defMsg += `<br/>${game.i18n.localize("ARMOR.IMPEDING")}(${-1 * activeArmor.impeding})${data.data.bonus.defense_msg}`;
+        defMsg += `<br/>${game.i18n.localize("ARMOR.IMPEDING")}(${-1 * activeArmor.impeding})<br/>${data.data.bonus.defense_msg}`;
         let robust = this.items.filter(element => element.data.data?.reference === "robust");
         if(robust.length > 0){
             let powerLvl = getPowerLevel(robust[0]);
@@ -144,7 +144,7 @@ export class SymbaroumActor extends Actor {
             data.data.weapons = this.evaluateWeapons(activeWeapons);
         }
         let attributeInit = data.data.initiative.attribute.toLowerCase();
-        data.data.initiative.value = (data.data.attributes[attributeInit].value * 1000) + (data.data.attributes.vigilant.value * 10);
+        data.data.initiative.value = ((data.data.attributes[attributeInit].total) + (data.data.attributes.vigilant.total /100)) ;
         
         data.data.experience.spent = data.data.bonus.experience.cost - data.data.bonus.experience.value;
         data.data.experience.available = data.data.experience.total - data.data.experience.artifactrr - data.data.experience.spent;

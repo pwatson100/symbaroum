@@ -214,7 +214,7 @@
   "gridUnits": "m",
   "primaryTokenAttribute": "health.toughness",
   "secondaryTokenAttribute": "combat.defense",
-  "initiative": "1d8 + @initiative.value",
+  "initiative": "1d20[tiebreaker]/100000 + @initiative.value",
   "socket": true,
   "url": "https://github.com/pwatson100/symbaroum",
   "manifest": "https://github.com/pwatson100/symbaroum/releases/download/2.21.0/system.json",

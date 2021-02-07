@@ -599,6 +599,11 @@
     "SYMBAROUM.OPTIONAL_MORERITUALS": "Permet d'apprendre plus de rituels.",
     "SYMBAROUM.OPTIONAL_MORERITUALS_HINT": "Cochez pour permettre d'apprendre plus de rituels, comme décrit dans le Guide du joueur p. 102",
     "SYMBAROUM.OPTIONAL_AUTOCOMBAT": "Combats accélérés",
-    "SYMBAROUM.OPTIONAL_AUTOCOMBAT_HINT": "Cochez pour activer l'utilisation les combats semi-automatisés. Cette option est décrite en détail dans le Guide du système Symbaroum pour FoundryVTT dans la section compendium."
+    "SYMBAROUM.OPTIONAL_AUTOCOMBAT_HINT": "Cochez pour activer l'utilisation les combats semi-automatisés. Cette option est décrite en détail dans le Guide du système Symbaroum pour FoundryVTT dans la section compendium.",
+    "SYMBAROUM.OPTIONAL_SAVECOMBATROLL": "Combat settings for rolls",
+    "SYMBAROUM.OPTIONAL_SAVECOMBATROLL_HINT": "Check to enable QoL enhancement for keeping all modifiers when rolling combat (weapon/defense)",
+    "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL": "Attribute settings for rolls",
+    "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT": "Check to enable QoL enhancement for keeping all modifiers when rolling attribute tests"
+  
 }
 
