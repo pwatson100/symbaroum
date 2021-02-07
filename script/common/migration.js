@@ -177,7 +177,12 @@ const migrateItemData = (item, worldTemplateVersion) => {
             update = setValueIfNotExists(update, item, "data.qualities.desecrated", false)
         }
     }
-		
+	if (worldTemplateVersion < 3.1) {
+        if (item.type === "weapon") {
+            update = setValueIfNotExists(update, item, "data.qualities.mystical", false)
+        }	
+    }
+
     if (!isObjectEmpty(update)) {
         update._id = item._id;
     }
