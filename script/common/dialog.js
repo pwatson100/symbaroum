@@ -80,7 +80,17 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon) 
 }
 
 function getRollDefaults(attributeName, isArmor, isWeapon) {
-	if( roll_defaults[attributeName+":"+isArmor+":"+isWeapon] === undefined )
+  if( !game.settings.get('symbaroum', 'saveCombatRoll')) {
+    if(isArmor || isWeapon) {
+      return createDefaults();
+    }
+  }
+  if( !game.settings.get('symbaroum', 'saveAttributeRoll')) {
+    if(!isArmor && !isWeapon) {
+      return createDefaults();
+    }
+  }
+  if( roll_defaults[attributeName+":"+isArmor+":"+isWeapon] === undefined )
 	{
 		roll_defaults[attributeName+":"+isArmor+":"+isWeapon] = createDefaults();
 	}

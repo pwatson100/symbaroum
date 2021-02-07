@@ -98,7 +98,22 @@ Hooks.once('init', () => {
     config: true,
   });  
   
-  
+  game.settings.register('symbaroum', 'saveCombatRoll', {
+    name: 'SYMBAROUM.OPTIONAL_SAVECOMBATROLL',
+    hint: 'SYMBAROUM.OPTIONAL_SAVECOMBATROLL_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });  
+  game.settings.register('symbaroum', 'saveAttributeRoll', {
+    name: 'SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL',
+    hint: 'SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });      
  
 });
 
