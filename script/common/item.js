@@ -53,16 +53,25 @@ export class SymbaroumItem extends Item {
                 "1handed",
                 "short",
                 "long",
+                "shield",
                 "unarmed",
                 "heavy"
+            ];
+            const distanceClass = [
+                "ranged",
+                "thrown"
             ];
             if(meleeClass.includes(data.data.reference)){
                 data.data.isMelee = true;
                 data.data.isDistance = false;
             }
-            else{
+            else if(distanceClass.includes(data.data.reference)){
                 data.data.isMelee = false;
                 data.data.isDistance = true;
+            }
+            else{
+                data.data.isMelee = false;
+                data.data.isDistance = false;
             }
             let baseDamage = data.data.baseDamage;
             if(data.data.bonusDamage != ""){
@@ -366,15 +375,15 @@ export class SymbaroumItem extends Item {
         const scriptedAbilities =
         [{reference: "alchemy", level: [1, 2, 3], function: alchemy},
         {reference: "acrobatics", level: [1, 2, 3], function: acrobatics},
-        {reference: "backstab", level: [1, 2, 3], function: attackRoll},
+        //{reference: "backstab", level: [1, 2, 3], function: attackRoll},
         {reference: "beastlore", level: [1, 2, 3], function: beastlore},
         {reference: "berserker", level: [1, 2, 3], function: berserker},
         {reference: "dominate", level: [1, 2, 3], function: dominatePrepare},
-        {reference: "huntersinstinct", level: [1, 2, 3], function: attackRoll},
+        //{reference: "huntersinstinct", level: [1, 2, 3], function: attackRoll},
         {reference: "leader", level: [1, 2, 3], function: leaderPrepare},
         {reference: "loremaster", level: [1, 2, 3], function: loremaster},
         {reference: "medicus", level: [1, 2, 3], function: medicus},
-        {reference: "shieldfighter", level: [1, 2, 3], function: attackRoll},
+        //{reference: "shieldfighter", level: [1, 2, 3], function: attackRoll},
         {reference: "strangler", level: [1, 2, 3], function: strangler},
         {reference: "witchsight", level: [1, 2, 3], function: witchsight}];
 
@@ -424,6 +433,7 @@ const weaponReferences = [
     "long",
     "unarmed",
     "heavy",
+    "shield",
     "thrown",
     "ranged"
   ]
@@ -977,7 +987,7 @@ It won't work with NPC fixed values as input
 * @param {object} rollParams is an object of parameters.
 * @param {object} targetData is information on the target that will receive the damage (as returned by the getTarget function)*/
 
-export async function attackRoll(weapon, actor, ability){
+export async function attackRoll(weapon, actor){
 
     //check wether acting token is player controlled
     let targetData;
@@ -1029,15 +1039,15 @@ export async function attackRoll(weapon, actor, ability){
             weapon: weapon,
         }
     }
-    if(ability){
+    /*if(ability){
         specificStuff = {
             ability: ability,
             askWeapon: true,
             powerLvl: getPowerLevel(ability)
         }
-    }
+    }*/
     let functionStuff = Object.assign({}, fsDefault , specificStuff)
-    if(ability){
+/*    if(ability){
         if(ability.data.data.reference === "huntersinstinct"){
             functionStuff.useHuntersInstinct = true;
             if(functionStuff.powerLvl > 1){specificStuff.dmgData.hunterIDmg = true}
@@ -1050,80 +1060,83 @@ export async function attackRoll(weapon, actor, ability){
                 functionStuff.dmgData.bleed = "1d4"
             }
         }
-    }
-    // check for leader adept ability effect on target
-    const LeaderEffect = "icons/svg/eye.svg";
-    let leaderEffect = getEffect(targetData.token, LeaderEffect);
-    if(leaderEffect){
-        functionStuff.dmgData.leaderTarget = true;
-        functionStuff.targetData.autoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
-    };
-
+    }*/
     //search for special attacks (if the attacker has abilities that can affect the roll or not, ask the player in the dialog)
-    if(!functionStuff.dmgData.useBackstab){
-        let backstabAbil = actor.items.filter(item => item.data.data?.reference === "backstab");
-        if(backstabAbil.length != 0){
-            functionStuff.askBackstab = true;
-            if(backstabAbil[0].data.data.adept.isActive){
-                functionStuff.dmgData.backstabBleed = true
+    //ranged attacks
+    if(weapon && weapon.isDistance){
+        if(!functionStuff.useHuntersInstinct){
+            let hunterInstinct = actor.items.filter(item => item.data.data?.reference === "huntersinstinct");
+            if(hunterInstinct.length != 0){
+                functionStuff.askHuntersInstinct = true;
+                if(hunterInstinct[0].data.data.adept.isActive){
+                    functionStuff.dmgData.hunterIDmg = true;
+                }
+            }
+        }
+        let rapidfire = actor.items.filter(item => item.data.data?.reference === "rapidfire");
+        if(rapidfire.length != 0){
+            if(rapidfire[0].data.data.master.isActive){
+                functionStuff.askThreeAttacks = true;
+            }
+            else{
+                functionStuff.askTwoAttacks = true;
+            }
+        }
+        if(weapon.reference == "thrown"){
+            let steelthrow = actor.items.filter(item => item.data.data?.reference === "steelthrow");
+            if(steelthrow.length != 0){
+                if(steelthrow[0].data.data.adept.isActive){
+                    functionStuff.askTwoAttacks = true;
+                }
+                if(steelthrow.data.data.master.isActive){
+                    functionStuff.askThreeAttacks = true;
+                }
             }
         }
     }
-    if(!functionStuff.useHuntersInstinct){
-        let hunterInstinct = actor.items.filter(item => item.data.data?.reference === "huntersinstinct");
-        if(hunterInstinct.length != 0){
-            functionStuff.askHuntersInstinct = true;
-            if(hunterInstinct[0].data.data.adept.isActive){
-                functionStuff.dmgData.hunterIDmg = true;
+    //melee weapons
+    if(weapon && weapon.isMelee){
+        if(weapon.reference == "unarmed"){
+            let naturalwarrior = actor.items.filter(item => item.data.data?.reference === "naturalwarrior");
+            if(naturalwarrior.length != 0){
+                if(naturalwarrior[0].data.data.adept.isActive){
+                    functionStuff.askTwoAttacks = true;
+                }
+            }
+        }
+        if(weapon.qualities.short){
+            let knifeplay = actor.items.filter(item => item.data.data?.reference === "knifeplay");
+            if(knifeplay.length != 0){
+                if(knifeplay[0].data.data.adept.isActive){
+                    functionStuff.askTwoAttacks = true;
+                }
+            }
+        }
+        if(!functionStuff.dmgData.useBackstab){
+            let backstabAbil = actor.items.filter(item => item.data.data?.reference === "backstab");
+            if(backstabAbil.length != 0){
+                functionStuff.askBackstab = true;
+                if(backstabAbil[0].data.data.adept.isActive){
+                    functionStuff.dmgData.backstabBleed = true
+                }
+            }
+        }
+        let ironFist = actor.items.filter(item => item.data.data?.reference === "ironfist");
+        if(ironFist.length > 0){
+            let powerLvl = getPowerLevel(ironFist[0]);
+            if(powerLvl.level > 2){
+                functionStuff.askIronFistMaster = true;
+                functionStuff.autoParams += game.i18n.localize('ABILITY_LABEL.IRON_FIST') + " (" + game.i18n.localize('ABILITY.MASTER') + "), ";
             }
         }
     }
-    //multiple attacks
-    let naturalwarrior = actor.items.filter(item => item.data.data?.reference === "naturalwarrior");
-    if(naturalwarrior.length != 0){
-        if(naturalwarrior[0].data.data.adept.isActive){
-            functionStuff.askTwoAttacks = true;
-        }
-    }
-    let rapidfire = actor.items.filter(item => item.data.data?.reference === "rapidfire");
-    if(rapidfire.length != 0){
-        if(rapidfire[0].data.data.master.isActive){
-            functionStuff.askThreeAttacks = true;
-        }
-        else{
-            functionStuff.askTwoAttacks = true;
-        }
-    }
-    let knifeplay = actor.items.filter(item => item.data.data?.reference === "knifeplay");
-    if(knifeplay.length != 0){
-        if(knifeplay[0].data.data.adept.isActive){
-            functionStuff.askTwoAttacks = true;
-        }
-    }
-    let steelthrow = actor.items.filter(item => item.data.data?.reference === "steelthrow");
-    if(steelthrow.length != 0){
-        if(steelthrow[0].data.data.adept.isActive){
-            functionStuff.askTwoAttacks = true;
-        }
-        if(steelthrow.data.data.master.isActive){
-            functionStuff.askThreeAttacks = true;
-        }
-    }
+    //all weapons
     if(!functionStuff.askWeapon){
         if(functionStuff.weapon.qualities.precise){
             functionStuff.modifier += 1;
             functionStuff.autoParams += game.i18n.localize('COMBAT.PARAMS_PRECISE')
         }
     };
-    //iron fist
-    let ironFist = actor.items.filter(item => item.data.data?.reference === "ironfist");
-    if(ironFist.length > 0){
-        let powerLvl = getPowerLevel(ironFist[0]);
-        if(powerLvl.level > 2){
-            functionStuff.askIronFistMaster = true;
-            functionStuff.autoParams += game.i18n.localize('ABILITY_LABEL.IRON_FIST') + " (" + game.i18n.localize('ABILITY.MASTER') + "), ";
-        }
-    }
     let beastlore = actor.items.filter(item => item.data.data?.reference === "beastlore");
     if(beastlore.length != 0){
         let beastLoreLvl = getPowerLevel(beastlore[0]).level;
@@ -1134,7 +1147,13 @@ export async function attackRoll(weapon, actor, ability){
             functionStuff.dmgData.beastLoreDmg = "1d6";
         }
     }
-
+    // check for leader adept ability effect on target
+    const LeaderEffect = "icons/svg/eye.svg";
+    let leaderEffect = getEffect(targetData.token, LeaderEffect);
+    if(leaderEffect){
+        functionStuff.dmgData.leaderTarget = true;
+        functionStuff.targetData.autoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
+    };
     await modifierDialog(functionStuff)
 }
   
@@ -1163,7 +1182,8 @@ async function attackResult(rollData, functionStuff){
             if(damage.roll.total > functionStuff.targetData.actor.data.data.health.toughness.threshold){pain = true}
             dmgFormula = game.i18n.localize('WEAPON.DAMAGE') + ": " + damage.roll._formula;
             //damageTooltip += damage.roll.result + "    ";
-            damageTooltip = await damage.roll.getTooltip();
+            //damageTooltip = await damage.roll.getTooltip();
+            damageTooltip = new Handlebars.SafeString(await damage.roll.getTooltip());
             damageRollMod = game.i18n.localize('COMBAT.CHAT_DMG_PARAMS') + damage.autoParams;
             hasDmgMod = (damage.autoParams.length >0) ? true : false;
             damageTot += Math.max(0, damage.roll.total);
@@ -1189,7 +1209,7 @@ async function attackResult(rollData, functionStuff){
             effectDuration: 1
         })
     }
-    else if(hasDamage){
+    else{
         damageText = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
         flagDataArray.push({
             tokenId: functionStuff.targetData.token.data._id,
@@ -1209,6 +1229,7 @@ async function attackResult(rollData, functionStuff){
     let targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.actor.data.name;
     if (functionStuff.targetData.autoParams != ""){targetText += ": " + functionStuff.targetData.autoParams}
     let templateData = {
+        rollData: rollData,
         targetData : functionStuff.targetData,
         hasTarget : functionStuff.targetData.hasTarget,
         introText: introText,
