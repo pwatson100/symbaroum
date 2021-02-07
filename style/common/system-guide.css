@@ -228,3 +228,43 @@
     background-size: 100%;
     border: 0;
   }
+.armor-add {
+    display: block;
+    background-image: url('../../asset/image/system-guide/armor-add.webp');
+    width: 477px;
+    height: 116px;
+    margin-left: auto;
+    margin-right: auto;
+    background-size: 100%;
+    border: 0;
+  }
+.weapon-state {
+    display: block;
+    background-image: url('../../asset/image/system-guide/weapon-state.webp');
+    width: 462px;
+    height: 175px;
+    margin-left: auto;
+    margin-right: auto;
+    background-size: 100%;
+    border: 0;
+  }
+.character-stats {
+    display: block;
+    background-image: url('../../asset/image/system-guide/character-stats.webp');
+    width: 520px;
+    height: 266px;
+    margin-left: auto;
+    margin-right: auto;
+    background-size: 100%;
+    border: 0;
+  }
+.monster-stats {
+    display: block;
+    background-image: url('../../asset/image/system-guide/monster-stats.webp');
+    width: 520px;
+    height: 280px;
+    margin-left: auto;
+    margin-right: auto;
+    background-size: 100%;
+    border: 0;
+  }
