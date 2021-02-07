@@ -62,7 +62,7 @@
                                     <button class="item-edit ellipsis" style="width: 131px">{{item.name}}</button>
                                 </div>
                                 <div class="damage">{{item.damage.pc}}</div>
-                                <div class="quality">{{item.attribute}}</div>
+                                <div class="quality">{{localize item.attributeLabel}}</div>
                                 <div class="state">
                                     {{#if item.isActive}}
                                         <a class="item-state" title="{{localize 'GEAR.ACTIVE'}}"><i class="fas fa-tshirt"></i></a>
