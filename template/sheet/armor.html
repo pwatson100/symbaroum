@@ -9,12 +9,23 @@
                     <label>{{localize "ARMOR.NAME"}}</label>
                     <input name="name" type="text" value="{{item.name}}"/>
                 </div>
+                <div class="computedvalues">
+                    <div class="wrapper-column">
+                        <label>{{localize "ARMOR.PC_PROTECTION"}}</label>
+                        <input type="text" value="{{data.pcProtection}}" data-dtype="Text" disabled/>
+                    </div>
+                    <div class="wrapper-column">
+                        <label>{{localize "ARMOR.NPC_PROTECTION"}}</label>
+                        <input type="number" value="{{data.npcProtection}}" data-dtype="Number" disabled/>
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="sheet-tabs tabs" data-group="primary">
             <b class="item" data-tab="description">{{localize "TAB.DESCRIPTION"}}</b>
             <b class="item" data-tab="stats">{{localize "TAB.STATS"}}</b>
+            <b class="item" data-tab="qualities">{{localize "TAB.QUALITIES"}}</b>
             <b class="item" data-tab="bonus">{{localize "TAB.BONUS"}}</b>
         </div>
 
@@ -29,8 +40,19 @@
                 <div class="stats foreground border">
                     <h1>{{localize "TITLE.STATS"}}</h1>
                     <div class="protection">
-                        <label>{{localize "ARMOR.PROTECTION"}}</label>
-                        <input name="data.protection" type="text" value="{{data.protection}}"/>
+                        <label>Base Prot</label>
+                        <select name="data.baseProtection">
+                            {{#select data.baseProtection}}
+                            <option value="1d4">1d4</option>
+                            <option value="1d6">1d6</option>
+                            <option value="1d8">1d8</option>
+                            <option value="1d10">1d10</option>
+                            {{/select}}
+                        </select>
+                    </div>
+                    <div class="protection">
+                        <label>Prot bonus</label>
+                        <input name="data.bonusProtection" type="text" value="{{data.bonusProtection}}"/>
                     </div>
                     <div class="impeding">
                         <label>{{localize "ARMOR.IMPEDING"}}</label>
@@ -43,6 +65,67 @@
                     <div class="quality">
                         <label>{{localize "ARMOR.QUALITY"}}</label>
                         <input name="data.quality" type="text" value="{{data.quality}}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="tab" data-group="primary" data-tab="qualities">
+                <div class="qualities foreground border">
+                    <h1>{{localize "TITLE.QUALITIES"}}</h1>
+                    <div class="leftcolumn">
+                        <label>{{localize "QUALITY.FLEXIBLE"}}</label>
+                        {{#if data.qualities.flexible}}
+                        <input name="data.qualities.flexible" type="checkbox" value="flexible" checked/>
+                        {{else}}
+                        <input name="data.qualities.flexible" type="checkbox" value="flexible"/>
+                        {{/if}}
+                    </div>
+                    <div class="rightcolumn">
+                        <label>{{localize "QUALITY.CUMBERSOME"}}</label>
+                        {{#if data.qualities.cumbersome}}
+                        <input name="data.qualities.cumbersome" type="checkbox" value="cumbersome" checked/>
+                        {{else}}
+                        <input name="data.qualities.cumbersome" type="checkbox" value="cumbersome"/>
+                        {{/if}}
+                    </div>
+                    <div class="leftcolumn">
+                        <label>{{localize "QUALITY.REINFORCED"}}</label>
+                        {{#if data.qualities.reinforced}}
+                        <input name="data.qualities.reinforced" type="checkbox" value="reinforced" checked/>
+                        {{else}}
+                        <input name="data.qualities.reinforced" type="checkbox" value="reinforced"/>
+                        {{/if}}
+                    </div>
+                    <div class="rightcolumn">
+                        <label>{{localize "QUALITY.CONCEALED"}}</label>
+                        {{#if data.qualities.concealed}}
+                        <input name="data.qualities.concealed" type="checkbox" value="concealed" checked/>
+                        {{else}}
+                        <input name="data.qualities.concealed" type="checkbox" value="concealed"/>
+                        {{/if}}
+                    </div>
+                    <div class="leftcolumn">
+                        <label>{{localize "QUALITY.HALLOWED"}}</label>
+                        {{#if data.qualities.hallowed}}
+                        <input name="data.qualities.hallowed" type="checkbox" value="hallowed" checked/>
+                        {{else}}
+                        <input name="data.qualities.hallowed" type="checkbox" value="hallowed"/>
+                        {{/if}}
+                    </div>
+                    <div class="rightcolumn">
+                        <label>{{localize "QUALITY.RETRIBUTIVE"}}</label>
+                        {{#if data.qualities.retributive}}
+                        <input name="data.qualities.retributive" type="checkbox" value="retributive" checked/>
+                        {{else}}
+                        <input name="data.qualities.retributive" type="checkbox" value="retributive"/>
+                        {{/if}}
+                    </div>
+                    <div class="leftcolumn">
+                        <label>{{localize "QUALITY.DESECRATED"}}</label>
+                        {{#if data.qualities.desecrated}}
+                        <input name="data.qualities.desecrated" type="checkbox" value="desecrated" checked/>
+                        {{else}}
+                        <input name="data.qualities.desecrated" type="checkbox" value="desecrated"/>
+                        {{/if}}
                     </div>
                 </div>
             </div>

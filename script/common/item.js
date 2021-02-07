@@ -1,4 +1,4 @@
-import { rollAttribute, baseRoll, damageRollWithDiceParams, simpleDamageRoll, getAttributeValue, createModifyTokenChatButton } from './roll.js';
+import { upgradeDice, baseRoll, damageRollWithDiceParams, simpleDamageRoll, getAttributeValue, createModifyTokenChatButton } from './roll.js';
 
 export class SymbaroumItem extends Item {
     static async create(data, options) {
@@ -28,6 +28,80 @@ export class SymbaroumItem extends Item {
             }
         }
         super.create(data, options);
+    }
+
+    prepareData() {
+        super.prepareData();
+        this._initializeData(this.data);
+        this._computeCombatData(this.data);
+    }
+
+    _initializeData(data) {
+        if(data.type === "weapon"){
+            data.data.pcDamage = "";
+            data.data.npcDamage = 0;
+        }
+        else if(data.type === "armor"){
+            data.data.pcProtection = "";
+            data.data.npcProtection = 0;
+        }
+    }
+
+    _computeCombatData(data) {
+        if(data.type === "weapon"){
+            const meleeClass = [
+                "1handed",
+                "short",
+                "long",
+                "shield",
+                "unarmed",
+                "heavy"
+            ];
+            const distanceClass = [
+                "ranged",
+                "thrown"
+            ];
+            if(meleeClass.includes(data.data.reference)){
+                data.data.isMelee = true;
+                data.data.isDistance = false;
+            }
+            else if(distanceClass.includes(data.data.reference)){
+                data.data.isMelee = false;
+                data.data.isDistance = true;
+            }
+            else{
+                data.data.isMelee = false;
+                data.data.isDistance = false;
+            }
+            let baseDamage = data.data.baseDamage;
+            if(data.data.bonusDamage != ""){
+                baseDamage += data.data.bonusDamage;;
+            }
+            data.data.pcDamage += baseDamage;
+            if(data.data.qualities?.deepImpact){
+                data.data.pcDamage +=  "+1";
+            }
+            let weaponRoll= new Roll(baseDamage).evaluate({maximize: true});
+            data.data.npcDamage = Math.ceil(weaponRoll.total/2);
+            if(data.data.qualities?.deepImpact){
+                data.data.npcDamage +=  1;
+            }
+        }
+        else if(data.type === "armor"){
+            let protection = data.data.baseProtection;
+            if(data.data.bonusProtection && data.data.bonusProtection != ""){
+                protection += "+" + data.data.bonusProtection;
+            }
+            data.data.pcProtection = protection;
+            if(data.data.qualities?.reinforced){
+                data.data.pcProtection +=  "+1";
+            }
+            let armorRoll= new Roll(protection).evaluate({maximize: true});
+            data.data.npcProtection = Math.ceil(armorRoll.total/2);
+            if(data.data.qualities?.reinforced){
+                data.data.npcProtection +=  1;
+            }
+        }
     }
 
     async sendToChat() {
@@ -188,12 +262,74 @@ export class SymbaroumItem extends Item {
             {label: game.i18n.localize('POWER_LABEL.EARTH_SHOT'), value: "earthshot"},
             {label: game.i18n.localize('POWER_LABEL.WITCH_HAMMER'), value: "witchhammer"}
         ];
+        const traitsList = [
+            {label: game.i18n.localize('TRAIT_LABEL.ACIDICATTACK'), value: "acidicattack"},
+             {label: game.i18n.localize('TRAIT_LABEL.ACIDICBLOOD'), value: "acidicblood"},
+             {label: game.i18n.localize('TRAIT_LABEL.ALTERNATIVEDAMAGE'), value: "alternativedamage"},
+             {label: game.i18n.localize('TRAIT_LABEL.AMPHIBIAN'), value: "amphibian"},
+             {label: game.i18n.localize('TRAIT_LABEL.ARMORED'), value: "armored"},
+             {label: game.i18n.localize('TRAIT_LABEL.AVENGINGSUCCESSOR'), value: "avengingsuccessor"},
+             {label: game.i18n.localize('TRAIT_LABEL.BLOODLUST'), value: "bloodlust"},
+             {label: game.i18n.localize('TRAIT_LABEL.CARAPACE'), value: "carapace"},
+             {label: game.i18n.localize('TRAIT_LABEL.COLLECTIVEPOWER'), value: "collectivepower"},
+             {label: game.i18n.localize('TRAIT_LABEL.COLOSSAL'), value: "colossal"},
+             {label: game.i18n.localize('TRAIT_LABEL.COMPANIONS'), value: "companions"},
+             {label: game.i18n.localize('TRAIT_LABEL.CORRUPTINGATTACK'), value: "corruptingattack"},
+             {label: game.i18n.localize('TRAIT_LABEL.CORRUPTIONHOARDER'), value: "corruptionhoarder"},
+             {label: game.i18n.localize('TRAIT_LABEL.CORRUPTIONSENSITIVE'), value: "corruptionsensitive"},
+             {label: game.i18n.localize('TRAIT_LABEL.CRUSHINGEMBRACE'), value: "crushingembrace"},
+             {label: game.i18n.localize('TRAIT_LABEL.DEADLYBREATH'), value: "deadlybreath"},
+             {label: game.i18n.localize('TRAIT_LABEL.DEATHSTRUGGLE'), value: "deathstruggle"},
+             {label: game.i18n.localize('TRAIT_LABEL.DEVOUR'), value: "devour"},
+             {label: game.i18n.localize('TRAIT_LABEL.DIMINUTIVE'), value: "diminutive"},
+             {label: game.i18n.localize('TRAIT_LABEL.ENTHRALL'), value: "enthrall"},
+             {label: game.i18n.localize('TRAIT_LABEL.FREESPIRIT'), value: "freespirit"},
+             {label: game.i18n.localize('TRAIT_LABEL.GRAPPLINGTONGUE'), value: "grapplingtongue"},
+             {label: game.i18n.localize('TRAIT_LABEL.GRAVELYCOLD'), value: "gravelycold"},
+             {label: game.i18n.localize('TRAIT_LABEL.HARMFULAURA'), value: "harmfulaura"},
+             {label: game.i18n.localize('TRAIT_LABEL.HAUNTING'), value: "haunting"},
+             {label: game.i18n.localize('TRAIT_LABEL.INFECTIOUS'), value: "infectious"},
+             {label: game.i18n.localize('TRAIT_LABEL.INFESTATION'), value: "infestation"},
+             {label: game.i18n.localize('TRAIT_LABEL.INVISIBILITY'), value: "invisibility"},
+             {label: game.i18n.localize('TRAIT_LABEL.LEAP'), value: "leap"},
+             {label: game.i18n.localize('TRAIT_LABEL.LIFESENSE'), value: "lifesense"},
+             {label: game.i18n.localize('TRAIT_LABEL.MANIFESTATION'), value: "manifestation"},
+             {label: game.i18n.localize('TRAIT_LABEL.MANYHEADED'), value: "many-headed"},
+             {label: game.i18n.localize('TRAIT_LABEL.METAMORPHOSIS'), value: "metamorphosis"},
+             {label: game.i18n.localize('TRAIT_LABEL.MYSTICALRESISTANCE'), value: "mysticalresistance"},
+             {label: game.i18n.localize('TRAIT_LABEL.NATURALWEAPON'), value: "naturalweapon"},
+             {label: game.i18n.localize('TRAIT_LABEL.NIGHTPERCEPTION'), value: "nightperception"},
+             {label: game.i18n.localize('TRAIT_LABEL.OBSERVANT'), value: "observant"},
+             {label: game.i18n.localize('TRAIT_LABEL.PARALYZINGVENOM'), value: "paralyzingvenom"},
+             {label: game.i18n.localize('TRAIT_LABEL.PIERCINGATTACK'), value: "piercingattack"},
+             {label: game.i18n.localize('TRAIT_LABEL.POISONOUS'), value: "poisonous"},
+             {label: game.i18n.localize('TRAIT_LABEL.POISONSPIT'), value: "poisonspit"},
+             {label: game.i18n.localize('TRAIT_LABEL.PREHENSILECLAWS'), value: "prehensileclaws"},
+             {label: game.i18n.localize('TRAIT_LABEL.RAMPAGE'), value: "rampage"},
+             {label: game.i18n.localize('TRAIT_LABEL.REGENERATION'), value: "regeneration"},
+             {label: game.i18n.localize('TRAIT_LABEL.ROBUST'), value: "robust"},
+             {label: game.i18n.localize('TRAIT_LABEL.ROOTWALL'), value: "rootwall"},
+             {label: game.i18n.localize('TRAIT_LABEL.SPIRITFORM'), value: "spiritform"},
+             {label: game.i18n.localize('TRAIT_LABEL.STURDY'), value: "sturdy"},
+             {label: game.i18n.localize('TRAIT_LABEL.SUMMONER'), value: "summoner"},
+             {label: game.i18n.localize('TRAIT_LABEL.SWARM'), value: "swarm"},
+             {label: game.i18n.localize('TRAIT_LABEL.SWIFT'), value: "swift"},
+             {label: game.i18n.localize('TRAIT_LABEL.TERRIFY'), value: "terrify"},
+             {label: game.i18n.localize('TRAIT_LABEL.TUNNELER'), value: "tunneler"},
+             {label: game.i18n.localize('TRAIT_LABEL.UNDEAD'), value: "undead"},
+             {label: game.i18n.localize('TRAIT_LABEL.WEB'), value: "web"},
+             {label: game.i18n.localize('TRAIT_LABEL.WINGS'), value: "wings"},
+             {label: game.i18n.localize('TRAIT_LABEL.WRECKER'), value: "wrecker"}  
+        ];
         let list;
         if(this.data.type === "ability"){
             list = abilitiesList;
         }
         else if(this.data.type === "mysticalPower"){
             list = powersList;
+        }
+        else if(this.data.type === "trait"){
+            list = traitsList;
         }
         else{return}
         let referenceOptions = "";
@@ -237,14 +373,17 @@ export class SymbaroumItem extends Item {
         }
 
         const scriptedAbilities =
-        [{reference: "acrobatics", level: [1, 2, 3], function: acrobatics},
-        {reference: "backstab", level: [1, 2, 3], function: attackRoll},
+        [{reference: "alchemy", level: [1, 2, 3], function: alchemy},
+        {reference: "acrobatics", level: [1, 2, 3], function: acrobatics},
+        //{reference: "backstab", level: [1, 2, 3], function: attackRoll},
+        {reference: "beastlore", level: [1, 2, 3], function: beastlore},
+        {reference: "berserker", level: [1, 2, 3], function: berserker},
         {reference: "dominate", level: [1, 2, 3], function: dominatePrepare},
-        {reference: "huntersinstinct", level: [1, 2, 3], function: attackRoll},
+        //{reference: "huntersinstinct", level: [1, 2, 3], function: attackRoll},
         {reference: "leader", level: [1, 2, 3], function: leaderPrepare},
         {reference: "loremaster", level: [1, 2, 3], function: loremaster},
         {reference: "medicus", level: [1, 2, 3], function: medicus},
-        {reference: "shieldfighter", level: [1, 2, 3], function: attackRoll},
+        //{reference: "shieldfighter", level: [1, 2, 3], function: attackRoll},
         {reference: "strangler", level: [1, 2, 3], function: strangler},
         {reference: "witchsight", level: [1, 2, 3], function: witchsight}];
 
@@ -259,12 +398,17 @@ export class SymbaroumItem extends Item {
         {reference: "layonhands", level: [1, 2, 3], function: layonhandsPrepare},
         {reference: "unnoticeable", level: [1, 2, 3], function: unnoticeablePrepare}];
 
+        const scriptedTraits = 
+        [];
         let list;
         if(this.data.type === "ability"){
             list = scriptedAbilities;
         }
         else if(this.data.type === "mysticalPower"){
             list = scriptedPowers;
+        }
+        else if(this.data.type === "trait"){
+            list = scriptedTraits;
         }
         else{return}
 
@@ -281,6 +425,18 @@ export class SymbaroumItem extends Item {
         }
     }
 }
+
+
+const weaponReferences = [
+    "1handed",
+    "short",
+    "long",
+    "unarmed",
+    "heavy",
+    "shield",
+    "thrown",
+    "ranged"
+  ]
 
 /*get the target token, its actor, and evaluate which attribute this actor will use for opposition
 @Params: {string}   targetAttributeName : the name of the resist attribute. Can be defence, and can be null.
@@ -348,6 +504,7 @@ async function buildFunctionStuffDefault(ability, actor) {
     }
     let functionStuff = {
         actor: actor,
+        gmOnlyChatResult: false,
         token :selectedToken,
         ability: ability,
         askTargetAttribute: false,
@@ -480,7 +637,6 @@ async function getMysticAbilities(actor){
                     {number} level
                     {string} levelname the localized label (novice, adpet or master)}*/
 async function getCorruption(functionStuff, corruptionFormula = "1d4"){
-    console.log(functionStuff)
     let sorceryRoll;
     if(functionStuff?.tradition){
         for(let trad of functionStuff.tradition){
@@ -491,7 +647,6 @@ async function getCorruption(functionStuff, corruptionFormula = "1d4"){
             }
         } 
     }
-    console.log(functionStuff)
     if(functionStuff.casterMysticAbilities.sorcery.hasAbility){
         let castingAttribute = (await checkResoluteModifiers(functionStuff.actor)).bestAttributeName;
         sorceryRoll = await baseRoll(functionStuff.actor, castingAttribute, null, null, 0, 0);
@@ -832,7 +987,7 @@ It won't work with NPC fixed values as input
 * @param {object} rollParams is an object of parameters.
 * @param {object} targetData is information on the target that will receive the damage (as returned by the getTarget function)*/
 
-export async function attackRoll(item, actor){
+export async function attackRoll(weapon, actor){
 
     //check wether acting token is player controlled
     let targetData;
@@ -877,27 +1032,27 @@ export async function attackRoll(item, actor){
 
     }
     let specificStuff;
-    if(item.data.type === "weapon"){
+    if(weapon){
         specificStuff = {
             askWeapon: false,
-            castingAttributeName: item.data.data.attribute,
-            weapon: item,
+            castingAttributeName: weapon.attribute,
+            weapon: weapon,
         }
     }
-    if(item.data.type === "ability"){
+    /*if(ability){
         specificStuff = {
-            ability: item,
+            ability: ability,
             askWeapon: true,
-            powerLvl: getPowerLevel(item)
+            powerLvl: getPowerLevel(ability)
         }
-    }
+    }*/
     let functionStuff = Object.assign({}, fsDefault , specificStuff)
-    if(item.data.type === "ability"){
-        if(item.data.data.reference === "huntersinstinct"){
+/*    if(ability){
+        if(ability.data.data.reference === "huntersinstinct"){
             functionStuff.useHuntersInstinct = true;
             if(functionStuff.powerLvl > 1){specificStuff.dmgData.hunterIDmg = true}
         }
-        if(item.data.data.reference === "backstab"){
+        if(ability.data.data.reference === "backstab"){
             functionStuff.dmgData.useBackstab = true;
             if(functionStuff.powerLvl > 1){
                 functionStuff.backstabBleed = true;
@@ -905,84 +1060,83 @@ export async function attackRoll(item, actor){
                 functionStuff.dmgData.bleed = "1d4"
             }
         }
-    }
-    // check for leader adept ability effect on target
-    const LeaderEffect = "icons/svg/eye.svg";
-    let leaderEffect = getEffect(targetData.token, LeaderEffect);
-    if(leaderEffect){
-        functionStuff.dmgData.leaderTarget = true;
-        functionStuff.targetData.autoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
-    };
-
+    }*/
     //search for special attacks (if the attacker has abilities that can affect the roll or not, ask the player in the dialog)
-    if(!functionStuff.dmgData.useBackstab){
-        let backstabAbil = actor.items.filter(item => item.data.data?.reference === "backstab");
-        if(backstabAbil.length != 0){
-            functionStuff.askBackstab = true;
-            if(backstabAbil[0].data.data.adept.isActive){
-                functionStuff.dmgData.backstabBleed = true
+    //ranged attacks
+    if(weapon && weapon.isDistance){
+        if(!functionStuff.useHuntersInstinct){
+            let hunterInstinct = actor.items.filter(item => item.data.data?.reference === "huntersinstinct");
+            if(hunterInstinct.length != 0){
+                functionStuff.askHuntersInstinct = true;
+                if(hunterInstinct[0].data.data.adept.isActive){
+                    functionStuff.dmgData.hunterIDmg = true;
+                }
+            }
+        }
+        let rapidfire = actor.items.filter(item => item.data.data?.reference === "rapidfire");
+        if(rapidfire.length != 0){
+            if(rapidfire[0].data.data.master.isActive){
+                functionStuff.askThreeAttacks = true;
+            }
+            else{
+                functionStuff.askTwoAttacks = true;
+            }
+        }
+        if(weapon.reference == "thrown"){
+            let steelthrow = actor.items.filter(item => item.data.data?.reference === "steelthrow");
+            if(steelthrow.length != 0){
+                if(steelthrow[0].data.data.adept.isActive){
+                    functionStuff.askTwoAttacks = true;
+                }
+                if(steelthrow.data.data.master.isActive){
+                    functionStuff.askThreeAttacks = true;
+                }
             }
         }
     }
-    if(!functionStuff.useHuntersInstinct){
-        let hunterInstinct = actor.items.filter(item => item.data.data?.reference === "huntersinstinct");
-        if(hunterInstinct.length != 0){
-            functionStuff.askHuntersInstinct = true;
-            if(hunterInstinct[0].data.data.adept.isActive){
-                functionStuff.dmgData.hunterIDmg = true;
+    //melee weapons
+    if(weapon && weapon.isMelee){
+        if(weapon.reference == "unarmed"){
+            let naturalwarrior = actor.items.filter(item => item.data.data?.reference === "naturalwarrior");
+            if(naturalwarrior.length != 0){
+                if(naturalwarrior[0].data.data.adept.isActive){
+                    functionStuff.askTwoAttacks = true;
+                }
+            }
+        }
+        if(weapon.qualities.short){
+            let knifeplay = actor.items.filter(item => item.data.data?.reference === "knifeplay");
+            if(knifeplay.length != 0){
+                if(knifeplay[0].data.data.adept.isActive){
+                    functionStuff.askTwoAttacks = true;
+                }
+            }
+        }
+        if(!functionStuff.dmgData.useBackstab){
+            let backstabAbil = actor.items.filter(item => item.data.data?.reference === "backstab");
+            if(backstabAbil.length != 0){
+                functionStuff.askBackstab = true;
+                if(backstabAbil[0].data.data.adept.isActive){
+                    functionStuff.dmgData.backstabBleed = true
+                }
+            }
+        }
+        let ironFist = actor.items.filter(item => item.data.data?.reference === "ironfist");
+        if(ironFist.length > 0){
+            let powerLvl = getPowerLevel(ironFist[0]);
+            if(powerLvl.level > 2){
+                functionStuff.askIronFistMaster = true;
+                functionStuff.autoParams += game.i18n.localize('ABILITY_LABEL.IRON_FIST') + " (" + game.i18n.localize('ABILITY.MASTER') + "), ";
             }
         }
     }
-    //multiple attacks
-    let naturalwarrior = actor.items.filter(item => item.data.data?.reference === "naturalwarrior");
-    if(naturalwarrior.length != 0){
-        if(naturalwarrior[0].data.data.adept.isActive){
-            functionStuff.askTwoAttacks = true;
-        }
-    }
-    let rapidfire = actor.items.filter(item => item.data.data?.reference === "rapidfire");
-    if(rapidfire.length != 0){
-        if(rapidfire[0].data.data.master.isActive){
-            functionStuff.askThreeAttacks = true;
-        }
-        else{
-            functionStuff.askTwoAttacks = true;
-        }
-    }
-    let knifeplay = actor.items.filter(item => item.data.data?.reference === "knifeplay");
-    if(knifeplay.length != 0){
-        if(knifeplay[0].data.data.adept.isActive){
-            functionStuff.askTwoAttacks = true;
-        }
-    }
-    let steelthrow = actor.items.filter(item => item.data.data?.reference === "steelthrow");
-    if(steelthrow.length != 0){
-        if(steelthrow[0].data.data.adept.isActive){
-            functionStuff.askTwoAttacks = true;
-        }
-        if(steelthrow.data.data.master.isActive){
-            functionStuff.askThreeAttacks = true;
-        }
-    }
+    //all weapons
     if(!functionStuff.askWeapon){
-        if(functionStuff.weapon.data.data.qualities.precise){
+        if(functionStuff.weapon.qualities.precise){
             functionStuff.modifier += 1;
             functionStuff.autoParams += game.i18n.localize('COMBAT.PARAMS_PRECISE')
         }
     };
-    //iron fist
-    let ironFist = actor.items.filter(item => item.data.data?.reference === "ironfist");
-    if(ironFist.length > 0){
-        let powerLvl = getPowerLevel(ironFist[0]);
-        if(powerLvl.level == 2){
-            functionStuff.dmgData.modifier += " + 1d4";
-            functionStuff.autoParams += game.i18n.localize('ABILITY_LABEL.IRON_FIST') + " (" + game.i18n.localize('ABILITY.ADEPT') + "), ";
-        }
-        if(powerLvl.level > 2){
-            functionStuff.askIronFistMaster = true;
-            functionStuff.autoParams += game.i18n.localize('ABILITY_LABEL.IRON_FIST') + " (" + game.i18n.localize('ABILITY.MASTER') + "), ";
-        }
-    }
     let beastlore = actor.items.filter(item => item.data.data?.reference === "beastlore");
     if(beastlore.length != 0){
         let beastLoreLvl = getPowerLevel(beastlore[0]).level;
@@ -993,7 +1147,13 @@ export async function attackRoll(item, actor){
             functionStuff.dmgData.beastLoreDmg = "1d6";
         }
     }
-
+    // check for leader adept ability effect on target
+    const LeaderEffect = "icons/svg/eye.svg";
+    let leaderEffect = getEffect(targetData.token, LeaderEffect);
+    if(leaderEffect){
+        functionStuff.dmgData.leaderTarget = true;
+        functionStuff.targetData.autoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
+    };
     await modifierDialog(functionStuff)
 }
   
@@ -1021,7 +1181,9 @@ async function attackResult(rollData, functionStuff){
             damage = await damageRollWithDiceParams(functionStuff.attackFromPC, functionStuff.actor, functionStuff.weapon, functionStuff.dmgData, functionStuff.targetData);
             if(damage.roll.total > functionStuff.targetData.actor.data.data.health.toughness.threshold){pain = true}
             dmgFormula = game.i18n.localize('WEAPON.DAMAGE') + ": " + damage.roll._formula;
-            damageTooltip += damage.roll.result + "    ";
+            //damageTooltip += damage.roll.result + "    ";
+            //damageTooltip = await damage.roll.getTooltip();
+            damageTooltip = new Handlebars.SafeString(await damage.roll.getTooltip());
             damageRollMod = game.i18n.localize('COMBAT.CHAT_DMG_PARAMS') + damage.autoParams;
             hasDmgMod = (damage.autoParams.length >0) ? true : false;
             damageTot += Math.max(0, damage.roll.total);
@@ -1047,7 +1209,7 @@ async function attackResult(rollData, functionStuff){
             effectDuration: 1
         })
     }
-    else if(hasDamage){
+    else{
         damageText = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
         flagDataArray.push({
             tokenId: functionStuff.targetData.token.data._id,
@@ -1063,10 +1225,11 @@ async function attackResult(rollData, functionStuff){
         }
 
     }
-    let introText = functionStuff.actor.data.name + game.i18n.localize('COMBAT.CHAT_INTRO') + functionStuff.weapon.data.name;
+    let introText = functionStuff.actor.data.name + game.i18n.localize('COMBAT.CHAT_INTRO') + functionStuff.weapon.name;
     let targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.actor.data.name;
     if (functionStuff.targetData.autoParams != ""){targetText += ": " + functionStuff.targetData.autoParams}
     let templateData = {
+        rollData: rollData,
         targetData : functionStuff.targetData,
         hasTarget : functionStuff.targetData.hasTarget,
         introText: introText,
@@ -1314,6 +1477,12 @@ async function standardPowerResult(rollData, functionStuff){
         user: game.user._id,
         content: html,
     }
+    if(functionStuff?.gmOnlyChatResult){
+        let gmList =  ChatMessage.getWhisperRecipients('GM');
+        if(gmList.length > 0){
+            chatData.whisper = gmList
+          }
+    }
     let NewMessage = await ChatMessage.create(chatData);
 
     if(hasSucceed && (functionStuff.addTargetEffect.length >0)){
@@ -1326,7 +1495,7 @@ async function standardPowerResult(rollData, functionStuff){
         }
     }
     if(hasSucceed && (functionStuff.addCasterEffect.length >0)){ 
-        for(let effect of functionStuff.addTargetEffect){   
+        for(let effect of functionStuff.addCasterEffect){   
             flagDataArray.push({
                 tokenId: functionStuff.token.data._id,
                 addEffect: effect,
@@ -1369,7 +1538,6 @@ async function anathemaPrepare(ability, actor) {
         targetData.resistAttributeValue = targetResMod.bestAttributeValue;
         targetData.autoParams = targetResMod.autoParams;
         favour += targetResMod.favour*-1;
-        console.log(targetResMod)
     }
     else {targetData = {hasTarget : false}}
     let fsDefault = await buildFunctionStuffDefault(ability, actor)
@@ -1449,7 +1617,6 @@ async function brimstoneCascadePrepare(ability, actor) {
     //check rapid reflexes
     let targetHasRapidReflexes = false;
     let rrAbility = targetData.actor.items.filter(item => item.data.data.reference === "rapidreflexes");
-    console.log(rrAbility)
     if(rrAbility.length != 0){
         targetHasRapidReflexes = true;
         targetData.autoParams += "Rapid Reflexes, ";
@@ -2280,6 +2447,54 @@ async function unnoticeablePrepare(ability, actor) {
     await standardPowerActivation(functionStuff);
 }
 
+async function alchemy(ability, actor) {
+    let fsDefault = await buildFunctionStuffDefault(ability, actor);
+    let specificStuff = {
+        castingAttributeName: "cunning",
+        combat: false
+    }
+    let functionStuff = Object.assign({}, fsDefault , specificStuff);
+    await standardAbilityActivation(functionStuff)
+}
+
+async function beastlore(ability, actor) {
+    let fsDefault = await buildFunctionStuffDefault(ability, actor);
+    let specificStuff = {
+        castingAttributeName: "cunning",
+        combat: false
+    }
+    let functionStuff = Object.assign({}, fsDefault , specificStuff);
+    await standardAbilityActivation(functionStuff)
+}
+
+async function berserker(ability, actor) {
+    let fsDefault = await buildFunctionStuffDefault(ability, actor);
+    let specificStuff = {
+        isMaintained: false
+    };
+    let functionStuff = Object.assign({}, fsDefault , specificStuff);
+
+    if(!functionStuff.attackFromPC){
+        functionStuff.gmOnlyChatResult = true
+    }
+    let flagData = await actor.getFlag(game.system.id, 'berserker');
+    if(flagData){
+        await actor.unsetFlag(game.system.id, 'berserker');
+        functionStuff.introText = game.i18n.localize('ABILITY_BERSERKER.CHAT_DESACTIVATE');
+        functionStuff.resultTextSuccess = game.i18n.localize('ABILITY_BERSERKER.CHAT_RESULT_DESACTIVATE');
+        functionStuff.removeCasterEffect= ["systems/symbaroum/asset/image/berserker.svg"]
+    }
+    else{
+        flagData = functionStuff.powerLvl.level;
+        functionStuff.introText = game.i18n.localize('ABILITY_BERSERKER.CHAT_ACTIVATE');
+        await actor.setFlag(game.system.id, 'berserker', flagData);
+        functionStuff.addCasterEffect = ["systems/symbaroum/asset/image/berserker.svg"];
+        if(functionStuff.powerLvl.level == 2) functionStuff.resultTextSuccess = game.i18n.localize('ABILITY_BERSERKER.CHAT_RESULT_LVL2');
+        else if(functionStuff.powerLvl.level > 2) functionStuff.resultTextSuccess = game.i18n.localize('ABILITY_BERSERKER.CHAT_RESULT_LVL3');
+        else functionStuff.resultTextSuccess = game.i18n.localize('ABILITY_BERSERKER.CHAT_RESULT_LVL1');
+    }
+    await standardPowerResult(null, functionStuff);
+}
 
 async function dominatePrepare(ability, actor) {
     let powerLvl = getPowerLevel(ability);
@@ -2748,7 +2963,11 @@ async function witchsight(ability, actor) {
             templateData.finalText = game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_FINAL1') + targetData.actor.data.name + game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_FINAL2') +  targetData.actor.data.data.bio.shadow;
         }
     }
-    let corruptionRoll = new Roll("1d4").evaluate();
+    let corruptionFormula = "1d1";
+    if(powerLvl.level == 2) corruptionFormula = "1d4";
+    if(powerLvl.level > 2) corruptionFormula = "1d6";
+
+    let corruptionRoll = new Roll(corruptionFormula).evaluate();
     corruptionRoll.toMessage();
     templateData.corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruptionRoll.total.toString();
 

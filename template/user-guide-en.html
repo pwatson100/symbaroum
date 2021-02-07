@@ -65,14 +65,47 @@
 
     <h1>Weapons and Armor</h1>
     <p>
+        Pre-configured weapons and armors are available in compendiums. We recommand you use them. Just find the compendiums corresponding to your langage in the compendium tab, and select "import".
+        <br>
         To create an armor or weapon, select the tab&nbsp;<em>GEAR</em>&nbsp;on the character sheet.
         There is a&nbsp;<strong>+</strong>&nbsp;at the end of the tables for armor and weapons which when clicked, will create new armor or weapon and details about can be filled in.
         <br>
-
+    </p>
         &nbsp;<span class="img05">&nbsp;</span>&nbsp;
+    <p>
+    Weapons have a class : One-handed (default), heavy, unarmed, short, long, ranged, thrown, and shield.
+    <br>
+    Attributes: The default base attribute is "Accurate" but you can select another one. You usually don't have to, since abilities that modify the attribute (Iron fist, Sixth sense...) will automaticaly do it. 
+    <br>
+    There are two fields for the damage :
+    <br>
+    - Base damage : contains the damage dice of the weapon (1-handed is 1d8, short is 1d6…). You don't need to add passive bonuses from abilities, they will automaticaly added later.
+    <br>
+    - Bonus damage. This field should be left empty and be used only for exceptional situations, unsupported abilities and house rules.
+    <br>
+    - A weapon with the quality deep impact, or a wepon masterfully crafted to give it this quality have +1 damage, this damage should not be entered in the bonus field, just check the checkbox « deep impact » in the quality tab and the bonus will be added.
+    
+    The calculated damage is printed in the boxes under the weapon name : as in Symbaroum rules, PC damage is the damage roll formula when it’s a PC that wields it, and the NPC damage is the fixed damage used when it’s a NPC.
+    <br>
+
+    To add an armor or weapon to a character sheet, drag it them from the Item's selection to the armor or weapon section of the gear tab of the character sheet.
+    Monsters with the "Natural weapon" trait should be given the weapon « Natural weapon » of the compendium, and those with the "Armored" trait should be given the "armored" Armor.
+    <br>
+    When a PC or NPC add a weapon or an armor, to its sheet, its damage or ptotection value is automaticaly recalculated, taking into account the character abilities and traits (man-at-arms, Robust, Iron Fist…). For weapons, the attribute is also evaluated, taking into account the class of the weapon.
+    The weapon/arùor then appears on the character sheet with its final value printed. (dice value if it’s a PC sheet (ex: 1d8+1d6), fixed if it’s a monster sheet (ex: 7))
+    <br>
+    On the gear tab of the sheet, Weapons and armor have 3 states repredented bys a small icon, that you can change by clicking on it:
+    <br>
+    - stored (house icon): the item is stored out of immediate reach (in the character house, in a pack on a mule...)
+    <br>
+    - carried (briefcase icon): the item is sheated, or in a backpack
+    <br>
+    - active (shirt icon): the item is weared (armor) or in hand (weapon), and can be used for combat.
+    <br>
+    Active weapons, and the active armor, can be seen in the main tab of the character sheet. Click on them to make a roll (cf the combat section).
+    Only one armor will be considered active at a time. If there is no active armor, the system will generate a "no armor" dummy armor, equipped by the character, with passive bonuses added (robust..).
     </p>
     <br><br>
-
     <h1>Making an Attribute Test</h1>
     <p>
         Symbaroum often calls for a test to be performed against an attribute.
@@ -239,6 +272,16 @@
         Clicking the button will automaticaly affect the results of the attack to the tokens: damage will be substracted from toughness, status icons like poison and bleed added, etc.
     </p>
     <br><br>
+    
+    <h1>Initiative:</h1>
+    The initiative used in the Symbaroum for FVTT system works the same way than stated in the rulebook, but in order to integrate in FVTT it uses the formula:
+    <br>
+    initiative = quick x 1000 + vigilant x 10 + 1d8.
+    <br>
+    This simple formula produces the same order than the rulebook, but the side effect is the strange big number that appear in the tracker.
+    The 2 first digits are <i>Quick</i>, digits 3 and 4 are <i>Vigilant</i>, and the last digit is for randomize the rare event when both attributes are equal.
+    So initiative 15106 means <i>Quick</i> 15, <i>Vigilant</i> 10, and the 6 is the random digit.
+    It is possible to change the base attribute used for the formula in the character sheet (for characters with the <i>Tactician</i> abilty, for example).
 
     <h1>Favour/Disfavour:</h1>
     <p>

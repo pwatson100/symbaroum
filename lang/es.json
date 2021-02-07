@@ -80,6 +80,13 @@
   "ABILITY_LABEL.WRESTLING":"Lucha",
   
   "ABILITY_ERROR.TARGET": "Demasiados objetivos",
+  
+  "ABILITY_BERSERKER.CHAT_ACTIVATE": " enters Berserker rage.",
+  "ABILITY_BERSERKER.CHAT_DESACTIVATE": " calms down and quits berserker rage.",
+  "ABILITY_BERSERKER.CHAT_RESULT_DESACTIVATE": "Combat stats revert to normal.",
+  "ABILITY_BERSERKER.CHAT_RESULT_LVL1": "Melee damage increased, base defense set to 5.",
+  "ABILITY_BERSERKER.CHAT_RESULT_LVL2": "Melee damage increased, armor bonus, base defense set to 5.",
+  "ABILITY_BERSERKER.CHAT_RESULT_LVL3": "Melee damage increased, armor bonus.",
 
   "ABILITY_DOMINATE_ADEPT.CHAT_INTRO": " intenta indimidar a su objetivo.",
   "ABILITY_DOMINATE_MASTER.CHAT_INTRO": " intenta someter a su objetivo.",
@@ -126,6 +133,8 @@
   "ARMOR.NAME": "Nombre",
   "ARMOR.PROTECTION": "Protección",
   "ARMOR.PROTECTION_SHORT": "Prot.",
+  "ARMOR.PC_PROTECTION": "PC Prot.",
+  "ARMOR.NPC_PROTECTION": "NPC Prot.",
   "ARMOR.IMPEDING": "Incomodidad",
   "ARMOR.DEFENSE": "Defensa",
   "ARMOR.COST": "Precio",
@@ -258,7 +267,6 @@
   "EQUIPMENT.NUMBER": "Número",
   "EQUIPMENT.DESCRIPTION": "Descr.",
   "EQUIPMENT.QUANTITY_SHORT": "Cant.",
-
 
   "EXPERIENCE": "Experiencia",
 
@@ -546,16 +554,37 @@
   "TRAIT_LABEL.WEB": "Telaraña",
   "TRAIT_LABEL.WINGS": "Alado",
   "TRAIT_LABEL.WRECKER": "Demoledor",
+  "QUALITY.ACIDCOATED": "Acid coated",
+  "QUALITY.BANE": "Bane",
+  "QUALITY.DEATHRUNE": "Death Rune",
+  "QUALITY.DESECRATED": "Desecrated",
+  "QUALITY.FLAMING": "Flaming",
+  "QUALITY.HALLOWED": "Hallowed",
+  "QUALITY.POISON": "Poison",
+  "QUALITY.THUNDERING": "Thundering",
+  "QUALITY.RETRIBUTIVE": "Retributive",
  
   "WEAPON.HEADER": "Arma",
   "WEAPON.NAME": "Nombre",
   "WEAPON.DAMAGE": "Daño",
   "WEAPON.DAMAGE_SHORT": "Daño",
+  "WEAPON.PC_DAMAGE": "PC Dmg",
+  "WEAPON.NPC_DAMAGE": "NPC Dmg",
   "WEAPON.QUALITY": "Calidad",
   "WEAPON.COST": "Precio",
   "WEAPON.ATTRIBUTE": "Atributo",
   "WEAPON.DESCRIPTION": "Descr.",
   "WEAPON.NUMBER": "Número",
+
+  "WEAPON_CLASS.LABEL": "Weapon type",
+  "WEAPON_CLASS.1HANDED": "Single-handed",
+  "WEAPON_CLASS.SHORT": "Short",
+  "WEAPON_CLASS.LONG": "Long",
+  "WEAPON_CLASS.UNARMED": "Unarmed Attack",
+  "WEAPON_CLASS.HEAVY": "Heavy",
+  "WEAPON_CLASS.RANGED": "Ranged",
+  "WEAPON_CLASS.SHIELD":"Shield",
+  "WEAPON_CLASS.THROWN": "Thrown",
 
   "SYMBAROUM.OPTIONAL_CRIT": "Tiradas Críticas Opcionales",
   "SYMBAROUM.OPTIONAL_CRIT_HINT": "Marca para habilitar el bonus de Golpes y pifias en Defensa en tiradas de 1 y 20, como se detalla en el Libro Básico p. 179",

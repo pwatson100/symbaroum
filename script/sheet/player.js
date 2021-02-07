@@ -63,21 +63,13 @@ export class PlayerSheet extends SymbaroumActorSheet {
 
     async _prepareRollArmor(event) {
         event.preventDefault();
-        const armor = this.actor.data.data.combat;
-        if(!game.settings.get('symbaroum', 'combatAutomation')){
-            await prepareRollAttribute(this.actor, "defense", armor, null)
-        }
+        await this.actor.rollArmor()
     }
 
     async _prepareRollWeapon(event) {
         event.preventDefault();
         const div = $(event.currentTarget).parents(".item");
-        const weapon = this.actor.getOwnedItem(div.data("itemId"));
-        if(game.settings.get('symbaroum', 'combatAutomation')){
-            await this.actor.rollWeapon(weapon)
-        }
-        else{
-            await prepareRollAttribute(this.actor, weapon.data.data.attribute, null, weapon)
-        }
+        const weapon = this.actor.data.data.weapons.filter(item => item._id == div.data("itemId"))[0];
+        await this.actor.rollWeapon(weapon)
     }
 }

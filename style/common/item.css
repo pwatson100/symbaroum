@@ -139,7 +139,16 @@
     margin: auto;
 }
 
+.symbaroum.sheet.item .sheet-header .computedvalues {
+    display: flex;
+    flex-direction: row;
+    flex-basis: 100%;
+    align-items: center;
+    margin: auto;
+}
+
 .symbaroum.sheet.item .sheet-header .level input,
+.symbaroum.sheet.item .sheet-header .computedvalues input,
 .symbaroum.sheet.item .sheet-header .name input {
     height: 30px;
 }

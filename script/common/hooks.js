@@ -35,15 +35,15 @@ Hooks.once('init', () => {
   Items.registerSheet('symbaroum', EquipmentSheet, { types: ['equipment'], makeDefault: true });
   Items.registerSheet('symbaroum', ArtifactSheet, { types: ['artifact'], makeDefault: true });
   initializeHandlebars();
-  game.settings.register('symbaroum', 'worldSchemaVersion', {
-    name: 'World Version',
-    hint: 'Used to automatically upgrade worlds data when the system is upgraded.',
+  game.settings.register('symbaroum', 'worldTemplateVersion', {
+    name: 'World Template Version',
+    hint: 'Used to automatically upgrade worlds data when the template is upgraded.',
     scope: 'world',
     config: true,
     default: 0,
     type: Number,
   });
-  
+
   game.settings.register('symbaroum', 'combatAutomation', {
     name: 'SYMBAROUM.OPTIONAL_AUTOCOMBAT',
     hint: 'SYMBAROUM.OPTIONAL_AUTOCOMBAT_HINT',
@@ -174,8 +174,7 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
             if(statusCounterMod){
               let statusEffectCounter = await EffectCounter.findCounter(token, flagData.removeEffect);
               if(statusEffectCounter != undefined){
-                  statusEffectCounter.setValue(0);
-                  await statusEffectCounter.update();
+                  await statusEffectCounter.remove();
               }
             }
             else {token.toggleEffect(flagData.removeEffect)}

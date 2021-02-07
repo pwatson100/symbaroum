@@ -6,15 +6,14 @@
                 <div class="item-header">
                     <b class="name">{{localize "ARMOR.NAME"}}</b>
                     <b class="protection">{{localize "ARMOR.PROTECTION_SHORT"}}</b>
-                    <b class="quality">{{localize "ARMOR.QUALITY"}}</b>
+                    <b class="quality">{{localize "ARMOR.IMPEDING"}}</b>
                     <b class="state">{{localize "GEAR.STATE"}}</b>
                     <div class="button">
                         <a class="item-create" title="Add Armor" data-type="armor"><i class="fas fa-plus"></i></a>
                     </div>
                 </div>
                 <div class="items">
-                    {{#each actor.items as |item|}}
-                        {{#if item.isArmor}}
+                    {{#each actor.data.armors as |item|}}
                             <div class="armor item" data-item-id="{{item._id}}">
                                 <div class="name">
                                     <div class="image-container">
@@ -22,8 +21,8 @@
                                     </div>
                                     <button class="item-edit ellipsis" style="width: 131px">{{item.name}}</button>
                                 </div>
-                                <div class="protection">{{item.data.protection}}</div>
-                                <div class="quality">{{item.data.quality}}</div>
+                                <div class="protection">{{item.pc}}</div>
+                                <div class="quality">{{item.impeding}}</div>
                                 <div class="state">
                                     {{#if item.isActive}}
                                         <a class="item-state" title="{{localize 'GEAR.ACTIVE'}}"><i class="fas fa-tshirt"></i></a>
@@ -37,7 +36,6 @@
                                     <a class="item-control item-delete" title="Delete Armor"><i class="fas fa-trash"></i></a>
                                 </div>
                             </div>
-                        {{/if}}
                     {{/each}}
                 </div>
             </div>
@@ -48,15 +46,14 @@
                 <div class="item-header">
                     <b class="name">{{localize "WEAPON.NAME"}}</b>
                     <b class="damage">{{localize "WEAPON.DAMAGE_SHORT"}}</b>
-                    <b class="quality">{{localize "WEAPON.QUALITY"}}</b>
+                    <b class="quality">{{localize "WEAPON.ATTRIBUTE"}}</b>
                     <b class="state">{{localize "GEAR.STATE"}}</b>
                     <div class="button">
                         <a class="item-create" title="Add Weapon" data-type="weapon"><i class="fas fa-plus"></i></a>
                     </div>
                 </div>
                 <div class="items">
-                    {{#each actor.items as |item|}}
-                        {{#if item.isWeapon}}
+                    {{#each actor.data.weapons as |item|}}
                             <div class="weapon item" data-item-id="{{item._id}}">
                                 <div class="name">
                                     <div class="image-container">
@@ -64,8 +61,8 @@
                                     </div>
                                     <button class="item-edit ellipsis" style="width: 131px">{{item.name}}</button>
                                 </div>
-                                <div class="damage">{{item.data.damage}}</div>
-                                <div class="quality">{{item.data.quality}}</div>
+                                <div class="damage">{{item.damage.pc}}</div>
+                                <div class="quality">{{localize item.attributeLabel}}</div>
                                 <div class="state">
                                     {{#if item.isActive}}
                                         <a class="item-state" title="{{localize 'GEAR.ACTIVE'}}"><i class="fas fa-tshirt"></i></a>
@@ -79,7 +76,6 @@
                                     <a class="item-control item-delete" title="Delete Weapon"><i class="fas fa-trash"></i></a>
                                 </div>
                             </div>
-                        {{/if}}
                     {{/each}}
                 </div>
             </div>

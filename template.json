@@ -274,9 +274,9 @@
         "bonus"
       ],
       "description": "",
-      "reference": "",
-      "damage": "",
-      "quality": "",
+      "reference": "1handed",
+      "baseDamage": "1d8",
+      "bonusDamage": "",
       "qualities": {
         "bastard": false,
         "returning": false,
@@ -295,7 +295,15 @@
         "bloodLetting": false,
         "areaMeleeRadius": false,
         "areaShortRadius": false,
-        "areaCone": false
+        "areaCone": false,
+        "acidcoated": false,
+        "bane": false,
+        "deathrune": false,
+        "desecrated": false,
+        "flaming": false,
+        "hallowed": false,
+        "poison": false,
+        "thundering": false
       },
       "cost": "",
       "number": 1,
@@ -308,9 +316,18 @@
       ],
       "description": "",
       "reference": "",
-      "protection": "",
+      "baseProtection": "1d4",
+      "bonusProtection": "",
       "impeding": 0,
-      "quality": "",
+      "qualities": {
+        "flexible": false,
+        "cumbersome": false,
+        "concealed": false,
+        "reinforced": false,
+        "hallowed": false,
+        "retributive": false,
+        "desecrated": false
+      },
       "cost": "",
       "state": "other"
     },

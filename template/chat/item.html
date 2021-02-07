@@ -59,16 +59,15 @@
         {{/if}}
 
         {{#if isWeapon}}
-        <p><strong>{{localize "WEAPON.DAMAGE"}}:</strong> {{data.damage}}</p>
-        <p><strong>{{localize "WEAPON.QUALITY"}}:</strong> {{data.quality}}</p>
+        <p><strong>{{localize "WEAPON_CLASS.LABEL"}}:</strong> {{data.reference}}</p>
+        <p><strong>{{localize "WEAPON.PC_DAMAGE"}}:</strong> {{data.pcDamage}}</p>
         <p><strong>{{localize "WEAPON.COST"}}:</strong> {{data.cost}}</p>
         <p><strong>{{localize "WEAPON.DESCRIPTION"}}:</strong> {{removeMarkup data.description}}</p>
         {{/if}}
 
         {{#if isArmor}}
-        <p><strong>{{localize "ARMOR.PROTECTION"}}:</strong> {{data.protection}}</p>
+        <p><strong>{{localize "ARMOR.PC_PROTCETION"}}:</strong> {{data.pcProtection}}</p>
         <p><strong>{{localize "ARMOR.IMPEDING"}}:</strong> {{data.impeding}}</p>
-        <p><strong>{{localize "ARMOR.QUALITY"}}:</strong> {{data.quality}}</p>
         <p><strong>{{localize "ARMOR.COST"}}:</strong> {{data.cost}}</p>
         <p><strong>{{localize "ARMOR.DESCRIPTION"}}:</strong> {{removeMarkup data.description}}</p>
         {{/if}}
