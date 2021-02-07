@@ -78,6 +78,13 @@
       "entity": "Item"
     },
     {
+      "name": "symbaroumabilitieses",
+      "label": "ES - Abilities",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumabilitieses.db",
+      "entity": "Item"
+    },
+    {
       "name": "symbaroumpowersen",
       "label": "EN - Powers",
       "system": "symbaroum",
@@ -106,6 +113,13 @@
       "entity": "Item"
     },
     {
+      "name": "symbaroumpowerses",
+      "label": "ES - Powers",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumpowerses.db",
+      "entity": "Item"
+    },
+    {
       "name": "symbaroumtraitsen",
       "label": "EN - Traits",
       "system": "symbaroum",
@@ -131,6 +145,13 @@
       "label": "SV - Traits",
       "system": "symbaroum",
       "path": "./packs/symbaroumtraitssv.db",
+      "entity": "Item"
+    },
+    {
+      "name": "symbaroumtraitses",
+      "label": "ES - Traits",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumtraitses.db",
       "entity": "Item"
     },
     {
@@ -193,10 +214,10 @@
   "gridUnits": "m",
   "primaryTokenAttribute": "health.toughness",
   "secondaryTokenAttribute": "combat.defense",
-  "initiative": "1d8 + @initiative.value",
+  "initiative": "1d20[tiebreaker]/100000 + @initiative.value",
   "socket": true,
   "url": "https://github.com/pwatson100/symbaroum",
-  "manifest": "https://github.com/pwatson100/symbaroum/releases/download/2.20.0/system.json",
-  "download": "https://github.com/pwatson100/symbaroum/releases/download/2.20.0/master.zip",
+  "manifest": "https://github.com/pwatson100/symbaroum/releases/download/2.21.0/system.json",
+  "download": "https://github.com/pwatson100/symbaroum/releases/download/2.21.0/master.zip",
   "license": "LICENSE.txt"
 }

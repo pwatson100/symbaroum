@@ -598,6 +598,11 @@
   "SYMBAROUM.OPTIONAL_MORERITUALS": "Tillåt fler ritualer",
   "SYMBAROUM.OPTIONAL_MORERITUALS_HINT": "Välj för att tillåta fler ritualer, som det beskrivs i Spelarens Handbok s. 102.",
   "SYMBAROUM.OPTIONAL_AUTOCOMBAT": "Stridsautomatisering",
-  "SYMBAROUM.OPTIONAL_AUTOCOMBAT_HINT": "Välj för att aktivera automatiserade förbättringar för smidiga strider. Läs Symbaroum systemguide för FoundryVTT i Compendium-sektionen för mer info."
+  "SYMBAROUM.OPTIONAL_AUTOCOMBAT_HINT": "Välj för att aktivera automatiserade förbättringar för smidiga strider. Läs Symbaroum systemguide för FoundryVTT i Compendium-sektionen för mer info.",
+  "SYMBAROUM.OPTIONAL_SAVECOMBATROLL": "Combat settings for rolls",
+  "SYMBAROUM.OPTIONAL_SAVECOMBATROLL_HINT": "Check to enable QoL enhancement for keeping all modifiers when rolling combat (weapon/defense)",
+  "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL": "Attribute settings for rolls",
+  "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT": "Check to enable QoL enhancement for keeping all modifiers when rolling attribute tests"
+
     
 }
