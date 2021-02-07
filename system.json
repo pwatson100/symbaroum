@@ -5,7 +5,7 @@
   "version": "2.21.0",
   "minimumCoreVersion": "0.7.5",
   "compatibleCoreVersion": "0.7.9",
-  "templateVersion": 3,
+  "templateVersion": 3.1,
   "author": "Paul Watson, Bithir, Khaali",
   "scripts": [],
   "esmodules": [

@@ -160,11 +160,11 @@
                         {{/if}}
                     </div>
                     <div class="rightcolumn">
-                        <label>{{localize "QUALITY.RETURNING"}}</label>
+                        <label>{{localize "QUALITY.MYSTICAL"}}</label>
                         {{#if data.qualities.returning}}
-                        <input name="data.qualities.returning" type="checkbox" value="returning" checked/>
+                        <input name="data.qualities.mystical" type="checkbox" value="mystical" checked/>
                         {{else}}
-                        <input name="data.qualities.returning" type="checkbox" value="returning"/>
+                        <input name="data.qualities.mystical" type="checkbox" value="mystical"/>
                         {{/if}}
                     </div>
                     <div class="leftcolumn">
@@ -224,6 +224,14 @@
                         {{/if}}
                     </div>
                     <div class="rightcolumn">
+                        <label>{{localize "QUALITY.RETURNING"}}</label>
+                        {{#if data.qualities.returning}}
+                        <input name="data.qualities.returning" type="checkbox" value="returning" checked/>
+                        {{else}}
+                        <input name="data.qualities.returning" type="checkbox" value="returning"/>
+                        {{/if}}
+                    </div>
+                    <div class="leftcolumn">
                         <label>{{localize "QUALITY.AREAC"}}</label>
                         {{#if data.qualities.areaCone}}
                         <input name="data.qualities.areaCone" type="checkbox" value="areaCone" checked/>
@@ -231,7 +239,7 @@
                         <input name="data.qualities.areaCone" type="checkbox" value="areaCone"/>
                         {{/if}}
                     </div>
-                    <div class="leftcolumn">
+                    <div class="rightcolumn">
                         <label>{{localize "QUALITY.AREAMRR"}}</label>
                         {{#if data.qualities.areaMeleeRadius}}
                         <input name="data.qualities.areaMeleeRadius" type="checkbox" value="areaMeleeRadius" checked/>
@@ -239,12 +247,20 @@
                         <input name="data.qualities.areaMeleeRadius" type="checkbox" value="areaMeleeRadius"/>
                         {{/if}}
                     </div>
-                    <div class="rightcolumn">
+                    <div class="leftcolumn">
                         <label>{{localize "QUALITY.AREASRR"}}</label>
                         {{#if data.qualities.areaShortRadius}}
                         <input name="data.qualities.areaShortRadius" type="checkbox" value="areaShortRadius" checked/>
                         {{else}}
                         <input name="data.qualities.areaShortRadius" type="checkbox" value="areaShortRadius"/>
+                        {{/if}}
+                    </div>
+                    <div class="rightcolumn">
+                        <label>{{localize "QUALITY.THUNDERING"}}</label>
+                        {{#if data.qualities.thundering}}
+                        <input name="data.qualities.thundering" type="checkbox" value="thundering" checked/>
+                        {{else}}
+                        <input name="data.qualities.thundering" type="checkbox" value="thundering"/>
                         {{/if}}
                     </div>
                     <div class="leftcolumn">
@@ -301,14 +317,6 @@
                         <input name="data.qualities.poison" type="checkbox" value="poison" checked/>
                         {{else}}
                         <input name="data.qualities.poison" type="checkbox" value="poison"/>
-                        {{/if}}
-                    </div>
-                    <div class="rightcolumn">
-                        <label>{{localize "QUALITY.THUNDERING"}}</label>
-                        {{#if data.qualities.thundering}}
-                        <input name="data.qualities.thundering" type="checkbox" value="thundering" checked/>
-                        {{else}}
-                        <input name="data.qualities.thundering" type="checkbox" value="thundering"/>
                         {{/if}}
                     </div>
                 </div>

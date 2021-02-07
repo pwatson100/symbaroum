@@ -134,6 +134,7 @@ const migrateItemData = (item, worldTemplateVersion) => {
             update = setValueIfNotExists(update, item, "data.qualities.desecrated", false);
             update = setValueIfNotExists(update, item, "data.qualities.poison", false);
             update = setValueIfNotExists(update, item, "data.qualities.thundering", false);
+            update = setValueIfNotExists(update, item, "data.qualities.mystical", false);
         }
         if ((item.type === "equipment") || (item.type === "weapon")) {
             update = setValueIfNotExists(update, item, "data.number", 1)
