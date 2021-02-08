@@ -351,9 +351,10 @@ It won't work with NPC fixed values as input
 * @param {actor object} actor  is the actor that does damage
 * @param {item object} weapon is the weapon that is used
 * @param {{isRanged: boolean, useBackstab: boolean, hasAdvantage: boolean, ignoreArm: boolean, modifier: string}} dmgData is an object of damage parameters.
-* @param {object} targetData is information on the target that will receive the damage (as returned by the getTarget function)*/
+* @param {object} targetData is information on the target that will receive the damage (as returned by the getTarget function)
+* @param {boolean} critSuccess  for optional bonus damage on crits*/
 
-export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgData, targetData){
+export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgData, targetData, critSuccess){
   let newRollDmgString = "";  // for dice modificators like +1d4
   let modFixedDmg = 0;  // for fixed modificators like +1
   let damageAutoParams = "";
@@ -386,6 +387,7 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
     dmgData.modifier += " + 1d4" + game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
     damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
   }
+  if(critSuccess) { dmgData.modifier += "+ 1d6[crit.]"}
 
   if(dmgData.ignoreArm){
     damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_IGN_ARMOR');

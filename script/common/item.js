@@ -1015,6 +1015,7 @@ export async function attackRoll(weapon, actor){
         favour: 0,
         modifier: 0,
         poison: 0,
+        isMystical: false,
         resultFunction: attackResult,
         targetData: targetData,
         useHuntersInstinct: false,
@@ -1037,6 +1038,7 @@ export async function attackRoll(weapon, actor){
             askWeapon: false,
             castingAttributeName: weapon.attribute,
             weapon: weapon,
+            isMystical: weapon.qualities.mystical
         }
     }
     /*if(ability){
@@ -1178,7 +1180,7 @@ async function attackResult(rollData, functionStuff){
         if(rollDataElement.hasSucceed){
             resultText += functionStuff.actor.data.name + game.i18n.localize('COMBAT.CHAT_SUCCESS') + functionStuff.targetData.actor.data.name + " <br>";
             hasDamage = true;
-            damage = await damageRollWithDiceParams(functionStuff.attackFromPC, functionStuff.actor, functionStuff.weapon, functionStuff.dmgData, functionStuff.targetData);
+            damage = await damageRollWithDiceParams(functionStuff.attackFromPC, functionStuff.actor, functionStuff.weapon, functionStuff.dmgData, functionStuff.targetData, rollDataElement.critSuccess);
             if(damage.roll.total > functionStuff.targetData.actor.data.data.health.toughness.threshold){pain = true}
             dmgFormula = game.i18n.localize('WEAPON.DAMAGE') + ": " + damage.roll._formula;
             //damageTooltip += damage.roll.result + "    ";
