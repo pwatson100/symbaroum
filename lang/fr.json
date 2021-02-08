@@ -214,13 +214,13 @@
     "COMBAT.CHAT_POISON_SUCCESS2": ",  durée: ",
     "COMBAT.CHAT_MODIFIER": "Mod: ",
     "COMBAT.CHAT_DMG_PARAMS": "Modificateurs aux dégâts: ",
-    "COMBAT.CHAT_DMG_PARAMS_HUNTER": "[marque du chasseur] ",
-    "COMBAT.CHAT_DMG_PARAMS_CUSTOM": "[modificateur libre] ",
-    "COMBAT.CHAT_DMG_PARAMS_BACKSTAB": "[coup en traître] ",
+    "COMBAT.CHAT_DMG_PARAMS_HUNTER": "[chasseur] ",
+    "COMBAT.CHAT_DMG_PARAMS_CUSTOM": "[mod. libre] ",
+    "COMBAT.CHAT_DMG_PARAMS_BACKSTAB": "[coup.traître] ",
     "COMBAT.CHAT_DMG_PARAMS_ADVANTAGE": "[avantage] ",
-    "COMBAT.CHAT_DMG_PARAMS_LEADER": "[cible Meneur né] ",
-    "COMBAT.CHAT_DMG_PARAMS_DEEPIMPACT": "[arme éventreur] ",
-    "COMBAT.CHAT_DMG_PARAMS_IGN_ARMOR": "[attaque ignore l'armure] ",
+    "COMBAT.CHAT_DMG_PARAMS_LEADER": "[Meneur né] ",
+    "COMBAT.CHAT_DMG_PARAMS_DEEPIMPACT": "[éventreur] ",
+    "COMBAT.CHAT_DMG_PARAMS_IGN_ARMOR": "[ignore l'armure] ",
     "COMBAT.CHAT_DAMAGE_NUL": " est protégé par son armure.",
     "COMBAT.CHAT_DAMAGE_DYING": " est mortellement blessé.",
     "COMBAT.CHAT_DAMAGE": " reçoit des dégâts : ",
@@ -430,6 +430,7 @@
     "QUALITY.JOINTED": "Flexible",
     "QUALITY.LONG": "Longue",
     "QUALITY.MASSIVE": "Massive",
+    "QUALITY.MYSTICAL": "Magique",
     "QUALITY.PRECISE": "Précise",
     "QUALITY.REINFORCED": "Renforcée",
     "QUALITY.RETURNING": "Boomerang",
@@ -446,7 +447,6 @@
     "QUALITY.POISON": "Empoisonné",
     "QUALITY.THUNDERING": "Rugissant",
     "QUALITY.RETRIBUTIVE": "Punitif",
-
     "RITUAL.TRADITION": "Tradition",
     "RITUAL.DESCRIPTION": "Description",
 
@@ -599,6 +599,11 @@
     "SYMBAROUM.OPTIONAL_MORERITUALS": "Permet d'apprendre plus de rituels.",
     "SYMBAROUM.OPTIONAL_MORERITUALS_HINT": "Cochez pour permettre d'apprendre plus de rituels, comme décrit dans le Guide du joueur p. 102",
     "SYMBAROUM.OPTIONAL_AUTOCOMBAT": "Combats accélérés",
-    "SYMBAROUM.OPTIONAL_AUTOCOMBAT_HINT": "Cochez pour activer l'utilisation les combats semi-automatisés. Cette option est décrite en détail dans le Guide du système Symbaroum pour FoundryVTT dans la section compendium."
+    "SYMBAROUM.OPTIONAL_AUTOCOMBAT_HINT": "Cochez pour activer l'utilisation les combats semi-automatisés. Cette option est décrite en détail dans le Guide du système Symbaroum pour FoundryVTT dans la section compendium.",
+    "SYMBAROUM.OPTIONAL_SAVECOMBATROLL": "Configuration des jets de combat",
+    "SYMBAROUM.OPTIONAL_SAVECOMBATROLL_HINT": "Garder en mémoire les modificateurs d'un jet de combat sur l'autre. (arme/defense)",
+    "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL": "Configuration des jets d'attribut",
+    "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT": "Garder en mémoire les modificateurs d'un jet d'attribut sur l'autre."
+  
 }
 

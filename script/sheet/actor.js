@@ -54,12 +54,17 @@ export class SymbaroumActorSheet extends ActorSheet {
         event.preventDefault();
         const div = $(event.currentTarget).parents(".item");
         const item = this.actor.getOwnedItem(div.data("itemId"));
-        item.sheet.render(true);
+        if( item !== null)
+            item.sheet.render(true);
     }
 
     _onItemDelete(event) {
         event.preventDefault();
         const div = $(event.currentTarget).parents(".item");
+        const item = this.actor.getOwnedItem(div.data("itemId"));
+        if( item === null) {
+            return;
+        }
         this.actor.deleteOwnedItem(div.data("itemId"));
         div.slideUp(200, () => this.render(false));
     }
@@ -72,6 +77,9 @@ export class SymbaroumActorSheet extends ActorSheet {
         event.preventDefault();
         const div = $(event.currentTarget).parents(".item");
         const item = this.actor.getOwnedItem(div.data("itemId"));
+        if( item === null ) {
+            return;
+        }
         let data;
         switch (item.data.data.state) {
             case "active":

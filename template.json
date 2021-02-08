@@ -303,7 +303,8 @@
         "flaming": false,
         "hallowed": false,
         "poison": false,
-        "thundering": false
+        "thundering": false,
+        "mystical": false
       },
       "cost": "",
       "number": 1,

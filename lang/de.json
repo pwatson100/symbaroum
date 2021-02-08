@@ -211,7 +211,7 @@
   "COMBAT.CHAT_POISON_SUCCESS2": ",  dauer",
   "COMBAT.CHAT_MODIFIER": "Mod: ",
   "COMBAT.CHAT_DMG_PARAMS": "Schadensmodifikator: ",
-  "COMBAT.CHAT_DMG_PARAMS_HUNTER": "[Hunter's instinct] ",
+  "COMBAT.CHAT_DMG_PARAMS_HUNTER": "[Hunter] ",
   "COMBAT.CHAT_DMG_PARAMS_CUSTOM": "[Custom] ",
   "COMBAT.CHAT_DMG_PARAMS_BACKSTAB": "[Hinterhältiger Angriff] ",
   "COMBAT.CHAT_DMG_PARAMS_ADVANTAGE": "[Vorteil] ",
@@ -420,6 +420,7 @@
   "QUALITY.JOINTED": "Gelenkig",
   "QUALITY.LONG": "Lang",
   "QUALITY.MASSIVE": "Robust",
+  "QUALITY.MYSTICAL": "Mystical",
   "QUALITY.PRECISE": "Präzise",
   "QUALITY.REINFORCED": "Verstärkt",
   "QUALITY.RETURNING": "Wiederkehrend",
@@ -591,5 +592,10 @@
   "SYMBAROUM.OPTIONAL_MORERITUALS": "Erlaube more rituals",
   "SYMBAROUM.OPTIONAL_MORERITUALS_HINT": "Ermögliche  „more rituals“ wie sie im Advanced Players Guide auf Seite 103 beschrieben sind",
   "SYMBAROUM.OPTIONAL_AUTOCOMBAT": "Combat enhancement",
-  "SYMBAROUM.OPTIONAL_AUTOCOMBAT_HINT": "Check to enable QoL enhancement for smooth combat. Read the Symbaroum system guide for FoundryVTT in the compendium section for more info"
+  "SYMBAROUM.OPTIONAL_AUTOCOMBAT_HINT": "Check to enable QoL enhancement for smooth combat. Read the Symbaroum system guide for FoundryVTT in the compendium section for more info",
+  "SYMBAROUM.OPTIONAL_SAVECOMBATROLL": "Combat settings for rolls",
+  "SYMBAROUM.OPTIONAL_SAVECOMBATROLL_HINT": "Check to enable QoL enhancement for keeping all modifiers when rolling combat (weapon/defense)",
+  "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL": "Attribute settings for rolls",
+  "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT": "Check to enable QoL enhancement for keeping all modifiers when rolling attribute tests"
+
 }
