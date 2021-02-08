@@ -211,7 +211,7 @@
   "COMBAT.CHAT_POISON_SUCCESS2": ",  dauer",
   "COMBAT.CHAT_MODIFIER": "Mod: ",
   "COMBAT.CHAT_DMG_PARAMS": "Schadensmodifikator: ",
-  "COMBAT.CHAT_DMG_PARAMS_HUNTER": "[Hunter's instinct] ",
+  "COMBAT.CHAT_DMG_PARAMS_HUNTER": "[Hunter] ",
   "COMBAT.CHAT_DMG_PARAMS_CUSTOM": "[Custom] ",
   "COMBAT.CHAT_DMG_PARAMS_BACKSTAB": "[Hinterhältiger Angriff] ",
   "COMBAT.CHAT_DMG_PARAMS_ADVANTAGE": "[Vorteil] ",
