@@ -87,52 +87,37 @@
     <div class="combat foreground">
         <h1>{{localize "TITLE.COMBAT"}}</h1>
         <div class="stat-modifiers">
-        <div class="initiative" title="{{localize "TOOLTIP.COMBAT.INITIATIVE"}}">
-            <label>{{localize "INITIATIVE"}}</label>
-            <select name="data.initiative.attribute" class="attribute">
-                {{#select data.initiative.attribute}}
-                <option value="quick">{{localize "ATTRIBUTE.QUICK"}}</option>
-                <option value="accurate">{{localize "ATTRIBUTE.ACCURATE"}}</option>
-                <option value="cunning">{{localize "ATTRIBUTE.CUNNING"}}</option>
-                <option value="discreet">{{localize "ATTRIBUTE.DISCREET"}}</option>
-                <option value="persuasive">{{localize "ATTRIBUTE.PERSUASIVE"}}</option>
-                <option value="resolute">{{localize "ATTRIBUTE.RESOLUTE"}}</option>
-                <option value="strong">{{localize "ATTRIBUTE.STRONG"}}</option>
-                <option value="vigilant">{{localize "ATTRIBUTE.VIGILANT"}}</option>
-                {{/select}}
-            </select>
-        </div>
-        <div class="defenseAttr" title="{{localize "TOOLTIP.COMBAT.DEFENSE"}}">
-            <label>{{localize "ARMOR.DEFENSE"}}</label>
-            <select name="data.defense.attribute" class="attribute">
-                {{#select data.defense.attribute}}
-                <option value="quick">{{localize "ATTRIBUTE.QUICK"}}</option>
-                <option value="accurate">{{localize "ATTRIBUTE.ACCURATE"}}</option>
-                <option value="cunning">{{localize "ATTRIBUTE.CUNNING"}}</option>
-                <option value="discreet">{{localize "ATTRIBUTE.DISCREET"}}</option>
-                <option value="persuasive">{{localize "ATTRIBUTE.PERSUASIVE"}}</option>
-                <option value="resolute">{{localize "ATTRIBUTE.RESOLUTE"}}</option>
-                <option value="strong">{{localize "ATTRIBUTE.STRONG"}}</option>
-                <option value="vigilant">{{localize "ATTRIBUTE.VIGILANT"}}</option>
-                {{/select}}
-            </select>
-        </div>
+            <div class="initiative" title="{{localize "TOOLTIP.COMBAT.INITIATIVE"}}">
+                <label>{{localize "INITIATIVE"}}</label>
+                <select name="data.initiative.attribute" class="attribute">
+                    {{#select data.initiative.attribute}}
+                    <option value="quick">{{localize "ATTRIBUTE.QUICK"}}</option>
+                    <option value="accurate">{{localize "ATTRIBUTE.ACCURATE"}}</option>
+                    <option value="cunning">{{localize "ATTRIBUTE.CUNNING"}}</option>
+                    <option value="discreet">{{localize "ATTRIBUTE.DISCREET"}}</option>
+                    <option value="persuasive">{{localize "ATTRIBUTE.PERSUASIVE"}}</option>
+                    <option value="resolute">{{localize "ATTRIBUTE.RESOLUTE"}}</option>
+                    <option value="strong">{{localize "ATTRIBUTE.STRONG"}}</option>
+                    <option value="vigilant">{{localize "ATTRIBUTE.VIGILANT"}}</option>
+                    {{/select}}
+                </select>
+            </div>
         </div>
         <div class="armor">
             <button class="roll-armor">{{data.combat.armor}}</button>
-            <div class="protection">
-                <label>{{localize "ARMOR.PROTECTION"}}</label>
-                <input type="text" value="{{data.combat.protectionPc}}" disabled />
-            </div>
-            <div class="defense">
+            <div class="quality">
                 <label>{{localize "ARMOR.DEFENSE"}}</label>
-
+                <input type="text" value={{localize data.defense.attributelabel}} disabled />
               <span class="tooltip input">
                   <input type="number" value="{{data.combat.defense}}" data-dtype="Number" disabled />
                   <span class="tooltiptext downleft">{{localize "TOOLTIP.BONUS_TOTAL"}}  {{data.combat.defense}} {{{data.combat.msg}}} </span>
               </span>
             </div>
-            <div class="quality">
+            <div class="protection">
+                <label>{{localize "ARMOR.PROTECTION"}}</label>
+                <input type="text" value="{{data.combat.protectionPc}}" disabled />
+            </div>
+            <div class="protection">
                 <label>{{localize "ARMOR.IMPEDING"}}</label>
                 <input type="text" value="{{data.combat.impeding}}" disabled />
             </div>

@@ -114,7 +114,8 @@ export class SymbaroumActor extends Actor {
         corr.value = corr.temporary + corr.longterm + corr.permanent;
         
         let activeArmor = this._getActiveArmor(data);
-        let attributeDef = data.data.defense.attribute.toLowerCase();
+        let defense = this._getDefenseValue(data, activeArmor);
+/*       let attributeDef = data.data.defense.attribute.toLowerCase();
         let attDefValue = data.data.attributes[attributeDef].total;
         let defMsg = `${game.i18n.localize(data.data.attributes[attributeDef].label)} ${data.data.attributes[attributeDef].total}`;
         let flagBerserk = this.getFlag(game.system.id, 'berserker');
@@ -129,14 +130,20 @@ export class SymbaroumActor extends Actor {
             attDefValue -=  powerLvl.level + 1;
             defMsg += `<br/>${game.i18n.localize("TRAIT_LABEL.ROBUST")}(${-1 * (powerLvl.level + 1)})`;
         }
+        
+        ({
+            attDefValue: attDefValue,
+            defMsg: defMsg
+        })
+        */
         data.data.combat = {
             id: activeArmor._id,
             armor: activeArmor.name,
             protectionPc: activeArmor.pc,
             protectionNpc: activeArmor.npc,
             impeding: activeArmor.impeding,
-            defense: attDefValue - activeArmor.impeding + data.data.bonus.defense,
-            msg: defMsg
+            defense: defense.attDefValue - activeArmor.impeding + data.data.bonus.defense,
+            msg: defense.defMsg
         };
         const activeWeapons = this._getWeapons(data);
         data.data.weapons = [];
@@ -483,6 +490,72 @@ export class SymbaroumActor extends Actor {
             img: item.data.img})
     }
 
+    _getDefenseValue(data, activeArmor){
+        let attributeDef = data.data.defense.attribute.toLowerCase();
+        let attDefValue = data.data.attributes[attributeDef].total;
+        let sixthsense = this.items.filter(element => element.data.data?.reference === "sixthsense");
+        if(sixthsense.length > 0){
+            let sixthsenseLvl = getPowerLevel(sixthsense[0]).level;
+            if(sixthsenseLvl >1 && data.data.attributes.vigilant.total > data.data.attributes[attributeDef].total){
+                attributeDef = "vigilant";
+                attDefValue = data.data.attributes[attributeDef].total
+            }
+        }
+        let tactician = this.items.filter(element => element.data.data?.reference === "tactician");
+        if(tactician.length > 0){
+            let tacticianLvl = getPowerLevel(tactician[0]).level;
+            if(tacticianLvl >1 && data.data.attributes.cunning.total > data.data.attributes[attributeDef].total){
+                attributeDef = "cunning";
+                attDefValue = data.data.attributes[attributeDef].total
+            }
+        }
+        let feint = this.items.filter(element => element.data.data?.reference === "feint");
+        if(feint.length > 0){
+            let feintLvl = getPowerLevel(feint[0]).level;
+            if(feintLvl >1 && data.data.attributes.discreet.total > data.data.attributes[attributeDef].total){
+                attributeDef = "discreet";
+                attDefValue = data.data.attributes[attributeDef].total
+            }
+        }
+        data.data.defense.attribute = attributeDef;
+        data.data.defense.attributelabel = data.data.attributes[attributeDef].label;
+
+        let defMsg = `${game.i18n.localize(data.data.attributes[attributeDef].label)} ${data.data.attributes[attributeDef].total}`;
+        let flagBerserk = this.getFlag(game.system.id, 'berserker');
+        if(flagBerserk && flagBerserk < 3){
+            attDefValue = 5;
+            defMsg = `${game.i18n.localize("ABILITY_LABEL.BERSERKER")} 5`;
+        }
+        defMsg += `<br/>${game.i18n.localize("ARMOR.IMPEDING")}(${-1 * activeArmor.impeding})<br/>${data.data.bonus.defense_msg}`;
+        let robust = this.items.filter(element => element.data.data?.reference === "robust");
+        if(robust.length > 0){
+            let powerLvl = getPowerLevel(robust[0]);
+            attDefValue -=  powerLvl.level + 1;
+            defMsg += `<br/>${game.i18n.localize("TRAIT_LABEL.ROBUST")}(${-1 * (powerLvl.level + 1)})`;
+        }
+
+        let shieldfighter = this.items.filter(element => element.data.data?.reference === "shieldfighter");
+        if(shieldfighter.length > 0){
+            let haveShieldEquipped = this.items.filter(element => element.data.data?.reference === "shield" && element._data.isActive)
+            if(haveShieldEquipped.length > 0){
+                attDefValue += 1
+                defMsg += `<br/>${game.i18n.localize("ABILITY_LABEL.SHIELD_FIGHTER")}(+1)`;
+            }
+        }
+        let stafffighting = this.items.filter(element => element.data.data?.reference === "stafffighting");
+        if(stafffighting.length > 0){
+            let haveLongEquipped = this.items.filter(element => element._data.isWeapon && element.data.data?.qualities.long && element._data.isActive)
+            if(haveLongEquipped.length > 0){
+                attDefValue += 1
+                defMsg += `<br/>${game.i18n.localize("ABILITY_LABEL.STAFF_FIGHTING")}(+1)`;
+            }
+        }
+
+        return({
+            attDefValue: attDefValue,
+            defMsg: defMsg
+        })
+    }
     _getActiveArmor(data) {
         let wearArmor;
         data.data.armors = [];
