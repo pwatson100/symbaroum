@@ -18,12 +18,16 @@
         <div class="wrapper-right">
             {{editor content=data.bio.appearance target="data.bio.appearance" button=true owner=owner editable=editable}}
         </div>
-        <div class="wrapper-full">
-            <div class="shadow">
-                <label>{{localize "BIO.SHADOW"}}</label>
-                <input name="data.bio.shadow" type="text" value="{{data.bio.shadow}}" />
+        {{#ife actor.type 'player'}}
+
+            <div class="wrapper-full">
+                <div class="shadow">
+                    <label>{{localize "BIO.SHADOW"}}</label>
+                    <input name="data.bio.shadow" type="text" value="{{data.bio.shadow}}" />
+                </div>
             </div>
-        </div>
+        {{/ife}}
+
     </div>
     <div class="background foreground border">
         <h1 style="text-transform: uppercase">{{localize "BIO.BACKGROUND"}}</h1>
