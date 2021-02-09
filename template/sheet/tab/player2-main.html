@@ -130,6 +130,7 @@
                 </div>
                 <div class="items">
                     {{#each actor.data.weapons as |item|}}
+                    {{#if item.isActive}}
                         <div class="weapon item" data-item-id="{{item._id}}">
                             <div class="name">
                                 <div class="image-container">
@@ -139,6 +140,7 @@
                             </div>
                             <div class="damage">{{item.damage.pc}}</div>
                         </div>
+                    {{/if}}
                     {{/each}}
                 </div>
             </div>
