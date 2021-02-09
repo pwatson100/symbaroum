@@ -2,7 +2,6 @@ import { SymbaroumActor } from './actor.js';
 import { SymbaroumItem } from './item.js';
 import { PlayerSheet } from '../sheet/player.js';
 import { PlayerSheet2 } from '../sheet/player2.js';
-import { MonsterSheet } from '../sheet/monster.js';
 import { TraitSheet } from '../sheet/trait.js';
 import { AbilitySheet } from '../sheet/ability.js';
 import { MysticalPowerSheet } from '../sheet/mystical-power.js';
@@ -22,7 +21,7 @@ Hooks.once('init', () => {
   Actors.unregisterSheet('core', ActorSheet);
   Actors.registerSheet('symbaroum', PlayerSheet2, { types: ['player'], makeDefault: true });
   Actors.registerSheet('symbaroum', PlayerSheet, { types: ['player'], makeDefault: false });
-  Actors.registerSheet('symbaroum', MonsterSheet, { types: ['monster'], makeDefault: true });
+  Actors.registerSheet('symbaroum', PlayerSheet2, { types: ['monster'], makeDefault: true });
   Items.unregisterSheet('core', ItemSheet);
   Items.registerSheet('symbaroum', TraitSheet, { types: ['trait'], makeDefault: true });
   Items.registerSheet('symbaroum', AbilitySheet, { types: ['ability'], makeDefault: true });
@@ -51,7 +50,7 @@ Hooks.once('init', () => {
     type: Boolean,
     default: false,
     config: true,
-  }); 
+  });
 
   game.settings.register('symbaroum', 'alwaysSucceedOnOne', {
     name: 'SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE',
@@ -60,7 +59,7 @@ Hooks.once('init', () => {
     type: Boolean,
     default: false,
     config: true,
-  });  
+  });
 
   game.settings.register('symbaroum', 'optionalCrit', {
     name: 'SYMBAROUM.OPTIONAL_CRIT',
@@ -70,7 +69,7 @@ Hooks.once('init', () => {
     default: false,
     config: true,
   });
-  
+
   game.settings.register('symbaroum', 'optionalRareCrit', {
     name: 'SYMBAROUM.OPTIONAL_RARECRIT',
     hint: 'SYMBAROUM.OPTIONAL_RARECRIT_HINT',
@@ -78,8 +77,8 @@ Hooks.once('init', () => {
     type: Boolean,
     default: false,
     config: true,
-  });  
- 
+  });
+
   game.settings.register('symbaroum', 'critsApplyToAllTests', {
     name: 'SYMBAROUM.OPTIONAL_ALWAYSUSECRIT',
     hint: 'SYMBAROUM.OPTIONAL_ALWAYSUSECRIT_HINT',
@@ -87,7 +86,7 @@ Hooks.once('init', () => {
     type: Boolean,
     default: false,
     config: true,
-  });  
+  });
 
   game.settings.register('symbaroum', 'optionalMoreRituals', {
     name: 'SYMBAROUM.OPTIONAL_MORERITUALS',
@@ -96,8 +95,8 @@ Hooks.once('init', () => {
     type: Boolean,
     default: false,
     config: true,
-  });  
-  
+  });
+
   game.settings.register('symbaroum', 'saveCombatRoll', {
     name: 'SYMBAROUM.OPTIONAL_SAVECOMBATROLL',
     hint: 'SYMBAROUM.OPTIONAL_SAVECOMBATROLL_HINT',
@@ -105,7 +104,7 @@ Hooks.once('init', () => {
     type: Boolean,
     default: false,
     config: true,
-  });  
+  });
   game.settings.register('symbaroum', 'saveAttributeRoll', {
     name: 'SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL',
     hint: 'SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT',
@@ -113,8 +112,7 @@ Hooks.once('init', () => {
     type: Boolean,
     default: false,
     config: true,
-  });      
- 
+  });
 });
 
 Hooks.once('ready', () => {
@@ -161,63 +159,68 @@ Hooks.once('diceSoNiceReady', (dice3d) => {
 /*Hook for the chatMessage that contain a button for the GM to apply status icons or damage to a token.*/
 Hooks.on('renderChatMessage', async (chatItem, html, data) => {
   const flagDataArray = await chatItem.getFlag(game.system.id, 'abilityRoll');
-  if(flagDataArray){
-    await html.find("#applyEffect").click(async () => {
-      for(let flagData of flagDataArray){
-
-        if(flagData.tokenId){
-          let token = canvas.tokens.objects.children.find(token => token.data._id === flagData.tokenId);
+  if (flagDataArray) {
+    await html.find('#applyEffect').click(async () => {
+      for (let flagData of flagDataArray) {
+        if (flagData.tokenId) {
+          let token = canvas.tokens.objects.children.find((token) => token.data._id === flagData.tokenId);
           let statusCounterMod = false;
-          if(game.modules.get("statuscounter")?.active){
+          if (game.modules.get('statuscounter')?.active) {
             statusCounterMod = true;
           }
-          if(flagData.addEffect){
-            if(token == undefined){return}
+          if (flagData.addEffect) {
+            if (token == undefined) {
+              return;
+            }
             let duration = 1;
-            if(flagData.effectDuration){duration = flagData.effectDuration}
-            if(statusCounterMod){
+            if (flagData.effectDuration) {
+              duration = flagData.effectDuration;
+            }
+            if (statusCounterMod) {
               let alreadyHereEffect = await EffectCounter.findCounter(token, flagData.addEffect);
-              if(alreadyHereEffect == undefined){
+              if (alreadyHereEffect == undefined) {
                 let statusEffect = new EffectCounter(duration, flagData.addEffect, token, false);
                 await statusEffect.update();
               }
+            } else {
+              token.toggleEffect(flagData.addEffect);
             }
-            else {token.toggleEffect(flagData.addEffect)}
-          }
-          
-          if(flagData.removeEffect){
-            if(statusCounterMod){
-              let statusEffectCounter = await EffectCounter.findCounter(token, flagData.removeEffect);
-              if(statusEffectCounter != undefined){
-                  await statusEffectCounter.remove();
-              }
-            }
-            else {token.toggleEffect(flagData.removeEffect)}
           }
 
-          if(flagData.modifyEffectDuration){
-            if(statusCounterMod){
+          if (flagData.removeEffect) {
+            if (statusCounterMod) {
+              let statusEffectCounter = await EffectCounter.findCounter(token, flagData.removeEffect);
+              if (statusEffectCounter != undefined) {
+                await statusEffectCounter.remove();
+              }
+            } else {
+              token.toggleEffect(flagData.removeEffect);
+            }
+          }
+
+          if (flagData.modifyEffectDuration) {
+            if (statusCounterMod) {
               let statusEffectCounter = await EffectCounter.findCounter(token, flagData.modifyEffectDuration);
-              if(statusEffectCounter != undefined){
+              if (statusEffectCounter != undefined) {
                 await statusEffectCounter.setValue(effectDuration);
                 await statusEffectCounter.update();
               }
             }
           }
 
-          if(flagData.toughnessChange){
-            let newToughness = Math.max(0, Math.min(token.actor.data.data.health.toughness.max, token.actor.data.data.health.toughness.value + flagData.toughnessChange))
-            await token.actor.update({"data.health.toughness.value" : newToughness}); 
+          if (flagData.toughnessChange) {
+            let newToughness = Math.max(0, Math.min(token.actor.data.data.health.toughness.max, token.actor.data.data.health.toughness.value + flagData.toughnessChange));
+            await token.actor.update({ 'data.health.toughness.value': newToughness });
           }
 
-          if(flagData.corruptionChange){
+          if (flagData.corruptionChange) {
             let newCorruption = token.actor.data.data.health.corruption.temporary + flagData.corruptionChange;
-            await token.actor.update({"data.health.corruption.temporary" : newCorruption}); 
+            await token.actor.update({ 'data.health.corruption.temporary': newCorruption });
           }
         }
       }
       await chatItem.unsetFlag(game.system.id, 'abilityRoll');
       return;
-    })
+    });
   }
-})
+});
