@@ -260,6 +260,7 @@ export async function baseRoll(actor, actingAttributeName, targetActor, targetAt
     hasSucceed: hasSucceed,
     diceTarget: diceTarget,
     diceResult: attributeRoll.total,
+    hasDamage: false,
     favour: favour,
     modifier: modifier,
     dicesResult: dicesResult,
