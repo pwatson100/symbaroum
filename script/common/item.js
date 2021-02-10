@@ -1162,45 +1162,43 @@ export async function attackRoll(weapon, actor){
 async function attackResult(rollData, functionStuff){
     
     let damage;
-    let hasDamage = false;
+    let hasDamage;
     let targetDies = false;
     let pain = false;
     let flagDataArray = [];
     let damageTot = 0;
-    let resultText = "";
     let damageText = "";
     let damageFinalText = "";
-    let dmgFormula = "";
-    let damageTooltip = "";
     let damageRollMod = "";
     let hasDmgMod = "false";
+    let i = 0;
 
     for(let rollDataElement of rollData){
 
+        rollDataElement.finalText="";
         if(rollDataElement.hasSucceed){
-            resultText += functionStuff.actor.data.name + game.i18n.localize('COMBAT.CHAT_SUCCESS') + functionStuff.targetData.actor.data.name + " <br>";
+            rollDataElement.resultText = functionStuff.actor.data.name + game.i18n.localize('COMBAT.CHAT_SUCCESS') + functionStuff.targetData.actor.data.name;
             hasDamage = true;
+            rollDataElement.hasDamage = true;
             damage = await damageRollWithDiceParams(functionStuff.attackFromPC, functionStuff.actor, functionStuff.weapon, functionStuff.dmgData, functionStuff.targetData, rollDataElement.critSuccess);
             if(damage.roll.total > functionStuff.targetData.actor.data.data.health.toughness.threshold){pain = true}
-            dmgFormula = game.i18n.localize('WEAPON.DAMAGE') + ": " + damage.roll._formula;
-            //damageTooltip += damage.roll.result + "    ";
-            //damageTooltip = await damage.roll.getTooltip();
-            damageTooltip = new Handlebars.SafeString(await damage.roll.getTooltip());
+            rollDataElement.dmgFormula = game.i18n.localize('WEAPON.DAMAGE') + ": " + damage.roll._formula;
+            rollDataElement.damageTooltip = new Handlebars.SafeString(await damage.roll.getTooltip());
             damageRollMod = game.i18n.localize('COMBAT.CHAT_DMG_PARAMS') + damage.autoParams;
             hasDmgMod = (damage.autoParams.length >0) ? true : false;
-            damageTot += Math.max(0, damage.roll.total);
+            rollDataElement.dmg = Math.max(0, damage.roll.total);
+            rollDataElement.damageText = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + rollDataElement.dmg.toString();
+            damageTot += rollDataElement.dmg;
         }
         else{
-            resultText += functionStuff.actor.data.name + game.i18n.localize('COMBAT.CHAT_FAILURE') + " <br>";
+            rollDataElement.resultText = functionStuff.actor.data.name + game.i18n.localize('COMBAT.CHAT_FAILURE');
         }
     }
     if(damageTot <= 0){
         damageTot = 0;
-        damageText = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_NUL');
     }
     else if(damageTot > functionStuff.targetData.actor.data.data.health.toughness.value){
         targetDies = true;
-        damageText = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
         damageFinalText = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_DYING');
         flagDataArray.push({
             tokenId: functionStuff.targetData.token.data._id,
@@ -1212,7 +1210,6 @@ async function attackResult(rollData, functionStuff){
         })
     }
     else{
-        damageText = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
         flagDataArray.push({
             tokenId: functionStuff.targetData.token.data._id,
             toughnessChange: damageTot*-1
@@ -1243,13 +1240,10 @@ async function attackResult(rollData, functionStuff){
         hasCorruption: false,
         rollString: await formatRollString(rollData[0], functionStuff.targetData.hasTarget, rollData[0].modifier),
         rollResult : await formatRollResult(rollData),
-        resultText: resultText,
         hasDamage: hasDamage,
-        damageText: damageText,
-        dmgFormula: dmgFormula,
         hasDmgMod: hasDmgMod,
         damageRollMod: damageRollMod,
-        damageTooltip: damageTooltip,
+        damageText: damageText,
         damageFinalText: damageFinalText,
         printPoison: false,
         poisonRollString: "",

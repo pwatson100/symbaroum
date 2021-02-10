@@ -260,6 +260,7 @@ export async function baseRoll(actor, actingAttributeName, targetActor, targetAt
     hasSucceed: hasSucceed,
     diceTarget: diceTarget,
     diceResult: attributeRoll.total,
+    hasDamage: false,
     favour: favour,
     modifier: modifier,
     dicesResult: dicesResult,
@@ -358,36 +359,37 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
   let newRollDmgString = "";  // for dice modificators like +1d4
   let modFixedDmg = 0;  // for fixed modificators like +1
   let damageAutoParams = "";
-  if(dmgData.modifier != ""){
+  let damageModFormula = dmgData.modifier;
+  if(damageModFormula != ""){
     damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_CUSTOM');
   }
 
   //if(dmgData.isRanged){
     if(dmgData.hunterIDmg){
-      dmgData.modifier += " + 1d4["+game.i18n.localize("ABILITY_LABEL.HUNTER_INSTINCT")+"]";
+      damageModFormula += " + 1d4" + game.i18n.localize("COMBAT.CHAT_DMG_PARAMS_HUNTER");
       damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_HUNTER');
     }
   
   if(dmgData.hasAdvantage){
     if(dmgData.useBackstab){
-      dmgData.modifier += " + 2d4["+game.i18n.localize("ABILITY_LABEL.BACKSTAB")+"]";
+      damageModFormula += " + 2d4["+game.i18n.localize("ABILITY_LABEL.BACKSTAB")+"]";
       damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_BACKSTAB');
     }
     else
     {
-      dmgData.modifier += " + 1d4"+game.i18n.localize("COMBAT.CHAT_DMG_PARAMS_ADVANTAGE");
+      damageModFormula += " + 1d4"+game.i18n.localize("COMBAT.CHAT_DMG_PARAMS_ADVANTAGE");
       damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_ADVANTAGE');
     }
   }
   if(dmgData.useBeastlore){
-    dmgData.modifier += " + " + dmgData.beastLoreDmg + "[" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "]";
+    damageModFormula += " + " + dmgData.beastLoreDmg + "[" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "]";
     damageAutoParams += " [" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "] ";
   }
   if(dmgData.leaderTarget){
-    dmgData.modifier += " + 1d4" + game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
+    damageModFormula += " + 1d4" + game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
     damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
   }
-  if(critSuccess) { dmgData.modifier += "+ 1d6[crit.]"}
+  if(critSuccess) { damageModFormula += "+ 1d6[crit.]"}
 
   if(dmgData.ignoreArm){
     damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_IGN_ARMOR');
@@ -396,8 +398,8 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
     if(attackFromPC){  
       //build roll string
       newRollDmgString = weapon.damage.pc;
-      if(dmgData.modifier != ""){
-        newRollDmgString += "+" + dmgData.modifier
+      if(damageModFormula != ""){
+        newRollDmgString += "+" + damageModFormula
       }
       if(modFixedDmg) {newRollDmgString += "+"+ modFixedDmg.toString()};
       if(!dmgData.ignoreArm){
@@ -409,8 +411,8 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
      //build roll string
       newRollDmgString = weapon.damage.npc.toString();
       if(modFixedDmg) {newRollDmgString += "+"+ modFixedDmg.toString()};
-      if(dmgData.modifier != ""){
-        let weaponModRoll= new Roll(dmgData.modifier).evaluate({maximize: true});
+      if(damageModFormula != ""){
+        let weaponModRoll= new Roll(damageModFormula).evaluate({maximize: true});
         let weaponModDmgValue = Math.ceil(weaponModRoll.total/2);
         newRollDmgString += "+"+ weaponModDmgValue.toString(); 
       }
