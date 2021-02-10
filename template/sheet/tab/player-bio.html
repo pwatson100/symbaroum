@@ -4,26 +4,30 @@
         <div class="wrapper-left">
             <div class="age">
                 <label>{{localize "BIO.AGE"}}</label>
-                <input name="data.bio.age" type="text" value="{{data.bio.age}}"/>
+                <input name="data.bio.age" type="text" value="{{data.bio.age}}" />
             </div>
             <div class="height">
                 <label>{{localize "BIO.HEIGHT"}}</label>
-                <input name="data.bio.height" type="text" value="{{data.bio.height}}"/>
+                <input name="data.bio.height" type="text" value="{{data.bio.height}}" />
             </div>
             <div class="weight">
                 <label>{{localize "BIO.WEIGHT"}}</label>
-                <input name="data.bio.weight" type="text" value="{{data.bio.weight}}"/>
+                <input name="data.bio.weight" type="text" value="{{data.bio.weight}}" />
             </div>
         </div>
         <div class="wrapper-right">
             {{editor content=data.bio.appearance target="data.bio.appearance" button=true owner=owner editable=editable}}
         </div>
-        <div class="wrapper-full">
-            <div class="shadow">
-                <label>{{localize "BIO.SHADOW"}}</label>
-                <input name="data.bio.shadow" type="text" value="{{data.bio.shadow}}"/>
+        {{#ife actor.type 'player'}}
+
+            <div class="wrapper-full">
+                <div class="shadow">
+                    <label>{{localize "BIO.SHADOW"}}</label>
+                    <input name="data.bio.shadow" type="text" value="{{data.bio.shadow}}" />
+                </div>
             </div>
-        </div>
+        {{/ife}}
+
     </div>
     <div class="background foreground border">
         <h1 style="text-transform: uppercase">{{localize "BIO.BACKGROUND"}}</h1>
@@ -33,8 +37,17 @@
         <h1 style="text-transform: uppercase">{{localize "BIO.GOAL"}}</h1>
         {{editor content=data.bio.personalGoal target="data.bio.personalGoal" button=true owner=owner editable=editable}}
     </div>
-    <div class="stigmas foreground border">
-        <h1 style="text-transform: uppercase">{{localize "BIO.STIGMAS"}}</h1>
-        {{editor content=data.bio.stigmas target="data.bio.stigmas" button=true owner=owner editable=editable}}
-    </div>
+    {{#ife actor.type 'player'}}
+        <div class="stigmas foreground border">
+            <h1 style="text-transform: uppercase">{{localize "BIO.STIGMAS"}}</h1>
+            {{editor content=data.bio.stigmas target="data.bio.stigmas" button=true owner=owner editable=editable}}
+        </div>
+    {{/ife}}
+
+    {{#ife actor.type 'monster'}}
+        <div class="stigmas foreground border">
+            <h1 style="text-transform: uppercase">{{localize "BIO.TACTICS"}}</h1>
+            {{editor content=data.bio.tactics target="data.bio.tactics" button=true owner=owner editable=editable}}
+        </div>
+    {{/ife}}
 </div>

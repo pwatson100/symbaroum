@@ -1,0 +1,38 @@
+// Import chat.
+@import 'chat/ability';
+@import 'chat/dialog';
+@import 'chat/item';
+@import 'chat/roll';
+
+/* Common styles */
+@import 'common/actor';
+@import 'common/item';
+@import 'common/system-guide';
+@import 'common/variable';
+
+/* Tabs styles */
+@import 'sheet/tab/player-bio';
+@import 'sheet/tab/player-gear';
+@import 'sheet/tab/player-main';
+@import 'sheet/tab/player-note';
+
+/* Sheet styles */
+@import 'sheet/ability';
+@import 'sheet/armor';
+@import 'sheet/artifact';
+@import 'sheet/boon';
+@import 'sheet/burden';
+@import 'sheet/equipment';
+@import 'sheet/mystical-power';
+@import 'sheet/player';
+@import 'sheet/ritual';
+@import 'sheet/trait';
+@import 'sheet/weapon';
+
+/* Styles limited to alienrpg sheets */
+// .alienrpg {
+//   @import 'components/forms';
+//   @import 'components/resource';
+//   @import 'components/tabs';
+//   @import 'components/items';
+// }

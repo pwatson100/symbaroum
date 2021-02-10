@@ -12,9 +12,11 @@
                         <a class="item-create" title="Add Armor" data-type="armor"><i class="fas fa-plus"></i></a>
                     </div>
                 </div>
+
                 <div class="items">
-                    {{#each actor.data.armors as |item|}}
-                            <div class="armor item" data-item-id="{{item._id}}">
+                    {{#ife actor.type 'player'}}
+                        {{#each actor.data.armors as |item|}}
+                            <div class="armor item actor" data-item-id="{{item._id}}">
                                 <div class="name">
                                     <div class="image-container">
                                         <div class="image" style="background-image: url('{{item.img}}')"></div>
@@ -36,8 +38,39 @@
                                     <a class="item-control item-delete" title="Delete Armor"><i class="fas fa-trash"></i></a>
                                 </div>
                             </div>
-                    {{/each}}
+                        {{/each}}
+                    {{/ife}}
                 </div>
+                <div class="items">
+                    {{#ife actor.type 'monster'}}
+                        {{#each actor.data.armors as |item|}}
+                            <div class="armor item actor" data-item-id="{{item._id}}">
+                                <div class="name">
+                                    <div class="image-container">
+                                        <div class="image" style="background-image: url('{{item.img}}')"></div>
+                                    </div>
+                                    <button class="item-edit ellipsis" style="width: 131px">{{item.name}}</button>
+                                </div>
+                                <!-- <div class="protection">{{item.pc}}</div> -->
+                                <div class="protection">{{item.npc}}</div>
+                                <div class="quality">{{item.impeding}}</div>
+                                <div class="state">
+                                    {{#if item.isActive}}
+                                        <a class="item-state" title="{{localize 'GEAR.ACTIVE'}}"><i class="fas fa-tshirt"></i></a>
+                                    {{else if item.isEquipped}}
+                                        <a class="item-state" title="{{localize 'GEAR.EQUIPPED'}}"><i class="fas fa-suitcase"></i></a>
+                                    {{else}}
+                                        <a class="item-state" title="{{localize 'GEAR.OTHER'}}"><i class="fas fa-warehouse"></i></a>
+                                    {{/if}}
+                                </div>
+                                <div class="button">
+                                    <a class="item-control item-delete" title="Delete Armor"><i class="fas fa-trash"></i></a>
+                                </div>
+                            </div>
+                        {{/each}}
+                    {{/ife}}
+                </div>
+
             </div>
         </div>
         <div class="weapons foreground border">
@@ -53,7 +86,8 @@
                     </div>
                 </div>
                 <div class="items">
-                    {{#each actor.data.weapons as |item|}}
+                    {{#ife actor.type 'player'}}
+                        {{#each actor.data.weapons as |item|}}
                             <div class="weapon item" data-item-id="{{item._id}}">
                                 <div class="name">
                                     <div class="image-container">
@@ -76,8 +110,38 @@
                                     <a class="item-control item-delete" title="Delete Weapon"><i class="fas fa-trash"></i></a>
                                 </div>
                             </div>
-                    {{/each}}
+                        {{/each}}
+                    {{/ife}}
                 </div>
+                <div class="items">
+                    {{#ife actor.type 'monster'}}
+                        {{#each actor.data.weapons as |item|}}
+                            <div class="weapon item" data-item-id="{{item._id}}">
+                                <div class="name">
+                                    <div class="image-container">
+                                        <div class="image" style="background-image: url('{{item.img}}')"></div>
+                                    </div>
+                                    <button class="item-edit ellipsis" style="width: 131px">{{item.name}}</button>
+                                </div>
+                                <div class="damage">{{item.damage.npc}}</div>
+                                <div class="quality">{{localize item.attributeLabel}}</div>
+                                <div class="state">
+                                    {{#if item.isActive}}
+                                        <a class="item-state" title="{{localize 'GEAR.ACTIVE'}}"><i class="fas fa-tshirt"></i></a>
+                                    {{else if item.isEquipped}}
+                                        <a class="item-state" title="{{localize 'GEAR.EQUIPPED'}}"><i class="fas fa-suitcase"></i></a>
+                                    {{else}}
+                                        <a class="item-state" title="{{localize 'GEAR.OTHER'}}"><i class="fas fa-warehouse"></i></a>
+                                    {{/if}}
+                                </div>
+                                <div class="button">
+                                    <a class="item-control item-delete" title="Delete Weapon"><i class="fas fa-trash"></i></a>
+                                </div>
+                            </div>
+                        {{/each}}
+                    {{/ife}}
+                </div>
+
             </div>
         </div>
         <div class="artifacts foreground border">

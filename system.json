@@ -12,34 +12,7 @@
     "script/common/hooks.js"
   ],
   "styles": [
-    "style/common/variable.css",
-    "style/common/actor.css",
-    "style/common/item.css",
-    "style/common/system-guide.css",
-    "style/sheet/player.css",
-    "style/sheet/tab/player-main.css",
-    "style/sheet/tab/player-gear.css",
-    "style/sheet/tab/player-bio.css",
-    "style/sheet/tab/player-note.css",
-    "style/sheet/monster.css",
-    "style/sheet/tab/monster-main.css",
-    "style/sheet/tab/monster-gear.css",
-    "style/sheet/tab/monster-bio.css",
-    "style/sheet/tab/monster-note.css",
-    "style/sheet/trait.css",
-    "style/sheet/ability.css",
-    "style/sheet/mystical-power.css",
-    "style/sheet/ritual.css",
-    "style/sheet/burden.css",
-    "style/sheet/boon.css",
-    "style/sheet/weapon.css",
-    "style/sheet/armor.css",
-    "style/sheet/equipment.css",
-    "style/sheet/artifact.css",
-    "style/chat/item.css",
-    "style/chat/dialog.css",
-    "style/chat/roll.css",
-    "style/chat/ability.css"
+    "css/symbaroum.css"
   ],
   "packs": [
     {
