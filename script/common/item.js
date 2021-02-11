@@ -975,6 +975,27 @@ async function checkResoluteModifiers(actor, autoParams = "", checkLeader = fals
     }
 }
 
+
+async function mathDamageProt(targetActor, damage, damageType){
+    let finalDamage = Math.max(0, damage);
+    if(damageType.mystical){
+        finalDamage = Math.round(finalDamage*targetActor.data.data.combat.damageProt.mystical)
+    }
+    else if(damageType.holy){
+        finalDamage = Math.round(finalDamage*targetActor.data.data.combat.damageProt.holy)
+    }
+    else if(damageType.elementary){
+        finalDamage = Math.round(finalDamage*targetActor.data.data.combat.damageProt.elementary)
+    }
+    else if(damageType.mysticalWeapon){
+        finalDamage = Math.round(finalDamage*targetActor.data.data.combat.damageProt.mysticalWeapon)
+    }
+    else{
+        finalDamage = Math.round(finalDamage*targetActor.data.data.combat.damageProt.normal)
+    }
+    return(finalDamage)
+}
+
 /*function for main combat
 
 ****************this function needs damage and armor parameters as dice (ie: weapon.data.data.damage = "1d8")
@@ -1172,6 +1193,7 @@ async function attackResult(rollData, functionStuff){
     let damageRollMod = "";
     let hasDmgMod = "false";
     let i = 0;
+    let mysticalWeapon = functionStuff.weapon.qualities.mystical;
 
     for(let rollDataElement of rollData){
 
@@ -1186,7 +1208,7 @@ async function attackResult(rollData, functionStuff){
             rollDataElement.damageTooltip = new Handlebars.SafeString(await damage.roll.getTooltip());
             damageRollMod = game.i18n.localize('COMBAT.CHAT_DMG_PARAMS') + damage.autoParams;
             hasDmgMod = (damage.autoParams.length >0) ? true : false;
-            rollDataElement.dmg = Math.max(0, damage.roll.total);
+            rollDataElement.dmg = await mathDamageProt(functionStuff.targetData.actor, damage.roll.total, {mysticalWeapon: mysticalWeapon});
             rollDataElement.damageText = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + rollDataElement.dmg.toString();
             damageTot += rollDataElement.dmg;
         }

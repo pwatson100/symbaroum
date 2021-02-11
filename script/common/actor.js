@@ -115,27 +115,8 @@ export class SymbaroumActor extends Actor {
         
         let activeArmor = this._getActiveArmor(data);
         let defense = this._getDefenseValue(data, activeArmor);
-/*       let attributeDef = data.data.defense.attribute.toLowerCase();
-        let attDefValue = data.data.attributes[attributeDef].total;
-        let defMsg = `${game.i18n.localize(data.data.attributes[attributeDef].label)} ${data.data.attributes[attributeDef].total}`;
-        let flagBerserk = this.getFlag(game.system.id, 'berserker');
-        if(flagBerserk && flagBerserk < 3){
-            attDefValue = 5;
-            defMsg = `${game.i18n.localize("ABILITY_LABEL.BERSERKER")} 5`;
-        }
-        defMsg += `<br/>${game.i18n.localize("ARMOR.IMPEDING")}(${-1 * activeArmor.impeding})<br/>${data.data.bonus.defense_msg}`;
-        let robust = this.items.filter(element => element.data.data?.reference === "robust");
-        if(robust.length > 0){
-            let powerLvl = getPowerLevel(robust[0]);
-            attDefValue -=  powerLvl.level + 1;
-            defMsg += `<br/>${game.i18n.localize("TRAIT_LABEL.ROBUST")}(${-1 * (powerLvl.level + 1)})`;
-        }
-        
-        ({
-            attDefValue: attDefValue,
-            defMsg: defMsg
-        })
-        */
+        let damageProt = this._getDamageProtection();
+
         data.data.combat = {
             id: activeArmor._id,
             armor: activeArmor.name,
@@ -143,7 +124,8 @@ export class SymbaroumActor extends Actor {
             protectionNpc: activeArmor.npc,
             impeding: activeArmor.impeding,
             defense: defense.attDefValue - activeArmor.impeding + data.data.bonus.defense,
-            msg: defense.defMsg
+            msg: defense.defMsg,
+            damageProt: damageProt
         };
         const activeWeapons = this._getWeapons(data);
         data.data.weapons = [];
@@ -550,12 +532,68 @@ export class SymbaroumActor extends Actor {
                 defMsg += `<br/>${game.i18n.localize("ABILITY_LABEL.STAFF_FIGHTING")}(+1)`;
             }
         }
-
         return({
             attDefValue: attDefValue,
             defMsg: defMsg
         })
     }
+
+    _getDamageProtection(){
+        let damageProt = {
+            normal: 1,
+            elementary: 1,
+            mystic: 1,
+            holy: 1,
+            mysticalWeapon: 1
+        }
+        let undead = this.items.filter(element => element.data.data?.reference === "undead");
+        if(undead.length > 0){
+            let undeadLvl = getPowerLevel(undead[0]).level;
+            if(undeadLvl >1){
+                damageProt.normal = 0.5;
+                damageProt.elementary = 0.5;
+            }
+            if(undeadLvl >2){
+                damageProt.mystic = 0.5;
+            }
+        }
+        let spiritform = this.items.filter(element => element.data.data?.reference === "spiritform");
+        if(spiritform.length > 0){
+            let spiritformLvl = getPowerLevel(spiritform[0]).level;
+            if(spiritformLvl >0){
+                damageProt.normal = 0.5;
+            }
+            if(spiritformLvl >1){
+                damageProt.mystic = 0.5;
+                damageProt.elementary = 0.5;
+                damageProt.holy = 0.5;
+                damageProt.mysticalWeapon = 0.5
+            }
+            if(spiritformLvl >2){
+                damageProt.normal = 0;
+            }
+        }
+        let swarm = this.items.filter(element => element.data.data?.reference === "swarm");
+        if(swarm.length > 0){
+            let swarmLvl = getPowerLevel(swarm[0]).level;
+            if(swarmLvl >0){
+                damageProt.normal = 0.5;
+                damageProt.mystic = 0.5;
+                damageProt.elementary = 0.5;
+                damageProt.holy = 0.5;
+                damageProt.mysticalWeapon = 0.5
+            }
+            if(swarmLvl >2){
+                damageProt.normal = 0.25;
+                damageProt.mystic = 0.25;
+                damageProt.elementary = 0.25;
+                damageProt.holy = 0.25;
+                damageProt.mysticalWeapon = 0.25
+            }
+        }
+        return(damageProt)
+    }
+
     _getActiveArmor(data) {
         let wearArmor;
         data.data.armors = [];
