@@ -975,6 +975,39 @@ async function checkResoluteModifiers(actor, autoParams = "", checkLeader = fals
     }
 }
 
+/* This function applies damage reduction (Undead trait, swarm...) to the final damage */
+async function mathDamageProt(targetActor, damage, damageType){
+    async function damageReductionText(value){
+        if(value != 1){
+            return (" (x" + value + ")")
+        }
+        else return("")
+    }
+    let finalDamage = Math.max(0, damage);
+    let infoText = "";
+    if(damageType.holy){
+        finalDamage = Math.round(finalDamage*targetActor.data.data.combat.damageProt.holy);
+        infoText = await damageReductionText(targetActor.data.data.combat.damageProt.holy)
+    }
+    else if(damageType.elementary){
+        finalDamage = Math.round(finalDamage*targetActor.data.data.combat.damageProt.elementary);
+        infoText = await damageReductionText(targetActor.data.data.combat.damageProt.elementary)
+    }
+    else if(damageType.mystical){
+        finalDamage = Math.round(finalDamage*targetActor.data.data.combat.damageProt.mystical);
+        infoText = await damageReductionText(targetActor.data.data.combat.damageProt.mystical)
+    }
+    else if(damageType.mysticalWeapon){
+        finalDamage = Math.round(finalDamage*targetActor.data.data.combat.damageProt.mysticalWeapon);
+        infoText = await damageReductionText(targetActor.data.data.combat.damageProt.mysticalWeapon)
+    }
+    else{
+        finalDamage = Math.round(finalDamage*targetActor.data.data.combat.damageProt.normal)
+        infoText = await damageReductionText(targetActor.data.data.combat.damageProt.normal)
+    }
+    return({damage: finalDamage, text : infoText})
+}
+
 /*function for main combat
 
 ****************this function needs damage and armor parameters as dice (ie: weapon.data.data.damage = "1d8")
@@ -1172,6 +1205,7 @@ async function attackResult(rollData, functionStuff){
     let damageRollMod = "";
     let hasDmgMod = "false";
     let i = 0;
+    let mysticalWeapon = functionStuff.weapon.qualities.mystical;
 
     for(let rollDataElement of rollData){
 
@@ -1186,7 +1220,9 @@ async function attackResult(rollData, functionStuff){
             rollDataElement.damageTooltip = new Handlebars.SafeString(await damage.roll.getTooltip());
             damageRollMod = game.i18n.localize('COMBAT.CHAT_DMG_PARAMS') + damage.autoParams;
             hasDmgMod = (damage.autoParams.length >0) ? true : false;
-            rollDataElement.dmg = Math.max(0, damage.roll.total);
+            let finalDmg = await mathDamageProt(functionStuff.targetData.actor, damage.roll.total, {mysticalWeapon: mysticalWeapon});
+            rollDataElement.dmg = finalDmg.damage;
+            rollDataElement.dmgFormula += finalDmg.text;
             rollDataElement.damageText = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + rollDataElement.dmg.toString();
             damageTot += rollDataElement.dmg;
         }
@@ -1258,7 +1294,6 @@ async function attackResult(rollData, functionStuff){
     if(functionStuff.poison > 0 && !targetDies && damageTot > 0){
 
         templateData.poisonChatIntro = functionStuff.actor.data.name + game.i18n.localize('COMBAT.CHAT_POISON') + functionStuff.targetData.actor.data.name;
-        let poisonChatResult;
         let poisonDamage = "0";
         let poisonRounds = "0";
         let poisonedTimeLeft = 0;
