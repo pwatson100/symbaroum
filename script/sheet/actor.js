@@ -9,7 +9,6 @@ export class SymbaroumActorSheet extends ActorSheet {
     html.find('input').focusin((ev) => this._onFocusIn(ev));
     html.find('.item-state').click(async (ev) => await this._onItemStateUpdate(ev));
     html.find('.activate-ability').click(async (ev) => await this._prepareActivateAbility(ev));
-    html.find('.roll-weapon').click(async (ev) => await this._prepareRollWeapon(ev));
   }
 
   _getHeaderButtons() {
