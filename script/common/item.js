@@ -1021,16 +1021,22 @@ It won't work with NPC fixed values as input
 * @param {object} targetData is information on the target that will receive the damage (as returned by the getTarget function)*/
 
 export async function attackRoll(weapon, actor){
-
-    //check wether acting token is player controlled
-    let targetData;
+    // get selected token
+    let selected = canvas.tokens.controlled;
+    if(selected.length == 0 || selected.length > 1){
+        ui.notifications.error(game.i18n.localize('ERROR.NO_TOKEN_SELECTED'));
+        return;
+    }
+    let token = selected[0];
     // get target token, actor and defense value
+    let targetData;
     try{targetData = getTarget("defense")} catch(error){      
         ui.notifications.error(error);
         return;
     }
     let fsDefault = {
         actor: actor,
+        token: token,
         askTargetAttribute: false,
         askCastingAttribute: false,
         askBackstab: false,
@@ -1211,7 +1217,7 @@ async function attackResult(rollData, functionStuff){
 
         rollDataElement.finalText="";
         if(rollDataElement.hasSucceed){
-            rollDataElement.resultText = functionStuff.actor.data.name + game.i18n.localize('COMBAT.CHAT_SUCCESS') + functionStuff.targetData.actor.data.name;
+            rollDataElement.resultText = functionStuff.token.data.name + game.i18n.localize('COMBAT.CHAT_SUCCESS') + functionStuff.targetData.token.data.name;
             hasDamage = true;
             rollDataElement.hasDamage = true;
             damage = await damageRollWithDiceParams(functionStuff.attackFromPC, functionStuff.actor, functionStuff.weapon, functionStuff.dmgData, functionStuff.targetData, rollDataElement.critSuccess);
@@ -1223,11 +1229,11 @@ async function attackResult(rollData, functionStuff){
             let finalDmg = await mathDamageProt(functionStuff.targetData.actor, damage.roll.total, {mysticalWeapon: mysticalWeapon});
             rollDataElement.dmg = finalDmg.damage;
             rollDataElement.dmgFormula += finalDmg.text;
-            rollDataElement.damageText = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + rollDataElement.dmg.toString();
+            rollDataElement.damageText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + rollDataElement.dmg.toString();
             damageTot += rollDataElement.dmg;
         }
         else{
-            rollDataElement.resultText = functionStuff.actor.data.name + game.i18n.localize('COMBAT.CHAT_FAILURE');
+            rollDataElement.resultText = functionStuff.token.data.name + game.i18n.localize('COMBAT.CHAT_FAILURE');
         }
     }
     if(damageTot <= 0){
@@ -1235,7 +1241,7 @@ async function attackResult(rollData, functionStuff){
     }
     else if(damageTot > functionStuff.targetData.actor.data.data.health.toughness.value){
         targetDies = true;
-        damageFinalText = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_DYING');
+        damageFinalText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_DYING');
         flagDataArray.push({
             tokenId: functionStuff.targetData.token.data._id,
             toughnessChange: damageTot*-1
@@ -1251,7 +1257,7 @@ async function attackResult(rollData, functionStuff){
             toughnessChange: damageTot*-1
         })
         if(pain){
-            damageFinalText = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_PAIN');
+            damageFinalText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_PAIN');
             flagDataArray.push({
                 tokenId: functionStuff.targetData.token.data._id,
                 addEffect: "icons/svg/falling.svg",
@@ -1260,8 +1266,8 @@ async function attackResult(rollData, functionStuff){
         }
 
     }
-    let introText = functionStuff.actor.data.name + game.i18n.localize('COMBAT.CHAT_INTRO') + functionStuff.weapon.name;
-    let targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.actor.data.name;
+    let introText = functionStuff.token.data.name + game.i18n.localize('COMBAT.CHAT_INTRO') + functionStuff.weapon.name;
+    let targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.token.data.name;
     if (functionStuff.targetData.autoParams != ""){targetText += ": " + functionStuff.targetData.autoParams}
     let templateData = {
         rollData: rollData,
@@ -1293,7 +1299,7 @@ async function attackResult(rollData, functionStuff){
 
     if(functionStuff.poison > 0 && !targetDies && damageTot > 0){
 
-        templateData.poisonChatIntro = functionStuff.actor.data.name + game.i18n.localize('COMBAT.CHAT_POISON') + functionStuff.targetData.actor.data.name;
+        templateData.poisonChatIntro = functionStuff.token.data.name + game.i18n.localize('COMBAT.CHAT_POISON') + functionStuff.targetData.token.data.name;
         let poisonDamage = "0";
         let poisonRounds = "0";
         let poisonedTimeLeft = 0;
@@ -1367,7 +1373,7 @@ async function attackResult(rollData, functionStuff){
                 addEffect: "icons/svg/poison.svg",
                 effectDuration: NewPoisonRounds
             });
-            templateData.poisonChatResult = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_POISON_SUCCESS1') + poisonDamage  + game.i18n.localize('COMBAT.CHAT_POISON_SUCCESS2')  + NewPoisonRounds.toString();
+            templateData.poisonChatResult = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_POISON_SUCCESS1') + poisonDamage  + game.i18n.localize('COMBAT.CHAT_POISON_SUCCESS2')  + NewPoisonRounds.toString();
           }
         }
         templateData.printPoison = true;
@@ -1376,7 +1382,7 @@ async function attackResult(rollData, functionStuff){
     }
     if(functionStuff.bleed > 0 && !targetDies && damageTot > 0){
         templateData.printBleed = true;
-        templateData.bleedChat = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_BLEED') + "1d4";
+        templateData.bleedChat = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_BLEED') + "1d4";
         flagDataArray.push({
             tokenId: functionStuff.targetData.token.data._id,
             addEffect: "icons/svg/blood.svg"
@@ -1481,7 +1487,7 @@ async function standardPowerResult(rollData, functionStuff){
     }
     let targetText = "";
     if(functionStuff.targetData.hasTarget){
-        targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.actor.data.name;
+        targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.token.data.name;
         if (functionStuff.targetData.autoParams != ""){targetText += ": " + functionStuff.targetData.autoParams}
     }
 
@@ -1597,7 +1603,7 @@ async function anathemaResult(rollData, functionStuff){
     }
     let targetText = "";
     if(functionStuff.targetData.hasTarget){
-        targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.actor.data.name;
+        targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.token.data.name;
         if (functionStuff.targetData.autoParams != ""){targetText += ": " + functionStuff.targetData.autoParams}
     }
     let corruption = await getCorruption(functionStuff);
@@ -1680,13 +1686,13 @@ async function brimstoneCascadeResult(rollData, functionStuff){
 
     let introText = functionStuff.actor.data.name + game.i18n.localize('POWER_BRIMSTONECASC.CHAT_INTRO');
     
-    let resultText = functionStuff.targetData.actor.data.name + game.i18n.localize('POWER_BRIMSTONECASC.CHAT_SUCCESS');
+    let resultText = functionStuff.targetData.token.data.name + game.i18n.localize('POWER_BRIMSTONECASC.CHAT_SUCCESS');
     if(!rollData[0].hasSucceed){
-        resultText = functionStuff.targetData.actor.data.name + game.i18n.localize('POWER_BRIMSTONECASC.CHAT_FAILURE');
+        resultText = functionStuff.targetData.token.data.name + game.i18n.localize('POWER_BRIMSTONECASC.CHAT_FAILURE');
     }
     let targetText = "";
     if(functionStuff.targetData.hasTarget){
-        targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.actor.data.name;
+        targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.token.data.name;
         if (functionStuff.targetData.autoParams != ""){targetText += ": " + functionStuff.targetData.autoParams}
     }
     let damageDice = "";
@@ -1707,11 +1713,11 @@ async function brimstoneCascadeResult(rollData, functionStuff){
 
     if(damageTot <= 0){
         damageTot = 0;
-        damageText = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_NUL');
+        damageText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_NUL');
     }
     else if(damageTot > functionStuff.targetData.actor.data.data.health.toughness.value){
-        damageText = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
-        damageFinalText = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_DYING');
+        damageText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
+        damageFinalText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_DYING');
         flagDataArray.push({
             tokenId: functionStuff.targetData.token.data._id,
             toughnessChange: damageTot*-1
@@ -1722,13 +1728,13 @@ async function brimstoneCascadeResult(rollData, functionStuff){
         })
     }
     else{
-        damageText = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
+        damageText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
         flagDataArray.push({
             tokenId: functionStuff.targetData.token.data._id,
             toughnessChange: damageTot*-1
         })
         if(pain){
-            damageFinalText = functionStuff.targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_PAIN');
+            damageFinalText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_PAIN');
             flagDataArray.push({
                 tokenId: functionStuff.targetData.token.data._id,
                 addEffect: "icons/svg/falling.svg",
@@ -1820,11 +1826,11 @@ async function bendWillResult(rollData, functionStuff){
     else{
         introText = functionStuff.actor.data.name + game.i18n.localize('POWER_BENDWILL.CHAT_INTRO');
     }
-    let resultText = functionStuff.actor.data.name + game.i18n.localize('POWER_BENDWILL.CHAT_SUCCESS') + functionStuff.targetData.actor.data.name;
+    let resultText = functionStuff.actor.data.name + game.i18n.localize('POWER_BENDWILL.CHAT_SUCCESS') + functionStuff.targetData.token.data.name;
     if(!rollData[0].hasSucceed){
-        resultText = functionStuff.targetData.actor.data.name + game.i18n.localize('POWER_BENDWILL.CHAT_FAILURE');
+        resultText = functionStuff.targetData.token.data.name + game.i18n.localize('POWER_BENDWILL.CHAT_FAILURE');
     }
-    let targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.actor.data.name;
+    let targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.token.data.name;
     if (functionStuff.targetData.autoParams != ""){targetText += ": " + functionStuff.targetData.autoParams}
     if(!functionStuff.isMaintained){
         haveCorruption = true;
@@ -1920,16 +1926,16 @@ async function curseResult(rollData, functionStuff){
             corruptionChange: corruption.value
         });
     }
-    let resultText = functionStuff.targetData.actor.data.name + game.i18n.localize('POWER_CURSE.CHAT_SUCCESS_N');
-    if(functionStuff.powerLvl == 2){resultText = functionStuff.targetData.actor.data.name + game.i18n.localize('POWER_CURSE.CHAT_SUCCESS_A')}
-    else if(functionStuff.powerLvl == 3){resultText = functionStuff.targetData.actor.data.name + game.i18n.localize('POWER_CURSE.CHAT_SUCCESS_M')}
+    let resultText = functionStuff.targetData.token.data.name + game.i18n.localize('POWER_CURSE.CHAT_SUCCESS_N');
+    if(functionStuff.powerLvl == 2){resultText = functionStuff.targetData.token.data.name + game.i18n.localize('POWER_CURSE.CHAT_SUCCESS_A')}
+    else if(functionStuff.powerLvl == 3){resultText = functionStuff.targetData.token.data.name + game.i18n.localize('POWER_CURSE.CHAT_SUCCESS_M')}
 
     let templateData = {
         targetData : functionStuff.targetData,
         hasTarget : functionStuff.targetData.hasTarget,
         introText: introText,
         introImg: functionStuff.actor.data.img,
-        targetText: game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.actor.data.name,
+        targetText: game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.token.data.name,
         subText: functionStuff.ability.name + " (" + functionStuff.powerLvl.lvlName + ")",
         subImg: functionStuff.ability.img,
         hasRoll: hasRoll,
@@ -1944,7 +1950,7 @@ async function curseResult(rollData, functionStuff){
 
     if(!rollData[0].hasSucceed){
         templateData.resultText = functionStuff.actor.data.name + game.i18n.localize('POWER_CURSE.CHAT_FAILURE');
-        templateData.finalText = game.i18n.localize('POWER_CURSE.CHAT_FAIL_FINAL') + functionStuff.targetData.actor.data.name;
+        templateData.finalText = game.i18n.localize('POWER_CURSE.CHAT_FAIL_FINAL') + functionStuff.targetData.token.data.name;
     }
 
     const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
@@ -2107,7 +2113,7 @@ async function inheritWound(ability, actor){
         hasTarget : targetData.hasTarget,
         introText: actor.data.name + game.i18n.localize('POWER_INHERITWOUND.CHAT_INTRO'),
         introImg: actor.data.img,
-        targetText: game.i18n.localize('ABILITY_MEDICUS.CHAT_TARGET') + targetData.actor.data.name,
+        targetText: game.i18n.localize('ABILITY_MEDICUS.CHAT_TARGET') + targetData.token.data.name,
         subText: ability.name + ", " + powerLvl.lvlName,
         subImg: ability.img,
         hasRoll: true,
@@ -2128,7 +2134,7 @@ async function inheritWound(ability, actor){
         if(powerLvl.level >= 2){
             inheritDamage = Math.ceil(healed /2);
         }
-        templateData.finalText += targetData.actor.data.name + game.i18n.localize('POWER_INHERITWOUND.CHAT_HEALED') + healed.toString() + ";\n" + actor.data.name + game.i18n.localize('POWER_INHERITWOUND.CHAT_DAMAGE') + inheritDamage.toString();
+        templateData.finalText += targetData.token.data.name + game.i18n.localize('POWER_INHERITWOUND.CHAT_HEALED') + healed.toString() + ";\n" + actor.data.name + game.i18n.localize('POWER_INHERITWOUND.CHAT_DAMAGE') + inheritDamage.toString();
         flagDataArray.push({
             tokenId: selectedToken.data._id,
             toughnessChange: inheritDamage*-1
@@ -2265,11 +2271,11 @@ async function larvaeBoilsResult(rollData, functionStuff){
             let damageRoll= new Roll(effectDamage).evaluate({maximize: true});
             finalDamage = Math.ceil(damageRoll.total/2);
         }
-        resultText = functionStuff.targetData.actor.data.name + game.i18n.localize('POWER_LARVAEBOILS.CHAT_SUCCESS');
+        resultText = functionStuff.targetData.token.data.name + game.i18n.localize('POWER_LARVAEBOILS.CHAT_SUCCESS');
         finalText =  game.i18n.localize('COMBAT.DAMAGE') + finalDamage.toString();
     }
     else{
-        resultText = functionStuff.targetData.actor.data.name + game.i18n.localize('POWER_LARVAEBOILS.CHAT_FAILURE');
+        resultText = functionStuff.targetData.token.data.name + game.i18n.localize('POWER_LARVAEBOILS.CHAT_FAILURE');
     }
 
     let templateData = {
@@ -2277,7 +2283,7 @@ async function larvaeBoilsResult(rollData, functionStuff){
         hasTarget : functionStuff.targetData.hasTarget,
         introText: introText,
         introImg: functionStuff.actor.data.img,
-        targetText: game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.actor.data.name,
+        targetText: game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.token.data.name,
         subText: functionStuff.ability.name + " (" + functionStuff.powerLvl.lvlName + ")",
         subImg: functionStuff.ability.img,
         hasRoll: hasRoll,
@@ -2431,13 +2437,13 @@ async function layonhandsResult(functionStuff) {
         hasTarget : true,
         introText: functionStuff.actor.data.name + game.i18n.localize('POWER_LAYONHANDS.CHAT_INTRO'),
         introImg: functionStuff.actor.data.img,
-        targetText: game.i18n.localize('ABILITY_MEDICUS.CHAT_TARGET') + functionStuff.targetData.actor.data.name,
+        targetText: game.i18n.localize('ABILITY_MEDICUS.CHAT_TARGET') + functionStuff.targetData.token.data.name,
         subText: functionStuff.ability.name + ", " + functionStuff.powerLvl.lvlName,
         subImg: functionStuff.ability.img,
         hasRoll: true,
         rollString: `${game.i18n.localize(rollData[0].actingAttributeLabel)} : (${rollData[0].actingAttributeValue})`,
         rollResult : formatRollResult(rollData),
-        resultText: functionStuff.actor.data.name + game.i18n.localize('POWER_LAYONHANDS.CHAT_SUCCESS') + functionStuff.targetData.actor.data.name,
+        resultText: functionStuff.actor.data.name + game.i18n.localize('POWER_LAYONHANDS.CHAT_SUCCESS') + functionStuff.targetData.token.data.name,
         finalText: "",
         hasDamage: hasDamage,
         damageText: damageText,
@@ -2450,7 +2456,7 @@ async function layonhandsResult(functionStuff) {
         corruptionText: corruptionText
     }
 
-    if(!rollData[0].hasSucceed){templateData.resultText = game.i18n.localize('POWER_LAYONHANDS.CHAT_FAILURE') + functionStuff.targetData.actor.data.name}
+    if(!rollData[0].hasSucceed){templateData.resultText = game.i18n.localize('POWER_LAYONHANDS.CHAT_FAILURE') + functionStuff.targetData.token.data.name}
 
     
     const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
@@ -2511,13 +2517,13 @@ async function berserker(ability, actor) {
     let flagData = await actor.getFlag(game.system.id, 'berserker');
     if(flagData){
         await actor.unsetFlag(game.system.id, 'berserker');
-        functionStuff.introText = game.i18n.localize('ABILITY_BERSERKER.CHAT_DESACTIVATE');
+        functionStuff.introText = actor.name + game.i18n.localize('ABILITY_BERSERKER.CHAT_DESACTIVATE');
         functionStuff.resultTextSuccess = game.i18n.localize('ABILITY_BERSERKER.CHAT_RESULT_DESACTIVATE');
         functionStuff.removeCasterEffect= ["systems/symbaroum/asset/image/berserker.svg"]
     }
     else{
         flagData = functionStuff.powerLvl.level;
-        functionStuff.introText = game.i18n.localize('ABILITY_BERSERKER.CHAT_ACTIVATE');
+        functionStuff.introText = actor.name + game.i18n.localize('ABILITY_BERSERKER.CHAT_ACTIVATE');
         await actor.setFlag(game.system.id, 'berserker', flagData);
         functionStuff.addCasterEffect = ["systems/symbaroum/asset/image/berserker.svg"];
         if(functionStuff.powerLvl.level == 2) functionStuff.resultTextSuccess = game.i18n.localize('ABILITY_BERSERKER.CHAT_RESULT_LVL2');
@@ -2736,7 +2742,7 @@ async function medicusResult(ability, actor, targetData, powerLvl, herbalCure, h
         finalText: game.i18n.localize('ABILITY_MEDICUS.CHAT_FINAL') + healed.toString()
     };
     if(targetData.hasTarget){
-        templateData.targetText = game.i18n.localize('ABILITY_MEDICUS.CHAT_TARGET') + targetData.actor.data.name;
+        templateData.targetText = game.i18n.localize('ABILITY_MEDICUS.CHAT_TARGET') + targetData.token.data.name;
     }
 
     if(herbalCure){templateData.subText += ", " + game.i18n.localize('ABILITY_MEDICUS.HERBALCURE')}
@@ -2857,11 +2863,11 @@ async function strangler(ability, actor){
                 
                     if(damageTot <= 0){
                         damageTot = 0;
-                        damageText = targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_NUL');
+                        damageText = targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_NUL');
                     }
                     else if(damageTot > targetData.actor.data.data.health.toughness.value){
-                        damageText = targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
-                        damageFinalText = targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_DYING');
+                        damageText = targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
+                        damageFinalText = targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_DYING');
                         flagDataArray.push({
                             tokenId: targetData.token.data._id,
                             toughnessChange: damageTot*-1
@@ -2872,13 +2878,13 @@ async function strangler(ability, actor){
                         })
                     }
                     else{
-                        damageText = targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
+                        damageText = targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
                         flagDataArray.push({
                             tokenId: targetData.token.data._id,
                             toughnessChange: damageTot*-1
                         })
                         if(pain){
-                            damageFinalText = targetData.actor.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_PAIN');
+                            damageFinalText = targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_PAIN');
                             flagDataArray.push({
                                 tokenId: targetData.token.data._id,
                                 addEffect: "icons/svg/falling.svg",
@@ -2896,7 +2902,7 @@ async function strangler(ability, actor){
                     }
                 }
                 else{
-                    resultText = targetData.actor.data.name + game.i18n.localize('ABILITY_STRANGLER.CHAT_FAILURE');
+                    resultText = targetData.token.data.name + game.i18n.localize('ABILITY_STRANGLER.CHAT_FAILURE');
                     hasDamage = false;
                     if(isMaintained){
                         flagDataArray.push({
@@ -2905,7 +2911,7 @@ async function strangler(ability, actor){
                         })
                     }
                 }
-                let targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + targetData.actor.data.name;
+                let targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + targetData.token.data.name;
                 if (targetData.autoParams != ""){targetText += ": " + targetData.autoParams}
                 let templateData = {
                     targetData : targetData,
@@ -2989,9 +2995,9 @@ async function witchsight(ability, actor) {
         corruptionText: ""
     };
     if(targetData.hasTarget){
-        templateData.targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + targetData.actor.data.name;
+        templateData.targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + targetData.token.data.name;
         if(rollData[0].hasSucceed){
-            templateData.finalText = game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_FINAL1') + targetData.actor.data.name + game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_FINAL2') +  targetData.actor.data.data.bio.shadow;
+            templateData.finalText = game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_FINAL1') + targetData.token.data.name + game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_FINAL2') +  targetData.actor.data.data.bio.shadow;
         }
     }
     let corruptionFormula = "1d1";
