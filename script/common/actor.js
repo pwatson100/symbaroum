@@ -376,6 +376,9 @@ export class SymbaroumActor extends Actor {
             let pcDamage = baseDamage + bonusDamage;
             let DmgRoll= new Roll(pcDamage).evaluate({maximize: true});
             let npcDamage = Math.ceil(DmgRoll.total/2);         
+            if(item.data.data.qualities.massive) {
+                pcDamage = "2d"+(npcDamage*2)+"kh"+bonusDamage;
+            }
             if(item.data.data.qualities.deepImpact){
                 pcDamage += "+1";
                 npcDamage+= 1;
