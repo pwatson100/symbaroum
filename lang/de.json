@@ -596,6 +596,8 @@
   "SYMBAROUM.OPTIONAL_SAVECOMBATROLL": "Combat settings for rolls",
   "SYMBAROUM.OPTIONAL_SAVECOMBATROLL_HINT": "Check to enable QoL enhancement for keeping all modifiers when rolling combat (weapon/defense)",
   "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL": "Attribute settings for rolls",
-  "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT": "Check to enable QoL enhancement for keeping all modifiers when rolling attribute tests"
+  "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT": "Check to enable QoL enhancement for keeping all modifiers when rolling attribute tests",
+  "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE": "Show modifers in targetted attribute rolls",
+  "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE_HINT": "Check to enable QoL enhancement for showing attribute modifiers before making the roll"
 
 }
