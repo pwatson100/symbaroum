@@ -141,6 +141,7 @@ export class SymbaroumActor extends Actor {
 
     _computePower(data, item) {
         let expCost = 0;
+        let progCost = 0;
         if (item.isRitual) {
             item.data.actions = "Ritual";
             this.data.data.numRituals = this.data.data.numRituals + 1;
@@ -150,10 +151,12 @@ export class SymbaroumActor extends Actor {
             }
         } else if (item.isBurden) {
             item.data.actions = "Burden";
-            expCost = -5 * item.data.level;
+            progCost = -5 * item.data.level;
+//            expCost = -5 * item.data.level;
         } else if (item.isBoon) {
             item.data.actions = "Boon";            
-            expCost = 5 * item.data.level;
+            progCost = 5 * item.data.level;
+//            expCost = 5 * item.data.level;
         } else {
 			
             let novice = "-";
@@ -165,15 +168,18 @@ export class SymbaroumActor extends Actor {
             }
             if (item.data.adept.isActive) { 
               adept = item.data.adept.action;
-              expCost += 20;
+              expCost += 15;
+//              expCost += 20;
             }
             if (item.data.master.isActive) {
               master = item.data.master.action;
-              expCost += 30;
+              expCost += 20;
+//              expCost += 30;
             }
             item.data.actions = `${novice}/${adept}/${master}`;
         }
         item.data.bonus.experience.cost = expCost;
+        item.data.bonus.experience.progresCost = progCost;//
         
         this._addBonus(data, item);
     }
