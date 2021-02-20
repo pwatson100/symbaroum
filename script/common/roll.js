@@ -61,7 +61,6 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
       
       weaponResults.value = weaponRoll.total;
       weaponResults.name = weapon.name; 
-    //  weaponResults.diceBreakdown = formatDice(weaponRoll.terms,"+");
       weaponResults.diceBreakdown = tooltip;
       console.log(tooltip);
       weaponResults.img = weapon.img;
