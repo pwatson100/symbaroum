@@ -39,6 +39,9 @@
       <label>{{localize "DIALOG.ADVANTAGE"}}</label> <span class="lblfavour"><input type="checkbox" {{roll_defaults.advantage}} id="advantage" value="1" data-dtype="Number"> </span>
     </div>
     <div class="damagemodifier">
+      <label>{{localize "DIALOG.DAMAGE_MODIFIER"}}</label> <span>{{weaponDamage}}</span>
+      </div>
+      <div class="damagemodifier">
 		<label>{{localize "DIALOG.DAMAGE_MODIFIER"}}</label> <input id="dammodifier" value="{{roll_defaults.additionalModifier}}" type="text" data-dtype="Text"/> 
     </div>
     {{/if}}

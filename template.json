@@ -308,7 +308,7 @@
       },
       "cost": "",
       "number": 1,
-      "attribute": "",
+      "attribute": "accurate",
       "state": "other"
     },
     "armor": {
