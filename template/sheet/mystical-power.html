@@ -9,6 +9,12 @@
                 <label>{{localize "MYSTICAL_POWER.NAME"}}</label>
                     <input name="name" type="text" value="{{item.name}}"/>
                 </div>
+                {{#if item.isGM }}
+                <div class="name">
+                    <label>{{localize "ABILITY.REFERENCE"}}</label>
+                    <input name="data.reference" type="text" value="{{data.reference}}"/>
+                </div>
+                {{/if}}                
             </div>
             <div class="avatar">
                     <button class="activate-ability" ><img src="icons/vtt-512.png" /></button>
