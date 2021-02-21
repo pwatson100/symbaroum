@@ -312,7 +312,7 @@ export class SymbaroumActor extends Actor {
                 }
                 if(flagBerserk){
                     bonusDamage += " +1d6["+game.i18n.localize("ABILITY_LABEL.BERSERKER")+"]";
-                    shortBonusDamage += " +1d8";
+                    shortBonusDamage += " +1d6";
                     tooltip += game.i18n.localize("ABILITY_LABEL.BERSERKER") + ", ";
                 }
                 if(ironFistLvl > 0){
