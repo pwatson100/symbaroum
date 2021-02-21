@@ -11,6 +11,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon) 
   const html = await renderTemplate('systems/symbaroum/template/chat/dialog.html', {
     "hasTarget": targetTokens.length > 0,
     "isWeaponRoll" : weapon !== null,
+    "weaponDamage" : weapon !== null ? weapon.damage.pc:"",
     "isArmorRoll" : armor !== null,
     "askImpeding" : askImpeding,
     "choices": { "0": game.i18n.localize("DIALOG.FAVOUR_NORMAL"), "-1":game.i18n.localize("DIALOG.FAVOUR_DISFAVOUR"), "1":game.i18n.localize("DIALOG.FAVOUR_FAVOUR")},
