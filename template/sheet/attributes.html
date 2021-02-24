@@ -1,0 +1,22 @@
+<div class="attributes">
+		
+    <div class="attributes foreground">
+        <h1>{{localize "TITLE.ATTRIBUTES"}}</h1>
+        <div class="attribute-header">
+            <b class="name">{{localize "ARMOR.NAME"}}</b>
+            <b class="total">total</b>
+            <b class="base">base</b>
+            <b class="temp">temp</b>
+            <b class="temp">bonus</b>
+        </div>
+        {{#each data.attributes as |attribute key|}}
+            <div class="attribute">
+              <button class="roll-attribute" style="width: 100%" data-attribute="{{key}}">{{localize attribute.label}}</button>
+                <input name="data.attributes.{{key}}.total" type="number" value="{{attribute.total}}" data-dtype="Number" disabled/>
+                <input name="data.attributes.{{key}}.value" type="number" value="{{attribute.value}}" data-dtype="Number" />
+                <input name="data.attributes.{{key}}.temporaryMod" type="number" value="{{attribute.temporaryMod}}" data-dtype="Number" />
+                <input name="data.bonus.{{key}}" type="number" value="{{data.bonus.{{key}}}}" data-dtype="Number" disabled/>
+            </div>
+        {{/each}}
+    </div>
+</div>

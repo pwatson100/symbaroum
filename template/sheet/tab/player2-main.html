@@ -5,6 +5,7 @@
 		
     <div class="attributes foreground">
         <h1>{{localize "TITLE.ATTRIBUTES"}}</h1>
+        <button class="modify-attribute">Modify</button>
         {{#each data.attributes as |attribute key|}}
             <div class="attribute">
               <button class="roll-attribute" style="width: 100%" data-attribute="{{key}}">{{localize attribute.label}}</button>                
@@ -138,7 +139,7 @@
                                 </div>
                                 <button class="roll-weapon">{{item.name}}</button>
                             </div>
-                            <div class="damage">{{item.damage.pc}}</div>
+                            <div class="damage" title="{{item.tooltip}}">{{item.damage.pcShort}}</div>
                         </div>
                     {{/if}}
                     {{/each}}

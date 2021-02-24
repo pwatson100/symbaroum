@@ -1,5 +1,6 @@
 {
   "ABILITY.NAME": "Name",
+  "ABILITY.REFERENCE": "Reference",
   "ABILITY.ACTIVE": "Learned",
   "ABILITY.ACTION": "Action",
   "ABILITY.DESCRIPTION": "Description",
@@ -140,6 +141,7 @@
   "ARMOR.COST": "Cost",
   "ARMOR.QUALITY": "Quality",
   "ARMOR.DESCRIPTION": "Description",
+  "ARMOR.BONUS_ONLY": "Bonus armor",
 
   "ARTIFACT.NAME": "Name",
   "ARTIFACT.ACTION": "Action",
@@ -379,6 +381,11 @@
   "POWER_BENDWILL.CHAT_INTRO_M": " maintains Bend Will.",
   "POWER_BENDWILL.CHAT_SUCCESS": " controls ",
   "POWER_BENDWILL.CHAT_FAILURE": " resists the attempt.",
+    
+  "POWER_BLESSEDSHIELD.CHAT_INTRO": " tries to invoke Prios' protection.",
+  "POWER_BLESSEDSHIELD.CHAT_SUCCESS": " is surrounded by a shield of light.",
+  "POWER_BLESSEDSHIELD.CHAT_FAILURE": " stays in darkness.",
+  "POWER_BLESSEDSHIELD.PROTECTED": " is protected",
   
   "POWER_BRIMSTONECASC.CHAT_INTRO": " throws fire at its target.",
   "POWER_BRIMSTONECASC.CHAT_SUCCESS": " gets burned.",  
@@ -611,5 +618,7 @@
   "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL": "Attribute settings for rolls",
   "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT": "Check to enable QoL enhancement for keeping all modifiers when rolling attribute tests",
   "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE": "Show modifers in targetted attribute rolls",
-  "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE_HINT": "Check to enable QoL enhancement for showing attribute modifiers before making the roll"
+  "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE_HINT": "Check to enable QoL enhancement for showing attribute modifiers before making the roll",
+  "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Allow reference modification",
+  "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Warning - GM Only - allow to manually adjust reference implementation for abilities, traits and mystical powers. Requires refresh."
 }

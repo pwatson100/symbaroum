@@ -34,6 +34,7 @@ export class SymbaroumItem extends Item {
         super.prepareData();
         this._initializeData(this.data);
         this._computeCombatData(this.data);
+        this.data.isGM = game.user.isGM && game.settings.get('symbaroum', 'allowShowReference'); // Show advanced settings
     }
 
     _initializeData(data) {
@@ -401,7 +402,9 @@ export class SymbaroumItem extends Item {
         {reference: "inheritwound", level: [1, 2, 3], function: inheritWound},
         {reference: "larvaeboils", level: [1, 2, 3], function: larvaeBoilsPrepare},
         {reference: "layonhands", level: [1, 2, 3], function: layonhandsPrepare},
-        {reference: "unnoticeable", level: [1, 2, 3], function: unnoticeablePrepare}];
+        {reference: "tormentingspirits", level: [1, 2, 3], function: tormentingspiritsPrepare},
+        {reference: "unnoticeable", level: [1, 2, 3], function: unnoticeablePrepare},
+        {reference: "blessedshield", level: [1, 2, 3], function: blessedshieldPrepare}];
 
         const scriptedTraits = 
         [];
@@ -447,29 +450,42 @@ const weaponReferences = [
 @Params: {string}   targetAttributeName : the name of the resist attribute. Can be defence, and can be null.
 @returns:  {targetData object}*/
 function getTarget(targetAttributeName) {
+    let targetsData;
+    try{targetsData = getTargets(targetAttributeName, 1)} catch(error){      
+        throw error;
+    }
+    return targetsData[0]
+}
+
+function getTargets(targetAttributeName, maxTargets = 1) {
     let targets = Array.from(game.user.targets)
-    if(targets.length == 0 || targets.length > 1 ){
+    if(targets.length == 0 || targets.length > maxTargets){
       throw game.i18n.localize('ABILITY_ERROR.TARGET');
     }
-    let targetToken = targets[0];
-    let targetActor = targets[0].actor;
+    let targetsData = [];
+    for(let target of targets){
+        let targetToken = target;
+        let targetActor = target.actor;
 
-     // get target opposition attribute
-    let resistAttributeValue = null;
-    if(targetAttributeName != undefined)
-    {
-        resistAttributeValue = getAttributeValue(targetActor, targetAttributeName);
+        // get target opposition attribute
+        let resistAttributeValue = null;
+        if(targetAttributeName != undefined)
+        {
+            resistAttributeValue = getAttributeValue(targetActor, targetAttributeName);
+        }
+        else {targetAttributeName = null};
+        targetsData.push({
+            hasTarget : true,
+            token : targetToken,
+            actor : targetActor,
+            resistAttributeName: targetAttributeName,
+            resistAttributeValue : resistAttributeValue,
+            autoParams: ""
+        })
     }
-    else {targetAttributeName = null}
-    return{
-        hasTarget : true,
-        token : targetToken,
-        actor : targetActor,
-        resistAttributeName: targetAttributeName,
-        resistAttributeValue : resistAttributeValue,
-        autoParams: ""
-    }
+    return(targetsData)
 }
+
 
 /* get the selected token ID */
 function getTokenId(){
@@ -1888,6 +1904,95 @@ async function bendWillResult(rollData, functionStuff){
     }
 }
 
+async function blessedshieldPrepare(ability, actor) {
+    let fsDefault = await buildFunctionStuffDefault(ability, actor);
+    let specificStuff = {
+        isMaintained: false,
+        combat: false,
+        targetMandatory: false,
+        checkMaintain: false,
+        corruption: true,
+        tradition: ["theurgy"],
+        resultFunction: blessedshieldResult
+    }
+    
+    specificStuff.healFormula = "1d6";
+    if(fsDefault.powerLvl.level > 1){
+        specificStuff.healFormula = "1d8";
+        specificStuff.removeTargetEffect = ["icons/svg/poison.svg", "icons/svg/blood.svg"]
+    }
+    let functionStuff = Object.assign({}, fsDefault , specificStuff);
+
+    if(functionStuff.powerLvl.level > 0){
+        try{functionStuff.targets = getTargets(undefined, functionStuff.powerLvl.level)} catch(error){
+        }
+    }
+    await modifierDialog(functionStuff)
+}
+
+async function blessedshieldResult(rollData, functionStuff){
+    let flagDataArray = [];
+    let haveCorruption = true;
+    let corruption = await getCorruption(functionStuff);
+    let corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
+    flagDataArray.push({
+        tokenId: functionStuff.token.data._id,
+        corruptionChange: corruption.value
+    });
+    let templateData = {
+        targetData : functionStuff.targetData,
+        hasTarget : false,
+        introText: functionStuff.actor.data.name + game.i18n.localize('POWER_BLESSEDSHIELD.CHAT_INTRO'),
+        introImg: functionStuff.actor.data.img,
+        targetText: "",
+        subText: functionStuff.ability.name + ", " + functionStuff.powerLvl.lvlName,
+        subImg: functionStuff.ability.img,
+        hasRoll: true,
+        rollString: `${rollData[0].actingAttributeLabel} : (${rollData[0].actingAttributeValue})`,
+        rollResult : formatRollResult(rollData),
+        resultText: functionStuff.actor.data.name + game.i18n.localize('POWER_BLESSEDSHIELD.CHAT_SUCCESS'),
+        finalText: "",
+        haveCorruption: haveCorruption,
+        corruptionText: corruptionText
+    };
+    if(functionStuff.autoParams != ""){templateData.subText += ", " + functionStuff.autoParams};
+
+    if(rollData[0].hasSucceed){
+        let protectionFormula = "1d" + (4 + (2*functionStuff.powerLvl.level));
+
+        flagDataArray.push({
+            tokenId: functionStuff.token.data._id,
+            addEffect: "icons/svg/holy-shield.svg",
+            effectDuration: 1
+        })
+        templateData.finalText = functionStuff.actor.data.name + game.i18n.localize('POWER_BLESSEDSHIELD.PROTECTED') + " (" + protectionFormula + ")";
+
+        if(functionStuff.targets){
+            for(let target of functionStuff.targets){
+                flagDataArray.push({
+                    tokenId: target.token.data._id,
+                    addEffect: "icons/svg/holy-shield.svg",
+                    effectDuration: 1 
+                })
+                templateData.finalText += ", " + target.actor.data.name + game.i18n.localize('POWER_BLESSEDSHIELD.PROTECTED');
+            }
+        }
+    }
+    else{
+        templateData.resultText = functionStuff.actor.data.name + game.i18n.localize('POWER_BLESSEDSHIELD.CHAT_FAILURE')
+    }
+    const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
+    const chatData = {
+        user: game.user._id,
+        content: html,
+    }
+    ChatMessage.create(chatData);
+
+    if(flagDataArray.length){
+        await createModifyTokenChatButton(flagDataArray);
+    }
+}
+
 async function cursePrepare(ability, actor) {
     
     let targetData;
@@ -2473,6 +2578,129 @@ async function layonhandsResult(functionStuff) {
     if(flagDataArray.length > 0){
         await createModifyTokenChatButton(flagDataArray);
     }
+}
+
+async function tormentingspiritsPrepare(ability, actor) { 
+    let targetData;
+    try{targetData = getTarget()} catch(error){      
+        ui.notifications.error(error);
+        return;
+    }
+    let fsDefault = await buildFunctionStuffDefault(ability, actor)
+    let specificStuff = {
+        combat: false,
+        targetMandatory: true,
+        checkMaintain: true,
+        corruption: true,
+        targetData: targetData,
+        resultFunction: tormentingspiritsResult,
+        tradition: ["witchcraft"],
+    }
+    let functionStuff = Object.assign({}, fsDefault , specificStuff);
+    await modifierDialog(functionStuff)
+}
+
+async function tormentingspiritsResult(rollData, functionStuff){
+    let flagDataArray = [];
+    let haveCorruption = false;
+    let corruptionText = "";
+    let corruption;
+    let introText = "";
+    let resultText;
+    let finalText = "";
+    let hasRoll;
+    let finalDamage = 0;
+
+    if(functionStuff.isMaintained){
+        introText = functionStuff.actor.data.name + game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_INTRO_M');
+        hasRoll = true;
+    }
+    else{
+        introText = functionStuff.actor.data.name + game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_INTRO');
+        hasRoll = false;
+        rollData[0].hasSucceed = true;
+        haveCorruption = true;
+        corruption = await getCorruption(functionStuff);
+        corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
+        flagDataArray.push({
+            tokenId: functionStuff.token.data._id,
+            corruptionChange: corruption.value
+        });
+    }
+    if(rollData[0].hasSucceed){
+        //PC roll damage, NPCs do fixed damage = maximumdice/2
+        let effectDamage;
+        if(functionStuff.powerLvl.level == 2){
+            effectDamage = "1d4";
+        }
+        else if(functionStuff.powerLvl.level == 3){
+            effectDamage = "1d6";
+        }
+        if(functionStuff.attackFromPC){
+            let damageRoll = new Roll(effectDamage).evaluate();
+            damageRoll.toMessage();
+            finalDamage = damageRoll.total;
+        }
+        else{
+            finalDamage
+            let damageRoll= new Roll(effectDamage).evaluate({maximize: true});
+            finalDamage = Math.ceil(damageRoll.total/2);
+        }
+        resultText = functionStuff.targetData.token.data.name + game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_SUCCESS');
+        finalText =  game.i18n.localize('COMBAT.DAMAGE') + finalDamage.toString();
+    }
+    else{
+        resultText = functionStuff.targetData.token.data.name + game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_FAILURE');
+    }
+
+    let templateData = {
+        targetData : functionStuff.targetData,
+        hasTarget : functionStuff.targetData.hasTarget,
+        introText: introText,
+        introImg: functionStuff.actor.data.img,
+        targetText: game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.token.data.name,
+        subText: functionStuff.ability.name + " (" + functionStuff.powerLvl.lvlName + ")",
+        subImg: functionStuff.ability.img,
+        hasRoll: hasRoll,
+        rollString: `${rollData[0].actingAttributeLabel} : (${rollData[0].actingAttributeValue})`,
+        rollResult : formatRollResult(rollData),
+        resultText: resultText,
+        finalText: finalText,
+        haveCorruption: haveCorruption,
+        corruptionText: corruptionText
+    }
+    if(functionStuff.autoParams != ""){templateData.subText += ", " + functionStuff.autoParams};
+    if(functionStuff.targetData.autoParams != ""){templateData.targetText += ", " + functionStuff.targetData.autoParams};
+
+
+    const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
+    const chatData = {
+        user: game.user._id,
+        content: html,
+    }
+    ChatMessage.create(chatData);
+    if(!functionStuff.isMaintained){
+        flagDataArray.push({
+            tokenId: functionStuff.targetData.token.data._id,
+            addEffect: "systems/symbaroum/asset/image/bug.png",
+            effectDuration: 1
+        }, {
+            tokenId: functionStuff.targetData.token.data._id,
+            toughnessChange: finalDamage*-1
+        });
+    }
+    else if(!rollData[0].hasSucceed){   
+        flagDataArray.push({
+            tokenId: functionStuff.targetData.token.data._id,
+            removeEffect: "systems/symbaroum/asset/image/bug.png",
+        })
+    }else{
+        flagDataArray.push({
+            tokenId: functionStuff.targetData.token.data._id,
+            toughnessChange: finalDamage*-1
+        });
+    }
+    await createModifyTokenChatButton(flagDataArray);
 }
 
 async function unnoticeablePrepare(ability, actor) {

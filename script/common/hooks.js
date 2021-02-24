@@ -121,6 +121,15 @@ Hooks.once('init', () => {
     default: false,
     config: true,
   });  
+  game.settings.register('symbaroum', 'allowShowReference', {
+    name: 'SYMBAROUM.OPTIONAL_SHOWREFERENCE',
+    hint: 'SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });  
+
 });
 
 Hooks.once('ready', () => {
@@ -187,14 +196,19 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
             if (statusCounterMod) {
               let alreadyHereEffect = await EffectCounter.findCounter(token, flagData.addEffect);
               if (alreadyHereEffect == undefined) {
-                let statusEffect = new EffectCounter(duration, flagData.addEffect, token, false);
-                await statusEffect.update();
+                if(flagData.effectStuff){
+                  let statusEffect = new EffectCounter(flagData.effectStuff, flagData.addEffect, token, false);
+                  await statusEffect.update();
+                }
+                else{
+                  let statusEffect = new EffectCounter(duration, flagData.addEffect, token, false);
+                  await statusEffect.update();
+                }
               }
             } else {
               token.toggleEffect(flagData.addEffect);
             }
           }
-
           if (flagData.removeEffect) {
             if (statusCounterMod) {
               let statusEffectCounter = await EffectCounter.findCounter(token, flagData.removeEffect);
@@ -205,7 +219,6 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
               token.toggleEffect(flagData.removeEffect);
             }
           }
-
           if (flagData.modifyEffectDuration) {
             if (statusCounterMod) {
               let statusEffectCounter = await EffectCounter.findCounter(token, flagData.modifyEffectDuration);
