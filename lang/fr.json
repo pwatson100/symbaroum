@@ -1,5 +1,6 @@
 {
     "ABILITY.NAME": "Nom",
+    "ABILITY.REFERENCE": "Reference",
     "ABILITY.ACTIVE": "Appris",
     "ABILITY.ACTION": "Action",
     "ABILITY.DESCRIPTION": "Description",
@@ -609,7 +610,11 @@
     "SYMBAROUM.OPTIONAL_SAVECOMBATROLL": "Configuration des jets de combat",
     "SYMBAROUM.OPTIONAL_SAVECOMBATROLL_HINT": "Garder en mémoire les modificateurs d'un jet de combat sur l'autre. (arme/defense)",
     "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL": "Configuration des jets d'attribut",
-    "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT": "Garder en mémoire les modificateurs d'un jet d'attribut sur l'autre."
+    "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT": "Garder en mémoire les modificateurs d'un jet d'attribut sur l'autre.",
+    "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE": "Show modifers in targetted attribute rolls",
+    "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE_HINT": "Check to enable QoL enhancement for showing attribute modifiers before making the roll",
+    "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Allow reference modification",
+    "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Warning - GM Only - allow to manually adjust reference implementation for abilities, traits and mystical powers. Requires refresh."
   
 }
 

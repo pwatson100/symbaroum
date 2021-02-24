@@ -113,6 +113,23 @@ Hooks.once('init', () => {
     default: false,
     config: true,
   });
+  game.settings.register('symbaroum', 'showModifiersInDialogue', {
+    name: 'SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE',
+    hint: 'SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });  
+  game.settings.register('symbaroum', 'allowShowReference', {
+    name: 'SYMBAROUM.OPTIONAL_SHOWREFERENCE',
+    hint: 'SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });  
+
 });
 
 Hooks.once('ready', () => {

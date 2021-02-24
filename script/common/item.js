@@ -34,6 +34,7 @@ export class SymbaroumItem extends Item {
         super.prepareData();
         this._initializeData(this.data);
         this._computeCombatData(this.data);
+        this.data.isGM = game.user.isGM && game.settings.get('symbaroum', 'allowShowReference'); // Show advanced settings
     }
 
     _initializeData(data) {
@@ -74,6 +75,11 @@ export class SymbaroumItem extends Item {
                 data.data.isDistance = false;
             }
             let baseDamage = data.data.baseDamage;
+            if(data.data.qualities?.massive) {
+                let diceSides = new Roll(baseDamage).evaluate({maximize: true});                
+                baseDamage = "2d"+Math.ceil(diceSides.total)+"kh";
+                console.log("Weapon is massive, baseDamage set to "+baseDamage);
+            } 
             if(data.data.bonusDamage != ""){
                 baseDamage += data.data.bonusDamage;;
             }

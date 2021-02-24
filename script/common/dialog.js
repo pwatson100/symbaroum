@@ -3,17 +3,21 @@ import { rollAttribute, getAttributeLabel } from './roll.js';
 let roll_defaults = {};
 
 export async function prepareRollAttribute(actor, attributeName, armor, weapon) {
+  let targetTokens = Array.from(game.user.targets);
 	let attri_defaults = getRollDefaults(attributeName,armor !== null, weapon !== null);
+  let attri_mods = getVersusModifiers(targetTokens);
   let askImpeding = actor.data.data.combat.impeding !== 0 && weapon === null && armor === null;
 
   const html = await renderTemplate('systems/symbaroum/template/chat/dialog.html', {
-    "hasTarget": game.user.targets.values().next().value !== undefined,
+    "hasTarget": targetTokens.length > 0,
     "isWeaponRoll" : weapon !== null,
+    "weaponDamage" : weapon !== null ? weapon.damage.pc:"",
     "isArmorRoll" : armor !== null,
     "askImpeding" : askImpeding,
     "choices": { "0": game.i18n.localize("DIALOG.FAVOUR_NORMAL"), "-1":game.i18n.localize("DIALOG.FAVOUR_DISFAVOUR"), "1":game.i18n.localize("DIALOG.FAVOUR_FAVOUR")},
     "groupName":"favour",
-    "roll_defaults": attri_defaults,
+    "attri_mods" : attri_mods,
+    "roll_defaults": attri_defaults
   });
   console.log(armor);
   console.log(weapon);
@@ -106,6 +110,25 @@ function createDefaults() {
     advantage: "",
     impeding: ""
 	};
+}
+
+function getVersusModifiers(targetTokens) {
+  if( targetTokens.length === 0) {
+    return null;
+  }
+  return {
+    show: game.settings.get('symbaroum', 'showModifiersInDialogue'),
+    custom:0,
+    defense: (10 - targetTokens[0].actor.data.data?.combat.defense),
+    accurate: (10 - targetTokens[0].actor.data.data?.attributes.accurate.total),
+    cunning: (10 - targetTokens[0].actor.data.data?.attributes.cunning.total),
+    discreet: (10 - targetTokens[0].actor.data.data?.attributes.discreet.total),
+    persuasive: (10 - targetTokens[0].actor.data.data?.attributes.persuasive.total),
+    quick: (10 - targetTokens[0].actor.data.data?.attributes.quick.total),
+    resolute: (10 - targetTokens[0].actor.data.data?.attributes.resolute.total),
+    strong: (10 - targetTokens[0].actor.data.data?.attributes.strong.total),
+    vigilant: (10 - targetTokens[0].actor.data.data?.attributes.vigilant.total),
+  };
 }
 
 function getTarget() {
