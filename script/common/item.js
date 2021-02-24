@@ -1915,16 +1915,10 @@ async function blessedshieldPrepare(ability, actor) {
         tradition: ["theurgy"],
         resultFunction: blessedshieldResult
     }
-    
-    specificStuff.healFormula = "1d6";
-    if(fsDefault.powerLvl.level > 1){
-        specificStuff.healFormula = "1d8";
-        specificStuff.removeTargetEffect = ["icons/svg/poison.svg", "icons/svg/blood.svg"]
-    }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
 
-    if(functionStuff.powerLvl.level > 0){
-        try{functionStuff.targets = getTargets(undefined, functionStuff.powerLvl.level)} catch(error){
+    if(functionStuff.powerLvl.level > 1){
+        try{functionStuff.targets = getTargets(undefined, functionStuff.powerLvl.level-1)} catch(error){
         }
     }
     await modifierDialog(functionStuff)
@@ -1958,7 +1952,7 @@ async function blessedshieldResult(rollData, functionStuff){
     if(functionStuff.autoParams != ""){templateData.subText += ", " + functionStuff.autoParams};
 
     if(rollData[0].hasSucceed){
-        let protectionFormula = "1d" + (4 + (2*functionStuff.powerLvl.level));
+        let protectionFormula = "1d" + (2 + (2*functionStuff.powerLvl.level));
 
         flagDataArray.push({
             tokenId: functionStuff.token.data._id,
