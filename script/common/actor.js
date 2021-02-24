@@ -92,7 +92,7 @@ export class SymbaroumActor extends Actor {
 
     _computeSecondaryAttributes(data) {
         for (var aKey in data.data.attributes) {
-          data.data.attributes[aKey].total = data.data.attributes[aKey].value + data.data.bonus[aKey];
+          data.data.attributes[aKey].total = data.data.attributes[aKey].value + data.data.bonus[aKey] + data.data.attributes[aKey].temporaryMod;
           data.data.attributes[aKey].msg = `${game.i18n.localize("TOOLTIP.BONUS_TOTAL")} ${data.data.attributes[aKey].total} ${data.data.bonus[aKey + "_msg"]}`;
         }
         
@@ -113,7 +113,8 @@ export class SymbaroumActor extends Actor {
         let corr = data.data.health.corruption;
         corr.value = corr.temporary + corr.longterm + corr.permanent;
         
-        let activeArmor = this._getActiveArmor(data);
+        let extraArmorBonus = this._getExtraArmorBonuses();
+        let activeArmor = this._getActiveArmor(data, extraArmorBonus);
         let defense = this._getDefenseValue(data, activeArmor);
         let damageProt = this._getDamageProtection();
 
@@ -141,7 +142,6 @@ export class SymbaroumActor extends Actor {
 
     _computePower(data, item) {
         let expCost = 0;
-        let progCost = 0;
         if (item.isRitual) {
             item.data.actions = "Ritual";
             this.data.data.numRituals = this.data.data.numRituals + 1;
@@ -151,12 +151,10 @@ export class SymbaroumActor extends Actor {
             }
         } else if (item.isBurden) {
             item.data.actions = "Burden";
-            progCost = -5 * item.data.level;
-//            expCost = -5 * item.data.level;
+            expCost = -5 * item.data.level;
         } else if (item.isBoon) {
             item.data.actions = "Boon";            
-            progCost = 5 * item.data.level;
-//            expCost = 5 * item.data.level;
+            expCost = 5 * item.data.level;
         } else {
 			
             let novice = "-";
@@ -168,18 +166,15 @@ export class SymbaroumActor extends Actor {
             }
             if (item.data.adept.isActive) { 
               adept = item.data.adept.action;
-              expCost += 15;
-//              expCost += 20;
+              expCost += 20;
             }
             if (item.data.master.isActive) {
               master = item.data.master.action;
-              expCost += 20;
-//              expCost += 30;
+              expCost += 30;
             }
             item.data.actions = `${novice}/${adept}/${master}`;
         }
         item.data.bonus.experience.cost = expCost;
-        item.data.bonus.experience.progresCost = progCost;//
         
         this._addBonus(data, item);
     }
@@ -412,7 +407,7 @@ export class SymbaroumActor extends Actor {
         return(weaponArray)
     }
     
-    _evaluateProtection(item) {
+    _evaluateProtection(item, extraArmorBonus) {
         let tooltip = "";
         let protection = item.data.data.baseProtection;
         let impeding = item.data.data.impeding;
@@ -420,41 +415,45 @@ export class SymbaroumActor extends Actor {
         if(item.data.data.bonusProtection != ""){
             bonusProtection = "+" + item.data.data.bonusProtection;
         }
-        let manatarms = this.items.filter(element => element.data.data?.reference === "manatarms");
-        if(manatarms.length > 0){
-            let powerLvl = getPowerLevel(manatarms[0]);
-            let newprot = upgradeDice(protection, 1);
-            protection = newprot;
-            tooltip += game.i18n.localize("ABILITY_LABEL.MAN_AT_ARMS") + ", ";
-            if(powerLvl.level > 1){
-                impeding = 0;
+        if(item.data.data.baseProtection != "0" || item.data.data.bonusProtection == "")
+        {
+            let manatarms = this.items.filter(element => element.data.data?.reference === "manatarms");
+            if(manatarms.length > 0){
+                let powerLvl = getPowerLevel(manatarms[0]);
+                let newprot = upgradeDice(protection, 1);
+                protection = newprot;
+                tooltip += game.i18n.localize("ABILITY_LABEL.MAN_AT_ARMS") + ", ";
+                if(powerLvl.level > 1){
+                    impeding = 0;
+                }
             }
-        }
-        let naturalarmor = this.items.filter(element => element.data.data?.reference === "armored");
-        if(naturalarmor.length > 0){
-            let powerLvl = getPowerLevel(naturalarmor[0]);
-            let newprot = upgradeDice(protection, powerLvl.level -1);
-            protection = newprot;
-            tooltip += game.i18n.localize("TRAIT_LABEL.ARMORED") + powerLvl.lvlName + ", ";
-        }
-        let robust = this.items.filter(element => element.data.data?.reference === "robust");
-        if(robust.length > 0){
-            let powerLvl = getPowerLevel(robust[0]);
-            if(powerLvl.level == 2){
-                bonusProtection += "+1d6";
+            let naturalarmor = this.items.filter(element => element.data.data?.reference === "armored");
+            if(naturalarmor.length > 0){
+                let powerLvl = getPowerLevel(naturalarmor[0]);
+                let newprot = upgradeDice(protection, powerLvl.level -1);
+                protection = newprot;
+                tooltip += game.i18n.localize("TRAIT_LABEL.ARMORED") + powerLvl.lvlName + ", ";
             }
-            else if(powerLvl.level > 2){
-                bonusProtection += "+1d8";
+            let robust = this.items.filter(element => element.data.data?.reference === "robust");
+            if(robust.length > 0){
+                let powerLvl = getPowerLevel(robust[0]);
+                if(powerLvl.level == 2){
+                    bonusProtection += "+1d6";
+                }
+                else if(powerLvl.level > 2){
+                    bonusProtection += "+1d8";
+                }
+                else{
+                    bonusProtection += "+1d4";
+                }
+                tooltip += game.i18n.localize("TRAIT_LABEL.ROBUST") + powerLvl.lvlName + ", ";
             }
-            else{
+            let flagBerserk = this.getFlag(game.system.id, 'berserker');
+            if(flagBerserk && flagBerserk > 1){
                 bonusProtection += "+1d4";
+                tooltip += game.i18n.localize("ABILITY_LABEL.BERSERKER") + ", ";
             }
-            tooltip += game.i18n.localize("TRAIT_LABEL.ROBUST") + powerLvl.lvlName + ", ";
-        }
-        let flagBerserk = this.getFlag(game.system.id, 'berserker');
-        if(flagBerserk && flagBerserk > 1){
-            bonusProtection += "+1d4";
-            tooltip += game.i18n.localize("ABILITY_LABEL.BERSERKER") + ", ";
+            if (extraArmorBonus != ""){bonusProtection += "+" + extraArmorBonus}
         }
         let pcProt = protection + bonusProtection;
         let armorRoll= new Roll(pcProt).evaluate({maximize: true});
@@ -473,7 +472,7 @@ export class SymbaroumActor extends Actor {
             npc: npcProt,
             tooltip: tooltip,
             impeding: impeding,
-            isActive: item._data.isActive, 
+            isActive: item._data.isActive,
             isEquipped: item._data.isEquipped, 
             img: item.data.img})
     }
@@ -600,14 +599,27 @@ export class SymbaroumActor extends Actor {
         return(damageProt)
     }
 
-    _getActiveArmor(data) {
+    //get all bonus armors (blessed shield, ect)
+    _getExtraArmorBonuses() {
+        let extraArmorBonus = "";
+        let armorList = this.items.filter(element => element._data.isArmor);
+        for(let armor of armorList){
+            if(armor.data.data.baseProtection == "0" && armor.data.data.bonusProtection != "" && armor._data.isActive){
+                if(extraArmorBonus != ""){extraArmorBonus += "+"};
+                extraArmorBonus += armor.data.data.bonusProtection //+ "["+ armor.data.name +"]"
+            }
+        }
+        return(extraArmorBonus)
+    }
+
+    _getActiveArmor(data, extraArmorBonus) {
         let wearArmor;
         data.data.armors = [];
         let armorList = this.items.filter(element => element._data.isArmor);
         for(let armor of armorList){
-            let armorData = this._evaluateProtection(armor);
+            let armorData = this._evaluateProtection(armor, extraArmorBonus);
             data.data.armors.push(armorData);
-            if(armorData.isActive){
+            if(armorData.isActive && (armor.data.data.baseProtection != "0" || armor.data.data.bonusProtection == "")){
                 wearArmor = armorData;
             }
         }
@@ -636,7 +648,7 @@ export class SymbaroumActor extends Actor {
                     isActive: true, 
                     isEquipped: false
                 }
-            })
+            }, extraArmorBonus)
             data.data.armors.push(noArmor);
             wearArmor = noArmor
         }

@@ -139,6 +139,7 @@
     "ARMOR.COST": "Prix",
     "ARMOR.QUALITY": "Qualité",
     "ARMOR.DESCRIPTION": "Description",
+    "ARMOR.BONUS_ONLY": "Armure Bonus additionnel",
 
     "ARTIFACT.NAME": "Nom",
     "ARTIFACT.ACTION": "Action",
@@ -376,6 +377,11 @@
     "POWER_BENDWILL.CHAT_INTRO_M": " maintient le pouvoir Soumission.",
     "POWER_BENDWILL.CHAT_SUCCESS": " parvient à soumettre ",
     "POWER_BENDWILL.CHAT_FAILURE": " résiste à la soumission.",
+
+    "POWER_BLESSEDSHIELD.CHAT_INTRO": " tente d'invoquer la protection de Prios.",
+    "POWER_BLESSEDSHIELD.CHAT_SUCCESS": " est entouré d'un bouclier lumineux.",
+    "POWER_BLESSEDSHIELD.CHAT_FAILURE": " ne parvient pas à canaliser la lumière de Prios.",
+    "POWER_BLESSEDSHIELD.PROTECTED": " est protégé",
 
     "POWER_BRIMSTONECASC.CHAT_INTRO": " déchaine le feu vers sa cible.",
     "POWER_BRIMSTONECASC.CHAT_SUCCESS": " est brûlé.", 

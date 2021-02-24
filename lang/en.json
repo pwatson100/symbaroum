@@ -140,6 +140,7 @@
   "ARMOR.COST": "Cost",
   "ARMOR.QUALITY": "Quality",
   "ARMOR.DESCRIPTION": "Description",
+  "ARMOR.BONUS_ONLY": "Bonus armor",
 
   "ARTIFACT.NAME": "Name",
   "ARTIFACT.ACTION": "Action",
@@ -379,6 +380,11 @@
   "POWER_BENDWILL.CHAT_INTRO_M": " maintains Bend Will.",
   "POWER_BENDWILL.CHAT_SUCCESS": " controls ",
   "POWER_BENDWILL.CHAT_FAILURE": " resists the attempt.",
+    
+  "POWER_BLESSEDSHIELD.CHAT_INTRO": " tries to invoke Prios' protection.",
+  "POWER_BLESSEDSHIELD.CHAT_SUCCESS": " is surrounded by a shield of light.",
+  "POWER_BLESSEDSHIELD.CHAT_FAILURE": " stays in darkness.",
+  "POWER_BLESSEDSHIELD.PROTECTED": " is protected",
   
   "POWER_BRIMSTONECASC.CHAT_INTRO": " throws fire at its target.",
   "POWER_BRIMSTONECASC.CHAT_SUCCESS": " gets burned.",  

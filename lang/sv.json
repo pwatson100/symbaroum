@@ -380,6 +380,11 @@
   "POWER_BENDWILL.CHAT_INTRO_M": " upprätthåller Bända vilja.",
   "POWER_BENDWILL.CHAT_SUCCESS": " kontrollerar ",
   "POWER_BENDWILL.CHAT_FAILURE": " står emot försöket.",
+    
+  "POWER_BLESSEDSHIELD.CHAT_INTRO": " tries to invoke Prios' protection.",
+  "POWER_BLESSEDSHIELD.CHAT_SUCCESS": " is surrounded by a shield of light.",
+  "POWER_BLESSEDSHIELD.CHAT_FAILURE": " stays in darkness.",
+  "POWER_BLESSEDSHIELD.PROTECTED": " is protected",
   
   "POWER_BRIMSTONECASC.CHAT_INTRO": " kastar eld mot sitt mål.",
   "POWER_BRIMSTONECASC.CHAT_SUCCESS": " blir bränd.",  

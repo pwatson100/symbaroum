@@ -380,6 +380,11 @@
   "POWER_BENDWILL.CHAT_INTRO_M": " mantiene Someter Voluntad.",
   "POWER_BENDWILL.CHAT_SUCCESS": " controla ",
   "POWER_BENDWILL.CHAT_FAILURE": " resiste el intento.",
+    
+  "POWER_BLESSEDSHIELD.CHAT_INTRO": " tries to invoke Prios' protection.",
+  "POWER_BLESSEDSHIELD.CHAT_SUCCESS": " is surrounded by a shield of light.",
+  "POWER_BLESSEDSHIELD.CHAT_FAILURE": " stays in darkness.",
+  "POWER_BLESSEDSHIELD.PROTECTED": " is protected",
   
   "POWER_BRIMSTONECASC.CHAT_INTRO": " lanza fuego a su objetivo.",
   "POWER_BRIMSTONECASC.CHAT_SUCCESS": " se quema.",  
