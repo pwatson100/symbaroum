@@ -136,6 +136,7 @@
   "ARMOR.COST": "Kosten",
   "ARMOR.QUALITY": "Qualität",
   "ARMOR.DESCRIPTION": "Beschreibung",
+  "ARMOR.BONUS_ONLY": "Stackable protection",
 
   "ARTIFACT.NAME": "Name",
   "ARTIFACT.ACTION": "Aktion",
