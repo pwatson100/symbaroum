@@ -1958,6 +1958,10 @@ async function blessedshieldResult(rollData, functionStuff){
             tokenId: functionStuff.token.data._id,
             addEffect: "icons/svg/holy-shield.svg",
             effectDuration: 1
+        },{
+            tokenId: functionStuff.token.data._id,
+            addObject: "blessedshield",
+            protection: protectionFormula
         })
         templateData.finalText = functionStuff.actor.data.name + game.i18n.localize('POWER_BLESSEDSHIELD.PROTECTED') + " (" + protectionFormula + ")";
 
@@ -1967,6 +1971,10 @@ async function blessedshieldResult(rollData, functionStuff){
                     tokenId: target.token.data._id,
                     addEffect: "icons/svg/holy-shield.svg",
                     effectDuration: 1 
+                },{
+                    tokenId: target.token.data._id,
+                    addObject: "blessedshield",
+                    protection: protectionFormula
                 })
                 templateData.finalText += ", " + target.actor.data.name + game.i18n.localize('POWER_BLESSEDSHIELD.PROTECTED');
             }

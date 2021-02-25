@@ -238,6 +238,12 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
             let newCorruption = token.actor.data.data.health.corruption.temporary + flagData.corruptionChange;
             await token.actor.update({ 'data.health.corruption.temporary': newCorruption });
           }
+          if (flagData.addObject) {
+            let actor= token.actor;
+            if(flagData.addObject == "blessedshield"){
+              await createBlessedShield(actor, flagData.protection)
+            }
+          }
         }
       }
       await chatItem.unsetFlag(game.system.id, 'abilityRoll');
@@ -245,3 +251,17 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
     });
   }
 });
+
+async function createBlessedShield(actor, protection = "1d4"){
+ 
+    let data = {
+      name: game.i18n.localize("POWER_LABEL.BLESSED_SHIELD"),
+      img: 'icons/svg/holy-shield.svg',
+      type: "armor",
+      data: {
+        state: "active",
+        baseProtection: "0",
+        bonusProtection: protection}
+  }    
+  actor.createEmbeddedEntity('OwnedItem', data, { renderSheet: false });
+}
