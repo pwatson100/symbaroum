@@ -61,7 +61,17 @@ const migrateActorData = (actor, worldTemplateVersion) => {
         update = setValueIfNotExists(update, actor, "data.data.experience.artifactrr", 0);
         update = setValueIfNotExists(update, actor, "data.data.health.corruption.value", 0);
         update = setValueIfNotExists(update, actor, "data.data.health.corruption.longterm", 0)
-	}            
+	}
+    if (worldTemplateVersion < 3.2) {
+        update = setValueIfNotExists(update, actor, "data.attributes.accurate.temporaryMod", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.cunning.temporaryMod", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.discreet.temporaryMod", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.quick.temporaryMod", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.persuasive.temporaryMod", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.resolute.temporaryMod", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.strong.temporaryMod", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.vigilant.temporaryMod", 0)
+	} 
 		
     let itemsChanged = false;
     const items = actor.items.map((item) => {

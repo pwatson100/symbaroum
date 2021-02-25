@@ -141,6 +141,7 @@
   "ARMOR.COST": "Cost",
   "ARMOR.QUALITY": "Quality",
   "ARMOR.DESCRIPTION": "Description",
+  "ARMOR.BONUS_ONLY": "Stackable protection",
 
   "ARTIFACT.NAME": "Name",
   "ARTIFACT.ACTION": "Action",
@@ -156,6 +157,10 @@
   "ATTRIBUTE.STRONG": "Strong",
   "ATTRIBUTE.VIGILANT": "Vigilant",
   "ATTRIBUTE.CUSTOM": "Custom",
+  "ATTRIBUTE.BASE": "Base",
+  "ATTRIBUTE.MODIFIER": "Modifier",
+  "ATTRIBUTE.BONUS": "Bonus",
+  "ATTRIBUTE.MODIFY": "Modify",
 
   "BIO.NAME": "Name",
   "BIO.RACE": "Race",
@@ -186,6 +191,7 @@
   "BUTTON.POST_ITEM": "Post Item",
   "BUTTON.ROLL": "Roll",
   "BUTTON.CANCEL": "Cancel",
+  "BUTTON.CONFIRM": "Confirm",
 
   "CHAT.GMTEXT_BUTTON": "This button is for GM use only. It will apply the effects to the tokens.",
   "CHAT.APPLY_BUTTON": "Apply results to the token",
@@ -380,6 +386,11 @@
   "POWER_BENDWILL.CHAT_INTRO_M": " maintains Bend Will.",
   "POWER_BENDWILL.CHAT_SUCCESS": " controls ",
   "POWER_BENDWILL.CHAT_FAILURE": " resists the attempt.",
+    
+  "POWER_BLESSEDSHIELD.CHAT_INTRO": " tries to invoke Prios' protection.",
+  "POWER_BLESSEDSHIELD.CHAT_SUCCESS": " is surrounded by a shield of light.",
+  "POWER_BLESSEDSHIELD.CHAT_FAILURE": " stays in darkness.",
+  "POWER_BLESSEDSHIELD.PROTECTED": " is protected",
   
   "POWER_BRIMSTONECASC.CHAT_INTRO": " throws fire at its target.",
   "POWER_BRIMSTONECASC.CHAT_SUCCESS": " gets burned.",  

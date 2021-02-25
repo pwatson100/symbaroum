@@ -1,0 +1,21 @@
+<div class="symbaroum attributes">
+        <div class="sheet-header foreground border">
+            <h1>{{localize "TITLE.ATTRIBUTES"}}</h1>
+            <div class="col-header">
+                <b class="item">{{localize "ARMOR.NAME"}}</b>
+                <b class="item">{{localize "ATTRIBUTE.BASE"}}</b>
+                <b class="item">{{localize "ATTRIBUTE.MODIFIER"}}</b>
+                <b class="item">{{localize "ATTRIBUTE.BONUS"}}</b>
+                <b class="item">{{localize "HEALTH.TOUGHNESS_TOTAL"}}</b>
+            </div>
+            {{#each data.attributes as |attribute key|}}
+            <div class="attArray">
+                <label style="width: 100%">{{localize attribute.label}}</label>
+                <input id="{{key}}-value" type="number" value="{{attribute.value}}" data-dtype="Number" />
+                <input id="{{key}}-mod" type="number" value="{{attribute.temporaryMod}}" data-dtype="Number" />
+                <div class="fixed">{{attribute.bonus}}</div>
+                <div class="fixed">{{attribute.total}}</div>
+            </div>
+            {{/each}}
+        </div>
+    </div>

@@ -141,6 +141,7 @@
   "ARMOR.COST": "Kostnad",
   "ARMOR.QUALITY": "Kvalitet",
   "ARMOR.DESCRIPTION": "Beskrivning",
+  "ARMOR.BONUS_ONLY": "Stackable protection",
 
   "ARTIFACT.NAME": "Namn",
   "ARTIFACT.ACTION": "Handling",
@@ -156,6 +157,10 @@
   "ATTRIBUTE.RESOLUTE": "Viljestark",
   "ATTRIBUTE.PERSUASIVE": "Övertygande",
   "ATTRIBUTE.CUSTOM": "Anpassad",
+  "ATTRIBUTE.BASE": "Base",
+  "ATTRIBUTE.MODIFIER": "Modifier",
+  "ATTRIBUTE.BONUS": "Bonus",
+  "ATTRIBUTE.MODIFY": "Modify",
 
   "BIO.NAME": "Namn",
   "BIO.RACE": "Släkte",
@@ -186,6 +191,7 @@
   "BUTTON.POST_ITEM": "Visa Föremål",
   "BUTTON.ROLL": "Rulla",
   "BUTTON.CANCEL": "Avbryt",
+  "BUTTON.CONFIRM": "Confirm",
 
   "CHAT.GMTEXT_BUTTON": "Denna knapp är endast avsedd för SL. Det kommer att tillämpa effekterna på valda tokens.",
   "CHAT.APPLY_BUTTON": "Applicera resultat på valt token",
@@ -381,6 +387,11 @@
   "POWER_BENDWILL.CHAT_INTRO_M": " upprätthåller Bända vilja.",
   "POWER_BENDWILL.CHAT_SUCCESS": " kontrollerar ",
   "POWER_BENDWILL.CHAT_FAILURE": " står emot försöket.",
+    
+  "POWER_BLESSEDSHIELD.CHAT_INTRO": " tries to invoke Prios' protection.",
+  "POWER_BLESSEDSHIELD.CHAT_SUCCESS": " is surrounded by a shield of light.",
+  "POWER_BLESSEDSHIELD.CHAT_FAILURE": " stays in darkness.",
+  "POWER_BLESSEDSHIELD.PROTECTED": " is protected",
   
   "POWER_BRIMSTONECASC.CHAT_INTRO": " kastar eld mot sitt mål.",
   "POWER_BRIMSTONECASC.CHAT_SUCCESS": " blir bränd.",  

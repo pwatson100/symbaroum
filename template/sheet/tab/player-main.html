@@ -1,10 +1,11 @@
 <div class="main">
     <div class="attributes foreground border">
         <h1>{{localize "TITLE.ATTRIBUTES"}}</h1>
+        <button class="modify-attribute">{{localize "ATTRIBUTE.MODIFY"}}</button>
         {{#each data.attributes as |attribute key|}}
             <div class="attribute">
                 <button class="roll-attribute" data-attribute="{{key}}">{{localize attribute.label}}</button>
-                <input class="input" name="data.attributes.{{key}}.value" type="number" value="{{attribute.value}}" data-dtype="Number" />
+                <input class="input" name="data.attributes.{{key}}.total" type="number" value="{{attribute.total}}" data-dtype="Number" disabled/>
             </div>
         {{/each}}
     </div>

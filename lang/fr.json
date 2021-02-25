@@ -140,6 +140,7 @@
     "ARMOR.COST": "Prix",
     "ARMOR.QUALITY": "Qualité",
     "ARMOR.DESCRIPTION": "Description",
+    "ARMOR.BONUS_ONLY": "Protection additionnelle",
 
     "ARTIFACT.NAME": "Nom",
     "ARTIFACT.ACTION": "Action",
@@ -155,6 +156,10 @@
     "ATTRIBUTE.STRONG": "Force",
     "ATTRIBUTE.VIGILANT": "Vigilance",
     "ATTRIBUTE.CUSTOM": "Personnalisé",
+    "ATTRIBUTE.BASE": "Base",
+    "ATTRIBUTE.MODIFIER": "Modificateur",
+    "ATTRIBUTE.BONUS": "Bonus",
+    "ATTRIBUTE.MODIFY": "Modifier",
 
     "BIO.NAME": "Nom",
     "BIO.RACE": "Race",
@@ -185,6 +190,7 @@
     "BUTTON.POST_ITEM": "Publier l'Objet",
     "BUTTON.ROLL": "Lancer",
     "BUTTON.CANCEL": "Annuler",
+    "BUTTON.CONFIRM": "Confirmer",
 
     "CHAT.GMTEXT_BUTTON": "Ce bouton ne peut être utilisé que par le MJ. Il affecte les résultats de l'action aux tokens.",
     "CHAT.APPLY_BUTTON": "Appliquer les résultats au token",
@@ -378,6 +384,11 @@
     "POWER_BENDWILL.CHAT_SUCCESS": " parvient à soumettre ",
     "POWER_BENDWILL.CHAT_FAILURE": " résiste à la soumission.",
 
+    "POWER_BLESSEDSHIELD.CHAT_INTRO": " tente d'invoquer la protection de Prios.",
+    "POWER_BLESSEDSHIELD.CHAT_SUCCESS": " est entouré d'un bouclier lumineux.",
+    "POWER_BLESSEDSHIELD.CHAT_FAILURE": " ne parvient pas à canaliser la lumière de Prios.",
+    "POWER_BLESSEDSHIELD.PROTECTED": " est protégé",
+
     "POWER_BRIMSTONECASC.CHAT_INTRO": " déchaine le feu vers sa cible.",
     "POWER_BRIMSTONECASC.CHAT_SUCCESS": " est brûlé.", 
     "POWER_BRIMSTONECASC.CHAT_FAILURE": " évite une partie des flammes.",
@@ -483,7 +494,7 @@
     "TITLE.QUALITIES":"QUALITÉS",
     
     "TOOLTIP.EXPERIENCE_CURRENT": "Vos points d'expérience non dépensés",
-    "TOOLTIP.EXPERIENCE_TOTAL": "Total des points d'expériences acquis",
+    "TOOLTIP.EXPERIENCE_TOTAL": "Total des points d'expérience acquis",
     "TOOLTIP.EXPERIENCE_ARTIFACTRR": "Points d'expérience dépensés pour les artefacts et relances",
     "TOOLTIP.EXPERIENCE_SPENT": "Points d'expérience dépensés sur les talents, traits, atouts et fardeaux",
     "TOOLTIP.EXPERIENCE_AVAILABLE": "Vos points d'expérience disponibles (non dépensés)",
