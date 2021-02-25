@@ -1,22 +1,21 @@
-<div class="attributes">
-		
-    <div class="attributes foreground">
-        <h1>{{localize "TITLE.ATTRIBUTES"}}</h1>
-        <div class="attribute-header">
-            <b class="name">{{localize "ARMOR.NAME"}}</b>
-            <b class="total">total</b>
-            <b class="base">base</b>
-            <b class="temp">temp</b>
-            <b class="temp">bonus</b>
-        </div>
-        {{#each data.attributes as |attribute key|}}
-            <div class="attribute">
-              <button class="roll-attribute" style="width: 100%" data-attribute="{{key}}">{{localize attribute.label}}</button>
-                <input name="data.attributes.{{key}}.total" type="number" value="{{attribute.total}}" data-dtype="Number" disabled/>
-                <input name="data.attributes.{{key}}.value" type="number" value="{{attribute.value}}" data-dtype="Number" />
-                <input name="data.attributes.{{key}}.temporaryMod" type="number" value="{{attribute.temporaryMod}}" data-dtype="Number" />
-                <input name="data.bonus.{{key}}" type="number" value="{{data.bonus.{{key}}}}" data-dtype="Number" disabled/>
+<div class="symbaroum attributes">
+        <div class="sheet-header foreground border">
+            <h1>{{localize "TITLE.ATTRIBUTES"}}</h1>
+            <div class="col-header">
+                <b class="item">{{localize "ARMOR.NAME"}}</b>
+                <b class="item">{{localize "ATTRIBUTE.BASE"}}</b>
+                <b class="item">{{localize "ATTRIBUTE.MODIFIER"}}</b>
+                <b class="item">{{localize "ATTRIBUTE.BONUS"}}</b>
+                <b class="item">{{localize "HEALTH.TOUGHNESS_TOTAL"}}</b>
             </div>
-        {{/each}}
+            {{#each data.attributes as |attribute key|}}
+            <div class="attArray">
+                <label style="width: 100%">{{localize attribute.label}}</label>
+                <input id="{{key}}-value" type="number" value="{{attribute.value}}" data-dtype="Number" />
+                <input id="{{key}}-mod" type="number" value="{{attribute.temporaryMod}}" data-dtype="Number" />
+                <div class="fixed">{{attribute.bonus}}</div>
+                <div class="fixed">{{attribute.total}}</div>
+            </div>
+            {{/each}}
+        </div>
     </div>
-</div>

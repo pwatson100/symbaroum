@@ -151,6 +151,10 @@
   "ATTRIBUTE.STRONG": "Stärke",
   "ATTRIBUTE.VIGILANT": "Aufmerksam.",
   "ATTRIBUTE.CUSTOM": "Variabel",
+  "ATTRIBUTE.BASE": "Base",
+  "ATTRIBUTE.MODIFIER": "Modifier",
+  "ATTRIBUTE.BONUS": "Bonus",
+  "ATTRIBUTE.MODIFY": "Modify",
 
   "BIO.NAME": "Name",
   "BIO.RACE": "Volk",
@@ -181,6 +185,7 @@
   "BUTTON.POST_ITEM": "Sende Item",
   "BUTTON.ROLL": "Würfel",
   "BUTTON.CANCEL": "Abbruch",
+  "BUTTON.CONFIRM": "Confirm",
 
   "CHAT.GMTEXT_BUTTON": "This button is for GM use only. It will apply the effects to the tokens.",
   "CHAT.APPLY_BUTTON": "Wenden Sie die Ergebnisse auf das Token an",

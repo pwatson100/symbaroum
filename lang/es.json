@@ -156,6 +156,10 @@
   "ATTRIBUTE.STRONG": "Fuerte",
   "ATTRIBUTE.VIGILANT": "Atento",
   "ATTRIBUTE.CUSTOM": "Custom",
+  "ATTRIBUTE.BASE": "Base",
+  "ATTRIBUTE.MODIFIER": "Modifier",
+  "ATTRIBUTE.BONUS": "Bonus",
+  "ATTRIBUTE.MODIFY": "Modify",
 
   "BIO.NAME": "Nombre",
   "BIO.RACE": "Raza",
@@ -186,6 +190,7 @@
   "BUTTON.POST_ITEM": "Publicar objeto",
   "BUTTON.ROLL": "Lanzar",
   "BUTTON.CANCEL": "Cancelar",
+  "BUTTON.CONFIRM": "Confirm",
 
 
   "CHAT.APPLY_BUTTON": "Aplicar los resultados al token",

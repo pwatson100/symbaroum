@@ -156,6 +156,10 @@
     "ATTRIBUTE.STRONG": "Force",
     "ATTRIBUTE.VIGILANT": "Vigilance",
     "ATTRIBUTE.CUSTOM": "Personnalisé",
+    "ATTRIBUTE.BASE": "Base",
+    "ATTRIBUTE.MODIFIER": "Modificateur",
+    "ATTRIBUTE.BONUS": "Bonus",
+    "ATTRIBUTE.MODIFY": "Modifier",
 
     "BIO.NAME": "Nom",
     "BIO.RACE": "Race",
@@ -186,6 +190,7 @@
     "BUTTON.POST_ITEM": "Publier l'Objet",
     "BUTTON.ROLL": "Lancer",
     "BUTTON.CANCEL": "Annuler",
+    "BUTTON.CONFIRM": "Confirmer",
 
     "CHAT.GMTEXT_BUTTON": "Ce bouton ne peut être utilisé que par le MJ. Il affecte les résultats de l'action aux tokens.",
     "CHAT.APPLY_BUTTON": "Appliquer les résultats au token",

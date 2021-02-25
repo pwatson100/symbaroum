@@ -156,6 +156,10 @@
   "ATTRIBUTE.RESOLUTE": "Viljestark",
   "ATTRIBUTE.PERSUASIVE": "Övertygande",
   "ATTRIBUTE.CUSTOM": "Anpassad",
+  "ATTRIBUTE.BASE": "Base",
+  "ATTRIBUTE.MODIFIER": "Modifier",
+  "ATTRIBUTE.BONUS": "Bonus",
+  "ATTRIBUTE.MODIFY": "Modify",
 
   "BIO.NAME": "Namn",
   "BIO.RACE": "Släkte",
@@ -186,6 +190,7 @@
   "BUTTON.POST_ITEM": "Visa Föremål",
   "BUTTON.ROLL": "Rulla",
   "BUTTON.CANCEL": "Avbryt",
+  "BUTTON.CONFIRM": "Confirm",
 
   "CHAT.GMTEXT_BUTTON": "Denna knapp är endast avsedd för SL. Det kommer att tillämpa effekterna på valda tokens.",
   "CHAT.APPLY_BUTTON": "Applicera resultat på valt token",
