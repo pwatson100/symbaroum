@@ -421,6 +421,11 @@
   "POWER_LARVAEBOILS.CHAT_INTRO_M": " mantiene la Erupción de Larvas.",
   "POWER_LARVAEBOILS.CHAT_SUCCESS": " es comido desde el interior por las larvas.",
   "POWER_LARVAEBOILS.CHAT_FAILURE": " resiste a las larvas.",
+
+  "POWER_TORMENTINGSPIRITS.CHAT_INTRO":" tries to invoke tormenting spirits.",
+  "POWER_TORMENTINGSPIRITS.CHAT_INTRO_M":" tries to maintain the tormenting spirits.",
+  "POWER_TORMENTINGSPIRITS.CHAT_SUCCESS":" invokes spirits around  ",
+  "POWER_TORMENTINGSPIRITS.CHAT_FAILURE":" fails the invokation.",
   
   "QUALITY.AREAMRR": "Efecto Área: Rango melee",
   "QUALITY.AREASRR": "Efecto Área: Rango corto", 

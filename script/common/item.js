@@ -2610,17 +2610,14 @@ async function tormentingspiritsResult(rollData, functionStuff){
     let introText = "";
     let resultText;
     let finalText = "";
-    let hasRoll;
+    let hasRoll = true;
     let finalDamage = 0;
 
     if(functionStuff.isMaintained){
         introText = functionStuff.actor.data.name + game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_INTRO_M');
-        hasRoll = true;
     }
     else{
         introText = functionStuff.actor.data.name + game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_INTRO');
-        hasRoll = false;
-        rollData[0].hasSucceed = true;
         haveCorruption = true;
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
@@ -2640,7 +2637,6 @@ async function tormentingspiritsResult(rollData, functionStuff){
         }
         if(functionStuff.attackFromPC){
             let damageRoll = new Roll(effectDamage).evaluate();
-            damageRoll.toMessage();
             finalDamage = damageRoll.total;
         }
         else{
@@ -2648,8 +2644,8 @@ async function tormentingspiritsResult(rollData, functionStuff){
             let damageRoll= new Roll(effectDamage).evaluate({maximize: true});
             finalDamage = Math.ceil(damageRoll.total/2);
         }
-        resultText = functionStuff.targetData.token.data.name + game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_SUCCESS');
-        finalText =  game.i18n.localize('COMBAT.DAMAGE') + finalDamage.toString();
+        resultText = functionStuff.targetData.token.data.name + game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_SUCCESS') + functionStuff.targetData.token.data.name;
+        finalText =  game.i18n.localize('COMBAT.DAMAGE') +" "+effectDamage+" = " + finalDamage.toString()+" ("+game.i18n.localize('ATTRIBUTE.RESOLUTE')+")" ;
     }
     else{
         resultText = functionStuff.targetData.token.data.name + game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_FAILURE');
@@ -2681,26 +2677,29 @@ async function tormentingspiritsResult(rollData, functionStuff){
         content: html,
     }
     ChatMessage.create(chatData);
-    if(!functionStuff.isMaintained){
-        flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data._id,
-            addEffect: "systems/symbaroum/asset/image/bug.png",
-            effectDuration: 1
-        }, {
-            tokenId: functionStuff.targetData.token.data._id,
-            toughnessChange: finalDamage*-1
-        });
+    if(rollData[0].hasSucceed){
+        if(functionStuff.powerLvl.level>1){
+            flagDataArray.push({
+                tokenId: functionStuff.targetData.token.data._id,
+                attributeChange: finalDamage*-1,
+                attributeName: "resolute"
+            });
+        }
+        if(!functionStuff.isMaintained){
+            flagDataArray.push({
+                tokenId: functionStuff.targetData.token.data._id,
+                addEffect: "systems/symbaroum/asset/image/ghost.svg",
+                effectDuration: 1
+            })
+        }
     }
-    else if(!rollData[0].hasSucceed){   
-        flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data._id,
-            removeEffect: "systems/symbaroum/asset/image/bug.png",
-        })
-    }else{
-        flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data._id,
-            toughnessChange: finalDamage*-1
-        });
+    else{
+        if(!functionStuff.isMaintained){
+            flagDataArray.push({
+                tokenId: functionStuff.targetData.token.data._id,
+                removeEffect: "systems/symbaroum/asset/image/ghost.svg",
+            })
+        }
     }
     await createModifyTokenChatButton(flagDataArray);
 }

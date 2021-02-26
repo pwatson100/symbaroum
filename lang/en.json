@@ -428,6 +428,11 @@
   "POWER_LAYONHANDS.CHAT_SUCCESS":" heals ",
   "POWER_LAYONHANDS.CHAT_FINAL":"Toughness healed: ",
   "POWER_LAYONHANDS.CHAT_FAILURE":" fails to heal ",
+
+  "POWER_TORMENTINGSPIRITS.CHAT_INTRO":" tries to invoke tormenting spirits.",
+  "POWER_TORMENTINGSPIRITS.CHAT_INTRO_M":" tries to maintain the tormenting spirits.",
+  "POWER_TORMENTINGSPIRITS.CHAT_SUCCESS":" invokes spirits around  ",
+  "POWER_TORMENTINGSPIRITS.CHAT_FAILURE":" fails the invokation.",
   
   "QUALITY.AREAMRR": "Area Effect - melee range radius",
   "QUALITY.AREASRR": "Area Effect - short range radius", 

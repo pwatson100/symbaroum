@@ -415,6 +415,11 @@
   "POWER_LARVAEBOILS.CHAT_INTRO_M": " hält den Larvenfrass aufrecht.",
   "POWER_LARVAEBOILS.CHAT_SUCCESS": " wird von innen von den Larven gefressen.",
   "POWER_LARVAEBOILS.CHAT_FAILURE": " wiedersteht dem Larvenfrass.",
+
+  "POWER_TORMENTINGSPIRITS.CHAT_INTRO":" tries to invoke tormenting spirits.",
+  "POWER_TORMENTINGSPIRITS.CHAT_INTRO_M":" tries to maintain the tormenting spirits.",
+  "POWER_TORMENTINGSPIRITS.CHAT_SUCCESS":" invokes spirits around  ",
+  "POWER_TORMENTINGSPIRITS.CHAT_FAILURE":" fails the invokation.",
   
   "QUALITY.AREAMRR": "Bereichseffekt – Nahkampf Reichweite",
   "QUALITY.AREASRR": " Bereichseffekt – Kurze Reichweite",
