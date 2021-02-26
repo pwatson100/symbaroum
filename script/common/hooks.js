@@ -233,10 +233,20 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
             let newToughness = Math.max(0, Math.min(token.actor.data.data.health.toughness.max, token.actor.data.data.health.toughness.value + flagData.toughnessChange));
             await token.actor.update({ 'data.health.toughness.value': newToughness });
           }
-
+          if (flagData.attributeChange) {
+            let newMod = token.actor.data.data.attributes[flagData.attributeName].temporaryMod + flagData.attributeChange;
+            let linkMod = "data.attributes."+flagData.attributeName+".temporaryMod";
+            await token.actor.update({ [linkMod] : newMod });
+          }
           if (flagData.corruptionChange) {
             let newCorruption = token.actor.data.data.health.corruption.temporary + flagData.corruptionChange;
             await token.actor.update({ 'data.health.corruption.temporary': newCorruption });
+          }
+          if (flagData.addObject) {
+            let actor= token.actor;
+            if(flagData.addObject == "blessedshield"){
+              await createBlessedShield(actor, flagData.protection)
+            }
           }
         }
       }
@@ -245,3 +255,17 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
     });
   }
 });
+
+async function createBlessedShield(actor, protection = "1d4"){
+ 
+    let data = {
+      name: game.i18n.localize("POWER_LABEL.BLESSED_SHIELD"),
+      img: 'icons/svg/holy-shield.svg',
+      type: "armor",
+      data: {
+        state: "active",
+        baseProtection: "0",
+        bonusProtection: protection}
+  }    
+  actor.createEmbeddedEntity('OwnedItem', data, { renderSheet: false });
+}

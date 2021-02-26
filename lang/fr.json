@@ -426,6 +426,11 @@
     "POWER_LAYONHANDS.CHAT_FINAL":"Points d'endurance soignés: ",
     "POWER_LAYONHANDS.CHAT_FAILURE":" échoue à soigner ",
 
+    "POWER_TORMENTINGSPIRITS.CHAT_INTRO":" essaye d'appeller les esprits des morts.",
+    "POWER_TORMENTINGSPIRITS.CHAT_INTRO_M":" essaye de maintenir les esprits tourmenteurs.",
+    "POWER_TORMENTINGSPIRITS.CHAT_SUCCESS":" invoque les esprits tourmenteurs autour de  ",
+    "POWER_TORMENTINGSPIRITS.CHAT_FAILURE":" échoue son invocation.",
+
     "QUALITY.AREAMRR": "Zone d’effet - rayon portée mélée",
     "QUALITY.AREASRR": "Zone d’effet - rayon portée courte",
     "QUALITY.AREAC": "Zone d'effet - cône",
