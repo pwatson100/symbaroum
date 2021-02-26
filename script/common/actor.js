@@ -502,7 +502,7 @@ export class SymbaroumActor extends Actor {
     }
 
     _getDefenseValue(data, activeArmor){
-        let attributeDef = data.data.defense.attribute.toLowerCase();
+        let attributeDef = "quick";
         let attDefValue = data.data.attributes[attributeDef].total;
         let sixthsense = this.items.filter(element => element.data.data?.reference === "sixthsense");
         if(sixthsense.length > 0){
