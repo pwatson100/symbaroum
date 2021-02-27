@@ -61,7 +61,7 @@ const migrateActorData = (actor, worldTemplateVersion) => {
         update = setValueIfNotExists(update, actor, "data.data.experience.artifactrr", 0);
         update = setValueIfNotExists(update, actor, "data.data.health.corruption.value", 0);
         update = setValueIfNotExists(update, actor, "data.data.health.corruption.longterm", 0)
-	}
+	};
     if (worldTemplateVersion < 3.2) {
         update = setValueIfNotExists(update, actor, "data.attributes.accurate.temporaryMod", 0);
         update = setValueIfNotExists(update, actor, "data.attributes.cunning.temporaryMod", 0);
@@ -71,7 +71,17 @@ const migrateActorData = (actor, worldTemplateVersion) => {
         update = setValueIfNotExists(update, actor, "data.attributes.resolute.temporaryMod", 0);
         update = setValueIfNotExists(update, actor, "data.attributes.strong.temporaryMod", 0);
         update = setValueIfNotExists(update, actor, "data.attributes.vigilant.temporaryMod", 0)
-	} 
+	};
+    if (worldTemplateVersion < 3.3) {
+        update = setValueIfNotExists(update, actor, "data.attributes.accurate.total", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.cunning.total", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.discreet.total", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.quick.total", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.persuasive.total", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.resolute.total", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.strong.total", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.vigilant.total", 0)
+	};
 		
     let itemsChanged = false;
     const items = actor.items.map((item) => {

@@ -9,41 +9,49 @@
         "attributes": {
           "accurate": {
             "label": "ATTRIBUTE.ACCURATE",
+            "total": 10,
             "value": 10,
             "temporaryMod": 0
           },
           "cunning": {
             "label": "ATTRIBUTE.CUNNING",
+            "total": 10,
             "value": 10,
             "temporaryMod": 0
           },
           "discreet": {
             "label": "ATTRIBUTE.DISCREET",
+            "total": 10,
             "value": 10,
             "temporaryMod": 0
           },
           "persuasive": {
             "label": "ATTRIBUTE.PERSUASIVE",
+            "total": 10,
             "value": 10,
             "temporaryMod": 0
           },
           "quick": {
             "label": "ATTRIBUTE.QUICK",
+            "total": 10,
             "value": 10,
             "temporaryMod": 0
           },
           "resolute": {
             "label": "ATTRIBUTE.RESOLUTE",
+            "total": 10,
             "value": 10,
             "temporaryMod": 0
           },
           "strong": {
             "label": "ATTRIBUTE.STRONG",
+            "total": 10,
             "value": 10,
             "temporaryMod": 0
           },
           "vigilant": {
             "label": "ATTRIBUTE.VIGILANT",
+            "total": 10,
             "value": 10,
             "temporaryMod": 0
           }
