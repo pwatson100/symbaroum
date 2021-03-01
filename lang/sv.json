@@ -261,6 +261,7 @@
   "DIALOG.FAVOUR_FAVOUR": "Bästa av två slag", 
   "DIALOG.FAVOUR_DISFAVOUR": "Sämsta av två slag",
   "DIALOG.DAMAGE_MODIFIER": "Skademod.",
+  "DIALOG.WEAPON_DAMAGE": "Skadeslag",  
   "DIALOG.IMPEDING": "Inkludera begränsande avdrag?",
   "DIALOG.CASTING": "Initial besvärjelse",
   "DIALOG.MAINTAINING": "Upprätthålla förmåga/kraft",

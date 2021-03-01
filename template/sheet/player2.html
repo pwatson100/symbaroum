@@ -7,12 +7,12 @@
             <div class="wrapper-column">
                 <div class="wrapper-row">
                     <div class="name">
-                        <label>{{localize "BIO.NAME"}}</label>
-                        <input name="name" type="text" value="{{actor.name}}" />
+                        <label for="{{actor._id}}-name">{{localize "BIO.NAME"}}</label>
+                        <input id="{{actor._id}}-name" name="name" type="text" value="{{actor.name}}" />
                     </div>
                     <div class="experience">
-                        <label>{{localize "EXPERIENCE"}}</label>
-                        <input name="data.experience.total" title="{{localize "TOOLTIP.EXPERIENCE_TOTAL"}}" type="number" value="{{data.experience.total}}" data-dtype="Number" />
+                        <label for="data.experience.total">{{localize "EXPERIENCE"}}</label>
+                        <input id="data.experience.total" name="data.experience.total" title="{{localize "TOOLTIP.EXPERIENCE_TOTAL"}}" type="number" value="{{data.experience.total}}" data-dtype="Number" />
                         <input name="data.experience.artifactrr" title="{{localize "TOOLTIP.EXPERIENCE_ARTIFACTRR"}}" type="number" value="{{data.experience.artifactrr}}" data-dtype="Number" />
                         <input name="data.experience.spent" title="{{localize "TOOLTIP.EXPERIENCE_SPENT"}}" type="number" value="{{data.experience.spent}}" data-dtype="Number" disabled />
                         <input name="data.experience.available" title="{{localize "TOOLTIP.EXPERIENCE_AVAILABLE"}}" type="number" value="{{data.experience.available}}" data-dtype="Number" disabled />
@@ -22,19 +22,19 @@
                 </div>
                 <div class="wrapper-row">
                     <div class="race">
-                        <label>{{localize "BIO.RACE"}}</label>
-                        <input name="data.bio.race" type="text" value="{{data.bio.race}}" />
+                        <label for="{{actor._id}}-data.bio.race">{{localize "BIO.RACE"}}</label>
+                        <input id="{{actor._id}}-data.bio.race" name="data.bio.race" type="text" value="{{data.bio.race}}" />
                     </div>
                     <div class="occupation">
-                        <label>{{localize "BIO.OCCUPATION"}}</label>
-                        <input name="data.bio.occupation" type="text" value="{{data.bio.occupation}}" />
+                        <label for="{{actor._id}}-data.bio.occupation">{{localize "BIO.OCCUPATION"}}</label>
+                        <input id="{{actor._id}}-data.bio.occupation" name="data.bio.occupation" type="text" value="{{data.bio.occupation}}" />
                     </div>
                 </div>
                 {{#ife actor.type 'player'}}
                     <div class="wrapper-row">
                         <div class="quote">
-                            <label>{{localize "BIO.QUOTE"}}</label>
-                            <input name="data.bio.quote" type="text" value="{{data.bio.quote}}" />
+                            <label for="{{actor._id}}-data.bio.quote">{{localize "BIO.QUOTE"}}</label>
+                            <input id="{{actor._id}}-data.bio.quote" name="data.bio.quote" type="text" value="{{data.bio.quote}}" />
                         </div>
                     </div>
                 {{/ife}}
@@ -42,14 +42,14 @@
                 {{#ife actor.type 'monster'}}
                     <div class="wrapper-row">
                         <div class="manner">
-                            <label>{{localize "BIO.MANNER"}}</label>
-                            <input name="data.bio.manner" type="text" value="{{data.bio.manner}}" />
+                            <label for="{{actor._id}}-data.bio.manner">{{localize "BIO.MANNER"}}</label>
+                            <input id="{{actor._id}}-data.bio.manner" name="data.bio.manner" type="text" value="{{data.bio.manner}}" />
                         </div>
                     </div>
                     <div class="wrapper-row">
                         <div class="shadow">
-                            <label>{{localize "BIO.SHADOW"}}</label>
-                            <input name="data.bio.shadow" type="text" value="{{data.bio.shadow}}" />
+                            <label for="{{actor._id}}-data.bio.shadow">{{localize "BIO.SHADOW"}}</label>
+                            <input id="{{actor._id}}-data.bio.shadow" name="data.bio.shadow" type="text" value="{{data.bio.shadow}}" />
                         </div>
                     </div>
                 {{/ife}}

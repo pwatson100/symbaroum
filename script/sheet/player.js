@@ -76,7 +76,8 @@ export class PlayerSheet extends SymbaroumActorSheet {
 
     async _modifyAttributes(event) {
         event.preventDefault();
-        let data = this.actor.data.data;
+        let data = duplicate(this.actor.data.data);
+        data._id = this.actor._id;
         console.log(data);
         const html = await renderTemplate('systems/symbaroum/template/sheet/attributes.html', {
             data: data

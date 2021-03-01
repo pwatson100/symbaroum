@@ -265,6 +265,7 @@
   "DIALOG.FAVOUR_FAVOUR": "Favorable", 
   "DIALOG.FAVOUR_DISFAVOUR": "Desfavorable",
   "DIALOG.DAMAGE_MODIFIER": "Mod. daño",
+  "DIALOG.WEAPON_DAMAGE": "Dam. roll",  
   "DIALOG.IMPEDING": "¿Incluir impedimento?",
   "DIALOG.CASTING": "Casteo inicial",
   "DIALOG.MAINTAINING": "Manteniendo habilidad",

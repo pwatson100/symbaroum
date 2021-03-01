@@ -258,9 +258,12 @@ export class SymbaroumActor extends Actor {
             let attribute = item.data.data.attribute;
             let tooltip = "";
             let baseDamage = item.data.data.baseDamage;
+            if( baseDamage === undefined) {
+                baseDamage = "1d8";
+            }
             let bonusDamage = "";
             let shortBonusDamage = "";
-            if(item.data.data.bonusDamage != ""){
+            if( item.data.data.bonusDamage !== undefined && item.data.data.bonusDamage != ""){
                 bonusDamage = "+" + item.data.data.bonusDamage;
                 shortBonusDamage += "+" + item.data.data.bonusDamage;;
             }
@@ -395,11 +398,11 @@ export class SymbaroumActor extends Actor {
             let DmgRoll= new Roll(pcDamage).evaluate({maximize: true});
             let npcDamage = Math.ceil(DmgRoll.total/2);
             let baseDmgRoll = new Roll(baseDamage).evaluate({maximize: true});
-            if(item.data.data.qualities.massive) {
-                pcDamage = "2d"+(baseDmgRoll)+"kh"+bonusDamage;
-                pcShort = "2d"+(baseDmgRoll)+"kh"+shortBonusDamage;
+            if(item.data.data.qualities?.massive) {
+                pcDamage = "2d"+(baseDmgRoll.total)+"kh"+bonusDamage;
+                pcShort = "2d"+(baseDmgRoll.total)+"kh"+shortBonusDamage;
             }
-            if(item.data.data.qualities.deepImpact){
+            if(item.data.data.qualities?.deepImpact){
                 pcDamage += "+1";
                 pcShort += " +1";
                 npcDamage+= 1;
@@ -434,12 +437,15 @@ export class SymbaroumActor extends Actor {
     _evaluateProtection(item, extraArmorBonus) {
         let tooltip = "";
         let protection = item.data.data.baseProtection;
+        if( protection === undefined) {
+            protection = "1d4";
+        }
         let impeding = item.data.data.impeding;
         let bonusProtection = "";
-        if(item.data.data.bonusProtection != ""){
+        if(item.data.data.bonusProtection !== undefined && item.data.data.bonusProtection != ""){
             bonusProtection = "+" + item.data.data.bonusProtection;
         }
-        if(item.data.data.baseProtection != "0" || item.data.data.bonusProtection == "")
+        if(protection != "0" || protection == "")
         {
             let manatarms = this.items.filter(element => element.data.data?.reference === "manatarms");
             if(manatarms.length > 0){
