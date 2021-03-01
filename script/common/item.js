@@ -75,6 +75,10 @@ export class SymbaroumItem extends Item {
                 data.data.isDistance = false;
             }
             let baseDamage = data.data.baseDamage;
+            console.log("baseDamage["+baseDamage+"]");
+            if( baseDamage === null || baseDamage === undefined || baseDamage === "" ) {
+                baseDamage = "1d8";
+            }
             if(data.data.qualities?.massive) {
                 let diceSides = new Roll(baseDamage).evaluate({maximize: true});                
                 baseDamage = "2d"+Math.ceil(diceSides.total)+"kh";
@@ -95,6 +99,10 @@ export class SymbaroumItem extends Item {
         }
         else if(data.type === "armor"){
             let protection = data.data.baseProtection;
+            if( protection === null || protection === undefined || protection === "" ) {
+                protection = "1d4";
+            }
+
             if(data.data.bonusProtection && data.data.bonusProtection != ""){
                 protection += "+" + data.data.bonusProtection;
             }

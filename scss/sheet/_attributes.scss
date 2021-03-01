@@ -77,6 +77,11 @@
     min-width: 0;
   }
 
+
+  .symbaroum.attributes input[type='number'][disabled] {
+    background: url(../asset/image/not-editable.jpg) repeat;
+  }
+   
   .symbaroum.attributes .fixed {
     background: url(../asset/image/not-editable.jpg) repeat;
     border: 1px solid var(--color-border);
@@ -116,6 +121,10 @@
     display: flex;
     flex-basis: 25%;
     justify-content: center;
+  }
+
+  .symbaroum.attributes .item-name {
+    min-width: 10em;
   }
   
   .symbaroum.attributes .col-header {

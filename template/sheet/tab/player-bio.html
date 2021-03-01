@@ -3,16 +3,16 @@
         <h1 style="text-transform: uppercase">{{localize "BIO.APPEARANCE"}}</h1>
         <div class="wrapper-left">
             <div class="age">
-                <label>{{localize "BIO.AGE"}}</label>
-                <input name="data.bio.age" type="text" value="{{data.bio.age}}" />
+                <label for="{{actor._id}}-data.bio.age">{{localize "BIO.AGE"}}</label>
+                <input id="{{actor._id}}-data.bio.age" name="data.bio.age" type="text" value="{{data.bio.age}}" />
             </div>
             <div class="height">
-                <label>{{localize "BIO.HEIGHT"}}</label>
-                <input name="data.bio.height" type="text" value="{{data.bio.height}}" />
+                <label for="{{actor._id}}-data.bio.height">{{localize "BIO.HEIGHT"}}</label>
+                <input id="{{actor._id}}-data.bio.height" name="data.bio.height" type="text" value="{{data.bio.height}}" />
             </div>
             <div class="weight">
-                <label>{{localize "BIO.WEIGHT"}}</label>
-                <input name="data.bio.weight" type="text" value="{{data.bio.weight}}" />
+                <label for="{{actor._id}}-data.bio.weight">{{localize "BIO.WEIGHT"}}</label>
+                <input id="{{actor._id}}-data.bio.weight" name="data.bio.weight" type="text" value="{{data.bio.weight}}" />
             </div>
         </div>
         <div class="wrapper-right">
@@ -22,8 +22,8 @@
 
             <div class="wrapper-full">
                 <div class="shadow">
-                    <label>{{localize "BIO.SHADOW"}}</label>
-                    <input name="data.bio.shadow" type="text" value="{{data.bio.shadow}}" />
+                    <label for="{{actor._id}}-data.bio.shadow">{{localize "BIO.SHADOW"}}</label>
+                    <input id="{{actor._id}}-data.bio.shadow" name="data.bio.shadow" type="text" value="{{data.bio.shadow}}" />
                 </div>
             </div>
         {{/ife}}

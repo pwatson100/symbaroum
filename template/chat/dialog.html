@@ -1,7 +1,7 @@
 <div class="symbaroum dialog">
 	{{#if hasTarget}}
     <div class="attribute">
-        <label>{{localize "DIALOG.ATTRIBUTE"}}</label>
+        <label for="targetAttribute">{{localize "DIALOG.ATTRIBUTE"}}</label>
         <select id="targetAttribute">
             {{#select roll_defaults.targetAttributeName}}
             <option value="custom">{{localize "ATTRIBUTE.CUSTOM"}}</option>
@@ -20,7 +20,7 @@
     {{/if}}
         
     <div class="bonus">
-      <label>{{localize "DIALOG.MODIFIER"}}</label>
+      <label for="modifier">{{localize "DIALOG.MODIFIER"}}</label>
       <input id="modifier" type="number" value="{{roll_defaults.modifier}}" data-dtype="Number"/>
    </div>
 
@@ -31,24 +31,24 @@
 
     {{#if askImpeding}}
     <div class="simplebox">
-      <label style="width: 90%;">{{localize "DIALOG.IMPEDING"}}</label> <span class="lblfavour" style="width: 40%;"><input type="checkbox" id="impeding" {{roll_defaults.impeding}}></span>
+      <label for="impeding" style="width: 90%;">{{localize "DIALOG.IMPEDING"}}</label> <span class="lblfavour" style="width: 40%;"><input type="checkbox" id="impeding" {{roll_defaults.impeding}}></span>
     </div>
     {{/if}}
     {{#if isWeaponRoll}}
     <div class="advantage">
-      <label>{{localize "DIALOG.ADVANTAGE"}}</label> <span class="lblfavour"><input type="checkbox" {{roll_defaults.advantage}} id="advantage" value="1" data-dtype="Number"> </span>
+      <label for="advantage-check">{{localize "DIALOG.ADVANTAGE"}}</label> <span class="lblfavour"><input id="advantage-check" type="checkbox" {{roll_defaults.advantage}} id="advantage" value="1" data-dtype="Number"> </span>
     </div>
     <div class="damagemodifier">
-      <label>{{localize "DIALOG.DAMAGE_MODIFIER"}}</label> <span>{{weaponDamage}}</span>
+      <label for="weapondamage">{{localize "DIALOG.WEAPON_DAMAGE"}}</label> <div class="weapondamage"><span id="weapondamage">{{weaponDamage}}</span></div>
       </div>
       <div class="damagemodifier">
-		<label>{{localize "DIALOG.DAMAGE_MODIFIER"}}</label> <input id="dammodifier" value="{{roll_defaults.additionalModifier}}" type="text" data-dtype="Text"/> 
+		<label for="dammodifier">{{localize "DIALOG.DAMAGE_MODIFIER"}}</label> <input id="dammodifier" value="{{roll_defaults.additionalModifier}}" type="text" data-dtype="Text"/> 
     </div>
     {{/if}}
       
     {{#if isArmorRoll}}
     <div class="advantage">
-      <label>{{localize "DIALOG.DISADVANTAGE"}}</label> <span class="lblfavour"><input type="checkbox" {{roll_defaults.advantage}} id="advantage" value="1" data-dtype="Number"> </span>
+      <label for="disadvantage-check">{{localize "DIALOG.DISADVANTAGE"}}</label> <span class="lblfavour"><input id="disadvantage-check" type="checkbox" {{roll_defaults.advantage}} id="advantage" value="1" data-dtype="Number"> </span>
     </div>
     {{/if}}    		
 
