@@ -32,6 +32,11 @@
         Underneath it has a set of tabs, main, gear, bio, etc. which can be used to supply the various information required.
         <br>
         On the main tab, the player can fill in their details of their attributes, how much toughness they have remaining and details of their corruption.
+		In order to modify attributes, click on the "modify" button under the attributes label. this will open the attributes windows. 
+	</p>
+		&nbsp;<span class="attributes">&nbsp;</span>&nbsp;
+	<p>
+	The base attribute is for the base, unmodifed attribute of the character. The "Modifier" field is for temporary modifiers, like attribute damage from undead creatures. "Bonus" is for bonuses from items. "Total" will display the computed attribute.
         <br>
         The corruption fields contains entries for how much Temporary (scene) corruption they've taken, any long term corruption, such as happens when consuming Krusan Berries, or even Permanent corruption they have accumulated.
         <br>
@@ -71,7 +76,8 @@
         There is a&nbsp;<strong>+</strong>&nbsp;at the end of the tables for armor and weapons which when clicked, will create new armor or weapon and details about can be filled in.
         <br>
     </p>
-    &nbsp;<span class="img05">&nbsp;</span>&nbsp;
+    &nbsp;<span class="armor-add">&nbsp;</span>&nbsp;
+    <h2>Weapons</h2>
     <p>
         Weapons have a class : One-handed (default), heavy, unarmed, short, long, ranged, thrown, and shield.
         <br>
@@ -83,16 +89,29 @@
         <br>
         - Bonus damage. This field should be left empty and be used only for exceptional situations, unsupported abilities and house rules.
         <br>
-        - A weapon with the quality deep impact, or a wepon masterfully crafted to give it this quality have +1 damage, this damage should not be entered in the bonus field, just check the checkbox « deep impact » in the quality tab and the bonus will be added.
+        - A weapon with the quality deep impact, or a weapon masterfully crafted to give it this quality have +1 damage, this damage should not be entered in the bonus field, just check the checkbox « deep impact » in the quality tab and the bonus will be added.
 
         The calculated damage is printed in the boxes under the weapon name : as in Symbaroum rules, PC damage is the damage roll formula when it’s a PC that wields it, and the NPC damage is the fixed damage used when it’s a NPC.
-        <br>
-
-        To add an armor or weapon to a character sheet, drag it them from the Item's selection to the armor or weapon section of the gear tab of the character sheet.
+    </p>
+	<br>
+    <h2>Armors</h2>
+	<p>
+		Armors have a fixed base protection value (1d4, 1d6, or 1d8). A reinforced armor should have the "Reinforced" quality checkbox scheck in the "Qualities" tab.
+		Other bonus to protection can be add in the "bonus prot" field. 
+		The "Impeding" field should receive the impeding value of the armor. This value will be used in some rolls.
+		Qualities should be checked in the qualities tab. Only those will be used by the system. Any other custom quality can be entered in the "quality" field.
+	</p>
+		<p>
+		Stackable armors can be created, for effects like "Blessed shield" that stacks to normal armor. Select the "stackable armor" option in the base armor field, then type the added protection value in the bonus field.
+	</p>
+	<br>
+    <h2>Adding weapons and armors to characters</h2>
+	<p>
+        To add an armor or weapon to a character sheet, drag it from the Item's selection to the armor or weapon section of the gear tab of the character sheet.
         Monsters with the "Natural weapon" trait should be given the weapon « Natural weapon » of the compendium, and those with the "Armored" trait should be given the "armored" Armor.
         <br>
-        When a PC or NPC add a weapon or an armor, to its sheet, its damage or ptotection value is automaticaly recalculated, taking into account the character abilities and traits (man-at-arms, Robust, Iron Fist…). For weapons, the attribute is also evaluated, taking into account the class of the weapon.
-        The weapon/arùor then appears on the character sheet with its final value printed. (dice value if it’s a PC sheet (ex: 1d8+1d6), fixed if it’s a monster sheet (ex: 7))
+        When a PC or NPC add a weapon or an armor, to its sheet, its damage or protection value is automaticaly recalculated, taking into account the character abilities and traits (Man-at-arms, Robust, Iron Fist…). For weapons, the attribute is also evaluated, taking into account the class of the weapon.
+        The weapon/armor then appears on the character sheet with its final value printed. (dice value if it’s a PC sheet (ex: 1d8+1d6), fixed if it’s a monster sheet (ex: 7))
         <br>
         On the gear tab of the sheet, Weapons and armor have 3 states repredented bys a small icon, that you can change by clicking on it:
         <br>
@@ -101,10 +120,14 @@
         - carried (briefcase icon): the item is sheated, or in a backpack
         <br>
         - active (shirt icon): the item is weared (armor) or in hand (weapon), and can be used for combat.
-        <br>
-        Active weapons, and the active armor, can be seen in the main tab of the character sheet. Click on them to make a roll (cf the combat section).
-        Only one armor will be considered active at a time. If there is no active armor, the system will generate a "no armor" dummy armor, equipped by the character, with passive bonuses added (robust..).
     </p>
+		&nbsp;<span class="weapon-state">&nbsp;</span>&nbsp;
+	<p>
+        Active weapons, and the active armor, can be seen in the main tab of the character sheet. Click on them to make a roll (cf the combat section).
+        Only one non-stackable armor will be considered active at a time. If there is no active armor, the system will generate a "no armor" dummy armor, equipped by the character, with passive bonuses added (robust..).
+		When a stackable armor is activated, it will add its bonus protection to the active armor.
+	</p>
+		&nbsp;<span class="character-stats">&nbsp;</span>&nbsp;
     <br><br>
     <h1>Making an Attribute Test</h1>
     <p>
@@ -178,11 +201,11 @@
         <br>
         Power activation is a WIP. <br>
         For now, only those active powers are supported: <br>
-        anathema,&nbsp;brimstone cascade,&nbsp;bend will,&nbsp;curse,&nbsp;holy aura,&nbsp;inherit wound,&nbsp;larvae boils, lay on hands,&nbsp;unnoticeable
+        anathema,&nbsp; blessed shield, brimstone cascade,&nbsp;bend will,&nbsp;curse,&nbsp;holy aura,&nbsp;inherit wound,&nbsp;larvae boils, lay on hands, tormenting spirits,&nbsp;unnoticeable
         <br>
         and the abilities:
         <br>
-        acrobatics,&nbsp;dominate,&nbsp;leader,&nbsp;loremaster,&nbsp;medicus,&nbsp;witchsight.
+        alchemy, acrobatics, berserker,&nbsp;dominate,&nbsp;leader,&nbsp;loremaster,&nbsp;medicus,&nbsp;witchsight.
         <br><br>
         When you activate a power, it will take in account the relevant abilities of the character and its target (leader ability, rapid reflexes, steadfast, traditions, impeding armour...).
         It will open a dialog window for the acting player asking a few questions:
@@ -206,7 +229,20 @@
     <br>
     Clicking the button will automaticaly affect the results of the power to the tokens: damage will be substracted from toughness, temporary corruption added, etc.
     </p>
-    <br><br>
+    <h2>Power and Abilities specifics:</h2>
+    <h3><strong>Anathema</strong></h3>
+	<p>Anathema can be used with or without a target. The target should be the opposing caster.</p>
+    <h3><strong>Berserker</strong></h3>
+	<p>When using this abilities, the effects will automaticaly modify the combat values of the character (armor, defense, damage). Use the abality again to revert to normal.</p>
+    <h3><strong>Brimstone cascade</strong></h3>
+	<p>When striking multiple targets, use the power several times, changing the target each time. After the first target, use the "maintain power" option so the casting character won't get corruption.</p>
+	<h3><strong>Blessed Shield</strong></h3>
+	<p>When using the power on 1 or 2 other characters (adept and master level), select them as targets before using the power.
+	If successful, the Mystic and the target will automaticaly get an active "blessed shield" stackable armor. At the end of the duration of the power, just delete this item from their inventory.
+	</p>
+	<h3><strong>Leader</strong></h3>
+	<p>When using leader, it will trigger the adept level effect: the target will receive a "targeted" status effect. When any character attacks this target, damage will receive a +1d4 bonus (or +2 if attack from a NPC). Just delete the status effect on the token to remove the effect.</p>
+	<br><br>
 
     <h1>Combat</span></h1>
     <p>There are 2 options for combat:
@@ -270,18 +306,18 @@
 
         <br>
         Clicking the button will automaticaly affect the results of the attack to the tokens: damage will be substracted from toughness, status icons like poison and bleed added, etc.
+		We recommend using the "Status icons counters" in order to have the duration of those effects displayed on the token and in the combat tracker.
     </p>
     <br><br>
 
     <h1>Initiative:</h1>
     The initiative used in the Symbaroum for FVTT system works the same way than stated in the rulebook, but in order to integrate in FVTT it uses the formula:
     <br>
-    initiative = quick x 1000 + vigilant x 10 + 1d8.
+    initiative = quick + vigilant x 0.01.
     <br>
-    This simple formula produces the same order than the rulebook, but the side effect is the strange big number that appear in the tracker.
-    The 2 first digits are <i>Quick</i>, digits 3 and 4 are <i>Vigilant</i>, and the last digit is for randomize the rare event when both attributes are equal.
-    So initiative 15106 means <i>Quick</i> 15, <i>Vigilant</i> 10, and the 6 is the random digit.
-    It is possible to change the base attribute used for the formula in the character sheet (for characters with the <i>Tactician</i> abilty, for example).
+    This simple formula produces the same order than the rulebook.
+    So initiative 15.10 means <i>Quick</i> 15, <i>Vigilant</i> 10.
+    It is possible to change the base attribute used for the formula in the character sheet (for characters with the <i>Tactician</i> ability, for example).
 
     <h1>Favour/Disfavour:</h1>
     <p>
@@ -306,9 +342,6 @@
     </p>
 
     <!-- New image tags -->
-    &nbsp;<span class="armor-add">&nbsp;</span>&nbsp;
-    &nbsp;<span class="weapon-state">&nbsp;</span>&nbsp;
-    &nbsp;<span class="character-stats">&nbsp;</span>&nbsp;
     &nbsp;<span class="monster-stats">&nbsp;</span>&nbsp;
 
 
