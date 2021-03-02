@@ -411,6 +411,7 @@ export class SymbaroumActor extends Actor {
             let itemID = item.data._id;
             weaponArray.push({
                 _id: itemID,
+                sort: item.data.sort,
                 name : item.data.name,
                 img: item.data.img,
                 attribute: attribute,
@@ -485,7 +486,12 @@ export class SymbaroumActor extends Actor {
             }
             if (extraArmorBonus != ""){bonusProtection += "+" + extraArmorBonus}
         }
-        let pcProt = protection + bonusProtection;
+        let pcProt = "";
+        if( protection === "0" || protection === undefined || protection === null ) {
+            pcProt = bonusProtection;
+        } else {
+            pcProt = protection + bonusProtection;
+        }
         let armorRoll= new Roll(pcProt).evaluate({maximize: true});
         let npcProt = Math.ceil(armorRoll.total/2);
         
