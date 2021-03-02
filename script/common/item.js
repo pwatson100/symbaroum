@@ -99,6 +99,7 @@ export class SymbaroumItem extends Item {
         }
         else if(data.type === "armor"){
             let protection = data.data.baseProtection;
+            let armorRoll = null;
             if( protection === null || protection === undefined || protection === "" ) {
                 protection = "1d4";
             }
@@ -113,7 +114,11 @@ export class SymbaroumItem extends Item {
             if(data.data.qualities?.reinforced){
                 data.data.pcProtection +=  "+1";
             }
-            let armorRoll= new Roll(protection).evaluate({maximize: true});
+            if(protection === "") {
+                armorRoll = new Roll("0").evaluate({maximize: true});
+            } else {
+                armorRoll = new Roll(protection).evaluate({maximize: true});
+            }
             data.data.npcProtection = Math.ceil(armorRoll.total/2);
             if(data.data.qualities?.reinforced){
                 data.data.npcProtection +=  1;
