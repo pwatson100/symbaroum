@@ -12,8 +12,8 @@
 
     <div class="health foreground border">
         <h1>{{localize "TITLE.HEALTH"}}</h1>
-        <label class="toughness">{{localize "HEALTH.TOUGHNESS"}}</label>
-        <div class="toughness-current" title="{{localize "TOOLTIP.HEALTH.TOUGHNESS_CURRENT"}}">
+        <label for="toughness-current" class="toughness">{{localize "HEALTH.TOUGHNESS"}}</label>
+        <div id="toughness-current" class="toughness-current" title="{{localize "TOOLTIP.HEALTH.TOUGHNESS_CURRENT"}}">
             <label>{{localize "HEALTH.TOUGHNESS_CURRENT"}}</label>
             <input name="data.health.toughness.value" type="number" value="{{data.health.toughness.value}}" data-dtype="Number"/>
         </div>
@@ -27,12 +27,12 @@
         </div>
         <label class="corruption">{{localize "HEALTH.CORRUPTION"}}</label>
         <div class="corruption-temporary"  title="{{localize "TOOLTIP.HEALTH.CORRUPTION_CURRENT"}}">
-            <label>{{localize "HEALTH.CORRUPTION_TEMPORARY"}}</label>
-            <input name="data.health.corruption.temporary" type="number" value="{{data.health.corruption.temporary}}" data-dtype="Number"/>
+            <label for="data.health.corruption.temporary">{{localize "HEALTH.CORRUPTION_TEMPORARY"}}</label>
+            <input id="data.health.corruption.temporary" name="data.health.corruption.temporary" type="number" value="{{data.health.corruption.temporary}}" data-dtype="Number"/>
         </div>
         <div class="corruption-permanent" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_PERMANENT"}}">
-            <label>{{localize "HEALTH.CORRUPTION_PERMANENT"}}</label>
-            <input name="data.health.corruption.permanent" type="number" value="{{data.health.corruption.permanent}}" data-dtype="Number"/>
+            <label for="data.health.corruption.permanent">{{localize "HEALTH.CORRUPTION_PERMANENT"}}</label>
+            <input id="data.health.corruption.permanent" name="data.health.corruption.permanent" type="number" value="{{data.health.corruption.permanent}}" data-dtype="Number"/>
         </div>
         <div class="corruption-threshold" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_THRESHOLD"}}">
             <label>{{localize "HEALTH.CORRUPTION_THRESHOLD"}}</label>

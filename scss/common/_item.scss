@@ -51,6 +51,11 @@
   cursor: pointer;
 }
 
+.symbaroum.sheet.item input[type='text'][disabled],
+.symbaroum.sheet.item input[type='number'][disabled] {
+  background: url(../asset/image/not-editable.jpg) repeat;
+}
+
 .symbaroum.sheet.item input[type='text'],
 .symbaroum.sheet.item input[type='number'],
 .symbaroum.sheet.item select {

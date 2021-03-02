@@ -17,6 +17,10 @@
   padding: 5px;
 }
 
+.symbaroum.dialog .weapondamage {
+  padding-left: 5px;
+}
+
 .symbaroum.dialog label {
   font-size: 14px;
   font-weight: bold;
@@ -24,6 +28,7 @@
   font-family: var(--font-text);
   background: url(../asset/image/title.jpg) repeat;
   width: 10em;
+  min-width: 10em;  
   text-align: center;
   padding: 5px;
 }
