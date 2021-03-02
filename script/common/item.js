@@ -102,6 +102,9 @@ export class SymbaroumItem extends Item {
             if( protection === null || protection === undefined || protection === "" ) {
                 protection = "1d4";
             }
+            if( protection === "0") {
+                protection = "";
+            } 
 
             if(data.data.bonusProtection && data.data.bonusProtection != ""){
                 protection += "+" + data.data.bonusProtection;
