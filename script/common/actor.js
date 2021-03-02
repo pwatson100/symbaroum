@@ -487,12 +487,20 @@ export class SymbaroumActor extends Actor {
             if (extraArmorBonus != ""){bonusProtection += "+" + extraArmorBonus}
         }
         let pcProt = "";
+        let armorRoll= null;
         if( protection === "0" || protection === undefined || protection === null ) {
-            pcProt = bonusProtection;
+            if( bonusProtection === "") {
+                armorRoll = new Roll("0").evaluate({maximize: true});    
+            } else {
+                pcProt = bonusProtection;
+                armorRoll = new Roll(pcRoll).evaluate({maximize: true});    
+            }
+            
         } else {
             pcProt = protection + bonusProtection;
+            armorRoll = new Roll(pcProt).evaluate({maximize: true});
         }
-        let armorRoll= new Roll(pcProt).evaluate({maximize: true});
+
         let npcProt = Math.ceil(armorRoll.total/2);
         
         if(item.data.data?.qualities?.reinforced){
