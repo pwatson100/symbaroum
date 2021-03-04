@@ -122,6 +122,7 @@ export class SymbaroumActor extends Actor {
 
         data.data.combat = {
             id: activeArmor._id,
+            img: activeArmor.img,
             armor: activeArmor.name,
             protectionPc: activeArmor.pc,
             protectionNpc: activeArmor.npc,
@@ -264,8 +265,12 @@ export class SymbaroumActor extends Actor {
             let bonusDamage = "";
             let shortBonusDamage = "";
             if( item.data.data.bonusDamage !== undefined && item.data.data.bonusDamage != ""){
-                bonusDamage = "+" + item.data.data.bonusDamage;
-                shortBonusDamage += "+" + item.data.data.bonusDamage;;
+                let plus = "+";
+                if(item.data.data.bonusDamage.charAt(0) === '+') {
+                    plus = "";
+                }
+                bonusDamage = plus + item.data.data.bonusDamage;
+                shortBonusDamage += plus + item.data.data.bonusDamage;;
             }
             if(item.data.data?.isMelee){
                 if(ironFistLvl == 2){
@@ -488,14 +493,11 @@ export class SymbaroumActor extends Actor {
         }
         let pcProt = "";
         let armorRoll= null;
-        if( protection === "0" || protection === undefined || protection === null ) {
-            if( bonusProtection === "") {
-                armorRoll = new Roll("0").evaluate({maximize: true});    
-            } else {
-                pcProt = bonusProtection;
-                armorRoll = new Roll(pcRoll).evaluate({maximize: true});    
-            }
-            
+        if( protection === "0" && bonusProtection === "") {
+            armorRoll = new Roll("0").evaluate({maximize: true});    
+        } else if(protection === "0") {
+            pcProt = bonusProtection;
+            armorRoll = new Roll(pcProt).evaluate({maximize: true});    
         } else {
             pcProt = protection + bonusProtection;
             armorRoll = new Roll(pcProt).evaluate({maximize: true});

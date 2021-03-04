@@ -255,11 +255,12 @@
 .symbaroum.sheet.actor .player .main .combat .armor .protection label,
 .symbaroum.sheet.actor .player .main .combat .armor .defense label {
   width: 10em;
+  min-width: 10em;
 }
 
 .symbaroum.sheet.actor .player .main .combat .armor .protection input,
 .symbaroum.sheet.actor .player .main .combat .armor .defense input {
-  flex-basis: 30%;
+  width:100%;
 }
 
 .symbaroum.sheet.actor .player .main .combat .weapons {

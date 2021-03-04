@@ -75,17 +75,19 @@ export class SymbaroumItem extends Item {
                 data.data.isDistance = false;
             }
             let baseDamage = data.data.baseDamage;
-            console.log("baseDamage["+baseDamage+"]");
+            // console.log("baseDamage["+baseDamage+"]");
             if( baseDamage === null || baseDamage === undefined || baseDamage === "" ) {
                 baseDamage = "1d8";
             }
             if(data.data.qualities?.massive) {
                 let diceSides = new Roll(baseDamage).evaluate({maximize: true});                
                 baseDamage = "2d"+Math.ceil(diceSides.total)+"kh";
-                console.log("Weapon is massive, baseDamage set to "+baseDamage);
             } 
-            if(data.data.bonusDamage != ""){
-                baseDamage += data.data.bonusDamage;;
+            if(data.data.bonusDamage != "") {
+                if(data.data.bonusDamage.charAt(0) !== '+' ) {
+                    data.data.bonusDamage = "+"+data.data.bonusDamage;
+                }
+                baseDamage += data.data.bonusDamage;
             }
             data.data.pcDamage += baseDamage;
             if(data.data.qualities?.deepImpact){
@@ -114,6 +116,7 @@ export class SymbaroumItem extends Item {
             if(data.data.qualities?.reinforced){
                 data.data.pcProtection +=  "+1";
             }
+
             if(protection === "") {
                 armorRoll = new Roll("0").evaluate({maximize: true});
             } else {
