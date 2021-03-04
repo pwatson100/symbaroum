@@ -105,15 +105,21 @@
             </div>
         </div>
         <div class="armor">
-            <button class="roll-armor">{{data.combat.armor}}</button>
+            <div style="display:flex; width:100%">
+                <div class="image-container">
+                    <div class="image" style="background-image: url('{{data.combat.img}}')"></div>
+                </div>
+                <button class="roll-armor">{{data.combat.armor}}</button>
+            </div>
             <div class="quality">
                 <label>{{localize "ARMOR.DEFENSE"}}</label>
                 <input type="text" value={{localize data.defense.attributelabel}} disabled />
-              <span class="tooltip input">
-                  <input type="number" value="{{data.combat.defense}}" data-dtype="Number" disabled />
-                  <span class="tooltiptext downleft">{{localize "TOOLTIP.BONUS_TOTAL"}}  {{data.combat.defense}} {{{data.combat.msg}}} </span>
-              </span>
+                <span class="tooltip input">
+                    <input type="number" value="{{data.combat.defense}}" data-dtype="Number" disabled />
+                    <span class="tooltiptext downleft">{{localize "TOOLTIP.BONUS_TOTAL"}}  {{data.combat.defense}} {{{data.combat.msg}}} </span>
+                </span>
             </div>
+            <div class="quality">
             <div class="protection">
                 <label>{{localize "ARMOR.PROTECTION"}}</label>
                 <input type="text" value="{{data.combat.protectionPc}}" disabled />
@@ -121,6 +127,7 @@
             <div class="protection">
                 <label>{{localize "ARMOR.IMPEDING"}}</label>
                 <input type="text" value="{{data.combat.impeding}}" disabled />
+            </div>
             </div>
         </div>
         <div class="weapons">

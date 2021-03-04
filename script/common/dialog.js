@@ -60,6 +60,9 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon) 
           const favour = fvalue;
           
           let modifier = parseInt(html.find("#modifier")[0].value);   
+          if(isNaN(modifier)) {
+            modifier = 0;
+          }
           attri_defaults.modifier = modifier;              
           if(askImpeding){
             if(html.find("#impeding")[0].checked){

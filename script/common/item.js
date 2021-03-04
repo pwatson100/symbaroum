@@ -83,8 +83,11 @@ export class SymbaroumItem extends Item {
                 let diceSides = new Roll(baseDamage).evaluate({maximize: true});                
                 baseDamage = "2d"+Math.ceil(diceSides.total)+"kh";
             } 
-            if(data.data.bonusDamage != ""){
-                baseDamage += data.data.bonusDamage;;
+            if(data.data.bonusDamage != "") {
+                if(data.data.bonusDamage.charAt(0) !== '+' ) {
+                    data.data.bonusDamage = "+"+data.data.bonusDamage;
+                }
+                baseDamage += data.data.bonusDamage;
             }
             data.data.pcDamage += baseDamage;
             if(data.data.qualities?.deepImpact){
