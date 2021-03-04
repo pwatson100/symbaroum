@@ -439,7 +439,8 @@ export async function simpleDamageRoll(attackFromPC, actor, damageFormula, targe
     newRollDmgString = damageFormula;
     //build roll string
     if(!ignoreArmor){
-      newRollDmgString += " - " + targetData.actor.data.data.combat.protectionNpc + "["+targetData.actor.data.data.combat.armor+"]";
+      //      newRollDmgString += " - " + targetData.actor.data.data.combat.protectionNpc + "["+targetData.actor.data.data.combat.armor+"]";
+      newRollDmgString += " - " + targetData.actor.data.data.combat.protectionNpc;
     }
   }
   else{

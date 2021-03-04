@@ -884,7 +884,10 @@ async function modifierDialog(functionStuff){
                     functionStuff.dmgData.hasAdvantage = html.find("#advantage")[0].checked;
                     if(functionStuff.dmgData.hasAdvantage){
                         functionStuff.modifier += 2;
-                        functionStuff.autoParams += game.i18n.localize('DIALOG.ADVANTAGE') + ", "
+                        functionStuff.autoParams += game.i18n.localize('DIALOG.ADVANTAGE') + ", ";
+                        if(askBackstab && functionStuff.actor.data.data.attributes.discreet.total > functionStuff.actor.data.data.attributes[functionStuff.castingAttributeName].total){
+                            functionStuff.castingAttributeName = "discreet";
+                        }
                     }
                     
                     if(askBackstab){
@@ -2605,10 +2608,10 @@ async function layonhandsResult(functionStuff) {
 async function mindthrowPrepare(ability, actor) {
     // get target
     let targetData;
-    try{targetData = getTarget("quick")} catch(error){      
-        ui.notifications.error(error);
-        return;
+    try{targetData = getTarget("quick")} catch(error){
+        targetData = {hasTarget : false}
     }
+
     let fsDefault = await buildFunctionStuffDefault(ability, actor)
     let specificStuff = {
         corruption: true,
@@ -2635,57 +2638,67 @@ async function mindthrowResult(rollData, functionStuff){
     let haveCorruption = false;
     let corruptionText = "";
     let corruption;
-
-    let introText = functionStuff.actor.data.name + game.i18n.localize('POWER_MIND_THROW.CHAT_INTRO');
-    
-    let resultText = functionStuff.targetData.token.data.name + game.i18n.localize('POWER_MIND_THROW.CHAT_SUCCESS');
-    if(!rollData[0].hasSucceed){
-        resultText = functionStuff.targetData.token.data.name + game.i18n.localize('POWER_MIND_THROW.CHAT_FAILURE');
-    }
+    let dmgFormula = "";
+    let introText = "";
     let targetText = "";
+    let resultText = "";
+
+    if(functionStuff.isMaintained){
+        introText = functionStuff.introTextMaintain ?? functionStuff.actor.data.name + game.i18n.localize('POWER.CHAT_INTRO_M') + functionStuff.ability.name + " \".";
+    }
+    else{
+        introText = functionStuff.actor.data.name + game.i18n.localize('POWER.CHAT_INTRO') + functionStuff.ability.name + " \".";
+    }
+    if(!rollData[0].hasSucceed){
+        resultText = functionStuff.actor.data.name + game.i18n.localize('POWER.CHAT_FAILURE');
+    }
+    else{
+        resultText = functionStuff.actor.data.name + game.i18n.localize('POWER.CHAT_SUCCESS');
+    }
     if(functionStuff.targetData.hasTarget){
         targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.token.data.name;
         if (functionStuff.targetData.autoParams != ""){targetText += ": " + functionStuff.targetData.autoParams}
-    }
-    let damageDice = "1d8";
-    let damage = await simpleDamageRoll(functionStuff.attackFromPC, functionStuff.actor, damageDice, functionStuff.targetData, false);
-    damageTot = damage.roll.total;
-    if(damage.roll.total > functionStuff.targetData.actor.data.data.health.toughness.threshold){pain = true}
-    damageRollResult += await formatRollResult([damage]);
-    let dmgFormula = game.i18n.localize('WEAPON.DAMAGE') + ": " + damage.roll._formula;
-    damageTooltip += damage.roll.result;
+        if (rollData[0].hasSucceed){
+            let damageDice = "1d8";
+            let damage = await simpleDamageRoll(functionStuff.attackFromPC, functionStuff.actor, damageDice, functionStuff.targetData, false);
+            damageTot = damage.roll.total;
+            if(damage.roll.total > functionStuff.targetData.actor.data.data.health.toughness.threshold){pain = true}
+            damageRollResult += await formatRollResult([damage]);
+            dmgFormula = game.i18n.localize('WEAPON.DAMAGE') + ": " + damage.roll._formula;
+            damageTooltip += damage.roll.result;
 
-    if(damageTot <= 0){
-        damageTot = 0;
-        damageText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_NUL');
-    }
-    else if(damageTot > functionStuff.targetData.actor.data.data.health.toughness.value){
-        damageText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
-        damageFinalText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_DYING');
-        flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data._id,
-            toughnessChange: damageTot*-1
-        }, {
-            tokenId: functionStuff.targetData.token.data._id,
-            addEffect: "icons/svg/skull.svg",
-            effectDuration: 1
-        })
-    }
-    else{
-        damageText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
-        flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data._id,
-            toughnessChange: damageTot*-1
-        })
-        if(pain){
-            damageFinalText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_PAIN');
-            flagDataArray.push({
-                tokenId: functionStuff.targetData.token.data._id,
-                addEffect: "icons/svg/falling.svg",
-                effectDuration: 1
-            })
+            if(damageTot <= 0){
+                damageTot = 0;
+                damageText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_NUL');
+            }
+            else if(damageTot > functionStuff.targetData.actor.data.data.health.toughness.value){
+                damageText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
+                damageFinalText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_DYING');
+                flagDataArray.push({
+                    tokenId: functionStuff.targetData.token.data._id,
+                    toughnessChange: damageTot*-1
+                }, {
+                    tokenId: functionStuff.targetData.token.data._id,
+                    addEffect: "icons/svg/skull.svg",
+                    effectDuration: 1
+                })
+            }
+            else{
+                damageText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
+                flagDataArray.push({
+                    tokenId: functionStuff.targetData.token.data._id,
+                    toughnessChange: damageTot*-1
+                })
+                if(pain){
+                    damageFinalText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_PAIN');
+                    flagDataArray.push({
+                        tokenId: functionStuff.targetData.token.data._id,
+                        addEffect: "icons/svg/falling.svg",
+                        effectDuration: 1
+                    })
+                }
+            }
         }
-
     }
     if(!functionStuff.isMaintained){
         haveCorruption = true;
@@ -2709,7 +2722,7 @@ async function mindthrowResult(rollData, functionStuff){
         rollResult : formatRollResult(rollData),
         resultText: resultText,
         finalText: "",
-        hasDamage: true,
+        hasDamage: functionStuff.targetData.hasTarget,
         damageText: damageText,
         damageRollResult: damageRollResult,
         dmgFormula: dmgFormula,
