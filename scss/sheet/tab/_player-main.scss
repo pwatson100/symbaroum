@@ -214,7 +214,9 @@
   flex-direction: row;
   flex-wrap: wrap;
   flex-basis: 100%;
-  margin: 5px;
+  margin-bottom: 5px;
+  margin-right: 5px;
+  margin-left: 5px;
 }
 
 .symbaroum.sheet.actor .player .main .combat .armor .roll-armor,
@@ -237,13 +239,10 @@
 
 .symbaroum.sheet.actor .player .main .combat .armor .quality {
   margin-top: 5px;
-  margin-bottom: 5px;
 }
 
 .symbaroum.sheet.actor .player .main .combat .armor .protection {
-  flex-basis: calc(50% - 5px);
-  margin-top: 5px;
-  margin-right: 5px;
+  flex-basis: 50%;
 }
 
 .symbaroum.sheet.actor .player .main .combat .armor .defense {
@@ -252,6 +251,8 @@
   margin-left: 5px;
 }
 
+.symbaroum.sheet.actor .player .main .combat .armor .initiative label,
+.symbaroum.sheet.actor .player .main .combat .armor .quality label,
 .symbaroum.sheet.actor .player .main .combat .armor .protection label,
 .symbaroum.sheet.actor .player .main .combat .armor .defense label {
   width: 10em;
