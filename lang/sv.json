@@ -466,6 +466,9 @@
   "RITUAL.TRADITION": "Tradition",
   "RITUAL.DESCRIPTION": "Beskrivning",
 
+  "ROLL.CRITSHORT":"krit",
+  "ROLL.ADVANTAGESHORT":"adv",
+
   "TAB.MAIN": "ÖVERSIKT",
   "TAB.GEAR": "UTRUSTNING",
   "TAB.BIO": "BIOGRAFI",
