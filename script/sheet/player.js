@@ -93,15 +93,22 @@ export class PlayerSheet extends SymbaroumActorSheet {
                     label: game.i18n.localize('BUTTON.CONFIRM'),
                     callback: async (html) => {
                         for (var aKey in data.attributes) {
-                            var base = "#" + [aKey] + "-value";
+                            var base = "#" + data._id + "-" + [aKey] + "-value";
+                            console.log("Find["+base+"]");
                             const stringValue = html.find(base)[0].value;
+                            console.log("Found value["+stringValue+"]");
+
                             let newValue = parseInt(stringValue, 10);
-                            let link = "data.attributes."+[aKey]+".value";
-                            var mod = "#" + [aKey] + "-mod";
-                            const stringMod = html.find(mod)[0].value;
-                            let newModValue = parseInt(stringMod, 10);
-                            let linkMod = "data.attributes."+[aKey]+".temporaryMod";
-                            await this.actor.update({ [link] : newValue, [linkMod] : newModValue });
+                            if( !isNaN(newValue)) {
+                                let link = "data.attributes."+[aKey]+".value";
+                                var mod = "#" + [aKey] + "-mod";
+                                const stringMod = html.find(mod)[0].value;
+                                let newModValue = parseInt(stringMod, 10);
+                                if( !isNaN(newModValue)) {
+                                    let linkMod = "data.attributes."+[aKey]+".temporaryMod";
+                                    await this.actor.update({ [link] : newValue, [linkMod] : newModValue });
+                                }
+                            }
                         }
                     }
                 },
