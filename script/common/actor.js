@@ -444,14 +444,18 @@ export class SymbaroumActor extends Actor {
         let tooltip = "";
         let protection = item.data.data.baseProtection;
         if( protection === undefined) {
-            protection = "1d4";
+            protection = "0";
         }
         let impeding = item.data.data.impeding;
         let bonusProtection = "";
         if(item.data.data.bonusProtection !== undefined && item.data.data.bonusProtection != ""){
+            let plus = "+";
+            if(item.data.data.bonusProtection.charAt(0) === '+' ) { 
+                plus = "";
+            }
             bonusProtection = "+" + item.data.data.bonusProtection;
         }
-        if(protection != "0" || protection == "")
+        if(protection != "0" || bonusProtection == "")
         {
             let manatarms = this.items.filter(element => element.data.data?.reference === "manatarms");
             if(manatarms.length > 0){
@@ -489,7 +493,7 @@ export class SymbaroumActor extends Actor {
                 bonusProtection += "+1d4";
                 tooltip += game.i18n.localize("ABILITY_LABEL.BERSERKER") + ", ";
             }
-            if (extraArmorBonus != ""){bonusProtection += "+" + extraArmorBonus}
+            if (extraArmorBonus != ""){ bonusProtection += "+" + extraArmorBonus}
         }
         let pcProt = "";
         let armorRoll= null;
