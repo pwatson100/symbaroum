@@ -237,6 +237,7 @@
     "COMBAT.PARAMS_PRECISE": "[arme précise], ",
     "COMBAT.DAMAGE": "Dégâts infligés: ",
 
+    "DIALOG.VERSUS": "Versus",
     "DIALOG.ATTRIBUTE": "Attribut",
     "DIALOG.MODIFIER": "Mod. jet d'attribut",
     "DIALOG.ADVANTAGE": "Avantage",
