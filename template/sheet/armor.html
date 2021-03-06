@@ -40,7 +40,7 @@
                 <div class="stats foreground border">
                     <h1>{{localize "TITLE.STATS"}}</h1>
                     <div class="protection">
-                        <label for="{{item._id}}-data.baseProtection">Base Prot</label>
+                        <label for="{{item._id}}-data.baseProtection">{{localize "ARMOR.BASE_PROT"}}</label>
                         <select for="{{item._id}}-data.baseProtection" name="data.baseProtection">
                             {{#select data.baseProtection}}
                             <option value="1d4">1d4</option>
@@ -52,7 +52,7 @@
                         </select>
                     </div>
                     <div class="protection">
-                        <label for="{{item._id}}-data.bonusProtection">Prot bonus</label>
+                        <label for="{{item._id}}-data.bonusProtection">{{localize "ARMOR.BONUS_PROT"}}</label>
                         <input id="{{item._id}}-data.bonusProtection" name="data.bonusProtection" type="text" value="{{data.bonusProtection}}"/>
                     </div>
                     <div class="impeding">
