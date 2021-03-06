@@ -71,7 +71,7 @@
                         </select>
                     </div>
                     <div class="damage">
-                        <label for="{{item._id}}-data.baseDamage">Base Damage</label>
+                        <label for="{{item._id}}-data.baseDamage">{{localize "WEAPON.BASE_DAMAGE"}}</label>
                         <select id="{{item._id}}-data.baseDamage" name="data.baseDamage">
                             {{#select data.baseDamage}}
                             <option value="1d4">1d4</option>
@@ -83,7 +83,7 @@
                         </select>
                     </div>
                     <div class="damage">
-                        <label for="{{item._id}}-data.bonusDamage" >damagebonus</label>
+                        <label for="{{item._id}}-data.bonusDamage" >{{localize "WEAPON.BONUS_DAMAGE"}}</label>
                         <input id="{{item._id}}-data.bonusDamage" name="data.bonusDamage" type="text" value="{{data.bonusDamage}}"/>
                     </div>
                     <div class="cost">

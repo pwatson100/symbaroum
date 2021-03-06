@@ -711,8 +711,8 @@ async function getCorruption(functionStuff, corruptionFormula = "1d4"){
 @returns:  {{number} level
             {lvlName} the localized label (novice, adpet or master)}*/
 export function getPowerLevel(ability){
-    let powerLvl = 1;
-    let lvlName = game.i18n.localize('ABILITY.NOVICE');
+    let powerLvl = 0;
+    let lvlName = "Not learned";
     if(ability.data.data.master.isActive){
         powerLvl = 3;
         lvlName = game.i18n.localize('ABILITY.MASTER');
@@ -720,6 +720,10 @@ export function getPowerLevel(ability){
     else if(ability.data.data.adept.isActive){
         powerLvl = 2;
         lvlName = game.i18n.localize('ABILITY.ADEPT');
+    }
+    else if(ability.data.data.novice.isActive){
+        powerLvl = 1;
+        lvlName = game.i18n.localize('ABILITY.NOVICE');
     }
     return{level : powerLvl, lvlName : lvlName}
 }
