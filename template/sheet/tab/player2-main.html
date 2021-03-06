@@ -121,8 +121,9 @@
             </div>
             <div class="quality">
             <div class="protection">
-                <label>{{localize "ARMOR.PROTECTION"}}</label>
-                <input type="text" value="{{data.combat.protectionPc}}" disabled />
+                <label>{{localize "ARMOR.PROTECTION"}}</label>                
+                {{#ife actor.type "player"}}<input type="text" value="{{data.combat.protectionPc}}" disabled />{{/ife}}
+                {{#ife actor.type "monster"}}<input type="text" value="{{data.combat.protectionNpc}}" disabled />{{/ife}}
             </div>
             <div class="protection">
                 <label>{{localize "ARMOR.IMPEDING"}}</label>
@@ -146,7 +147,8 @@
                                 </div>
                                 <button class="roll-weapon">{{item.name}}</button>
                             </div>
-                            <div class="damage" title="{{item.tooltip}}">{{item.damage.pcShort}}</div>
+                            {{#ife ../actor.type "player"}}<div class="damage" title="{{item.tooltip}}">{{item.damage.pcShort}}</div>{{/ife}}
+                            {{#ife ../actor.type "monster"}}<div class="damage" title="{{item.tooltip}}">{{item.damage.npc}}</div>{{/ife}}
                         </div>
                     {{/if}}
                     {{/each}}

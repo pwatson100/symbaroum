@@ -465,6 +465,9 @@
   "RITUAL.TRADITION": "Tradición",
   "RITUAL.DESCRIPTION": "Descr.",
 
+  "ROLL.CRITSHORT":"crit",
+  "ROLL.ADVANTAGESHORT":"adv",
+
   "TAB.MAIN": "PRINCIPAL",
   "TAB.GEAR": "EQUIPAMIENTO",
   "TAB.BIO": "BIO",
