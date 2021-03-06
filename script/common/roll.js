@@ -77,7 +77,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   let rollData = {
     subImg: actor.data.img,
     name: `${getAttributeLabel(actor, actingAttributeName) } (${ getAttributeValue(actor, actingAttributeName) }) ⬅ ${getAttributeLabel(targetActor, targetAttributeName)} (${finalMod})`,
-    margin: game.i18n.localize('CHAT.MARGIN') + (rollResults.diceTarget - rollResults.diceResult).toString(),
+    margin: (rollResults.diceTarget - rollResults.diceResult),
     hasSucceed: rollResults.hasSucceed,
     diceResult: rollResults.diceResult,
     diceBreakdown: rollResults.diceBreakdown,

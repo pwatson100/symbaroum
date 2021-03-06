@@ -5,9 +5,10 @@
     {{#if hasSucceed}}
 
     <div class="tooltip" style="width: 100%;">
-      <h4>{{localize "CHAT.SUCCEED"}} ({{diceResult}}&lt;={{diceTarget}} )</h4>
+      <h4>{{localize "CHAT.SUCCEED"}} ({{diceResult}})</h4>
        <h4>{{margin}}</h4>
-      <div class="tooltiptext">{{{diceBreakdown}}}</div>
+      <div class="tooltiptext">{{{diceBreakdown}}}<br>
+        {{diceTarget}} - {{diceResult}} = {{margin}} </div>
     </div>
 
     {{#if critSuccess}}
@@ -25,9 +26,11 @@
     {{else}} 
 
     <div class="tooltip" style="width: 100%;">
-      <h4>{{localize "CHAT.FAILED"}} ({{diceResult}}&gt;{{diceTarget}})</h4>
-      <h4>{{margin}}</h4>
-      <div class="tooltiptext">{{{diceBreakdown}}}</div>
+      <h4>{{localize "CHAT.FAILED"}} ({{diceResult}})</h4>
+      <h4>{{localize "MARGIN"}} {{margin}}</h4>
+      <div class="tooltiptext">{{{diceBreakdown}}} <br/>
+        {{diceTarget}} - {{diceResult}} = {{margin}} </div>
+      </div>
     </div>
 
     {{#if critFail}}
