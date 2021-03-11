@@ -1177,7 +1177,7 @@ export async function attackRoll(weapon, actor){
                 if(steelthrow[0].data.data.adept.isActive){
                     functionStuff.askTwoAttacks = true;
                 }
-                if(steelthrow.data.data.master.isActive){
+                if(steelthrow[0].data.data.master.isActive){
                     functionStuff.askThreeAttacks = true;
                 }
             }
