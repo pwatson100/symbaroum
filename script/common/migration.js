@@ -11,6 +11,18 @@ export const migrateWorld = async () => {
     }
     if (worldTemplateVersion < templateVersion && game.user.isGM) {
         ui.notifications.info("New template detected; Upgrading the world, please wait...");
+        if (worldTemplateVersion < 3) {
+            const htmlTemplate = await renderTemplate("systems/symbaroum/template/migration-warning.html");
+            new Dialog({
+                title: "WARNING", 
+                content: htmlTemplate,
+                buttons: {
+                    close: {
+                        label: "Close"
+                    }
+                }
+            }).render(true);
+        }
         for (let actor of game.actors.entities) {
             try {
                 const update = migrateActorData(actor.data, worldTemplateVersion);
