@@ -14,6 +14,8 @@ import { EquipmentSheet } from '../sheet/equipment.js';
 import { ArtifactSheet } from '../sheet/artifact.js';
 import { initializeHandlebars } from './handlebars.js';
 import { migrateWorld } from './migration.js';
+import { sendDevMessage } from './devmsg.js';
+
 
 Hooks.once('init', () => {
   CONFIG.Actor.entityClass = SymbaroumActor;
@@ -42,6 +44,15 @@ Hooks.once('init', () => {
     default: 0,
     type: Number,
   });
+
+  game.settings.register('symbaroum', 'symbaroumDevMessageVersionNumber', {
+    name: 'Message from the devs',
+    hint: 'Used to track last message id from the Symbaroum devs',
+    scope: 'world',
+    config: false,
+    default: 0,
+    type: Number,
+  });  
 
   game.settings.register('symbaroum', 'combatAutomation', {
     name: 'SYMBAROUM.OPTIONAL_AUTOCOMBAT',
@@ -134,6 +145,7 @@ Hooks.once('init', () => {
 
 Hooks.once('ready', () => {
   migrateWorld();
+  sendDevMessage();
 });
 
 Hooks.on('preCreateActor', (createData) => {
