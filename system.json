@@ -154,6 +154,20 @@
       "system": "symbaroum",
       "path": "./packs/symbaroumarmorsfr.db",
       "entity": "Item"
+    },
+    {
+      "name": "symbaroummacrosfr",
+      "label": "FR - Macros",
+      "system": "symbaroum",
+      "path": "./packs/symbaroummacrosfr.db",
+      "entity": "Macro"
+    },
+    {
+      "name": "symbaroummacrosen",
+      "label": "EN - Macros",
+      "system": "symbaroum",
+      "path": "./packs/symbaroummacrosen.db",
+      "entity": "Macro"
     }
   ],
   "languages": [
