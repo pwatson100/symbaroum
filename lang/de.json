@@ -55,7 +55,7 @@
   "ABILITY_LABEL.RUNE_TATTOO":"Rune Tattoo",
   "ABILITY_LABEL.SHIELD_FIGHTER":"Schildkampf",
   "ABILITY_LABEL.SIEGE_EXPERT":"Siege Expert",
-  "ABILITY_LABEL.SIXTH_SENSE":"Gefahren Sinn",
+  "ABILITY_LABEL.SIXTH_SENSE":"Gefahrensinn",
   "ABILITY_LABEL.SORCERY":"Zauberei",
   "ABILITY_LABEL.STAFF_FIGHTING":"Staff Fighting",
   "ABILITY_LABEL.STAFF_MAGIC":"Staff Magic",
@@ -82,7 +82,7 @@
   "ABILITY_ERROR.TARGET": "Du musst ein Ziel auswählen",
 
   "ABILITY_LOREMASTER.CHAT_INTRO": " weiss vielleicht etwas darüber.",
-  "ABILITY_LOREMASTER.CHAT_SUCCESS": " weiss nur wenig darüber.",
+  "ABILITY_LOREMASTER.CHAT_SUCCESS": " weiss etwas darüber.",
   "ABILITY_LOREMASTER.CHAT_FAILURE": " hat keine Ahnung.",
 
   "ABILITY_MEDICUS.CHAT_INTRO": " behandelt die Verletzungen.",
@@ -96,12 +96,12 @@
 
   "ABILITY_STRANGLER.CHAT_INTRO": " versucht sein Ziel zu ergreifen.",
   "ABILITY_STRANGLER.CHAT_INTRO_M": " versucht den Würgegriff aufrechtzuerhalten.",
-  "ABILITY_STRANGLER.CHAT_SUCCESS": " erwürgt sein Opfer.",
+  "ABILITY_STRANGLER.CHAT_SUCCESS": " würgt sein Opfer.",
   "ABILITY_STRANGLER.CHAT_FAILURE": " entkommt dem Würgegriff.",
 
   "ABILITY_WITCHSIGHT.CHAT_INTRO": " versucht die Schatten wahrzunehmen.",
-  "ABILITY_WITCHSIGHT.CHAT_SUCCESS": " pierces the veil of shadows.",
-  "ABILITY_WITCHSIGHT.CHAT_FAILURE": " durchbohrt den Schleier der Schatten.",
+  "ABILITY_WITCHSIGHT.CHAT_SUCCESS": " durchblickt den Schleier der Schatten.",
+  "ABILITY_WITCHSIGHT.CHAT_FAILURE": " verliert den Focus im Schleier.",
   "ABILITY_WITCHSIGHT.CHAT_FINAL1": " Die Farbe des Schattens ",
   "ABILITY_WITCHSIGHT.CHAT_FINAL2": " ist: ",
 
@@ -176,7 +176,7 @@
   "BUTTON.ROLL": "Würfel",
   "BUTTON.CANCEL": "Abbruch",
 
-  "CHAT.GMTEXT_BUTTON": "This button is for GM use only. It will apply the effects to the tokens.",
+  "CHAT.GMTEXT_BUTTON": "Dieser Knopf ist nur für den SL. Er fügt dem Token den Effekt hinzu.",
   "CHAT.APPLY_BUTTON": "Wenden Sie die Ergebnisse auf das Token an",
   "CHAT.DEATH_ROLL": "Todesprobe",
   "CHAT.SUCCEED": "Erfolg",
@@ -186,7 +186,7 @@
   "CHAT.CRITICAL_FREEATTACK": "Freier Angriff",
   "CHAT.CRITICAL_PLUS3DAMAGE": "+3 Schaden",
   "CHAT.CRITICAL_FAILURE_FREEATTACK": "Freier Angriff des Gegners",
-  "CHAT.MARGIN": "Result Margin : ",
+  "CHAT.MARGIN": "Erfolgsgrade : ",
   "CHAT.RECOVER": "Erholung",
   "CHAT.TOUGHNESS": "Zähigkeit",
   "CHAT.STAY_ALIVE": "Du bleibst vorerst am Leben!",
@@ -576,14 +576,14 @@
   "SYMBAROUM.OPTIONAL_MORERITUALS": "Erlaube more rituals",
   "SYMBAROUM.OPTIONAL_MORERITUALS_HINT": "Ermögliche  „more rituals“ wie sie im Advanced Players Guide auf Seite 103 beschrieben sind",
   "SYMBAROUM.OPTIONAL_AUTOCOMBAT": "Combat enhancement",
-  "SYMBAROUM.OPTIONAL_AUTOCOMBAT_HINT": "Check to enable QoL enhancement for smooth combat. Read the Symbaroum system guide for FoundryVTT in the compendium section for more info",
-  "SYMBAROUM.OPTIONAL_SAVECOMBATROLL": "Combat settings for rolls",
-  "SYMBAROUM.OPTIONAL_SAVECOMBATROLL_HINT": "Check to enable QoL enhancement for keeping all modifiers when rolling combat (weapon/defense)",
-  "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL": "Attribute settings for rolls",
-  "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT": "Check to enable QoL enhancement for keeping all modifiers when rolling attribute tests",
-  "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE": "Show modifers in targetted attribute rolls",
-  "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE_HINT": "Check to enable QoL enhancement for showing attribute modifiers before making the roll",
-  "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Allow reference modification",
-  "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Warning - GM Only - allow to manually adjust reference implementation for abilities, traits and mystical powers. Requires refresh."
+  "SYMBAROUM.OPTIONAL_AUTOCOMBAT_HINT": "Markieren um QoL Erweiterungen für einen flüssigen Kampf zu erlauben. Lese den Symbaroum system guide for FoundryVTT im Kompendium für weitere Infos",
+  "SYMBAROUM.OPTIONAL_SAVECOMBATROLL": "Kampf einstellungen für Würfe",
+  "SYMBAROUM.OPTIONAL_SAVECOMBATROLL_HINT": "Markieren um QoL Erweiterungen zu erlauben welche alle Werte für den Kampf mit einbeziehen (weapon/defense)",
+  "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL": "Attribut für die Probe",
+  "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT": "Markieren um QoL Erweiterungen zu erlauben, damit für Proben alle Attribut Modifizierungen berücksichtigt werden",
+  "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE": "Zeige Modifikatoren bei den Proben an",
+  "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE_HINT": "Markieren um QoL Erweiterungen zu aktivieren die Modifikatoren vor dem Wurf anzuzeigen",
+  "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Erlaube Beispiel modifizierungen",
+  "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Warnung - NUR FÜR DEN SL- Erlaube die Manuelle einstellung für Referenz Fähigkeiten, Merkmalen und Mystischen Fähigkeiten. Benötigt einen Reload."
 
 }
