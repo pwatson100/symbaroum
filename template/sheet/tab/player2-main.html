@@ -116,7 +116,8 @@
                 <input type="text" value={{localize data.defense.attributelabel}} disabled />
                 <span class="tooltip input">
                     <input type="number" value="{{data.combat.defense}}" data-dtype="Number" disabled />
-                    <span class="tooltiptext downleft">{{localize "TOOLTIP.BONUS_TOTAL"}}  {{data.combat.defense}} {{{data.combat.msg}}} </span>
+                    {{#ife actor.type "monster"}} <span class="tooltiptext downleft">{{localize "TOOLTIP.BONUS_TOTAL"}}  {{data.combat.defense}} ({{data.combat.defmod}})<br/> {{{data.combat.msg}}} </span> {{/ife}}
+                    {{#ife actor.type "player"}} <span class="tooltiptext downleft">{{localize "TOOLTIP.BONUS_TOTAL"}}  {{data.combat.defense}} <br/> {{{data.combat.msg}}} </span> {{/ife}}
                 </span>
             </div>
             <div class="quality">

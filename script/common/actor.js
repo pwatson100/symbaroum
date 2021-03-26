@@ -123,6 +123,7 @@ export class SymbaroumActor extends Actor {
         let activeArmor = this._getActiveArmor(data, extraArmorBonus);
         let defense = this._getDefenseValue(data, activeArmor);
         let damageProt = this._getDamageProtection();
+        let totDefense = defense.attDefValue - activeArmor.impeding + data.data.bonus.defense;
 
         data.data.combat = {
             id: activeArmor._id,
@@ -131,7 +132,8 @@ export class SymbaroumActor extends Actor {
             protectionPc: activeArmor.pc,
             protectionNpc: activeArmor.npc,
             impeding: activeArmor.impeding,
-            defense: defense.attDefValue - activeArmor.impeding + data.data.bonus.defense,
+            defense: totDefense,
+            defmod: (10 - totDefense),
             msg: defense.defMsg,
             damageProt: damageProt
         };
