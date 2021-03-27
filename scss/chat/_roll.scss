@@ -1,0 +1,116 @@
+.symbaroum.chat.roll {
+  color: var(--color-text);
+  font-family: var(--font-text);
+  font-size: 12px;
+  line-height: 16px;
+  padding: 5px;
+}
+
+.symbaroum.chat.roll .foreground {
+  background: url(../asset/image/editable.jpg) repeat;
+  padding: 10px;
+}
+
+.symbaroum.chat.roll .border {
+  border: 1px solid transparent;
+  border-image: url(../asset/image/title.jpg) 20/5px round;
+}
+
+.symbaroum.chat.roll strong {
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #606060;
+  font-size: 14px;
+}
+
+.symbaroum.chat.roll h3 {
+  font-family: var(--font-text);
+  font-size: 14px;
+  font-weight: bold;
+  color: #606060;
+  margin: 0 0 8px;
+  text-align: center;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.symbaroum.chat.roll h4 {
+  font-family: var(--font-text);
+  font-size: 16px;
+  font-weight: bold;
+  margin: 10px 0 10px 0;
+  text-align: center;
+}
+
+.symbaroum.chat.roll p {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0 0 4px;
+}
+
+.symbaroum.chat.roll .tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+/* Tooltip text */
+.symbaroum.chat.roll .tooltip .tooltiptext {
+  visibility: hidden;
+  width: 10em;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+}
+
+.symbaroum.chat.roll .right {
+  top: -15%;
+  left: 105%;
+}
+
+.symbaroum.chat.roll .tooltip .down {
+  top: 100%;
+  left: 0%;
+}
+
+.symbaroum.chat.roll .tooltip .downleft {
+  top: -105%;
+  left: calc(-5% - 10em);
+}
+
+.symbaroum.chat.roll .tooltip .up {
+  top: -105%;
+  left: 0%;
+}
+
+.symbaroum.chat.roll .tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+.symbaroum.chat.roll .strike {
+  color: grey;
+  text-decoration: line-through;
+}
+
+.symbaroum.chat.roll .fumble {
+  color: red;
+  font-weight: bold;
+}
+
+.symbaroum.chat.roll .critical {
+  color: yellow;
+  font-weight: bold;
+}
+
+.symbaroum.chat.roll img {
+  border: 0;
+  display: block;
+  margin: 0 auto 8px;
+  max-height: 64px;
+  width: auto;
+}

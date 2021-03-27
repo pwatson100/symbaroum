@@ -9,35 +9,51 @@
         "attributes": {
           "accurate": {
             "label": "ATTRIBUTE.ACCURATE",
-            "value": 10
+            "total": 10,
+            "value": 10,
+            "temporaryMod": 0
           },
           "cunning": {
             "label": "ATTRIBUTE.CUNNING",
-            "value": 10
+            "total": 10,
+            "value": 10,
+            "temporaryMod": 0
           },
           "discreet": {
             "label": "ATTRIBUTE.DISCREET",
-            "value": 10
+            "total": 10,
+            "value": 10,
+            "temporaryMod": 0
           },
           "persuasive": {
             "label": "ATTRIBUTE.PERSUASIVE",
-            "value": 10
+            "total": 10,
+            "value": 10,
+            "temporaryMod": 0
           },
           "quick": {
             "label": "ATTRIBUTE.QUICK",
-            "value": 10
+            "total": 10,
+            "value": 10,
+            "temporaryMod": 0
           },
           "resolute": {
             "label": "ATTRIBUTE.RESOLUTE",
-            "value": 10
+            "total": 10,
+            "value": 10,
+            "temporaryMod": 0
           },
           "strong": {
             "label": "ATTRIBUTE.STRONG",
-            "value": 10
+            "total": 10,
+            "value": 10,
+            "temporaryMod": 0
           },
           "vigilant": {
             "label": "ATTRIBUTE.VIGILANT",
-            "value": 10
+            "total": 10,
+            "value": 10,
+            "temporaryMod": 0
           }
         }
       },
@@ -168,7 +184,7 @@
             "threshold": 0
           },
           "corruption": {
-	    "max": 0,
+	          "max": 0,
             "threshold": 0
           },
           "experience": {
@@ -274,9 +290,9 @@
         "bonus"
       ],
       "description": "",
-      "reference": "",
-      "damage": "",
-      "quality": "",
+      "reference": "1handed",
+      "baseDamage": "1d8",
+      "bonusDamage": "",
       "qualities": {
         "bastard": false,
         "returning": false,
@@ -295,11 +311,20 @@
         "bloodLetting": false,
         "areaMeleeRadius": false,
         "areaShortRadius": false,
-        "areaCone": false
+        "areaCone": false,
+        "acidcoated": false,
+        "bane": false,
+        "deathrune": false,
+        "desecrated": false,
+        "flaming": false,
+        "hallowed": false,
+        "poison": false,
+        "thundering": false,
+        "mystical": false
       },
       "cost": "",
       "number": 1,
-      "attribute": "",
+      "attribute": "accurate",
       "state": "other"
     },
     "armor": {
@@ -308,9 +333,18 @@
       ],
       "description": "",
       "reference": "",
-      "protection": "",
+      "baseProtection": "1d4",
+      "bonusProtection": "",
       "impeding": 0,
-      "quality": "",
+      "qualities": {
+        "flexible": false,
+        "cumbersome": false,
+        "concealed": false,
+        "reinforced": false,
+        "hallowed": false,
+        "retributive": false,
+        "desecrated": false
+      },
       "cost": "",
       "state": "other"
     },

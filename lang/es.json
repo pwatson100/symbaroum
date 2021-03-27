@@ -1,5 +1,6 @@
 {
   "ABILITY.NAME": "Nombre",
+  "ABILITY.REFERENCE": "Referencia",
   "ABILITY.ACTIVE": "Activa",
   "ABILITY.ACTION": "Acción",
   "ABILITY.DESCRIPTION": "Descripción",
@@ -80,14 +81,21 @@
   "ABILITY_LABEL.WRESTLING":"Lucha",
   
   "ABILITY_ERROR.TARGET": "Demasiados objetivos",
+  
+  "ABILITY_BERSERKER.CHAT_ACTIVATE": " entra en modo Berserker.",
+  "ABILITY_BERSERKER.CHAT_DESACTIVATE": " se calma y su rabia desaparece.",
+  "ABILITY_BERSERKER.CHAT_RESULT_DESACTIVATE": "Los stats de combate vuelven a la normalidad.",
+  "ABILITY_BERSERKER.CHAT_RESULT_LVL1": "Daño Melee incrementado, defensa base pasa a 5.",
+  "ABILITY_BERSERKER.CHAT_RESULT_LVL2": "Daño Melee incrementado, bonus de armadura, defensa base pasa a 5.",
+  "ABILITY_BERSERKER.CHAT_RESULT_LVL3": "Daño Melee incrementado, bonus de armadura.",
 
   "ABILITY_DOMINATE_ADEPT.CHAT_INTRO": " intenta indimidar a su objetivo.",
   "ABILITY_DOMINATE_MASTER.CHAT_INTRO": " intenta someter a su objetivo.",
   "ABILITY_DOMINATE_ADEPT.CHAT_SUCCESS": " hace que su objetivo dude.",
   "ABILITY_DOMINATE_MASTER.CHAT_SUCCESS": " somete a su enemigo.",
 
-  "ABILITY_LOREMASTER.CHAT_INTRO": " suelta un poco de sabiduría.",
-  "ABILITY_LOREMASTER.CHAT_SUCCESS": " sabe algo de esto.",
+  "ABILITY_LOREMASTER.CHAT_INTRO": " comparte algo de su sabiduría.",
+  "ABILITY_LOREMASTER.CHAT_SUCCESS": " sabe algo al respecto.",
   "ABILITY_LOREMASTER.CHAT_FAILURE": " no tiene ni idea.",
 
   "ABILITY_MEDICUS.CHAT_INTRO": " cura las heridas.",
@@ -126,11 +134,16 @@
   "ARMOR.NAME": "Nombre",
   "ARMOR.PROTECTION": "Protección",
   "ARMOR.PROTECTION_SHORT": "Prot.",
+  "ARMOR.BASE_PROT": "Base Protection",
+  "ARMOR.BONUS_PROT": "Bonus Protection",
+  "ARMOR.PC_PROTECTION": "PC Prot.",
+  "ARMOR.NPC_PROTECTION": "NPC Prot.",
   "ARMOR.IMPEDING": "Incomodidad",
   "ARMOR.DEFENSE": "Defensa",
   "ARMOR.COST": "Precio",
   "ARMOR.QUALITY": "Calidad",
   "ARMOR.DESCRIPTION": "Descr.",
+  "ARMOR.BONUS_ONLY": "Protección aplicable",
 
   "ARTIFACT.NAME": "Nombre",
   "ARTIFACT.ACTION": "Acción",
@@ -146,6 +159,10 @@
   "ATTRIBUTE.STRONG": "Fuerte",
   "ATTRIBUTE.VIGILANT": "Atento",
   "ATTRIBUTE.CUSTOM": "Custom",
+  "ATTRIBUTE.BASE": "Base",
+  "ATTRIBUTE.MODIFIER": "Modificador",
+  "ATTRIBUTE.BONUS": "Bonus",
+  "ATTRIBUTE.MODIFY": "Modificar",
 
   "BIO.NAME": "Nombre",
   "BIO.RACE": "Raza",
@@ -176,11 +193,12 @@
   "BUTTON.POST_ITEM": "Publicar objeto",
   "BUTTON.ROLL": "Lanzar",
   "BUTTON.CANCEL": "Cancelar",
+  "BUTTON.CONFIRM": "Confirmar",
 
 
   "CHAT.APPLY_BUTTON": "Aplicar los resultados al token",
 
-  "CHAT.GMTEXT_BUTTON": "This button is for GM use only. It will apply the effects to the tokens.",
+  "CHAT.GMTEXT_BUTTON": "Este botón es para uso exclusivo del GM. Aplicará los efectos a los tokens.",
 
   "CHAT.DEATH_ROLL": "Tirada de Muerte",
   "CHAT.SUCCEED": "Éxito",
@@ -238,9 +256,10 @@
   "DIALOG.2ATTACKS": "¿Ataque doble?",
   "DIALOG.3ATTACKS": "¿Atacar tres veces?",
 
-  "DIALOG.CASTING_ATTRIBUTE": "Atributo de origen",
-  "DIALOG.RESIST_ATTRIBUTE": "Atributo de oposición",
+  "DIALOG.CASTING_ATTRIBUTE": "Atributo original",
+  "DIALOG.RESIST_ATTRIBUTE": "Atributo contrario",
 
+  "DIALOG.VERSUS": "Versus",
   "DIALOG.ATTRIBUTE": "Atributo",
   "DIALOG.MODIFIER": "Modificador",
   "DIALOG.ADVANTAGE": "Ventaja",
@@ -249,6 +268,7 @@
   "DIALOG.FAVOUR_FAVOUR": "Favorable", 
   "DIALOG.FAVOUR_DISFAVOUR": "Desfavorable",
   "DIALOG.DAMAGE_MODIFIER": "Mod. daño",
+  "DIALOG.WEAPON_DAMAGE": "Tir. de Daño",  
   "DIALOG.IMPEDING": "¿Incluir impedimento?",
   "DIALOG.CASTING": "Casteo inicial",
   "DIALOG.MAINTAINING": "Manteniendo habilidad",
@@ -258,7 +278,6 @@
   "EQUIPMENT.NUMBER": "Número",
   "EQUIPMENT.DESCRIPTION": "Descr.",
   "EQUIPMENT.QUANTITY_SHORT": "Cant.",
-
 
   "EXPERIENCE": "Experiencia",
 
@@ -318,7 +337,7 @@
   "POWER_LABEL.DANCING_WEAPON":"Arma Danzante",
   "POWER_LABEL.DRAINING_GLYPH":"Glifo Drenador",
   "POWER_LABEL.EARTH_BINDING":"Refugio Terrestre",
-  "POWER_LABEL.EARTH_SHOT":"Earth Shot",
+  "POWER_LABEL.EARTH_SHOT":"Disparo Terrestre",
   "POWER_LABEL.ENTANGLING_VINES":"Enredadera Veloz",
   "POWER_LABEL.EXORCIZE":"Exorcizar",
   "POWER_LABEL.FIRE_SOUL":"Alma de Fuego",
@@ -372,6 +391,11 @@
   "POWER_BENDWILL.CHAT_INTRO_M": " mantiene Someter Voluntad.",
   "POWER_BENDWILL.CHAT_SUCCESS": " controla ",
   "POWER_BENDWILL.CHAT_FAILURE": " resiste el intento.",
+    
+  "POWER_BLESSEDSHIELD.CHAT_INTRO": " intenta invocar la protección de Prios.",
+  "POWER_BLESSEDSHIELD.CHAT_SUCCESS": " es rodeado por un escudo de luz.",
+  "POWER_BLESSEDSHIELD.CHAT_FAILURE": " permanece en la oscuridad.",
+  "POWER_BLESSEDSHIELD.PROTECTED": " está protegido",
   
   "POWER_BRIMSTONECASC.CHAT_INTRO": " lanza fuego a su objetivo.",
   "POWER_BRIMSTONECASC.CHAT_SUCCESS": " se quema.",  
@@ -401,6 +425,11 @@
   "POWER_LARVAEBOILS.CHAT_INTRO_M": " mantiene la Erupción de Larvas.",
   "POWER_LARVAEBOILS.CHAT_SUCCESS": " es comido desde el interior por las larvas.",
   "POWER_LARVAEBOILS.CHAT_FAILURE": " resiste a las larvas.",
+
+  "POWER_TORMENTINGSPIRITS.CHAT_INTRO":" intenta invocar Espíritus Atormentadores.",
+  "POWER_TORMENTINGSPIRITS.CHAT_INTRO_M":" intenta mantener a los Espíritus Atormentadores.",
+  "POWER_TORMENTINGSPIRITS.CHAT_SUCCESS":" invoca a los espíritus alrededor  ",
+  "POWER_TORMENTINGSPIRITS.CHAT_FAILURE":" falla la invocación.",
   
   "QUALITY.AREAMRR": "Efecto Área: Rango melee",
   "QUALITY.AREASRR": "Efecto Área: Rango corto", 
@@ -418,6 +447,7 @@
   "QUALITY.JOINTED": "Articulada", 
   "QUALITY.LONG": "Larga",
   "QUALITY.MASSIVE": "Masiva",
+  "QUALITY.MYSTICAL": "Mística",
   "QUALITY.PRECISE": "Precisa",
   "QUALITY.REINFORCED": "Reforzada",
   "QUALITY.RETURNING": "Retornante", 
@@ -425,9 +455,21 @@
   "QUALITY.SHORT": "Corta",
   "QUALITY.UNWIELDY": "Difícil manejo",
   "QUALITY.WRECKING": "Demoledora",
+  "QUALITY.ACIDCOATED": "Capa de Ácido",
+  "QUALITY.BANE": "Perdición",
+  "QUALITY.DEATHRUNE": "Runa de Muerte",
+  "QUALITY.DESECRATED": "Profanada",
+  "QUALITY.FLAMING": "Flamígera",
+  "QUALITY.HALLOWED": "Santificada",
+  "QUALITY.POISON": "Veneno",
+  "QUALITY.THUNDERING": "Atronadora",
+  "QUALITY.RETRIBUTIVE": "Castigadora",
 
   "RITUAL.TRADITION": "Tradición",
   "RITUAL.DESCRIPTION": "Descr.",
+
+  "ROLL.CRITSHORT":"crit",
+  "ROLL.ADVANTAGESHORT":"vent",
 
   "TAB.MAIN": "PRINCIPAL",
   "TAB.GEAR": "EQUIPAMIENTO",
@@ -551,11 +593,25 @@
   "WEAPON.NAME": "Nombre",
   "WEAPON.DAMAGE": "Daño",
   "WEAPON.DAMAGE_SHORT": "Daño",
+  "WEAPON.BASE_DAMAGE": "Base damage",
+  "WEAPON.BONUS_DAMAGE": "Bonus damage",
+  "WEAPON.PC_DAMAGE": "PC Dmg",
+  "WEAPON.NPC_DAMAGE": "NPC Dmg",
   "WEAPON.QUALITY": "Calidad",
   "WEAPON.COST": "Precio",
   "WEAPON.ATTRIBUTE": "Atributo",
   "WEAPON.DESCRIPTION": "Descr.",
   "WEAPON.NUMBER": "Número",
+
+  "WEAPON_CLASS.LABEL": "Tipo de arma",
+  "WEAPON_CLASS.1HANDED": "De 1 mano",
+  "WEAPON_CLASS.SHORT": "Corta",
+  "WEAPON_CLASS.LONG": "Larga",
+  "WEAPON_CLASS.UNARMED": "Desarmado",
+  "WEAPON_CLASS.HEAVY": "Pesada",
+  "WEAPON_CLASS.RANGED": "Distancia",
+  "WEAPON_CLASS.SHIELD":"Escudo",
+  "WEAPON_CLASS.THROWN": "Arrojadiza",
 
   "SYMBAROUM.OPTIONAL_CRIT": "Tiradas Críticas Opcionales",
   "SYMBAROUM.OPTIONAL_CRIT_HINT": "Marca para habilitar el bonus de Golpes y pifias en Defensa en tiradas de 1 y 20, como se detalla en el Libro Básico p. 179",
@@ -568,6 +624,15 @@
   "SYMBAROUM.OPTIONAL_MORERITUALS": "Permitir más rituales",
   "SYMBAROUM.OPTIONAL_MORERITUALS_HINT": "Marca para permitir más rituales, como se detalla en la Guía Avanzada del Jugador p. 103",
   "SYMBAROUM.OPTIONAL_AUTOCOMBAT": "Mejora del combate",
-  "SYMBAROUM.OPTIONAL_AUTOCOMBAT_HINT": "Marca para permitir la mejora QoL del combate. Lee la guía del sistema Symbaroum de FoundryVTT en la sección del compedio para más información"
+  "SYMBAROUM.OPTIONAL_AUTOCOMBAT_HINT": "Marca para permitir la mejora QoL del combate. Lee la guía del sistema Symbaroum de FoundryVTT en la sección del compedio para más información",
+  "SYMBAROUM.OPTIONAL_SAVECOMBATROLL": "Ajustes de combate para las tiradas",
+  "SYMBAROUM.OPTIONAL_SAVECOMBATROLL_HINT": "Marcar para permitir mejoras de QoL para mantener todos los modificadores en tiradas de combate (armas/defensa)",
+  "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL": "Ajustes de atributos para las tiradas",
+  "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT": "Marcar para permitir mejoras de QoL para mantener todos los modificadores cuando se hagan pruebas de atributos",
+  "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE": "Mostrar modificadores en tiradas de atributo con objetivo",
+  "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE_HINT": "Marcar para permitir mejoras de QoL para mostrar los mod de los atributos antes de la tirada",
+  "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Permitir modificaciones de referencias",
+  "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Atención - Solo GM - permite ajustar manualmente las referencias en la implementación de habilidades, rasgos y poderes místicos. Requiere reiniciar."
+
   
 }
