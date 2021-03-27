@@ -146,6 +146,7 @@ Hooks.once('init', () => {
 Hooks.once('ready', () => {
   migrateWorld();
   sendDevMessage();
+  showReleaseNotes();
 });
 
 Hooks.on('preCreateActor', (createData) => {
@@ -280,4 +281,64 @@ async function createBlessedShield(actor, protection = "1d4"){
         bonusProtection: protection}
   }    
   actor.createEmbeddedEntity('OwnedItem', data, { renderSheet: false });
+}
+
+async function showReleaseNotes()
+{
+  if (game.user.isGM) {
+    try {
+      const newVer = '1';
+      const releaseNoteName = "Symbaroum System guide EN";
+      const releasePackLabel = "Symbaroum for FVTT system user guides";
+
+      let currentVer = '0';
+      let oldReleaseNotes = game.journal.getName(releaseNoteName);
+      if(oldReleaseNotes !== null && oldReleaseNotes.getFlag('symbaroum', 'ver') !== undefined) {
+        currentVer = oldReleaseNotes.getFlag('symbaroum', 'ver');
+      }
+      if( newVer === currentVer ) {
+        // Up to date    
+        return;
+      }
+
+      let newReleasePack = game.packs.find(p => p.metadata.label === releasePackLabel);
+      if( newReleasePack === null) {
+        // This is bad - the symbaroum pack does not exist in the system packages
+        return;
+      }
+      await newReleasePack.getIndex();
+
+      let newReleaseNotes = newReleasePack.index.find( j => j.name === releaseNoteName);
+      console.log("Found new release notes in the compendium pack");
+
+      // Don't delete until we have new release Pack
+      if( newReleaseNotes !== undefined && newReleaseNotes !== null && oldReleaseNotes !== null ) { 
+        await oldReleaseNotes.delete();        
+      }
+
+      await game.journal.importFromCollection(`${newReleasePack.metadata.system}.${newReleasePack.metadata.name}`, newReleaseNotes._id);
+      let newReleaseJournal = game.journal.getName(newReleaseNotes.name);
+
+      await newReleaseJournal.setFlag('symbaroum', 'ver', newVer);
+
+      // Before we show final - tidy up release prior to this
+      tidyReleaseNotes11();
+
+      // Show journal
+      await newReleaseJournal.show();
+    
+
+    } catch (error) {} // end of try
+  } // end of if(isgm)
+} // end of function
+
+async function tidyReleaseNotes11()
+{
+  const releaseNoteName = "Symbaroum System guide EN (1.1)";
+  let old11ReleaseNotes = game.journal.getName(releaseNoteName);
+  // Delete Delete Delete
+  if( old11ReleaseNotes !== undefined && old11ReleaseNotes !== null) { 
+    await old11ReleaseNotes.delete();        
+  }
+
 }
