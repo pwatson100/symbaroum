@@ -1,7 +1,7 @@
 {
-  "name": "alienrpg",
+  "name": "symbaroum",
   "version": "1.0.0",
-  "description": "CSS compiler for the Alien RPG system",
+  "description": "CSS compiler for the Symbaroum RPG system",
   "scripts": {
     "build": "gulp",
     "compile": "gulp css",

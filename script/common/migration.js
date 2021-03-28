@@ -1,11 +1,31 @@
 export const migrateWorld = async () => {
-    const schemaVersion = 1;
-    const worldSchemaVersion = Number(game.settings.get("symbaroum", "worldSchemaVersion"));
-    if (worldSchemaVersion !== schemaVersion && game.user.isGM) {
-        ui.notifications.info("Upgrading the world, please wait...");
+    let templateVersion = game.data.system.data.templateVersion;
+    let worldTemplateVersion;
+    try{
+        worldTemplateVersion = Number(game.settings.get("symbaroum", "worldTemplateVersion"))
+    }
+    catch(e){
+        console.error(e);
+        worldTemplateVersion = 1;
+        console.log("No template version detected... Default to 1")
+    }
+    if (worldTemplateVersion < templateVersion && game.user.isGM) {
+        ui.notifications.info("New template detected; Upgrading the world, please wait...");
+        if (worldTemplateVersion < 3) {
+            const htmlTemplate = await renderTemplate("systems/symbaroum/template/migration-warning.html");
+            new Dialog({
+                title: "WARNING", 
+                content: htmlTemplate,
+                buttons: {
+                    close: {
+                        label: "Close"
+                    }
+                }
+            }).render(true);
+        }
         for (let actor of game.actors.entities) {
             try {
-                const update = migrateActorData(actor.data, worldSchemaVersion);
+                const update = migrateActorData(actor.data, worldTemplateVersion);
                 if (!isObjectEmpty(update)) {
                     await actor.update(update, {enforceTypes: false});
                 }
@@ -15,7 +35,7 @@ export const migrateWorld = async () => {
         }
         for (let item of game.items.entities) {
             try {
-                const update = migrateItemData(item.data, worldSchemaVersion);
+                const update = migrateItemData(item.data, worldTemplateVersion);
                 if (!isObjectEmpty(update)) {
                     await item.update(update, {enforceTypes: false});
                 }
@@ -25,7 +45,7 @@ export const migrateWorld = async () => {
         }
         for (let scene of game.scenes.entities) {
             try {
-                const update = migrateSceneData(scene.data, worldSchemaVersion);
+                const update = migrateSceneData(scene.data, worldTemplateVersion);
                 if (!isObjectEmpty(update)) {
                     await scene.update(update, {enforceTypes: false});
                 }
@@ -34,38 +54,50 @@ export const migrateWorld = async () => {
             }
         }
         for (let pack of game.packs.filter((p) => p.metadata.package === "world" && ["Actor", "Item", "Scene"].includes(p.metadata.entity))) {
-            await migrateCompendium(pack, worldSchemaVersion);
+            await migrateCompendium(pack, worldTemplateVersion);
         }
-        game.settings.set("symbaroum", "worldSchemaVersion", schemaVersion);
+        game.settings.set("symbaroum", "worldTemplateVersion", templateVersion);
         ui.notifications.info("Upgrade complete!");
     }
 };
 
-const migrateActorData = (actor, worldSchemaVersion) => {
-    const update = {};
-    if (worldSchemaVersion < 2.11) {
-        update["data.data.initiative"] = {
-            attribute: "quick",
-            value: 0
-        }
-    }
-    if (worldSchemaVersion < 2.13) {
-        update["data.data.defense"] = {
-            attribute: "quick"
-        }
-    }
-    if  (worldSchemaVersion < 2.16) { 
-		update["data.data.corruption.max"] = 0;
-		update["data.data.experience.spent"] = 0;
-		update["data.data.experience.available"] = 0;
-		update["data.data.experience.artifactrr"] = 0;
-		update["data.data.health.corruption.value"] = 0;
-		update["data.data.health.corruption.longterm"] = 0;
-	}            
+const migrateActorData = (actor, worldTemplateVersion) => {
+    let update = {};
+    if (worldTemplateVersion < 3) {
+        update = setValueIfNotExists(update, actor, "data.data.initiative.attribute", "quick");
+        update = setValueIfNotExists(update, actor, "data.data.initiative.value", 0);
+        update = setValueIfNotExists(update, actor, "data.data.defense.attribute", "quick");
+        update = setValueIfNotExists(update, actor, "data.data.corruption.max", 0);
+        update = setValueIfNotExists(update, actor, "data.data.experience.spent", 0);
+        update = setValueIfNotExists(update, actor, "data.data.experience.available", 0);
+        update = setValueIfNotExists(update, actor, "data.data.experience.artifactrr", 0);
+        update = setValueIfNotExists(update, actor, "data.data.health.corruption.value", 0);
+        update = setValueIfNotExists(update, actor, "data.data.health.corruption.longterm", 0)
+	};
+    if (worldTemplateVersion < 3.2) {
+        update = setValueIfNotExists(update, actor, "data.attributes.accurate.temporaryMod", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.cunning.temporaryMod", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.discreet.temporaryMod", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.quick.temporaryMod", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.persuasive.temporaryMod", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.resolute.temporaryMod", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.strong.temporaryMod", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.vigilant.temporaryMod", 0)
+	};
+    if (worldTemplateVersion < 3.3) {
+        update = setValueIfNotExists(update, actor, "data.attributes.accurate.total", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.cunning.total", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.discreet.total", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.quick.total", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.persuasive.total", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.resolute.total", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.strong.total", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.vigilant.total", 0)
+	};
 		
     let itemsChanged = false;
     const items = actor.items.map((item) => {
-        const itemUpdate = migrateItemData(item, worldSchemaVersion);
+        const itemUpdate = migrateItemData(item, worldTemplateVersion);
         if (!isObjectEmpty(itemUpdate)) {
             itemsChanged = true;
             return mergeObject(item, itemUpdate, {enforceTypes: false, inplace: false});
@@ -78,94 +110,118 @@ const migrateActorData = (actor, worldSchemaVersion) => {
     return update;
 };
 
-const migrateItemData = (item, worldSchemaVersion) => {
-    const update = {};
-    if (worldSchemaVersion < 1) {
+const migrateItemData = (item, worldTemplateVersion) => {
+    let update = {};
+    if (worldTemplateVersion < 3) {
         const powerType = [ "trait", "ability", "mysticalPower", "ritual", "burden", "boon" ];
         const gearType = [ "weapon", "armor", "equipment", "artifact" ];
         if (powerType.includes(item.type)) {
-            update["data.bonus"] = {
-                defense: 0,
-                accurate: 0,
-                cunning: 0,
-                discreet: 0,
-                persuasive: 0,
-                quick: 0,
-                resolute: 0,
-                strong: 0,
-                vigilant: 0,
-                toughness: { max: 0, threshold: 0 },
-                corruption: { max:0, threshold: 0 },                
-            }
-        } else if (gearType.includes(item.type)) {
-            update["data.bonus.toughness"] = { max:0, threshold: 0 };
-            update["data.bonus.corruption"] = { max:0, threshold: 0 };
+            update = setValueIfNotExists(update, item, "data.bonus.defense", 0);
+            update = setValueIfNotExists(update, item, "data.bonus.accurate", 0);
+            update = setValueIfNotExists(update, item, "data.bonus.cunning", 0);
+            update = setValueIfNotExists(update, item, "data.bonus.discreet", 0);
+            update = setValueIfNotExists(update, item, "data.bonus.persuasive", 0);
+            update = setValueIfNotExists(update, item, "data.bonus.quick", 0);
+            update = setValueIfNotExists(update, item, "data.bonus.resolute", 0);
+            update = setValueIfNotExists(update, item, "data.bonus.strong", 0);
+            update = setValueIfNotExists(update, item, "data.bonus.vigilant", 0);
+            update = setValueIfNotExists(update, item, "data.bonus.toughness.max", 0);
+            update = setValueIfNotExists(update, item, "data.bonus.toughness.threshold", 0);
+            update = setValueIfNotExists(update, item, "data.bonus.corruption.max", 0);
+            update = setValueIfNotExists(update, item, "data.bonus.corruption.threshold", 0);           
         }
-    }
-    if (worldSchemaVersion < 2.12) {
+        else if (gearType.includes(item.type)) {
+            update = setValueIfNotExists(update, item, "data.bonus.toughness.max", 0);
+            update = setValueIfNotExists(update, item, "data.bonus.toughness.threshold", 0);
+            update = setValueIfNotExists(update, item, "data.bonus.corruption.max", 0);
+            update = setValueIfNotExists(update, item, "data.bonus.corruption.threshold", 0)  
+        }
+            update = setValueIfNotExists(update, item, "data.reference", "");
+
+
         if (item.type === "weapon") {
-                update["data.qualities"] = {
-                bastard: false,
-                returning: false,
-                blunt: false,        
-                short: false,
-                unwieldy: false,
-                wrecking: false,
-                concealed: false,
-                balanced: false,
-                deepImpact: false,
-                jointed: false,
-                ensnaring: false,
-                long: false,
-                massive: false,
-                precise: false,
-                bloodLetting: false,
-                areaMeleeRadius: false,
-                areaShortRadius: false,
-                areaCone: false
-            };
+            update = setValueIfNotExists(update, item, "data.qualities.bastard", false);
+            update = setValueIfNotExists(update, item, "data.qualities.returning", false);
+            update = setValueIfNotExists(update, item, "data.qualities.blunt", false);
+            update = setValueIfNotExists(update, item, "data.qualities.short", false);
+            update = setValueIfNotExists(update, item, "data.qualities.unwieldy", false);
+            update = setValueIfNotExists(update, item, "data.qualities.wrecking", false);
+            update = setValueIfNotExists(update, item, "data.qualities.concealed", false);
+            update = setValueIfNotExists(update, item, "data.qualities.balanced", false);
+            update = setValueIfNotExists(update, item, "data.qualities.deepImpact", false);
+            update = setValueIfNotExists(update, item, "data.qualities.jointed", false);
+            update = setValueIfNotExists(update, item, "data.qualities.ensnaring", false);
+            update = setValueIfNotExists(update, item, "data.qualities.long", false);
+            update = setValueIfNotExists(update, item, "data.qualities.massive", false);
+            update = setValueIfNotExists(update, item, "data.qualities.precise", false);
+            update = setValueIfNotExists(update, item, "data.qualities.bloodLetting", false);
+            update = setValueIfNotExists(update, item, "data.qualities.areaMeleeRadius", false);
+            update = setValueIfNotExists(update, item, "data.qualities.areaShortRadius", false);
+            update = setValueIfNotExists(update, item, "data.qualities.areaCone", false);
+            update = setValueIfNotExists(update, item, "data.qualities.acidcoated", false);
+            update = setValueIfNotExists(update, item, "data.qualities.bane", false);
+            update = setValueIfNotExists(update, item, "data.qualities.deathrune", false);
+            update = setValueIfNotExists(update, item, "data.qualities.flaming", false);
+            update = setValueIfNotExists(update, item, "data.qualities.hallowed", false);
+            update = setValueIfNotExists(update, item, "data.qualities.desecrated", false);
+            update = setValueIfNotExists(update, item, "data.qualities.poison", false);
+            update = setValueIfNotExists(update, item, "data.qualities.thundering", false);
+            update = setValueIfNotExists(update, item, "data.qualities.mystical", false);
         }
-    }
-    if (worldSchemaVersion < 2.14) {
         if ((item.type === "equipment") || (item.type === "weapon")) {
-            update["data.number"] = 1
+            update = setValueIfNotExists(update, item, "data.number", 1)
         }
-    }
-    if (worldSchemaVersion < 2.14) {
         if (item.type === "artifact") {
-            update["data.power1.description"] = "";
-            update["data.power1.action"] = "";
-            update["data.power1.corruption"] = "0";
-            update["data.power2.description"] = "";
-            update["data.power2.action"] = "";
-            update["data.power2.corruption"] = "0";
-            update["data.power3.description"] = "";
-            update["data.power3.action"] = "";
-            update["data.power3.corruption"] = "0"
+            update = setValueIfNotExists(update, item, "data.power1.description", "");
+            update = setValueIfNotExists(update, item, "data.power1.action", "");
+            update = setValueIfNotExists(update, item, "data.power1.corruption", "0");
+            update = setValueIfNotExists(update, item, "data.power2.description", "");
+            update = setValueIfNotExists(update, item, "data.power2.action", "");
+            update = setValueIfNotExists(update, item, "data.power2.corruption", "0");
+            update = setValueIfNotExists(update, item, "data.power3.description", "");
+            update = setValueIfNotExists(update, item, "data.power3.action", "");
+            update = setValueIfNotExists(update, item, "data.power3.corruption", "0");
         }
-    }
-    if  (worldSchemaVersion < 2.15) { 
 		const boonType = [ "burden", "boon" ];
-        update["data.bonus.corruption"] = { max:0, threshold: 0 };
-        update["data.bonus.experience"] = {
-            "value": 0,
-            "cost": 0
-        }
+        update = setValueIfNotExists(update, item, "data.bonus.corruption.max", 0);
+        update = setValueIfNotExists(update, item, "data.bonus.corruption.threshold", 0);
+        update = setValueIfNotExists(update, item, "data.bonus.experience.value", 0);
+        update = setValueIfNotExists(update, item, "data.bonus.experience.cost", 0);
 		if ( boonType.includes(item.type) ) {
-			update["data.level"] = 1;
-		}            
+            update = setValueIfNotExists(update, item, "data.level", 1)
+		}
+        
+        if (item.type === "weapon") {
+            update["data.reference"] = "1handed";
+            update["data.baseDamage"] = "1d8";
+            update["data.bonusDamage"] = ""
+        }
+        if (item.type === "armor") {
+            update = setValueIfNotExists(update, item, "data.baseProtection", "1d4");
+            update = setValueIfNotExists(update, item, "data.bonusProtection", "");
+            update = setValueIfNotExists(update, item, "data.qualities.cumbersome", false);
+            update = setValueIfNotExists(update, item, "data.qualities.flexible", false);
+            update = setValueIfNotExists(update, item, "data.qualities.cumbersome", false);
+            update = setValueIfNotExists(update, item, "data.qualities.concealed", false);
+            update = setValueIfNotExists(update, item, "data.qualities.reinforced", false);
+            update = setValueIfNotExists(update, item, "data.qualities.hallowed", false);
+            update = setValueIfNotExists(update, item, "data.qualities.retributive", false);
+            update = setValueIfNotExists(update, item, "data.qualities.desecrated", false)
+        }
     }
-    if  (worldSchemaVersion < 2.16) { 
-            update["data.reference"] = "";
-        }            
-		
+	if (worldTemplateVersion < 3.1) {
+        if (item.type === "weapon") {
+            update = setValueIfNotExists(update, item, "data.qualities.mystical", false)
+        }	
+    }
+
     if (!isObjectEmpty(update)) {
         update._id = item._id;
     }
     return update;
 };
 
-const migrateSceneData = (scene, worldSchemaVersion) => {
+const migrateSceneData = (scene, worldTemplateVersion) => {
     const tokens = duplicate(scene.tokens);
     return {
         tokens: tokens.map((tokenData) => {
@@ -178,7 +234,7 @@ const migrateSceneData = (scene, worldSchemaVersion) => {
                 tokenData.actorId = null;
                 tokenData.actorData = {};
             } else if (!tokenData.actorLink && token.data.actorData.items) {
-                const update = migrateActorData(token.data.actorData, worldSchemaVersion);
+                const update = migrateActorData(token.data.actorData, worldTemplateVersion);
                 console.log("ACTOR CHANGED", token.data.actorData, update);
                 tokenData.actorData = mergeObject(token.data.actorData, update);
             }
@@ -187,7 +243,7 @@ const migrateSceneData = (scene, worldSchemaVersion) => {
     };
 };
 
-export const migrateCompendium = async function (pack, worldSchemaVersion) {
+export const migrateCompendium = async function (pack, worldTemplateVersion) {
     const entity = pack.metadata.entity;
 
     await pack.migrate();
@@ -196,11 +252,11 @@ export const migrateCompendium = async function (pack, worldSchemaVersion) {
     for (let ent of content) {
         let updateData = {};
         if (entity === "Item") {
-            updateData = migrateItemData(ent.data, worldSchemaVersion);
+            updateData = migrateItemData(ent.data, worldTemplateVersion);
         } else if (entity === "Actor") {
-            updateData = migrateActorData(ent.data, worldSchemaVersion);
+            updateData = migrateActorData(ent.data, worldTemplateVersion);
         } else if (entity === "Scene") {
-            updateData = migrateSceneData(ent.data, worldSchemaVersion);
+            updateData = migrateSceneData(ent.data, worldTemplateVersion);
         }
         if (!isObjectEmpty(updateData)) {
             expandObject(updateData);
@@ -209,3 +265,10 @@ export const migrateCompendium = async function (pack, worldSchemaVersion) {
         }
     }
 };
+
+const setValueIfNotExists = (update, object, property, newValue) => {
+    if (typeof(getProperty(object,property)) === 'undefined'){
+        update[property] = newValue;
+    }
+    return(update)
+}

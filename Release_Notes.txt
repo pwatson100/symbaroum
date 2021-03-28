@@ -83,6 +83,35 @@ Corrected issue where packs were not included in the zip package.
 Verision 2.19.0
 I had a syntax error in the url for the download. 
 
-Verision 2.20.0
+Verision 2.21.0
 Minor error in the spanish translation file, preventing spanish character sheet from showing.
-Updated monster sheet size.
+Language fixes for German (DasTorfu) & Swedish (Weymyss).
+Sheet changes
+ - Monster sheet size has been changed
+ - Monster modifier now shows in tooltips
+ - Usability update - label now have label for set. Tracked as #122
+ - Character sheet updates for look & feel
+ - Character sheet updates for attributes
+ - Shiny icon on the main-tab for armor. Tracked as #134
+Roll changes
+ - Expanded roll-results for attribute/non-ec combat test
+ - Versus rolls shows modifiers (Configurable - default off)
+Items, Armors and weapons
+  - Major change for how to deal with dice - this was required to automate current and future features
+  - This change is game breaking - so if you are a GM, plan the upgrade
+  - Added support for stackable armor
+  - GM can now change the implementation reference - this can be useful if you want to disable an ability feature
+
+Some calculated/derived fields have been added to the template so that they can be used with other modules, tracked as #121
+Added a few macros - one for importing npc's from the books and one for generating symbaroum-esque names. Support for French versions of the NPC importer.
+Dev messaging system - allowing devs to notify GMs in the chat window for future releases or issues.
+Updates to the system guide for new functionality and system settings.
+Fixes for
+ - #112 Weapon image in chatroll message-content is not showing up due to trailing /
+ - #117 Flexible quality was lowercase in English
+
+
+
+
+
+

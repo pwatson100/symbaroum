@@ -2,44 +2,17 @@
   "name": "symbaroum",
   "title": "Symbaroum",
   "description": "Twilight falls. Davokar darkens.",
-  "version": "2.20.0",
+  "version": "2.22.0",
   "minimumCoreVersion": "0.7.5",
   "compatibleCoreVersion": "0.7.9",
-  "templateVersion": 2,
+  "templateVersion": 3.3,
   "author": "Paul Watson, Bithir, Khaali",
   "scripts": [],
   "esmodules": [
     "script/common/hooks.js"
   ],
   "styles": [
-    "style/common/variable.css",
-    "style/common/actor.css",
-    "style/common/item.css",
-    "style/common/system-guide.css",
-    "style/sheet/player.css",
-    "style/sheet/tab/player-main.css",
-    "style/sheet/tab/player-gear.css",
-    "style/sheet/tab/player-bio.css",
-    "style/sheet/tab/player-note.css",
-    "style/sheet/monster.css",
-    "style/sheet/tab/monster-main.css",
-    "style/sheet/tab/monster-gear.css",
-    "style/sheet/tab/monster-bio.css",
-    "style/sheet/tab/monster-note.css",
-    "style/sheet/trait.css",
-    "style/sheet/ability.css",
-    "style/sheet/mystical-power.css",
-    "style/sheet/ritual.css",
-    "style/sheet/burden.css",
-    "style/sheet/boon.css",
-    "style/sheet/weapon.css",
-    "style/sheet/armor.css",
-    "style/sheet/equipment.css",
-    "style/sheet/artifact.css",
-    "style/chat/item.css",
-    "style/chat/dialog.css",
-    "style/chat/roll.css",
-    "style/chat/ability.css"
+    "css/symbaroum.css"
   ],
   "packs": [
     {
@@ -51,87 +24,150 @@
     },
     {
       "name": "symbaroumabilitiesen",
-      "label": "Symbaroum Abilities EN",
+      "label": "EN - Abilities",
       "system": "symbaroum",
       "path": "./packs/symbaroumabilitiesen.db",
       "entity": "Item"
     },
     {
       "name": "symbaroumabilitiesfr",
-      "label": "Talents Symbaroum FR",
+      "label": "FR - Talents",
       "system": "symbaroum",
       "path": "./packs/symbaroumabilitiesfr.db",
       "entity": "Item"
     },
     {
       "name": "symbaroumabilitiesde",
-      "label": "Symbaroum Abilities DE",
+      "label": "DE - Abilities",
       "system": "symbaroum",
       "path": "./packs/symbaroumabilitiesde.db",
       "entity": "Item"
     },
     {
       "name": "symbaroumabilitiessv",
-      "label": "Symbaroum Abilities SV",
+      "label": "SV - Abilities",
       "system": "symbaroum",
       "path": "./packs/symbaroumabilitiessv.db",
       "entity": "Item"
     },
     {
+      "name": "symbaroumabilitieses",
+      "label": "ES - Abilities",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumabilitieses.db",
+      "entity": "Item"
+    },
+    {
       "name": "symbaroumpowersen",
-      "label": "Symbaroum Powers EN",
+      "label": "EN - Powers",
       "system": "symbaroum",
       "path": "./packs/symbaroumpowersen.db",
       "entity": "Item"
     },
     {
       "name": "symbaroumpowersfr",
-      "label": "Pouvoirs Symbaroum FR",
+      "label": "FR - Pouvoirs",
       "system": "symbaroum",
       "path": "./packs/symbaroumpowersfr.db",
       "entity": "Item"
     },
     {
       "name": "symbaroumpowersde",
-      "label": "Symbaroum Powers DE",
+      "label": "DE - Powers",
       "system": "symbaroum",
       "path": "./packs/symbaroumpowersde.db",
       "entity": "Item"
     },
     {
       "name": "symbaroumpowerssv",
-      "label": "Symbaroum Powers SV",
+      "label": "SV - Powers",
       "system": "symbaroum",
       "path": "./packs/symbaroumpowerssv.db",
       "entity": "Item"
     },
     {
+      "name": "symbaroumpowerses",
+      "label": "ES - Powers",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumpowerses.db",
+      "entity": "Item"
+    },
+    {
       "name": "symbaroumtraitsen",
-      "label": "Symbaroum Traits EN",
+      "label": "EN - Traits",
       "system": "symbaroum",
       "path": "./packs/symbaroumtraitsen.db",
       "entity": "Item"
     },
     {
       "name": "symbaroumtraitsfr",
-      "label": "Traits Symbaroum FR",
+      "label": "FR - Traits",
       "system": "symbaroum",
       "path": "./packs/symbaroumtraitsfr.db",
       "entity": "Item"
     },
     {
       "name": "symbaroumtraitsde",
-      "label": "Symbaroum Traits DE",
+      "label": "DE - Traits",
       "system": "symbaroum",
       "path": "./packs/symbaroumtraitsde.db",
       "entity": "Item"
     },
     {
       "name": "symbaroumtraitssv",
-      "label": "Symbaroum Traits SV",
+      "label": "SV - Traits",
       "system": "symbaroum",
       "path": "./packs/symbaroumtraitssv.db",
       "entity": "Item"
+    },
+    {
+      "name": "symbaroumtraitses",
+      "label": "ES - Traits",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumtraitses.db",
+      "entity": "Item"
+    },
+    {
+      "name": "symbaroumweaponsen",
+      "label": "EN - Weapons",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumweaponsen.db",
+      "entity": "Item"
+    },
+    {
+      "name": "symbaroumweaponsfr",
+      "label": "FR - Armes",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumweaponsfr.db",
+      "entity": "Item"
+    },
+    {
+      "name": "symbaroumarmorsen",
+      "label": "EN - Armors",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumarmorsen.db",
+      "entity": "Item"
+    },
+    {
+      "name": "symbaroumarmorsfr",
+      "label": "FR - Armures",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumarmorsfr.db",
+      "entity": "Item"
+    },
+    {
+      "name": "symbaroummacrosfr",
+      "label": "FR - Macros",
+      "system": "symbaroum",
+      "path": "./packs/symbaroummacrosfr.db",
+      "entity": "Macro"
+    },
+    {
+      "name": "symbaroummacrosen",
+      "label": "EN - Macros",
+      "system": "symbaroum",
+      "path": "./packs/symbaroummacrosen.db",
+      "entity": "Macro"
     }
   ],
   "languages": [
@@ -165,10 +201,10 @@
   "gridUnits": "m",
   "primaryTokenAttribute": "health.toughness",
   "secondaryTokenAttribute": "combat.defense",
-  "initiative": "1d8 + @initiative.value",
+  "initiative": "1d20[tiebreaker]/100000 + @initiative.value",
   "socket": true,
   "url": "https://github.com/pwatson100/symbaroum",
-  "manifest": "https://github.com/pwatson100/symbaroum/releases/download/2.20.0/system.json",
-  "download": "https://github.com/pwatson100/symbaroum/releases/download/2.20.0/master.zip",
+  "manifest": "https://github.com/pwatson100/symbaroum/releases/download/2.22.0/system.json",
+  "download": "https://github.com/pwatson100/symbaroum/releases/download/2.22.0/master.zip",
   "license": "LICENSE.txt"
 }
