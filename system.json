@@ -2,7 +2,7 @@
   "name": "symbaroum",
   "title": "Symbaroum",
   "description": "Twilight falls. Davokar darkens.",
-  "version": "2.21.0",
+  "version": "2.22.0",
   "minimumCoreVersion": "0.7.5",
   "compatibleCoreVersion": "0.7.9",
   "templateVersion": 3.3,
@@ -204,7 +204,7 @@
   "initiative": "1d20[tiebreaker]/100000 + @initiative.value",
   "socket": true,
   "url": "https://github.com/pwatson100/symbaroum",
-  "manifest": "https://github.com/pwatson100/symbaroum/releases/download/2.21.0/system.json",
-  "download": "https://github.com/pwatson100/symbaroum/releases/download/2.21.0/master.zip",
+  "manifest": "https://github.com/pwatson100/symbaroum/releases/download/2.22.0/system.json",
+  "download": "https://github.com/pwatson100/symbaroum/releases/download/2.22.0/master.zip",
   "license": "LICENSE.txt"
 }
