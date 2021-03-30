@@ -38,6 +38,15 @@ export class SymbaroumItem extends Item {
     }
 
     _initializeData(data) {
+        let transl = {
+            A:"ACTION.ACTIVE",
+            M:"ACTION.MOVEMENT",
+            T:"ACTION.FULL_TURN",
+            F:"ACTION.FREE",
+            P:"ACTION.PASSIVE",
+            R:"ACTION.REACTION",
+            S:"ACTION.SPECIAL"
+        }
         if(data.type === "weapon"){
             data.data.pcDamage = "";
             data.data.npcDamage = 0;
@@ -45,6 +54,16 @@ export class SymbaroumItem extends Item {
         else if(data.type === "armor"){
             data.data.pcProtection = "";
             data.data.npcProtection = 0;
+        } else if(data.type == "artifact") {
+            if( data.data.power1.action !== "-") {
+                data.data.power1.actionlabel = transl[data.data.power1.action];
+            }
+            if( data.data.power2.action !== "-") {
+                data.data.power2.actionlabel = transl[data.data.power2.action];
+            }
+            if( data.data.power3.action !== "-") {
+                data.data.power3.actionlabel = transl[data.data.power3.action];
+            }
         }
     }
 
