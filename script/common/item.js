@@ -465,6 +465,30 @@ const weaponReferences = [
     "thrown",
     "ranged"
   ]
+  
+  async function weaponTypeLabel(weapon){
+    switch (weapon.reference){
+        case "1handed":
+            return(game.i18n.localize('WEAPON_CLASS.1HANDED'));
+        case "short":
+            return(game.i18n.localize('WEAPON_CLASS.SHORT'));
+        case "long":
+            return(game.i18n.localize('WEAPON_CLASS.LONG'));
+        case "unarmed":
+            return(game.i18n.localize('WEAPON_CLASS.UNARMED'));
+        case "heavy":
+            return(game.i18n.localize('WEAPON_CLASS.HEAVY'));
+        case "ranged":
+            return(game.i18n.localize('WEAPON_CLASS.RANGED'));
+        case "thrown":
+            return(game.i18n.localize('WEAPON_CLASS.THROWN'));
+        case "shield":
+            return(game.i18n.localize('WEAPON_CLASS.SHIELD'));
+        case "other":
+            return(game.i18n.localize('GEAR.OTHER'));
+    }
+    return(game.i18n.localize('GEAR.OTHER'));
+}
 
 /*get the target token, its actor, and evaluate which attribute this actor will use for opposition
 @Params: {string}   targetAttributeName : the name of the resist attribute. Can be defence, and can be null.
@@ -1324,7 +1348,7 @@ async function attackResult(rollData, functionStuff){
         introText: introText,
         introImg: functionStuff.actor.data.img,
         targetText: targetText,
-        subText: functionStuff.weapon.name,
+        subText: functionStuff.weapon.name + " ("+await weaponTypeLabel(functionStuff.weapon)+")",
         subImg: functionStuff.weapon.img,
         hasRoll: true,
         hasCorruption: false,
