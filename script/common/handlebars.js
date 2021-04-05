@@ -36,6 +36,11 @@ function registerHandlebarsHelpers() {
     const markup = /<(.*?)>/gi;
     return new Handlebars.SafeString(text.replace(markup, ''));
   });
+
+  Handlebars.registerHelper('keepMarkup', function (text) {  
+    return new Handlebars.SafeString(text);
+  });
+    
   // Ifis not equal
   Handlebars.registerHelper('ifne', function (v1, v2, options) {
     if (v1 !== v2) return options.fn(this);
