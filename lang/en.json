@@ -390,6 +390,10 @@
   "POWER_BENDWILL.CHAT_INTRO_M": " maintains Bend Will.",
   "POWER_BENDWILL.CHAT_SUCCESS": " controls ",
   "POWER_BENDWILL.CHAT_FAILURE": " resists the attempt.",
+  
+  "POWER_BLACKBOLT.CHAT_INTRO": " traps its target in black fire.",
+  "POWER_BLACKBOLT.CHAT_SUCCESS": " is burned and paralyzed.",  
+  "POWER_BLACKBOLT.CHAT_FAILURE": " avoids the black bolt.",
     
   "POWER_BLESSEDSHIELD.CHAT_INTRO": " tries to invoke Prios' protection.",
   "POWER_BLESSEDSHIELD.CHAT_SUCCESS": " is surrounded by a shield of light.",

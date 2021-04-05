@@ -435,6 +435,7 @@ export class SymbaroumItem extends Item {
         [{reference: "anathema", level: [1, 2, 3], function: anathemaPrepare},
         {reference: "brimstonecascade", level: [1, 2, 3], function: brimstoneCascadePrepare},
         {reference: "bendwill", level: [1, 2, 3], function: bendWillPrepare},
+        {reference: "blackbolt", level: [1, 2, 3], function: blackBoltPrepare},
         {reference: "blessedshield", level: [1, 2, 3], function: blessedshieldPrepare},
         {reference: "curse", level: [1, 2, 3], function: cursePrepare},
         {reference: "holyaura", level: [1, 2, 3], function: holyAuraPrepare},
@@ -1970,6 +1971,135 @@ async function bendWillResult(rollData, functionStuff){
         });
     }
     if(flagDataArray.length){
+        await createModifyTokenChatButton(flagDataArray);
+    }
+}
+
+async function blackBoltPrepare(ability, actor) {
+    // get target
+    let targetData;
+    try{targetData = getTarget("quick")} catch(error){      
+        ui.notifications.error(error);
+        return;
+    }
+    let fsDefault = await buildFunctionStuffDefault(ability, actor)
+    let specificStuff = {
+        checkMaintain: true,
+        corruption: true,
+        targetData: targetData,
+        resultFunction: blackBoltResult
+    }
+    let functionStuff = Object.assign({}, fsDefault , specificStuff);
+    await modifierDialog(functionStuff)
+}
+
+async function blackBoltResult(rollData, functionStuff){
+
+    let damageTot = 0;
+    let damageText = "";
+    let damageFinalText = "";
+    let damageRollResult= "";
+    let damageTooltip = "";
+    let flagDataArray = [];
+    let pain = false;
+    let haveCorruption = false;
+    let corruptionText = "";
+    let corruption;
+    let targetText = "";
+    let dmgFormula = "";
+
+    let introText = functionStuff.actor.data.name + game.i18n.localize('POWER_BLACKBOLT.CHAT_INTRO');
+    if(functionStuff.targetData.hasTarget){
+        targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.token.data.name;
+        if (functionStuff.targetData.autoParams != ""){targetText += ": " + functionStuff.targetData.autoParams}
+    }
+    let resultText = functionStuff.targetData.token.data.name + game.i18n.localize('POWER_BLACKBOLT.CHAT_SUCCESS');
+    if(!rollData[0].hasSucceed){
+        resultText = functionStuff.targetData.token.data.name + game.i18n.localize('POWER_BLACKBOLT.CHAT_FAILURE');
+    }
+    else{
+        let damageDice = "1d6";
+        let damage = await simpleDamageRoll(functionStuff.attackFromPC, functionStuff.actor, damageDice, functionStuff.targetData, true);
+        damageTot = damage.roll.total;
+        if(damage.roll.total > functionStuff.targetData.actor.data.data.health.toughness.threshold){pain = true}
+        damageRollResult += await formatRollResult([damage]);
+        dmgFormula = game.i18n.localize('WEAPON.DAMAGE') + ": " + damage.roll._formula;
+        damageTooltip += damage.roll.result;
+
+        if(damageTot <= 0){
+            damageTot = 0;
+            damageText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_NUL');
+        }
+        else if(damageTot > functionStuff.targetData.actor.data.data.health.toughness.value){
+            damageText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
+            damageFinalText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_DYING');
+            flagDataArray.push({
+                tokenId: functionStuff.targetData.token.data._id,
+                toughnessChange: damageTot*-1
+            }, {
+                tokenId: functionStuff.targetData.token.data._id,
+                addEffect: "icons/svg/skull.svg",
+                effectDuration: 1
+            })
+        }
+        else{
+            damageText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
+            flagDataArray.push({
+                tokenId: functionStuff.targetData.token.data._id,
+                toughnessChange: damageTot*-1
+            })
+            if(pain){
+                damageFinalText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_PAIN');
+                flagDataArray.push({
+                    tokenId: functionStuff.targetData.token.data._id,
+                    addEffect: "icons/svg/falling.svg",
+                    effectDuration: 1
+                })
+            }
+
+        }
+    }
+    if(!functionStuff.isMaintained){
+        haveCorruption = true;
+        corruption = await getCorruption(functionStuff);
+        corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
+        flagDataArray.push({
+            tokenId: functionStuff.token.data._id,
+            corruptionChange: corruption.value
+        });
+    }
+    let templateData = {
+        targetData : functionStuff.targetData,
+        hasTarget : functionStuff.targetData.hasTarget,
+        introText: introText,
+        introImg: functionStuff.actor.data.img,
+        targetText: targetText,
+        subText: functionStuff.ability.name + " (" + functionStuff.powerLvl.lvlName + ")",
+        subImg: functionStuff.ability.img,
+        hasRoll: true,
+        rollString: await formatRollString(rollData[0], functionStuff.targetData.hasTarget, rollData[0].modifier),
+        rollResult : formatRollResult(rollData),
+        resultText: resultText,
+        finalText: "",
+        hasDamage: true,
+        damageText: damageText,
+        damageRollResult: damageRollResult,
+        dmgFormula: dmgFormula,
+        damageRollMod: "",
+        damageTooltip: damageTooltip,
+        damageFinalText: damageFinalText,
+        haveCorruption: haveCorruption,
+        corruptionText: corruptionText
+    }
+    if(functionStuff.autoParams != ""){templateData.subText += ", " + functionStuff.autoParams};
+
+    const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
+    const chatData = {
+        user: game.user._id,
+        content: html,
+    }
+    let NewMessage = await ChatMessage.create(chatData);
+    if(flagDataArray.length > 0){
         await createModifyTokenChatButton(flagDataArray);
     }
 }

@@ -387,6 +387,10 @@
     "POWER_BENDWILL.CHAT_INTRO_M": " maintient le pouvoir Soumission.",
     "POWER_BENDWILL.CHAT_SUCCESS": " parvient à soumettre ",
     "POWER_BENDWILL.CHAT_FAILURE": " résiste à la soumission.",
+  
+    "POWER_BLACKBOLT.CHAT_INTRO": " lance un éclair noir vers son ennemi.",
+    "POWER_BLACKBOLT.CHAT_SUCCESS": " est brulé et paralysé par les éclairs noirs.",
+    "POWER_BLACKBOLT.CHAT_FAILURE": " évite l'éclair noir.",
 
     "POWER_BLESSEDSHIELD.CHAT_INTRO": " tente d'invoquer la protection de Prios.",
     "POWER_BLESSEDSHIELD.CHAT_SUCCESS": " est entouré d'un bouclier lumineux.",
