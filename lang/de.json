@@ -371,6 +371,10 @@
   "POWER_BENDWILL.CHAT_SUCCESS": " kontrolliert ",
   "POWER_BENDWILL.CHAT_FAILURE": " wiedersteht dem Zwang.",
   
+  "POWER_BLACKBOLT.CHAT_INTRO": " traps its target in black fire.",
+  "POWER_BLACKBOLT.CHAT_SUCCESS": " is burned and paralyzed.",  
+  "POWER_BLACKBOLT.CHAT_FAILURE": " avoids the black bolt.",
+  
   "POWER_BRIMSTONECASC.CHAT_INTRO": " wirft Feuer auf sein Ziel.",
   "POWER_BRIMSTONECASC.CHAT_SUCCESS": " fängt Feuer.",
   "POWER_BRIMSTONECASC.CHAT_FAILURE": " vermeidet einen Teil des Schadens.",

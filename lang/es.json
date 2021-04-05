@@ -391,6 +391,10 @@
   "POWER_BENDWILL.CHAT_INTRO_M": " mantiene Someter Voluntad.",
   "POWER_BENDWILL.CHAT_SUCCESS": " controla ",
   "POWER_BENDWILL.CHAT_FAILURE": " resiste el intento.",
+  
+  "POWER_BLACKBOLT.CHAT_INTRO": " traps its target in black fire.",
+  "POWER_BLACKBOLT.CHAT_SUCCESS": " is burned and paralyzed.",  
+  "POWER_BLACKBOLT.CHAT_FAILURE": " avoids the black bolt.",
     
   "POWER_BLESSEDSHIELD.CHAT_INTRO": " intenta invocar la protección de Prios.",
   "POWER_BLESSEDSHIELD.CHAT_SUCCESS": " es rodeado por un escudo de luz.",

@@ -451,7 +451,7 @@ export async function simpleDamageRoll(attackFromPC, actor, damageFormula, targe
     let weaponDmgValue = Math.ceil(weaponRoll.total/2);
 
    //build roll string
-    newRollDmgString = weaponDmgValue;
+    newRollDmgString = weaponDmgValue.toString();
     if(!ignoreArmor){
       newRollDmgString += " - " + targetData.actor.data.data.combat.protectionPc + "["+targetData.actor.data.data.combat.armor+"]";
     }
