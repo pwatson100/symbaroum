@@ -415,6 +415,10 @@
   "POWER_CURSE.CHAT_SUCCESS_M": " is heavily cursed (1d6 damage for each action).",
   "POWER_CURSE.CHAT_FAILURE": " can't maintain the curse.",
   "POWER_CURSE.CHAT_FAIL_FINAL": "The curse has no more effect on ",
+  
+  "POWER_ENTANGLINGVINES.CHAT_INTRO_M": " tries to break free from the vines.",
+  "POWER_ENTANGLINGVINES.CHAT_SUCCESS": " is entangled in the vines.",
+  "POWER_ENTANGLINGVINES.CHAT_FAILURE": " breaks free from the vines.",
 
   "POWER_HOLYAURA.CHAT_INTRO": " tries to channel the Light of Prios.",
   "POWER_HOLYAURA.CHAT_SUCCESS": " emits a holy light.",

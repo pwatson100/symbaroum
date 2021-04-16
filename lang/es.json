@@ -416,6 +416,10 @@
   "POWER_CURSE.CHAT_SUCCESS_M": " está condenado (1d6 daño por cada acción).",
   "POWER_CURSE.CHAT_FAILURE": " no puede mantener la maldición.",
   "POWER_CURSE.CHAT_FAIL_FINAL": "La maldición ya no tiene efecto en ",
+  
+  "POWER_ENTANGLINGVINES.CHAT_INTRO_M": " tries to break free from the vines.",
+  "POWER_ENTANGLINGVINES.CHAT_SUCCESS": " is entangled in the vines.",
+  "POWER_ENTANGLINGVINES.CHAT_FAILURE": " breaks free from the vines.",
 
   "POWER_HOLYAURA.CHAT_INTRO": " intenta canalizar la Luz de Prios.",
   "POWER_HOLYAURA.CHAT_SUCCESS": " emite una luz sagrada.",
