@@ -379,6 +379,10 @@
   "POWER_BRIMSTONECASC.CHAT_SUCCESS": " fängt Feuer.",
   "POWER_BRIMSTONECASC.CHAT_FAILURE": " vermeidet einen Teil des Schadens.",
   
+  "POWER_CONFUSION.EFFECT12": " stands still, blinking stupidly.",
+  "POWER_CONFUSION.EFFECT34": " attacks whichever of its allies is closest.",
+  "POWER_CONFUSION.EFFECT56": "  attacks whichever of its enemies is closest.",
+  
   "POWER_CURSE.CHAT_INTRO": " wirkt einen Fluch.",
   "POWER_CURSE.CHAT_INTRO_M": " hält den Fluch aufrecht.",
   "POWER_CURSE.CHAT_SUCCESS_N": " ist verflucht (Hat Misgunst gegen den Mystiker).",

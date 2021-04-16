@@ -400,6 +400,10 @@
     "POWER_BRIMSTONECASC.CHAT_INTRO": " déchaine le feu vers sa cible.",
     "POWER_BRIMSTONECASC.CHAT_SUCCESS": " est brûlé.", 
     "POWER_BRIMSTONECASC.CHAT_FAILURE": " évite une partie des flammes.",
+  
+    "POWER_CONFUSION.EFFECT12": " reste immobile, clignant des yeux bêtement.",
+    "POWER_CONFUSION.EFFECT34": " attaque son allié le plus proche.",
+    "POWER_CONFUSION.EFFECT56": "  attaque son ennemi le plus proche.",
 
     "POWER_CURSE.CHAT_INTRO": " lance une malédiction.",
     "POWER_CURSE.CHAT_INTRO_M": " maintient une malédiction.",

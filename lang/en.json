@@ -404,6 +404,10 @@
   "POWER_BRIMSTONECASC.CHAT_SUCCESS": " gets burned.",  
   "POWER_BRIMSTONECASC.CHAT_FAILURE": " avoids part of the damage.",
   
+  "POWER_CONFUSION.EFFECT12": " stands still, blinking stupidly.",
+  "POWER_CONFUSION.EFFECT34": " attacks whichever of its allies is closest.",
+  "POWER_CONFUSION.EFFECT56": "  attacks whichever of its enemies is closest.",
+  
   "POWER_CURSE.CHAT_INTRO": " casts a curse.",
   "POWER_CURSE.CHAT_INTRO_M": " maintains a curse.",
   "POWER_CURSE.CHAT_SUCCESS_N": " is cursed (has unfavour against mystic).",
