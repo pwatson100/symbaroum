@@ -442,6 +442,7 @@ export class SymbaroumItem extends Item {
         {reference: "inheritwound", level: [1, 2, 3], function: inheritWound},
         {reference: "larvaeboils", level: [1, 2, 3], function: larvaeBoilsPrepare},
         {reference: "layonhands", level: [1, 2, 3], function: layonhandsPrepare},
+        {reference: "levitate", level: [1, 2, 3], function: levitatePrepare},
         {reference: "mindthrow", level: [1, 2, 3], function: mindthrowPrepare},
         {reference: "tormentingspirits", level: [1, 2, 3], function: tormentingspiritsPrepare},
         {reference: "unnoticeable", level: [1, 2, 3], function: unnoticeablePrepare}];
@@ -2780,6 +2781,38 @@ async function layonhandsResult(functionStuff) {
     if(flagDataArray.length > 0){
         await createModifyTokenChatButton(flagDataArray);
     }
+}
+
+async function levitatePrepare(ability, actor) {
+    let fsDefault = await buildFunctionStuffDefault(ability, actor);
+
+    let specificStuff = {
+        checkMaintain: true,
+        combat: false,
+        targetMandatory: false,
+        corruption: true,
+        tradition: ["theurgy", "wizardry"],
+        resultFunction: standardPowerResult
+    }
+    let functionStuff = Object.assign({}, fsDefault , specificStuff);
+
+    let targetData;
+    if(functionStuff.powerLvl.level > 1){
+        try{targetData = getTarget("strong")} catch(error){
+            targetData = {hasTarget : false}
+        }
+    }
+    else{
+        targetData = {hasTarget : false}
+    }
+    if(targetData.hasTarget){
+        functionStuff.addTargetEffect= ["icons/svg/wing.svg"]
+    }
+    else{
+        functionStuff.addCasterEffect= ["icons/svg/wing.svg"]
+    }
+    functionStuff.targetData = targetData;
+    await modifierDialog(functionStuff)
 }
 
 async function mindthrowPrepare(ability, actor) {
