@@ -201,7 +201,7 @@
         <br>
         Power activation is a WIP. <br>
         For now, only those active powers are supported: <br>
-        anathema,&nbsp; blessed shield, brimstone cascade,&nbsp;bend will,&nbsp;curse,&nbsp;holy aura,&nbsp;inherit wound,&nbsp;larvae boils, lay on hands, tormenting spirits,&nbsp;unnoticeable
+        anathema,&nbsp; blessed shield, brimstone cascade,&nbsp;bend will,&nbsp;black bolt,&nbsp;curse,&nbsp;holy aura,&nbsp;inherit wound,&nbsp;larvae boils,&nbsp;lay on hands,&nbsp;levitate,&nbsp;tormenting spirits,&nbsp;unnoticeable
         <br>
         and the abilities:
         <br>
@@ -216,7 +216,7 @@
     <ul>
         <li>manual modifer (any other modifier to the roll...)</li>
         <li>favour / disfavour (see favour section of this guide)</li>
-        <li>first casting or maintained. First casting is for the first round the player use the ability, and maintain is for the subsequent rounds (if relevant)</li>
+        <li>first casting or maintained. First casting is for the first round the player use the ability, and maintain is for the subsequent rounds or for chain casting (if relevant). The main difference is that "first cast" will generate corruption for the caster, while "maintain" will not.</li>
     </ul>
     Most roll should be left by default. <br>
     Than the roll is made, and result is announced in the chat.
@@ -231,7 +231,7 @@
     <br>
     Clicking the button will automaticaly affect the results of the power to the tokens: damage will be substracted from toughness, temporary corruption added, etc.
     <br>
-    Chain effects are not yet supported by the system, but you can use the power on each target, checking the "maintained" box after the first target.
+    In order to do chain effects, you'll have to cast the power on each target, checking the "maintained" box after the first target.
     </p>
     <h2>Power and Abilities specifics:</h2>
     <h3><strong>Anathema</strong></h3>
@@ -243,6 +243,12 @@
 	<h3><strong>Blessed Shield</strong></h3>
 	<p>When using the power on 1 or 2 other characters (adept and master level), select them as targets before using the power.
 	If successful, the Mystic and the target will automaticaly get an active "blessed shield" stackable armor. At the end of the duration of the power, just delete this item from their inventory.
+	</p>
+    <h3><strong>Inherit wound</strong></h3>
+	<p>Target will be healed and damage will apply to the caster.&nbsp;If enhanced combat is used, and the level is adept or master, poison and bleeding effects will also be transfered from target to caster.
+	</p>
+    <h3><strong>Levitate</strong></h3>
+	<p>If no target are selected, the spell will be cast on self. If a target is selected and level is adept or master, the power will be cast on the target.
 	</p>
 	<h3><strong>Leader</strong></h3>
 	<p>When using leader, it will trigger the adept level effect: the target will receive a "targeted" status effect. When any character attacks this target, damage will receive a +1d4 bonus (or +2 if attack from a NPC). Just delete the status effect on the token to remove the effect.</p>
