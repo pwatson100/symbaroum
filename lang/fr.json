@@ -400,6 +400,10 @@
     "POWER_BRIMSTONECASC.CHAT_INTRO": " déchaine le feu vers sa cible.",
     "POWER_BRIMSTONECASC.CHAT_SUCCESS": " est brûlé.", 
     "POWER_BRIMSTONECASC.CHAT_FAILURE": " évite une partie des flammes.",
+  
+    "POWER_CONFUSION.EFFECT12": " reste immobile, clignant des yeux bêtement.",
+    "POWER_CONFUSION.EFFECT34": " attaque son allié le plus proche.",
+    "POWER_CONFUSION.EFFECT56": "  attaque son ennemi le plus proche.",
 
     "POWER_CURSE.CHAT_INTRO": " lance une malédiction.",
     "POWER_CURSE.CHAT_INTRO_M": " maintient une malédiction.",
@@ -408,6 +412,10 @@
     "POWER_CURSE.CHAT_SUCCESS_M": " est maudit (pour chaque action, il subit 1d6 points de dégâts).",
     "POWER_CURSE.CHAT_FAILURE": " ne parvient pas à maintenir la malédiction.",
     "POWER_CURSE.CHAT_FAIL_FINAL": "La malédiction n'a plus d'effet sur ",
+  
+    "POWER_ENTANGLINGVINES.CHAT_INTRO_M": " essaye de briser l'étreinte des plantes.",
+    "POWER_ENTANGLINGVINES.CHAT_SUCCESS": " est enchevêtré dans la végétation.",
+    "POWER_ENTANGLINGVINES.CHAT_FAILURE": " se libère de l'enchevêtrement de plantes.",
     
     "POWER_HOLYAURA.CHAT_INTRO": " tente de canaliser la lumière de Prios.",
     "POWER_HOLYAURA.CHAT_SUCCESS": " est entourée d'une aura lumineuse bienfaisante.",
