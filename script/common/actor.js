@@ -92,6 +92,9 @@ export class SymbaroumActor extends Actor {
 
     _computeSecondaryAttributes(data) {
         for (var aKey in data.data.attributes) {
+            // If there are corrupt attributes added, ignore this
+            if (!!!data.data.attributes[aKey].value || !!!data.data.attributes[aKey].label) continue;
+
             data.data.attributes[aKey].bonus = data.data.bonus[aKey];
             data.data.attributes[aKey].total = data.data.attributes[aKey].value + data.data.bonus[aKey] + data.data.attributes[aKey].temporaryMod;
             if(data.type === "monster") {
