@@ -149,7 +149,9 @@ Hooks.once('ready', () => {
   showReleaseNotes();
 });
 
-Hooks.on('preCreateActor', (createData) => {
+Hooks.on('preCreateActor', (createData) => {} );
+
+  /*
   mergeObject(createData, {
     'token.bar1': { attribute: 'health.toughness' },
     'token.bar2': { attribute: 'combat.defense' },
@@ -166,6 +168,7 @@ Hooks.on('preCreateActor', (createData) => {
     createData.token.actorLink = true;
   }
 });
+  */
 
 Hooks.on('createOwnedItem', (actor, item) => {});
 
@@ -193,7 +196,7 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
     await html.find('#applyEffect').click(async () => {
       for (let flagData of flagDataArray) {
         if (flagData.tokenId) {
-          let token = canvas.tokens.objects.children.find((token) => token.data._id === flagData.tokenId);
+          let token = canvas.tokens.objects.children.find((token) => token.data.id === flagData.tokenId);
           let statusCounterMod = false;
           if (game.modules.get('statuscounter')?.active) {
             statusCounterMod = true;
@@ -316,7 +319,7 @@ async function showReleaseNotes()
         await oldReleaseNotes.delete();        
       }
 
-      await game.journal.importFromCollection(`${newReleasePack.metadata.system}.${newReleasePack.metadata.name}`, newReleaseNotes._id);
+      await game.journal.importFromCollection(`${newReleasePack.metadata.system}.${newReleasePack.metadata.name}`, newReleaseNotes.id);
       let newReleaseJournal = game.journal.getName(newReleaseNotes.name);
 
       await newReleaseJournal.setFlag('symbaroum', 'ver', newVer);

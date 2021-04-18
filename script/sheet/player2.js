@@ -22,7 +22,14 @@ export class PlayerSheet2 extends PlayerSheet {
     }
 
     getData() {
-        const data = super.getData();
+        // const data = super.getData();
+        this.actor.prepareData();
+        let data = {
+            id: this.actor.id,
+            actor: this.actor.data,
+            data: this.actor.data.data
+        }
+        data.items = this.actor.items;
         return data;
     }
 }
