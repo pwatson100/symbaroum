@@ -23,11 +23,14 @@ export class PlayerSheet2 extends PlayerSheet {
 
     getData() {
         // const data = super.getData();
-        this.actor.prepareData();
+        /*
+        if(!this.actor.data.isDataPrepared)
+            this.actor.prepareData();
+        */
         let data = {
             id: this.actor.id,
-            actor: this.actor.data,
-            data: this.actor.data.data
+            actor: foundry.utils.deepClone(this.actor.data),
+            data: foundry.utils.deepClone(this.actor.data.data)
         }
         data.items = this.actor.items;
         return data;

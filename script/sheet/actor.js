@@ -53,6 +53,7 @@ export class SymbaroumActorSheet extends ActorSheet {
       img:data.img,
       data:foundry.utils.deepClone(data)
     };
+    
     // Not required in "data.<x>"
     delete itemData.data["name"];
     delete itemData.data["type"];
@@ -82,7 +83,7 @@ export class SymbaroumActorSheet extends ActorSheet {
     this.actor.deleteEmbeddedDocuments("Item", [ item.id ], { render:false } ).then( dummy => {
       // Does nothing now in 0.8.1 due to actor refreshing
       // I thought render:false would stop that
-      div.slideUp(200, () => this.render(false));
+      // div.slideUp(200, () => this.render(false));
     });
   }
 
