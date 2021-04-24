@@ -1402,23 +1402,23 @@ async function attackResult(rollData, functionStuff){
         targetDies = true;
         damageFinalText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_DYING');
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data.id,
+            tokenId: functionStuff.targetData.token.id,
             toughnessChange: damageTot*-1
         }, {
-            tokenId: functionStuff.targetData.token.data.id,
+            tokenId: functionStuff.targetData.token.id,
             addEffect: "icons/svg/skull.svg",
             effectDuration: 1
         })
     }
     else{
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data.id,
+            tokenId: functionStuff.targetData.token.id,
             toughnessChange: damageTot*-1
         })
         if(pain){
             damageFinalText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_PAIN');
             flagDataArray.push({
-                tokenId: functionStuff.targetData.token.data.id,
+                tokenId: functionStuff.targetData.token.id,
                 addEffect: "icons/svg/falling.svg",
                 effectDuration: 1
             })
@@ -1512,7 +1512,7 @@ async function attackResult(rollData, functionStuff){
                 poisonedTimeLeft = await EffectCounter.findCounterValue(functionStuff.targetData.token, effect);  
                 if(NewPoisonRounds > poisonedTimeLeft){
                     flagDataArray.push({
-                        tokenId: functionStuff.targetData.token.data.id,
+                        tokenId: functionStuff.targetData.token.id,
                         modifyEffectDuration: "icons/svg/poison.svg",
                         effectDuration: NewPoisonRounds
                     })
@@ -1528,7 +1528,7 @@ async function attackResult(rollData, functionStuff){
           else{
             //new poisonning  
             flagDataArray.push({
-                tokenId: functionStuff.targetData.token.data.id,
+                tokenId: functionStuff.targetData.token.id,
                 addEffect: "icons/svg/poison.svg",
                 effectDuration: NewPoisonRounds
             });
@@ -1543,7 +1543,7 @@ async function attackResult(rollData, functionStuff){
         templateData.printBleed = true;
         templateData.bleedChat = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_BLEED') + "1d4";
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data.id,
+            tokenId: functionStuff.targetData.token.id,
             addEffect: "icons/svg/blood.svg"
         });
     }
@@ -1624,7 +1624,7 @@ async function standardPowerResult(rollData, functionStuff){
             corruption = await getCorruption(functionStuff);
             corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
             flagDataArray.push({
-                tokenId: functionStuff.token.data.id,
+                tokenId: functionStuff.token.id,
                 corruptionChange: corruption.value
             });
         }
@@ -1684,7 +1684,7 @@ async function standardPowerResult(rollData, functionStuff){
     if(hasSucceed && (functionStuff.addTargetEffect.length >0)){
         for(let effect of functionStuff.addTargetEffect){
         flagDataArray.push({
-                tokenId: functionStuff.targetData.token.data.id,
+                tokenId: functionStuff.targetData.token.id,
                 addEffect: effect,
                 effectDuration: 1
             });
@@ -1693,7 +1693,7 @@ async function standardPowerResult(rollData, functionStuff){
     if(hasSucceed && (functionStuff.addCasterEffect.length >0)){ 
         for(let effect of functionStuff.addCasterEffect){   
             flagDataArray.push({
-                tokenId: functionStuff.token.data.id,
+                tokenId: functionStuff.token.id,
                 addEffect: effect,
                 effectDuration: 1
             });
@@ -1702,7 +1702,7 @@ async function standardPowerResult(rollData, functionStuff){
     if(hasSucceed && (functionStuff.removeTargetEffect.length >0)){
         for(let effect of functionStuff.removeTargetEffect){
         flagDataArray.push({
-                tokenId: functionStuff.targetData.token.data.id,
+                tokenId: functionStuff.targetData.token.id,
                 removeEffect: effect
             });
         }
@@ -1710,7 +1710,7 @@ async function standardPowerResult(rollData, functionStuff){
     if(hasSucceed && (functionStuff.removeCasterEffect.length >0)){ 
         for(let effect of functionStuff.removeCasterEffect){   
             flagDataArray.push({
-                tokenId: functionStuff.token.data.id,
+                tokenId: functionStuff.token.id,
                 removeEffect: effect
             });
         }
@@ -1769,7 +1769,7 @@ async function anathemaResult(rollData, functionStuff){
     let corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
 
     flagDataArray.push({
-        tokenId: functionStuff.token.data.id,
+        tokenId: functionStuff.token.id,
         corruptionChange: corruption.value
     });
 
@@ -1878,10 +1878,10 @@ async function brimstoneCascadeResult(rollData, functionStuff){
         damageText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
         damageFinalText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_DYING');
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data.id,
+            tokenId: functionStuff.targetData.token.id,
             toughnessChange: damageTot*-1
         }, {
-            tokenId: functionStuff.targetData.token.data.id,
+            tokenId: functionStuff.targetData.token.id,
             addEffect: "icons/svg/skull.svg",
             effectDuration: 1
         })
@@ -1889,13 +1889,13 @@ async function brimstoneCascadeResult(rollData, functionStuff){
     else{
         damageText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data.id,
+            tokenId: functionStuff.targetData.token.id,
             toughnessChange: damageTot*-1
         })
         if(pain){
             damageFinalText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_PAIN');
             flagDataArray.push({
-                tokenId: functionStuff.targetData.token.data.id,
+                tokenId: functionStuff.targetData.token.id,
                 addEffect: "icons/svg/falling.svg",
                 effectDuration: 1
             })
@@ -1907,7 +1907,7 @@ async function brimstoneCascadeResult(rollData, functionStuff){
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
         flagDataArray.push({
-            tokenId: functionStuff.token.data.id,
+            tokenId: functionStuff.token.id,
             corruptionChange: corruption.value
         });
     }
@@ -1996,7 +1996,7 @@ async function bendWillResult(rollData, functionStuff){
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
         flagDataArray.push({
-            tokenId: functionStuff.token.data.id,
+            tokenId: functionStuff.token.id,
             corruptionChange: corruption.value
         });
     }
@@ -2026,14 +2026,14 @@ async function bendWillResult(rollData, functionStuff){
     let NewMessage = await ChatMessage.create(chatData);
     if(rollData[0].hasSucceed && !functionStuff.isMaintained){
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data.id,
+            tokenId: functionStuff.targetData.token.id,
             addEffect: "systems/symbaroum/asset/image/puppet.png",
             effectDuration: 1
         });
     }
     else if(!rollData[0].hasSucceed){   
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data.id,
+            tokenId: functionStuff.targetData.token.id,
             removeEffect: "systems/symbaroum/asset/image/puppet.png"
         });
     }
@@ -2101,10 +2101,10 @@ async function blackBoltResult(rollData, functionStuff){
             damageText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
             damageFinalText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_DYING');
             flagDataArray.push({
-                tokenId: functionStuff.targetData.token.data.id,
+                tokenId: functionStuff.targetData.token.id,
                 toughnessChange: damageTot*-1
             }, {
-                tokenId: functionStuff.targetData.token.data.id,
+                tokenId: functionStuff.targetData.token.id,
                 addEffect: "icons/svg/skull.svg",
                 effectDuration: 1
             })
@@ -2112,13 +2112,13 @@ async function blackBoltResult(rollData, functionStuff){
         else{
             damageText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
             flagDataArray.push({
-                tokenId: functionStuff.targetData.token.data.id,
+                tokenId: functionStuff.targetData.token.id,
                 toughnessChange: damageTot*-1
             })
             if(pain){
                 damageFinalText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_PAIN');
                 flagDataArray.push({
-                    tokenId: functionStuff.targetData.token.data.id,
+                    tokenId: functionStuff.targetData.token.id,
                     addEffect: "icons/svg/falling.svg",
                     effectDuration: 1
                 })
@@ -2131,7 +2131,7 @@ async function blackBoltResult(rollData, functionStuff){
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
         flagDataArray.push({
-            tokenId: functionStuff.token.data.id,
+            tokenId: functionStuff.token.id,
             corruptionChange: corruption.value
         });
     }
@@ -2197,7 +2197,7 @@ async function blessedshieldResult(rollData, functionStuff){
     let corruption = await getCorruption(functionStuff);
     let corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
     flagDataArray.push({
-        tokenId: functionStuff.token.data.id,
+        tokenId: functionStuff.token.id,
         corruptionChange: corruption.value
     });
     let templateData = {
@@ -2222,11 +2222,11 @@ async function blessedshieldResult(rollData, functionStuff){
         let protectionFormula = "1d" + (2 + (2*functionStuff.powerLvl.level));
 
         flagDataArray.push({
-            tokenId: functionStuff.token.data.id,
+            tokenId: functionStuff.token.id,
             addEffect: "icons/svg/holy-shield.svg",
             effectDuration: 1
         },{
-            tokenId: functionStuff.token.data.id,
+            tokenId: functionStuff.token.id,
             addObject: "blessedshield",
             protection: protectionFormula
         })
@@ -2235,11 +2235,11 @@ async function blessedshieldResult(rollData, functionStuff){
         if(functionStuff.targets){
             for(let target of functionStuff.targets){
                 flagDataArray.push({
-                    tokenId: target.token.data.id,
+                    tokenId: target.token.id,
                     addEffect: "icons/svg/holy-shield.svg",
                     effectDuration: 1 
                 },{
-                    tokenId: target.token.data.id,
+                    tokenId: target.token.id,
                     addObject: "blessedshield",
                     protection: protectionFormula
                 })
@@ -2326,7 +2326,7 @@ async function confusionResult(rollData, functionStuff){
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
         flagDataArray.push({
-            tokenId: functionStuff.token.data.id,
+            tokenId: functionStuff.token.id,
             corruptionChange: corruption.value
         });
     }
@@ -2356,14 +2356,14 @@ async function confusionResult(rollData, functionStuff){
     let NewMessage = await ChatMessage.create(chatData);
     if(rollData[0].hasSucceed && !functionStuff.isMaintained){
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data.id,
+            tokenId: functionStuff.targetData.token.id,
             addEffect: "systems/symbaroum/asset/image/unknown-item.png",
             effectDuration: 1
         });
     }
     else if(!rollData[0].hasSucceed){   
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data.id,
+            tokenId: functionStuff.targetData.token.id,
             removeEffect: "systems/symbaroum/asset/image/unknown-item.png"
         });
     }
@@ -2411,7 +2411,7 @@ async function curseResult(rollData, functionStuff){
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
         flagDataArray.push({
-            tokenId: functionStuff.token.data.id,
+            tokenId: functionStuff.token.id,
             corruptionChange: corruption.value
         });
     }
@@ -2450,14 +2450,14 @@ async function curseResult(rollData, functionStuff){
     ChatMessage.create(chatData);
     if(!functionStuff.isMaintained){
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data.id,
+            tokenId: functionStuff.targetData.token.id,
             addEffect: "icons/svg/sun.svg",
             effectDuration: 1
         });
     }
     else if(!rollData[0].hasSucceed){   
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data.id,
+            tokenId: functionStuff.targetData.token.id,
             removeEffect: "icons/svg/sun.svg"
         })
     }
@@ -2510,7 +2510,7 @@ async function entanglingvinesResult(rollData, functionStuff){
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
         flagDataArray.push({
-            tokenId: functionStuff.token.data.id,
+            tokenId: functionStuff.token.id,
             corruptionChange: corruption.value
         });
     }
@@ -2529,7 +2529,7 @@ async function entanglingvinesResult(rollData, functionStuff){
             }
             finalText =  game.i18n.localize('COMBAT.DAMAGE') + finalDamage.toString();
             flagDataArray.push({
-                tokenId: functionStuff.targetData.token.data.id,
+                tokenId: functionStuff.targetData.token.id,
                 toughnessChange: finalDamage*-1
             });
         }
@@ -2566,14 +2566,14 @@ async function entanglingvinesResult(rollData, functionStuff){
     ChatMessage.create(chatData);
     if(!functionStuff.isMaintained && rollData[0].hasSucceed){
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data.id,
+            tokenId: functionStuff.targetData.token.id,
             addEffect: "systems/symbaroum/asset/image/vines.png",
             effectDuration: 1
         });
     }
     else if(!rollData[0].hasSucceed){   
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data.id,
+            tokenId: functionStuff.targetData.token.id,
             removeEffect: "systems/symbaroum/asset/image/vines.png",
         })
     }
@@ -2602,7 +2602,7 @@ async function holyAuraResult(rollData, functionStuff){
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
         flagDataArray.push({
-            tokenId: functionStuff.token.data.id,
+            tokenId: functionStuff.token.id,
             corruptionChange: corruption.value
         });
     }
@@ -2659,14 +2659,14 @@ async function holyAuraResult(rollData, functionStuff){
 
     if(rollData[0].hasSucceed && !functionStuff.isMaintained){
         flagDataArray.push({
-            tokenId: functionStuff.token.data.id,
+            tokenId: functionStuff.token.id,
             addEffect: "icons/svg/aura.svg",
             effectDuration: 1
         })
     }
     else if(!rollData[0].hasSucceed && functionStuff.isMaintained){   
         flagDataArray.push({
-            tokenId: functionStuff.token.data.id,
+            tokenId: functionStuff.token.id,
             removeEffect: "icons/svg/aura.svg"
         })
     }
@@ -2742,7 +2742,7 @@ async function inheritWound(ability, actor){
             tokenId: selectedToken.data.id,
             toughnessChange: inheritDamage*-1
         }, {
-            tokenId: targetData.token.data.id,
+            tokenId: targetData.token.id,
             toughnessChange: healed
         });
 
@@ -2763,7 +2763,7 @@ async function inheritWound(ability, actor){
                     addEffect: "icons/svg/poison.svg",
                     effectDuration: timeLeft
                 }, {
-                    tokenId: targetData.token.data.id,
+                    tokenId: targetData.token.id,
                     removeEffect: "icons/svg/poison.svg"
                 })
             }
@@ -2781,7 +2781,7 @@ async function inheritWound(ability, actor){
                     addEffect: "icons/svg/blood.svg",
                     effectDuration: timeLeft
                 }, {
-                    tokenId: targetData.token.data.id,
+                    tokenId: targetData.token.id,
                     removeEffect: "icons/svg/blood.svg"
                 })
             }
@@ -2848,7 +2848,7 @@ async function larvaeBoilsResult(rollData, functionStuff){
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
         flagDataArray.push({
-            tokenId: functionStuff.token.data.id,
+            tokenId: functionStuff.token.id,
             corruptionChange: corruption.value
         });
     }
@@ -2909,22 +2909,22 @@ async function larvaeBoilsResult(rollData, functionStuff){
     ChatMessage.create(chatData);
     if(!functionStuff.isMaintained){
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data.id,
+            tokenId: functionStuff.targetData.token.id,
             addEffect: "systems/symbaroum/asset/image/bug.png",
             effectDuration: 1
         }, {
-            tokenId: functionStuff.targetData.token.data.id,
+            tokenId: functionStuff.targetData.token.id,
             toughnessChange: finalDamage*-1
         });
     }
     else if(!rollData[0].hasSucceed){   
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data.id,
+            tokenId: functionStuff.targetData.token.id,
             removeEffect: "systems/symbaroum/asset/image/bug.png",
         })
     }else{
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data.id,
+            tokenId: functionStuff.targetData.token.id,
             toughnessChange: finalDamage*-1
         });
     }
@@ -3009,15 +3009,15 @@ async function layonhandsResult(functionStuff) {
         healRoll.toMessage();
         healed = Math.min(healRoll.total, functionStuff.targetData.actor.data.data.health.toughness.max - functionStuff.targetData.actor.data.data.health.toughness.value);
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data.id,
+            tokenId: functionStuff.targetData.token.id,
             toughnessChange: healed
         });
         if(functionStuff.powerLvl.level > 1){   
             flagDataArray.push({
-                tokenId: functionStuff.targetData.token.data.id,
+                tokenId: functionStuff.targetData.token.id,
                 removeEffect: "icons/svg/poison.svg"
             },{
-                tokenId: functionStuff.targetData.token.data.id,
+                tokenId: functionStuff.targetData.token.id,
                 removeEffect: "icons/svg/blood.svg"
             })
         }
@@ -3031,7 +3031,7 @@ async function layonhandsResult(functionStuff) {
     let corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
 
     flagDataArray.push({
-        tokenId: functionStuff.token.data.id,
+        tokenId: functionStuff.token.id,
         corruptionChange: corruption.value
     });
 
@@ -3175,10 +3175,10 @@ async function mindthrowResult(rollData, functionStuff){
                 damageText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
                 damageFinalText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_DYING');
                 flagDataArray.push({
-                    tokenId: functionStuff.targetData.token.data.id,
+                    tokenId: functionStuff.targetData.token.id,
                     toughnessChange: damageTot*-1
                 }, {
-                    tokenId: functionStuff.targetData.token.data.id,
+                    tokenId: functionStuff.targetData.token.id,
                     addEffect: "icons/svg/skull.svg",
                     effectDuration: 1
                 })
@@ -3186,13 +3186,13 @@ async function mindthrowResult(rollData, functionStuff){
             else{
                 damageText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
                 flagDataArray.push({
-                    tokenId: functionStuff.targetData.token.data.id,
+                    tokenId: functionStuff.targetData.token.id,
                     toughnessChange: damageTot*-1
                 })
                 if(pain){
                     damageFinalText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_PAIN');
                     flagDataArray.push({
-                        tokenId: functionStuff.targetData.token.data.id,
+                        tokenId: functionStuff.targetData.token.id,
                         addEffect: "icons/svg/falling.svg",
                         effectDuration: 1
                     })
@@ -3205,7 +3205,7 @@ async function mindthrowResult(rollData, functionStuff){
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
         flagDataArray.push({
-            tokenId: functionStuff.token.data.id,
+            tokenId: functionStuff.token.id,
             corruptionChange: corruption.value
         });
     }
@@ -3285,7 +3285,7 @@ async function tormentingspiritsResult(rollData, functionStuff){
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
         flagDataArray.push({
-            tokenId: functionStuff.token.data.id,
+            tokenId: functionStuff.token.id,
             corruptionChange: corruption.value
         });
     }
@@ -3343,14 +3343,14 @@ async function tormentingspiritsResult(rollData, functionStuff){
     if(rollData[0].hasSucceed){
         if(functionStuff.powerLvl.level>1){
             flagDataArray.push({
-                tokenId: functionStuff.targetData.token.data.id,
+                tokenId: functionStuff.targetData.token.id,
                 attributeChange: finalDamage*-1,
                 attributeName: "resolute"
             });
         }
         if(!functionStuff.isMaintained){
             flagDataArray.push({
-                tokenId: functionStuff.targetData.token.data.id,
+                tokenId: functionStuff.targetData.token.id,
                 addEffect: "systems/symbaroum/asset/image/ghost.svg",
                 effectDuration: 1
             })
@@ -3359,7 +3359,7 @@ async function tormentingspiritsResult(rollData, functionStuff){
     else{
         if(!functionStuff.isMaintained){
             flagDataArray.push({
-                tokenId: functionStuff.targetData.token.data.id,
+                tokenId: functionStuff.targetData.token.id,
                 removeEffect: "systems/symbaroum/asset/image/ghost.svg",
             })
         }
@@ -3604,7 +3604,7 @@ async function medicusResult(ability, actor, targetData, powerLvl, herbalCure, h
         if(targetData.hasTarget){
             healed = Math.min(healRoll.total, targetData.actor.data.data.health.toughness.max - targetData.actor.data.data.health.toughness.value);
             flagData = {
-                tokenId: targetData.token.data.id,
+                tokenId: targetData.token.id,
                 toughnessChange: healed
             }
         }
@@ -3617,7 +3617,7 @@ async function medicusResult(ability, actor, targetData, powerLvl, herbalCure, h
             if(targetData.hasTarget){
                 healed = Math.min(healRoll.total, targetData.actor.data.data.health.toughness.max - targetData.actor.data.data.health.toughness.value);
                 flagData = {
-                    tokenId: targetData.token.data.id,
+                    tokenId: targetData.token.id,
                     toughnessChange: healed
                 }
             }
@@ -3766,10 +3766,10 @@ async function strangler(ability, actor){
                         damageText = targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
                         damageFinalText = targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_DYING');
                         flagDataArray.push({
-                            tokenId: targetData.token.data.id,
+                            tokenId: targetData.token.id,
                             toughnessChange: damageTot*-1
                         }, {
-                            tokenId: targetData.token.data.id,
+                            tokenId: targetData.token.id,
                             addEffect: "icons/svg/skull.svg",
                             effectDuration: 1
                         })
@@ -3777,13 +3777,13 @@ async function strangler(ability, actor){
                     else{
                         damageText = targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
                         flagDataArray.push({
-                            tokenId: targetData.token.data.id,
+                            tokenId: targetData.token.id,
                             toughnessChange: damageTot*-1
                         })
                         if(pain){
                             damageFinalText = targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_PAIN');
                             flagDataArray.push({
-                                tokenId: targetData.token.data.id,
+                                tokenId: targetData.token.id,
                                 addEffect: "icons/svg/falling.svg",
                                 effectDuration: 1
                             })
@@ -3792,7 +3792,7 @@ async function strangler(ability, actor){
                     }
                     if(!isMaintained){
                         flagDataArray.push({
-                            tokenId: targetData.token.data.id,
+                            tokenId: targetData.token.id,
                             addEffect: "systems/symbaroum/asset/image/lasso.png",
                             effectDuration: 1
                         })
@@ -3803,7 +3803,7 @@ async function strangler(ability, actor){
                     hasDamage = false;
                     if(isMaintained){
                         flagDataArray.push({
-                            tokenId: targetData.token.data.id,
+                            tokenId: targetData.token.id,
                             removeEffect: "systems/symbaroum/asset/image/lasso.png"
                         })
                     }
