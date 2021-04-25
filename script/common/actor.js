@@ -135,6 +135,7 @@ export class SymbaroumActor extends Actor {
             protectionPc: activeArmor.pc,
             protectionNpc: activeArmor.npc,
             impeding: activeArmor.impeding,
+            tooltipProt: activeArmor.tooltip,
             defense: totDefense,
             defmod: (10 - totDefense),
             msg: defense.defMsg,
@@ -471,7 +472,7 @@ export class SymbaroumActor extends Actor {
                 let powerLvl = getPowerLevel(manatarms[0]);
                 let newprot = upgradeDice(protection, 1);
                 protection = newprot;
-                tooltip += game.i18n.localize("ABILITY_LABEL.MAN_AT_ARMS") + ", ";
+                tooltip += game.i18n.localize("ABILITY_LABEL.MAN-AT-ARMS") + ", ";
                 if(powerLvl.level > 1){
                     impeding = 0;
                 }
@@ -481,7 +482,7 @@ export class SymbaroumActor extends Actor {
                 let powerLvl = getPowerLevel(naturalarmor[0]);
                 let newprot = upgradeDice(protection, powerLvl.level -1);
                 protection = newprot;
-                tooltip += game.i18n.localize("TRAIT_LABEL.ARMORED") + powerLvl.lvlName + ", ";
+                tooltip += game.i18n.localize("TRAIT_LABEL.ARMORED") + " (" + powerLvl.lvlName + "), ";
             }
             let robust = this.items.filter(element => element.data.data?.reference === "robust");
             if(robust.length > 0){
@@ -495,7 +496,15 @@ export class SymbaroumActor extends Actor {
                 else{
                     bonusProtection += "+1d4";
                 }
-                tooltip += game.i18n.localize("TRAIT_LABEL.ROBUST") + powerLvl.lvlName + ", ";
+                tooltip += game.i18n.localize("TRAIT_LABEL.ROBUST") + " (" + powerLvl.lvlName + "), ";
+            }
+            let survivalinstinct = this.items.filter(element => element.data.data?.reference === "survivalinstinct");
+            if(survivalinstinct.length > 0){
+                let powerLvl = getPowerLevel(survivalinstinct[0]);
+                if(powerLvl.level > 1){
+                    bonusProtection += "+1d4";
+                    tooltip += game.i18n.localize("TRAIT_LABEL.SURVIVALINSTINCT") + " (" + powerLvl.lvlName + "), ";
+                }
             }
             let flagBerserk = this.getFlag(game.system.id, 'berserker');
             if(flagBerserk && flagBerserk > 1){

@@ -356,6 +356,7 @@ export class SymbaroumItem extends Item {
              {label: game.i18n.localize('TRAIT_LABEL.SPIRITFORM'), value: "spiritform"},
              {label: game.i18n.localize('TRAIT_LABEL.STURDY'), value: "sturdy"},
              {label: game.i18n.localize('TRAIT_LABEL.SUMMONER'), value: "summoner"},
+             {label: game.i18n.localize('TRAIT_LABEL.SURVIVALINSTINCT'), value: "survivalinstinct"},
              {label: game.i18n.localize('TRAIT_LABEL.SWARM'), value: "swarm"},
              {label: game.i18n.localize('TRAIT_LABEL.SWIFT'), value: "swift"},
              {label: game.i18n.localize('TRAIT_LABEL.TERRIFY'), value: "terrify"},
