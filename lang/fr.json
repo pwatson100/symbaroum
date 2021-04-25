@@ -601,6 +601,8 @@
     "TRAIT_LABEL.WEB": "Toile",
     "TRAIT_LABEL.WINGS": "Ailes",
     "TRAIT_LABEL.WRECKER": "Démolisseur",
+  
+    "TRAIT_REGENERATION.CHAT_ACTION": " régénère ",
 
     "WEAPON.HEADER": "Arme",
     "WEAPON.NAME": "Nom",

@@ -602,6 +602,8 @@
   "TRAIT_LABEL.WINGS": "Vingar",
   "TRAIT_LABEL.WRECKER": "Bräckare",
   
+  "TRAIT_REGENERATION.CHAT_ACTION": " regenerates ",
+  
   "WEAPON.HEADER": "Vapen",
   "WEAPON.NAME": "Namn",
   "WEAPON.DAMAGE": "Skada",

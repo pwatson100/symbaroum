@@ -608,6 +608,8 @@
   "TRAIT_LABEL.WINGS": "Wings",
   "TRAIT_LABEL.WRECKER": "Wrecker",
   
+  "TRAIT_REGENERATION.CHAT_ACTION": " regenerates ",
+  
   "WEAPON.HEADER": "Weapon",
   "WEAPON.NAME": "Name",
   "WEAPON.DAMAGE": "Damage",

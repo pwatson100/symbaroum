@@ -600,6 +600,8 @@
   "TRAIT_LABEL.WEB": "Telaraña",
   "TRAIT_LABEL.WINGS": "Alado",
   "TRAIT_LABEL.WRECKER": "Demoledor",
+  
+  "TRAIT_REGENERATION.CHAT_ACTION": " regenerates ",
  
   "WEAPON.HEADER": "Arma",
   "WEAPON.NAME": "Nombre",

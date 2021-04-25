@@ -564,6 +564,8 @@
   "TRAIT_LABEL.WEB": "Web",
   "TRAIT_LABEL.WINGS": "Geflügelt",
   "TRAIT_LABEL.WRECKER": "Wrecker",
+  
+  "TRAIT_REGENERATION.CHAT_ACTION": " regenerates ",
 
   "WEAPON.HEADER": "Waffe",
   "WEAPON.NAME": "Name",
