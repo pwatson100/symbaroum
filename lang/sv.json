@@ -593,6 +593,7 @@
   "TRAIT_LABEL.SPIRITFORM": "Andeform",
   "TRAIT_LABEL.STURDY": "Livskraftig",
   "TRAIT_LABEL.SUMMONER": "Frammanare",
+  "TRAIT_LABEL.SURVIVALINSTINCT": "Survival Instinct",
   "TRAIT_LABEL.SWARM": "Svärm",
   "TRAIT_LABEL.SWIFT": "Blixtsnabb",
   "TRAIT_LABEL.TERRIFY": "Skräckslå",
@@ -601,6 +602,8 @@
   "TRAIT_LABEL.WEB": "Fångstnät",
   "TRAIT_LABEL.WINGS": "Vingar",
   "TRAIT_LABEL.WRECKER": "Bräckare",
+  
+  "TRAIT_REGENERATION.CHAT_ACTION": " regenerates ",
   
   "WEAPON.HEADER": "Vapen",
   "WEAPON.NAME": "Namn",

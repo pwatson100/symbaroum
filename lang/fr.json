@@ -593,6 +593,7 @@
     "TRAIT_LABEL.SPIRITFORM": "Forme éthérée",
     "TRAIT_LABEL.STURDY": "Énergique",
     "TRAIT_LABEL.SUMMONER": "Invocateur",
+    "TRAIT_LABEL.SURVIVALINSTINCT": "Instinct de survie",
     "TRAIT_LABEL.SWARM": "Nuée",
     "TRAIT_LABEL.SWIFT": "Vif",
     "TRAIT_LABEL.TERRIFY": "Terrifiant",
@@ -601,6 +602,8 @@
     "TRAIT_LABEL.WEB": "Toile",
     "TRAIT_LABEL.WINGS": "Ailes",
     "TRAIT_LABEL.WRECKER": "Démolisseur",
+  
+    "TRAIT_REGENERATION.CHAT_ACTION": " régénère ",
 
     "WEAPON.HEADER": "Arme",
     "WEAPON.NAME": "Nom",

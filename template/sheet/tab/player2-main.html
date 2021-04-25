@@ -122,9 +122,12 @@
             </div>
             <div class="quality">
             <div class="protection">
-                <label>{{localize "ARMOR.PROTECTION"}}</label>                
-                {{#ife actor.type "player"}}<input type="text" value="{{data.combat.protectionPc}}" disabled />{{/ife}}
-                {{#ife actor.type "monster"}}<input type="text" value="{{data.combat.protectionNpc}}" disabled />{{/ife}}
+                <label>{{localize "ARMOR.PROTECTION"}}</label>   
+                <span class="tooltip input">           
+                    {{#ife actor.type "player"}}<input type="text" value="{{data.combat.protectionPc}}" disabled />{{/ife}}
+                    {{#ife actor.type "monster"}}<input type="text" value="{{data.combat.protectionNpc}}" disabled />{{/ife}}
+                    <span class="tooltiptext downleft">{{{data.combat.tooltipProt}}}</span>
+                </span>
             </div>
             <div class="protection">
                 <label>{{localize "ARMOR.IMPEDING"}}</label>

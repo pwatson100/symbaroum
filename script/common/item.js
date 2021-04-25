@@ -356,6 +356,7 @@ export class SymbaroumItem extends Item {
              {label: game.i18n.localize('TRAIT_LABEL.SPIRITFORM'), value: "spiritform"},
              {label: game.i18n.localize('TRAIT_LABEL.STURDY'), value: "sturdy"},
              {label: game.i18n.localize('TRAIT_LABEL.SUMMONER'), value: "summoner"},
+             {label: game.i18n.localize('TRAIT_LABEL.SURVIVALINSTINCT'), value: "survivalinstinct"},
              {label: game.i18n.localize('TRAIT_LABEL.SWARM'), value: "swarm"},
              {label: game.i18n.localize('TRAIT_LABEL.SWIFT'), value: "swift"},
              {label: game.i18n.localize('TRAIT_LABEL.TERRIFY'), value: "terrify"},
@@ -450,7 +451,7 @@ export class SymbaroumItem extends Item {
         {reference: "unnoticeable", level: [1, 2, 3], function: unnoticeablePrepare}];
 
         const scriptedTraits = 
-        [];
+        [{reference: "regeneration", level: [1, 2, 3], function: regeneration}];
         let list;
         if(this.data.type === "ability"){
             list = scriptedAbilities;
@@ -1551,7 +1552,7 @@ async function standardAbilityActivation(functionStuff) {
 }
 
 async function standardPowerResult(rollData, functionStuff){
-    let flagDataArray = [];
+    let flagDataArray = functionStuff.flagDataArray ?? [];
     let haveCorruption = false;
     let corruptionText = "";
     let corruption;
@@ -1661,6 +1662,8 @@ async function standardPowerResult(rollData, functionStuff){
         await createModifyTokenChatButton(flagDataArray);
     }
 }
+
+// ********************************************* POWERS *****************************************************
 
 async function anathemaPrepare(ability, actor) {
     // get target
@@ -3323,6 +3326,8 @@ async function unnoticeablePrepare(ability, actor) {
     await standardPowerActivation(functionStuff);
 }
 
+// ********************************************* ABILITIES *****************************************************
+
 async function alchemy(ability, actor) {
     let fsDefault = await buildFunctionStuffDefault(ability, actor);
     let specificStuff = {
@@ -3862,4 +3867,39 @@ async function witchsight(ability, actor) {
     }
 
     await createModifyTokenChatButton([flagData]);
+}
+
+// ********************************************* TRAITS *****************************************************
+
+async function regeneration(ability, actor){
+    let fsDefault = await buildFunctionStuffDefault(ability, actor);
+    let specificStuff = {
+        isMaintained: false
+    };
+    let functionStuff = Object.assign({}, fsDefault , specificStuff);
+
+
+    functionStuff.introText = actor.name + game.i18n.localize('TRAIT_REGENERATION.CHAT_ACTION');
+    
+    let regenTotal = 0;
+
+    if(!functionStuff.attackFromPC){
+        functionStuff.gmOnlyChatResult = true;
+        regenTotal = 1+functionStuff.powerLvl.level;
+        functionStuff.introText += "("+regenTotal.toString()+" " + game.i18n.localize('HEALTH.TOUGHNESS') +").";
+    }
+    else{
+        let regenDice = 2+ 2*functionStuff.powerLvl.level;
+        let regenFormula = "1d" + regenDice.toString();
+        let dmgRoll= new Roll(regenFormula).evaluate();
+        functionStuff.introText += "("+regenFormula+" " + game.i18n.localize('HEALTH.TOUGHNESS') +").";
+        regenTotal = dmgRoll.total;
+    }
+    functionStuff.resultTextSuccess = actor.name + game.i18n.localize('TRAIT_REGENERATION.CHAT_ACTION') + regenTotal.toString() + " " + game.i18n.localize('HEALTH.TOUGHNESS') +".";;
+
+    functionStuff.flagDataArray = [{
+        tokenId: functionStuff.token.data._id,
+        toughnessChange: regenTotal
+    }];
+    await standardPowerResult(null, functionStuff);
 }
