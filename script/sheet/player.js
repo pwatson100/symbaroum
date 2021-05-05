@@ -37,7 +37,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
 
     _getHeaderButtons() {
         let buttons = super._getHeaderButtons();
-        if (this.actor.isOwner ) {
+        if (this.actor.owner) {
             buttons = [
                 {
                     label: game.i18n.localize("BUTTON.DEATH"),
@@ -70,15 +70,15 @@ export class PlayerSheet extends SymbaroumActorSheet {
     async _prepareRollWeapon(event) {
         event.preventDefault();
         const div = $(event.currentTarget).parents(".item");
-        const weapon = this.actor.data.data.weapons.filter(item => item.id == div.data("itemId"))[0];
+        const weapon = this.actor.data.data.weapons.filter(item => item._id == div.data("itemId"))[0];
         await this.actor.rollWeapon(weapon)
     }
 
     async _modifyAttributes(event) {
         event.preventDefault();
-        let data = foundry.utils.deepClone(this.actor.data.data);
-        data.id = this.actor.id;
-
+        let data = duplicate(this.actor.data.data);
+        data._id = this.actor._id;
+        console.log(data);
         const html = await renderTemplate('systems/symbaroum/template/sheet/attributes.html', {
             data: data
         });
@@ -93,8 +93,10 @@ export class PlayerSheet extends SymbaroumActorSheet {
                     label: game.i18n.localize('BUTTON.CONFIRM'),
                     callback: async (html) => {
                         for (var aKey in data.attributes) {
-                            var base = "#" + data.id + "-" + [aKey] + "-value";
+                            var base = "#" + data._id + "-" + [aKey] + "-value";
+                            console.log("Find["+base+"]");
                             const stringValue = html.find(base)[0].value;
+                            console.log("Found value["+stringValue+"]");
 
                             let newValue = parseInt(stringValue, 10);
                             if( !isNaN(newValue)) {
@@ -118,6 +120,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
             }
         });
         
+        console.log(dialog);
         dialog.render(true);
     }
 }

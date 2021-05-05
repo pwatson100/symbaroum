@@ -15,7 +15,7 @@
 
                 <div class="items">
                     {{#each actor.data.armors as |item|}}
-                        <div class="armor item actor" data-item-id="{{item.id}}">
+                        <div class="armor item actor" data-item-id="{{item._id}}">
                             <div class="name">
                                 <div class="image-container">
                                     <div class="image" style="background-image: url('{{item.img}}')"></div>
@@ -57,7 +57,7 @@
                 </div>
                 <div class="items">
                     {{#each actor.data.weapons as |item|}}
-                        <div class="weapon item" data-item-id="{{item.id}}">
+                        <div class="weapon item" data-item-id="{{item._id}}">
                             <div class="name">
                                 <div class="image-container">
                                     <div class="image" style="background-image: url('{{item.img}}')"></div>
@@ -97,9 +97,9 @@
                     </div>
                 </div>
                 <div class="items">
-                    {{#each items as |item|}}
+                    {{#each actor.items as |item|}}
                         {{#if item.isArtifact}}
-                            <div class="artifact item" data-item-id="{{item.id}}">
+                            <div class="artifact item" data-item-id="{{item._id}}">
                                 <div class="name">
                                     <div class="image-container">
                                         <div class="image" style="background-image: url('{{item.img}}')"></div>
@@ -140,9 +140,9 @@
                     </div>
                 </div>
                 <div class="items">
-                    {{#each items as |item|}}
+                    {{#each actor.items as |item|}}
                         {{#if item.isEquipment}}
-                            <div class="equipment item" data-item-id="{{item.id}}">
+                            <div class="equipment item" data-item-id="{{item._id}}">
                                 <div class="name">
                                     <div class="image-container">
                                         <div class="image" style="background-image: url('{{item.img}}')"></div>

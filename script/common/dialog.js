@@ -19,7 +19,8 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon) 
     "attri_mods" : attri_mods,
     "roll_defaults": attri_defaults
   });
-
+  console.log(armor);
+  console.log(weapon);
   let dialog = new Dialog({
     title: getAttributeLabel(actor, attributeName),
     content: html,
