@@ -80,10 +80,8 @@ export class SymbaroumActorSheet extends ActorSheet {
     if (item === null) {
       return;
     }    
-    this.actor.deleteEmbeddedDocuments("Item", [ item.id ], { render:false } ).then( dummy => {
-      // Does nothing now in 0.8.1 due to actor refreshing
-      // I thought render:false would stop that
-      // div.slideUp(200, () => this.render(false));
+    div.slideUp(200, () => {
+      this.actor.deleteEmbeddedDocuments("Item", [ item.id ], { render:false });
     });
   }
 
@@ -111,7 +109,7 @@ export class SymbaroumActorSheet extends ActorSheet {
         break;
     }    
 
-    this.actor.updateEmbeddedDocuments("Item", [data], {render:false} );
+    this.actor.updateEmbeddedDocuments("Item", [data]); // Used to have render:false    
   }
 
   async _prepareActivateAbility(event) {
