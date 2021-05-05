@@ -487,7 +487,6 @@ export class SymbaroumItem extends Item {
         {reference: "loremaster", level: [1, 2, 3], function: loremaster},
         {reference: "medicus", level: [1, 2, 3], function: medicus},
         //{reference: "shieldfighter", level: [1, 2, 3], function: attackRoll},
-        {reference: "recovery", level: [1, 2, 3], function: recoveryPrepare},
         {reference: "strangler", level: [1, 2, 3], function: strangler},
         {reference: "witchsight", level: [1, 2, 3], function: witchsight}];
 
@@ -1562,7 +1561,7 @@ async function attackResult(rollData, functionStuff){
 
 async function formatRollString(rollDataElement, hasTarget, modifier){
     let rollString = `${rollDataElement.actingAttributeLabel} : (${rollDataElement.actingAttributeValue})`;
-    if(hasTarget && rollDataElement.targetAttributeLabel){
+    if(hasTarget){
         let attributeMod = 10 - rollDataElement.resistAttributeValue
         rollString += `  ⬅  ${rollDataElement.targetAttributeLabel} : (${attributeMod})`
     }
@@ -1610,30 +1609,12 @@ async function standardAbilityActivation(functionStuff) {
     await modifierDialog(functionStuff)
 }
 
-async function healing(healFormula, targetToken){
-    let healRoll = new Roll(healFormula).evaluate();
-    healRoll.toMessage();
-    let healed = Math.min(healRoll.total, targetToken.actor.data.data.health.toughness.max - targetToken.actor.data.data.health.toughness.value);
-    return({
-        hasDamage : true,
-        dmgFormula : game.i18n.localize('POWER_LAYONHANDS.CHAT_FINAL') + healFormula,
-        damageText : game.i18n.localize('POWER_LAYONHANDS.CHAT_FINAL') + healed.toString(),
-        damageTooltip : healRoll.result,
-        flagData : {
-            tokenId: targetToken.data._id,
-            toughnessChange: healed
-        }
-    })
-}
-
 async function standardPowerResult(rollData, functionStuff){
     let flagDataArray = functionStuff.flagDataArray ?? [];
     let haveCorruption = false;
     let corruptionText = "";
     let corruption;
     let introText;
-    let finalText = functionStuff.finalText ?? "";
-    let subText = functionStuff.subText ?? functionStuff.ability.name + " (" + functionStuff.powerLvl.lvlName + ")";
     if(functionStuff.isMaintained){
         introText = functionStuff.introTextMaintain ?? functionStuff.actor.data.name + game.i18n.localize('POWER.CHAT_INTRO_M') + functionStuff.ability.name + " \".";
     }
@@ -1666,7 +1647,7 @@ async function standardPowerResult(rollData, functionStuff){
     }
     let targetText = "";
     if(functionStuff.targetData.hasTarget){
-        targetText = functionStuff.targetText ?? game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.token.data.name;
+        targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.token.data.name;
         if (functionStuff.targetData.autoParams != ""){targetText += ": " + functionStuff.targetData.autoParams}
     }
 
@@ -1676,38 +1657,17 @@ async function standardPowerResult(rollData, functionStuff){
         introText: introText,
         introImg: functionStuff.actor.data.img,
         targetText: targetText,
-        subText: subText,
+        subText: functionStuff.ability.name + " (" + functionStuff.powerLvl.lvlName + ")",
         subImg: functionStuff.ability.img,
         hasRoll: hasRoll,
         rollString: rollString,
         rollResult: rollResult,
         resultText: resultText,
-        finalText: finalText,
+        finalText: "",
         haveCorruption: haveCorruption,
         corruptionText: corruptionText
     }
     if(functionStuff.autoParams != ""){templateData.subText += ", " + functionStuff.autoParams};
-
-/* if the power / ability have healing effects  */
-    if(functionStuff.healFormulaSucceed){
-        let healResult;
-        if(hasSucceed){
-            healResult = await healing(functionStuff.healFormulaSucceed, functionStuff.healedToken); 
-        }
-        else if(!hasSucceed && functionStuff.healFormulaFailed){
-            healResult = await healing(functionStuff.healFormulaFailed, functionStuff.healedToken); 
-        }
-        
-        if(healResult){
-            console.log(healResult)
-            templateData.hasDamage = healResult.hasDamage;
-            templateData.damageText = healResult.damageText;
-            templateData.dmgFormula = healResult.dmgFormula;
-            templateData.damageTooltip = healResult.damageTooltip;
-            templateData.damageFinalText = "";
-            flagDataArray.push(healResult.flagData);
-        }
-    }
 
     const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
     const chatData = {
@@ -2981,25 +2941,21 @@ async function layonhandsPrepare(ability, actor) {
         targetMandatory: true,
         checkMaintain: false,
         corruption: true,
-        tradition: ["witchcraft", "theurgy"]
+        tradition: ["witchcraft", "theurgy"],
+        resultFunction: layonhandsResult
     }
     
-    specificStuff.healFormulaSucceed = "1d6";
+    specificStuff.healFormula = "1d6";
     if(fsDefault.powerLvl.level > 1){
-        specificStuff.healFormulaSucceed = "1d8";
+        specificStuff.healFormula = "1d8";
         specificStuff.removeTargetEffect = ["icons/svg/poison.svg", "icons/svg/blood.svg"]
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    if(functionStuff.casterMysticAbilities.theurgy.level == 3 || functionStuff.casterMysticAbilities.blessings.level == 3 ){
-        functionStuff.healFormulaSucceed += " + 1d4";
-    }
 
     try{functionStuff.targetData = getTarget()} catch(error){
         ui.notifications.error(error);
         return;
     }
-    functionStuff.healedToken = functionStuff.targetData.token;
-    functionStuff.targetText = game.i18n.localize('ABILITY_MEDICUS.CHAT_TARGET') + functionStuff.targetData.token.data.name;
 
     if(fsDefault.powerLvl.level > 2){
         let layHandsDialogTemplate = `
@@ -3012,12 +2968,9 @@ async function layonhandsPrepare(ability, actor) {
                 touch: {
                     label: game.i18n.localize('POWER_LAYONHANDS.TOUCH'),
                     callback: (html) => {
-                        functionStuff.healFormulaSucceed = "1d12";
+                        functionStuff.healFormula = "1d12";
                         functionStuff.touch=true;
-                        if(functionStuff.casterMysticAbilities.theurgy.level == 3 || functionStuff.casterMysticAbilities.blessings.level == 3 ){
-                            functionStuff.healFormulaSucceed += " + 1d4";
-                        }
-                        modifierDialog(functionStuff);
+                        layonhandsResult(functionStuff);
                     }
                 }, 
 
@@ -3025,7 +2978,7 @@ async function layonhandsPrepare(ability, actor) {
                     label: game.i18n.localize('POWER_LAYONHANDS.REMOTE'), 
                     callback: (html) => {
                         functionStuff.touch=false;
-                        modifierDialog(functionStuff);
+                        layonhandsResult(functionStuff);
                     }
                 },
                 close: {
@@ -3035,7 +2988,91 @@ async function layonhandsPrepare(ability, actor) {
         }).render(true);
     }
     else{
-        modifierDialog(functionStuff);
+        layonhandsResult(functionStuff);
+    }
+}
+
+async function layonhandsResult(functionStuff) {
+    let flagDataArray= [];
+    let rollData = [];
+    let hasDamage = false;
+    let damageTooltip = "";
+    let dmgFormula = "";
+    let damageText = "";
+    rollData.push(await baseRoll(functionStuff.actor, functionStuff.castingAttributeName, null, null, functionStuff.favour, functionStuff.modifier));
+    let healed = 0;
+
+    if(functionStuff.casterMysticAbilities.theurgy.level == 3 || functionStuff.casterMysticAbilities.blessings.level == 3 ){
+        functionStuff.healFormula += " + 1d4";
+    }
+
+    if(rollData[0].hasSucceed){
+
+        let healRoll = new Roll(functionStuff.healFormula).evaluate();
+        healRoll.toMessage();
+        healed = Math.min(healRoll.total, functionStuff.targetData.actor.data.data.health.toughness.max - functionStuff.targetData.actor.data.data.health.toughness.value);
+        flagDataArray.push({
+            tokenId: functionStuff.targetData.token.data._id,
+            toughnessChange: healed
+        });
+        if(functionStuff.powerLvl.level > 1){   
+            flagDataArray.push({
+                tokenId: functionStuff.targetData.token.data._id,
+                removeEffect: "icons/svg/poison.svg"
+            },{
+                tokenId: functionStuff.targetData.token.data._id,
+                removeEffect: "icons/svg/blood.svg"
+            })
+        }
+        hasDamage = true;
+        dmgFormula = game.i18n.localize('POWER_LAYONHANDS.CHAT_FINAL') + functionStuff.healFormula;
+        damageText = game.i18n.localize('POWER_LAYONHANDS.CHAT_FINAL') + healed.toString();
+        damageTooltip += healRoll.result;
+    }
+
+    let corruption = await getCorruption(functionStuff);
+    let corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
+
+    flagDataArray.push({
+        tokenId: functionStuff.token.data._id,
+        corruptionChange: corruption.value
+    });
+
+    let templateData = {
+        targetData : functionStuff.targetData,
+        hasTarget : true,
+        introText: functionStuff.actor.data.name + game.i18n.localize('POWER_LAYONHANDS.CHAT_INTRO'),
+        introImg: functionStuff.actor.data.img,
+        targetText: game.i18n.localize('ABILITY_MEDICUS.CHAT_TARGET') + functionStuff.targetData.token.data.name,
+        subText: functionStuff.ability.name + ", " + functionStuff.powerLvl.lvlName,
+        subImg: functionStuff.ability.img,
+        hasRoll: true,
+        rollString: `${game.i18n.localize(rollData[0].actingAttributeLabel)} : (${rollData[0].actingAttributeValue})`,
+        rollResult : formatRollResult(rollData),
+        resultText: functionStuff.actor.data.name + game.i18n.localize('POWER_LAYONHANDS.CHAT_SUCCESS') + functionStuff.targetData.token.data.name,
+        finalText: "",
+        hasDamage: hasDamage,
+        damageText: damageText,
+        damageRollResult: "",
+        dmgFormula: dmgFormula,
+        damageRollMod: "",
+        damageTooltip: damageTooltip,
+        damageFinalText: "",
+        haveCorruption: true,
+        corruptionText: corruptionText
+    }
+
+    if(!rollData[0].hasSucceed){templateData.resultText = game.i18n.localize('POWER_LAYONHANDS.CHAT_FAILURE') + functionStuff.targetData.token.data.name}
+
+    
+    const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
+    const chatData = {
+        user: game.user._id,
+        content: html,
+    }
+    await ChatMessage.create(chatData);
+    if(flagDataArray.length > 0){
+        await createModifyTokenChatButton(flagDataArray);
     }
 }
 
@@ -3349,17 +3386,6 @@ async function unnoticeablePrepare(ability, actor) {
 
 // ********************************************* ABILITIES *****************************************************
 
-async function acrobatics(ability, actor) {
-    let fsDefault = await buildFunctionStuffDefault(ability, actor);
-let specificStuff = {
-    castingAttributeName: "quick",
-    combat: false,
-    modifier: actor.data.data.combat.impeding*-1
-}
-let functionStuff = Object.assign({}, fsDefault , specificStuff);
-await standardAbilityActivation(functionStuff)
-}
-
 async function alchemy(ability, actor) {
     let fsDefault = await buildFunctionStuffDefault(ability, actor);
     let specificStuff = {
@@ -3497,35 +3523,31 @@ async function loremaster(ability, actor) {
     ChatMessage.create(chatData);
 }
 
-async function medicus(ability, actor) {
-    let fsDefault = await buildFunctionStuffDefault(ability, actor);
+async function acrobatics(ability, actor) {
+        let fsDefault = await buildFunctionStuffDefault(ability, actor);
     let specificStuff = {
-        castingAttributeName: "cunning",
+        castingAttributeName: "quick",
         combat: false,
-        targetMandatory: true,
-        checkMaintain: false,
-        herbalCure: false,
-        introText: actor.data.name + game.i18n.localize('ABILITY_MEDICUS.CHAT_INTRO'),
-        resultTextFail: game.i18n.localize('ABILITY_MEDICUS.CHAT_FAILURE'),
-        resultTextSuccess: actor.data.name + game.i18n.localize('ABILITY_MEDICUS.CHAT_SUCCESS')
+        modifier: actor.data.data.combat.impeding*-1
     }
-    
-    specificStuff.healFormulaSucceed = "1d4";
-    specificStuff.removeTargetEffect = ["icons/svg/blood.svg"]
-
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
+    await standardAbilityActivation(functionStuff)
+}
 
-    try{functionStuff.targetData = getTarget()} catch(error){
-        ui.notifications.error(error);
-        return;
-    }
-    functionStuff.healedToken = functionStuff.targetData.token;
-    functionStuff.targetText = game.i18n.localize('ABILITY_MEDICUS.CHAT_TARGET') + functionStuff.targetData.token.data.name;
+function medicus(ability, actor) {
 
+    let targetData;
+    try{targetData = getTarget()} catch(error){
+        targetData = {hasTarget : false}
+    };
     let hCureDialogTemplate = `
     <h1> ${game.i18n.localize('ABILITY_MEDICUS.DIALOG')} </h1>
     `;
-    functionStuff.subText = functionStuff.ability.name + " (" + functionStuff.powerLvl.lvlName + ")";
+    let herbalCure = false;
+    let healFormula = "1d4";
+    let healFormulaMasterFailed = "1d4";
+    let powerLvl = getPowerLevel(ability);
+
     new Dialog({
         title: game.i18n.localize('ABILITY_MEDICUS.HERBALCURE'), 
         content: hCureDialogTemplate,
@@ -3533,37 +3555,37 @@ async function medicus(ability, actor) {
             chooseRem: {
                 label: game.i18n.localize('ABILITY_MEDICUS.HERBALCURE'),
                 callback: (html) => {                 
-                    functionStuff.herbalCure = true;
-                    functionStuff.subText += ", " + game.i18n.localize('ABILITY_MEDICUS.HERBALCURE');
-                    if(functionStuff.powerLvl.level == 1){
-                        functionStuff.healFormulaSucceed = "1d6"
+                    herbalCure = true;
+
+                    if(powerLvl.level == 1){
+                        healFormula = "1d6"
                     }
-                    else if(functionStuff.powerLvl.level == 2){
-                        functionStuff.healFormulaSucceed = "1d8"
+                    else if(powerLvl.level == 2){
+                        healFormula = "1d8"
                     }
                     else{
-                        functionStuff.healFormulaSucceed = "1d10";
-                        functionStuff.healFormulaFailed = "1d6";
+                        healFormula = "1d10";
+                        healFormulaMasterFailed = "1d6";
                     }
-                    modifierDialog(functionStuff);
+                    medicusResult(ability, actor, targetData, powerLvl, herbalCure, healFormula, healFormulaMasterFailed);
                 }
             }, 
 
             chooseNotRem: {
                 label: game.i18n.localize('ABILITY_MEDICUS.NOHERBALCURE'), 
-                callback: (html) => {
-                    functionStuff.subText += ", " + game.i18n.localize('ABILITY_MEDICUS.NOHERBALCURE');
-                    if(functionStuff.powerLvl.level == 1){
-                        functionStuff.healFormulaSucceed = "1d4"
+                callback: (html) => {             
+                    herbalCure = false;
+                    if(powerLvl.level == 1){
+                        healFormula = "1d4"
                     }
-                    else if(functionStuff.powerLvl.level == 2){
-                        functionStuff.healFormulaSucceed = "1d6"
+                    else if(powerLvl.level == 2){
+                        healFormula = "1d6"
                     }
                     else{
-                        functionStuff.healFormulaSucceed = "1d8";
-                        functionStuff.healFormulaFailed = "1d4";
+                        healFormula = "1d8";
+                        healFormulaMasterFailed = "1d4";
                     }
-                    modifierDialog(functionStuff);
+                    medicusResult(ability, actor, targetData, powerLvl, herbalCure, healFormula, healFormulaMasterFailed);
                 }
             },
             close: {
@@ -3580,8 +3602,6 @@ async function recoveryPrepare(ability, actor) {
         isMaintained: false,
         castingAttributeName: "resolute"
     }
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    functionStuff.healedToken = functionStuff.token;
 
     if(functionStuff.powerLvl.level == 2) {functionStuff.healFormulaSucceed = "1d6"}
     else if(functionStuff.powerLvl.level == 3) {functionStuff.healFormulaSucceed = "1d8"}
