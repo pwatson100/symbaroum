@@ -47,6 +47,26 @@ export class SymbaroumItem extends Item {
             R:"ACTION.REACTION",
             S:"ACTION.SPECIAL"
         }
+
+        
+        data.isTrait = data.type === "trait";
+        data.isAbility = data.type === "ability";
+        data.isMysticalPower = data.type === "mysticalPower";
+        data.isRitual = data.type === "ritual";
+        data.isBurden = data.type === "burden";
+        data.isBoon = data.type === "boon";
+        data.isPower = data.isTrait || data.isAbility || data.isMysticalPower || data.isRitual || data.isBurden || data.isBoon;
+        data.isWeapon = data.type === "weapon";
+        data.isArmor = data.type === "armor";
+        data.isEquipment = data.type === "equipment";
+        data.isArtifact = data.type === "artifact";
+        data.isGear = data.isWeapon || data.isArmor || data.isEquipment || data.isArtifact;
+
+        if(data.isGear) {
+            data.isActive = data.data.state === "active";
+            data.isEquipped = data.data.state === "equipped";
+        }
+
         if(data.type === "weapon"){
             data.data.pcDamage = "";
             data.data.npcDamage = 0;
@@ -65,6 +85,44 @@ export class SymbaroumItem extends Item {
                 data.data.power3.actionlabel = transl[data.data.power3.action];
             }
         }
+        if(data.isPower )
+            this._computeExperienceCost(data);
+    }
+
+    _computeExperienceCost(data) {
+        // console.log("computeExperienceCost "+JSON.stringify(data));
+
+        let expCost = 0;
+
+        if (data.isRitual) {
+            data.data.actions = "Ritual";
+        }
+        else if (data.isBurden) {
+            data.data.actions = "Burden";
+            expCost = -5 * data.data.level;
+        } else if (data.isBoon) {
+            data.data.actions = "Boon";            
+            expCost = 5 * data.data.level;
+        } else if (data.isPower) {
+			
+            let novice = "-";
+            let adept = "-";
+            let master = "-";
+            if (data.data.novice.isActive) {
+              novice = data.data.novice.action;
+              expCost += 10;
+            }
+            if (data.data.adept.isActive) { 
+              adept = data.data.adept.action;
+              expCost += 20;
+            }
+            if (data.data.master.isActive) {
+              master = data.data.master.action;
+              expCost += 30;
+            }
+            data.data.actions = `${novice}/${adept}/${master}`;
+        }
+        data.data.bonus.experience.cost = expCost;
     }
 
     _computeCombatData(data) {
@@ -163,7 +221,7 @@ export class SymbaroumItem extends Item {
         itemData.isArtifact = itemData.type === "artifact";
         const html = await renderTemplate("systems/symbaroum/template/chat/item.html", itemData);
         const chatData = {
-            user: game.user._id,
+            user: game.user.id,
             rollMode: game.settings.get("core", "rollMode"),
             content: html,
         };
@@ -1346,23 +1404,23 @@ async function attackResult(rollData, functionStuff){
         targetDies = true;
         damageFinalText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_DYING');
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data._id,
+            tokenId: functionStuff.targetData.token.id,
             toughnessChange: damageTot*-1
         }, {
-            tokenId: functionStuff.targetData.token.data._id,
+            tokenId: functionStuff.targetData.token.id,
             addEffect: "icons/svg/skull.svg",
             effectDuration: 1
         })
     }
     else{
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data._id,
+            tokenId: functionStuff.targetData.token.id,
             toughnessChange: damageTot*-1
         })
         if(pain){
             damageFinalText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_PAIN');
             flagDataArray.push({
-                tokenId: functionStuff.targetData.token.data._id,
+                tokenId: functionStuff.targetData.token.id,
                 addEffect: "icons/svg/falling.svg",
                 effectDuration: 1
             })
@@ -1456,7 +1514,7 @@ async function attackResult(rollData, functionStuff){
                 poisonedTimeLeft = await EffectCounter.findCounterValue(functionStuff.targetData.token, effect);  
                 if(NewPoisonRounds > poisonedTimeLeft){
                     flagDataArray.push({
-                        tokenId: functionStuff.targetData.token.data._id,
+                        tokenId: functionStuff.targetData.token.id,
                         modifyEffectDuration: "icons/svg/poison.svg",
                         effectDuration: NewPoisonRounds
                     })
@@ -1472,7 +1530,7 @@ async function attackResult(rollData, functionStuff){
           else{
             //new poisonning  
             flagDataArray.push({
-                tokenId: functionStuff.targetData.token.data._id,
+                tokenId: functionStuff.targetData.token.id,
                 addEffect: "icons/svg/poison.svg",
                 effectDuration: NewPoisonRounds
             });
@@ -1487,13 +1545,13 @@ async function attackResult(rollData, functionStuff){
         templateData.printBleed = true;
         templateData.bleedChat = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_BLEED') + "1d4";
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data._id,
+            tokenId: functionStuff.targetData.token.id,
             addEffect: "icons/svg/blood.svg"
         });
     }
     const html = await renderTemplate("systems/symbaroum/template/chat/combat.html", templateData);
     const chatData = {
-        user: game.user._id,
+        user: game.user.id,
         content: html,
     }
     let NewMessage = await ChatMessage.create(chatData);
@@ -1586,7 +1644,7 @@ async function standardPowerResult(rollData, functionStuff){
             corruption = await getCorruption(functionStuff);
             corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
             flagDataArray.push({
-                tokenId: functionStuff.token.data._id,
+                tokenId: functionStuff.token.id,
                 corruptionChange: corruption.value
             });
         }
@@ -1653,7 +1711,7 @@ async function standardPowerResult(rollData, functionStuff){
 
     const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
     const chatData = {
-        user: game.user._id,
+        user: game.user.id,
         content: html,
     }
     if(functionStuff?.gmOnlyChatResult){
@@ -1667,7 +1725,7 @@ async function standardPowerResult(rollData, functionStuff){
     if(hasSucceed && (functionStuff.addTargetEffect.length >0)){
         for(let effect of functionStuff.addTargetEffect){
         flagDataArray.push({
-                tokenId: functionStuff.targetData.token.data._id,
+                tokenId: functionStuff.targetData.token.id,
                 addEffect: effect,
                 effectDuration: 1
             });
@@ -1676,7 +1734,7 @@ async function standardPowerResult(rollData, functionStuff){
     if(hasSucceed && (functionStuff.addCasterEffect.length >0)){ 
         for(let effect of functionStuff.addCasterEffect){   
             flagDataArray.push({
-                tokenId: functionStuff.token.data._id,
+                tokenId: functionStuff.token.id,
                 addEffect: effect,
                 effectDuration: 1
             });
@@ -1685,7 +1743,7 @@ async function standardPowerResult(rollData, functionStuff){
     if(hasSucceed && (functionStuff.removeTargetEffect.length >0)){
         for(let effect of functionStuff.removeTargetEffect){
         flagDataArray.push({
-                tokenId: functionStuff.targetData.token.data._id,
+                tokenId: functionStuff.targetData.token.id,
                 removeEffect: effect
             });
         }
@@ -1693,7 +1751,7 @@ async function standardPowerResult(rollData, functionStuff){
     if(hasSucceed && (functionStuff.removeCasterEffect.length >0)){ 
         for(let effect of functionStuff.removeCasterEffect){   
             flagDataArray.push({
-                tokenId: functionStuff.token.data._id,
+                tokenId: functionStuff.token.id,
                 removeEffect: effect
             });
         }
@@ -1754,7 +1812,7 @@ async function anathemaResult(rollData, functionStuff){
     let corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
 
     flagDataArray.push({
-        tokenId: functionStuff.token.data._id,
+        tokenId: functionStuff.token.id,
         corruptionChange: corruption.value
     });
 
@@ -1778,7 +1836,7 @@ async function anathemaResult(rollData, functionStuff){
 
     const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
     const chatData = {
-        user: game.user._id,
+        user: game.user.id,
         content: html,
     }
     let NewMessage = await ChatMessage.create(chatData);
@@ -1863,10 +1921,10 @@ async function brimstoneCascadeResult(rollData, functionStuff){
         damageText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
         damageFinalText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_DYING');
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data._id,
+            tokenId: functionStuff.targetData.token.id,
             toughnessChange: damageTot*-1
         }, {
-            tokenId: functionStuff.targetData.token.data._id,
+            tokenId: functionStuff.targetData.token.id,
             addEffect: "icons/svg/skull.svg",
             effectDuration: 1
         })
@@ -1874,13 +1932,13 @@ async function brimstoneCascadeResult(rollData, functionStuff){
     else{
         damageText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data._id,
+            tokenId: functionStuff.targetData.token.id,
             toughnessChange: damageTot*-1
         })
         if(pain){
             damageFinalText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_PAIN');
             flagDataArray.push({
-                tokenId: functionStuff.targetData.token.data._id,
+                tokenId: functionStuff.targetData.token.id,
                 addEffect: "icons/svg/falling.svg",
                 effectDuration: 1
             })
@@ -1892,7 +1950,7 @@ async function brimstoneCascadeResult(rollData, functionStuff){
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
         flagDataArray.push({
-            tokenId: functionStuff.token.data._id,
+            tokenId: functionStuff.token.id,
             corruptionChange: corruption.value
         });
     }
@@ -1923,7 +1981,7 @@ async function brimstoneCascadeResult(rollData, functionStuff){
 
     const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
     const chatData = {
-        user: game.user._id,
+        user: game.user.id,
         content: html,
     }
     let NewMessage = await ChatMessage.create(chatData);
@@ -1981,7 +2039,7 @@ async function bendWillResult(rollData, functionStuff){
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
         flagDataArray.push({
-            tokenId: functionStuff.token.data._id,
+            tokenId: functionStuff.token.id,
             corruptionChange: corruption.value
         });
     }
@@ -2005,20 +2063,20 @@ async function bendWillResult(rollData, functionStuff){
 
     const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
     const chatData = {
-        user: game.user._id,
+        user: game.user.id,
         content: html,
     }
     let NewMessage = await ChatMessage.create(chatData);
     if(rollData[0].hasSucceed && !functionStuff.isMaintained){
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data._id,
+            tokenId: functionStuff.targetData.token.id,
             addEffect: "systems/symbaroum/asset/image/puppet.png",
             effectDuration: 1
         });
     }
     else if(!rollData[0].hasSucceed){   
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data._id,
+            tokenId: functionStuff.targetData.token.id,
             removeEffect: "systems/symbaroum/asset/image/puppet.png"
         });
     }
@@ -2086,10 +2144,10 @@ async function blackBoltResult(rollData, functionStuff){
             damageText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
             damageFinalText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_DYING');
             flagDataArray.push({
-                tokenId: functionStuff.targetData.token.data._id,
+                tokenId: functionStuff.targetData.token.id,
                 toughnessChange: damageTot*-1
             }, {
-                tokenId: functionStuff.targetData.token.data._id,
+                tokenId: functionStuff.targetData.token.id,
                 addEffect: "icons/svg/skull.svg",
                 effectDuration: 1
             })
@@ -2097,13 +2155,13 @@ async function blackBoltResult(rollData, functionStuff){
         else{
             damageText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
             flagDataArray.push({
-                tokenId: functionStuff.targetData.token.data._id,
+                tokenId: functionStuff.targetData.token.id,
                 toughnessChange: damageTot*-1
             })
             if(pain){
                 damageFinalText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_PAIN');
                 flagDataArray.push({
-                    tokenId: functionStuff.targetData.token.data._id,
+                    tokenId: functionStuff.targetData.token.id,
                     addEffect: "icons/svg/falling.svg",
                     effectDuration: 1
                 })
@@ -2116,7 +2174,7 @@ async function blackBoltResult(rollData, functionStuff){
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
         flagDataArray.push({
-            tokenId: functionStuff.token.data._id,
+            tokenId: functionStuff.token.id,
             corruptionChange: corruption.value
         });
     }
@@ -2147,7 +2205,7 @@ async function blackBoltResult(rollData, functionStuff){
 
     const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
     const chatData = {
-        user: game.user._id,
+        user: game.user.id,
         content: html,
     }
     let NewMessage = await ChatMessage.create(chatData);
@@ -2182,7 +2240,7 @@ async function blessedshieldResult(rollData, functionStuff){
     let corruption = await getCorruption(functionStuff);
     let corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
     flagDataArray.push({
-        tokenId: functionStuff.token.data._id,
+        tokenId: functionStuff.token.id,
         corruptionChange: corruption.value
     });
     let templateData = {
@@ -2207,11 +2265,11 @@ async function blessedshieldResult(rollData, functionStuff){
         let protectionFormula = "1d" + (2 + (2*functionStuff.powerLvl.level));
 
         flagDataArray.push({
-            tokenId: functionStuff.token.data._id,
+            tokenId: functionStuff.token.id,
             addEffect: "icons/svg/holy-shield.svg",
             effectDuration: 1
         },{
-            tokenId: functionStuff.token.data._id,
+            tokenId: functionStuff.token.id,
             addObject: "blessedshield",
             protection: protectionFormula
         })
@@ -2220,11 +2278,11 @@ async function blessedshieldResult(rollData, functionStuff){
         if(functionStuff.targets){
             for(let target of functionStuff.targets){
                 flagDataArray.push({
-                    tokenId: target.token.data._id,
+                    tokenId: target.token.id,
                     addEffect: "icons/svg/holy-shield.svg",
                     effectDuration: 1 
                 },{
-                    tokenId: target.token.data._id,
+                    tokenId: target.token.id,
                     addObject: "blessedshield",
                     protection: protectionFormula
                 })
@@ -2237,7 +2295,7 @@ async function blessedshieldResult(rollData, functionStuff){
     }
     const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
     const chatData = {
-        user: game.user._id,
+        user: game.user.id,
         content: html,
     }
     ChatMessage.create(chatData);
@@ -2311,7 +2369,7 @@ async function confusionResult(rollData, functionStuff){
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
         flagDataArray.push({
-            tokenId: functionStuff.token.data._id,
+            tokenId: functionStuff.token.id,
             corruptionChange: corruption.value
         });
     }
@@ -2335,20 +2393,20 @@ async function confusionResult(rollData, functionStuff){
 
     const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
     const chatData = {
-        user: game.user._id,
+        user: game.user.id,
         content: html,
     }
     let NewMessage = await ChatMessage.create(chatData);
     if(rollData[0].hasSucceed && !functionStuff.isMaintained){
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data._id,
+            tokenId: functionStuff.targetData.token.id,
             addEffect: "systems/symbaroum/asset/image/unknown-item.png",
             effectDuration: 1
         });
     }
     else if(!rollData[0].hasSucceed){   
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data._id,
+            tokenId: functionStuff.targetData.token.id,
             removeEffect: "systems/symbaroum/asset/image/unknown-item.png"
         });
     }
@@ -2396,7 +2454,7 @@ async function curseResult(rollData, functionStuff){
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
         flagDataArray.push({
-            tokenId: functionStuff.token.data._id,
+            tokenId: functionStuff.token.id,
             corruptionChange: corruption.value
         });
     }
@@ -2429,20 +2487,20 @@ async function curseResult(rollData, functionStuff){
 
     const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
     const chatData = {
-        user: game.user._id,
+        user: game.user.id,
         content: html,
     }
     ChatMessage.create(chatData);
     if(!functionStuff.isMaintained){
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data._id,
+            tokenId: functionStuff.targetData.token.id,
             addEffect: "icons/svg/sun.svg",
             effectDuration: 1
         });
     }
     else if(!rollData[0].hasSucceed){   
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data._id,
+            tokenId: functionStuff.targetData.token.id,
             removeEffect: "icons/svg/sun.svg"
         })
     }
@@ -2495,7 +2553,7 @@ async function entanglingvinesResult(rollData, functionStuff){
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
         flagDataArray.push({
-            tokenId: functionStuff.token.data._id,
+            tokenId: functionStuff.token.id,
             corruptionChange: corruption.value
         });
     }
@@ -2514,7 +2572,7 @@ async function entanglingvinesResult(rollData, functionStuff){
             }
             finalText =  game.i18n.localize('COMBAT.DAMAGE') + finalDamage.toString();
             flagDataArray.push({
-                tokenId: functionStuff.targetData.token.data._id,
+                tokenId: functionStuff.targetData.token.id,
                 toughnessChange: finalDamage*-1
             });
         }
@@ -2545,20 +2603,20 @@ async function entanglingvinesResult(rollData, functionStuff){
 
     const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
     const chatData = {
-        user: game.user._id,
+        user: game.user.id,
         content: html,
     }
     ChatMessage.create(chatData);
     if(!functionStuff.isMaintained && rollData[0].hasSucceed){
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data._id,
+            tokenId: functionStuff.targetData.token.id,
             addEffect: "systems/symbaroum/asset/image/vines.png",
             effectDuration: 1
         });
     }
     else if(!rollData[0].hasSucceed){   
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data._id,
+            tokenId: functionStuff.targetData.token.id,
             removeEffect: "systems/symbaroum/asset/image/vines.png",
         })
     }
@@ -2587,7 +2645,7 @@ async function holyAuraResult(rollData, functionStuff){
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
         flagDataArray.push({
-            tokenId: functionStuff.token.data._id,
+            tokenId: functionStuff.token.id,
             corruptionChange: corruption.value
         });
     }
@@ -2637,21 +2695,21 @@ async function holyAuraResult(rollData, functionStuff){
     }
     const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
     const chatData = {
-        user: game.user._id,
+        user: game.user.id,
         content: html,
     }
     ChatMessage.create(chatData);
 
     if(rollData[0].hasSucceed && !functionStuff.isMaintained){
         flagDataArray.push({
-            tokenId: functionStuff.token.data._id,
+            tokenId: functionStuff.token.id,
             addEffect: "icons/svg/aura.svg",
             effectDuration: 1
         })
     }
     else if(!rollData[0].hasSucceed && functionStuff.isMaintained){   
         flagDataArray.push({
-            tokenId: functionStuff.token.data._id,
+            tokenId: functionStuff.token.id,
             removeEffect: "icons/svg/aura.svg"
         })
     }
@@ -2692,7 +2750,7 @@ async function inheritWound(ability, actor){
     corruption = await getCorruption({tradition: tradition, casterMysticAbilities: casterMysticAbilities, actor: actor, attackFromPC: attackFromPC});
     corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
     flagDataArray.push({
-        tokenId: selectedToken.data._id,
+        tokenId: selectedToken.data.id,
         corruptionChange: corruption.value
     });
 
@@ -2724,10 +2782,10 @@ async function inheritWound(ability, actor){
         }
         templateData.finalText += targetData.token.data.name + game.i18n.localize('POWER_INHERITWOUND.CHAT_HEALED') + healed.toString() + ";\n" + actor.data.name + game.i18n.localize('POWER_INHERITWOUND.CHAT_DAMAGE') + inheritDamage.toString();
         flagDataArray.push({
-            tokenId: selectedToken.data._id,
+            tokenId: selectedToken.data.id,
             toughnessChange: inheritDamage*-1
         }, {
-            tokenId: targetData.token.data._id,
+            tokenId: targetData.token.id,
             toughnessChange: healed
         });
 
@@ -2744,11 +2802,11 @@ async function inheritWound(ability, actor){
                 }
                 //set status to caster
                 flagDataArray.push({
-                    tokenId: selectedToken.data._id,
+                    tokenId: selectedToken.data.id,
                     addEffect: "icons/svg/poison.svg",
                     effectDuration: timeLeft
                 }, {
-                    tokenId: targetData.token.data._id,
+                    tokenId: targetData.token.id,
                     removeEffect: "icons/svg/poison.svg"
                 })
             }
@@ -2762,11 +2820,11 @@ async function inheritWound(ability, actor){
                 }
                 //set status to caster
                 flagDataArray.push({
-                    tokenId: selectedToken.data._id,
+                    tokenId: selectedToken.data.id,
                     addEffect: "icons/svg/blood.svg",
                     effectDuration: timeLeft
                 }, {
-                    tokenId: targetData.token.data._id,
+                    tokenId: targetData.token.id,
                     removeEffect: "icons/svg/blood.svg"
                 })
             }
@@ -2779,7 +2837,7 @@ async function inheritWound(ability, actor){
     
     const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
     const chatData = {
-        user: game.user._id,
+        user: game.user.id,
         content: html,
     }
     ChatMessage.create(chatData);
@@ -2833,7 +2891,7 @@ async function larvaeBoilsResult(rollData, functionStuff){
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
         flagDataArray.push({
-            tokenId: functionStuff.token.data._id,
+            tokenId: functionStuff.token.id,
             corruptionChange: corruption.value
         });
     }
@@ -2888,28 +2946,28 @@ async function larvaeBoilsResult(rollData, functionStuff){
 
     const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
     const chatData = {
-        user: game.user._id,
+        user: game.user.id,
         content: html,
     }
     ChatMessage.create(chatData);
     if(!functionStuff.isMaintained){
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data._id,
+            tokenId: functionStuff.targetData.token.id,
             addEffect: "systems/symbaroum/asset/image/bug.png",
             effectDuration: 1
         }, {
-            tokenId: functionStuff.targetData.token.data._id,
+            tokenId: functionStuff.targetData.token.id,
             toughnessChange: finalDamage*-1
         });
     }
     else if(!rollData[0].hasSucceed){   
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data._id,
+            tokenId: functionStuff.targetData.token.id,
             removeEffect: "systems/symbaroum/asset/image/bug.png",
         })
     }else{
         flagDataArray.push({
-            tokenId: functionStuff.targetData.token.data._id,
+            tokenId: functionStuff.targetData.token.id,
             toughnessChange: finalDamage*-1
         });
     }
@@ -3083,10 +3141,10 @@ async function mindthrowResult(rollData, functionStuff){
                 damageText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
                 damageFinalText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_DYING');
                 flagDataArray.push({
-                    tokenId: functionStuff.targetData.token.data._id,
+                    tokenId: functionStuff.targetData.token.id,
                     toughnessChange: damageTot*-1
                 }, {
-                    tokenId: functionStuff.targetData.token.data._id,
+                    tokenId: functionStuff.targetData.token.id,
                     addEffect: "icons/svg/skull.svg",
                     effectDuration: 1
                 })
@@ -3094,13 +3152,13 @@ async function mindthrowResult(rollData, functionStuff){
             else{
                 damageText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
                 flagDataArray.push({
-                    tokenId: functionStuff.targetData.token.data._id,
+                    tokenId: functionStuff.targetData.token.id,
                     toughnessChange: damageTot*-1
                 })
                 if(pain){
                     damageFinalText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_PAIN');
                     flagDataArray.push({
-                        tokenId: functionStuff.targetData.token.data._id,
+                        tokenId: functionStuff.targetData.token.id,
                         addEffect: "icons/svg/falling.svg",
                         effectDuration: 1
                     })
@@ -3113,7 +3171,7 @@ async function mindthrowResult(rollData, functionStuff){
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
         flagDataArray.push({
-            tokenId: functionStuff.token.data._id,
+            tokenId: functionStuff.token.id,
             corruptionChange: corruption.value
         });
     }
@@ -3144,7 +3202,7 @@ async function mindthrowResult(rollData, functionStuff){
 
     const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
     const chatData = {
-        user: game.user._id,
+        user: game.user.id,
         content: html,
     }
     let NewMessage = await ChatMessage.create(chatData);
@@ -3193,7 +3251,7 @@ async function tormentingspiritsResult(rollData, functionStuff){
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
         flagDataArray.push({
-            tokenId: functionStuff.token.data._id,
+            tokenId: functionStuff.token.id,
             corruptionChange: corruption.value
         });
     }
@@ -3244,21 +3302,21 @@ async function tormentingspiritsResult(rollData, functionStuff){
 
     const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
     const chatData = {
-        user: game.user._id,
+        user: game.user.id,
         content: html,
     }
     ChatMessage.create(chatData);
     if(rollData[0].hasSucceed){
         if(functionStuff.powerLvl.level>1){
             flagDataArray.push({
-                tokenId: functionStuff.targetData.token.data._id,
+                tokenId: functionStuff.targetData.token.id,
                 attributeChange: finalDamage*-1,
                 attributeName: "resolute"
             });
         }
         if(!functionStuff.isMaintained){
             flagDataArray.push({
-                tokenId: functionStuff.targetData.token.data._id,
+                tokenId: functionStuff.targetData.token.id,
                 addEffect: "systems/symbaroum/asset/image/ghost.svg",
                 effectDuration: 1
             })
@@ -3267,7 +3325,7 @@ async function tormentingspiritsResult(rollData, functionStuff){
     else{
         if(!functionStuff.isMaintained){
             flagDataArray.push({
-                tokenId: functionStuff.targetData.token.data._id,
+                tokenId: functionStuff.targetData.token.id,
                 removeEffect: "systems/symbaroum/asset/image/ghost.svg",
             })
         }
@@ -3433,7 +3491,7 @@ async function loremaster(ability, actor) {
 
     const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
     const chatData = {
-        user: game.user._id,
+        user: game.user.id,
         content: html
     }
     ChatMessage.create(chatData);
@@ -3514,7 +3572,7 @@ async function medicus(ability, actor) {
         }
     }).render(true);
 }
- 
+
 async function recoveryPrepare(ability, actor) {
     let fsDefault = await buildFunctionStuffDefault(ability, actor);
     let specificStuff = {
@@ -3528,7 +3586,6 @@ async function recoveryPrepare(ability, actor) {
     if(functionStuff.powerLvl.level == 2) {functionStuff.healFormulaSucceed = "1d6"}
     else if(functionStuff.powerLvl.level == 3) {functionStuff.healFormulaSucceed = "1d8"}
     else {functionStuff.healFormulaSucceed = "1d4"}
-
     await standardAbilityActivation(functionStuff)
 }
 
@@ -3641,10 +3698,10 @@ async function strangler(ability, actor){
                         damageText = targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
                         damageFinalText = targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_DYING');
                         flagDataArray.push({
-                            tokenId: targetData.token.data._id,
+                            tokenId: targetData.token.id,
                             toughnessChange: damageTot*-1
                         }, {
-                            tokenId: targetData.token.data._id,
+                            tokenId: targetData.token.id,
                             addEffect: "icons/svg/skull.svg",
                             effectDuration: 1
                         })
@@ -3652,13 +3709,13 @@ async function strangler(ability, actor){
                     else{
                         damageText = targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
                         flagDataArray.push({
-                            tokenId: targetData.token.data._id,
+                            tokenId: targetData.token.id,
                             toughnessChange: damageTot*-1
                         })
                         if(pain){
                             damageFinalText = targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_PAIN');
                             flagDataArray.push({
-                                tokenId: targetData.token.data._id,
+                                tokenId: targetData.token.id,
                                 addEffect: "icons/svg/falling.svg",
                                 effectDuration: 1
                             })
@@ -3667,7 +3724,7 @@ async function strangler(ability, actor){
                     }
                     if(!isMaintained){
                         flagDataArray.push({
-                            tokenId: targetData.token.data._id,
+                            tokenId: targetData.token.id,
                             addEffect: "systems/symbaroum/asset/image/lasso.png",
                             effectDuration: 1
                         })
@@ -3678,7 +3735,7 @@ async function strangler(ability, actor){
                     hasDamage = false;
                     if(isMaintained){
                         flagDataArray.push({
-                            tokenId: targetData.token.data._id,
+                            tokenId: targetData.token.id,
                             removeEffect: "systems/symbaroum/asset/image/lasso.png"
                         })
                     }
@@ -3710,7 +3767,7 @@ async function strangler(ability, actor){
             
                 const chathtml = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
                 const chatData = {
-                    user: game.user._id,
+                    user: game.user.id,
                     content: chathtml,
                 }
                 let NewMessage = await ChatMessage.create(chatData);
@@ -3784,13 +3841,13 @@ async function witchsight(ability, actor) {
     
     const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
     const chatData = {
-        user: game.user._id,
+        user: game.user.id,
         content: html,
     }
 
     await ChatMessage.create(chatData);
     let flagData = {
-        tokenId: selectedToken.data._id,
+        tokenId: selectedToken.data.id,
         corruptionChange: corruptionRoll.total
     }
 

@@ -5,11 +5,22 @@ import { upgradeDice } from './roll.js';
 export class SymbaroumActor extends Actor {
   
     prepareData() {
+        console.log("In prepareData");
         super.prepareData();
+        // this.data.items.forEach(item => item.prepareFinalAttributes());
+        // let data = foundry.utils.deepClone(this.data);
+        console.log("Init data");
         this._initializeData(this.data);
+        console.log("Init data - complete");
         this.data.data.numRituals = 0;
-        this._computeItems(this.data);
+        console.log("Compute itemns");    
+        this._computeItems(this.data.items);
+        console.log("Compute items - complete");
+        console.log("Compute _computeSecondaryAttributes");
         this._computeSecondaryAttributes(this.data);
+        console.log("Compute _computeSecondaryAttributes");
+        console.log("Out prepareData");
+        this.data.isDataPrepared = true;
     }
 
     _initializeData(data) {
@@ -71,22 +82,15 @@ export class SymbaroumActor extends Actor {
         };
     }
 
-    _computeItems(data) {
-        for (let item of Object.values(data.items)) {
-            item.isTrait = item.type === "trait";
-            item.isAbility = item.type === "ability";
-            item.isMysticalPower = item.type === "mysticalPower";
-            item.isRitual = item.type === "ritual";
-            item.isBurden = item.type === "burden";
-            item.isBoon = item.type === "boon";
-            item.isPower = item.isTrait || item.isAbility || item.isMysticalPower || item.isRitual || item.isBurden || item.isBoon;
-            if (item.isPower) this._computePower(data, item);
-            item.isWeapon = item.type === "weapon";
-            item.isArmor = item.type === "armor";
-            item.isEquipment = item.type === "equipment";
-            item.isArtifact = item.type === "artifact";
-            item.isGear = item.isWeapon || item.isArmor || item.isEquipment || item.isArtifact
-            if (item.isGear) this._computeGear(data, item);
+    _computeItems(items) {
+        // for (let item of Object.values(items)) {
+        for( const [key, item] of items.entries() ) {
+            item.prepareData();
+            
+            if (item.data.isPower) this._computePower(this.data, item.data);
+            if (item.data.isGear) this._computeGear(this.data, item.data);
+
+
         }
     }
 
@@ -106,7 +110,7 @@ export class SymbaroumActor extends Actor {
         }
         
         let strong = data.data.attributes.strong.total;
-        let sturdy = this.items.filter(item => item.data.data.reference === "sturdy");
+        let sturdy = this.data.items.filter(item => item.data.reference === "sturdy");
         if(sturdy.length != 0){
             let sturdyLvl = getPowerLevel(sturdy[0]).level;
             if(sturdyLvl == 1) data.data.health.toughness.max = Math.ceil(strong*(1.5));
@@ -121,6 +125,11 @@ export class SymbaroumActor extends Actor {
         
         let corr = data.data.health.corruption;
         corr.value = corr.temporary + corr.longterm + corr.permanent;
+
+        console.log("Experience cost");
+        data.data.experience.spent = data.data.bonus.experience.cost - data.data.bonus.experience.value;
+        console.log("Experience total");
+        data.data.experience.available = data.data.experience.total - data.data.experience.artifactrr - data.data.experience.spent;
         
         let extraArmorBonus = this._getExtraArmorBonuses();
         let activeArmor = this._getActiveArmor(data, extraArmorBonus);
@@ -129,7 +138,7 @@ export class SymbaroumActor extends Actor {
         let totDefense = defense.attDefValue - activeArmor.impeding + data.data.bonus.defense;
 
         data.data.combat = {
-            id: activeArmor._id,
+            id: activeArmor.id,
             img: activeArmor.img,
             armor: activeArmor.name,
             protectionPc: activeArmor.pc,
@@ -148,13 +157,10 @@ export class SymbaroumActor extends Actor {
         }
         let attributeInit = data.data.initiative.attribute.toLowerCase();
         data.data.initiative.value = ((data.data.attributes[attributeInit].total) + (data.data.attributes.vigilant.total /100)) ;
-        
-        data.data.experience.spent = data.data.bonus.experience.cost - data.data.bonus.experience.value;
-        data.data.experience.available = data.data.experience.total - data.data.experience.artifactrr - data.data.experience.spent;
+        console.log("out _computeSecondaryAttributes "); // +JSON.stringify(data));
     }
 
     _computePower(data, item) {
-        let expCost = 0;
         if (item.isRitual) {
             item.data.actions = "Ritual";
             this.data.data.numRituals = this.data.data.numRituals + 1;
@@ -162,39 +168,12 @@ export class SymbaroumActor extends Actor {
             // This needs to check if running with alternative rules for additional rituals, APG p.102                
               expCost = game.settings.get('symbaroum', 'optionalMoreRituals') ? 10 : 0;
             }
-        } else if (item.isBurden) {
-            item.data.actions = "Burden";
-            expCost = -5 * item.data.level;
-        } else if (item.isBoon) {
-            item.data.actions = "Boon";            
-            expCost = 5 * item.data.level;
-        } else {
-			
-            let novice = "-";
-            let adept = "-";
-            let master = "-";
-            if (item.data.novice.isActive) {
-              novice = item.data.novice.action;
-              expCost += 10;
-            }
-            if (item.data.adept.isActive) { 
-              adept = item.data.adept.action;
-              expCost += 20;
-            }
-            if (item.data.master.isActive) {
-              master = item.data.master.action;
-              expCost += 30;
-            }
-            item.data.actions = `${novice}/${adept}/${master}`;
         }
-        item.data.bonus.experience.cost = expCost;
         
         this._addBonus(data, item);
     }
 
     _computeGear(data, item) {
-        item.isActive = item.data.state === "active";
-        item.isEquipped = item.data.state === "equipped";
         if (item.isActive) {
             this._addBonus(data, item);
         }
@@ -204,69 +183,70 @@ export class SymbaroumActor extends Actor {
         let weaponArray = [];
         // check for abilities that gives bonuses to rolls
         let ironFistLvl = 0;
-        let ironFist = this.items.filter(element => element.data.data?.reference === "ironfist");
+        let ironFist = this.data.items.filter(element => element.data?.reference === "ironfist");
         if(ironFist.length > 0){
             let powerLvl = getPowerLevel(ironFist[0]);
             ironFistLvl = powerLvl.level;
         }
         let marksmanLvl = 0;
-        let marksman = this.items.filter(element => element.data.data?.reference === "marksman");
+        let marksman = this.data.items.filter(element => element.data?.reference === "marksman");
         if(marksman.length > 0){
             let powerLvl = getPowerLevel(marksman[0]);
             marksmanLvl = powerLvl.level;
         }
         let polearmmasteryLvl = 0;
-        let polearmmastery = this.items.filter(element => element.data.data?.reference === "polearmmastery");
+        let polearmmastery = this.data.items.filter(element => element.data?.reference === "polearmmastery");
         if(polearmmastery.length > 0){
             let powerLvl = getPowerLevel(polearmmastery[0]);
             polearmmasteryLvl = powerLvl.level;
         }
         let shieldfighterLvl = 0;
-        let shieldfighter = this.items.filter(element => element.data.data?.reference === "shieldfighter");
+        let shieldfighter = this.data.items.filter(element => element.data?.reference === "shieldfighter");
         if(shieldfighter.length > 0){
-            let haveShieldEquipped = this.items.filter(element => element.data.data?.reference === "shield" && element._data.isActive)
+            let haveShieldEquipped = this.data.items.filter(element => element.data?.reference === "shield" && element.data.isActive)
             if(haveShieldEquipped.length > 0){
                 let powerLvl = getPowerLevel(shieldfighter[0]);
                 shieldfighterLvl = powerLvl.level;
             }
         }
         let twohandedforceLvl = 0;
-        let twohandedforce = this.items.filter(element => element.data.data?.reference === "twohandedforce");
+        let twohandedforce = this.data.items.filter(element => element.data?.reference === "twohandedforce");
         if(twohandedforce.length > 0){
             let powerLvl = getPowerLevel(twohandedforce[0]);
             twohandedforceLvl = powerLvl.level;
         }
         let robustLvl = 0;
-        let robust = this.items.filter(element => element.data.data?.reference === "robust");
+        let robust = this.data.items.filter(element => element.data?.reference === "robust");
         if(robust.length > 0){
             let powerLvl = getPowerLevel(robust[0]);
             robustLvl = powerLvl.level;
         }
         let naturalweaponLvl = 0;
-        let naturalweapon = this.items.filter(element => element.data.data.reference === "naturalweapon");
+        let naturalweapon = this.data.items.filter(element => element.data.reference === "naturalweapon");
         if(naturalweapon.length > 0){
             naturalweaponLvl = getPowerLevel(naturalweapon[0]).level;
         }
         let naturalwarriorLvl = 0;
-        let naturalwarrior = this.items.filter(element => element.data.data.reference === "naturalwarrior");
+        let naturalwarrior = this.data.items.filter(element => element.data.reference === "naturalwarrior");
         if(naturalwarrior.length > 0){
             naturalwarriorLvl = getPowerLevel(naturalwarrior[0]).level;
         }
         let flagBerserk = this.getFlag(game.system.id, 'berserker');
 
         // check for abilities that changes attack attribute
-        let dominate = this.items.filter(element => element.data.data?.reference === "dominate");
-        let feint = this.items.filter(element => element.data.data?.reference === "feint");
-        let knifeplay = this.items.filter(element => element.data.data?.reference === "knifeplay");
-        let sixthsense = this.items.filter(element => element.data.data?.reference === "sixthsense");
+        let dominate = this.data.items.filter(element => element.data?.reference === "dominate");
+        let feint = this.data.items.filter(element => element.data?.reference === "feint");
+        let knifeplay = this.data.items.filter(element => element.data?.reference === "knifeplay");
+        let sixthsense = this.data.items.filter(element => element.data?.reference === "sixthsense");
         let tacticianLvl = 0;
-        let tactician = this.items.filter(element => element.data.data?.reference === "tactician");
+        let tactician = this.data.items.filter(element => element.data?.reference === "tactician");
         if(tactician.length > 0){
             tacticianLvl = getPowerLevel(tactician[0]).level;
         }
 
         for(let item of activeWeapons){
             let attribute = item.data.data.attribute;
+            
             let tooltip = "";
             let baseDamage = item.data.data.baseDamage;
             if( baseDamage === undefined) {
@@ -370,7 +350,7 @@ export class SymbaroumActor extends Actor {
                     }
                 }
                 if(item.data.data.reference === "thrown"){
-                    let steelthrow = this.items.filter(element => element.data.data.reference === "steelthrow");
+                    let steelthrow = this.data.items.filter(element => element.data.data.reference === "steelthrow");
                     if(steelthrow.length > 0){
                         let newdamage = upgradeDice(baseDamage, 1);
                         baseDamage = newdamage;
@@ -423,20 +403,20 @@ export class SymbaroumActor extends Actor {
                 npcDamage+= 1;
                 tooltip += game.i18n.localize("QUALITY.DEEPIMPACT") + ", ";
             }
-            let itemID = item.data._id;
+            let itemID = item.id;
             weaponArray.push({
-                _id: itemID,
+                id: itemID,
                 sort: item.data.sort,
                 name : item.data.name,
                 img: item.data.img,
                 attribute: attribute,
                 attributeLabel: this.data.data.attributes[attribute].label, 
                 tooltip : tooltip,
-                isActive: item._data.isActive,
-                isEquipped: item._data.isEquipped,
-                reference: item.data.data.reference, 
-                isMelee: item.data.data.isMelee, 
-                isDistance: item.data.data.isDistance,
+                isActive: item.data.isActive,
+                isEquipped: item.data.isEquipped,
+                reference: item.data.reference, 
+                isMelee: item.data.isMelee, 
+                isDistance: item.data.isDistance,
                 qualities: item.data.data.qualities,
                 damage: {
                     base: baseDamage, 
@@ -451,6 +431,8 @@ export class SymbaroumActor extends Actor {
     }
     
     _evaluateProtection(item, extraArmorBonus) {
+        console.log("_evaluateProtection ");
+
         let tooltip = "";
         let protection = item.data.data.baseProtection;
         if( protection === undefined) {
@@ -463,11 +445,11 @@ export class SymbaroumActor extends Actor {
             if(item.data.data.bonusProtection.charAt(0) === '+' ) { 
                 plus = "";
             }
-            bonusProtection = "+" + item.data.data.bonusProtection;
+            bonusProtection = plus + item.data.data.bonusProtection;
         }
         if(protection != "0" || bonusProtection == "")
         {
-            let manatarms = this.items.filter(element => element.data.data?.reference === "manatarms");
+            let manatarms = this.items.filter(element => element.data?.reference === "manatarms");
             if(manatarms.length > 0){
                 let powerLvl = getPowerLevel(manatarms[0]);
                 let newprot = upgradeDice(protection, 1);
@@ -477,14 +459,14 @@ export class SymbaroumActor extends Actor {
                     impeding = 0;
                 }
             }
-            let naturalarmor = this.items.filter(element => element.data.data?.reference === "armored");
+            let naturalarmor = this.items.filter(element => element.data?.reference === "armored");
             if(naturalarmor.length > 0){
                 let powerLvl = getPowerLevel(naturalarmor[0]);
                 let newprot = upgradeDice(protection, powerLvl.level -1);
                 protection = newprot;
                 tooltip += game.i18n.localize("TRAIT_LABEL.ARMORED") + " (" + powerLvl.lvlName + "), ";
             }
-            let robust = this.items.filter(element => element.data.data?.reference === "robust");
+            let robust = this.items.filter(element => element.data?.reference === "robust");
             if(robust.length > 0){
                 let powerLvl = getPowerLevel(robust[0]);
                 if(powerLvl.level == 2){
@@ -531,24 +513,25 @@ export class SymbaroumActor extends Actor {
             pcProt += "+1";
             npcProt+= 1;
         }
-        return({
-            _id: item.data._id,
-            name: item.data.name,
+        return( {
+            _id: item.id,
+            id: item.id,
+            name: item.name,
             base: protection,
             bonus: bonusProtection, 
             pc: pcProt, 
             npc: npcProt,
             tooltip: tooltip,
             impeding: impeding,
-            isActive: item._data.isActive,
-            isEquipped: item._data.isEquipped, 
-            img: item.data.img})
+            isActive: item.data.isActive,
+            isEquipped: item.data.isEquipped, 
+            img: item.img} );
     }
 
     _getDefenseValue(data, activeArmor){
         let attributeDef = "quick";
         let attDefValue = data.data.attributes[attributeDef].total;
-        let sixthsense = this.items.filter(element => element.data.data?.reference === "sixthsense");
+        let sixthsense = this.data.items.filter(element => element.data?.reference === "sixthsense");
         if(sixthsense.length > 0){
             let sixthsenseLvl = getPowerLevel(sixthsense[0]).level;
             if(sixthsenseLvl >1 && data.data.attributes.vigilant.total > data.data.attributes[attributeDef].total){
@@ -556,7 +539,7 @@ export class SymbaroumActor extends Actor {
                 attDefValue = data.data.attributes[attributeDef].total
             }
         }
-        let tactician = this.items.filter(element => element.data.data?.reference === "tactician");
+        let tactician = this.data.items.filter(element => element.data?.reference === "tactician");
         if(tactician.length > 0){
             let tacticianLvl = getPowerLevel(tactician[0]).level;
             if(tacticianLvl >1 && data.data.attributes.cunning.total > data.data.attributes[attributeDef].total){
@@ -564,7 +547,7 @@ export class SymbaroumActor extends Actor {
                 attDefValue = data.data.attributes[attributeDef].total
             }
         }
-        let feint = this.items.filter(element => element.data.data?.reference === "feint");
+        let feint = this.data.items.filter(element => element.data?.reference === "feint");
         if(feint.length > 0){
             let feintLvl = getPowerLevel(feint[0]).level;
             if(feintLvl >1 && data.data.attributes.discreet.total > data.data.attributes[attributeDef].total){
@@ -582,24 +565,24 @@ export class SymbaroumActor extends Actor {
             defMsg = `${game.i18n.localize("ABILITY_LABEL.BERSERKER")} 5`;
         }
         defMsg += `<br/>${game.i18n.localize("ARMOR.IMPEDING")}(${-1 * activeArmor.impeding})<br/>${data.data.bonus.defense_msg}`;
-        let robust = this.items.filter(element => element.data.data?.reference === "robust");
+        let robust = this.data.items.filter(element => element.data?.reference === "robust");
         if(robust.length > 0){
             let powerLvl = getPowerLevel(robust[0]);
             attDefValue -=  powerLvl.level + 1;
             defMsg += `<br/>${game.i18n.localize("TRAIT_LABEL.ROBUST")}(${-1 * (powerLvl.level + 1)})`;
         }
 
-        let shieldfighter = this.items.filter(element => element.data.data?.reference === "shieldfighter");
+        let shieldfighter = this.data.items.filter(element => element.data?.reference === "shieldfighter");
         if(shieldfighter.length > 0){
-            let haveShieldEquipped = this.items.filter(element => element.data.data?.reference === "shield" && element._data.isActive)
+            let haveShieldEquipped = this.data.items.filter(element => element.data?.reference === "shield" && element.data.isActive)
             if(haveShieldEquipped.length > 0){
                 attDefValue += 1
                 defMsg += `<br/>${game.i18n.localize("ABILITY_LABEL.SHIELD_FIGHTER")}(+1)`;
             }
         }
-        let stafffighting = this.items.filter(element => element.data.data?.reference === "stafffighting");
+        let stafffighting = this.data.items.filter(element => element.data?.reference === "stafffighting");
         if(stafffighting.length > 0){
-            let haveLongEquipped = this.items.filter(element => element._data.isWeapon && element.data.data?.qualities.long && element._data.isActive)
+            let haveLongEquipped = this.data.items.filter(element => element.data.isWeapon && element.data?.qualities.long && element.data.isActive)
             if(haveLongEquipped.length > 0){
                 attDefValue += 1
                 defMsg += `<br/>${game.i18n.localize("ABILITY_LABEL.STAFF_FIGHTING")}(+1)`;
@@ -619,7 +602,7 @@ export class SymbaroumActor extends Actor {
             holy: 1,
             mysticalWeapon: 1
         }
-        let undead = this.items.filter(element => element.data.data?.reference === "undead");
+        let undead = this.data.items.filter(element => element.data?.reference === "undead");
         if(undead.length > 0){
             let undeadLvl = getPowerLevel(undead[0]).level;
             if(undeadLvl >1){
@@ -630,7 +613,7 @@ export class SymbaroumActor extends Actor {
                 damageProt.mystic = 0.5;
             }
         }
-        let spiritform = this.items.filter(element => element.data.data?.reference === "spiritform");
+        let spiritform = this.data.items.filter(element => element.data?.reference === "spiritform");
         if(spiritform.length > 0){
             let spiritformLvl = getPowerLevel(spiritform[0]).level;
             if(spiritformLvl >0){
@@ -646,7 +629,7 @@ export class SymbaroumActor extends Actor {
                 damageProt.normal = 0;
             }
         }
-        let swarm = this.items.filter(element => element.data.data?.reference === "swarm");
+        let swarm = this.data.items.filter(element => element.data?.reference === "swarm");
         if(swarm.length > 0){
             let swarmLvl = getPowerLevel(swarm[0]).level;
             if(swarmLvl >0){
@@ -670,9 +653,9 @@ export class SymbaroumActor extends Actor {
     //get all bonus armors (blessed shield, ect)
     _getExtraArmorBonuses() {
         let extraArmorBonus = "";
-        let armorList = this.items.filter(element => element._data.isArmor);
+        let armorList = this.data.items.filter(element => element.data.isArmor);
         for(let armor of armorList){
-            if(armor.data.data.baseProtection == "0" && armor.data.data.bonusProtection != "" && armor._data.isActive){
+            if(armor.data.data.baseProtection == "0" && armor.data.data.bonusProtection != "" && armor.data.isActive){
                 if(extraArmorBonus != ""){extraArmorBonus += "+"};
                 extraArmorBonus += armor.data.data.bonusProtection //+ "["+ armor.data.name +"]"
             }
@@ -683,48 +666,52 @@ export class SymbaroumActor extends Actor {
     _getActiveArmor(data, extraArmorBonus) {
         let wearArmor;
         data.data.armors = [];
-        let armorList = this.items.filter(element => element._data.isArmor);
+        let armorList = this.data.items.filter(element => element.data.isArmor);
+        // for( const [key, armor] of this.data.items.entries() ) {
         for(let armor of armorList){
+
             let armorData = this._evaluateProtection(armor, extraArmorBonus);
             data.data.armors.push(armorData);
-            if(armorData.isActive && (armor.data.data.baseProtection != "0" || armor.data.data.bonusProtection == "")){
+            if(armorData.isActive && (armor.data.baseProtection != "0" || armor.data.bonusProtection == "")){
                 wearArmor = armorData;
             }
         }
         if(typeof wearArmor == 'undefined'){
             let noArmor = this._evaluateProtection({
-                data: {
-                    _id: null,
+                    id: null,
                     name: "No Armor",
                     img:"icons/equipment/chest/shirt-simple-white.webp",
                     data: {
-                        baseProtection: "0",
-                        bonusProtection: "",
-                        impeding: 0,
-                        qualities: {
-                            flexible: false,
-                            cumbersome: false,
-                            concealed: false,
-                            reinforced: false,
-                            hallowed: false,
-                            retributive: false,
-                            desecrated: false
-                        }
+                        data: {
+                            baseProtection: "0",
+                            bonusProtection: "",
+                            impeding: 0,
+                            qualities: {
+                                flexible: false,
+                                cumbersome: false,
+                                concealed: false,
+                                reinforced: false,
+                                hallowed: false,
+                                retributive: false,
+                                desecrated: false
+                            
+                            }
+                        },
+                        type:"armor",
+                        isArmor: true,
+                        isActive: true, 
+                        isEquipped: false
                     }
-                },
-                _data: {
-                    isActive: true, 
-                    isEquipped: false
-                }
-            }, extraArmorBonus)
+
+                }, extraArmorBonus);
             data.data.armors.push(noArmor);
-            wearArmor = noArmor
+            wearArmor = noArmor;
         }
         return(wearArmor)
     }
 
     _getWeapons(data) {
-        let weaponArray = this.items.filter(element => element._data.isWeapon);
+        let weaponArray = this.data.items.filter(element => element.data.isWeapon);
         return(weaponArray)
     }
 
@@ -736,6 +723,7 @@ export class SymbaroumActor extends Actor {
     }
 
     _addBonus(data, item) {
+
       let currentBonus = data.data.bonus;
       let currentBonusToughness = currentBonus.toughness;
       let currentBonusCorruption = currentBonus.corruption;
@@ -788,5 +776,22 @@ export class SymbaroumActor extends Actor {
 
     async rollAttribute(attributeName) {
         await prepareRollAttribute(this, attributeName, null, null);
+    }
+
+    async _preCreate(data, options, user) {
+        await super._preCreate(data, options, user);
+
+        data.token.bar1.attribute = 'health.toughness';
+        data.token.bar2.attribute = 'combat.defense';
+        data.token.displayName = CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER;
+        data.token.displayBars = CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER;
+        data.token.disposition = CONST.TOKEN_DISPOSITIONS.NEUTRAL;
+        data.token.name = this.name;
+        data.img = 'systems/symbaroum/asset/image/unknown-actor.png';
+
+        if (this.type === 'player') {
+            data.token.vision = true;
+            data.token.actorLink = true;
+        }        
     }
 }
