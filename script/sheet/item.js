@@ -4,6 +4,14 @@ export class SymbaroumItemSheet extends ItemSheet {
     html.find(".activate-ability").click(async ev => await this._prepareActivateAbility(ev));
   }
 
+  getData() {
+    return { 
+      id:this.item.id,
+      item:foundry.utils.deepClone(this.item.data),
+      data: foundry.utils.deepClone(this.item.data.data)
+    };
+  }
+
   _getHeaderButtons() {
     let buttons = super._getHeaderButtons();
     buttons = [

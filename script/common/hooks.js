@@ -18,8 +18,8 @@ import { sendDevMessage } from './devmsg.js';
 
 
 Hooks.once('init', () => {
-  CONFIG.Actor.entityClass = SymbaroumActor;
-  CONFIG.Item.entityClass = SymbaroumItem;
+  CONFIG.Actor.documentClass = SymbaroumActor;
+  CONFIG.Item.documentClass = SymbaroumItem;
   Actors.unregisterSheet('core', ActorSheet);
   Actors.registerSheet('symbaroum', PlayerSheet2, { types: ['player'], makeDefault: true });
   Actors.registerSheet('symbaroum', PlayerSheet, { types: ['player'], makeDefault: false });
@@ -149,7 +149,8 @@ Hooks.once('ready', () => {
   showReleaseNotes();
 });
 
-Hooks.on('preCreateActor', (createData) => {
+Hooks.on('preCreateActor', (doc, createData, options, userid) => {
+  
   mergeObject(createData, {
     'token.bar1': { attribute: 'health.toughness' },
     'token.bar2': { attribute: 'combat.defense' },
@@ -158,9 +159,8 @@ Hooks.on('preCreateActor', (createData) => {
     'token.disposition': CONST.TOKEN_DISPOSITIONS.NEUTRAL,
     'token.name': createData.name,
   });
-  if (!createData.img) {
-    createData.img = 'systems/symbaroum/asset/image/unknown-actor.png';
-  }
+
+  createData.img = 'systems/symbaroum/asset/image/unknown-actor.png';
   if (createData.type === 'player') {
     createData.token.vision = true;
     createData.token.actorLink = true;
@@ -193,7 +193,7 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
     await html.find('#applyEffect').click(async () => {
       for (let flagData of flagDataArray) {
         if (flagData.tokenId) {
-          let token = canvas.tokens.objects.children.find((token) => token.data._id === flagData.tokenId);
+          let token = canvas.tokens.objects.children.find((token) => token.data.id === flagData.tokenId);
           let statusCounterMod = false;
           if (game.modules.get('statuscounter')?.active) {
             statusCounterMod = true;
@@ -316,7 +316,7 @@ async function showReleaseNotes()
         await oldReleaseNotes.delete();        
       }
 
-      await game.journal.importFromCollection(`${newReleasePack.metadata.system}.${newReleasePack.metadata.name}`, newReleaseNotes._id);
+      await game.journal.importFromCollection(`${newReleasePack.metadata.system}.${newReleasePack.metadata.name}`, newReleaseNotes.id);
       let newReleaseJournal = game.journal.getName(newReleaseNotes.name);
 
       await newReleaseJournal.setFlag('symbaroum', 'ver', newVer);

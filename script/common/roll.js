@@ -91,7 +91,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   };
   const html = await renderTemplate('systems/symbaroum/template/chat/roll.html', rollData);
   let chatData = {
-    user: game.user._id,
+    user: game.user.id,
     speaker: {
 			actor: actor.id
 	},
@@ -131,7 +131,7 @@ export async function deathRoll(sheet) {
   };
   const html = await renderTemplate('systems/symbaroum/template/chat/death.html', rollData);
   let chatData = {
-    user: game.user._id,
+    user: game.user.id,
     rollMode: game.settings.get('core', 'rollMode'),
     content: html,
   };
@@ -276,7 +276,7 @@ will be intercepted by a hook (see hook.js)
 The actions to do on the token and its actor have to be detailled in the actionsData object:
 * @param actionsDataArray is an array of actionData
 ActionData = {
-    tokenId: {string} the id of the token that will be modified (ex: token.data._id),
+    tokenId: {string} the id of the token that will be modified (ex: token.data.id),
     
 To add a status effect    
     addEffect: {string}  Path to the icon (ex:"icons/svg/daze.svg"),
@@ -298,7 +298,7 @@ export async function createModifyTokenChatButton(actionsDataArray){
   let gmList =  ChatMessage.getWhisperRecipients('GM');
   if(gmList.length > 0){
     const chatData = {
-        user: game.user._id,
+        user: game.user.id,
         content: html,
         whisper: gmList,
         blind: true
