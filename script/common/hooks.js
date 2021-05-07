@@ -291,9 +291,10 @@ async function showReleaseNotes()
       const releaseNoteName = "Symbaroum System guide EN";
       const releasePackLabel = "Symbaroum for FVTT system user guides";
 
+      console.log("Bithir is here");
       let currentVer = '0';
       let oldReleaseNotes = game.journal.getName(releaseNoteName);
-      if(oldReleaseNotes !== null && oldReleaseNotes.getFlag('symbaroum', 'ver') !== undefined) {
+      if(oldReleaseNotes !== undefined && oldReleaseNotes !== null && oldReleaseNotes.getFlag('symbaroum', 'ver') !== undefined) {
         currentVer = oldReleaseNotes.getFlag('symbaroum', 'ver');
       }
       if( newVer === currentVer ) {
@@ -303,6 +304,7 @@ async function showReleaseNotes()
 
       let newReleasePack = game.packs.find(p => p.metadata.label === releasePackLabel);
       if( newReleasePack === null) {
+        console.log("No pack found");
         // This is bad - the symbaroum pack does not exist in the system packages
         return;
       }
@@ -312,7 +314,7 @@ async function showReleaseNotes()
       console.log("Found new release notes in the compendium pack");
 
       // Don't delete until we have new release Pack
-      if( newReleaseNotes !== undefined && newReleaseNotes !== null && oldReleaseNotes !== null ) { 
+      if( newReleaseNotes !== undefined && newReleaseNotes !== null && oldReleaseNotes !== null && oldReleaseNotes !== undefined ) { 
         await oldReleaseNotes.delete();        
       }
 
@@ -328,7 +330,9 @@ async function showReleaseNotes()
       await newReleaseJournal.show();
     
 
-    } catch (error) {} // end of try
+    } catch (error) {
+      console.log(error);
+    } // end of try
   } // end of if(isgm)
 } // end of function
 
