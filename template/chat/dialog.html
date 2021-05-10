@@ -1,21 +1,55 @@
 <div class="symbaroum dialog">
+	{{#if hasTarget}}
     <div class="attribute">
-        <label>{{localize "DIALOG.ATTRIBUTE"}}</label>
-        <select id="modifier">
+        <label for="targetAttribute">{{localize "DIALOG.VERSUS"}}</label>
+        <select id="targetAttribute">
+            {{#select roll_defaults.targetAttributeName}}
             <option value="custom">{{localize "ATTRIBUTE.CUSTOM"}}</option>
-            <option value="defense">{{localize "ARMOR.DEFENSE"}}</option>
-            <option value="accurate">{{localize "ATTRIBUTE.ACCURATE"}}</option>
-            <option value="cunning">{{localize "ATTRIBUTE.CUNNING"}}</option>
-            <option value="discreet">{{localize "ATTRIBUTE.DISCREET"}}</option>
-            <option value="persuasive">{{localize "ATTRIBUTE.PERSUASIVE"}}</option>
-            <option value="quick">{{localize "ATTRIBUTE.QUICK"}}</option>
-            <option value="resolute">{{localize "ATTRIBUTE.RESOLUTE"}}</option>
-            <option value="strong">{{localize "ATTRIBUTE.STRONG"}}</option>
-            <option value="vigilant">{{localize "ATTRIBUTE.VIGILANT"}}</option>
+            <option value="defense">{{localize "ARMOR.DEFENSE"}} {{#if attri_mods.show}}({{attri_mods.defense}}){{/if}}</option>
+            <option value="accurate">{{localize "ATTRIBUTE.ACCURATE"}} {{#if attri_mods.show}}({{attri_mods.accurate}}){{/if}}</option>
+            <option value="cunning">{{localize "ATTRIBUTE.CUNNING"}} {{#if attri_mods.show}}({{attri_mods.cunning}}){{/if}}</option>
+            <option value="discreet">{{localize "ATTRIBUTE.DISCREET"}} {{#if attri_mods.show}}({{attri_mods.discreet}}){{/if}}</option>
+            <option value="persuasive">{{localize "ATTRIBUTE.PERSUASIVE"}} {{#if attri_mods.show}}({{attri_mods.persuasive}}){{/if}}</option>
+            <option value="quick">{{localize "ATTRIBUTE.QUICK"}} {{#if attri_mods.show}}({{attri_mods.quick}}){{/if}}</option>
+            <option value="resolute">{{localize "ATTRIBUTE.RESOLUTE"}} {{#if attri_mods.show}}({{attri_mods.resolute}}){{/if}}</option>
+            <option value="strong">{{localize "ATTRIBUTE.STRONG"}} {{#if attri_mods.show}}({{attri_mods.strong}}){{/if}}</option>
+            <option value="vigilant">{{localize "ATTRIBUTE.VIGILANT"}} {{#if attri_mods.show}}({{attri_mods.vigilant}}){{/if}}</option>
+            {{/select}}
         </select>
     </div>
+    {{/if}}
+        
     <div class="bonus">
-        <label>{{localize "DIALOG.MODIFIER"}}</label>
-        <input id="bonus" type="number" value="0" data-dtype="Number"/>
+      <label for="modifier">{{localize "DIALOG.MODIFIER"}}</label>
+      <input id="modifier" type="number" value="{{roll_defaults.modifier}}" data-dtype="Number"/>
+   </div>
+
+    
+   <div class="favour">
+     <label class="lblfavour">{{radioBoxes groupName choices checked=roll_defaults.selectedFavour localize=true}}</label>
+   </div>
+
+    {{#if askImpeding}}
+    <div class="simplebox">
+      <label for="impeding" style="width: 90%;">{{localize "DIALOG.IMPEDING"}}</label> <span class="lblfavour" style="width: 40%;"><input type="checkbox" id="impeding" {{roll_defaults.impeding}}></span>
     </div>
+    {{/if}}
+    {{#if isWeaponRoll}}
+    <div class="advantage">
+      <label for="advantage">{{localize "DIALOG.ADVANTAGE"}}</label> <span class="lblfavour"><input type="checkbox" {{roll_defaults.advantage}} id="advantage" value="1" data-dtype="Number"> </span>
+    </div>
+    <div class="damagemodifier">
+      <label for="weapondamage">{{localize "DIALOG.WEAPON_DAMAGE"}}</label> <div class="weapondamage"><span id="weapondamage">{{weaponDamage}}</span></div>
+      </div>
+      <div class="damagemodifier">
+		<label for="dammodifier">{{localize "DIALOG.DAMAGE_MODIFIER"}}</label> <input id="dammodifier" value="{{roll_defaults.additionalModifier}}" type="text" data-dtype="Text"/> 
+    </div>
+    {{/if}}
+      
+    {{#if isArmorRoll}}
+    <div class="advantage">
+      <label for="disadvantage-check">{{localize "DIALOG.DISADVANTAGE"}}</label> <span class="lblfavour"><input id="disadvantage-check" type="checkbox" {{roll_defaults.advantage}} id="advantage" value="1" data-dtype="Number"> </span>
+    </div>
+    {{/if}}    		
+
 </div>

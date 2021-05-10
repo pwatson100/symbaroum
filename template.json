@@ -9,35 +9,51 @@
         "attributes": {
           "accurate": {
             "label": "ATTRIBUTE.ACCURATE",
-            "value": 10
+            "total": 10,
+            "value": 10,
+            "temporaryMod": 0
           },
           "cunning": {
             "label": "ATTRIBUTE.CUNNING",
-            "value": 10
+            "total": 10,
+            "value": 10,
+            "temporaryMod": 0
           },
           "discreet": {
             "label": "ATTRIBUTE.DISCREET",
-            "value": 10
+            "total": 10,
+            "value": 10,
+            "temporaryMod": 0
           },
           "persuasive": {
             "label": "ATTRIBUTE.PERSUASIVE",
-            "value": 10
+            "total": 10,
+            "value": 10,
+            "temporaryMod": 0
           },
           "quick": {
             "label": "ATTRIBUTE.QUICK",
-            "value": 10
+            "total": 10,
+            "value": 10,
+            "temporaryMod": 0
           },
           "resolute": {
             "label": "ATTRIBUTE.RESOLUTE",
-            "value": 10
+            "total": 10,
+            "value": 10,
+            "temporaryMod": 0
           },
           "strong": {
             "label": "ATTRIBUTE.STRONG",
-            "value": 10
+            "total": 10,
+            "value": 10,
+            "temporaryMod": 0
           },
           "vigilant": {
             "label": "ATTRIBUTE.VIGILANT",
-            "value": 10
+            "total": 10,
+            "value": 10,
+            "temporaryMod": 0
           }
         }
       },
@@ -49,9 +65,13 @@
             "threshold": 0
           },
           "corruption": {
+	        "max": 0,
             "permanent": 0,
             "temporary": 0,
-            "threshold": 0
+            "threshold": 0,
+
+            "value":0,
+            "longterm": 0
           }
         }
       },
@@ -72,7 +92,17 @@
           "attribute": "quick",
           "value": 10
         }
-      }
+      },
+      "experience": {
+        "experience": {
+          "current": 0,
+          "total": 0,
+
+          "spent": 0,
+          "available": 0,
+          "artifactrr": 0
+        }
+      }      
     },
     "player": {
       "templates": [
@@ -80,7 +110,8 @@
         "health",
         "money",
         "defense",
-        "initiative"
+        "initiative",
+        "experience"
       ],
       "bio": {
         "race": "",
@@ -95,10 +126,6 @@
         "personalGoal": "",
         "stigmas": ""
       },
-      "experience": {
-        "current": 0,
-        "total": 0
-      },
       "notes": ""
     },
     "monster": {
@@ -107,7 +134,8 @@
         "health",
         "money",
         "defense",
-        "initiative"
+        "initiative",
+        "experience"
       ],
       "bio": {
         "race": "",
@@ -123,8 +151,7 @@
         "personalGoal": "",
         "tactics": "",
         "manner": ""
-      },
-      "notes": ""
+      }
     }
   },
   "Item": {
@@ -157,7 +184,12 @@
             "threshold": 0
           },
           "corruption": {
+	          "max": 0,
             "threshold": 0
+          },
+          "experience": {
+            "value": 0,
+            "cost": 0
           }
         }
       }
@@ -167,6 +199,7 @@
         "bonus"
       ],
       "description": "",
+      "reference": "",
       "novice": {
         "isActive": false,
         "action": "",
@@ -188,6 +221,7 @@
         "bonus"
       ],
       "description": "",
+      "reference": "",
       "novice": {
         "isActive": false,
         "action": "",
@@ -210,6 +244,7 @@
       ],
       "material": "",
       "description": "",
+      "reference": "",
       "novice": {
         "isActive": false,
         "action": "",
@@ -231,27 +266,33 @@
         "bonus"
       ],
       "tradition": "",
-      "description": ""
+      "description": "",
+      "reference": ""
     },
     "burden": {
       "templates": [
         "bonus"
       ],
-      "description": ""
+      "description": "",
+      "reference": "",
+      "level": 1
     },
     "boon": {
       "templates": [
         "bonus"
       ],
-      "description": ""
+      "description": "",
+      "reference": "",
+      "level": 1
     },
     "weapon": {
       "templates": [
         "bonus"
       ],
       "description": "",
-      "damage": "",
-      "quality": "",
+      "reference": "1handed",
+      "baseDamage": "1d8",
+      "bonusDamage": "",
       "qualities": {
         "bastard": false,
         "returning": false,
@@ -270,10 +311,20 @@
         "bloodLetting": false,
         "areaMeleeRadius": false,
         "areaShortRadius": false,
-        "areaCone": false
+        "areaCone": false,
+        "acidcoated": false,
+        "bane": false,
+        "deathrune": false,
+        "desecrated": false,
+        "flaming": false,
+        "hallowed": false,
+        "poison": false,
+        "thundering": false,
+        "mystical": false
       },
       "cost": "",
-      "attribute": "",
+      "number": 1,
+      "attribute": "accurate",
       "state": "other"
     },
     "armor": {
@@ -281,9 +332,19 @@
         "bonus"
       ],
       "description": "",
-      "protection": "",
+      "reference": "",
+      "baseProtection": "1d4",
+      "bonusProtection": "",
       "impeding": 0,
-      "quality": "",
+      "qualities": {
+        "flexible": false,
+        "cumbersome": false,
+        "concealed": false,
+        "reinforced": false,
+        "hallowed": false,
+        "retributive": false,
+        "desecrated": false
+      },
       "cost": "",
       "state": "other"
     },
@@ -292,17 +353,34 @@
         "bonus"
       ],
       "description": "",
+      "reference": "",
       "cost": "",
+      "number" : 1,
       "state": "other"
     },
     "artifact": {
       "templates": [
         "bonus"
       ],
-      "description": "",
-      "powers": "",
-      "action": "",
-      "corruption": "",
+      "power1": {
+        "name": "",
+        "description": "",
+        "action": "",
+        "corruption": ""
+      },
+      "power2": {
+        "name": "",
+        "description": "",
+        "action": "",
+        "corruption": ""
+      },
+      "power3": {
+        "name": "",
+        "description": "",
+        "action": "",
+        "corruption": ""
+      },
+      "reference": "",
       "state": "other"
     }
   }

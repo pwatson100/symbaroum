@@ -1,0 +1,190 @@
+<div class="main">
+	<div class="player2main">
+		
+	<div class="section1">
+		
+    <div class="attributes foreground">
+        <h1>{{localize "TITLE.ATTRIBUTES"}}</h1>
+        <button class="modify-attribute">{{localize "ATTRIBUTE.MODIFY"}}</button>
+        {{#each data.attributes as |attribute key|}}
+            <div class="attribute">
+              <button class="roll-attribute" style="width: 100%" data-attribute="{{key}}">{{localize attribute.label}}</button>                
+              <span class="tooltip input">
+                <input name="data.attributes.{{key}}.total" type="number" value="{{attribute.total}}" data-dtype="Number" disabled/>
+                <span class="tooltiptext right">{{{attribute.msg}}}</span>
+              </span>
+            </div>
+        {{/each}}
+    </div>
+
+	<div class="nonattributes">
+		
+    <div class="health2">
+        <div class="toughness ">
+        <div class="health-toughnesscol foreground">
+        <h1>{{localize "HEALTH.TOUGHNESS"}}</h1>
+        <div class="toughness-current" title="{{localize "TOOLTIP.HEALTH.TOUGHNESS_CURRENT"}}">
+            <label for="{{actor.id}}-data.health.toughness.value">{{localize "HEALTH.TOUGHNESS_CURRENT"}}</label>
+            <input id="{{actor.id}}-data.health.toughness.value" name="data.health.toughness.value" type="number" value="{{data.health.toughness.value}}" data-dtype="Number" />
+        </div>
+        <div class="toughness-total" title="{{localize "TOOLTIP.HEALTH.TOUGHNESS_TOTAL"}}">
+            <label>{{localize "HEALTH.TOUGHNESS_TOTAL"}}</label>
+            <span class="tooltip input flex30">
+                <input type="number" value="{{data.health.toughness.max}}" data-dtype="Number" disabled>
+                <span class="tooltiptext right">{{localize "TOOLTIP.BONUS_TOTAL"}} {{data.health.toughness.max}} {{{data.bonus.toughness.max_msg}}}</span>
+            </span>
+
+        </div>
+        <div class="toughness-threshold" title="{{localize "TOOLTIP.HEALTH.TOUGHNESS_THRESHOLD"}}">
+            <label>{{localize "HEALTH.TOUGHNESS_THRESHOLD"}}</label>
+            <span class="tooltip input flex30">
+                <input type="number" value="{{data.health.toughness.threshold}}" data-dtype="Number" disabled/>
+                <span class="tooltiptext right">{{localize "TOOLTIP.BONUS_TOTAL"}}  {{data.health.toughness.threshold}} {{{data.bonus.toughness.threshold_msg}}}</span>
+            </span>
+        </div>
+         </div>
+        </div>
+        
+        <div class="corruption foreground">
+        <h1>{{localize "HEALTH.CORRUPTION"}}</h1>
+        <div class="health-corruptioncol">
+			
+        <div class="corruption-col1">
+        <div class="corruption-current" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_CURRENT"}}">
+            <label>{{localize "HEALTH.CORRUPTION_CURRENT"}}</label>
+            <input name="data.health.corruption.value" type="number" value="{{data.health.corruption.value}}" data-dtype="Number" disabled/>
+        </div>
+        <div class="corruption-temporary" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_TEMPORARY"}}">
+            <label for="{{actor.id}}-data.health.corruption.temporary" >{{localize "HEALTH.CORRUPTION_TEMPORARY"}}</label>
+            <input id="{{actor.id}}-data.health.corruption.temporary" name="data.health.corruption.temporary" type="number" value="{{data.health.corruption.temporary}}" data-dtype="Number"/>
+        </div>
+        <div class="corruption-longterm" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_LONGTERM"}}">
+            <label for="{{actor.id}}-data.health.corruption.longterm">{{localize "HEALTH.CORRUPTION_LONGTERM"}}</label>
+            <input type="number" id="{{actor.id}}-data.health.corruption.longterm" name="data.health.corruption.longterm" value="{{data.health.corruption.longterm}}" data-dtype="Number" />
+        </div>
+        </div> <!-- end of col 1 -->
+        <div class="corruption-col2">
+        <div class="corruption-permanent" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_PERMANENT"}}">
+            <label for="{{actor.id}}-data.health.corruption.permanent">{{localize "HEALTH.CORRUPTION_PERMANENT"}}</label>
+            <input id="{{actor.id}}-data.health.corruption.permanent" name="data.health.corruption.permanent" type="number" value="{{data.health.corruption.permanent}}" data-dtype="Number"/>
+        </div>
+        <div class="corruption-threshold">
+            <label title="{{localize "TOOLTIP.HEALTH.CORRUPTION_THRESHOLD"}}">{{localize "HEALTH.CORRUPTION_THRESHOLD"}}</label>
+            <span class="tooltip input flex30">
+              <input name="data.health.corruption.threshold" type="number" value="{{data.health.corruption.threshold}}"  data-dtype="Number" disabled/>
+                <span class="tooltiptext downleft">{{localize "TOOLTIP.BONUS_TOTAL"}} {{data.health.corruption.threshold}} {{{data.bonus.corruption.threshold_msg}}}</span>
+            </span>
+        </div>
+        <div class="corruption-max">
+            <label title="{{localize "TOOLTIP.HEALTH.CORRUPTION_MAX"}}">{{localize "HEALTH.CORRUPTION_MAX"}}</label>
+            <span class="tooltip input flex30">
+                <input style="flex-basis: unset" name="data.health.corruption.max" type="number" value="{{data.health.corruption.max}}"  data-dtype="Number" disabled/>
+                <span class="tooltiptext downleft">{{localize "TOOLTIP.BONUS_TOTAL"}} {{data.health.corruption.max}} {{{data.bonus.corruption.max_msg}}}</span>
+            </span>
+        </div>
+        </div> <!-- end of col 2 --> </div> <!-- end of corruptioncol --></div>        
+    </div>
+
+    <div class="combat foreground">
+        <h1>{{localize "TITLE.COMBAT"}}</h1>
+        <div class="stat-modifiers">
+            <div class="initiative" title="{{localize "TOOLTIP.COMBAT.INITIATIVE"}}">
+                <label for="{{actor.id}}-data.initiative.attribute">{{localize "INITIATIVE"}}</label>
+                <select id="{{actor.id}}-data.initiative.attribute" name="data.initiative.attribute" class="attribute">
+                    {{#select data.initiative.attribute}}
+                    <option value="quick">{{localize "ATTRIBUTE.QUICK"}}</option>
+                    <option value="accurate">{{localize "ATTRIBUTE.ACCURATE"}}</option>
+                    <option value="cunning">{{localize "ATTRIBUTE.CUNNING"}}</option>
+                    <option value="discreet">{{localize "ATTRIBUTE.DISCREET"}}</option>
+                    <option value="persuasive">{{localize "ATTRIBUTE.PERSUASIVE"}}</option>
+                    <option value="resolute">{{localize "ATTRIBUTE.RESOLUTE"}}</option>
+                    <option value="strong">{{localize "ATTRIBUTE.STRONG"}}</option>
+                    <option value="vigilant">{{localize "ATTRIBUTE.VIGILANT"}}</option>
+                    {{/select}}
+                </select>
+            </div>
+        </div>
+        <div class="armor">
+            <div style="display:flex; width:100%">
+                <div class="image-container">
+                    <div class="image" style="background-image: url('{{data.combat.img}}')"></div>
+                </div>
+                <button class="roll-armor">{{data.combat.armor}}</button>
+            </div>
+            <div class="quality">
+                <label>{{localize "ARMOR.DEFENSE"}}</label>
+                <input type="text" value={{localize data.defense.attributelabel}} disabled />
+                <span class="tooltip input">
+                    <input type="number" value="{{data.combat.defense}}" data-dtype="Number" disabled />
+                    {{#ife actor.type "monster"}} <span class="tooltiptext downleft">{{localize "TOOLTIP.BONUS_TOTAL"}}  {{data.combat.defense}} ({{data.combat.defmod}})<br/> {{{data.combat.msg}}} </span> {{/ife}}
+                    {{#ife actor.type "player"}} <span class="tooltiptext downleft">{{localize "TOOLTIP.BONUS_TOTAL"}}  {{data.combat.defense}} <br/> {{{data.combat.msg}}} </span> {{/ife}}
+                </span>
+            </div>
+            <div class="quality">
+            <div class="protection">
+                <label>{{localize "ARMOR.PROTECTION"}}</label>   
+                <span class="tooltip input">           
+                    {{#ife actor.type "player"}}<input type="text" value="{{data.combat.protectionPc}}" disabled />{{/ife}}
+                    {{#ife actor.type "monster"}}<input type="text" value="{{data.combat.protectionNpc}}" disabled />{{/ife}}
+                    <span class="tooltiptext downleft">{{{data.combat.tooltipProt}}}</span>
+                </span>
+            </div>
+            <div class="protection">
+                <label>{{localize "ARMOR.IMPEDING"}}</label>
+                <input type="text" value="{{data.combat.impeding}}" disabled />
+            </div>
+            </div>
+        </div>
+        <div class="weapons">
+            <div class="item-list">
+                <div class="item-header" style="margin-bottom: 5px">
+                    <b class="name">{{localize "WEAPON.HEADER"}}</b>
+                    <b class="damage">{{localize "WEAPON.DAMAGE"}}</b>
+                </div>
+                <div class="items">
+                    {{#each actor.data.weapons as |item|}}
+                    {{#if item.isActive}}
+                        <div class="weapon item" data-item-id="{{item.id}}">
+                            <div class="name">
+                                <div class="image-container">
+                                    <div class="image" style="background-image: url('{{item.img}}')"></div>
+                                </div>
+                                <button class="roll-weapon">{{item.name}}</button>
+                            </div>
+                            {{#ife ../actor.type "player"}}<div class="damage" title="{{item.tooltip}}">{{item.damage.pcShort}}</div>{{/ife}}
+                            {{#ife ../actor.type "monster"}}<div class="damage" title="{{item.tooltip}}">{{item.damage.npc}}</div>{{/ife}}
+                        </div>
+                    {{/if}}
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+    </div>
+    </div> <!-- End of non-attributes -->
+    
+	</div> <!-- end of section 1 -->
+    </div> <!-- end of frustration -->
+
+
+    <div class="abilities-powers foreground border">
+        <h1>{{localize "TITLE.ABILITIES_POWERS"}}</h1>
+        <div class="traits">
+            {{#each items as |item|}}
+                {{#if item.data.isPower}}
+                    <div class="trait item" data-item-id="{{item.id}}">
+                        <div class="name">
+                            <div class="image-container">
+                                <button class="activate-ability" style="background-image: url('{{item.img}}'); height: 36px; width: 36px; background-size: 36px"></button>
+                            </div>
+                            <button class="item-edit">{{item.name}}</button>
+                        </div>
+                        <div class="actions" title="{{localize "TOOLTIP.POWER_ACTIONS"}}">{{item.data.data.actions}}</div>
+                        <div class="button">
+                            <a class="item-control item-delete" title="Delete Trait"><i class="fas fa-trash"></i></a>
+                        </div>
+                    </div>
+                {{/if}}
+            {{/each}}
+        </div>
+    </div>
+</div>

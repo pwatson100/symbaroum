@@ -1,36 +1,65 @@
 <div class="symbaroum chat roll">
-  <div class="foreground border">
-    <h3>{{name}}</h3>
+    <div class="foreground border">
+      <img src="{{subImg}}" />
+        <h3>{{removeMarkup name}}</h3>
     {{#if hasSucceed}}
-    <h4>{{localize "CHAT.SUCCEED"}} ({{diceResult}})</h4>
 
-    {{#if hasWeapon}} 
-    {{#if critAtSuccess}}
+    <div class="tooltip" style="width: 100%;">
+      <h4>{{localize "CHAT.SUCCEED"}} ({{diceResult}})</h4>
+      <h4>{{localize "CHAT.MARGIN"}} {{margin}}</h4>
+      <div class="tooltiptext">{{{diceBreakdown}}}<br>
+        {{diceTarget}} - {{diceResult}} = {{margin}} </div>
+    </div>
+
+    {{#if critSuccess}}
     <h4>{{localize "CHAT.CRITICAL_SUCCESS"}}</h4>
-
     {{/if}}
-    <p style="margin-top: 5px"><strong>{{localize "WEAPON.DAMAGE"}}:</strong> {{weapon.value}}</p>
-    <p><strong>{{localize "WEAPON.QUALITY"}}:</strong> {{weapon.quality}}</p>
+    
+    {{#if hasWeapon}} 
 
+    <img src="{{weapon.img}}" />
+      <p style="margin-top: 5px;text-align:center">{{weapon.name}}</p>
+    <div class="tooltip"><p style="margin-top: 5px"><strong>{{localize "WEAPON.DAMAGE"}}:</strong> {{weapon.value}}</p>
+      <div class="tooltiptext">{{{weapon.diceBreakdown}}}</div>
+    </div>
     {{/if}} 
     {{else}} 
-    {{#if critAtFail}}
+
+    <div class="tooltip" style="width: 100%;">
+      <h4>{{localize "CHAT.FAILED"}} ({{diceResult}})</h4>
+      <h4>{{localize "CHAT.MARGIN"}} {{margin}}</h4>
+      <div class="tooltiptext">{{{diceBreakdown}}} <br/>
+        {{diceTarget}} - {{diceResult}} = {{margin}} </div>
+      </div>
+    </div>
+
+    {{#if critFail}}
     <h4>{{localize "CHAT.CRITICAL_FAILURE"}}</h4>
     {{/if}}
 
     
-        <h4>{{localize "CHAT.FAILED"}} ({{diceResult}})</h4>
-
     {{#if hasArmor}}
-    <p style="margin-top: 5px"><strong>{{localize "ARMOR.PROTECTION"}}:</strong> {{armor.value}}</p>
-    <p><strong>{{localize "ARMOR.QUALITY"}}:</strong> {{armor.quality}}</p>
+    <p style="margin-top: 5px;text-align:center">{{armor.name}}</p>
+    <div class="tooltip"><p style="margin-top: 5px"><strong>{{localize "ARMOR.PROTECTION"}}:</strong> {{armor.value}}</p>
+      <div class="tooltiptext">{{{armor.diceBreakdown}}}</div>
+    </div>
     {{/if}}
-     {{/if}}
-     {{#if critDfSuccess}}
+    {{/if}}
+    
+   {{#if hasWeapon}}
+   {{#if critFail}}
+   <h4>{{localize "CHAT.CRITICAL_FAILURE_FREEATTACK"}}</h4>
+   {{/if}}
+   {{/if}}
+   
+   {{#if hasArmor}}      
+   {{#if critSuccess}}
     <h4>{{localize "CHAT.CRITICAL_FREEATTACK"}}</h4>
     {{/if}} 
-    {{#if critDfFail}}
+    {{#if critFail}}
     <h4>{{localize "CHAT.CRITICAL_PLUS3DAMAGE"}}</h4>
     {{/if}}
+    {{/if}}
+    
   </div>
 </div>

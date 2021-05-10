@@ -2,17 +2,22 @@
 
 <h1>&nbsp;Symbaroum</h1>
 <p>An **UNOFFICIAL** system for playing Symbaroum RPG on Foundry VTT.</p>
-<p>This system&nbsp;<strong><u>only </u></strong>provides support for character, creature and items sheets.&nbsp; <strong>&nbsp;</strong></p>
 <p><strong>There is no game content or images in this system.&nbsp;</strong></p>
 <p>Should you wish to populate the system with game content for your own use please purchase the rules from Free League Publishing:&nbsp; &nbsp;<a href="https://frialigan.se/en/games/symbaroum/">https://frialigan.se/en/games/symbaroum/</a></p>
 <br>
 <p>Please do not ask me to provide content. Buy the system from Free League !</p>
 <p>&nbsp;</p>
 <p>
+<p><strong>Please read the symbaroum system guide, in the compendiums section.</strong></p>
+<p>Thi guide presents the functionalities of the system.</p>
+<p>
+<p>**** The system is still in heavy development - please be patient ****
+<p>
 <b> Preview </b>
 <p>
 <img src="https://github.com/pwatson100/symbaroum/blob/master/asset/preview/character-1.jpg?raw=true" alt="" width="358" height="347" />
 <img src="https://github.com/pwatson100/symbaroum/blob/master/asset/preview/character-2.jpg?raw=true" alt="" width="358" height="347" />
+<img src="https://github.com/pwatson100/symbaroum/blob/master/asset/preview/chat-power.jpg?raw=true" alt="" width="291" height="446" />
 </p>
 <p>
 <b>Install</b>
@@ -26,7 +31,7 @@
 <p>
 <b>Feedback</b>
 <br>
-If you have any suggestions or feedback, please contact me on discord (Paul Watson#0965)
+If you have any suggestions or feedback, if you find a bug, please contact me on discord (Paul Watson#0965)
 </p>
 <br>
 <p>
@@ -63,3 +68,5 @@ I would like to thank him for his excellent work in putting the system together.
 [foundry-shield-066]: https://img.shields.io/badge/Foundry-v0.6.6-informational
 [foundry-shield-078]: https://img.shields.io/badge/Foundry-v0.7.8-informational
 [foundry-url]: https://foundryvtt.com/
+
+- Additional art under Creative Commons 3.0 BY license: icons by Delapouite and Lorc - More info available at https://game-icons.net

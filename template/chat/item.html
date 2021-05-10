@@ -32,14 +32,14 @@
         {{/if}}
 
         {{#if isTrait}}
-        <p><strong>{{localize "TRAIT.DESCRIPTION"}}:</strong> {{data.description}}</p>
+        <p><strong>{{localize "TRAIT.DESCRIPTION"}}:</strong> {{removeMarkup data.description}}</p>
         <p><strong>{{localize "TITLE.NOVICE"}} [{{data.novice.action}}]:</strong> {{removeMarkup data.novice.description}}</p>
         <p><strong>{{localize "TITLE.ADEPT"}} [{{data.adept.action}}]:</strong> {{removeMarkup data.adept.description}}</p>
         <p><strong>{{localize "TITLE.MASTER"}} [{{data.master.action}}]:</strong> {{removeMarkup data.master.description}}</p>
         {{/if}}
 
         {{#if isAbility}}
-        <p><strong>{{localize "ABILITY.DESCRIPTION"}}:</strong> {{data.description}}</p>
+        <p><strong>{{localize "ABILITY.DESCRIPTION"}}:</strong> {{removeMarkup data.description}}</p>
         <p><strong>{{localize "TITLE.NOVICE"}} [{{data.novice.action}}]:</strong> {{removeMarkup data.novice.description}}</p>
         <p><strong>{{localize "TITLE.ADEPT"}} [{{data.adept.action}}]:</strong> {{removeMarkup data.adept.description}}</p>
         <p><strong>{{localize "TITLE.MASTER"}} [{{data.master.action}}]:</strong> {{removeMarkup data.master.description}}</p>
@@ -59,16 +59,15 @@
         {{/if}}
 
         {{#if isWeapon}}
-        <p><strong>{{localize "WEAPON.DAMAGE"}}:</strong> {{data.damage}}</p>
-        <p><strong>{{localize "WEAPON.QUALITY"}}:</strong> {{data.quality}}</p>
+        <p><strong>{{localize "WEAPON_CLASS.LABEL"}}:</strong> {{data.reference}}</p>
+        <p><strong>{{localize "WEAPON.PC_DAMAGE"}}:</strong> {{data.pcDamage}}</p>
         <p><strong>{{localize "WEAPON.COST"}}:</strong> {{data.cost}}</p>
         <p><strong>{{localize "WEAPON.DESCRIPTION"}}:</strong> {{removeMarkup data.description}}</p>
         {{/if}}
 
         {{#if isArmor}}
-        <p><strong>{{localize "ARMOR.PROTECTION"}}:</strong> {{data.protection}}</p>
+        <p><strong>{{localize "ARMOR.PC_PROTCETION"}}:</strong> {{data.pcProtection}}</p>
         <p><strong>{{localize "ARMOR.IMPEDING"}}:</strong> {{data.impeding}}</p>
-        <p><strong>{{localize "ARMOR.QUALITY"}}:</strong> {{data.quality}}</p>
         <p><strong>{{localize "ARMOR.COST"}}:</strong> {{data.cost}}</p>
         <p><strong>{{localize "ARMOR.DESCRIPTION"}}:</strong> {{removeMarkup data.description}}</p>
         {{/if}}
@@ -79,9 +78,23 @@
         {{/if}}
 
         {{#if isArtifact}}
-        <p><strong>{{localize "ARTIFACT.DESCRIPTION"}}:</strong> {{data.description}}</p>
-        <p><strong>{{localize "ARTIFACT.POWER"}} [{{data.action}}]:</strong> {{data.powers}}</p>
-        <p><strong>{{localize "ARTIFACT.CORRUPTION"}}:</strong> {{data.corruption}}</p>
+        <p><strong>{{localize "ARTIFACT.DESCRIPTION"}}:</strong> {{{keepMarkup data.description}}}</p>
+        {{#ifne data.power1.action "-"}}
+        <hr>
+        <p><b>{{localize "TITLE.POWER"}} 1</b> [{{localize data.power1.actionlabel}}] - Corruption: {{data.power1.corruption}}</p>
+        <p>{{{data.power1.description}}}</p>        
+        {{/ifne}}
+        {{#ifne data.power2.action "-"}}
+        <hr>
+        <p><b>{{localize "TITLE.POWER"}} 2</b> [{{localize data.power2.actionlabel}}] - Corruption: {{data.power2.corruption}}</p>
+        <p>{{{data.power2.description}}}</p>        
+        {{/ifne}}
+        {{#ifne data.power3.action "-"}}
+        <hr>
+        <p><b>{{localize "TITLE.POWER"}} 3</b> [{{localize data.power3.actionlabel}}] - Corruption: {{data.power3.corruption}}</p>
+        <p>{{{data.power3.description}}}</p>        
+        {{/ifne}}
+
         {{/if}}
     </div>
 </div>

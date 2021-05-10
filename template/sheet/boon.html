@@ -9,6 +9,10 @@
                     <label>{{localize "BOON.NAME"}}</label>
                     <input name="name" type="text" value="{{item.name}}"/>
                 </div>
+                <div class="level">
+                    <label>{{localize "BOON.LEVEL"}}</label>
+                    <input name="data.level" type="text" value="{{data.level}}" data-dtype="Number"/>
+                </div>
             </div>
         </div>
 
@@ -21,7 +25,7 @@
             <div class="tab" data-group="primary" data-tab="description">
                 <div class="description foreground border">
                     <h1>{{localize "TITLE.DESCRIPTION"}}</h1>
-                    {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+                    {{editor content=data.description target="data.description" button=true owner=owner editable=true}}
                 </div>
             </div>
             <div class="tab" data-group="primary" data-tab="bonus">

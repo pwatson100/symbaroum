@@ -27,8 +27,4 @@ export class AbilitySheet extends SymbaroumItemSheet {
         let buttons = super._getHeaderButtons();
         return buttons;
     }
-
-    activateListeners(html) {
-        super.activateListeners(html);
-    }
 }

@@ -1,0 +1,48 @@
+.symbaroum.sheet.item .equipment {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    height: 100%;
+    width: 100%;
+}
+
+.symbaroum.sheet.item .equipment .description,
+.symbaroum.sheet.item .equipment .bonus {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-basis: 100%;
+    border-top: none;
+}
+
+
+.symbaroum.sheet.item .equipment .tab .cost,
+.symbaroum.sheet.item .equipment .tab .number {
+    display: flex;
+    flex-direction: row;
+    flex-basis: 100%;
+    margin: 10px 10px 0 10px;
+}
+
+.symbaroum.sheet.item .equipment .tab .bonus .scroll {
+    overflow-y: scroll;
+    height: 186px;
+    display: flex;
+    flex-basis: 100%;
+    flex-wrap: wrap;
+}
+
+.symbaroum.sheet.item .equipment .tab .bonus .attribute {
+    display: flex;
+    flex-direction: row;
+    flex-basis: 100%;
+    margin: 5px 10px;
+}
+
+.symbaroum.sheet.item .equipment .tab .bonus .attribute:first-child {
+    margin-top: 10px;
+}
+
+.symbaroum.sheet.item .equipment .tab .bonus .attribute:last-child {
+    margin-bottom: 10px;
+}

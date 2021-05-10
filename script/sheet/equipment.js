@@ -6,7 +6,7 @@ export class EquipmentSheet extends SymbaroumItemSheet {
             classes: ["symbaroum", "sheet", "item"],
             template: "systems/symbaroum/template/sheet/equipment.html",
             width: 500,
-            height: 472,
+            height: 508,
             resizable: false,
             tabs: [
                 {
