@@ -404,7 +404,7 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
       }
       if(modFixedDmg) {newRollDmgString += "+"+ modFixedDmg.toString()};
       if(!dmgData.ignoreArm){
-        newRollDmgString += " - " + targetData.actor.data.data.combat.protectionNpc;
+        newRollDmgString += " - " + targetData.actor.data.data.combat.protectionNpc.toString();
       }
     }
     else{
@@ -442,7 +442,7 @@ export async function simpleDamageRoll(attackFromPC, actor, damageFormula, targe
     //build roll string
     if(!ignoreArmor){
       //      newRollDmgString += " - " + targetData.actor.data.data.combat.protectionNpc + "["+targetData.actor.data.data.combat.armor+"]";
-      newRollDmgString += " - " + targetData.actor.data.data.combat.protectionNpc;
+      newRollDmgString += " - " + targetData.actor.data.data.combat.protectionNpc.toString();
     }
   }
   else{

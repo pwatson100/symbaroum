@@ -1742,18 +1742,24 @@ async function standardPowerResult(rollData, functionStuff){
     }
     if(hasSucceed && (functionStuff.removeTargetEffect.length >0)){
         for(let effect of functionStuff.removeTargetEffect){
-        flagDataArray.push({
-                tokenId: functionStuff.targetData.token.id,
-                removeEffect: effect
-            });
+            let effectPresent = getEffect(functionStuff.targetData.token, effect);
+            if(effectPresent){
+                flagDataArray.push({
+                    tokenId: functionStuff.targetData.token.id,
+                    removeEffect: effect
+                });
+            }
         }
     }
     if(hasSucceed && (functionStuff.removeCasterEffect.length >0)){ 
-        for(let effect of functionStuff.removeCasterEffect){   
-            flagDataArray.push({
-                tokenId: functionStuff.token.id,
-                removeEffect: effect
-            });
+        for(let effect of functionStuff.removeCasterEffect){
+            let effectPresent = getEffect(functionStuff.token, effect);
+            if(effectPresent){ 
+                flagDataArray.push({
+                    tokenId: functionStuff.token.id,
+                    removeEffect: effect
+                });
+            }
         }
     }
     if(flagDataArray.length){
