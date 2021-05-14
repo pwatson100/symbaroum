@@ -13,7 +13,7 @@ export class SymbaroumActor extends Actor {
         this._initializeData(this.data);
         console.log("Init data - complete");
         this.data.data.numRituals = 0;
-        console.log("Compute itemns");    
+        console.log("Compute items");    
         this._computeItems(this.data.items);
         console.log("Compute items - complete");
         console.log("Compute _computeSecondaryAttributes");
@@ -161,6 +161,7 @@ export class SymbaroumActor extends Actor {
     }
 
     _computePower(data, item) {
+        let expCost = 0;
         if (item.isRitual) {
             item.data.actions = "Ritual";
             this.data.data.numRituals = this.data.data.numRituals + 1;
