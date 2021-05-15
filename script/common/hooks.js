@@ -193,7 +193,7 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
     await html.find('#applyEffect').click(async () => {
       for (let flagData of flagDataArray) {
         if (flagData.tokenId) {
-          let token = canvas.tokens.objects.children.find((token) => token.data.id === flagData.tokenId);
+          let token = canvas.tokens.objects.children.find((token) => token.id === flagData.tokenId);
           let statusCounterMod = false;
           if (game.modules.get('statuscounter')?.active) {
             statusCounterMod = true;

@@ -1742,18 +1742,24 @@ async function standardPowerResult(rollData, functionStuff){
     }
     if(hasSucceed && (functionStuff.removeTargetEffect.length >0)){
         for(let effect of functionStuff.removeTargetEffect){
-        flagDataArray.push({
-                tokenId: functionStuff.targetData.token.id,
-                removeEffect: effect
-            });
+            let effectPresent = getEffect(functionStuff.targetData.token, effect);
+            if(effectPresent){
+                flagDataArray.push({
+                    tokenId: functionStuff.targetData.token.id,
+                    removeEffect: effect
+                });
+            }
         }
     }
     if(hasSucceed && (functionStuff.removeCasterEffect.length >0)){ 
-        for(let effect of functionStuff.removeCasterEffect){   
-            flagDataArray.push({
-                tokenId: functionStuff.token.id,
-                removeEffect: effect
-            });
+        for(let effect of functionStuff.removeCasterEffect){
+            let effectPresent = getEffect(functionStuff.token, effect);
+            if(effectPresent){ 
+                flagDataArray.push({
+                    tokenId: functionStuff.token.id,
+                    removeEffect: effect
+                });
+            }
         }
     }
     if(flagDataArray.length){
@@ -2541,14 +2547,14 @@ async function entanglingvinesResult(rollData, functionStuff){
     let hasRoll = true;
     let finalDamage = 0;
     let rollString = "";
-
     if(functionStuff.isMaintained){
         introText = functionStuff.targetData.token.data.name + game.i18n.localize('POWER_ENTANGLINGVINES.CHAT_INTRO_M');
         rollString = await formatRollString(rollData[0], functionStuff.targetData.hasTarget, rollData[0].modifier)
     }
     else{
         introText = functionStuff.actor.data.name + game.i18n.localize('POWER.CHAT_INTRO') + functionStuff.ability.name + " \".";
-        rollString = `${rollData[0].actingAttributeLabel} : (${rollData[0].actingAttributeValue})`;
+        rollString = await formatRollString(rollData[0], false, rollData[0].modifier)
+//rollString = `${rollData[0].actingAttributeLabel} : (${rollData[0].actingAttributeValue})`;
         haveCorruption = true;
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
@@ -3256,25 +3262,26 @@ async function tormentingspiritsResult(rollData, functionStuff){
         });
     }
     if(rollData[0].hasSucceed){
-        //PC roll damage, NPCs do fixed damage = maximumdice/2
-        let effectDamage;
-        if(functionStuff.powerLvl.level == 2){
-            effectDamage = "1d4";
-        }
-        else if(functionStuff.powerLvl.level == 3){
-            effectDamage = "1d6";
-        }
-        if(functionStuff.attackFromPC){
-            let damageRoll = new Roll(effectDamage).evaluate();
-            finalDamage = damageRoll.total;
-        }
-        else{
-            finalDamage
-            let damageRoll= new Roll(effectDamage).evaluate({maximize: true});
-            finalDamage = Math.ceil(damageRoll.total/2);
+        if(functionStuff.powerLvl.level > 1){
+            //PC roll damage, NPCs do fixed damage = maximumdice/2
+            let effectDamage;
+            if(functionStuff.powerLvl.level == 2){
+                effectDamage = "1d4";
+            }
+            else {
+                effectDamage = "1d6";
+            }
+            if(functionStuff.attackFromPC){
+                let damageRoll = new Roll(effectDamage).evaluate();
+                finalDamage = damageRoll.total;
+            }
+            else{
+                let damageRoll= new Roll(effectDamage).evaluate({maximize: true});
+                finalDamage = Math.ceil(damageRoll.total/2);
+            }
+            finalText =  game.i18n.localize('COMBAT.DAMAGE') +" "+effectDamage+" = " + finalDamage.toString()+" ("+game.i18n.localize('ATTRIBUTE.RESOLUTE')+")" ;
         }
         resultText = functionStuff.targetData.token.data.name + game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_SUCCESS') + functionStuff.targetData.token.data.name;
-        finalText =  game.i18n.localize('COMBAT.DAMAGE') +" "+effectDamage+" = " + finalDamage.toString()+" ("+game.i18n.localize('ATTRIBUTE.RESOLUTE')+")" ;
     }
     else{
         resultText = functionStuff.targetData.token.data.name + game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_FAILURE');
