@@ -290,8 +290,7 @@ async function showReleaseNotes()
       const newVer = '1';
       const releaseNoteName = "Symbaroum System guide EN";
       const releasePackLabel = "Symbaroum for FVTT system user guides";
-
-      console.log("Bithir is here");
+      
       let currentVer = '0';
       let oldReleaseNotes = game.journal.getName(releaseNoteName);
       if(oldReleaseNotes !== undefined && oldReleaseNotes !== null && oldReleaseNotes.getFlag('symbaroum', 'ver') !== undefined) {
@@ -303,7 +302,7 @@ async function showReleaseNotes()
       }
 
       let newReleasePack = game.packs.find(p => p.metadata.label === releasePackLabel);
-      if( newReleasePack === null) {
+      if( newReleasePack === null || newReleasePack === undefined) {
         console.log("No pack found");
         // This is bad - the symbaroum pack does not exist in the system packages
         return;

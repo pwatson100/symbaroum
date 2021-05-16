@@ -12,7 +12,7 @@ export class SymbaroumActor extends Actor {
         console.log("Init data");
         this._initializeData(this.data);
         console.log("Init data - complete");
-        this.data.data.numRituals = 0;
+        this.data.numRituals = 0;
         console.log("Compute items");    
         this._computeItems(this.data.items);
         console.log("Compute items - complete");
@@ -161,14 +161,17 @@ export class SymbaroumActor extends Actor {
     }
 
     _computePower(data, item) {
-        let expCost = 0;
         if (item.isRitual) {
+
+            console.log("numRitual: "+this.data.numRituals);
+
             item.data.actions = "Ritual";
-            this.data.data.numRituals = this.data.data.numRituals + 1;
-            if( this.data.data.numRituals > 6 ) {
-            // This needs to check if running with alternative rules for additional rituals, APG p.102                
-              expCost = game.settings.get('symbaroum', 'optionalMoreRituals') ? 10 : 0;
+            this.data.numRituals = this.data.numRituals + 1;
+            if( this.data.numRituals > 6 ) {
+                // This needs to check if running with alternative rules for additional rituals, APG p.102                
+              item.data.bonus.experience.cost = game.settings.get('symbaroum', 'optionalMoreRituals') ? 10 : 0;
             }
+            console.log("numRitual: "+this.data.numRituals);
         }
         
         this._addBonus(data, item);
