@@ -174,7 +174,6 @@ export class SymbaroumActor extends Actor {
             console.log("numRitual: "+this.data.numRituals);
         }
         
-        console.log(item);
         this._addBonus(data, item);
     }
 
