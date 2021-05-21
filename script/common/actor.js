@@ -162,16 +162,12 @@ export class SymbaroumActor extends Actor {
 
     _computePower(data, item) {
         if (item.isRitual) {
-
-            console.log("numRitual: "+this.data.numRituals);
-
             item.data.actions = "Ritual";
             this.data.numRituals = this.data.numRituals + 1;
             if( this.data.numRituals > 6 ) {
                 // This needs to check if running with alternative rules for additional rituals, APG p.102                
               item.data.bonus.experience.cost = game.settings.get('symbaroum', 'optionalMoreRituals') ? 10 : 0;
             }
-            console.log("numRitual: "+this.data.numRituals);
         }
         
         this._addBonus(data, item);
