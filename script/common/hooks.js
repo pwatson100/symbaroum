@@ -162,7 +162,6 @@ Hooks.on('preCreateActor', (doc, createData, options, userid) => {
   });
 
   createChanges.img = 'systems/symbaroum/asset/image/unknown-actor.png';
-  console.log(doc);
 
   if (doc.data.type === 'player') {
     createChanges.token.vision = true;
@@ -315,7 +314,7 @@ async function showReleaseNotes()
       await newReleasePack.getIndex();
 
       let newReleaseNotes = newReleasePack.index.find( j => j.name === releaseNoteName);
-      console.log("Found new release notes in the compendium pack");
+      // console.log("Found new release notes in the compendium pack");
 
       // Don't delete until we have new release Pack
       if( newReleaseNotes !== undefined && newReleaseNotes !== null && oldReleaseNotes !== null && oldReleaseNotes !== undefined ) { 
