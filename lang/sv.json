@@ -404,6 +404,10 @@
   "POWER_BRIMSTONECASC.CHAT_INTRO": " kastar eld mot sitt mål.",
   "POWER_BRIMSTONECASC.CHAT_SUCCESS": " blir bränd.",  
   "POWER_BRIMSTONECASC.CHAT_FAILURE": " undviker en del av skadan.",
+  
+  "POWER_CONFUSION.EFFECT12": " stands still, blinking stupidly.",
+  "POWER_CONFUSION.EFFECT34": " attacks whichever of its allies is closest.",
+  "POWER_CONFUSION.EFFECT56": "  attacks whichever of its enemies is closest.",
 
   "POWER_CURSE.CHAT_INTRO": " förhäxar sitt mål.",
   "POWER_CURSE.CHAT_INTRO_M": " upprätthåller sin förhäxning.",
@@ -412,6 +416,10 @@
   "POWER_CURSE.CHAT_SUCCESS_M": " är kraftigt förhäxad (1d6 skada vid varje handling).",
   "POWER_CURSE.CHAT_FAILURE": " kan inte upprätthålla förhäxningen.",
   "POWER_CURSE.CHAT_FAIL_FINAL": "Förhäxningen har inte längre någon effekt på ",
+  
+  "POWER_ENTANGLINGVINES.CHAT_INTRO_M": " tries to break free from the vines.",
+  "POWER_ENTANGLINGVINES.CHAT_SUCCESS": " is entangled in the vines.",
+  "POWER_ENTANGLINGVINES.CHAT_FAILURE": " breaks free from the vines.",
   
   "POWER_HOLYAURA.CHAT_INTRO": " försöker kanalisera Prios ljus.",
   "POWER_HOLYAURA.CHAT_SUCCESS": " utstrålar heligt ljus.",
@@ -584,6 +592,7 @@
   "TRAIT_LABEL.SPIRITFORM": "Andeform",
   "TRAIT_LABEL.STURDY": "Livskraftig",
   "TRAIT_LABEL.SUMMONER": "Frammanare",
+  "TRAIT_LABEL.SURVIVALINSTINCT": "Survival Instinct",
   "TRAIT_LABEL.SWARM": "Svärm",
   "TRAIT_LABEL.SWIFT": "Blixtsnabb",
   "TRAIT_LABEL.TERRIFY": "Skräckslå",
@@ -592,6 +601,8 @@
   "TRAIT_LABEL.WEB": "Fångstnät",
   "TRAIT_LABEL.WINGS": "Vingar",
   "TRAIT_LABEL.WRECKER": "Bräckare",
+  
+  "TRAIT_REGENERATION.CHAT_ACTION": " regenerates ",
   
   "WEAPON.HEADER": "Vapen",
   "WEAPON.NAME": "Namn",

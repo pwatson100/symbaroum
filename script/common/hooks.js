@@ -18,8 +18,8 @@ import { sendDevMessage } from './devmsg.js';
 
 
 Hooks.once('init', () => {
-  CONFIG.Actor.entityClass = SymbaroumActor;
-  CONFIG.Item.entityClass = SymbaroumItem;
+  CONFIG.Actor.documentClass = SymbaroumActor;
+  CONFIG.Item.documentClass = SymbaroumItem;
   Actors.unregisterSheet('core', ActorSheet);
   Actors.registerSheet('symbaroum', PlayerSheet2, { types: ['player'], makeDefault: true });
   Actors.registerSheet('symbaroum', PlayerSheet, { types: ['player'], makeDefault: false });
@@ -149,8 +149,10 @@ Hooks.once('ready', () => {
   showReleaseNotes();
 });
 
-Hooks.on('preCreateActor', (createData) => {
-  mergeObject(createData, {
+Hooks.on('preCreateActor', (doc, createData, options, userid) => {
+  
+  let createChanges = {};
+  mergeObject(createChanges, {
     'token.bar1': { attribute: 'health.toughness' },
     'token.bar2': { attribute: 'combat.defense' },
     'token.displayName': CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,
@@ -158,13 +160,15 @@ Hooks.on('preCreateActor', (createData) => {
     'token.disposition': CONST.TOKEN_DISPOSITIONS.NEUTRAL,
     'token.name': createData.name,
   });
-  if (!createData.img) {
-    createData.img = 'systems/symbaroum/asset/image/unknown-actor.png';
+
+  createChanges.img = 'systems/symbaroum/asset/image/unknown-actor.png';
+
+  if (doc.data.type === 'player') {
+    createChanges.token.vision = true;
+    createChanges.token.actorLink = true;
   }
-  if (createData.type === 'player') {
-    createData.token.vision = true;
-    createData.token.actorLink = true;
-  }
+  doc.data.update(createChanges);
+
 });
 
 Hooks.on('createOwnedItem', (actor, item) => {});
@@ -193,7 +197,7 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
     await html.find('#applyEffect').click(async () => {
       for (let flagData of flagDataArray) {
         if (flagData.tokenId) {
-          let token = canvas.tokens.objects.children.find((token) => token.data._id === flagData.tokenId);
+          let token = canvas.tokens.objects.children.find((token) => token.id === flagData.tokenId);
           let statusCounterMod = false;
           if (game.modules.get('statuscounter')?.active) {
             statusCounterMod = true;
@@ -290,10 +294,10 @@ async function showReleaseNotes()
       const newVer = '1';
       const releaseNoteName = "Symbaroum System guide EN";
       const releasePackLabel = "Symbaroum for FVTT system user guides";
-
+      
       let currentVer = '0';
       let oldReleaseNotes = game.journal.getName(releaseNoteName);
-      if(oldReleaseNotes !== null && oldReleaseNotes.getFlag('symbaroum', 'ver') !== undefined) {
+      if(oldReleaseNotes !== undefined && oldReleaseNotes !== null && oldReleaseNotes.getFlag('symbaroum', 'ver') !== undefined) {
         currentVer = oldReleaseNotes.getFlag('symbaroum', 'ver');
       }
       if( newVer === currentVer ) {
@@ -302,21 +306,22 @@ async function showReleaseNotes()
       }
 
       let newReleasePack = game.packs.find(p => p.metadata.label === releasePackLabel);
-      if( newReleasePack === null) {
+      if( newReleasePack === null || newReleasePack === undefined) {
+        console.log("No pack found");
         // This is bad - the symbaroum pack does not exist in the system packages
         return;
       }
       await newReleasePack.getIndex();
 
       let newReleaseNotes = newReleasePack.index.find( j => j.name === releaseNoteName);
-      console.log("Found new release notes in the compendium pack");
+      // console.log("Found new release notes in the compendium pack");
 
       // Don't delete until we have new release Pack
-      if( newReleaseNotes !== undefined && newReleaseNotes !== null && oldReleaseNotes !== null ) { 
+      if( newReleaseNotes !== undefined && newReleaseNotes !== null && oldReleaseNotes !== null && oldReleaseNotes !== undefined ) { 
         await oldReleaseNotes.delete();        
       }
 
-      await game.journal.importFromCollection(`${newReleasePack.metadata.system}.${newReleasePack.metadata.name}`, newReleaseNotes._id);
+      await game.journal.importFromCompendium(newReleasePack, newReleaseNotes.id);
       let newReleaseJournal = game.journal.getName(newReleaseNotes.name);
 
       await newReleaseJournal.setFlag('symbaroum', 'ver', newVer);
@@ -325,10 +330,12 @@ async function showReleaseNotes()
       tidyReleaseNotes11();
 
       // Show journal
-      await newReleaseJournal.show();
+      await newReleaseJournal.sheet.render(true, {sheetMode: "text"});
     
 
-    } catch (error) {} // end of try
+    } catch (error) {
+      console.log(error);
+    } // end of try
   } // end of if(isgm)
 } // end of function
 
