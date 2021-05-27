@@ -1,6 +1,6 @@
 {
   "ABILITY.NAME": "Namn",
-  "ABILITY.REFERENCE": "Reference",
+  "ABILITY.REFERENCE": "Referens",
   "ABILITY.ACTIVE": "Aktiv",
   "ABILITY.ACTION": "Handling",
   "ABILITY.DESCRIPTION": "Beskrivning",
@@ -80,7 +80,7 @@
   "ABILITY_LABEL.WIZARDRY":"Ordensmagi",
   "ABILITY_LABEL.WRESTLING":"Brottning",
 
-  "ABILITY_ERROR.TARGET": "För många mål",
+  "ABILITY_ERROR.TARGET": "För många eller för få mål",
   
   "ABILITY_BERSERKER.CHAT_ACTIVATE": " går bärsärk.",
   "ABILITY_BERSERKER.CHAT_DESACTIVATE": " lugnar ner sig och går inte längre bärsärk.",
@@ -392,9 +392,9 @@
   "POWER_BENDWILL.CHAT_SUCCESS": " kontrollerar ",
   "POWER_BENDWILL.CHAT_FAILURE": " står emot försöket.",
   
-  "POWER_BLACKBOLT.CHAT_INTRO": " traps its target in black fire.",
-  "POWER_BLACKBOLT.CHAT_SUCCESS": " is burned and paralyzed.",  
-  "POWER_BLACKBOLT.CHAT_FAILURE": " avoids the black bolt.",
+  "POWER_BLACKBOLT.CHAT_INTRO": " omsluter sitt mål med svarta energier.",
+  "POWER_BLACKBOLT.CHAT_SUCCESS": " bränns och paralyseras.",  
+  "POWER_BLACKBOLT.CHAT_FAILURE": " undviker den svarta blixten.",
     
   "POWER_BLESSEDSHIELD.CHAT_INTRO": " försöker åkalla Prios' beskydd.",
   "POWER_BLESSEDSHIELD.CHAT_SUCCESS": " omsluts av en sköld av ljus.",
@@ -405,9 +405,9 @@
   "POWER_BRIMSTONECASC.CHAT_SUCCESS": " blir bränd.",  
   "POWER_BRIMSTONECASC.CHAT_FAILURE": " undviker en del av skadan.",
   
-  "POWER_CONFUSION.EFFECT12": " stands still, blinking stupidly.",
-  "POWER_CONFUSION.EFFECT34": " attacks whichever of its allies is closest.",
-  "POWER_CONFUSION.EFFECT56": "  attacks whichever of its enemies is closest.",
+  "POWER_CONFUSION.EFFECT12": " står stilla och blinkar dumt.",
+  "POWER_CONFUSION.EFFECT34": " attackerar sin närmaste vän.",
+  "POWER_CONFUSION.EFFECT56": "  attackerar sin närmaste fiende.",
 
   "POWER_CURSE.CHAT_INTRO": " förhäxar sitt mål.",
   "POWER_CURSE.CHAT_INTRO_M": " upprätthåller sin förhäxning.",
@@ -417,9 +417,9 @@
   "POWER_CURSE.CHAT_FAILURE": " kan inte upprätthålla förhäxningen.",
   "POWER_CURSE.CHAT_FAIL_FINAL": "Förhäxningen har inte längre någon effekt på ",
   
-  "POWER_ENTANGLINGVINES.CHAT_INTRO_M": " tries to break free from the vines.",
-  "POWER_ENTANGLINGVINES.CHAT_SUCCESS": " is entangled in the vines.",
-  "POWER_ENTANGLINGVINES.CHAT_FAILURE": " breaks free from the vines.",
+  "POWER_ENTANGLINGVINES.CHAT_INTRO_M": " försöker bryta sig loss från rankorna.",
+  "POWER_ENTANGLINGVINES.CHAT_SUCCESS": " är intrasslad i rankorna.",
+  "POWER_ENTANGLINGVINES.CHAT_FAILURE": " tar sig loss från rankorna.",
   
   "POWER_HOLYAURA.CHAT_INTRO": " försöker kanalisera Prios ljus.",
   "POWER_HOLYAURA.CHAT_SUCCESS": " utstrålar heligt ljus.",
@@ -443,16 +443,15 @@
   "POWER_TORMENTINGSPIRITS.CHAT_SUCCESS":" åkallar andar kring  ",
   "POWER_TORMENTINGSPIRITS.CHAT_FAILURE":" misslyckas med sin andeåkallan.",
 
-  "QUALITY.AREAMRR": "Effektområde - Närstidsradie",
-  "QUALITY.AREASRR": "Effektområde - Kort radie", 
-
-  "QUALITY.AREAC": "Effektområde - Kon",
+  "QUALITY.AREAMRR": "Ytverkande - Närstidsradie",
+  "QUALITY.AREASRR": "Ytverkande - Kort radie", 
+  "QUALITY.AREAC": "Ytverkande - Kon",
   "QUALITY.BALANCED": "Balanserat",
   "QUALITY.BASTARD": "Bastardvapen", 
   "QUALITY.BLOODLETTING": "Blodsgjutande",
   "QUALITY.BLUNT": "Trubbigt",
   "QUALITY.CONCEALED": "Dolt", 
-  "QUALITY.CUMBERSOME": "Långsamt", 
+  "QUALITY.CUMBERSOME": "Otympligt", 
   "QUALITY.DEEPIMPACT": "Djupverkande",
   "QUALITY.ENSNARING": "Snärjande",
   "QUALITY.FLEXIBLE": "Flexibelt",
@@ -466,7 +465,7 @@
   "QUALITY.RETURNING": "Återvändande", 
   "QUALITY.SCREENING": "Täckande",
   "QUALITY.SHORT": "Kort",
-  "QUALITY.UNWIELDY": "Otympligt",
+  "QUALITY.UNWIELDY": "Långsamt",
   "QUALITY.WRECKING": "Raserande",
   "QUALITY.ACIDCOATED": "Syraosande",
   "QUALITY.BANE": "Banevapen",
@@ -593,7 +592,7 @@
   "TRAIT_LABEL.SPIRITFORM": "Andeform",
   "TRAIT_LABEL.STURDY": "Livskraftig",
   "TRAIT_LABEL.SUMMONER": "Frammanare",
-  "TRAIT_LABEL.SURVIVALINSTINCT": "Survival Instinct",
+  "TRAIT_LABEL.SURVIVALINSTINCT": "Överlevnadsinstinkt",
   "TRAIT_LABEL.SWARM": "Svärm",
   "TRAIT_LABEL.SWIFT": "Blixtsnabb",
   "TRAIT_LABEL.TERRIFY": "Skräckslå",
@@ -603,7 +602,7 @@
   "TRAIT_LABEL.WINGS": "Vingar",
   "TRAIT_LABEL.WRECKER": "Bräckare",
   
-  "TRAIT_REGENERATION.CHAT_ACTION": " regenerates ",
+  "TRAIT_REGENERATION.CHAT_ACTION": " regenererar ",
   
   "WEAPON.HEADER": "Vapen",
   "WEAPON.NAME": "Namn",
