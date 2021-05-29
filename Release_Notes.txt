@@ -110,7 +110,17 @@ Fixes for
  - #112 Weapon image in chatroll message-content is not showing up due to trailing /
  - #117 Flexible quality was lowercase in English
 
+Version 2.22.0
 
+Fix to yml error not including css folder.
+
+Version 3.0.0
+
+Main change is compatibility to Foundry v 0.8. New abilities/traits - regeneration, survival instinct has been added to the compendium. Compendiums for weapons and armors added for Swedish (Weymyss).
+System is no longer compatible with 0.7.9 - for the 0.7.9 use release 2.22.0 - https://github.com/pwatson100/symbaroum/releases/tag/2.22.0
+
+Fixes:
+ - #180 Compendium SV-Powers SV-Trais still has multiple languages and translations are missing (@Weymyss)
 
 
 
