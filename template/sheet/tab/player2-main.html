@@ -169,7 +169,7 @@
     <div class="abilities-powers foreground border">
         <h1>{{localize "TITLE.ABILITIES_POWERS"}}</h1>
         <div class="traits">
-            {{#each items as |item|}}
+            {{#each actor.items as |item|}}
                 {{#if item.data.isPower}}
                     <div class="trait item" data-item-id="{{item.id}}">
                         <div class="name">
