@@ -97,8 +97,8 @@
                     </div>
                 </div>
                 <div class="items">
-                    {{#each items as |item|}}
-                        {{#if item.isArtifact}}
+                    {{#each actor.items as |item|}}
+                        {{#if item.data.isArtifact}}
                             <div class="artifact item" data-item-id="{{item.id}}">
                                 <div class="name">
                                     <div class="image-container">
@@ -106,12 +106,12 @@
                                     </div>
                                     <button class="item-edit ellipsis" style="width: 131px">{{item.name}}</button>
                                 </div>
-                                <div class="action" style="width: 55px;">{{item.data.power1.action}}/{{item.data.power2.action}}/{{item.data.power3.action}}</div>
-                                <div class="corruption">{{item.data.power1.corruption}}/{{item.data.power2.corruption}}/{{item.data.power3.corruption}}</div>
+                                <div class="action" style="width: 55px;">{{item.data.data.power1.action}}/{{item.data.data.power2.action}}/{{item.data.data.power3.action}}</div>
+                                <div class="corruption">{{item.data.data.power1.corruption}}/{{item.data.data.power2.corruption}}/{{item.data.data.power3.corruption}}</div>
                                 <div class="state">
-                                    {{#if item.isActive}}
+                                    {{#if item.data.isActive}}
                                         <a class="item-state" title="{{localize 'GEAR.ACTIVE'}}"><i class="fas fa-tshirt"></i></a>
-                                    {{else if item.isEquipped}}
+                                    {{else if item.data.isEquipped}}
                                         <a class="item-state" title="{{localize 'GEAR.EQUIPPED'}}"><i class="fas fa-suitcase"></i></a>
                                     {{else}}
                                         <a class="item-state" title="{{localize 'GEAR.OTHER'}}"><i class="fas fa-warehouse"></i></a>
@@ -141,7 +141,7 @@
                 </div>
                 <div class="items">
                     {{#each items as |item|}}
-                        {{#if item.isEquipment}}
+                        {{#if item.data.isEquipment}}
                             <div class="equipment item" data-item-id="{{item.id}}">
                                 <div class="name">
                                     <div class="image-container">
@@ -149,11 +149,11 @@
                                     </div>
                                     <button class="item-edit ellipsis" style="width: 108px">{{item.name}}</button>
                                 </div>
-                                <div class="quantity">{{item.data.number}}</div>
+                                <div class="quantity">{{item.data.data.number}}</div>
                                 <div class="state">
-                                    {{#if item.isActive}}
+                                    {{#if item.data.isActive}}
                                         <a class="item-state" title="{{localize 'GEAR.ACTIVE'}}"><i class="fas fa-tshirt"></i></a>
-                                    {{else if item.isEquipped}}
+                                    {{else if item.data.isEquipped}}
                                         <a class="item-state" title="{{localize 'GEAR.EQUIPPED'}}"><i class="fas fa-suitcase"></i></a>
                                     {{else}}
                                         <a class="item-state" title="{{localize 'GEAR.OTHER'}}"><i class="fas fa-warehouse"></i></a>
