@@ -78,9 +78,23 @@
         {{/if}}
 
         {{#if isArtifact}}
-        <p><strong>{{localize "ARTIFACT.DESCRIPTION"}}:</strong> {{removeMarkup data.description}}</p>
-        <p><strong>{{localize "ARTIFACT.POWER"}} [{{data.action}}]:</strong> {{data.powers}}</p>
-        <p><strong>{{localize "ARTIFACT.CORRUPTION"}}:</strong> {{data.corruption}}</p>
+        <p><strong>{{localize "ARTIFACT.DESCRIPTION"}}:</strong> {{{keepMarkup data.description}}}</p>
+        {{#ifne data.power1.action "-"}}
+        <hr>
+        <p><b>{{localize "TITLE.POWER"}} 1</b> [{{localize data.power1.actionlabel}}] - Corruption: {{data.power1.corruption}}</p>
+        <p>{{{data.power1.description}}}</p>        
+        {{/ifne}}
+        {{#ifne data.power2.action "-"}}
+        <hr>
+        <p><b>{{localize "TITLE.POWER"}} 2</b> [{{localize data.power2.actionlabel}}] - Corruption: {{data.power2.corruption}}</p>
+        <p>{{{data.power2.description}}}</p>        
+        {{/ifne}}
+        {{#ifne data.power3.action "-"}}
+        <hr>
+        <p><b>{{localize "TITLE.POWER"}} 3</b> [{{localize data.power3.actionlabel}}] - Corruption: {{data.power3.corruption}}</p>
+        <p>{{{data.power3.description}}}</p>        
+        {{/ifne}}
+
         {{/if}}
     </div>
 </div>

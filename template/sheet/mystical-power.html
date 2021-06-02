@@ -6,13 +6,13 @@
             </div>
             <div class="wrapper-column">
                 <div class="name">
-                <label for="{{item._id}}-name" >{{localize "MYSTICAL_POWER.NAME"}}</label>
-                    <input id="{{item._id}}-name" name="name" type="text" value="{{item.name}}"/>
+                <label for="{{item.id}}-name" >{{localize "MYSTICAL_POWER.NAME"}}</label>
+                    <input id="{{item.id}}-name" name="name" type="text" value="{{item.name}}"/>
                 </div>
                 {{#if item.isGM }}
                 <div class="name">
-                    <label for="{{item._id}}-data.reference" >{{localize "ABILITY.REFERENCE"}}</label>
-                    <input id="{{item._id}}-data.reference" name="data.reference" type="text" value="{{data.reference}}"/>
+                    <label for="{{item.id}}-data.reference" >{{localize "ABILITY.REFERENCE"}}</label>
+                    <input id="{{item.id}}-data.reference" name="data.reference" type="text" value="{{data.reference}}"/>
                 </div>
                 {{/if}}                
             </div>
@@ -34,18 +34,18 @@
                 <div class="description foreground border">
                     <h1>{{localize "TITLE.DESCRIPTION"}}</h1>
                     <div class="material">
-                        <label for="{{item._id}}-data.material">{{localize "MYSTICAL_POWER.MATERIAL"}}</label>
-                        <input id="{{item._id}}-data.material" name="data.material" type="text" value="{{data.material}}"/>
+                        <label for="{{item.id}}-data.material">{{localize "MYSTICAL_POWER.MATERIAL"}}</label>
+                        <input id="{{item.id}}-data.material" name="data.material" type="text" value="{{data.material}}"/>
                     </div>
-                    {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+                    {{editor content=data.description target="data.description" button=true owner=owner editable=true}}
                 </div>
             </div>
             <div class="tab" data-group="primary" data-tab="novice">
                 <div class="novice foreground border">
                     <h1>{{localize "TITLE.NOVICE"}}</h1>
                     <div class="action">
-                        <label for="{{item._id}}-data.novice.action" >{{localize "MYSTICAL_POWER.ACTION"}}</label>
-                        <select id="{{item._id}}-data.novice.action" name="data.novice.action">
+                        <label for="{{item.id}}-data.novice.action" >{{localize "MYSTICAL_POWER.ACTION"}}</label>
+                        <select id="{{item.id}}-data.novice.action" name="data.novice.action">
                             {{#select data.novice.action}}
                             <option value="A">{{localize "ACTION.ACTIVE"}}</option>
                             <option value="M">{{localize "ACTION.MOVEMENT"}}</option>
@@ -58,22 +58,22 @@
                         </select>
                     </div>
                     <div class="active">
-                        <label for="{{item._id}}-data.novice.isActive">{{localize "MYSTICAL_POWER.ACTIVE"}}</label>
+                        <label for="{{item.id}}-data.novice.isActive">{{localize "MYSTICAL_POWER.ACTIVE"}}</label>
                         {{#if data.novice.isActive}}
-                        <input id="{{item._id}}-data.novice.isActive" name="data.novice.isActive" type="checkbox" value="active" checked/>
+                        <input id="{{item.id}}-data.novice.isActive" name="data.novice.isActive" type="checkbox" value="active" checked/>
                         {{else}}
-                        <input id="{{item._id}}-data.novice.isActive" name="data.novice.isActive" type="checkbox" value="active"/>
+                        <input id="{{item.id}}-data.novice.isActive" name="data.novice.isActive" type="checkbox" value="active"/>
                         {{/if}}
                     </div>
-                    {{editor content=data.novice.description target="data.novice.description" button=true owner=owner editable=editable}}
+                    {{editor content=data.novice.description target="data.novice.description" button=true owner=owner editable=true}}
                 </div>
             </div>
             <div class="tab" data-group="primary" data-tab="adept">
                 <div class="adept foreground border">
                     <h1>{{localize "TITLE.ADEPT"}}</h1>
                     <div class="action">
-                        <label for="{{item._id}}-data.adept.action">{{localize "MYSTICAL_POWER.ACTION"}}</label>
-                        <select id="{{item._id}}-data.adept.action" name="data.adept.action">
+                        <label for="{{item.id}}-data.adept.action">{{localize "MYSTICAL_POWER.ACTION"}}</label>
+                        <select id="{{item.id}}-data.adept.action" name="data.adept.action">
                             {{#select data.adept.action}}
                             <option value="A">{{localize "ACTION.ACTIVE"}}</option>
                             <option value="M">{{localize "ACTION.MOVEMENT"}}</option>
@@ -86,22 +86,22 @@
                         </select>
                     </div>
                     <div class="active">
-                        <label for="{{item._id}}-data.adept.isActive">{{localize "MYSTICAL_POWER.ACTIVE"}}</label>
+                        <label for="{{item.id}}-data.adept.isActive">{{localize "MYSTICAL_POWER.ACTIVE"}}</label>
                         {{#if data.adept.isActive}}
-                        <input id="{{item._id}}-data.adept.isActive" name="data.adept.isActive" type="checkbox" value="active" checked/>
+                        <input id="{{item.id}}-data.adept.isActive" name="data.adept.isActive" type="checkbox" value="active" checked/>
                         {{else}}
-                        <input id="{{item._id}}-data.adept.isActive" name="data.adept.isActive" type="checkbox" value="active"/>
+                        <input id="{{item.id}}-data.adept.isActive" name="data.adept.isActive" type="checkbox" value="active"/>
                         {{/if}}
                     </div>
-                    {{editor content=data.adept.description target="data.adept.description" button=true owner=owner editable=editable}}
+                    {{editor content=data.adept.description target="data.adept.description" button=true owner=owner editable=true}}
                 </div>
             </div>
             <div class="tab" data-group="primary" data-tab="master">
                 <div class="master foreground border">
                     <h1>{{localize "TITLE.MASTER"}}</h1>
                     <div class="action">
-                        <label for="{{item._id}}-data.master.action">{{localize "MYSTICAL_POWER.ACTION"}}</label>
-                        <select id="{{item._id}}-data.master.action" name="data.master.action">
+                        <label for="{{item.id}}-data.master.action">{{localize "MYSTICAL_POWER.ACTION"}}</label>
+                        <select id="{{item.id}}-data.master.action" name="data.master.action">
                             {{#select data.master.action}}
                             <option value="A">{{localize "ACTION.ACTIVE"}}</option>
                             <option value="M">{{localize "ACTION.MOVEMENT"}}</option>
@@ -114,14 +114,14 @@
                         </select>
                     </div>
                     <div class="active">
-                        <label for="{{item._id}}-data.master.isActive">{{localize "MYSTICAL_POWER.ACTIVE"}}</label>
+                        <label for="{{item.id}}-data.master.isActive">{{localize "MYSTICAL_POWER.ACTIVE"}}</label>
                         {{#if data.master.isActive}}
-                        <input id="{{item._id}}-data.master.isActive" name="data.master.isActive" type="checkbox" value="active" checked/>
+                        <input id="{{item.id}}-data.master.isActive" name="data.master.isActive" type="checkbox" value="active" checked/>
                         {{else}}
-                        <input id="{{item._id}}-data.master.isActive" name="data.master.isActive" type="checkbox" value="active"/>
+                        <input id="{{item.id}}-data.master.isActive" name="data.master.isActive" type="checkbox" value="active"/>
                         {{/if}}
                     </div>
-                    {{editor content=data.master.description target="data.master.description" button=true owner=owner editable=editable}}
+                    {{editor content=data.master.description target="data.master.description" button=true owner=owner editable=true}}
                 </div>
             </div>
             <div class="tab" data-group="primary" data-tab="bonus">

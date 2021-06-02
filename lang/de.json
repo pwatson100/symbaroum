@@ -371,9 +371,17 @@
   "POWER_BENDWILL.CHAT_SUCCESS": " kontrolliert ",
   "POWER_BENDWILL.CHAT_FAILURE": " wiedersteht dem Zwang.",
   
+  "POWER_BLACKBOLT.CHAT_INTRO": " traps its target in black fire.",
+  "POWER_BLACKBOLT.CHAT_SUCCESS": " is burned and paralyzed.",  
+  "POWER_BLACKBOLT.CHAT_FAILURE": " avoids the black bolt.",
+  
   "POWER_BRIMSTONECASC.CHAT_INTRO": " wirft Feuer auf sein Ziel.",
   "POWER_BRIMSTONECASC.CHAT_SUCCESS": " fängt Feuer.",
   "POWER_BRIMSTONECASC.CHAT_FAILURE": " vermeidet einen Teil des Schadens.",
+  
+  "POWER_CONFUSION.EFFECT12": " stands still, blinking stupidly.",
+  "POWER_CONFUSION.EFFECT34": " attacks whichever of its allies is closest.",
+  "POWER_CONFUSION.EFFECT56": "  attacks whichever of its enemies is closest.",
   
   "POWER_CURSE.CHAT_INTRO": " wirkt einen Fluch.",
   "POWER_CURSE.CHAT_INTRO_M": " hält den Fluch aufrecht.",
@@ -382,6 +390,10 @@
   "POWER_CURSE.CHAT_SUCCESS_M": " ist schwer verflucht (1d6 Schaden für jede aktion).",
   "POWER_CURSE.CHAT_FAILURE": " kann den Fluch nicht aufrecht erhalten.",
   "POWER_CURSE.CHAT_FAIL_FINAL": "Der Fluch hat keinen Effekt mehr auf ",
+  
+  "POWER_ENTANGLINGVINES.CHAT_INTRO_M": " tries to break free from the vines.",
+  "POWER_ENTANGLINGVINES.CHAT_SUCCESS": " is entangled in the vines.",
+  "POWER_ENTANGLINGVINES.CHAT_FAILURE": " breaks free from the vines.",
 
   "POWER_HOLYAURA.CHAT_INTRO": " versucht das Licht Prios zu kanalisieren.",
   "POWER_HOLYAURA.CHAT_SUCCESS": " strahlt ein heiliges Licht aus.",
@@ -544,6 +556,7 @@
   "TRAIT_LABEL.SPIRITFORM": "Geisterform",
   "TRAIT_LABEL.STURDY": "Sturdy",
   "TRAIT_LABEL.SUMMONER": "Summoner",
+  "TRAIT_LABEL.SURVIVALINSTINCT": "Survival Instinct",
   "TRAIT_LABEL.SWARM": "Schwarm",
   "TRAIT_LABEL.SWIFT": "Swift",
   "TRAIT_LABEL.TERRIFY": "Furchterregend",
@@ -552,6 +565,8 @@
   "TRAIT_LABEL.WEB": "Web",
   "TRAIT_LABEL.WINGS": "Geflügelt",
   "TRAIT_LABEL.WRECKER": "Wrecker",
+  
+  "TRAIT_REGENERATION.CHAT_ACTION": " regenerates ",
 
   "WEAPON.HEADER": "Waffe",
   "WEAPON.NAME": "Name",
