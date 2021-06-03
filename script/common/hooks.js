@@ -151,7 +151,8 @@ Hooks.once('ready', () => {
 
 Hooks.on('preCreateActor', (doc, createData, options, userid) => {
   
-  mergeObject(createData, {
+  let createChanges = {};
+  mergeObject(createChanges, {
     'token.bar1': { attribute: 'health.toughness' },
     'token.bar2': { attribute: 'combat.defense' },
     'token.displayName': CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,
@@ -160,11 +161,14 @@ Hooks.on('preCreateActor', (doc, createData, options, userid) => {
     'token.name': createData.name,
   });
 
-  createData.img = 'systems/symbaroum/asset/image/unknown-actor.png';
-  if (createData.type === 'player') {
-    createData.token.vision = true;
-    createData.token.actorLink = true;
+  createChanges.img = 'systems/symbaroum/asset/image/unknown-actor.png';
+
+  if (doc.data.type === 'player') {
+    createChanges.token.vision = true;
+    createChanges.token.actorLink = true;
   }
+  doc.data.update(createChanges);
+
 });
 
 Hooks.on('createOwnedItem', (actor, item) => {});
@@ -310,14 +314,14 @@ async function showReleaseNotes()
       await newReleasePack.getIndex();
 
       let newReleaseNotes = newReleasePack.index.find( j => j.name === releaseNoteName);
-      console.log("Found new release notes in the compendium pack");
+      // console.log("Found new release notes in the compendium pack");
 
       // Don't delete until we have new release Pack
       if( newReleaseNotes !== undefined && newReleaseNotes !== null && oldReleaseNotes !== null && oldReleaseNotes !== undefined ) { 
         await oldReleaseNotes.delete();        
       }
 
-      await game.journal.importFromCollection(`${newReleasePack.metadata.system}.${newReleasePack.metadata.name}`, newReleaseNotes.id);
+      await game.journal.importFromCompendium(newReleasePack, newReleaseNotes.id);
       let newReleaseJournal = game.journal.getName(newReleaseNotes.name);
 
       await newReleaseJournal.setFlag('symbaroum', 'ver', newVer);
@@ -326,7 +330,7 @@ async function showReleaseNotes()
       tidyReleaseNotes11();
 
       // Show journal
-      await newReleaseJournal.show();
+      await newReleaseJournal.sheet.render(true, {sheetMode: "text"});
     
 
     } catch (error) {

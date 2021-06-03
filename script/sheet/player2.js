@@ -32,7 +32,6 @@ export class PlayerSheet2 extends PlayerSheet {
             actor: foundry.utils.deepClone(this.actor.data),
             data: foundry.utils.deepClone(this.actor.data.data)
         }
-        data.items = this.actor.items;
         return data;
     }
 }
