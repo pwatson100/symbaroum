@@ -66,7 +66,7 @@
                             </div>
                             {{#ife ../actor.type "player"}}<div class="damage">{{item.damage.pcShort}}</div>{{/ife}}
                             {{#ife ../actor.type "monster"}}<div class="damage">{{item.damage.npc}}</div>{{/ife}}
-                            <div class="quality">{{localize item.attributeLabel}}</div>
+                            <div class="quality">{{localizeabbr item.attributeLabel}}</div>
                             <div class="state">
                                 {{#if item.isActive}}
                                     <a class="item-state" title="{{localize 'GEAR.ACTIVE'}}"><i class="fas fa-tshirt"></i></a>

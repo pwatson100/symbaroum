@@ -40,7 +40,11 @@ function registerHandlebarsHelpers() {
   Handlebars.registerHelper('keepMarkup', function (text) {  
     return new Handlebars.SafeString(text);
   });
-    
+
+  Handlebars.registerHelper('localizeabbr', function (text) {  
+    return game.i18n.localize(text+"ABBR");
+  });
+
   // Ifis not equal
   Handlebars.registerHelper('ifne', function (v1, v2, options) {
     if (v1 !== v2) return options.fn(this);
