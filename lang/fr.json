@@ -157,6 +157,16 @@
     "ATTRIBUTE.RESOLUTE": "Volonté",
     "ATTRIBUTE.STRONG": "Force",
     "ATTRIBUTE.VIGILANT": "Vigilance",
+
+    "ATTRIBUTE.ACCURATEABBR": "PRÉ",
+    "ATTRIBUTE.CUNNINGABBR": "AST",
+    "ATTRIBUTE.DISCREETABBR": "DIS",
+    "ATTRIBUTE.PERSUASIVEABBR": "PER",
+    "ATTRIBUTE.QUICKABBR": "AGI",
+    "ATTRIBUTE.RESOLUTEABBR": "VOL",
+    "ATTRIBUTE.STRONGABBR": "FOR",
+    "ATTRIBUTE.VIGILANTABBR": "VIG",
+
     "ATTRIBUTE.CUSTOM": "Personnalisé",
     "ATTRIBUTE.BASE": "Base",
     "ATTRIBUTE.MODIFIER": "Modificateur",
@@ -647,6 +657,8 @@
     "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT": "Garder en mémoire les modificateurs d'un jet d'attribut sur l'autre.",
     "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE": "Affichage préventif du modificateur",
     "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE_HINT": "Affiche le modificateur de l'attribut de l'adversaire dans le menu déroulant de jet resisté d'attribut.",
+    "SYMBAROUM.OPTIONAL_INIATITIVEROLLS": "Supress Initiative rolls",
+    "SYMBAROUM.OPTIONAL_INIATITIVEROLLS_HINT": "Check to QoL disabling of Initiative rolls in chat",
     "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Modification des références",
     "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Attention - MJ seulement - Permet de modifier les références des objets traits, talents et pouvoirs. A n'utiliser que si vous savez ce que vous faites."
   

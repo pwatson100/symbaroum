@@ -158,6 +158,16 @@
   "ATTRIBUTE.RESOLUTE": "Tenaz",
   "ATTRIBUTE.STRONG": "Fuerte",
   "ATTRIBUTE.VIGILANT": "Atento",
+
+  "ATTRIBUTE.ACCURATEABBR": "DIE",
+  "ATTRIBUTE.CUNNINGABBR": "INT",
+  "ATTRIBUTE.DISCREETABBR": "DIS",
+  "ATTRIBUTE.PERSUASIVEABBR": "PER",
+  "ATTRIBUTE.QUICKABBR": "ÁGI",
+  "ATTRIBUTE.RESOLUTEABBR": "TEN",
+  "ATTRIBUTE.STRONGABBR": "FUE",
+  "ATTRIBUTE.VIGILANTABBR": "ATE",
+
   "ATTRIBUTE.CUSTOM": "Custom",
   "ATTRIBUTE.BASE": "Base",
   "ATTRIBUTE.MODIFIER": "Modificador",
@@ -646,6 +656,8 @@
   "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT": "Marcar para permitir mejoras de QoL para mantener todos los modificadores cuando se hagan pruebas de atributos",
   "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE": "Mostrar modificadores en tiradas de atributo con objetivo",
   "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE_HINT": "Marcar para permitir mejoras de QoL para mostrar los mod de los atributos antes de la tirada",
+  "SYMBAROUM.OPTIONAL_INIATITIVEROLLS": "Supress Initiative rolls",
+  "SYMBAROUM.OPTIONAL_INIATITIVEROLLS_HINT": "Check to QoL disabling of Initiative rolls in chat",
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Permitir modificaciones de referencias",
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Atención - Solo GM - permite ajustar manualmente las referencias en la implementación de habilidades, rasgos y poderes místicos. Requiere reiniciar."
 
