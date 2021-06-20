@@ -267,13 +267,12 @@ export class SymbaroumActor extends Actor {
                     shortBonusDamage += " +1d4";
                     tooltip += game.i18n.localize("ABILITY_LABEL.IRON_FIST") + ironFistLvl.toString() + ", ";
                 }
-                /* This is not correct - this is an active ability - and, even worse, it replaces normal Iron Fist damage
+                // Houserule ironfist
                 else if(ironFistLvl > 2){
                     bonusDamage += " +1d8["+game.i18n.localize("ABILITY_LABEL.IRON_FIST")+"]";
                     shortBonusDamage += " +1d8";
                     tooltip += game.i18n.localize("ABILITY_LABEL.IRON_FIST") + ironFistLvl.toString() + ", ";
                 }
-                */
                 if(polearmmasteryLvl > 0 && item.data.data.qualities.long){
                     let newdamage = upgradeDice(baseDamage, 1);
                     baseDamage = newdamage;
