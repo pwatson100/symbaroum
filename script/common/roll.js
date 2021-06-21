@@ -400,7 +400,7 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
       //build roll string
       newRollDmgString = weapon.damage.pc;
       if(damageModFormula != ""){
-        newRollDmgString += "+" + damageModFormula
+        newRollDmgString += damageModFormula
       }
       if(modFixedDmg) {newRollDmgString += "+"+ modFixedDmg.toString()};
       if(!dmgData.ignoreArm){

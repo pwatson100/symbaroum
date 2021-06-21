@@ -985,7 +985,8 @@ async function modifierDialog(functionStuff){
                     functionStuff.dmgData.ignoreArm = html.find("#ignarm")[0].checked;
                     functionStuff.poison = Number(html.find("#poison")[0].value);                
                     let damModifier = html.find("#dammodifier")[0].value;
-                    if(damModifier!="") {
+                    
+                    if(damModifier.length > 0) {
                         functionStuff.dmgData.modifier += " + " + damModifier;
                     }
                     // Damage modifier for iron fist master 
