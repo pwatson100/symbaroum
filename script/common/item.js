@@ -869,7 +869,8 @@ async function modifierDialog(functionStuff){
     let isWeaponRoll = false;
     let askBackstab = functionStuff.askBackstab ?? false;
     let askHuntersInstinct = functionStuff.askHuntersInstinct ?? false;
-    let askIronFistMaster = functionStuff.askIronFistMaster ?? false;
+    let askIronFistDmg = functionStuff.askIronFistDmg ?? false;
+    let ironFistDmgMaster = functionStuff.ironFistDmgMaster ?? false;
     let askTwoAttacks = functionStuff.askTwoAttacks ?? false;
     let askThreeAttacks = functionStuff.askThreeAttacks ?? false;
     let askBeastlore = functionStuff.askBeastlore ?? false;
@@ -904,7 +905,8 @@ async function modifierDialog(functionStuff){
         autoparamsText: game.i18n.localize("DIALOG.AUTOPARAMS") + functionStuff.autoParams + functionStuff.targetData.autoParams,
         isArmorRoll : null,
         askBackstab : askBackstab,
-        askIronFistMaster: askIronFistMaster,
+        askIronFistAdept: askIronFistDmg && !ironFistDmgMaster,
+        askIronFistMaster: askIronFistDmg && ironFistDmgMaster,
         askHuntersInstinct: askHuntersInstinct,
         askThreeAttacks: askThreeAttacks,
         askTwoAttacks: askTwoAttacks,
@@ -990,7 +992,7 @@ async function modifierDialog(functionStuff){
                         functionStuff.dmgData.modifier += " + " + damModifier;
                     }
                     // Damage modifier for iron fist master 
-                    if(askIronFistMaster){
+                    if(askIronFistDmg){
                         functionStuff.dmgData.modifier += " + " + html.find("#ironfistmodifier")[0].value;
                     }
                         //advantage situation
@@ -1206,7 +1208,8 @@ export async function attackRoll(weapon, actor){
         askTwoAttacks: false,
         askThreeAttacks: false,
         askBeastlore: false,
-        askIronFistMaster: false,
+        askIronFistDmg: false,
+        ironFistDmgMaster: false,
         attackFromPC: actor.hasPlayerOwner,
         autoParams: "",
         bleed: false,
@@ -1327,9 +1330,12 @@ export async function attackRoll(weapon, actor){
         let ironFist = actor.items.filter(item => item.data.data?.reference === "ironfist");
         if(ironFist.length > 0){
             let powerLvl = getPowerLevel(ironFist[0]);
-            if(powerLvl.level > 2){
-                functionStuff.askIronFistMaster = true;
-                functionStuff.autoParams += game.i18n.localize('ABILITY_LABEL.IRON_FIST') + " (" + game.i18n.localize('ABILITY.MASTER') + "), ";
+            if(powerLvl.level > 1){
+                functionStuff.askIronFistDmg = true;
+                functionStuff.autoParams += game.i18n.localize('ABILITY_LABEL.IRON_FIST') + ", ";
+                if(powerLvl.level > 2){
+                    functionStuff.ironFistDmgMaster = true;
+                }
             }
         }
     }
@@ -3604,7 +3610,7 @@ async function strangler(ability, actor){
     let isWeaponRoll = false;
     let askBackstab = false;
     let askHuntersInstinct = false;
-    let askIronFistMaster = false;
+    let askIronFistDmg = false;
     let askTwoAttacks = false;
     let askThreeAttacks = false;
     let checkMaintain = true;
@@ -3625,7 +3631,7 @@ async function strangler(ability, actor){
         autoparamsText: game.i18n.localize("DIALOG.AUTOPARAMS") + targetData.autoParams,
         isArmorRoll : null,
         askBackstab : askBackstab,
-        askIronFistMaster: askIronFistMaster,
+        askIronFistDmg: askIronFistDmg,
         askHuntersInstinct: askHuntersInstinct,
         askThreeAttacks: askThreeAttacks,
         askTwoAttacks: askTwoAttacks,
