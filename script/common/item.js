@@ -93,16 +93,19 @@ export class SymbaroumItem extends Item {
         // console.log("computeExperienceCost "+JSON.stringify(data));
 
         let expCost = 0;
+        let progCost = 0;
 
         if (data.isRitual) {
             data.data.actions = "Ritual";
         }
         else if (data.isBurden) {
             data.data.actions = "Burden";
-            expCost = -5 * data.data.level;
+            progCost = -5 * data.data.level;
+//            expCost = -5 * data.data.level;
         } else if (data.isBoon) {
-            data.data.actions = "Boon";            
-            expCost = 5 * data.data.level;
+            data.data.actions = "Boon";
+            progCost = 5 * data.data.level;
+//            expCost = 5 * data.data.level;
         } else if (data.isPower) {
 			
             let novice = "-";
@@ -114,11 +117,13 @@ export class SymbaroumItem extends Item {
             }
             if (data.data.adept.isActive) { 
               adept = data.data.adept.action;
-              expCost += 20;
+              expCost += 15;
+//              expCost += 20;
             }
             if (data.data.master.isActive) {
               master = data.data.master.action;
-              expCost += 30;
+              expCost += 20;
+//              expCost += 30;
             }
             data.data.actions = `${novice}/${adept}/${master}`;
         }
