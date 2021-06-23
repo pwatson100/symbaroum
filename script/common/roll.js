@@ -315,10 +315,16 @@ export async function createModifyTokenChatButton(actionsDataArray){
 */
 function formatDice(diceResult, separator) {
 	let rolls = "";
+  
 	for( let dd of diceResult ) {
-		if (typeof dd === 'string' || Number.isInteger(dd) ) {
+    if (typeof dd === 'string' || Number.isInteger(dd) ) {
 			rolls += dd;
+    } else if( dd instanceof OperatorTerm) {
+        rolls += dd.operator;
 		} else {
+      if( dd.modifiers === undefined || dd.modifiers === null ) {
+        continue;
+      }
       let tmpSep = separator;
       
       if( dd.modifiers.includes("kl") || dd.modifiers.includes("kh") ) {
@@ -341,7 +347,6 @@ function formatDice(diceResult, separator) {
 	}
 	return rolls;
 }
-
 
 /*function for evaluating Damage
 
