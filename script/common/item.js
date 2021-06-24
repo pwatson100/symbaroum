@@ -2049,81 +2049,19 @@ async function bendWillPrepare(ability, actor) {
         favour: favour,
         targetMandatory : true,
         targetData: targetData,
-        resultFunction: bendWillResult,
+        resultFunction: standardPowerResult,
+        activelyMaintaninedTargetEffect: ["systems/symbaroum/asset/image/puppet.png"],
         combat: false,
-        tradition: ["witchcraft", "wizardry"]
+        tradition: ["witchcraft", "wizardry"],
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
+    functionStuff.introText = functionStuff.actor.data.name + game.i18n.localize('POWER_BENDWILL.CHAT_INTRO');
+    functionStuff.introTextMaintain = functionStuff.actor.data.name + game.i18n.localize('POWER_BENDWILL.CHAT_INTRO_M');
+    functionStuff.resultTextSuccess = functionStuff.actor.data.name + game.i18n.localize('POWER_BENDWILL.CHAT_SUCCESS') + functionStuff.targetData.token.data.name;
+    functionStuff.resultTextFail = functionStuff.targetData.token.data.name + game.i18n.localize('POWER_BENDWILL.CHAT_FAILURE');
+    functionStuff.targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.token.data.name;
+    functionStuff.finalText = "";
     await modifierDialog(functionStuff)
-}
-
-async function bendWillResult(rollData, functionStuff){
-    let flagDataArray = [];
-    let haveCorruption = false;
-    let corruptionText = "";
-    let corruption;
-    let introText = "";
-    if(functionStuff.isMaintained){
-        introText = functionStuff.actor.data.name + game.i18n.localize('POWER_BENDWILL.CHAT_INTRO_M');
-    }
-    else{
-        introText = functionStuff.actor.data.name + game.i18n.localize('POWER_BENDWILL.CHAT_INTRO');
-    }
-    let resultText = functionStuff.actor.data.name + game.i18n.localize('POWER_BENDWILL.CHAT_SUCCESS') + functionStuff.targetData.token.data.name;
-    if(!rollData[0].hasSucceed){
-        resultText = functionStuff.targetData.token.data.name + game.i18n.localize('POWER_BENDWILL.CHAT_FAILURE');
-    }
-    let targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.token.data.name;
-    if (functionStuff.targetData.autoParams != ""){targetText += ": " + functionStuff.targetData.autoParams}
-    if(!functionStuff.isMaintained){
-        haveCorruption = true;
-        corruption = await getCorruption(functionStuff);
-        corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
-        flagDataArray.push({
-            tokenId: functionStuff.token.id,
-            corruptionChange: corruption.value
-        });
-    }
-    let templateData = {
-        targetData : functionStuff.targetData,
-        hasTarget : functionStuff.targetData.hasTarget,
-        introText: introText,
-        introImg: functionStuff.actor.data.img,
-        targetText: targetText,
-        subText: functionStuff.ability.name + " (" + functionStuff.powerLvl.lvlName + ")",
-        subImg: functionStuff.ability.img,
-        hasRoll: true,
-        rollString: await formatRollString(rollData[0], functionStuff.targetData.hasTarget, rollData[0].modifier),
-        rollResult : formatRollResult(rollData),
-        resultText: resultText,
-        finalText: "",
-        haveCorruption: haveCorruption,
-        corruptionText: corruptionText
-    }
-    if(functionStuff.autoParams != ""){templateData.subText += ", " + functionStuff.autoParams};
-
-    const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
-    const chatData = {
-        user: game.user.id,
-        content: html,
-    }
-    let NewMessage = await ChatMessage.create(chatData);
-    if(rollData[0].hasSucceed && !functionStuff.isMaintained){
-        flagDataArray.push({
-            tokenId: functionStuff.targetData.token.id,
-            addEffect: "systems/symbaroum/asset/image/puppet.png",
-            effectDuration: 1
-        });
-    }
-    else if(!rollData[0].hasSucceed){   
-        flagDataArray.push({
-            tokenId: functionStuff.targetData.token.id,
-            removeEffect: "systems/symbaroum/asset/image/puppet.png"
-        });
-    }
-    if(flagDataArray.length){
-        await createModifyTokenChatButton(flagDataArray);
-    }
 }
 
 async function blackBoltPrepare(ability, actor) {
