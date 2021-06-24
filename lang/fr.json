@@ -238,6 +238,7 @@
     "COMBAT.DAMAGE": "Dégâts infligés: ",
 
     "DIALOG.VERSUS": "Versus",
+    "DIALOG.ASK_CORRUPTION": "Cible totalement corrompue?",
     "DIALOG.ATTRIBUTE": "Attribut",
     "DIALOG.MODIFIER": "Mod. jet d'attribut",
     "DIALOG.ADVANTAGE": "Avantage",
@@ -441,6 +442,9 @@
     "POWER_LAYONHANDS.CHAT_SUCCESS":" parvient à soigner ",
     "POWER_LAYONHANDS.CHAT_FINAL":"Points d'endurance soignés: ",
     "POWER_LAYONHANDS.CHAT_FAILURE":" échoue à soigner ",
+
+    "POWER_PRIOSBURNINGGLASS.CHAT_INTRO":" tente de canaliser la lumière de Prios vers une cible.",
+    "POWER_PRIOSBURNINGGLASS.CHAT_EXTRA":" peut être étoudi sur un test [Volonté <-- Volonté].",
 
     "POWER_TORMENTINGSPIRITS.CHAT_INTRO":" essaye d'appeller les esprits des morts.",
     "POWER_TORMENTINGSPIRITS.CHAT_INTRO_M":" essaye de maintenir les esprits tourmenteurs.",

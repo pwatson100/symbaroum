@@ -257,6 +257,7 @@
   "DIALOG.RESIST_ATTRIBUTE": "Opposition attribute",
 
   "DIALOG.VERSUS": "Versus",
+  "DIALOG.ASK_CORRUPTION": "Target fully corrupted?",
   "DIALOG.ATTRIBUTE": "Attribute",
   "DIALOG.MODIFIER": "Modifier",
   "DIALOG.ADVANTAGE": "Advantage",
@@ -435,7 +436,7 @@
   "POWER_LARVAEBOILS.CHAT_INTRO": " throws larvaes.",
   "POWER_LARVAEBOILS.CHAT_INTRO_M": " maintains the larvaes surge.",
   "POWER_LARVAEBOILS.CHAT_SUCCESS": " is eaten from the inside by the larvaes.",
-  "POWER_LARVAEBOILS.CHAT_FAILURE": " résists to the larvaes.",
+  "POWER_LARVAEBOILS.CHAT_FAILURE": " resists to the larvaes.",
     
   "POWER_LAYONHANDS.DIALOG":"How close is your target?",
   "POWER_LAYONHANDS.TOUCH":"Touch",
@@ -444,6 +445,9 @@
   "POWER_LAYONHANDS.CHAT_SUCCESS":" heals ",
   "POWER_LAYONHANDS.CHAT_FINAL":"Toughness healed: ",
   "POWER_LAYONHANDS.CHAT_FAILURE":" fails to heal ",
+
+  "POWER_PRIOSBURNINGGLASS.CHAT_INTRO":" tries to channel the Light of Prios at a target.",
+  "POWER_PRIOSBURNINGGLASS.CHAT_EXTRA":" might be stunned, test [resolute <-- resolute].",
 
   "POWER_TORMENTINGSPIRITS.CHAT_INTRO":" tries to invoke tormenting spirits.",
   "POWER_TORMENTINGSPIRITS.CHAT_INTRO_M":" tries to maintain the tormenting spirits.",
