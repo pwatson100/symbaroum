@@ -510,6 +510,7 @@ export class SymbaroumItem extends Item {
         {reference: "larvaeboils", level: [1, 2, 3], function: larvaeBoilsPrepare},
         {reference: "layonhands", level: [1, 2, 3], function: layonhandsPrepare},
         {reference: "levitate", level: [1, 2, 3], function: levitatePrepare},
+        {reference: "maltransformation", level: [1, 2, 3], function: maltransformationPrepare},
         {reference: "mindthrow", level: [1, 2, 3], function: mindthrowPrepare},
         {reference: "tormentingspirits", level: [1, 2, 3], function: tormentingspiritsPrepare},
         {reference: "unnoticeable", level: [1, 2, 3], function: unnoticeablePrepare}];
@@ -675,6 +676,7 @@ async function buildFunctionStuffDefault(ability, actor) {
         checkMaintain: false,
         addCasterEffect: [],
         addTargetEffect: [],
+        activelyMaintaninedTargetEffect: [],
         removeTargetEffect: [],
         removeCasterEffect: [],
         resultFunction: standardPowerResult
@@ -1774,6 +1776,27 @@ async function standardPowerResult(rollData, functionStuff){
             }
         }
     }
+    if(hasSucceed && !functionStuff.isMaintained && (functionStuff.activelyMaintaninedTargetEffect.length >0)){ 
+        for(let effect of functionStuff.activelyMaintaninedTargetEffect){
+        flagDataArray.push({
+                tokenId: functionStuff.targetData.token.id,
+                addEffect: effect,
+                effectDuration: 1
+            });
+        }
+    }
+    if(!hasSucceed && functionStuff.isMaintained && (functionStuff.activelyMaintaninedTargetEffect.length >0)){ 
+        for(let effect of functionStuff.activelyMaintaninedTargetEffect){
+            let effectPresent = getEffect(functionStuff.targetData.token, effect);
+            if(effectPresent){ 
+                flagDataArray.push({
+                    tokenId: functionStuff.targetData.token.id,
+                    removeEffect: effect
+                });
+            }
+        }
+    }
+
     if(flagDataArray.length){
         await createModifyTokenChatButton(flagDataArray);
     }
@@ -3088,6 +3111,34 @@ async function levitatePrepare(ability, actor) {
     functionStuff.targetData = targetData;
     await modifierDialog(functionStuff)
 }
+
+async function maltransformationPrepare(ability, actor) {
+    let targetData;
+    try{targetData = getTarget("resolute")} catch(error){      
+        ui.notifications.error(error);
+        return;
+    }
+    let targetResMod = await checkResoluteModifiers(targetData.actor, targetData.autoParams, true, true);
+    let favour = -1*targetResMod.favour;
+    targetData.resistAttributeName = targetResMod.bestAttributeName;
+    targetData.resistAttributeValue = targetResMod.bestAttributeValue;
+    targetData.autoParams = targetResMod.autoParams;
+    let fsDefault = await buildFunctionStuffDefault(ability, actor)
+    let specificStuff = {
+        checkMaintain: true,
+        corruption: true,
+        favour: favour,
+        targetMandatory : true,
+        targetData: targetData,
+        resultFunction: standardPowerResult,
+        combat: false,
+        activelyMaintaninedTargetEffect: ["systems/symbaroum/asset/image/frog.png"],
+        tradition: ["witchcraft"]
+    }
+    let functionStuff = Object.assign({}, fsDefault , specificStuff);
+    await modifierDialog(functionStuff)
+}
+
 
 async function mindthrowPrepare(ability, actor) {
     // get target
