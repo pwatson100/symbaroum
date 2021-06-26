@@ -2734,7 +2734,7 @@ async function inheritWound(ability, actor){
     corruption = await getCorruption({tradition: tradition, casterMysticAbilities: casterMysticAbilities, actor: actor, attackFromPC: attackFromPC});
     corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
     flagDataArray.push({
-        tokenId: selectedToken.data.id,
+        tokenId: selectedToken.id,
         corruptionChange: corruption.value
     });
 
@@ -2766,7 +2766,7 @@ async function inheritWound(ability, actor){
         }
         templateData.finalText += targetData.token.data.name + game.i18n.localize('POWER_INHERITWOUND.CHAT_HEALED') + healed.toString() + ";\n" + actor.data.name + game.i18n.localize('POWER_INHERITWOUND.CHAT_DAMAGE') + inheritDamage.toString();
         flagDataArray.push({
-            tokenId: selectedToken.data.id,
+            tokenId: selectedToken.id,
             toughnessChange: inheritDamage*-1
         }, {
             tokenId: targetData.token.id,
@@ -2786,7 +2786,7 @@ async function inheritWound(ability, actor){
                 }
                 //set status to caster
                 flagDataArray.push({
-                    tokenId: selectedToken.data.id,
+                    tokenId: selectedToken.id,
                     addEffect: "icons/svg/poison.svg",
                     effectDuration: timeLeft
                 }, {
@@ -2804,7 +2804,7 @@ async function inheritWound(ability, actor){
                 }
                 //set status to caster
                 flagDataArray.push({
-                    tokenId: selectedToken.data.id,
+                    tokenId: selectedToken.id,
                     addEffect: "icons/svg/blood.svg",
                     effectDuration: timeLeft
                 }, {
