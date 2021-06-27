@@ -670,7 +670,7 @@ export class SymbaroumActor extends Actor {
 
             let armorData = this._evaluateProtection(armor, extraArmorBonus);
             data.data.armors.push(armorData);
-            if(armorData.isActive && (armor.data.baseProtection != "0" || armor.data.bonusProtection == "")){
+            if(armorData.isActive && (armor.data.data.baseProtection != "0" || armor.data.data.bonusProtection == "")){
                 wearArmor = armorData;
             }
         }
