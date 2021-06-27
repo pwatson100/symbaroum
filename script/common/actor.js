@@ -262,18 +262,17 @@ export class SymbaroumActor extends Actor {
                 shortBonusDamage += plus + item.data.data.bonusDamage;;
             }
             if(item.data.data?.isMelee){
+                /* iron fist bonus is now in the dialog box
                 if(ironFistLvl == 2){
                     bonusDamage += " +1d4["+game.i18n.localize("ABILITY_LABEL.IRON_FIST")+"]";
                     shortBonusDamage += " +1d4";
                     tooltip += game.i18n.localize("ABILITY_LABEL.IRON_FIST") + ironFistLvl.toString() + ", ";
                 }
-                /* This is not correct - this is an active ability - and, even worse, it replaces normal Iron Fist damage
                 else if(ironFistLvl > 2){
                     bonusDamage += " +1d8["+game.i18n.localize("ABILITY_LABEL.IRON_FIST")+"]";
                     shortBonusDamage += " +1d8";
                     tooltip += game.i18n.localize("ABILITY_LABEL.IRON_FIST") + ironFistLvl.toString() + ", ";
-                }
-                */
+                }*/
                 if(polearmmasteryLvl > 0 && item.data.data.qualities.long){
                     let newdamage = upgradeDice(baseDamage, 1);
                     baseDamage = newdamage;
@@ -671,7 +670,7 @@ export class SymbaroumActor extends Actor {
 
             let armorData = this._evaluateProtection(armor, extraArmorBonus);
             data.data.armors.push(armorData);
-            if(armorData.isActive && (armor.data.baseProtection != "0" || armor.data.bonusProtection == "")){
+            if(armorData.isActive && (armor.data.data.baseProtection != "0" || armor.data.data.bonusProtection == "")){
                 wearArmor = armorData;
             }
         }

@@ -260,6 +260,7 @@
   "DIALOG.RESIST_ATTRIBUTE": "Atributo contrario",
 
   "DIALOG.VERSUS": "Versus",
+  "DIALOG.ASK_CORRUPTION": "Target fully corrupted?",
   "DIALOG.ATTRIBUTE": "Atributo",
   "DIALOG.MODIFIER": "Modificador",
   "DIALOG.ADVANTAGE": "Ventaja",
@@ -437,6 +438,9 @@
   "POWER_LARVAEBOILS.CHAT_INTRO_M": " mantiene la Erupción de Larvas.",
   "POWER_LARVAEBOILS.CHAT_SUCCESS": " es comido desde el interior por las larvas.",
   "POWER_LARVAEBOILS.CHAT_FAILURE": " resiste a las larvas.",
+
+  "POWER_PRIOSBURNINGGLASS.CHAT_INTRO":" tries to channel the Light of Prios at a target.",
+  "POWER_PRIOSBURNINGGLASS.CHAT_EXTRA":" might be stunned, test [resolute <-- resolute].",
 
   "POWER_TORMENTINGSPIRITS.CHAT_INTRO":" intenta invocar Espíritus Atormentadores.",
   "POWER_TORMENTINGSPIRITS.CHAT_INTRO_M":" intenta mantener a los Espíritus Atormentadores.",

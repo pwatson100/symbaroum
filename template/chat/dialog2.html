@@ -53,6 +53,11 @@
     <label>{{localize "DIALOG.IMPEDING"}}</label> <span class="lblfavour"><input type="checkbox" id="impeding" checked></span>
   </div>
   {{/if}}
+  {{#if askCorruptedTarget}}
+  <div class="simplebox">
+    <label>{{localize "DIALOG.ASK_CORRUPTION"}}</label><span class="lblfavour"><input type="checkbox" id="targetCorrupt" unchecked></span>
+  </div>
+  {{/if}}
     {{#if isWeaponRoll}}
     <div class="simplebox">
       <label>{{localize "DIALOG.ADVANTAGE"}}</label><span class="lblfavour"><input type="checkbox" id="advantage" unchecked></span>
@@ -63,11 +68,16 @@
     <div class="damagemodifier">
 		<label>{{localize "DIALOG.DAMAGE_MODIFIER"}}</label><input id="dammodifier" value="{{defaultDamModifier}}" type="text" data-dtype="Text"/>
     </div>
+    {{#if askIronFistAdept}}
+    <div class="damagemodifier">
+      <label>{{localize "DIALOG.DAMAGE_IF_MODIFIER"}}</label> <input id="ironfistmodifier" value="1d4" type="text" data-dtype="Text"/> 
+    </div>
+    {{/if}}
     {{#if askIronFistMaster}}
     <div class="damagemodifier">
       <label>{{localize "DIALOG.DAMAGE_IF_MODIFIER"}}</label> <input id="ironfistmodifier" value="1d8" type="text" data-dtype="Text"/> 
-      </div>
-      {{/if}}
+    </div>
+    {{/if}}
     <div class="bonus">
       <label>{{localize "DIALOG.USE_POISON"}}</label>
       <select id="poison">
