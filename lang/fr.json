@@ -1,5 +1,6 @@
 {
     "ABILITY.NAME": "Nom",
+    "ABILITY.REFERENCE": "Reference",
     "ABILITY.ACTIVE": "Appris",
     "ABILITY.ACTION": "Action",
     "ABILITY.DESCRIPTION": "Description",
@@ -132,6 +133,8 @@
     "ARMOR.NAME": "Nom",
     "ARMOR.PROTECTION": "Protection",
     "ARMOR.PROTECTION_SHORT": "Prot.",
+    "ARMOR.BASE_PROT": "Protection de base",
+    "ARMOR.BONUS_PROT": "Protection supplémentaire",
     "ARMOR.PC_PROTECTION": "Prot. PJ",
     "ARMOR.NPC_PROTECTION": "Prot. PNJ",
     "ARMOR.IMPEDING": "Gênante",
@@ -139,6 +142,7 @@
     "ARMOR.COST": "Prix",
     "ARMOR.QUALITY": "Qualité",
     "ARMOR.DESCRIPTION": "Description",
+    "ARMOR.BONUS_ONLY": "Protection additionnelle",
 
     "ARTIFACT.NAME": "Nom",
     "ARTIFACT.ACTION": "Action",
@@ -154,6 +158,10 @@
     "ATTRIBUTE.STRONG": "Force",
     "ATTRIBUTE.VIGILANT": "Vigilance",
     "ATTRIBUTE.CUSTOM": "Personnalisé",
+    "ATTRIBUTE.BASE": "Base",
+    "ATTRIBUTE.MODIFIER": "Modificateur",
+    "ATTRIBUTE.BONUS": "Bonus",
+    "ATTRIBUTE.MODIFY": "Modifier",
 
     "BIO.NAME": "Nom",
     "BIO.RACE": "Race",
@@ -184,6 +192,7 @@
     "BUTTON.POST_ITEM": "Publier l'Objet",
     "BUTTON.ROLL": "Lancer",
     "BUTTON.CANCEL": "Annuler",
+    "BUTTON.CONFIRM": "Confirmer",
 
     "CHAT.GMTEXT_BUTTON": "Ce bouton ne peut être utilisé que par le MJ. Il affecte les résultats de l'action aux tokens.",
     "CHAT.APPLY_BUTTON": "Appliquer les résultats au token",
@@ -228,6 +237,8 @@
     "COMBAT.PARAMS_PRECISE": "[arme précise], ",
     "COMBAT.DAMAGE": "Dégâts infligés: ",
 
+    "DIALOG.VERSUS": "Versus",
+    "DIALOG.ASK_CORRUPTION": "Cible totalement corrompue?",
     "DIALOG.ATTRIBUTE": "Attribut",
     "DIALOG.MODIFIER": "Mod. jet d'attribut",
     "DIALOG.ADVANTAGE": "Avantage",
@@ -236,6 +247,7 @@
     "DIALOG.FAVOUR_FAVOUR": "Faveur", 
     "DIALOG.FAVOUR_DISFAVOUR": "Défaveur",
     "DIALOG.DAMAGE_MODIFIER": "Mod. dégâts",
+    "DIALOG.WEAPON_DAMAGE": "Dam. roll",  
     "DIALOG.CASTING": "Lancement du talent",
     "DIALOG.MAINTAINING": "Jet pour maintenir le talent",
     "DIALOG.AUTOPARAMS": "Modificateurs déjà comptés: ",
@@ -376,10 +388,23 @@
     "POWER_BENDWILL.CHAT_INTRO_M": " maintient le pouvoir Soumission.",
     "POWER_BENDWILL.CHAT_SUCCESS": " parvient à soumettre ",
     "POWER_BENDWILL.CHAT_FAILURE": " résiste à la soumission.",
+  
+    "POWER_BLACKBOLT.CHAT_INTRO": " lance un éclair noir vers son ennemi.",
+    "POWER_BLACKBOLT.CHAT_SUCCESS": " est brulé et paralysé par les éclairs noirs.",
+    "POWER_BLACKBOLT.CHAT_FAILURE": " évite l'éclair noir.",
+
+    "POWER_BLESSEDSHIELD.CHAT_INTRO": " tente d'invoquer la protection de Prios.",
+    "POWER_BLESSEDSHIELD.CHAT_SUCCESS": " est entouré d'un bouclier lumineux.",
+    "POWER_BLESSEDSHIELD.CHAT_FAILURE": " ne parvient pas à canaliser la lumière de Prios.",
+    "POWER_BLESSEDSHIELD.PROTECTED": " est protégé",
 
     "POWER_BRIMSTONECASC.CHAT_INTRO": " déchaine le feu vers sa cible.",
     "POWER_BRIMSTONECASC.CHAT_SUCCESS": " est brûlé.", 
     "POWER_BRIMSTONECASC.CHAT_FAILURE": " évite une partie des flammes.",
+  
+    "POWER_CONFUSION.EFFECT12": " reste immobile, clignant des yeux bêtement.",
+    "POWER_CONFUSION.EFFECT34": " attaque son allié le plus proche.",
+    "POWER_CONFUSION.EFFECT56": "  attaque son ennemi le plus proche.",
 
     "POWER_CURSE.CHAT_INTRO": " lance une malédiction.",
     "POWER_CURSE.CHAT_INTRO_M": " maintient une malédiction.",
@@ -388,6 +413,10 @@
     "POWER_CURSE.CHAT_SUCCESS_M": " est maudit (pour chaque action, il subit 1d6 points de dégâts).",
     "POWER_CURSE.CHAT_FAILURE": " ne parvient pas à maintenir la malédiction.",
     "POWER_CURSE.CHAT_FAIL_FINAL": "La malédiction n'a plus d'effet sur ",
+  
+    "POWER_ENTANGLINGVINES.CHAT_INTRO_M": " essaye de briser l'étreinte des plantes.",
+    "POWER_ENTANGLINGVINES.CHAT_SUCCESS": " est enchevêtré dans la végétation.",
+    "POWER_ENTANGLINGVINES.CHAT_FAILURE": " se libère de l'enchevêtrement de plantes.",
     
     "POWER_HOLYAURA.CHAT_INTRO": " tente de canaliser la lumière de Prios.",
     "POWER_HOLYAURA.CHAT_SUCCESS": " est entourée d'une aura lumineuse bienfaisante.",
@@ -413,6 +442,14 @@
     "POWER_LAYONHANDS.CHAT_SUCCESS":" parvient à soigner ",
     "POWER_LAYONHANDS.CHAT_FINAL":"Points d'endurance soignés: ",
     "POWER_LAYONHANDS.CHAT_FAILURE":" échoue à soigner ",
+
+    "POWER_PRIOSBURNINGGLASS.CHAT_INTRO":" tente de canaliser la lumière de Prios vers une cible.",
+    "POWER_PRIOSBURNINGGLASS.CHAT_EXTRA":" peut être étoudi sur un test [Volonté <-- Volonté].",
+
+    "POWER_TORMENTINGSPIRITS.CHAT_INTRO":" essaye d'appeller les esprits des morts.",
+    "POWER_TORMENTINGSPIRITS.CHAT_INTRO_M":" essaye de maintenir les esprits tourmenteurs.",
+    "POWER_TORMENTINGSPIRITS.CHAT_SUCCESS":" invoque les esprits tourmenteurs autour de  ",
+    "POWER_TORMENTINGSPIRITS.CHAT_FAILURE":" échoue son invocation.",
 
     "QUALITY.AREAMRR": "Zone d’effet - rayon portée mélée",
     "QUALITY.AREASRR": "Zone d’effet - rayon portée courte",
@@ -450,6 +487,9 @@
     "RITUAL.TRADITION": "Tradition",
     "RITUAL.DESCRIPTION": "Description",
 
+    "ROLL.CRITSHORT":"crit",
+    "ROLL.ADVANTAGESHORT":"adv",
+  
     "TAB.MAIN": "PRINCIPAL",
     "TAB.GEAR": "ÉQUIPEMENTS",
     "TAB.BIO": "BIO",
@@ -482,7 +522,7 @@
     "TITLE.QUALITIES":"QUALITÉS",
     
     "TOOLTIP.EXPERIENCE_CURRENT": "Vos points d'expérience non dépensés",
-    "TOOLTIP.EXPERIENCE_TOTAL": "Total des points d'expériences acquis",
+    "TOOLTIP.EXPERIENCE_TOTAL": "Total des points d'expérience acquis",
     "TOOLTIP.EXPERIENCE_ARTIFACTRR": "Points d'expérience dépensés pour les artefacts et relances",
     "TOOLTIP.EXPERIENCE_SPENT": "Points d'expérience dépensés sur les talents, traits, atouts et fardeaux",
     "TOOLTIP.EXPERIENCE_AVAILABLE": "Vos points d'expérience disponibles (non dépensés)",
@@ -557,6 +597,7 @@
     "TRAIT_LABEL.SPIRITFORM": "Forme éthérée",
     "TRAIT_LABEL.STURDY": "Énergique",
     "TRAIT_LABEL.SUMMONER": "Invocateur",
+    "TRAIT_LABEL.SURVIVALINSTINCT": "Instinct de survie",
     "TRAIT_LABEL.SWARM": "Nuée",
     "TRAIT_LABEL.SWIFT": "Vif",
     "TRAIT_LABEL.TERRIFY": "Terrifiant",
@@ -565,11 +606,15 @@
     "TRAIT_LABEL.WEB": "Toile",
     "TRAIT_LABEL.WINGS": "Ailes",
     "TRAIT_LABEL.WRECKER": "Démolisseur",
+  
+    "TRAIT_REGENERATION.CHAT_ACTION": " régénère ",
 
     "WEAPON.HEADER": "Arme",
     "WEAPON.NAME": "Nom",
     "WEAPON.DAMAGE": "Dégâts",
     "WEAPON.DAMAGE_SHORT": "Dégâts",
+    "WEAPON.BASE_DAMAGE": "Dégâts de base",
+    "WEAPON.BONUS_DAMAGE": "Dégâts supplémentaires",
     "WEAPON.PC_DAMAGE": "Dégâts PJ",
     "WEAPON.NPC_DAMAGE": "Dégâts PNJ",
     "WEAPON.QUALITY": "Qualité",
@@ -603,7 +648,11 @@
     "SYMBAROUM.OPTIONAL_SAVECOMBATROLL": "Configuration des jets de combat",
     "SYMBAROUM.OPTIONAL_SAVECOMBATROLL_HINT": "Garder en mémoire les modificateurs d'un jet de combat sur l'autre. (arme/defense)",
     "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL": "Configuration des jets d'attribut",
-    "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT": "Garder en mémoire les modificateurs d'un jet d'attribut sur l'autre."
+    "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT": "Garder en mémoire les modificateurs d'un jet d'attribut sur l'autre.",
+    "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE": "Affichage préventif du modificateur",
+    "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE_HINT": "Affiche le modificateur de l'attribut de l'adversaire dans le menu déroulant de jet resisté d'attribut.",
+    "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Modification des références",
+    "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Attention - MJ seulement - Permet de modifier les références des objets traits, talents et pouvoirs. A n'utiliser que si vous savez ce que vous faites."
   
 }
 

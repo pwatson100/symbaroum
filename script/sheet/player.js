@@ -32,11 +32,12 @@ export class PlayerSheet extends SymbaroumActorSheet {
         html.find(".roll-attribute").click(async ev => await this._prepareRollAttribute(ev));
         html.find(".roll-armor").click(async ev => await this._prepareRollArmor(ev));
         html.find(".roll-weapon").click(async ev => await this._prepareRollWeapon(ev));
+        html.find(".modify-attribute").click(async ev => await this._modifyAttributes(ev));
     }
 
     _getHeaderButtons() {
         let buttons = super._getHeaderButtons();
-        if (this.actor.owner) {
+        if (this.actor.isOwner ) {
             buttons = [
                 {
                     label: game.i18n.localize("BUTTON.DEATH"),
@@ -69,7 +70,55 @@ export class PlayerSheet extends SymbaroumActorSheet {
     async _prepareRollWeapon(event) {
         event.preventDefault();
         const div = $(event.currentTarget).parents(".item");
-        const weapon = this.actor.data.data.weapons.filter(item => item._id == div.data("itemId"))[0];
+        const weapon = this.actor.data.data.weapons.filter(item => item.id == div.data("itemId"))[0];
         await this.actor.rollWeapon(weapon)
     }
+
+    async _modifyAttributes(event) {
+        event.preventDefault();
+        let data = foundry.utils.deepClone(this.actor.data.data);
+        data.id = this.actor.id;
+
+        const html = await renderTemplate('systems/symbaroum/template/sheet/attributes.html', {
+            data: data
+        });
+        let title = game.i18n.localize('TITLE.ATTRIBUTES');
+        let dialog = new Dialog({
+            //              label: "toto",
+            title: title,
+            content: html,
+            buttons:{
+                confirm: {
+                    icon: '<i class="fas fa-check"></i>',
+                    label: game.i18n.localize('BUTTON.CONFIRM'),
+                    callback: async (html) => {
+                        for (var aKey in data.attributes) {
+                            var base = "#" + data.id + "-" + [aKey] + "-value";
+                            const stringValue = html.find(base)[0].value;
+
+                            let newValue = parseInt(stringValue, 10);
+                            if( !isNaN(newValue)) {
+                                let link = "data.attributes."+[aKey]+".value";
+                                var mod = "#" + [aKey] + "-mod";
+                                const stringMod = html.find(mod)[0].value;
+                                let newModValue = parseInt(stringMod, 10);
+                                if( !isNaN(newModValue)) {
+                                    let linkMod = "data.attributes."+[aKey]+".temporaryMod";
+                                    await this.actor.update({ [link] : newValue, [linkMod] : newModValue });
+                                }
+                            }
+                        }
+                    }
+                },
+                cancel: {
+                    icon: '<i class="fas fa-check"></i>',
+                    label: game.i18n.localize('BUTTON.CANCEL'),
+                    callback: async (html) => {}
+                }
+            }
+        });
+        
+        dialog.render(true);
+    }
 }
+

@@ -11,6 +11,18 @@ export const migrateWorld = async () => {
     }
     if (worldTemplateVersion < templateVersion && game.user.isGM) {
         ui.notifications.info("New template detected; Upgrading the world, please wait...");
+        if (worldTemplateVersion < 3) {
+            const htmlTemplate = await renderTemplate("systems/symbaroum/template/migration-warning.html");
+            new Dialog({
+                title: "WARNING", 
+                content: htmlTemplate,
+                buttons: {
+                    close: {
+                        label: "Close"
+                    }
+                }
+            }).render(true);
+        }
         for (let actor of game.actors.entities) {
             try {
                 const update = migrateActorData(actor.data, worldTemplateVersion);
@@ -61,7 +73,27 @@ const migrateActorData = (actor, worldTemplateVersion) => {
         update = setValueIfNotExists(update, actor, "data.data.experience.artifactrr", 0);
         update = setValueIfNotExists(update, actor, "data.data.health.corruption.value", 0);
         update = setValueIfNotExists(update, actor, "data.data.health.corruption.longterm", 0)
-	}            
+	};
+    if (worldTemplateVersion < 3.2) {
+        update = setValueIfNotExists(update, actor, "data.attributes.accurate.temporaryMod", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.cunning.temporaryMod", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.discreet.temporaryMod", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.quick.temporaryMod", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.persuasive.temporaryMod", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.resolute.temporaryMod", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.strong.temporaryMod", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.vigilant.temporaryMod", 0)
+	};
+    if (worldTemplateVersion < 3.3) {
+        update = setValueIfNotExists(update, actor, "data.attributes.accurate.total", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.cunning.total", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.discreet.total", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.quick.total", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.persuasive.total", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.resolute.total", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.strong.total", 0);
+        update = setValueIfNotExists(update, actor, "data.attributes.vigilant.total", 0)
+	};
 		
     let itemsChanged = false;
     const items = actor.items.map((item) => {
@@ -184,7 +216,7 @@ const migrateItemData = (item, worldTemplateVersion) => {
     }
 
     if (!isObjectEmpty(update)) {
-        update._id = item._id;
+        update.id = item.id;
     }
     return update;
 };
@@ -228,7 +260,7 @@ export const migrateCompendium = async function (pack, worldTemplateVersion) {
         }
         if (!isObjectEmpty(updateData)) {
             expandObject(updateData);
-            updateData["_id"] = ent._id;
+            updateData["id"] = ent.id;
             await pack.updateEntity(updateData);
         }
     }

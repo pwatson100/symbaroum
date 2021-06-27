@@ -1,18 +1,19 @@
 <div class="main">
     <div class="attributes foreground border">
         <h1>{{localize "TITLE.ATTRIBUTES"}}</h1>
+        <button class="modify-attribute">{{localize "ATTRIBUTE.MODIFY"}}</button>
         {{#each data.attributes as |attribute key|}}
             <div class="attribute">
                 <button class="roll-attribute" data-attribute="{{key}}">{{localize attribute.label}}</button>
-                <input class="input" name="data.attributes.{{key}}.value" type="number" value="{{attribute.value}}" data-dtype="Number" />
+                <input class="input" name="data.attributes.{{key}}.total" type="number" value="{{attribute.total}}" data-dtype="Number" disabled/>
             </div>
         {{/each}}
     </div>
 
     <div class="health foreground border">
         <h1>{{localize "TITLE.HEALTH"}}</h1>
-        <label class="toughness">{{localize "HEALTH.TOUGHNESS"}}</label>
-        <div class="toughness-current" title="{{localize "TOOLTIP.HEALTH.TOUGHNESS_CURRENT"}}">
+        <label for="toughness-current" class="toughness">{{localize "HEALTH.TOUGHNESS"}}</label>
+        <div id="toughness-current" class="toughness-current" title="{{localize "TOOLTIP.HEALTH.TOUGHNESS_CURRENT"}}">
             <label>{{localize "HEALTH.TOUGHNESS_CURRENT"}}</label>
             <input name="data.health.toughness.value" type="number" value="{{data.health.toughness.value}}" data-dtype="Number"/>
         </div>
@@ -26,12 +27,12 @@
         </div>
         <label class="corruption">{{localize "HEALTH.CORRUPTION"}}</label>
         <div class="corruption-temporary"  title="{{localize "TOOLTIP.HEALTH.CORRUPTION_CURRENT"}}">
-            <label>{{localize "HEALTH.CORRUPTION_TEMPORARY"}}</label>
-            <input name="data.health.corruption.temporary" type="number" value="{{data.health.corruption.temporary}}" data-dtype="Number"/>
+            <label for="data.health.corruption.temporary">{{localize "HEALTH.CORRUPTION_TEMPORARY"}}</label>
+            <input id="data.health.corruption.temporary" name="data.health.corruption.temporary" type="number" value="{{data.health.corruption.temporary}}" data-dtype="Number"/>
         </div>
         <div class="corruption-permanent" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_PERMANENT"}}">
-            <label>{{localize "HEALTH.CORRUPTION_PERMANENT"}}</label>
-            <input name="data.health.corruption.permanent" type="number" value="{{data.health.corruption.permanent}}" data-dtype="Number"/>
+            <label for="data.health.corruption.permanent">{{localize "HEALTH.CORRUPTION_PERMANENT"}}</label>
+            <input id="data.health.corruption.permanent" name="data.health.corruption.permanent" type="number" value="{{data.health.corruption.permanent}}" data-dtype="Number"/>
         </div>
         <div class="corruption-threshold" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_THRESHOLD"}}">
             <label>{{localize "HEALTH.CORRUPTION_THRESHOLD"}}</label>
@@ -56,32 +57,18 @@
                 {{/select}}
             </select>
         </div>
-        <div class="defenseAttr" title="{{localize "TOOLTIP.COMBAT.DEFENSE"}}">
-            <label>{{localize "ARMOR.DEFENSE"}}</label>
-            <select name="data.defense.attribute" class="attribute">
-                {{#select data.defense.attribute}}
-                <option value="quick">{{localize "ATTRIBUTE.QUICK"}}</option>
-                <option value="accurate">{{localize "ATTRIBUTE.ACCURATE"}}</option>
-                <option value="cunning">{{localize "ATTRIBUTE.CUNNING"}}</option>
-                <option value="discreet">{{localize "ATTRIBUTE.DISCREET"}}</option>
-                <option value="persuasive">{{localize "ATTRIBUTE.PERSUASIVE"}}</option>
-                <option value="resolute">{{localize "ATTRIBUTE.RESOLUTE"}}</option>
-                <option value="strong">{{localize "ATTRIBUTE.STRONG"}}</option>
-                <option value="vigilant">{{localize "ATTRIBUTE.VIGILANT"}}</option>
-                {{/select}}
-            </select>
-        </div>
         <div class="armor">
             <button class="roll-armor">{{data.combat.armor}}</button>
+            <div class="quality">
+                <label>{{localize "ARMOR.DEFENSE"}}</label>
+                <input type="text" value={{localize data.defense.attributelabel}} disabled />
+                <input type="number" value="{{data.combat.defense}}" data-dtype="Number" disabled />
+            </div>
             <div class="protection">
                 <label>{{localize "ARMOR.PROTECTION"}}</label>
                 <input type="text" value="{{data.combat.protectionPc}}" disabled />
             </div>
-            <div class="defense">
-                <label>{{localize "ARMOR.DEFENSE"}}</label>
-                <input type="number" value="{{data.combat.defense}}" data-dtype="Number" disabled />
-            </div>
-            <div class="quality">
+            <div class="protection">
                 <label>{{localize "ARMOR.IMPEDING"}}</label>
                 <input type="text" value="{{data.combat.impeding}}" disabled />
             </div>
@@ -94,7 +81,8 @@
                 </div>
                 <div class="items">
                     {{#each actor.data.weapons as |item|}}
-                        <div class="weapon item" data-item-id="{{item._id}}">
+                    {{#if item.isActive}}
+                        <div class="weapon item" data-item-id="{{item.id}}">
                             <div class="name">
                                 <div class="image-container">
                                     <div class="image" style="background-image: url('{{item.img}}')"></div>
@@ -103,6 +91,7 @@
                             </div>
                             <div class="damage">{{item.damage.pc}}</div>
                         </div>
+                    {{/if}}
                     {{/each}}
                 </div>
             </div>
@@ -114,7 +103,7 @@
         <div class="traits">
             {{#each actor.items as |item|}}
                 {{#if item.isPower}}
-                    <div class="trait item" data-item-id="{{item._id}}">
+                    <div class="trait item" data-item-id="{{item.id}}">
                         <div class="name">
                             <div class="image-container">
                                 <button class="activate-ability" style="background-image: url('{{item.img}}'); height: 36px; width: 36px; background-size: 36px"></button>

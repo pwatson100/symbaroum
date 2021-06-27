@@ -1,13 +1,14 @@
 <div class="symbaroum chat roll">
     <div class="foreground border">
-      <img src="{{subImg}}"/>
+      <img src="{{subImg}}" />
         <h3>{{removeMarkup name}}</h3>
     {{#if hasSucceed}}
 
     <div class="tooltip" style="width: 100%;">
       <h4>{{localize "CHAT.SUCCEED"}} ({{diceResult}})</h4>
-       <h4>{{margin}}</h4>
-      <div class="tooltiptext">{{{diceBreakdown}}}</div>
+      <h4>{{localize "CHAT.MARGIN"}} {{margin}}</h4>
+      <div class="tooltiptext">{{{diceBreakdown}}}<br>
+        {{diceTarget}} - {{diceResult}} = {{margin}} </div>
     </div>
 
     {{#if critSuccess}}
@@ -16,7 +17,7 @@
     
     {{#if hasWeapon}} 
 
-    <img src={{weapon.img}}/>
+    <img src="{{weapon.img}}" />
       <p style="margin-top: 5px;text-align:center">{{weapon.name}}</p>
     <div class="tooltip"><p style="margin-top: 5px"><strong>{{localize "WEAPON.DAMAGE"}}:</strong> {{weapon.value}}</p>
       <div class="tooltiptext">{{{weapon.diceBreakdown}}}</div>
@@ -26,8 +27,10 @@
 
     <div class="tooltip" style="width: 100%;">
       <h4>{{localize "CHAT.FAILED"}} ({{diceResult}})</h4>
-      <h4>{{margin}}</h4>
-      <div class="tooltiptext">{{{diceBreakdown}}}</div>
+      <h4>{{localize "CHAT.MARGIN"}} {{margin}}</h4>
+      <div class="tooltiptext">{{{diceBreakdown}}} <br/>
+        {{diceTarget}} - {{diceResult}} = {{margin}} </div>
+      </div>
     </div>
 
     {{#if critFail}}

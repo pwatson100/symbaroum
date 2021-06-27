@@ -2,7 +2,6 @@ import { SymbaroumActor } from './actor.js';
 import { SymbaroumItem } from './item.js';
 import { PlayerSheet } from '../sheet/player.js';
 import { PlayerSheet2 } from '../sheet/player2.js';
-import { MonsterSheet } from '../sheet/monster.js';
 import { TraitSheet } from '../sheet/trait.js';
 import { AbilitySheet } from '../sheet/ability.js';
 import { MysticalPowerSheet } from '../sheet/mystical-power.js';
@@ -15,14 +14,16 @@ import { EquipmentSheet } from '../sheet/equipment.js';
 import { ArtifactSheet } from '../sheet/artifact.js';
 import { initializeHandlebars } from './handlebars.js';
 import { migrateWorld } from './migration.js';
+import { sendDevMessage } from './devmsg.js';
+
 
 Hooks.once('init', () => {
-  CONFIG.Actor.entityClass = SymbaroumActor;
-  CONFIG.Item.entityClass = SymbaroumItem;
+  CONFIG.Actor.documentClass = SymbaroumActor;
+  CONFIG.Item.documentClass = SymbaroumItem;
   Actors.unregisterSheet('core', ActorSheet);
   Actors.registerSheet('symbaroum', PlayerSheet2, { types: ['player'], makeDefault: true });
   Actors.registerSheet('symbaroum', PlayerSheet, { types: ['player'], makeDefault: false });
-  Actors.registerSheet('symbaroum', MonsterSheet, { types: ['monster'], makeDefault: true });
+  Actors.registerSheet('symbaroum', PlayerSheet2, { types: ['monster'], makeDefault: true });
   Items.unregisterSheet('core', ItemSheet);
   Items.registerSheet('symbaroum', TraitSheet, { types: ['trait'], makeDefault: true });
   Items.registerSheet('symbaroum', AbilitySheet, { types: ['ability'], makeDefault: true });
@@ -44,6 +45,15 @@ Hooks.once('init', () => {
     type: Number,
   });
 
+  game.settings.register('symbaroum', 'symbaroumDevMessageVersionNumber', {
+    name: 'Message from the devs',
+    hint: 'Used to track last message id from the Symbaroum devs',
+    scope: 'world',
+    config: false,
+    default: 0,
+    type: Number,
+  });  
+
   game.settings.register('symbaroum', 'combatAutomation', {
     name: 'SYMBAROUM.OPTIONAL_AUTOCOMBAT',
     hint: 'SYMBAROUM.OPTIONAL_AUTOCOMBAT_HINT',
@@ -51,7 +61,7 @@ Hooks.once('init', () => {
     type: Boolean,
     default: false,
     config: true,
-  }); 
+  });
 
   game.settings.register('symbaroum', 'alwaysSucceedOnOne', {
     name: 'SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE',
@@ -60,7 +70,7 @@ Hooks.once('init', () => {
     type: Boolean,
     default: false,
     config: true,
-  });  
+  });
 
   game.settings.register('symbaroum', 'optionalCrit', {
     name: 'SYMBAROUM.OPTIONAL_CRIT',
@@ -70,7 +80,7 @@ Hooks.once('init', () => {
     default: false,
     config: true,
   });
-  
+
   game.settings.register('symbaroum', 'optionalRareCrit', {
     name: 'SYMBAROUM.OPTIONAL_RARECRIT',
     hint: 'SYMBAROUM.OPTIONAL_RARECRIT_HINT',
@@ -78,8 +88,8 @@ Hooks.once('init', () => {
     type: Boolean,
     default: false,
     config: true,
-  });  
- 
+  });
+
   game.settings.register('symbaroum', 'critsApplyToAllTests', {
     name: 'SYMBAROUM.OPTIONAL_ALWAYSUSECRIT',
     hint: 'SYMBAROUM.OPTIONAL_ALWAYSUSECRIT_HINT',
@@ -87,7 +97,7 @@ Hooks.once('init', () => {
     type: Boolean,
     default: false,
     config: true,
-  });  
+  });
 
   game.settings.register('symbaroum', 'optionalMoreRituals', {
     name: 'SYMBAROUM.OPTIONAL_MORERITUALS',
@@ -96,8 +106,8 @@ Hooks.once('init', () => {
     type: Boolean,
     default: false,
     config: true,
-  });  
-  
+  });
+
   game.settings.register('symbaroum', 'saveCombatRoll', {
     name: 'SYMBAROUM.OPTIONAL_SAVECOMBATROLL',
     hint: 'SYMBAROUM.OPTIONAL_SAVECOMBATROLL_HINT',
@@ -105,7 +115,7 @@ Hooks.once('init', () => {
     type: Boolean,
     default: false,
     config: true,
-  });  
+  });
   game.settings.register('symbaroum', 'saveAttributeRoll', {
     name: 'SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL',
     hint: 'SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT',
@@ -113,16 +123,36 @@ Hooks.once('init', () => {
     type: Boolean,
     default: false,
     config: true,
-  });      
- 
+  });
+  game.settings.register('symbaroum', 'showModifiersInDialogue', {
+    name: 'SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE',
+    hint: 'SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });  
+  game.settings.register('symbaroum', 'allowShowReference', {
+    name: 'SYMBAROUM.OPTIONAL_SHOWREFERENCE',
+    hint: 'SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });  
+
 });
 
 Hooks.once('ready', () => {
   migrateWorld();
+  sendDevMessage();
+  showReleaseNotes();
 });
 
-Hooks.on('preCreateActor', (createData) => {
-  mergeObject(createData, {
+Hooks.on('preCreateActor', (doc, createData, options, userid) => {
+  
+  let createChanges = {};
+  mergeObject(createChanges, {
     'token.bar1': { attribute: 'health.toughness' },
     'token.bar2': { attribute: 'combat.defense' },
     'token.displayName': CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,
@@ -130,13 +160,15 @@ Hooks.on('preCreateActor', (createData) => {
     'token.disposition': CONST.TOKEN_DISPOSITIONS.NEUTRAL,
     'token.name': createData.name,
   });
-  if (!createData.img) {
-    createData.img = 'systems/symbaroum/asset/image/unknown-actor.png';
+
+  createChanges.img = 'systems/symbaroum/asset/image/unknown-actor.png';
+
+  if (doc.data.type === 'player') {
+    createChanges.token.vision = true;
+    createChanges.token.actorLink = true;
   }
-  if (createData.type === 'player') {
-    createData.token.vision = true;
-    createData.token.actorLink = true;
-  }
+  doc.data.update(createChanges);
+
 });
 
 Hooks.on('createOwnedItem', (actor, item) => {});
@@ -161,63 +193,160 @@ Hooks.once('diceSoNiceReady', (dice3d) => {
 /*Hook for the chatMessage that contain a button for the GM to apply status icons or damage to a token.*/
 Hooks.on('renderChatMessage', async (chatItem, html, data) => {
   const flagDataArray = await chatItem.getFlag(game.system.id, 'abilityRoll');
-  if(flagDataArray){
-    await html.find("#applyEffect").click(async () => {
-      for(let flagData of flagDataArray){
-
-        if(flagData.tokenId){
-          let token = canvas.tokens.objects.children.find(token => token.data._id === flagData.tokenId);
+  if (flagDataArray) {
+    await html.find('#applyEffect').click(async () => {
+      for (let flagData of flagDataArray) {
+        if (flagData.tokenId) {
+          let token = canvas.tokens.objects.children.find((token) => token.id === flagData.tokenId);
           let statusCounterMod = false;
-          if(game.modules.get("statuscounter")?.active){
+          if (game.modules.get('statuscounter')?.active) {
             statusCounterMod = true;
           }
-          if(flagData.addEffect){
-            if(token == undefined){return}
+          if (flagData.addEffect) {
+            if (token == undefined) {
+              return;
+            }
             let duration = 1;
-            if(flagData.effectDuration){duration = flagData.effectDuration}
-            if(statusCounterMod){
+            if (flagData.effectDuration) {
+              duration = flagData.effectDuration;
+            }
+            if (statusCounterMod) {
               let alreadyHereEffect = await EffectCounter.findCounter(token, flagData.addEffect);
-              if(alreadyHereEffect == undefined){
-                let statusEffect = new EffectCounter(duration, flagData.addEffect, token, false);
-                await statusEffect.update();
+              if (alreadyHereEffect == undefined) {
+                if(flagData.effectStuff){
+                  let statusEffect = new EffectCounter(flagData.effectStuff, flagData.addEffect, token, false);
+                  await statusEffect.update();
+                }
+                else{
+                  let statusEffect = new EffectCounter(duration, flagData.addEffect, token, false);
+                  await statusEffect.update();
+                }
               }
+            } else {
+              token.toggleEffect(flagData.addEffect);
             }
-            else {token.toggleEffect(flagData.addEffect)}
           }
-          
-          if(flagData.removeEffect){
-            if(statusCounterMod){
+          if (flagData.removeEffect) {
+            if (statusCounterMod) {
               let statusEffectCounter = await EffectCounter.findCounter(token, flagData.removeEffect);
-              if(statusEffectCounter != undefined){
-                  await statusEffectCounter.remove();
+              if (statusEffectCounter != undefined) {
+                await statusEffectCounter.remove();
               }
+            } else {
+              token.toggleEffect(flagData.removeEffect);
             }
-            else {token.toggleEffect(flagData.removeEffect)}
           }
-
-          if(flagData.modifyEffectDuration){
-            if(statusCounterMod){
+          if (flagData.modifyEffectDuration) {
+            if (statusCounterMod) {
               let statusEffectCounter = await EffectCounter.findCounter(token, flagData.modifyEffectDuration);
-              if(statusEffectCounter != undefined){
+              if (statusEffectCounter != undefined) {
                 await statusEffectCounter.setValue(effectDuration);
                 await statusEffectCounter.update();
               }
             }
           }
 
-          if(flagData.toughnessChange){
-            let newToughness = Math.max(0, Math.min(token.actor.data.data.health.toughness.max, token.actor.data.data.health.toughness.value + flagData.toughnessChange))
-            await token.actor.update({"data.health.toughness.value" : newToughness}); 
+          if (flagData.toughnessChange) {
+            let newToughness = Math.max(0, Math.min(token.actor.data.data.health.toughness.max, token.actor.data.data.health.toughness.value + flagData.toughnessChange));
+            await token.actor.update({ 'data.health.toughness.value': newToughness });
           }
-
-          if(flagData.corruptionChange){
+          if (flagData.attributeChange) {
+            let newMod = token.actor.data.data.attributes[flagData.attributeName].temporaryMod + flagData.attributeChange;
+            let linkMod = "data.attributes."+flagData.attributeName+".temporaryMod";
+            await token.actor.update({ [linkMod] : newMod });
+          }
+          if (flagData.corruptionChange) {
             let newCorruption = token.actor.data.data.health.corruption.temporary + flagData.corruptionChange;
-            await token.actor.update({"data.health.corruption.temporary" : newCorruption}); 
+            await token.actor.update({ 'data.health.corruption.temporary': newCorruption });
+          }
+          if (flagData.addObject) {
+            let actor= token.actor;
+            if(flagData.addObject == "blessedshield"){
+              await createBlessedShield(actor, flagData.protection)
+            }
           }
         }
       }
       await chatItem.unsetFlag(game.system.id, 'abilityRoll');
       return;
-    })
+    });
   }
-})
+});
+
+async function createBlessedShield(actor, protection = "1d4"){
+ 
+    let data = {
+      name: game.i18n.localize("POWER_LABEL.BLESSED_SHIELD"),
+      img: 'icons/svg/holy-shield.svg',
+      type: "armor",
+      data: {
+        state: "active",
+        baseProtection: "0",
+        bonusProtection: protection}
+  }    
+  //actor.createEmbeddedEntity('OwnedItem', data, { renderSheet: false });
+  await Item.create(data, {parent: actor}, { renderSheet: false });
+}
+
+async function showReleaseNotes()
+{
+  if (game.user.isGM) {
+    try {
+      const newVer = '1';
+      const releaseNoteName = "Symbaroum System guide EN";
+      const releasePackLabel = "Symbaroum for FVTT system user guides";
+      
+      let currentVer = '0';
+      let oldReleaseNotes = game.journal.getName(releaseNoteName);
+      if(oldReleaseNotes !== undefined && oldReleaseNotes !== null && oldReleaseNotes.getFlag('symbaroum', 'ver') !== undefined) {
+        currentVer = oldReleaseNotes.getFlag('symbaroum', 'ver');
+      }
+      if( newVer === currentVer ) {
+        // Up to date    
+        return;
+      }
+
+      let newReleasePack = game.packs.find(p => p.metadata.label === releasePackLabel);
+      if( newReleasePack === null || newReleasePack === undefined) {
+        console.log("No pack found");
+        // This is bad - the symbaroum pack does not exist in the system packages
+        return;
+      }
+      await newReleasePack.getIndex();
+
+      let newReleaseNotes = newReleasePack.index.find( j => j.name === releaseNoteName);
+      // console.log("Found new release notes in the compendium pack");
+
+      // Don't delete until we have new release Pack
+      if( newReleaseNotes !== undefined && newReleaseNotes !== null && oldReleaseNotes !== null && oldReleaseNotes !== undefined ) { 
+        await oldReleaseNotes.delete();        
+      }
+
+      await game.journal.importFromCompendium(newReleasePack, newReleaseNotes.id);
+      let newReleaseJournal = game.journal.getName(newReleaseNotes.name);
+
+      await newReleaseJournal.setFlag('symbaroum', 'ver', newVer);
+
+      // Before we show final - tidy up release prior to this
+      tidyReleaseNotes11();
+
+      // Show journal
+      await newReleaseJournal.sheet.render(true, {sheetMode: "text"});
+    
+
+    } catch (error) {
+      console.log(error);
+    } // end of try
+  } // end of if(isgm)
+} // end of function
+
+async function tidyReleaseNotes11()
+{
+  const releaseNoteName = "Symbaroum System guide EN (1.1)";
+  let old11ReleaseNotes = game.journal.getName(releaseNoteName);
+  // Delete Delete Delete
+  if( old11ReleaseNotes !== undefined && old11ReleaseNotes !== null) { 
+    await old11ReleaseNotes.delete();        
+  }
+
+}

@@ -1,0 +1,13 @@
+{
+    "messages": [
+        {
+            "version":1,
+            "message":"<h1>Welcome to the Symbaroum system</h1><br />We are happy that you are using our system and wish you best of luck.<br/>If you want to give some feedback on the system, the developers are active on both the Foundry Discord (channel #free-league) and Davokar Explorers Discord."
+        },
+        {
+            "version":4,
+            "message":"<h1>Foundry 0.8.6</h1><br />The first version of Symbaroum that is compatible with Foundry 0.8 has now been released. This version is not compatible with 0.7.9. This release has mainly focused on compatibility with Foundry 0.8, so there is limited amount of new or fixed functionality. See <a href='https://raw.githubusercontent.com/pwatson100/symbaroum/master/Release_Notes.txt'>Release Notes</a> for further information.<br><h1> <b>Before upgrading Foundry - Make sure you have a backup</b></h1>"
+        }
+
+    ]    
+}

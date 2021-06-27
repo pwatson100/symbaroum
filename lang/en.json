@@ -1,5 +1,6 @@
 {
   "ABILITY.NAME": "Name",
+  "ABILITY.REFERENCE": "Reference",
   "ABILITY.ACTIVE": "Learned",
   "ABILITY.ACTION": "Action",
   "ABILITY.DESCRIPTION": "Description",
@@ -133,6 +134,8 @@
   "ARMOR.NAME": "Name",
   "ARMOR.PROTECTION": "Protection",
   "ARMOR.PROTECTION_SHORT": "Prot.",
+  "ARMOR.BASE_PROT": "Base Protection",
+  "ARMOR.BONUS_PROT": "Bonus Protection",
   "ARMOR.PC_PROTECTION": "PC Prot.",
   "ARMOR.NPC_PROTECTION": "NPC Prot.",
   "ARMOR.IMPEDING": "Impeding",
@@ -140,6 +143,7 @@
   "ARMOR.COST": "Cost",
   "ARMOR.QUALITY": "Quality",
   "ARMOR.DESCRIPTION": "Description",
+  "ARMOR.BONUS_ONLY": "Stackable protection",
 
   "ARTIFACT.NAME": "Name",
   "ARTIFACT.ACTION": "Action",
@@ -155,6 +159,10 @@
   "ATTRIBUTE.STRONG": "Strong",
   "ATTRIBUTE.VIGILANT": "Vigilant",
   "ATTRIBUTE.CUSTOM": "Custom",
+  "ATTRIBUTE.BASE": "Base",
+  "ATTRIBUTE.MODIFIER": "Mod.",
+  "ATTRIBUTE.BONUS": "Bonus",
+  "ATTRIBUTE.MODIFY": "Modify",
 
   "BIO.NAME": "Name",
   "BIO.RACE": "Race",
@@ -185,6 +193,7 @@
   "BUTTON.POST_ITEM": "Post Item",
   "BUTTON.ROLL": "Roll",
   "BUTTON.CANCEL": "Cancel",
+  "BUTTON.CONFIRM": "Confirm",
 
   "CHAT.GMTEXT_BUTTON": "This button is for GM use only. It will apply the effects to the tokens.",
   "CHAT.APPLY_BUTTON": "Apply results to the token",
@@ -247,6 +256,8 @@
   "DIALOG.CASTING_ATTRIBUTE": "Casting attribute",
   "DIALOG.RESIST_ATTRIBUTE": "Opposition attribute",
 
+  "DIALOG.VERSUS": "Versus",
+  "DIALOG.ASK_CORRUPTION": "Target fully corrupted?",
   "DIALOG.ATTRIBUTE": "Attribute",
   "DIALOG.MODIFIER": "Modifier",
   "DIALOG.ADVANTAGE": "Advantage",
@@ -255,6 +266,7 @@
   "DIALOG.FAVOUR_FAVOUR": "Favour", 
   "DIALOG.FAVOUR_DISFAVOUR": "Disfavour",
   "DIALOG.DAMAGE_MODIFIER": "Dam. mod.",  
+  "DIALOG.WEAPON_DAMAGE": "Dam. roll",  
   "DIALOG.CASTING": "Initial casting",
   "DIALOG.IMPEDING": "Include impeding malus?",
   "DIALOG.MAINTAINING": "Maintening ability",
@@ -380,9 +392,22 @@
   "POWER_BENDWILL.CHAT_SUCCESS": " controls ",
   "POWER_BENDWILL.CHAT_FAILURE": " resists the attempt.",
   
+  "POWER_BLACKBOLT.CHAT_INTRO": " traps its target in black fire.",
+  "POWER_BLACKBOLT.CHAT_SUCCESS": " is burned and paralyzed.",  
+  "POWER_BLACKBOLT.CHAT_FAILURE": " avoids the black bolt.",
+    
+  "POWER_BLESSEDSHIELD.CHAT_INTRO": " tries to invoke Prios' protection.",
+  "POWER_BLESSEDSHIELD.CHAT_SUCCESS": " is surrounded by a shield of light.",
+  "POWER_BLESSEDSHIELD.CHAT_FAILURE": " stays in darkness.",
+  "POWER_BLESSEDSHIELD.PROTECTED": " is protected",
+  
   "POWER_BRIMSTONECASC.CHAT_INTRO": " throws fire at its target.",
   "POWER_BRIMSTONECASC.CHAT_SUCCESS": " gets burned.",  
   "POWER_BRIMSTONECASC.CHAT_FAILURE": " avoids part of the damage.",
+  
+  "POWER_CONFUSION.EFFECT12": " stands still, blinking stupidly.",
+  "POWER_CONFUSION.EFFECT34": " attacks whichever of its allies is closest.",
+  "POWER_CONFUSION.EFFECT56": "  attacks whichever of its enemies is closest.",
   
   "POWER_CURSE.CHAT_INTRO": " casts a curse.",
   "POWER_CURSE.CHAT_INTRO_M": " maintains a curse.",
@@ -391,6 +416,10 @@
   "POWER_CURSE.CHAT_SUCCESS_M": " is heavily cursed (1d6 damage for each action).",
   "POWER_CURSE.CHAT_FAILURE": " can't maintain the curse.",
   "POWER_CURSE.CHAT_FAIL_FINAL": "The curse has no more effect on ",
+  
+  "POWER_ENTANGLINGVINES.CHAT_INTRO_M": " tries to break free from the vines.",
+  "POWER_ENTANGLINGVINES.CHAT_SUCCESS": " is entangled in the vines.",
+  "POWER_ENTANGLINGVINES.CHAT_FAILURE": " breaks free from the vines.",
 
   "POWER_HOLYAURA.CHAT_INTRO": " tries to channel the Light of Prios.",
   "POWER_HOLYAURA.CHAT_SUCCESS": " emits a holy light.",
@@ -407,7 +436,7 @@
   "POWER_LARVAEBOILS.CHAT_INTRO": " throws larvaes.",
   "POWER_LARVAEBOILS.CHAT_INTRO_M": " maintains the larvaes surge.",
   "POWER_LARVAEBOILS.CHAT_SUCCESS": " is eaten from the inside by the larvaes.",
-  "POWER_LARVAEBOILS.CHAT_FAILURE": " résists to the larvaes.",
+  "POWER_LARVAEBOILS.CHAT_FAILURE": " resists to the larvaes.",
     
   "POWER_LAYONHANDS.DIALOG":"How close is your target?",
   "POWER_LAYONHANDS.TOUCH":"Touch",
@@ -416,6 +445,14 @@
   "POWER_LAYONHANDS.CHAT_SUCCESS":" heals ",
   "POWER_LAYONHANDS.CHAT_FINAL":"Toughness healed: ",
   "POWER_LAYONHANDS.CHAT_FAILURE":" fails to heal ",
+
+  "POWER_PRIOSBURNINGGLASS.CHAT_INTRO":" tries to channel the Light of Prios at a target.",
+  "POWER_PRIOSBURNINGGLASS.CHAT_EXTRA":" might be stunned, test [resolute <-- resolute].",
+
+  "POWER_TORMENTINGSPIRITS.CHAT_INTRO":" tries to invoke tormenting spirits.",
+  "POWER_TORMENTINGSPIRITS.CHAT_INTRO_M":" tries to maintain the tormenting spirits.",
+  "POWER_TORMENTINGSPIRITS.CHAT_SUCCESS":" invokes spirits around  ",
+  "POWER_TORMENTINGSPIRITS.CHAT_FAILURE":" fails the invokation.",
   
   "QUALITY.AREAMRR": "Area Effect - melee range radius",
   "QUALITY.AREASRR": "Area Effect - short range radius", 
@@ -428,7 +465,7 @@
   "QUALITY.CUMBERSOME": "Cumbersome", 
   "QUALITY.DEEPIMPACT": "Deep Impact",
   "QUALITY.ENSNARING": "Ensnaring",
-  "QUALITY.FLEXIBLE": "flexible",
+  "QUALITY.FLEXIBLE": "Flexible",
   "QUALITY.IMPEDING": "Impeding", 
   "QUALITY.JOINTED": "Jointed", 
   "QUALITY.LONG": "Long",
@@ -453,6 +490,9 @@
 
   "RITUAL.TRADITION": "Tradition",
   "RITUAL.DESCRIPTION": "Description",
+
+  "ROLL.CRITSHORT":"crit",
+  "ROLL.ADVANTAGESHORT":"adv",
 
   "TAB.MAIN": "MAIN",
   "TAB.GEAR": "GEAR",
@@ -563,6 +603,7 @@
   "TRAIT_LABEL.SPIRITFORM": "Spirit form",
   "TRAIT_LABEL.STURDY": "Sturdy",
   "TRAIT_LABEL.SUMMONER": "Summoner",
+  "TRAIT_LABEL.SURVIVALINSTINCT": "Survival Instinct",
   "TRAIT_LABEL.SWARM": "Swarm",
   "TRAIT_LABEL.SWIFT": "Swift",
   "TRAIT_LABEL.TERRIFY": "Terrify",
@@ -571,11 +612,15 @@
   "TRAIT_LABEL.WEB": "Web",
   "TRAIT_LABEL.WINGS": "Wings",
   "TRAIT_LABEL.WRECKER": "Wrecker",
+
+  "TRAIT_REGENERATION.CHAT_ACTION": " regenerates ",
   
   "WEAPON.HEADER": "Weapon",
   "WEAPON.NAME": "Name",
   "WEAPON.DAMAGE": "Damage",
   "WEAPON.DAMAGE_SHORT": "Dmg.",
+  "WEAPON.BASE_DAMAGE": "Base damage",
+  "WEAPON.BONUS_DAMAGE": "Bonus damage",
   "WEAPON.PC_DAMAGE": "PC Dmg",
   "WEAPON.NPC_DAMAGE": "NPC Dmg",
   "WEAPON.QUALITY": "Quality",
@@ -609,5 +654,9 @@
   "SYMBAROUM.OPTIONAL_SAVECOMBATROLL": "Combat settings for rolls",
   "SYMBAROUM.OPTIONAL_SAVECOMBATROLL_HINT": "Check to enable QoL enhancement for keeping all modifiers when rolling combat (weapon/defense)",
   "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL": "Attribute settings for rolls",
-  "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT": "Check to enable QoL enhancement for keeping all modifiers when rolling attribute tests"
+  "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT": "Check to enable QoL enhancement for keeping all modifiers when rolling attribute tests",
+  "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE": "Show modifers in targetted attribute rolls",
+  "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE_HINT": "Check to enable QoL enhancement for showing attribute modifiers before making the roll",
+  "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Allow reference modification",
+  "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Warning - GM Only - allow to manually adjust reference implementation for abilities, traits and mystical powers. Requires refresh."
 }

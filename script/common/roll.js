@@ -46,8 +46,8 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   if (hasWeapon && rollResults.hasSucceed) {
     dam = weapon.damage.pc;
     if (dam !== '') {
-      if ( advantage ) { dam += "+1d4[advantage]"; }
-      if ( rollResults.critSuccess ) { dam += "+1d6[critical]"; }
+      if ( advantage ) { dam += "+1d4["+game.i18n.localize('ROLL.ADVANTAGESHORT')+"]"; }
+      if ( rollResults.critSuccess ) { dam += "+1d6["+game.i18n.localize('ROLL.CRITSHORT')+"]"; }
       if( damModifier !== '') { dam = dam+"+"+damModifier; }
       
 
@@ -61,7 +61,6 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
       
       weaponResults.value = weaponRoll.total;
       weaponResults.name = weapon.name; 
-    //  weaponResults.diceBreakdown = formatDice(weaponRoll.terms,"+");
       weaponResults.diceBreakdown = tooltip;
       console.log(tooltip);
       weaponResults.img = weapon.img;
@@ -78,10 +77,11 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   let rollData = {
     subImg: actor.data.img,
     name: `${getAttributeLabel(actor, actingAttributeName) } (${ getAttributeValue(actor, actingAttributeName) }) ⬅ ${getAttributeLabel(targetActor, targetAttributeName)} (${finalMod})`,
-    margin: game.i18n.localize('CHAT.MARGIN') + (rollResults.diceTarget - rollResults.diceResult).toString(),
+    margin: (rollResults.diceTarget - rollResults.diceResult),
     hasSucceed: rollResults.hasSucceed,
     diceResult: rollResults.diceResult,
     diceBreakdown: rollResults.diceBreakdown,
+    diceTarget: rollResults.diceTarget,
     hasArmor: hasArmor,
     hasWeapon: hasWeapon,
     armor: armorResults,
@@ -91,7 +91,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   };
   const html = await renderTemplate('systems/symbaroum/template/chat/roll.html', rollData);
   let chatData = {
-    user: game.user._id,
+    user: game.user.id,
     speaker: {
 			actor: actor.id
 	},
@@ -131,7 +131,7 @@ export async function deathRoll(sheet) {
   };
   const html = await renderTemplate('systems/symbaroum/template/chat/death.html', rollData);
   let chatData = {
-    user: game.user._id,
+    user: game.user.id,
     rollMode: game.settings.get('core', 'rollMode'),
     content: html,
   };
@@ -184,6 +184,7 @@ export function getAttributeValue(actor, attributeName) {
   {string}  targetAttributeLabel
   {boolean}   hasSucceed,  // true = success
   {number}   diceResult,  // the result of the kept dice
+  {number}   diceTarget, // The final target
   {number}   favour (same as @Params)
   {number}   modifier (same as @Param)
   {array}   dicesResult,  //if favour/unfavour, an array of the results of the 2 thrown dice, or null
@@ -260,6 +261,7 @@ export async function baseRoll(actor, actingAttributeName, targetActor, targetAt
     hasSucceed: hasSucceed,
     diceTarget: diceTarget,
     diceResult: attributeRoll.total,
+    hasDamage: false,
     favour: favour,
     modifier: modifier,
     dicesResult: dicesResult,
@@ -274,7 +276,7 @@ will be intercepted by a hook (see hook.js)
 The actions to do on the token and its actor have to be detailled in the actionsData object:
 * @param actionsDataArray is an array of actionData
 ActionData = {
-    tokenId: {string} the id of the token that will be modified (ex: token.data._id),
+    tokenId: {string} the id of the token that will be modified (ex: token.data.id),
     
 To add a status effect    
     addEffect: {string}  Path to the icon (ex:"icons/svg/daze.svg"),
@@ -296,7 +298,7 @@ export async function createModifyTokenChatButton(actionsDataArray){
   let gmList =  ChatMessage.getWhisperRecipients('GM');
   if(gmList.length > 0){
     const chatData = {
-        user: game.user._id,
+        user: game.user.id,
         content: html,
         whisper: gmList,
         blind: true
@@ -313,10 +315,16 @@ export async function createModifyTokenChatButton(actionsDataArray){
 */
 function formatDice(diceResult, separator) {
 	let rolls = "";
+  
 	for( let dd of diceResult ) {
-		if (typeof dd === 'string' || Number.isInteger(dd) ) {
+    if (typeof dd === 'string' || Number.isInteger(dd) ) {
 			rolls += dd;
+    } else if( dd instanceof OperatorTerm) {
+        rolls += dd.operator;
 		} else {
+      if( dd.modifiers === undefined || dd.modifiers === null ) {
+        continue;
+      }
       let tmpSep = separator;
       
       if( dd.modifiers.includes("kl") || dd.modifiers.includes("kh") ) {
@@ -340,7 +348,6 @@ function formatDice(diceResult, separator) {
 	return rolls;
 }
 
-
 /*function for evaluating Damage
 
 ****************this function needs damage and armor parameters as dice (ie: weapon.data.data.damage = "1d8")
@@ -358,36 +365,37 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
   let newRollDmgString = "";  // for dice modificators like +1d4
   let modFixedDmg = 0;  // for fixed modificators like +1
   let damageAutoParams = "";
-  if(dmgData.modifier != ""){
+  let damageModFormula = dmgData.modifier;
+  if(damageModFormula != ""){
     damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_CUSTOM');
   }
 
   //if(dmgData.isRanged){
     if(dmgData.hunterIDmg){
-      dmgData.modifier += " + 1d4["+game.i18n.localize("ABILITY_LABEL.HUNTER_INSTINCT")+"]";
+      damageModFormula += " + 1d4" + game.i18n.localize("COMBAT.CHAT_DMG_PARAMS_HUNTER");
       damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_HUNTER');
     }
   
   if(dmgData.hasAdvantage){
     if(dmgData.useBackstab){
-      dmgData.modifier += " + 2d4["+game.i18n.localize("ABILITY_LABEL.BACKSTAB")+"]";
+      damageModFormula += " + 2d4["+game.i18n.localize("ABILITY_LABEL.BACKSTAB")+"]";
       damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_BACKSTAB');
     }
     else
     {
-      dmgData.modifier += " + 1d4"+game.i18n.localize("COMBAT.CHAT_DMG_PARAMS_ADVANTAGE");
+      damageModFormula += " + 1d4"+game.i18n.localize("COMBAT.CHAT_DMG_PARAMS_ADVANTAGE");
       damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_ADVANTAGE');
     }
   }
   if(dmgData.useBeastlore){
-    dmgData.modifier += " + " + dmgData.beastLoreDmg + "[" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "]";
+    damageModFormula += " + " + dmgData.beastLoreDmg + "[" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "]";
     damageAutoParams += " [" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "] ";
   }
   if(dmgData.leaderTarget){
-    dmgData.modifier += " + 1d4" + game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
+    damageModFormula += " + 1d4" + game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
     damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
   }
-  if(critSuccess) { dmgData.modifier += "+ 1d6[crit.]"}
+  if(critSuccess) { damageModFormula += "+ 1d6[crit.]"}
 
   if(dmgData.ignoreArm){
     damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_IGN_ARMOR');
@@ -396,12 +404,12 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
     if(attackFromPC){  
       //build roll string
       newRollDmgString = weapon.damage.pc;
-      if(dmgData.modifier != ""){
-        newRollDmgString += "+" + dmgData.modifier
+      if(damageModFormula != ""){
+        newRollDmgString += damageModFormula
       }
       if(modFixedDmg) {newRollDmgString += "+"+ modFixedDmg.toString()};
       if(!dmgData.ignoreArm){
-        newRollDmgString += " - " + targetData.actor.data.data.combat.protectionNpc;
+        newRollDmgString += " - " + targetData.actor.data.data.combat.protectionNpc.toString();
       }
     }
     else{
@@ -409,8 +417,8 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
      //build roll string
       newRollDmgString = weapon.damage.npc.toString();
       if(modFixedDmg) {newRollDmgString += "+"+ modFixedDmg.toString()};
-      if(dmgData.modifier != ""){
-        let weaponModRoll= new Roll(dmgData.modifier).evaluate({maximize: true});
+      if(damageModFormula != ""){
+        let weaponModRoll= new Roll(damageModFormula).evaluate({maximize: true});
         let weaponModDmgValue = Math.ceil(weaponModRoll.total/2);
         newRollDmgString += "+"+ weaponModDmgValue.toString(); 
       }
@@ -438,7 +446,8 @@ export async function simpleDamageRoll(attackFromPC, actor, damageFormula, targe
     newRollDmgString = damageFormula;
     //build roll string
     if(!ignoreArmor){
-      newRollDmgString += " - " + targetData.actor.data.data.combat.protectionNpc + "["+targetData.actor.data.data.combat.armor+"]";
+      //      newRollDmgString += " - " + targetData.actor.data.data.combat.protectionNpc + "["+targetData.actor.data.data.combat.armor+"]";
+      newRollDmgString += " - " + targetData.actor.data.data.combat.protectionNpc.toString();
     }
   }
   else{
@@ -447,7 +456,7 @@ export async function simpleDamageRoll(attackFromPC, actor, damageFormula, targe
     let weaponDmgValue = Math.ceil(weaponRoll.total/2);
 
    //build roll string
-    newRollDmgString = weaponDmgValue;
+    newRollDmgString = weaponDmgValue.toString();
     if(!ignoreArmor){
       newRollDmgString += " - " + targetData.actor.data.data.combat.protectionPc + "["+targetData.actor.data.data.combat.armor+"]";
     }
