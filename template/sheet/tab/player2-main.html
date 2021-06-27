@@ -24,8 +24,8 @@
         <div class="health-toughnesscol foreground">
         <h1>{{localize "HEALTH.TOUGHNESS"}}</h1>
         <div class="toughness-current" title="{{localize "TOOLTIP.HEALTH.TOUGHNESS_CURRENT"}}">
-            <label for="{{actor._id}}-data.health.toughness.value">{{localize "HEALTH.TOUGHNESS_CURRENT"}}</label>
-            <input id="{{actor._id}}-data.health.toughness.value" name="data.health.toughness.value" type="number" value="{{data.health.toughness.value}}" data-dtype="Number" />
+            <label for="{{actor.id}}-data.health.toughness.value">{{localize "HEALTH.TOUGHNESS_CURRENT"}}</label>
+            <input id="{{actor.id}}-data.health.toughness.value" name="data.health.toughness.value" type="number" value="{{data.health.toughness.value}}" data-dtype="Number" />
         </div>
         <div class="toughness-total" title="{{localize "TOOLTIP.HEALTH.TOUGHNESS_TOTAL"}}">
             <label>{{localize "HEALTH.TOUGHNESS_TOTAL"}}</label>
@@ -55,18 +55,18 @@
             <input name="data.health.corruption.value" type="number" value="{{data.health.corruption.value}}" data-dtype="Number" disabled/>
         </div>
         <div class="corruption-temporary" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_TEMPORARY"}}">
-            <label for="{{actor._id}}-data.health.corruption.temporary" >{{localize "HEALTH.CORRUPTION_TEMPORARY"}}</label>
-            <input id="{{actor._id}}-data.health.corruption.temporary" name="data.health.corruption.temporary" type="number" value="{{data.health.corruption.temporary}}" data-dtype="Number"/>
+            <label for="{{actor.id}}-data.health.corruption.temporary" >{{localize "HEALTH.CORRUPTION_TEMPORARY"}}</label>
+            <input id="{{actor.id}}-data.health.corruption.temporary" name="data.health.corruption.temporary" type="number" value="{{data.health.corruption.temporary}}" data-dtype="Number"/>
         </div>
         <div class="corruption-longterm" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_LONGTERM"}}">
-            <label for="{{actor._id}}-data.health.corruption.longterm">{{localize "HEALTH.CORRUPTION_LONGTERM"}}</label>
-            <input type="number" id="{{actor._id}}-data.health.corruption.longterm" name="data.health.corruption.longterm" value="{{data.health.corruption.longterm}}" data-dtype="Number" />
+            <label for="{{actor.id}}-data.health.corruption.longterm">{{localize "HEALTH.CORRUPTION_LONGTERM"}}</label>
+            <input type="number" id="{{actor.id}}-data.health.corruption.longterm" name="data.health.corruption.longterm" value="{{data.health.corruption.longterm}}" data-dtype="Number" />
         </div>
         </div> <!-- end of col 1 -->
         <div class="corruption-col2">
         <div class="corruption-permanent" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_PERMANENT"}}">
-            <label for="{{actor._id}}-data.health.corruption.permanent">{{localize "HEALTH.CORRUPTION_PERMANENT"}}</label>
-            <input id="{{actor._id}}-data.health.corruption.permanent" name="data.health.corruption.permanent" type="number" value="{{data.health.corruption.permanent}}" data-dtype="Number"/>
+            <label for="{{actor.id}}-data.health.corruption.permanent">{{localize "HEALTH.CORRUPTION_PERMANENT"}}</label>
+            <input id="{{actor.id}}-data.health.corruption.permanent" name="data.health.corruption.permanent" type="number" value="{{data.health.corruption.permanent}}" data-dtype="Number"/>
         </div>
         <div class="corruption-threshold">
             <label title="{{localize "TOOLTIP.HEALTH.CORRUPTION_THRESHOLD"}}">{{localize "HEALTH.CORRUPTION_THRESHOLD"}}</label>
@@ -89,8 +89,8 @@
         <h1>{{localize "TITLE.COMBAT"}}</h1>
         <div class="stat-modifiers">
             <div class="initiative" title="{{localize "TOOLTIP.COMBAT.INITIATIVE"}}">
-                <label for="{{actor._id}}-data.initiative.attribute">{{localize "INITIATIVE"}}</label>
-                <select id="{{actor._id}}-data.initiative.attribute" name="data.initiative.attribute" class="attribute">
+                <label for="{{actor.id}}-data.initiative.attribute">{{localize "INITIATIVE"}}</label>
+                <select id="{{actor.id}}-data.initiative.attribute" name="data.initiative.attribute" class="attribute">
                     {{#select data.initiative.attribute}}
                     <option value="quick">{{localize "ATTRIBUTE.QUICK"}}</option>
                     <option value="accurate">{{localize "ATTRIBUTE.ACCURATE"}}</option>
@@ -122,9 +122,12 @@
             </div>
             <div class="quality">
             <div class="protection">
-                <label>{{localize "ARMOR.PROTECTION"}}</label>                
-                {{#ife actor.type "player"}}<input type="text" value="{{data.combat.protectionPc}}" disabled />{{/ife}}
-                {{#ife actor.type "monster"}}<input type="text" value="{{data.combat.protectionNpc}}" disabled />{{/ife}}
+                <label>{{localize "ARMOR.PROTECTION"}}</label>   
+                <span class="tooltip input">           
+                    {{#ife actor.type "player"}}<input type="text" value="{{data.combat.protectionPc}}" disabled />{{/ife}}
+                    {{#ife actor.type "monster"}}<input type="text" value="{{data.combat.protectionNpc}}" disabled />{{/ife}}
+                    <span class="tooltiptext downleft">{{{data.combat.tooltipProt}}}</span>
+                </span>
             </div>
             <div class="protection">
                 <label>{{localize "ARMOR.IMPEDING"}}</label>
@@ -141,7 +144,7 @@
                 <div class="items">
                     {{#each actor.data.weapons as |item|}}
                     {{#if item.isActive}}
-                        <div class="weapon item" data-item-id="{{item._id}}">
+                        <div class="weapon item" data-item-id="{{item.id}}">
                             <div class="name">
                                 <div class="image-container">
                                     <div class="image" style="background-image: url('{{item.img}}')"></div>
@@ -167,15 +170,15 @@
         <h1>{{localize "TITLE.ABILITIES_POWERS"}}</h1>
         <div class="traits">
             {{#each actor.items as |item|}}
-                {{#if item.isPower}}
-                    <div class="trait item" data-item-id="{{item._id}}">
+                {{#if item.data.isPower}}
+                    <div class="trait item" data-item-id="{{item.id}}">
                         <div class="name">
                             <div class="image-container">
                                 <button class="activate-ability" style="background-image: url('{{item.img}}'); height: 36px; width: 36px; background-size: 36px"></button>
                             </div>
                             <button class="item-edit">{{item.name}}</button>
                         </div>
-                        <div class="actions" title="{{localize "TOOLTIP.POWER_ACTIONS"}}">{{item.data.actions}}</div>
+                        <div class="actions" title="{{localize "TOOLTIP.POWER_ACTIONS"}}">{{item.data.data.actions}}</div>
                         <div class="button">
                             <a class="item-control item-delete" title="Delete Trait"><i class="fas fa-trash"></i></a>
                         </div>

@@ -82,7 +82,7 @@
                 <div class="items">
                     {{#each actor.data.weapons as |item|}}
                     {{#if item.isActive}}
-                        <div class="weapon item" data-item-id="{{item._id}}">
+                        <div class="weapon item" data-item-id="{{item.id}}">
                             <div class="name">
                                 <div class="image-container">
                                     <div class="image" style="background-image: url('{{item.img}}')"></div>
@@ -103,7 +103,7 @@
         <div class="traits">
             {{#each actor.items as |item|}}
                 {{#if item.isPower}}
-                    <div class="trait item" data-item-id="{{item._id}}">
+                    <div class="trait item" data-item-id="{{item.id}}">
                         <div class="name">
                             <div class="image-container">
                                 <button class="activate-ability" style="background-image: url('{{item.img}}'); height: 36px; width: 36px; background-size: 36px"></button>

@@ -91,7 +91,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   };
   const html = await renderTemplate('systems/symbaroum/template/chat/roll.html', rollData);
   let chatData = {
-    user: game.user._id,
+    user: game.user.id,
     speaker: {
 			actor: actor.id
 	},
@@ -131,7 +131,7 @@ export async function deathRoll(sheet) {
   };
   const html = await renderTemplate('systems/symbaroum/template/chat/death.html', rollData);
   let chatData = {
-    user: game.user._id,
+    user: game.user.id,
     rollMode: game.settings.get('core', 'rollMode'),
     content: html,
   };
@@ -276,7 +276,7 @@ will be intercepted by a hook (see hook.js)
 The actions to do on the token and its actor have to be detailled in the actionsData object:
 * @param actionsDataArray is an array of actionData
 ActionData = {
-    tokenId: {string} the id of the token that will be modified (ex: token.data._id),
+    tokenId: {string} the id of the token that will be modified (ex: token.data.id),
     
 To add a status effect    
     addEffect: {string}  Path to the icon (ex:"icons/svg/daze.svg"),
@@ -298,7 +298,7 @@ export async function createModifyTokenChatButton(actionsDataArray){
   let gmList =  ChatMessage.getWhisperRecipients('GM');
   if(gmList.length > 0){
     const chatData = {
-        user: game.user._id,
+        user: game.user.id,
         content: html,
         whisper: gmList,
         blind: true
@@ -315,10 +315,16 @@ export async function createModifyTokenChatButton(actionsDataArray){
 */
 function formatDice(diceResult, separator) {
 	let rolls = "";
+  
 	for( let dd of diceResult ) {
-		if (typeof dd === 'string' || Number.isInteger(dd) ) {
+    if (typeof dd === 'string' || Number.isInteger(dd) ) {
 			rolls += dd;
+    } else if( dd instanceof OperatorTerm) {
+        rolls += dd.operator;
 		} else {
+      if( dd.modifiers === undefined || dd.modifiers === null ) {
+        continue;
+      }
       let tmpSep = separator;
       
       if( dd.modifiers.includes("kl") || dd.modifiers.includes("kh") ) {
@@ -341,7 +347,6 @@ function formatDice(diceResult, separator) {
 	}
 	return rolls;
 }
-
 
 /*function for evaluating Damage
 
@@ -400,11 +405,11 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
       //build roll string
       newRollDmgString = weapon.damage.pc;
       if(damageModFormula != ""){
-        newRollDmgString += "+" + damageModFormula
+        newRollDmgString += damageModFormula
       }
       if(modFixedDmg) {newRollDmgString += "+"+ modFixedDmg.toString()};
       if(!dmgData.ignoreArm){
-        newRollDmgString += " - " + targetData.actor.data.data.combat.protectionNpc;
+        newRollDmgString += " - " + targetData.actor.data.data.combat.protectionNpc.toString();
       }
     }
     else{
@@ -442,7 +447,7 @@ export async function simpleDamageRoll(attackFromPC, actor, damageFormula, targe
     //build roll string
     if(!ignoreArmor){
       //      newRollDmgString += " - " + targetData.actor.data.data.combat.protectionNpc + "["+targetData.actor.data.data.combat.armor+"]";
-      newRollDmgString += " - " + targetData.actor.data.data.combat.protectionNpc;
+      newRollDmgString += " - " + targetData.actor.data.data.combat.protectionNpc.toString();
     }
   }
   else{
@@ -451,7 +456,7 @@ export async function simpleDamageRoll(attackFromPC, actor, damageFormula, targe
     let weaponDmgValue = Math.ceil(weaponRoll.total/2);
 
    //build roll string
-    newRollDmgString = weaponDmgValue;
+    newRollDmgString = weaponDmgValue.toString();
     if(!ignoreArmor){
       newRollDmgString += " - " + targetData.actor.data.data.combat.protectionPc + "["+targetData.actor.data.data.combat.armor+"]";
     }

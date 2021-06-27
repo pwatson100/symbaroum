@@ -22,7 +22,16 @@ export class PlayerSheet2 extends PlayerSheet {
     }
 
     getData() {
-        const data = super.getData();
+        // const data = super.getData();
+        /*
+        if(!this.actor.data.isDataPrepared)
+            this.actor.prepareData();
+        */
+        let data = {
+            id: this.actor.id,
+            actor: foundry.utils.deepClone(this.actor.data),
+            data: foundry.utils.deepClone(this.actor.data.data)
+        }
         return data;
     }
 }
