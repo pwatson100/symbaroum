@@ -1286,7 +1286,7 @@ export async function attackRoll(weapon, actor){
                 }
             }
         }
-        let rapidfire = actor.items.filter(item => item.data.data?.reference === "rapidfire");
+        let rapidfire = actor.items.filter(item => (item.data.data?.reference === "rapidfire" || item.data.data?.reference === "rapidfire "));
         if(rapidfire.length != 0){
             if(rapidfire[0].data.data.master.isActive){
                 functionStuff.askThreeAttacks = true;
@@ -1414,7 +1414,7 @@ async function attackResult(rollData, functionStuff){
     if(damageTot <= 0){
         damageTot = 0;
     }
-    else if(damageTot > functionStuff.targetData.actor.data.data.health.toughness.value){
+    else if(damageTot >= functionStuff.targetData.actor.data.data.health.toughness.value){
         targetDies = true;
         damageFinalText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_DYING');
         flagDataArray.push({
