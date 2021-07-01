@@ -547,7 +547,7 @@
   "TOOLTIP.HEALTH.CORRUPTION_MAX": "Your abomination threshold",
   
   "TOOLTIP.HEALTH.TOUGHNESS_CURRENT": "Your current toughness",
-  "TOOLTIP.HEALTH.TOUGHNESS_TOTAL": "The amount of thoughness damage that will cause you to die",
+  "TOOLTIP.HEALTH.TOUGHNESS_TOTAL": "The amount of toughness damage that will cause you to die",
   "TOOLTIP.HEALTH.TOUGHNESS_THRESHOLD": "Your pain threshold",
   
   "TOOLTIP.COMBAT.INITIATIVE": "The attribute that your initiative is based on",
