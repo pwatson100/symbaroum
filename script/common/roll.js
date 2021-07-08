@@ -321,6 +321,8 @@ function formatDice(diceResult, separator) {
 			rolls += dd;
     } else if( dd instanceof OperatorTerm) {
         rolls += dd.operator;
+    } else if( dd instanceof NumericTerm) {
+        rolls += dd.number;
 		} else {
       if( dd.modifiers === undefined || dd.modifiers === null ) {
         continue;
