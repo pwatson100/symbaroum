@@ -322,7 +322,7 @@ async function showReleaseNotes()
         await oldReleaseNotes.delete();        
       }
 
-      await game.journal.importFromCompendium(newReleasePack, newReleaseNotes.id);
+      await game.journal.importFromCompendium(newReleasePack, newReleaseNotes._id);
       let newReleaseJournal = game.journal.getName(newReleaseNotes.name);
 
       await newReleaseJournal.setFlag('symbaroum', 'ver', newVer);
