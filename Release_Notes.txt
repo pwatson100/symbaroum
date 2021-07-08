@@ -124,6 +124,13 @@ A few macros have been added as documented in the user guide.
 Fixes:
  - #180 Compendium SV-Powers SV-Trais still has multiple languages and translations are missing (@Weymyss)
 
+Version 3.0.1
+ - Fixed version number
 
-
+Version 3.0.2
+ - Rapid Fire bug fix
+ - Changes to Iron First - it is now only automatically added in Enhanced combat
+ - Fix for #111 - Thanks to @NeV3rKilL for submitting the fix
+ - Fix for #206
+ - Additions of Maltransformation and Prios burning glass integration.
 
