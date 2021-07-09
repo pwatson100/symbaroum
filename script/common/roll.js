@@ -34,7 +34,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
       
       armorRoll.roll();
       if (game.dice3d != null) {
-        await game.dice3d.showForRoll(armorRoll);
+        await game.dice3d.showForRoll(armorRoll, game.user, true);
       }
       
       armorResults.name = armor.armor;
@@ -56,7 +56,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
       let tooltip = await weaponRoll.getTooltip();
       
       if (game.dice3d != null) {
-        await game.dice3d.showForRoll(weaponRoll);
+        await game.dice3d.showForRoll(weaponRoll, game.user, true);
       }
       
       weaponResults.value = weaponRoll.total;
@@ -111,7 +111,7 @@ export async function deathRoll(sheet) {
   let death = new Roll('1d20', {});
   death.roll();
   if (game.dice3d != null) {
-    await game.dice3d.showForRoll(death);
+    await game.dice3d.showForRoll(death, game.user, true);
   }
   let hasSucceed = death._total >= 2 && death._total <= 10;
   let isCriticalSuccess = death._total === 1;
@@ -120,7 +120,7 @@ export async function deathRoll(sheet) {
   let heal = new Roll('1d4', {});
   heal.roll();
   if (game.dice3d != null) {
-    await game.dice3d.showForRoll(heal);
+    await game.dice3d.showForRoll(heal, game.user, true);
   }
   let rollData = {
     isCriticalSuccess: isCriticalSuccess,
@@ -210,7 +210,7 @@ export async function baseRoll(actor, actingAttributeName, targetActor, targetAt
   };
   
   if (game.dice3d != null) {
-    await game.dice3d.showForRoll(attributeRoll);
+    await game.dice3d.showForRoll(attributeRoll, game.user, true);
   }
   
   diceBreakdown = formatDice(attributeRoll.terms,"+");
@@ -315,10 +315,18 @@ export async function createModifyTokenChatButton(actionsDataArray){
 */
 function formatDice(diceResult, separator) {
 	let rolls = "";
+  
 	for( let dd of diceResult ) {
-		if (typeof dd === 'string' || Number.isInteger(dd) ) {
+    if (typeof dd === 'string' || Number.isInteger(dd) ) {
 			rolls += dd;
+    } else if( dd instanceof OperatorTerm) {
+        rolls += dd.operator;
+    } else if( dd instanceof NumericTerm) {
+        rolls += dd.number;
 		} else {
+      if( dd.modifiers === undefined || dd.modifiers === null ) {
+        continue;
+      }
       let tmpSep = separator;
       
       if( dd.modifiers.includes("kl") || dd.modifiers.includes("kh") ) {
@@ -341,7 +349,6 @@ function formatDice(diceResult, separator) {
 	}
 	return rolls;
 }
-
 
 /*function for evaluating Damage
 
@@ -400,7 +407,7 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
       //build roll string
       newRollDmgString = weapon.damage.pc;
       if(damageModFormula != ""){
-        newRollDmgString += "+" + damageModFormula
+        newRollDmgString += damageModFormula
       }
       if(modFixedDmg) {newRollDmgString += "+"+ modFixedDmg.toString()};
       if(!dmgData.ignoreArm){

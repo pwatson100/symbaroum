@@ -256,6 +256,7 @@
   "DIALOG.CASTING_ATTRIBUTE": "Karaktärsdrag för mystisk kraft",
   "DIALOG.RESIST_ATTRIBUTE": "Karaktärsdrag för motstånd",
   "DIALOG.VERSUS": "Mot",
+  "DIALOG.ASK_CORRUPTION": "Target fully corrupted?",
   "DIALOG.ATTRIBUTE": "Karaktärsdrag",
   "DIALOG.MODIFIER": "Modifikation",
   "DIALOG.ADVANTAGE": "Övertag",
@@ -437,6 +438,9 @@
   "POWER_LARVAEBOILS.CHAT_INTRO_M": " upprätthåller larvernas framfart.",
   "POWER_LARVAEBOILS.CHAT_SUCCESS": " äts upp inifrån av larverna.",
   "POWER_LARVAEBOILS.CHAT_FAILURE": " motstår larverna.",
+
+  "POWER_PRIOSBURNINGGLASS.CHAT_INTRO":" tries to channel the Light of Prios at a target.",
+  "POWER_PRIOSBURNINGGLASS.CHAT_EXTRA":" might be stunned, test [resolute <-- resolute].",
 
   "POWER_TORMENTINGSPIRITS.CHAT_INTRO":" försöker åkalla plågoandar.",
   "POWER_TORMENTINGSPIRITS.CHAT_INTRO_M":" försöker upprätthålla plågoandarna.",

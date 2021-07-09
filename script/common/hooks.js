@@ -284,7 +284,8 @@ async function createBlessedShield(actor, protection = "1d4"){
         baseProtection: "0",
         bonusProtection: protection}
   }    
-  actor.createEmbeddedEntity('OwnedItem', data, { renderSheet: false });
+  //actor.createEmbeddedEntity('OwnedItem', data, { renderSheet: false });
+  await Item.create(data, {parent: actor}, { renderSheet: false });
 }
 
 async function showReleaseNotes()
@@ -321,7 +322,7 @@ async function showReleaseNotes()
         await oldReleaseNotes.delete();        
       }
 
-      await game.journal.importFromCompendium(newReleasePack, newReleaseNotes.id);
+      await game.journal.importFromCompendium(newReleasePack, newReleaseNotes._id);
       let newReleaseJournal = game.journal.getName(newReleaseNotes.name);
 
       await newReleaseJournal.setFlag('symbaroum', 'ver', newVer);
