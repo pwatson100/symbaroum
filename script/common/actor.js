@@ -569,7 +569,7 @@ export class SymbaroumActor extends Actor {
         }
         let stafffighting = this.data.items.filter(element => element.data.data?.reference === "stafffighting");
         if(stafffighting.length > 0){
-            let haveLongEquipped = this.data.items.filter(element => element.data.isWeapon && element.data?.qualities.long && element.data.isActive)
+            let haveLongEquipped = this.data.items.filter(element => element.data.isWeapon && element.data.data.qualities.long && element.data.isActive)
             if(haveLongEquipped.length > 0){
                 attDefValue += 1
                 defMsg += `<br/>${game.i18n.localize("ABILITY_LABEL.STAFF_FIGHTING")}(+1)`;
