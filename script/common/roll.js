@@ -424,7 +424,7 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
         let weaponModDmgValue = Math.ceil(weaponModRoll.total/2);
         newRollDmgString += "+"+ weaponModDmgValue.toString(); 
       }
-      if(!dmgData.ignoreArm){
+      if(!dmgData.ignoreArm && targetData.actor.data.data.combat.protectionPc != 0){
         newRollDmgString += " - (" + targetData.actor.data.data.combat.protectionPc + ")";
       }
     }
