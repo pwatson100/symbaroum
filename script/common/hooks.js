@@ -139,7 +139,16 @@ Hooks.once('init', () => {
     type: Boolean,
     default: false,
     config: true,
-  });  
+  });
+
+  game.settings.register('symbaroum', 'manualInitValue', {
+    name: 'SYMBAROUM.OPTIONAL_INIT_MANUAL',
+    hint: 'SYMBAROUM.OPTIONAL_INIT_MANUAL_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });
 
 });
 

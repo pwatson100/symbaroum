@@ -155,6 +155,9 @@ export class SymbaroumActor extends Actor {
         if(activeWeapons.length > 0){
             data.data.weapons = this.evaluateWeapons(activeWeapons);
         }
+        if(!game.settings.get('symbaroum', 'manualInitValue')){
+            this._getInitiativeAttribute()
+        }
         let attributeInit = data.data.initiative.attribute.toLowerCase();
         data.data.initiative.value = ((data.data.attributes[attributeInit].total) + (data.data.attributes.vigilant.total /100)) ;
         console.log("out _computeSecondaryAttributes "); // +JSON.stringify(data));
@@ -697,6 +700,26 @@ export class SymbaroumActor extends Actor {
         return(wearArmor)
     }
 
+    _getInitiativeAttribute() {
+        let attributeInit = "quick";
+        let sixthsenseLvl = 0;
+        let sixthsense = this.data.items.filter(element => element.data.data?.reference === "sixthsense");
+        if(sixthsense.length > 0){
+            sixthsenseLvl = getPowerLevel(sixthsense[0]).level;
+            if(sixthsenseLvl > 1){
+                if(this.data.data.attributes.vigilant.total > this.data.data.attributes[attributeInit].total){
+                    attributeInit = "vigilant";
+                }
+            }
+        }
+        let tactician = this.data.items.filter(element => element.data.data?.reference === "tactician");
+        if(tactician.length > 0){
+            if(this.data.data.attributes.cunning.total > this.data.data.attributes[attributeInit].total){
+                attributeInit = "cunning";
+            }
+        }
+        this.data.data.initiative.attribute = attributeInit;
+    }
     _getWeapons(data) {
         let weaponArray = this.data.items.filter(element => element.data.isWeapon);
         return(weaponArray)

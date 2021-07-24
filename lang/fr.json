@@ -652,7 +652,9 @@
     "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE": "Affichage préventif du modificateur",
     "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE_HINT": "Affiche le modificateur de l'attribut de l'adversaire dans le menu déroulant de jet resisté d'attribut.",
     "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Modification des références",
-    "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Attention - MJ seulement - Permet de modifier les références des objets traits, talents et pouvoirs. A n'utiliser que si vous savez ce que vous faites."
+    "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Attention - MJ seulement - Permet de modifier les références des objets traits, talents et pouvoirs. A n'utiliser que si vous savez ce que vous faites.",
+    "SYMBAROUM.OPTIONAL_INIT_MANUAL": "Choisir manuellement l'attribut pour l'initiative",
+    "SYMBAROUM.OPTIONAL_INIT_MANUAL_HINT": "Désactive l'évaluation automatique de l'attribut à utiliser pour l'initiative des personnages. A cocher si vous utilisez vos propres talents."
   
 }
 
