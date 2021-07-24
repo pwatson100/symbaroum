@@ -427,6 +427,7 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
       if(!dmgData.ignoreArm && targetData.actor.data.data.combat.protectionPc != 0){
         newRollDmgString += " - (" + targetData.actor.data.data.combat.protectionPc + ")";
       }
+      else newRollDmgString += " - 0";
     }
     // final damage
     console.log(newRollDmgString);
