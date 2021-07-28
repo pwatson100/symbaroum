@@ -150,6 +150,8 @@ Hooks.once('init', () => {
     config: true,
   });
 
+});
+  
 Hooks.once('ready', () => {
   migrateWorld();
   sendDevMessage();
