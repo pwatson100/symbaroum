@@ -651,7 +651,9 @@
   "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE": "Mostrar modificadores en tiradas de atributo con objetivo",
   "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE_HINT": "Marcar para permitir mejoras de QoL para mostrar los mod de los atributos antes de la tirada",
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Permitir modificaciones de referencias",
-  "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Atención - Solo GM - permite ajustar manualmente las referencias en la implementación de habilidades, rasgos y poderes místicos. Requiere reiniciar."
+  "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Atención - Solo GM - permite ajustar manualmente las referencias en la implementación de habilidades, rasgos y poderes místicos. Requiere reiniciar.",
+  "SYMBAROUM.OPTIONAL_INIT_MANUAL": "Manually select initiative attribute",
+  "SYMBAROUM.OPTIONAL_INIT_MANUAL_HINT": "Check to desactive the automated evaluation of the attribute used for initiative."
 
   
 }
