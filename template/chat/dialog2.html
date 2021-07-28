@@ -78,9 +78,19 @@
       <label>{{localize "DIALOG.DAMAGE_IF_MODIFIER"}}</label> <input id="ironfistmodifier" value="1d8" type="text" data-dtype="Text"/> 
     </div>
     {{/if}}
+    {{#if featStFavour}}
+    <div class="damagemodifier">
+      <label for="weapondamage">{{localize "ABILITY_LABEL.FEAT_STRENGTH"}}</label> <div class="weapondamage"><span id="weapondamage">{{localize "DIALOG.FAVOUR_FAVOUR"}}</span></div>
+    </div>
+    {{/if}}
     {{#if featStMasterDmg}}
     <div class="damagemodifier">
       <label for="weapondamage">{{localize "DIALOG.FEAT_STRENGTH_DAMAGE"}}</label> <div class="weapondamage"><span id="weapondamage">1d4</span></div>
+    </div>
+    {{/if}}
+    {{#if flagBerserk}}
+    <div class="damagemodifier">
+      <label for="weapondamage">{{localize "ABILITY_LABEL.BERSERKER"}}</label> <div class="weapondamage"><span id="weapondamage">1d6</span></div>
     </div>
     {{/if}}
     <div class="bonus">

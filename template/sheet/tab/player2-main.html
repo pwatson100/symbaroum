@@ -151,8 +151,8 @@
                                 </div>
                                 <button class="roll-weapon">{{item.name}}</button>
                             </div>
-                            {{#ife ../actor.type "player"}}<div class="damage" title="{{item.tooltip}}">{{item.damage.pcShort}}</div>{{/ife}}
-                            {{#ife ../actor.type "monster"}}<div class="damage" title="{{item.tooltip}}">{{item.damage.npc}}</div>{{/ife}}
+                            {{#ife ../actor.type "player"}}<div class="damage" title="{{item.tooltip}}">{{item.damage.pcExtShort}}</div>{{/ife}}
+                            {{#ife ../actor.type "monster"}}<div class="damage" title="{{item.tooltip}}">{{item.damage.npcExtended}}</div>{{/ife}}
                         </div>
                     {{/if}}
                     {{/each}}

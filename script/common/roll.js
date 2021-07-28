@@ -398,8 +398,8 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
     damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
   }
   if(dmgData.addFeatofStMasterDmg){
-    damageModFormula += "+1d4" + "[" + game.i18n.localize('ABILITY_LABEL.FEAT_STRENGTH') + "]";
-    damageAutoParams += " [" + game.i18n.localize('ABILITY_LABEL.FEAT_STRENGTH') + "] ";
+    damageModFormula += "+1d4" + game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_FEAT_ST');
+    damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_FEAT_ST');
   }
   if(critSuccess) { damageModFormula += "+ 1d6[crit.]"}
 

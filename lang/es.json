@@ -228,7 +228,9 @@
   "COMBAT.CHAT_POISON_SUCCESS2": ",  duración: ",
   "COMBAT.CHAT_DMG_PARAMS": "Modificadores de daño: ",
   "COMBAT.CHAT_MODIFIER": "Mod: ",
-  "COMBAT.CHAT_DMG_PARAMS_HUNTER": "[Instinto de cazador] ",
+  "COMBAT.CHAT_DMG_PARAMS_HUNTER": "[Inst. caz.] ",
+  "COMBAT.CHAT_DMG_PARAMS_IRON_FIST": "[Iron Fist] ",
+  "COMBAT.CHAT_DMG_PARAMS_FEAT_ST": "[Feat of St] ",
   "COMBAT.CHAT_DMG_PARAMS_CUSTOM": "[Custom] ",
 
   "COMBAT.CHAT_DMG_PARAMS_BACKSTAB": "[Por la espalda] ",

@@ -900,7 +900,6 @@ async function modifierDialog(functionStuff){
         targetAttributeName = functionStuff.targetData.resistAttributeName
     }
 
-
     const html = await renderTemplate('systems/symbaroum/template/chat/dialog2.html', {
         hasTarget: hasTarget,
         askCastingAttribute: functionStuff.askCastingAttribute,
@@ -911,7 +910,9 @@ async function modifierDialog(functionStuff){
         askBackstab : askBackstab,
         askIronFistAdept: askIronFistDmg && !ironFistDmgMaster,
         askIronFistMaster: askIronFistDmg && ironFistDmgMaster,
+        featStFavour: functionStuff.featStFavour,
         featStMasterDmg: functionStuff.featStMasterDmg,
+        flagBerserk: functionStuff.flagBerserk,
         askHuntersInstinct: askHuntersInstinct,
         askThreeAttacks: askThreeAttacks,
         askTwoAttacks: askTwoAttacks,
@@ -1001,7 +1002,7 @@ async function modifierDialog(functionStuff){
                     }
                     // Damage modifier for iron fist master 
                     if(askIronFistDmg){
-                        functionStuff.dmgData.modifier += " + " + html.find("#ironfistmodifier")[0].value;
+                        functionStuff.dmgData.modifier += " + " + html.find("#ironfistmodifier")[0].value +game.i18n.localize("COMBAT.CHAT_DMG_PARAMS_IRON_FIST");
                     }
                         //advantage situation
                     functionStuff.dmgData.hasAdvantage = html.find("#advantage")[0].checked;
@@ -1217,9 +1218,11 @@ export async function attackRoll(weapon, actor){
         askThreeAttacks: false,
         askBeastlore: false,
         askIronFistDmg: false,
+        featStFavour: false,
         ironFistDmgMaster: false,
         featStMasterDmg: false,
         attackFromPC: actor.hasPlayerOwner,
+        flagBerserk: false,
         autoParams: "",
         bleed: false,
         checkMaintain: false,
@@ -1348,15 +1351,26 @@ export async function attackRoll(weapon, actor){
                 }
             }
         }
+        let robustLvl = 0;
+        let robust = actor.items.filter(element => element.data.data.reference === "robust");
+        if(robust.length > 0){
+            let powerLvl = getPowerLevel(robust[0]);
+            robustLvl = powerLvl.level;
+            functionStuff.askIronFistDmg = true;
+        }
         let featSt = actor.items.filter(item => item.data.data.reference === "featofstrength");
         if((featSt.length != 0) && (actor.data.data.health.toughness.value < (actor.data.data.health.toughness.max/2)) && (weapon.attribute == "strong")){
             let featStLvl = getPowerLevel(featSt[0]).level;
-            if(featStLvl > 1) functionStuff.favour += 1;
+            if(featStLvl > 1) {
+                functionStuff.featStFavour = true;
+                functionStuff.favour += 1;
+            }
             if(featStLvl > 2) {
                 functionStuff.featStMasterDmg = true;
                 functionStuff.dmgData.addFeatofStMasterDmg = true;
             }
         }
+        functionStuff.flagBerserk = actor.getFlag(game.system.id, 'berserker');
     }
     //all weapons
     if(!functionStuff.askWeapon){
