@@ -109,6 +109,7 @@ export class SymbaroumActor extends Actor {
             if(data.data.attributes[aKey].temporaryMod != 0 ){data.data.attributes[aKey].msg += "<br />"+game.i18n.localize("ATTRIBUTE.MODIFIER")+"("+data.data.attributes[aKey].temporaryMod.toString()+")"};
         }
         
+        // Toughness max
         let strong = data.data.attributes.strong.total;
         let sturdy = this.data.items.filter(item => item.data.data.reference === "sturdy");
         if(sturdy.length != 0){
@@ -116,10 +117,23 @@ export class SymbaroumActor extends Actor {
             if(sturdyLvl == 1) data.data.health.toughness.max = Math.ceil(strong*(1.5));
             else data.data.health.toughness.max = strong*(sturdyLvl)
         }
-        else data.data.health.toughness.max = (strong > 10 ? strong : 10) + data.data.bonus.toughness.max;       
+        else data.data.health.toughness.max = (strong > 10 ? strong : 10) + data.data.bonus.toughness.max;
+        let featSt = this.data.items.filter(item => item.data.data.reference === "featofstrength");
+        if(featSt.length != 0){
+            let featStLvl = getPowerLevel(featSt[0]).level;
+            if(featStLvl > 0) data.data.health.toughness.max += 5;
+        }
+
         data.data.health.toughness.threshold = Math.ceil(strong / 2) + data.data.bonus.toughness.threshold;
         
-        let resolute = data.data.attributes.resolute.total;        
+        // Corruption Max
+        let resolute = data.data.attributes.resolute.total;
+        
+        let strongGift = this.data.items.filter(item => item.data.data.reference === "stronggift");
+        if(strongGift.length != 0){
+            let strongGiftLvl = getPowerLevel(strongGift[0]).level;
+            if(strongGift > 1) resolute = resolute*2;
+        }
         data.data.health.corruption.threshold = Math.ceil(resolute / 2) + data.data.bonus.corruption.threshold;
         data.data.health.corruption.max = resolute + data.data.bonus.corruption.max;
         
@@ -254,6 +268,8 @@ export class SymbaroumActor extends Actor {
             if( baseDamage === undefined) {
                 baseDamage = "1d8";
             }
+            let sometimesOnBonusFromAbilities = "";
+            let sometimesOnBonusFromAbilitiesShort = "";
             let bonusDamage = "";
             let shortBonusDamage = "";
             if( item.data.data.bonusDamage !== undefined && item.data.data.bonusDamage != ""){
@@ -284,21 +300,18 @@ export class SymbaroumActor extends Actor {
                     }
                 }
                 if(robustLvl == 1){
-                    /* Only on first attack, not remainder */
-                    bonusDamage += " +1d4["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
-                    shortBonusDamage += " +1d4";
+                    sometimesOnBonusFromAbilities += " +1d4["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
+                    sometimesOnBonusFromAbilitiesShort += " +1d4";
                     tooltip += game.i18n.localize("TRAIT_LABEL.ROBUST") + robustLvl.toString() + ", ";
                 }
                 else if(robustLvl == 2){
-                    /* Only on first attack, not remainder */
-                    bonusDamage += " +1d6["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
-                    shortBonusDamage += " +1d6";
+                    sometimesOnBonusFromAbilities += " +1d6["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
+                    sometimesOnBonusFromAbilitiesShort += " +1d6";
                     tooltip += game.i18n.localize("TRAIT_LABEL.ROBUST") + robustLvl.toString() + ", ";
                 }
                 else if(robustLvl > 2){
-                    /* Only on first attack, not remainder */
-                    bonusDamage += " +1d8["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
-                    shortBonusDamage += " +1d8";
+                    sometimesOnBonusFromAbilities += " +1d8["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
+                    sometimesOnBonusFromAbilitiesShort += " +1d8";
                     tooltip += game.i18n.localize("TRAIT_LABEL.ROBUST") + robustLvl.toString() + ", ";
                 }
                 if(flagBerserk){
@@ -309,6 +322,16 @@ export class SymbaroumActor extends Actor {
                 if(ironFistLvl > 0){
                     if(this.data.data.attributes.strong.total > this.data.data.attributes[attribute].total){
                         attribute = "strong";
+                    }
+                    if(ironFistLvl == 2){
+                        sometimesOnBonusFromAbilities += " +1d4["+game.i18n.localize("ABILITY_LABEL.IRON_FIST")+"]";
+                        sometimesOnBonusFromAbilitiesShort += " +1d4";
+                        tooltip += game.i18n.localize("ABILITY_LABEL.IRON_FIST") + ", ";
+                    }
+                    else if(ironFistLvl > 2){
+                        sometimesOnBonusFromAbilities += " +1d8["+game.i18n.localize("ABILITY_LABEL.IRON_FIST")+"]";
+                        sometimesOnBonusFromAbilitiesShort += " +1d8";
+                        tooltip += game.i18n.localize("ABILITY_LABEL.IRON_FIST") + ", ";
                     }
                 }
                 if(dominate.length > 0){
@@ -380,17 +403,26 @@ export class SymbaroumActor extends Actor {
             }
             let pcDamage = baseDamage + bonusDamage;
             let pcShort = baseDamage + shortBonusDamage;
+            let pcDamageExt = pcDamage + sometimesOnBonusFromAbilities;
+            let pcExtShort = pcShort + sometimesOnBonusFromAbilitiesShort;
             let DmgRoll= new Roll(pcDamage).evaluate({maximize: true});
             let npcDamage = Math.ceil(DmgRoll.total/2);
             let baseDmgRoll = new Roll(baseDamage).evaluate({maximize: true});
+            let DmgRollExt= new Roll(pcDamageExt).evaluate({maximize: true});
+            let npcDamageExt = Math.ceil(DmgRollExt.total/2);
             if(item.data.data.qualities?.massive) {
                 pcDamage = "2d"+(baseDmgRoll.total)+"kh"+bonusDamage;
                 pcShort = "2d"+(baseDmgRoll.total)+"kh"+shortBonusDamage;
+                pcDamageExt = pcDamage + sometimesOnBonusFromAbilities;
+                pcExtShort = pcShort + sometimesOnBonusFromAbilitiesShort;
             }
             if(item.data.data.qualities?.deepImpact){
-                pcDamage += "+1";
+                pcDamage += "+1d1["+game.i18n.localize("QUALITY.DEEPIMPACT")+"]";
                 pcShort += " +1";
-                npcDamage+= 1;
+                pcDamageExt += "+1d1["+game.i18n.localize("QUALITY.DEEPIMPACT")+"]";
+                pcExtShort += "+1"
+                npcDamage+=1;
+                npcDamageExt+=1;
                 tooltip += game.i18n.localize("QUALITY.DEEPIMPACT") + ", ";
             }
             let itemID = item.id;
@@ -410,9 +442,14 @@ export class SymbaroumActor extends Actor {
                 qualities: item.data.data.qualities,
                 damage: {
                     base: baseDamage, 
-                    bonus: bonusDamage, 
+                    bonus: bonusDamage,
+                    sometimesOnBonusFromAbilitiesShort: sometimesOnBonusFromAbilitiesShort,
+                    sometimesOnBonusFromAbilities: sometimesOnBonusFromAbilities,
                     pc: pcDamage, 
                     pcShort: pcShort,
+                    pcExtended: pcDamageExt,
+                    pcExtShort: pcExtShort,
+                    npcExtended: npcDamageExt,
                     npc: npcDamage
                 }
             })

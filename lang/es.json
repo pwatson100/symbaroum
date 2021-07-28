@@ -228,7 +228,9 @@
   "COMBAT.CHAT_POISON_SUCCESS2": ",  duración: ",
   "COMBAT.CHAT_DMG_PARAMS": "Modificadores de daño: ",
   "COMBAT.CHAT_MODIFIER": "Mod: ",
-  "COMBAT.CHAT_DMG_PARAMS_HUNTER": "[Instinto de cazador] ",
+  "COMBAT.CHAT_DMG_PARAMS_HUNTER": "[Inst. caz.] ",
+  "COMBAT.CHAT_DMG_PARAMS_IRON_FIST": "[Iron Fist] ",
+  "COMBAT.CHAT_DMG_PARAMS_FEAT_ST": "[Feat of St] ",
   "COMBAT.CHAT_DMG_PARAMS_CUSTOM": "[Custom] ",
 
   "COMBAT.CHAT_DMG_PARAMS_BACKSTAB": "[Por la espalda] ",
@@ -255,6 +257,8 @@
   "DIALOG.DAMAGE_IF_MODIFIER": "Bonus de daño por Golpe de Hierro",
   "DIALOG.2ATTACKS": "¿Ataque doble?",
   "DIALOG.3ATTACKS": "¿Atacar tres veces?",
+  "DIALOG.FEAT_STRENGTH_DAMAGE": "Bonus damage from Feat of Strength",
+  "DIALOG.ROBUST_DMG": "Add damage from Robust?",
 
   "DIALOG.CASTING_ATTRIBUTE": "Atributo original",
   "DIALOG.RESIST_ATTRIBUTE": "Atributo contrario",

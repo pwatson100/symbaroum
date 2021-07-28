@@ -226,6 +226,8 @@
   "COMBAT.CHAT_MODIFIER": "Mod: ",
   "COMBAT.CHAT_DMG_PARAMS": "Damage modifiers: ",
   "COMBAT.CHAT_DMG_PARAMS_HUNTER": "[Hunter] ",
+  "COMBAT.CHAT_DMG_PARAMS_IRON_FIST": "[Iron Fist] ",
+  "COMBAT.CHAT_DMG_PARAMS_FEAT_ST": "[Feat of St] ",
   "COMBAT.CHAT_DMG_PARAMS_CUSTOM": "[Custom] ",
   "COMBAT.CHAT_DMG_PARAMS_BACKSTAB": "[Backstab] ",
   "COMBAT.CHAT_DMG_PARAMS_ADVANTAGE": "[Adv.] ",
@@ -252,6 +254,8 @@
   "DIALOG.DAMAGE_IF_MODIFIER": "Iron fist damage bonus",
   "DIALOG.2ATTACKS": "Attack twice?",
   "DIALOG.3ATTACKS": "Attack three times?",
+  "DIALOG.FEAT_STRENGTH_DAMAGE": "Bonus damage from Feat of Strength",
+  "DIALOG.ROBUST_DMG": "Add damage from Robust?",
 
   "DIALOG.CASTING_ATTRIBUTE": "Casting attribute",
   "DIALOG.RESIST_ATTRIBUTE": "Opposition attribute",

@@ -226,6 +226,8 @@
   "COMBAT.CHAT_MODIFIER": "Mod: ",
   "COMBAT.CHAT_DMG_PARAMS": "Skademodifiering: ",
   "COMBAT.CHAT_DMG_PARAMS_HUNTER": "[Jaktinstinkt] ",
+  "COMBAT.CHAT_DMG_PARAMS_IRON_FIST": "[Iron Fist] ",
+  "COMBAT.CHAT_DMG_PARAMS_FEAT_ST": "[Feat of St] ",
   "COMBAT.CHAT_DMG_PARAMS_CUSTOM": "[Anpassad] ",
   "COMBAT.CHAT_DMG_PARAMS_BACKSTAB": "[Lönnstöt] ",
   "COMBAT.CHAT_DMG_PARAMS_ADVANTAGE": "[Övertag] ",
@@ -252,6 +254,8 @@
   "DIALOG.DAMAGE_IF_MODIFIER": "Järnnäve skadebonus",
   "DIALOG.2ATTACKS": "Två attacker?",
   "DIALOG.3ATTACKS": "Tre attacker?",
+  "DIALOG.FEAT_STRENGTH_DAMAGE": "Bonus damage from Feat of Strength",
+  "DIALOG.ROBUST_DMG": "Add damage from Robust?",
 
   "DIALOG.CASTING_ATTRIBUTE": "Karaktärsdrag för mystisk kraft",
   "DIALOG.RESIST_ATTRIBUTE": "Karaktärsdrag för motstånd",

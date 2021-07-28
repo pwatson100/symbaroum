@@ -64,8 +64,8 @@
                                 </div>
                                 <button class="item-edit ellipsis" style="width: 131px">{{item.name}}</button>
                             </div>
-                            {{#ife ../actor.type "player"}}<div class="damage">{{item.damage.pcShort}}</div>{{/ife}}
-                            {{#ife ../actor.type "monster"}}<div class="damage">{{item.damage.npc}}</div>{{/ife}}
+                            {{#ife ../actor.type "player"}}<div class="damage">{{item.damage.pcExtShort}}</div>{{/ife}}
+                            {{#ife ../actor.type "monster"}}<div class="damage">{{item.damage.npcExtended}}</div>{{/ife}}
                             <div class="quality">{{localize item.attributeLabel}}</div>
                             <div class="state">
                                 {{#if item.isActive}}
