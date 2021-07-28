@@ -908,6 +908,7 @@ async function modifierDialog(functionStuff){
         autoparamsText: game.i18n.localize("DIALOG.AUTOPARAMS") + functionStuff.autoParams + functionStuff.targetData.autoParams,
         isArmorRoll : null,
         askBackstab : askBackstab,
+        askRobustDmg : functionStuff.askRobustDmg,
         askIronFistAdept: askIronFistDmg && !ironFistDmgMaster,
         askIronFistMaster: askIronFistDmg && ironFistDmgMaster,
         featStFavour: functionStuff.featStFavour,
@@ -1003,6 +1004,9 @@ async function modifierDialog(functionStuff){
                     // Damage modifier for iron fist master 
                     if(askIronFistDmg){
                         functionStuff.dmgData.modifier += " + " + html.find("#ironfistmodifier")[0].value +game.i18n.localize("COMBAT.CHAT_DMG_PARAMS_IRON_FIST");
+                    }
+                    if(functionStuff.askRobustDmg){
+                        functionStuff.dmgData.useRobustDmg = html.find("#userobust")[0].checked;
                     }
                         //advantage situation
                     functionStuff.dmgData.hasAdvantage = html.find("#advantage")[0].checked;
@@ -1218,6 +1222,7 @@ export async function attackRoll(weapon, actor){
         askThreeAttacks: false,
         askBeastlore: false,
         askIronFistDmg: false,
+        askRobustDmg: false,
         featStFavour: false,
         ironFistDmgMaster: false,
         featStMasterDmg: false,
@@ -1243,6 +1248,7 @@ export async function attackRoll(weapon, actor){
             useBackstab: false,
             useBeastlore: false,
             beastLoreDmg: "1d4",
+            useRobustDmg: false,
             addFeatofStMasterDmg: false,
             leaderTarget: false,
             ignoreArm: false
@@ -1351,12 +1357,9 @@ export async function attackRoll(weapon, actor){
                 }
             }
         }
-        let robustLvl = 0;
         let robust = actor.items.filter(element => element.data.data.reference === "robust");
         if(robust.length > 0){
-            let powerLvl = getPowerLevel(robust[0]);
-            robustLvl = powerLvl.level;
-            functionStuff.askIronFistDmg = true;
+            functionStuff.askRobustDmg = true;
         }
         let featSt = actor.items.filter(item => item.data.data.reference === "featofstrength");
         if((featSt.length != 0) && (actor.data.data.health.toughness.value < (actor.data.data.health.toughness.max/2)) && (weapon.attribute == "strong")){

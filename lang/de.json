@@ -236,6 +236,7 @@
   "DIALOG.2ATTACKS": "Zweifach angreifen?",
   "DIALOG.3ATTACKS": "Dreifach angreifen?",
   "DIALOG.FEAT_STRENGTH_DAMAGE": "Bonus damage from Feat of Strength",
+  "DIALOG.ROBUST_DMG": "Add damage from Robust?",
 
   "DIALOG.CASTING_ATTRIBUTE": "Mystische Eigenschaft",
   "DIALOG.RESIST_ATTRIBUTE": "Gegnerische Eigenschaft",

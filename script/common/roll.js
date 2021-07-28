@@ -1,3 +1,5 @@
+import { getPowerLevel } from './item.js';
+
 export async function rollAttribute(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier, armor, weapon, advantage, damModifier) {
   let dam = "";	
 
@@ -392,6 +394,24 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
   if(dmgData.useBeastlore){
     damageModFormula += " + " + dmgData.beastLoreDmg + "[" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "]";
     damageAutoParams += " [" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "] ";
+  }
+  if(dmgData.useRobustDmg){
+    let robustLvl = 0;
+    let robust = actor.items.filter(element => element.data.data.reference === "robust");
+    if(robust.length > 0){
+        let powerLvl = getPowerLevel(robust[0]);
+        robustLvl = powerLvl.level;
+        if(robustLvl == 1){
+          damageModFormula += "+1d4["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
+        }
+        else if(robustLvl == 2){
+          damageModFormula += "+1d6["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
+        }
+        else if(robustLvl > 2){
+          damageModFormula += "+1d8["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
+        }
+        damageAutoParams += " [" + game.i18n.localize('TRAIT_LABEL.ROBUST') + "] ";
+    }
   }
   if(dmgData.leaderTarget){
     damageModFormula += " + 1d4" + game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');

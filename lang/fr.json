@@ -266,10 +266,11 @@
     "DIALOG.DAMAGE_IF_MODIFIER": "Bonus dégâts Poigne de fer",
     "DIALOG.2ATTACKS": "Deux attaques?",
     "DIALOG.3ATTACKS": "Trois attaques?",
-    "DIALOG.FEAT_STRENGTH_DAMAGE": "Dommages Epreuve de Force",
+    "DIALOG.FEAT_STRENGTH_DAMAGE": "Dégats Epreuve de Force",
     "DIALOG.IMPEDING": "Inclure malus d'armure?",
     "DIALOG.CASTING_ATTRIBUTE": "Attribut utilisé",
     "DIALOG.RESIST_ATTRIBUTE": "Attribut résisté",
+    "DIALOG.ROBUST_DMG": "Inclure bonus dégats de Robuste?",
 
     "EQUIPMENT.NAME": "Nom",
     "EQUIPMENT.COST": "Prix",

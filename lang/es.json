@@ -258,6 +258,7 @@
   "DIALOG.2ATTACKS": "¿Ataque doble?",
   "DIALOG.3ATTACKS": "¿Atacar tres veces?",
   "DIALOG.FEAT_STRENGTH_DAMAGE": "Bonus damage from Feat of Strength",
+  "DIALOG.ROBUST_DMG": "Add damage from Robust?",
 
   "DIALOG.CASTING_ATTRIBUTE": "Atributo original",
   "DIALOG.RESIST_ATTRIBUTE": "Atributo contrario",

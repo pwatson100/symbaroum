@@ -300,19 +300,16 @@ export class SymbaroumActor extends Actor {
                     }
                 }
                 if(robustLvl == 1){
-                    /* Only on first attack, not remainder */
                     sometimesOnBonusFromAbilities += " +1d4["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
                     sometimesOnBonusFromAbilitiesShort += " +1d4";
                     tooltip += game.i18n.localize("TRAIT_LABEL.ROBUST") + robustLvl.toString() + ", ";
                 }
                 else if(robustLvl == 2){
-                    /* Only on first attack, not remainder */
                     sometimesOnBonusFromAbilities += " +1d6["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
                     sometimesOnBonusFromAbilitiesShort += " +1d6";
                     tooltip += game.i18n.localize("TRAIT_LABEL.ROBUST") + robustLvl.toString() + ", ";
                 }
                 else if(robustLvl > 2){
-                    /* Only on first attack, not remainder */
                     sometimesOnBonusFromAbilities += " +1d8["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
                     sometimesOnBonusFromAbilitiesShort += " +1d8";
                     tooltip += game.i18n.localize("TRAIT_LABEL.ROBUST") + robustLvl.toString() + ", ";

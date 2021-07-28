@@ -117,6 +117,11 @@
       <label>{{localize "DIALOG.HUNTERS_INSTINCT"}}</label> <span class="lblfavour"><input type="checkbox" id="usehunter" unchecked></span>
   </div>
     {{/if}}
+    {{#if askRobustDmg}}
+    <div class="simplebox">
+      <label>{{localize "DIALOG.ROBUST_DMG"}}</label> <span class="lblfavour"><input type="checkbox" id="userobust" checked></span>
+  </div>
+    {{/if}}
     {{#if askTwoAttacks}}
     <div class="simplebox">
       <label>{{localize "DIALOG.2ATTACKS"}}</label> <span class="lblfavour"><input type="checkbox" id="do2attacks" unchecked></span>
