@@ -255,6 +255,7 @@
   "DIALOG.DAMAGE_IF_MODIFIER": "Bonus de daño por Golpe de Hierro",
   "DIALOG.2ATTACKS": "¿Ataque doble?",
   "DIALOG.3ATTACKS": "¿Atacar tres veces?",
+  "DIALOG.FEAT_STRENGTH_DAMAGE": "Bonus damage from Feat of Strength",
 
   "DIALOG.CASTING_ATTRIBUTE": "Atributo original",
   "DIALOG.RESIST_ATTRIBUTE": "Atributo contrario",

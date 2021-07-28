@@ -911,6 +911,7 @@ async function modifierDialog(functionStuff){
         askBackstab : askBackstab,
         askIronFistAdept: askIronFistDmg && !ironFistDmgMaster,
         askIronFistMaster: askIronFistDmg && ironFistDmgMaster,
+        featStMasterDmg: functionStuff.featStMasterDmg,
         askHuntersInstinct: askHuntersInstinct,
         askThreeAttacks: askThreeAttacks,
         askTwoAttacks: askTwoAttacks,
@@ -1217,6 +1218,7 @@ export async function attackRoll(weapon, actor){
         askBeastlore: false,
         askIronFistDmg: false,
         ironFistDmgMaster: false,
+        featStMasterDmg: false,
         attackFromPC: actor.hasPlayerOwner,
         autoParams: "",
         bleed: false,
@@ -1238,6 +1240,7 @@ export async function attackRoll(weapon, actor){
             useBackstab: false,
             useBeastlore: false,
             beastLoreDmg: "1d4",
+            addFeatofStMasterDmg: false,
             leaderTarget: false,
             ignoreArm: false
         }
@@ -1343,6 +1346,15 @@ export async function attackRoll(weapon, actor){
                 if(powerLvl.level > 2){
                     functionStuff.ironFistDmgMaster = true;
                 }
+            }
+        }
+        let featSt = actor.items.filter(item => item.data.data.reference === "featofstrength");
+        if((featSt.length != 0) && (actor.data.data.health.toughness.value < (actor.data.data.health.toughness.max/2)) && (weapon.attribute == "strong")){
+            let featStLvl = getPowerLevel(featSt[0]).level;
+            if(featStLvl > 1) functionStuff.favour += 1;
+            if(featStLvl > 2) {
+                functionStuff.featStMasterDmg = true;
+                functionStuff.dmgData.addFeatofStMasterDmg = true;
             }
         }
     }

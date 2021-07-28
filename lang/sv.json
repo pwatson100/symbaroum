@@ -252,6 +252,7 @@
   "DIALOG.DAMAGE_IF_MODIFIER": "Järnnäve skadebonus",
   "DIALOG.2ATTACKS": "Två attacker?",
   "DIALOG.3ATTACKS": "Tre attacker?",
+  "DIALOG.FEAT_STRENGTH_DAMAGE": "Bonus damage from Feat of Strength",
 
   "DIALOG.CASTING_ATTRIBUTE": "Karaktärsdrag för mystisk kraft",
   "DIALOG.RESIST_ATTRIBUTE": "Karaktärsdrag för motstånd",

@@ -252,6 +252,7 @@
   "DIALOG.DAMAGE_IF_MODIFIER": "Iron fist damage bonus",
   "DIALOG.2ATTACKS": "Attack twice?",
   "DIALOG.3ATTACKS": "Attack three times?",
+  "DIALOG.FEAT_STRENGTH_DAMAGE": "Bonus damage from Feat of Strength",
 
   "DIALOG.CASTING_ATTRIBUTE": "Casting attribute",
   "DIALOG.RESIST_ATTRIBUTE": "Opposition attribute",

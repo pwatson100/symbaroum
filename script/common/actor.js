@@ -109,6 +109,7 @@ export class SymbaroumActor extends Actor {
             if(data.data.attributes[aKey].temporaryMod != 0 ){data.data.attributes[aKey].msg += "<br />"+game.i18n.localize("ATTRIBUTE.MODIFIER")+"("+data.data.attributes[aKey].temporaryMod.toString()+")"};
         }
         
+        // Toughness max
         let strong = data.data.attributes.strong.total;
         let sturdy = this.data.items.filter(item => item.data.data.reference === "sturdy");
         if(sturdy.length != 0){
@@ -116,10 +117,23 @@ export class SymbaroumActor extends Actor {
             if(sturdyLvl == 1) data.data.health.toughness.max = Math.ceil(strong*(1.5));
             else data.data.health.toughness.max = strong*(sturdyLvl)
         }
-        else data.data.health.toughness.max = (strong > 10 ? strong : 10) + data.data.bonus.toughness.max;       
+        else data.data.health.toughness.max = (strong > 10 ? strong : 10) + data.data.bonus.toughness.max;
+        let featSt = this.data.items.filter(item => item.data.data.reference === "featofstrength");
+        if(featSt.length != 0){
+            let featStLvl = getPowerLevel(featSt[0]).level;
+            if(featStLvl > 0) data.data.health.toughness.max += 5;
+        }
+
         data.data.health.toughness.threshold = Math.ceil(strong / 2) + data.data.bonus.toughness.threshold;
         
-        let resolute = data.data.attributes.resolute.total;        
+        // Corruption Max
+        let resolute = data.data.attributes.resolute.total;
+        
+        let strongGift = this.data.items.filter(item => item.data.data.reference === "stronggift");
+        if(strongGift.length != 0){
+            let strongGiftLvl = getPowerLevel(strongGift[0]).level;
+            if(strongGift > 1) resolute = resolute*2;
+        }
         data.data.health.corruption.threshold = Math.ceil(resolute / 2) + data.data.bonus.corruption.threshold;
         data.data.health.corruption.max = resolute + data.data.bonus.corruption.max;
         

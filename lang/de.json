@@ -233,6 +233,7 @@
   "DIALOG.DAMAGE_IF_MODIFIER": "Eisenfaust Schadensbonus",
   "DIALOG.2ATTACKS": "Zweifach angreifen?",
   "DIALOG.3ATTACKS": "Dreifach angreifen?",
+  "DIALOG.FEAT_STRENGTH_DAMAGE": "Bonus damage from Feat of Strength",
 
   "DIALOG.CASTING_ATTRIBUTE": "Mystische Eigenschaft",
   "DIALOG.RESIST_ATTRIBUTE": "Gegnerische Eigenschaft",
