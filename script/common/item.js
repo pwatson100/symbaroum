@@ -1,4 +1,5 @@
 import { upgradeDice, baseRoll, damageRollWithDiceParams, simpleDamageRoll, getAttributeValue, createModifyTokenChatButton } from './roll.js';
+import { modifyEffectOnToken } from './hooks.js';
 
 export class SymbaroumItem extends Item {
     static async create(data, options) {
@@ -1562,7 +1563,7 @@ async function attackResult(rollData, functionStuff){
                         effectDuration: NewPoisonRounds
                     })
                 
-                    templateData.poisonChatResult = game.i18n.localize('COMBAT.CHAT_POISON_EXTEND');
+                    templateData.poisonChatResult = game.i18n.localize('COMBAT.CHAT_POISON_EXTEND') + NewPoisonRounds.toString();
                 }
                 else{
                     templateData.poisonChatResult = game.i18n.localize('COMBAT.CHAT_POISON_NOTEXTEND');
@@ -1774,13 +1775,9 @@ async function standardPowerResult(rollData, functionStuff){
             });
         }
     }
-    if(hasSucceed && (functionStuff.addCasterEffect.length >0)){ 
-        for(let effect of functionStuff.addCasterEffect){   
-            flagDataArray.push({
-                tokenId: functionStuff.token.id,
-                addEffect: effect,
-                effectDuration: 1
-            });
+    if(hasSucceed && (functionStuff.addCasterEffect.length >0)){
+        for(let effect of functionStuff.addCasterEffect){
+            modifyEffectOnToken(functionStuff.token, effect, 1, 1);
         }
     }
     if(hasSucceed && (functionStuff.removeTargetEffect.length >0)){
@@ -1797,11 +1794,8 @@ async function standardPowerResult(rollData, functionStuff){
     if(hasSucceed && (functionStuff.removeCasterEffect.length >0)){ 
         for(let effect of functionStuff.removeCasterEffect){
             let effectPresent = getEffect(functionStuff.token, effect);
-            if(effectPresent){ 
-                flagDataArray.push({
-                    tokenId: functionStuff.token.id,
-                    removeEffect: effect
-                });
+            if(effectPresent){
+                modifyEffectOnToken(functionStuff.token, effect, 0, 1);
             }
         }
     }
