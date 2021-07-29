@@ -149,6 +149,7 @@ Hooks.once('init', () => {
     default: false,
     config: true,
   });
+});
 
 Hooks.once('ready', () => {
   migrateWorld();
@@ -217,39 +218,13 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
             if (flagData.effectDuration) {
               duration = flagData.effectDuration;
             }
-            if (statusCounterMod) {
-              let alreadyHereEffect = await EffectCounter.findCounter(token, flagData.addEffect);
-              if (alreadyHereEffect == undefined) {
-                if (flagData.effectStuff) {
-                  let statusEffect = new EffectCounter(flagData.effectStuff, flagData.addEffect, token, false);
-                  await statusEffect.update();
-                } else {
-                  let statusEffect = new EffectCounter(duration, flagData.addEffect, token, false);
-                  await statusEffect.update();
-                }
-              }
-            } else {
-              token.toggleEffect(flagData.addEffect);
-            }
+            modifyEffectOnToken(token, flagData.addEffect, 1, duration, flagData.effectStuff);
           }
           if (flagData.removeEffect) {
-            if (statusCounterMod) {
-              let statusEffectCounter = await EffectCounter.findCounter(token, flagData.removeEffect);
-              if (statusEffectCounter != undefined) {
-                await statusEffectCounter.remove();
-              }
-            } else {
-              token.toggleEffect(flagData.removeEffect);
-            }
+            modifyEffectOnToken(token, flagData.removeEffect, 0, 0);
           }
           if (flagData.modifyEffectDuration) {
-            if (statusCounterMod) {
-              let statusEffectCounter = await EffectCounter.findCounter(token, flagData.modifyEffectDuration);
-              if (statusEffectCounter != undefined) {
-                await statusEffectCounter.setValue(effectDuration);
-                await statusEffectCounter.update();
-              }
-            }
+            modifyEffectOnToken(token, flagData.modifyEffectDuration, 2, flagData.effectDuration);
           }
 
           if (flagData.toughnessChange) {
@@ -349,5 +324,59 @@ async function tidyReleaseNotes11() {
   // Delete Delete Delete
   if (old11ReleaseNotes !== undefined && old11ReleaseNotes !== null) {
     await old11ReleaseNotes.delete();
+  }
+}
+
+Hooks.on('createToken', async (token, options, userID) => {
+  console.log("Hooked");
+  console.log(token);
+  let flagBerserk = token.actor.getFlag(game.system.id, 'berserker');
+  if(flagBerserk){
+    modifyEffectOnToken(token._object,"systems/symbaroum/asset/image/berserker.svg", 1, 1);
+  }
+})
+
+/* action = 0 : remove effect
+   action = 1 : add effect
+   action = 2 : modify effect duration */
+export async function modifyEffectOnToken(token, effect, action, duration, effectStuff){
+  let statusCounterMod = false;
+  if (game.modules.get('statuscounter')?.active) {
+    statusCounterMod = true;
+  }
+  if (action == 1) { //add effect
+    if (statusCounterMod) {
+      let alreadyHereEffect = await EffectCounter.findCounter(token, effect);
+      if (alreadyHereEffect == undefined) {
+        if (effectStuff) {
+          let statusEffect = new EffectCounter(effectStuff, effect, token, false);
+          await statusEffect.update();
+        } else {
+          let statusEffect = new EffectCounter(duration, effect, token, false);
+          await statusEffect.update();
+        }
+      }
+    } else {
+      token.toggleEffect(effect);
+    }
+  }
+  else if (action == 0){ //remove effect
+    if (statusCounterMod) {
+      let statusEffectCounter = await EffectCounter.findCounter(token, effect);
+      if (statusEffectCounter != undefined) {
+        await statusEffectCounter.remove();
+      }
+    } else {
+      token.toggleEffect(effect);
+    }
+  }
+  else { //modify duration - only with Status counter mod
+    if (statusCounterMod) {
+      let statusEffectCounter = await EffectCounter.findCounter(token, effect);
+      if (statusEffectCounter != undefined) {
+        await statusEffectCounter.setValue(duration);
+        await statusEffectCounter.update();
+      }
+    }
   }
 }
