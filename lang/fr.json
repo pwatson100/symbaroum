@@ -248,7 +248,7 @@
     "DIALOG.FAVOUR_NORMAL": "Normal",
     "DIALOG.FAVOUR_FAVOUR": "Faveur", 
     "DIALOG.FAVOUR_DISFAVOUR": "Défaveur",
-    "DIALOG.DAMAGE_MODIFIER": "Mod. dégâts",
+    "DIALOG.DAMAGE_MODIFIER": "Autre mod. dégâts",
     "DIALOG.WEAPON_DAMAGE": "Dam. roll",  
     "DIALOG.CASTING": "Lancement du talent",
     "DIALOG.MAINTAINING": "Jet pour maintenir le talent",

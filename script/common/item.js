@@ -879,8 +879,15 @@ async function modifierDialog(functionStuff){
     let askThreeAttacks = functionStuff.askThreeAttacks ?? false;
     let askBeastlore = functionStuff.askBeastlore ?? false;
     let askCorruptedTarget = functionStuff.askCorruptedTarget ?? false;
+    let robustDmgValue = functionStuff.robustDmgValue ?? "";
+    let askRobustDmg = functionStuff.askRobustDmg ?? false;
+    let featStFavour = functionStuff.featStFavour ?? false;
+    let hunterBonus = functionStuff.hunterBonus ?? false;
+    let weaponDamage = "";
     let actorWeapons;
     let askImpeding = false;
+    let d8 = "(+1d8)";
+    let d4 = "(+1d4)";
     if(functionStuff?.impeding){
         askImpeding = true;
     }
@@ -891,9 +898,18 @@ async function modifierDialog(functionStuff){
             return;
         }
     }
-    if(functionStuff?.combat)
-    {
-        isWeaponRoll = true
+    if(functionStuff?.combat){
+        isWeaponRoll = true;
+        if(functionStuff?.weapon){
+            if(functionStuff.attackFromPC){
+                weaponDamage = functionStuff.weapon.damage.pc;
+            }
+            else{
+                weaponDamage = functionStuff.weapon.damage.npc;
+                d8 = " (+4)";
+                d4 = " (+2)";
+            }
+        }
     }
     let targetAttributeName = null;
     let hasTarget = functionStuff.targetData.hasTarget;
@@ -909,17 +925,21 @@ async function modifierDialog(functionStuff){
         autoparamsText: game.i18n.localize("DIALOG.AUTOPARAMS") + functionStuff.autoParams + functionStuff.targetData.autoParams,
         isArmorRoll : null,
         askBackstab : askBackstab,
-        askRobustDmg : functionStuff.askRobustDmg,
+        askRobustDmg : askRobustDmg,
+        robustDmgValue: robustDmgValue,
         ironFistAdept: ironFistDmg && !ironFistDmgMaster,
         askIronFistMaster: ironFistDmg && ironFistDmgMaster,
-        featStFavour: functionStuff.featStFavour,
+        featStFavour: featStFavour,
         askHuntersInstinct: askHuntersInstinct,
+        hunterBonus: hunterBonus,
         askThreeAttacks: askThreeAttacks,
         askTwoAttacks: askTwoAttacks,
         askBeastlore: askBeastlore,
         askImpeding: askImpeding,
         askCorruptedTarget: askCorruptedTarget,
-        weaponDamage : functionStuff.weapon !== null ? functionStuff.weapon.damage.pc:"",
+        weaponDamage : weaponDamage,
+        d8: d8,
+        d4: d4,
         choicesIF: { "0": game.i18n.localize("ABILITY_LABEL.IRON_FIST")+" 1d4", "1":game.i18n.localize("ABILITY_LABEL.IRON_FIST")+" 1d8"},
         groupNameIF:"ironFdamage",
         choices: { "0": game.i18n.localize("DIALOG.FAVOUR_NORMAL"), "-1":game.i18n.localize("DIALOG.FAVOUR_DISFAVOUR"), "1":game.i18n.localize("DIALOG.FAVOUR_FAVOUR")},
@@ -1229,6 +1249,7 @@ export async function attackRoll(weapon, actor){
         askThreeAttacks: false,
         askBeastlore: false,
         askRobustDmg: false,
+        robustDmgValue:"",
         featStFavour: false,
         ironFistDmg: false,
         ironFistDmgMaster: false,
@@ -1246,6 +1267,7 @@ export async function attackRoll(weapon, actor){
         resultFunction: attackResult,
         targetData: targetData,
         useHuntersInstinct: false,
+        hunterBonus: "",
         dmgData: {
             isRanged: false,
             hunterIDmg: false,
@@ -1298,8 +1320,12 @@ export async function attackRoll(weapon, actor){
             let hunterInstinct = actor.items.filter(item => item.data.data?.reference === "huntersinstinct");
             if(hunterInstinct.length != 0){
                 functionStuff.askHuntersInstinct = true;
+                functionStuff.hunterBonus = " (" + game.i18n.localize('DIALOG.FAVOUR_FAVOUR')
                 if(hunterInstinct[0].data.data.adept.isActive){
                     functionStuff.dmgData.hunterIDmg = true;
+                    functionStuff.hunterBonus += ", "+ game.i18n.localize('WEAPON.DAMAGE');
+                    if(functionStuff.attackFromPC) functionStuff.hunterBonus += " +1d4)";
+                    else functionStuff.hunterBonus += " +2)";
                 }
             }
         }
@@ -1365,6 +1391,15 @@ export async function attackRoll(weapon, actor){
         let robust = actor.items.filter(element => element.data.data.reference === "robust");
         if(robust.length > 0){
             functionStuff.askRobustDmg = true;
+            let powerLvl = getPowerLevel(robust[0]);
+            if(functionStuff.attackFromPC){
+                let calc = powerLvl.level*2+2;
+                functionStuff.robustDmgValue = " (+1d" + calc.toString()+")";
+            }
+            else{
+                let calc = powerLvl.level+1;
+                functionStuff.robustDmgValue = " (+"+calc.toString()+")";
+            }
         }
         let featSt = actor.items.filter(item => item.data.data.reference === "featofstrength");
         if((featSt.length != 0) && (actor.data.data.health.toughness.value < (actor.data.data.health.toughness.max/2)) && (weapon.attribute == "strong")){
