@@ -280,6 +280,11 @@ export class SymbaroumActor extends Actor {
                 bonusDamage = plus + item.data.data.bonusDamage;
                 shortBonusDamage += plus + item.data.data.bonusDamage;;
             }
+            if(tacticianLvl > 2 && item.data.data.reference != "heavy"){
+                if(this.data.data.attributes.cunning.total > this.data.data.attributes[attribute].total){
+                    attribute = "cunning";
+                }
+            }
             if(item.data.data?.isMelee){
                 if(polearmmasteryLvl > 0 && item.data.data.qualities.long){
                     let newdamage = upgradeDice(baseDamage, 1);
@@ -319,21 +324,6 @@ export class SymbaroumActor extends Actor {
                     shortBonusDamage += " +1d6";
                     tooltip += game.i18n.localize("ABILITY_LABEL.BERSERKER") + ", ";
                 }
-                if(ironFistLvl > 0){
-                    if(this.data.data.attributes.strong.total > this.data.data.attributes[attribute].total){
-                        attribute = "strong";
-                    }
-                    if(ironFistLvl == 2){
-                        sometimesOnBonusFromAbilities += " +1d4["+game.i18n.localize("ABILITY_LABEL.IRON_FIST")+"]";
-                        sometimesOnBonusFromAbilitiesShort += " +1d4";
-                        tooltip += game.i18n.localize("ABILITY_LABEL.IRON_FIST") + ", ";
-                    }
-                    else if(ironFistLvl > 2){
-                        sometimesOnBonusFromAbilities += " +1d8["+game.i18n.localize("ABILITY_LABEL.IRON_FIST")+"]";
-                        sometimesOnBonusFromAbilitiesShort += " +1d8";
-                        tooltip += game.i18n.localize("ABILITY_LABEL.IRON_FIST") + ", ";
-                    }
-                }
                 if(dominate.length > 0){
                     if(this.data.data.attributes.persuasive.total > this.data.data.attributes[attribute].total){
                         attribute = "persuasive";
@@ -349,12 +339,32 @@ export class SymbaroumActor extends Actor {
                         attribute = "quick";
                     }
                 }
-            }
-            if(tacticianLvl > 2 && item.data.data.reference != "heavy"){
-                if(this.data.data.attributes.cunning.total > this.data.data.attributes[attribute].total){
-                    attribute = "cunning";
+                if(ironFistLvl > 0){
+                    if(this.data.data.attributes.strong.total >= this.data.data.attributes[attribute].total){
+                        attribute = "strong";
+                        let featSt = this.data.items.filter(item => item.data.data.reference === "featofstrength");
+                        if((featSt.length != 0) && (this.data.data.health.toughness.value < (this.data.data.health.toughness.max/2))){
+                            let featStLvl = getPowerLevel(featSt[0]).level;
+                            if(featStLvl > 2) {
+                                bonusDamage += " +1d4["+game.i18n.localize("ABILITY_LABEL.FEAT_STRENGTH")+"]";
+                                shortBonusDamage += " +1d4";
+                                tooltip += game.i18n.localize("ABILITY_LABEL.FEAT_STRENGTH") + ", ";
+                            }
+                        }
+                    }
+                    if(ironFistLvl == 2){
+                        sometimesOnBonusFromAbilities += " +1d4["+game.i18n.localize("ABILITY_LABEL.IRON_FIST")+"]";
+                        sometimesOnBonusFromAbilitiesShort += " +1d4";
+                        tooltip += game.i18n.localize("ABILITY_LABEL.IRON_FIST") + ", ";
+                    }
+                    else if(ironFistLvl > 2){
+                        sometimesOnBonusFromAbilities += " +1d8["+game.i18n.localize("ABILITY_LABEL.IRON_FIST")+"]";
+                        sometimesOnBonusFromAbilitiesShort += " +1d8";
+                        tooltip += game.i18n.localize("ABILITY_LABEL.IRON_FIST") + ", ";
+                    }
                 }
             }
+
             
             if(item.data.data?.isDistance){
                 if(sixthsense.length > 0){
