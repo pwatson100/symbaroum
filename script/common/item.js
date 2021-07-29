@@ -873,7 +873,7 @@ async function modifierDialog(functionStuff){
     let isWeaponRoll = false;
     let askBackstab = functionStuff.askBackstab ?? false;
     let askHuntersInstinct = functionStuff.askHuntersInstinct ?? false;
-    let askIronFistDmg = functionStuff.askIronFistDmg ?? false;
+    let ironFistDmg = functionStuff.ironFistDmg ?? false;
     let ironFistDmgMaster = functionStuff.ironFistDmgMaster ?? false;
     let askTwoAttacks = functionStuff.askTwoAttacks ?? false;
     let askThreeAttacks = functionStuff.askThreeAttacks ?? false;
@@ -910,20 +910,21 @@ async function modifierDialog(functionStuff){
         isArmorRoll : null,
         askBackstab : askBackstab,
         askRobustDmg : functionStuff.askRobustDmg,
-        askIronFistAdept: askIronFistDmg && !ironFistDmgMaster,
-        askIronFistMaster: askIronFistDmg && ironFistDmgMaster,
+        ironFistAdept: ironFistDmg && !ironFistDmgMaster,
+        askIronFistMaster: ironFistDmg && ironFistDmgMaster,
         featStFavour: functionStuff.featStFavour,
-        featStMasterDmg: functionStuff.featStMasterDmg,
-        flagBerserk: functionStuff.flagBerserk,
         askHuntersInstinct: askHuntersInstinct,
         askThreeAttacks: askThreeAttacks,
         askTwoAttacks: askTwoAttacks,
         askBeastlore: askBeastlore,
         askImpeding: askImpeding,
         askCorruptedTarget: askCorruptedTarget,
+        weaponDamage : functionStuff.weapon !== null ? functionStuff.weapon.damage.pc:"",
+        choicesIF: { "0": game.i18n.localize("ABILITY_LABEL.IRON_FIST")+" 1d4", "1":game.i18n.localize("ABILITY_LABEL.IRON_FIST")+" 1d8"},
+        groupNameIF:"ironFdamage",
         choices: { "0": game.i18n.localize("DIALOG.FAVOUR_NORMAL"), "-1":game.i18n.localize("DIALOG.FAVOUR_DISFAVOUR"), "1":game.i18n.localize("DIALOG.FAVOUR_FAVOUR")},
         groupName:"favour",
-        defaultFavour: 0,
+        defaultFavour: "0",
         defaultModifier: functionStuff.modifier,
         defaultAdvantage: "",
         defaultDamModifier: "",
@@ -1003,8 +1004,13 @@ async function modifierDialog(functionStuff){
                         functionStuff.dmgData.modifier += " + " + damModifier;
                     }
                     // Damage modifier for iron fist master 
-                    if(askIronFistDmg){
-                        functionStuff.dmgData.modifier += " + " + html.find("#ironfistmodifier")[0].value +game.i18n.localize("COMBAT.CHAT_DMG_PARAMS_IRON_FIST");
+                    if(ironFistDmgMaster){
+                        let ifResult = html.find("input[name='ironFdamage']");
+                        let ifvalue = 0;
+                        for ( let f of ifResult) {						
+                            if( f.checked ) ifvalue = parseInt(f.value, 10);
+                        }		
+                        functionStuff.ironFistDmgMaster = ifvalue;
                     }
                     if(functionStuff.askRobustDmg){
                         functionStuff.dmgData.useRobustDmg = html.find("#userobust")[0].checked;
@@ -1222,11 +1228,10 @@ export async function attackRoll(weapon, actor){
         askTwoAttacks: false,
         askThreeAttacks: false,
         askBeastlore: false,
-        askIronFistDmg: false,
         askRobustDmg: false,
         featStFavour: false,
+        ironFistDmg: false,
         ironFistDmgMaster: false,
-        featStMasterDmg: false,
         attackFromPC: actor.hasPlayerOwner,
         flagBerserk: false,
         autoParams: "",
@@ -1250,7 +1255,6 @@ export async function attackRoll(weapon, actor){
             useBeastlore: false,
             beastLoreDmg: "1d4",
             useRobustDmg: false,
-            addFeatofStMasterDmg: false,
             leaderTarget: false,
             ignoreArm: false
         }
@@ -1351,7 +1355,7 @@ export async function attackRoll(weapon, actor){
         if(ironFist.length > 0){
             let powerLvl = getPowerLevel(ironFist[0]);
             if(powerLvl.level > 1){
-                functionStuff.askIronFistDmg = true;
+                functionStuff.ironFistDmg = true;
                 functionStuff.autoParams += game.i18n.localize('ABILITY_LABEL.IRON_FIST') + ", ";
                 if(powerLvl.level > 2){
                     functionStuff.ironFistDmgMaster = true;
@@ -1368,10 +1372,6 @@ export async function attackRoll(weapon, actor){
             if(featStLvl > 1) {
                 functionStuff.featStFavour = true;
                 functionStuff.favour += 1;
-            }
-            if(featStLvl > 2) {
-                functionStuff.featStMasterDmg = true;
-                functionStuff.dmgData.addFeatofStMasterDmg = true;
             }
         }
         functionStuff.flagBerserk = actor.getFlag(game.system.id, 'berserker');
@@ -1415,7 +1415,7 @@ async function attackResult(rollData, functionStuff){
     let damageFinalText = "";
     let damageRollMod = "";
     let hasDmgMod = "false";
-    let i = 0;
+    let attackNumber = 0;
     let mysticalWeapon = functionStuff.weapon.qualities.mystical;
 
     for(let rollDataElement of rollData){
@@ -1425,7 +1425,7 @@ async function attackResult(rollData, functionStuff){
             rollDataElement.resultText = functionStuff.token.data.name + game.i18n.localize('COMBAT.CHAT_SUCCESS') + functionStuff.targetData.token.data.name;
             hasDamage = true;
             rollDataElement.hasDamage = true;
-            damage = await damageRollWithDiceParams(functionStuff.attackFromPC, functionStuff.actor, functionStuff.weapon, functionStuff.dmgData, functionStuff.targetData, rollDataElement.critSuccess);
+            damage = await damageRollWithDiceParams(functionStuff, rollDataElement.critSuccess, attackNumber);
             if(damage.roll.total > functionStuff.targetData.actor.data.data.health.toughness.threshold){pain = true}
             rollDataElement.dmgFormula = game.i18n.localize('WEAPON.DAMAGE') + ": " + damage.roll._formula;
             rollDataElement.damageTooltip = new Handlebars.SafeString(await damage.roll.getTooltip());
@@ -1440,6 +1440,7 @@ async function attackResult(rollData, functionStuff){
         else{
             rollDataElement.resultText = functionStuff.token.data.name + game.i18n.localize('COMBAT.CHAT_FAILURE');
         }
+        attackNumber =+ 1;
     }
     if(damageTot <= 0){
         damageTot = 0;
@@ -3770,7 +3771,7 @@ async function strangler(ability, actor){
     let isWeaponRoll = false;
     let askBackstab = false;
     let askHuntersInstinct = false;
-    let askIronFistDmg = false;
+    let ironFistDmg = false;
     let askTwoAttacks = false;
     let askThreeAttacks = false;
     let checkMaintain = true;
@@ -3791,7 +3792,7 @@ async function strangler(ability, actor){
         autoparamsText: game.i18n.localize("DIALOG.AUTOPARAMS") + targetData.autoParams,
         isArmorRoll : null,
         askBackstab : askBackstab,
-        askIronFistDmg: askIronFistDmg,
+        ironFistDmg: ironFistDmg,
         askHuntersInstinct: askHuntersInstinct,
         askThreeAttacks: askThreeAttacks,
         askTwoAttacks: askTwoAttacks,

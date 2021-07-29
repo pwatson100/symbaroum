@@ -45,8 +45,8 @@
       <label>{{localize "DIALOG.MODIFIER"}}</label>
       <input id="bonus" type="number" value="{{defaultModifier}}" data-dtype="Number"/>
   </div>
-    <div class="favour">
-      <label class="lblfavour">{{radioBoxes groupName choices checked=defaultFavour localize=true}}</label>
+  <div class="favour">
+    <label class="lblfavour">{{radioBoxes groupName choices checked=defaultFavour localize=true}}</label>
   </div>
   {{#if askImpeding}}
   <div class="simplebox">
@@ -68,14 +68,17 @@
     <div class="damagemodifier">
 		<label>{{localize "DIALOG.DAMAGE_MODIFIER"}}</label><input id="dammodifier" value="{{defaultDamModifier}}" type="text" data-dtype="Text"/>
     </div>
-    {{#if askIronFistAdept}}
     <div class="damagemodifier">
-      <label>{{localize "DIALOG.DAMAGE_IF_MODIFIER"}}</label> <input id="ironfistmodifier" value="1d4" type="text" data-dtype="Text"/> 
+      <label for="weapondamage">{{localize "DIALOG.WEAPON_DAMAGE"}}</label> <div class="weapondamage"><span id="weapondamage">{{weaponDamage}}</span></div>
+    </div>
+    {{#if ironFistAdept}}
+    <div class="damagemodifier">
+      <label for="weapondamage">{{localize "DIALOG.DAMAGE_IF_MODIFIER"}}</label> <div class="weapondamage"><span id="weapondamage">1d4</span></div>
     </div>
     {{/if}}
     {{#if askIronFistMaster}}
-    <div class="damagemodifier">
-      <label>{{localize "DIALOG.DAMAGE_IF_MODIFIER"}}</label> <input id="ironfistmodifier" value="1d8" type="text" data-dtype="Text"/> 
+    <div class="favour">
+      <label class="lblfavour">{{radioBoxes groupNameIF choicesIF checked="1" localize=true}}</label>
     </div>
     {{/if}}
     {{#if featStFavour}}
@@ -83,15 +86,10 @@
       <label for="weapondamage">{{localize "ABILITY_LABEL.FEAT_STRENGTH"}}</label> <div class="weapondamage"><span id="weapondamage">{{localize "DIALOG.FAVOUR_FAVOUR"}}</span></div>
     </div>
     {{/if}}
-    {{#if featStMasterDmg}}
-    <div class="damagemodifier">
-      <label for="weapondamage">{{localize "DIALOG.FEAT_STRENGTH_DAMAGE"}}</label> <div class="weapondamage"><span id="weapondamage">1d4</span></div>
-    </div>
-    {{/if}}
-    {{#if flagBerserk}}
-    <div class="damagemodifier">
-      <label for="weapondamage">{{localize "ABILITY_LABEL.BERSERKER"}}</label> <div class="weapondamage"><span id="weapondamage">1d6</span></div>
-    </div>
+    {{#if askRobustDmg}}
+    <div class="simplebox">
+      <label>{{localize "DIALOG.ROBUST_DMG"}}</label> <span class="lblfavour"><input type="checkbox" id="userobust" checked></span>
+  </div>
     {{/if}}
     <div class="bonus">
       <label>{{localize "DIALOG.USE_POISON"}}</label>
@@ -115,11 +113,6 @@
     {{#if askHuntersInstinct}}
     <div class="simplebox">
       <label>{{localize "DIALOG.HUNTERS_INSTINCT"}}</label> <span class="lblfavour"><input type="checkbox" id="usehunter" unchecked></span>
-  </div>
-    {{/if}}
-    {{#if askRobustDmg}}
-    <div class="simplebox">
-      <label>{{localize "DIALOG.ROBUST_DMG"}}</label> <span class="lblfavour"><input type="checkbox" id="userobust" checked></span>
   </div>
     {{/if}}
     {{#if askTwoAttacks}}

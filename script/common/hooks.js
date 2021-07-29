@@ -328,8 +328,6 @@ async function tidyReleaseNotes11() {
 }
 
 Hooks.on('createToken', async (token, options, userID) => {
-  console.log("Hooked");
-  console.log(token);
   let flagBerserk = token.actor.getFlag(game.system.id, 'berserker');
   if(flagBerserk){
     modifyEffectOnToken(token._object,"systems/symbaroum/asset/image/berserker.svg", 1, 1);
