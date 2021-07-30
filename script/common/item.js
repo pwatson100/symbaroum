@@ -661,6 +661,8 @@ async function buildFunctionStuffDefault(ability, actor) {
         askTargetAttribute: false,
         askCastingAttribute: false,
         attackFromPC: actor.hasPlayerOwner,
+        askBeastlore: false,
+        beastLoreMaster: false,
         autoParams: "",
         combat: false,
         favour: 0,
@@ -886,8 +888,9 @@ async function modifierDialog(functionStuff){
     let weaponDamage = "";
     let actorWeapons;
     let askImpeding = false;
-    let d8 = "(+1d8)";
-    let d4 = "(+1d4)";
+    let d8="(+1d8)";
+    let d6="(+1d6)";
+    let d4="(+1d4)";
     if(functionStuff?.impeding){
         askImpeding = true;
     }
@@ -906,11 +909,14 @@ async function modifierDialog(functionStuff){
             }
             else{
                 weaponDamage = functionStuff.weapon.damage.npc;
-                d8 = " (+4)";
-                d4 = " (+2)";
+                d8=" (+4)";
+                d6=" (+3)";
+                d4=" (+2)";
             }
         }
     }
+    let beastLoreDmg=d4;
+    if(functionStuff?.beastLoreMaster) beastLoreDmg=d6;
     let targetAttributeName = null;
     let hasTarget = functionStuff.targetData.hasTarget;
     if(functionStuff.targetData.resistAttributeName){
@@ -935,6 +941,7 @@ async function modifierDialog(functionStuff){
         askThreeAttacks: askThreeAttacks,
         askTwoAttacks: askTwoAttacks,
         askBeastlore: askBeastlore,
+        beastLoreDmg: beastLoreDmg,
         askImpeding: askImpeding,
         askCorruptedTarget: askCorruptedTarget,
         weaponDamage : weaponDamage,
@@ -1248,6 +1255,7 @@ export async function attackRoll(weapon, actor){
         askTwoAttacks: false,
         askThreeAttacks: false,
         askBeastlore: false,
+        beastLoreMaster: false,
         askRobustDmg: false,
         robustDmgValue:"",
         featStFavour: false,
@@ -1275,7 +1283,6 @@ export async function attackRoll(weapon, actor){
             hasAdvantage: false,
             useBackstab: false,
             useBeastlore: false,
-            beastLoreDmg: "1d4",
             useRobustDmg: false,
             leaderTarget: false,
             ignoreArm: false
@@ -1425,7 +1432,7 @@ export async function attackRoll(weapon, actor){
             functionStuff.askBeastlore = true;
         }
         if(beastLoreLvl > 2){
-            functionStuff.dmgData.beastLoreDmg = "1d6";
+            functionStuff.beastLoreMaster = true;
         }
     }
     // check for leader adept ability effect on target

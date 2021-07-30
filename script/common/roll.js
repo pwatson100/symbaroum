@@ -394,7 +394,8 @@ export async function damageRollWithDiceParams(functionStuff, critSuccess, attac
     }
   }
   if(dmgData.useBeastlore){
-    damageModFormula += " + " + dmgData.beastLoreDmg + "[" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "]";
+    if(functionStuff.beastLoreMaster) damageModFormula += " + 1d6[" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "]";
+    else damageModFormula += " + 1d4[" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "]";
     damageAutoParams += " [" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "] ";
   }
   if(dmgData.useRobustDmg && !attackNumber){
