@@ -492,7 +492,7 @@ export async function simpleDamageRoll(functionStuff, damageFormula){
   if(functionStuff.attackFromPC){
     newRollDmgString = damageFormula;
     //build roll string
-    if(!functionStuff.dmgData.ignoreArmor){
+    if(!functionStuff.dmgData.ignoreArm){
       newRollDmgString += " - " + functionStuff.targetData.actor.data.data.combat.protectionNpc.toString();
     }
   }
@@ -503,7 +503,7 @@ export async function simpleDamageRoll(functionStuff, damageFormula){
 
    //build roll string
     newRollDmgString = weaponDmgValue.toString();
-    if(!functionStuff.dmgData.ignoreArmor){
+    if(!functionStuff.dmgData.ignoreArm){
       newRollDmgString += " - (" + functionStuff.targetData.actor.data.data.combat.protectionPc + ")";
     }
   }
