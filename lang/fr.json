@@ -105,6 +105,9 @@
     "ABILITY_MEDICUS.NOHERBALCURE": "sans remède",
     "ABILITY_MEDICUS.CHAT_FINAL": "Points d'endurance soignés : ",
     "ABILITY_MEDICUS.CHAT_TARGET": "Bénéficiaire : ",
+    "ABILITY_MEDICUS.NO_TARGET": "Pas de cible selectionnée, test de médicus sans soins",
+    "DIALOG.MEDICUS_EXAM": "Test de médicus sans soins",
+    "DIALOG.CUSTOM_HEALING_MODIFIER": "Jet de soins personnalisée",
 
     "ABILITY_STRANGLER.CHAT_INTRO": " tente une prise de strangulation.",
     "ABILITY_STRANGLER.CHAT_INTRO_M": " essaye de maintenir sa prise.",
@@ -221,6 +224,7 @@
     "COMBAT.CHAT_POISON_NOTEXTEND": "La victime était déjà empoisonnée.",
     "COMBAT.CHAT_POISON_SUCCESS1": " est empoisonnée. Dégats par round : ",
     "COMBAT.CHAT_POISON_SUCCESS2": ",  durée: ",
+    "COMBAT.CHAT_FLAMING_SUCCESS1": " brûle. A partir du round prochain, les dégâts sont de : ",
     "COMBAT.CHAT_MODIFIER": "Mod: ",
     "COMBAT.CHAT_DMG_PARAMS": "Modificateurs aux dégâts: ",
     "COMBAT.CHAT_DMG_PARAMS_HUNTER": "[chasseur] ",

@@ -106,6 +106,9 @@
   "ABILITY_MEDICUS.NOHERBALCURE": "No hay cura a base de hierbas",
   "ABILITY_MEDICUS.CHAT_FINAL": "Resistencia curada : ",
   "ABILITY_MEDICUS.CHAT_TARGET": "Paciente : ",
+  "ABILITY_MEDICUS.NO_TARGET": "No target, medicus roll without healing",
+  "DIALOG.MEDICUS_EXAM": "Medicus roll without healing",
+  "DIALOG.CUSTOM_HEALING_MODIFIER": "Custom healing formula",
 
   "ABILITY_STRANGLER.CHAT_INTRO": " intenta apoderarse de su objetivo.",
   "ABILITY_STRANGLER.CHAT_INTRO_M": " intenta mantener el dominio.",
@@ -226,6 +229,7 @@
   "COMBAT.CHAT_POISON_NOTEXTEND": "La víctima ya estaba envenenada.",
   "COMBAT.CHAT_POISON_SUCCESS1": " está envenenada. Daño por ronda  : ",
   "COMBAT.CHAT_POISON_SUCCESS2": ",  duración: ",
+  "COMBAT.CHAT_FLAMING_SUCCESS1": " is burning. Starting next round, damage will be : ",
   "COMBAT.CHAT_DMG_PARAMS": "Modificadores de daño: ",
   "COMBAT.CHAT_MODIFIER": "Mod: ",
   "COMBAT.CHAT_DMG_PARAMS_HUNTER": "[Inst. caz.] ",

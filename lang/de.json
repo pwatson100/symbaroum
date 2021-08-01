@@ -93,6 +93,9 @@
   "ABILITY_MEDICUS.NOHERBALCURE": "keine Kräuterarznei ",
   "ABILITY_MEDICUS.CHAT_FINAL": " Zähigkeit geheilt : ",
   "ABILITY_MEDICUS.CHAT_TARGET": "Patient : ",
+  "ABILITY_MEDICUS.NO_TARGET": "No target, medicus roll without healing",
+  "DIALOG.MEDICUS_EXAM": "Medicus roll without healing",
+  "DIALOG.CUSTOM_HEALING_MODIFIER": "Custom healing formula",
 
   "ABILITY_STRANGLER.CHAT_INTRO": " versucht sein Ziel zu ergreifen.",
   "ABILITY_STRANGLER.CHAT_INTRO_M": " versucht den Würgegriff aufrechtzuerhalten.",
@@ -204,6 +207,7 @@
   "COMBAT.CHAT_POISON_NOTEXTEND": "Das Ziel war bereits vergiftet.",
   "COMBAT.CHAT_POISON_SUCCESS1": " ist vergiftet. Schaden pro Runde : ",
   "COMBAT.CHAT_POISON_SUCCESS2": ",  dauer",
+  "COMBAT.CHAT_FLAMING_SUCCESS1": " is burning. Starting next round, damage will be : ",
   "COMBAT.CHAT_MODIFIER": "Mod: ",
   "COMBAT.CHAT_DMG_PARAMS": "Schadensmodifikator: ",
   "COMBAT.CHAT_DMG_PARAMS_HUNTER": "[Hunter's instinct] ",

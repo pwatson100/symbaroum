@@ -106,6 +106,9 @@
   "ABILITY_MEDICUS.NOHERBALCURE": "No herbal cure",
   "ABILITY_MEDICUS.CHAT_FINAL": "Toughness healed : ",
   "ABILITY_MEDICUS.CHAT_TARGET": "Patient : ",
+  "ABILITY_MEDICUS.NO_TARGET": "No target, medicus roll without healing",
+  "DIALOG.MEDICUS_EXAM": "Medicus roll without healing",
+  "DIALOG.CUSTOM_HEALING_MODIFIER": "Custom healing formula",
 
   "ABILITY_STRANGLER.CHAT_INTRO": " tries to seize its target.",
   "ABILITY_STRANGLER.CHAT_INTRO_M": " tries to maintain the stranglehold.",
@@ -223,6 +226,7 @@
   "COMBAT.CHAT_POISON_NOTEXTEND": "Victim was already poisoned.",
   "COMBAT.CHAT_POISON_SUCCESS1": " is poisoned. Damage per round : ",
   "COMBAT.CHAT_POISON_SUCCESS2": ",  duration: ",
+  "COMBAT.CHAT_FLAMING_SUCCESS1": " is burning. Starting next round, damage will be : ",
   "COMBAT.CHAT_MODIFIER": "Mod: ",
   "COMBAT.CHAT_DMG_PARAMS": "Damage modifiers: ",
   "COMBAT.CHAT_DMG_PARAMS_HUNTER": "[Hunter] ",

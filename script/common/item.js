@@ -486,7 +486,7 @@ export class SymbaroumItem extends Item {
         //{reference: "huntersinstinct", level: [1, 2, 3], function: attackRoll},
         {reference: "leader", level: [1, 2, 3], function: leaderPrepare},
         {reference: "loremaster", level: [1, 2, 3], function: loremaster},
-        {reference: "medicus", level: [1, 2, 3], function: medicus},
+        {reference: "medicus", level: [1, 2, 3], function: medicusPrepare},
         //{reference: "shieldfighter", level: [1, 2, 3], function: attackRoll},
         {reference: "recovery", level: [1, 2, 3], function: recoveryPrepare},
         {reference: "strangler", level: [1, 2, 3], function: stranglerPrepare},
@@ -918,6 +918,7 @@ async function modifierDialog(functionStuff){
     let hunterBonus = functionStuff.hunterBonus ?? false;
     let contextualDamage = functionStuff.contextualDamage ?? false;
     let leaderTarget = functionStuff.targetData.leaderTarget ?? false;
+    let medicus = functionStuff.medicus ?? false;
     let weaponDamage = "";
     let actorWeapons;
     let askImpeding = false;
@@ -992,7 +993,8 @@ async function modifierDialog(functionStuff){
         defaultDamModifier: "",
         checkMaintain: functionStuff.checkMaintain,
         askWeapon: functionStuff.askWeapon,
-        weapons : actorWeapons
+        weapons : actorWeapons,
+        medicus : medicus
     });
     let title;
     if(functionStuff.ability){title = functionStuff.ability.name}
@@ -1111,6 +1113,37 @@ async function modifierDialog(functionStuff){
                             functionStuff.dmgData.hunterIDmg = false;
                         }
                     }
+                }
+                if(medicus){
+                    if(hasTarget){
+                        functionStuff.herbalCure = html.find("#herbalcure")[0].checked;
+                        functionStuff.medicusExam = html.find("#exam")[0].checked;
+                        let customHealingFormula = html.find("#customhealing")[0].value;
+                        if(customHealingFormula.length > 0){
+                            functionStuff.healFormulaSucceed = customHealingFormula;
+                        }
+                        else if(functionStuff.herbalCure){
+                            functionStuff.subText += ", " + game.i18n.localize('ABILITY_MEDICUS.HERBALCURE');
+                            if(functionStuff.powerLvl.level == 1){
+                                functionStuff.healFormulaSucceed = "1d6"
+                            }
+                            else if(functionStuff.powerLvl.level == 2){
+                                functionStuff.healFormulaSucceed = "1d8"
+                            }
+                            else{
+                                functionStuff.healFormulaSucceed = "1d10";
+                                functionStuff.healFormulaFailed = "1d6";
+                            }
+                        }
+                        else functionStuff.subText += ", " + game.i18n.localize('ABILITY_MEDICUS.NOHERBALCURE');
+                        if(!functionStuff.medicusExam) {
+                            functionStuff.removeTargetEffect = ["icons/svg/blood.svg"];
+                            functionStuff.introText= functionStuff.actor.data.name + game.i18n.localize('ABILITY_MEDICUS.CHAT_INTRO');
+                            functionStuff.resultTextFail = game.i18n.localize('ABILITY_MEDICUS.CHAT_FAILURE');
+                            functionStuff.resultTextSuccess = functionStuff.actor.data.name + game.i18n.localize('ABILITY_MEDICUS.CHAT_SUCCESS');
+                        }
+                    }
+                    else functionStuff.medicusExam = true;
                 }
                 let rollData = [];
                 functionStuff.favour = finalFavour;
@@ -1557,6 +1590,8 @@ async function attackResult(rollData, functionStuff){
         poisonChatResult: "",
         printBleed: false,
         bleedChat: "",
+        printFlaming: false,
+        flamingChat: "",
     }
     if(functionStuff.autoParams != ""){templateData.subText += ", " + functionStuff.autoParams};
 
@@ -1650,6 +1685,23 @@ async function attackResult(rollData, functionStuff){
             tokenId: functionStuff.targetData.token.id,
             addEffect: "icons/svg/blood.svg"
         });
+    }
+    if(functionStuff.weapon.qualities.flaming && hasDamage){
+        let flamingRoundsRoll= 2;
+        let flamingRounds = 2;
+        let flamingDamage = " 2";
+        if(functionStuff.attackFromPC){
+            flamingRoundsRoll= new Roll("1d4").evaluate();
+            flamingRounds = flamingRoundsRoll.total;
+            flamingDamage = " 1d4"
+        }
+        flagDataArray.push({
+            tokenId: functionStuff.targetData.token.id,
+            addEffect: "icons/svg/fire.svg",
+            effectDuration: flamingRounds
+        });
+        templateData.printFlaming = true;
+        templateData.flamingChat = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_FLAMING_SUCCESS1') + flamingDamage  + game.i18n.localize('COMBAT.CHAT_POISON_SUCCESS2')  + flamingRounds.toString();
     }
     const html = await renderTemplate("systems/symbaroum/template/chat/combat.html", templateData);
     const chatData = {
@@ -1791,7 +1843,7 @@ async function standardPowerResult(rollData, functionStuff){
     if(functionStuff.autoParams != ""){templateData.subText += ", " + functionStuff.autoParams};
 
 /* if the power / ability have healing effects  */
-    if(functionStuff.healFormulaSucceed){
+    if(functionStuff.healFormulaSucceed && !functionStuff.medicusExam){
         let healResult;
         if(hasSucceed){
             healResult = await healing(functionStuff.healFormulaSucceed, functionStuff.healedToken); 
@@ -3735,80 +3787,37 @@ async function loremaster(ability, actor) {
     ChatMessage.create(chatData);
 }
 
-async function medicus(ability, actor) {
+async function medicusPrepare(ability, actor) {
     let fsDefault = await buildFunctionStuffDefault(ability, actor);
     let specificStuff = {
         castingAttributeName: "cunning",
         combat: false,
-        targetMandatory: true,
         checkMaintain: false,
-        herbalCure: false,
-        introText: actor.data.name + game.i18n.localize('ABILITY_MEDICUS.CHAT_INTRO'),
-        resultTextFail: game.i18n.localize('ABILITY_MEDICUS.CHAT_FAILURE'),
-        resultTextSuccess: actor.data.name + game.i18n.localize('ABILITY_MEDICUS.CHAT_SUCCESS')
+        medicus: true
     }
-    
     specificStuff.healFormulaSucceed = "1d4";
-    specificStuff.removeTargetEffect = ["icons/svg/blood.svg"]
 
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
 
     try{functionStuff.targetData = getTarget()} catch(error){
-        ui.notifications.error(error);
-        return;
     }
-    functionStuff.healedToken = functionStuff.targetData.token;
-    functionStuff.targetText = game.i18n.localize('ABILITY_MEDICUS.CHAT_TARGET') + functionStuff.targetData.token.data.name;
-
-    let hCureDialogTemplate = `
-    <h1> ${game.i18n.localize('ABILITY_MEDICUS.DIALOG')} </h1>
-    `;
-    functionStuff.subText = functionStuff.ability.name + " (" + functionStuff.powerLvl.lvlName + ")";
-    new Dialog({
-        title: game.i18n.localize('ABILITY_MEDICUS.HERBALCURE'), 
-        content: hCureDialogTemplate,
-        buttons: {
-            chooseRem: {
-                label: game.i18n.localize('ABILITY_MEDICUS.HERBALCURE'),
-                callback: (html) => {                 
-                    functionStuff.herbalCure = true;
-                    functionStuff.subText += ", " + game.i18n.localize('ABILITY_MEDICUS.HERBALCURE');
-                    if(functionStuff.powerLvl.level == 1){
-                        functionStuff.healFormulaSucceed = "1d6"
-                    }
-                    else if(functionStuff.powerLvl.level == 2){
-                        functionStuff.healFormulaSucceed = "1d8"
-                    }
-                    else{
-                        functionStuff.healFormulaSucceed = "1d10";
-                        functionStuff.healFormulaFailed = "1d6";
-                    }
-                    modifierDialog(functionStuff);
-                }
-            }, 
-
-            chooseNotRem: {
-                label: game.i18n.localize('ABILITY_MEDICUS.NOHERBALCURE'), 
-                callback: (html) => {
-                    functionStuff.subText += ", " + game.i18n.localize('ABILITY_MEDICUS.NOHERBALCURE');
-                    if(functionStuff.powerLvl.level == 1){
-                        functionStuff.healFormulaSucceed = "1d4"
-                    }
-                    else if(functionStuff.powerLvl.level == 2){
-                        functionStuff.healFormulaSucceed = "1d6"
-                    }
-                    else{
-                        functionStuff.healFormulaSucceed = "1d8";
-                        functionStuff.healFormulaFailed = "1d4";
-                    }
-                    modifierDialog(functionStuff);
-                }
-            },
-            close: {
-                label: "Close"
-            }
+    if(functionStuff.targetData.hasTarget){
+        functionStuff.healedToken = functionStuff.targetData.token;
+        functionStuff.targetText = game.i18n.localize('ABILITY_MEDICUS.CHAT_TARGET') + functionStuff.targetData.token.data.name;
+        functionStuff.subText = functionStuff.ability.name + " (" + functionStuff.powerLvl.lvlName + ")";
+        if(functionStuff.powerLvl.level == 1){
+            functionStuff.healFormulaSucceed = "1d4"
         }
-    }).render(true);
+        else if(functionStuff.powerLvl.level == 2){
+            functionStuff.healFormulaSucceed = "1d6"
+        }
+        else{
+            functionStuff.healFormulaSucceed = "1d8";
+            functionStuff.healFormulaFailed = "1d4";
+        }
+    }
+    else functionStuff.medicusExam = true;
+    modifierDialog(functionStuff);
 }
 
 async function recoveryPrepare(ability, actor) {
