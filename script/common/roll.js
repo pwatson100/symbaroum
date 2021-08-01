@@ -373,6 +373,7 @@ export async function damageRollWithDiceParams(functionStuff, critSuccess, attac
   let dmgData = functionStuff.dmgData;
   let damageModFormula = dmgData.modifier;
   if(damageModFormula != ""){
+    damageModFormula += "[" + game.i18n.localize('DIALOG.DAMAGE_MODIFIER') + "]";
     damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_CUSTOM');
   }
 
@@ -393,8 +394,8 @@ export async function damageRollWithDiceParams(functionStuff, critSuccess, attac
       damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_ADVANTAGE');
     }
   }
-  if(dmgData.useBeastlore){
-    if(functionStuff.beastLoreMaster) damageModFormula += " + 1d6[" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "]";
+  if(functionStuff.beastLoreData.useBeastlore){
+    if(functionStuff.beastLoreData.beastLoreMaster) damageModFormula += " + 1d6[" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "]";
     else damageModFormula += " + 1d4[" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "]";
     damageAutoParams += " [" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "] ";
   }
@@ -424,7 +425,7 @@ export async function damageRollWithDiceParams(functionStuff, critSuccess, attac
       damageModFormula += "+1d4["+game.i18n.localize("ABILITY_LABEL.IRON_FIST")+"]";
     }
   }
-  if(dmgData.leaderTarget){
+  if(functionStuff.targetData.leaderTarget){
     damageModFormula += " + 1d4" + game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
     damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
   }
@@ -461,7 +462,6 @@ export async function damageRollWithDiceParams(functionStuff, critSuccess, attac
       else newRollDmgString += " - 0";
     }
     // final damage
-    console.log(newRollDmgString);
     let dmgRoll= new Roll(newRollDmgString).evaluate();
 
     return{
@@ -473,15 +473,27 @@ export async function damageRollWithDiceParams(functionStuff, critSuccess, attac
 }
 
 /* like damageRollWithDiceParams, but for spell damage and such */
-export async function simpleDamageRoll(attackFromPC, actor, damageFormula, targetData, ignoreArmor){
+export async function simpleDamageRoll(functionStuff, damageFormula){
+  if(functionStuff.dmgData.modifier != ""){
+    damageFormula += functionStuff.dmgData.modifier + "[" + game.i18n.localize('DIALOG.DAMAGE_MODIFIER') + "]";
+  }
+  if(functionStuff.beastLoreData.useBeastlore){
+    if(functionStuff.beastLoreData.beastLoreMaster) damageFormula += " + 1d6[" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "]";
+    else damageFormula += " + 1d4[" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "]";
+  }
+  if(functionStuff.dmgData.hasAdvantage){
+    damageFormula += " + 1d4"+game.i18n.localize("COMBAT.CHAT_DMG_PARAMS_ADVANTAGE");
+  }
+  if(functionStuff.targetData.leaderTarget){
+    damageFormula += " + 1d4" + game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
+  }
   // If the attack is made by a PC, roll damage and substract static value for armor (=max armor/2)
   let newRollDmgString = "";
-  if(attackFromPC){
+  if(functionStuff.attackFromPC){
     newRollDmgString = damageFormula;
     //build roll string
-    if(!ignoreArmor){
-      //      newRollDmgString += " - " + targetData.actor.data.data.combat.protectionNpc + "["+targetData.actor.data.data.combat.armor+"]";
-      newRollDmgString += " - " + targetData.actor.data.data.combat.protectionNpc.toString();
+    if(!functionStuff.dmgData.ignoreArmor){
+      newRollDmgString += " - " + functionStuff.targetData.actor.data.data.combat.protectionNpc.toString();
     }
   }
   else{
@@ -491,8 +503,8 @@ export async function simpleDamageRoll(attackFromPC, actor, damageFormula, targe
 
    //build roll string
     newRollDmgString = weaponDmgValue.toString();
-    if(!ignoreArmor){
-      newRollDmgString += " - " + targetData.actor.data.data.combat.protectionPc + "["+targetData.actor.data.data.combat.armor+"]";
+    if(!functionStuff.dmgData.ignoreArmor){
+      newRollDmgString += " - (" + functionStuff.targetData.actor.data.data.combat.protectionPc + ")";
     }
   }
   // final damage
