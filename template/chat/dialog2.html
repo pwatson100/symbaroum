@@ -147,4 +147,19 @@
     </select>
   </div>
   {{/if}}
+  {{#if medicus}}
+    {{#if hasTarget}}
+      <div class="simplebox">
+        <label>{{localize "DIALOG.MEDICUS_EXAM"}}</label><span class="lblfavour"><input type="checkbox" id="exam" unchecked></span>
+      </div>
+      <div class="simplebox">
+        <label>{{localize "ABILITY_MEDICUS.HERBALCURE"}}</label><span class="lblfavour"><input type="checkbox" id="herbalcure" unchecked></span>
+      </div>
+      <div class="damagemodifier">
+        <label>{{localize "DIALOG.CUSTOM_HEALING_MODIFIER"}}</label><input id="customhealing" value="" type="text" data-dtype="Text"/>
+      </div>
+      {{else}}
+      <h4>{{localize "ABILITY_MEDICUS.NO_TARGET"}}</h4>
+    {{/if}}
+  {{/if}}
 </div>

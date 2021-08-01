@@ -105,6 +105,9 @@
     "ABILITY_MEDICUS.NOHERBALCURE": "sans remède",
     "ABILITY_MEDICUS.CHAT_FINAL": "Points d'endurance soignés : ",
     "ABILITY_MEDICUS.CHAT_TARGET": "Bénéficiaire : ",
+    "ABILITY_MEDICUS.NO_TARGET": "Pas de cible selectionnée, test de médicus sans soins",
+    "DIALOG.MEDICUS_EXAM": "Test de médicus sans soins",
+    "DIALOG.CUSTOM_HEALING_MODIFIER": "Jet de soins personnalisée",
 
     "ABILITY_STRANGLER.CHAT_INTRO": " tente une prise de strangulation.",
     "ABILITY_STRANGLER.CHAT_INTRO_M": " essaye de maintenir sa prise.",

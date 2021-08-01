@@ -93,6 +93,9 @@
   "ABILITY_MEDICUS.NOHERBALCURE": "keine Kräuterarznei ",
   "ABILITY_MEDICUS.CHAT_FINAL": " Zähigkeit geheilt : ",
   "ABILITY_MEDICUS.CHAT_TARGET": "Patient : ",
+  "ABILITY_MEDICUS.NO_TARGET": "No target, medicus roll without healing",
+  "DIALOG.MEDICUS_EXAM": "Medicus roll without healing",
+  "DIALOG.CUSTOM_HEALING_MODIFIER": "Custom healing formula",
 
   "ABILITY_STRANGLER.CHAT_INTRO": " versucht sein Ziel zu ergreifen.",
   "ABILITY_STRANGLER.CHAT_INTRO_M": " versucht den Würgegriff aufrechtzuerhalten.",

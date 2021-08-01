@@ -106,6 +106,9 @@
   "ABILITY_MEDICUS.NOHERBALCURE": "No hay cura a base de hierbas",
   "ABILITY_MEDICUS.CHAT_FINAL": "Resistencia curada : ",
   "ABILITY_MEDICUS.CHAT_TARGET": "Paciente : ",
+  "ABILITY_MEDICUS.NO_TARGET": "No target, medicus roll without healing",
+  "DIALOG.MEDICUS_EXAM": "Medicus roll without healing",
+  "DIALOG.CUSTOM_HEALING_MODIFIER": "Custom healing formula",
 
   "ABILITY_STRANGLER.CHAT_INTRO": " intenta apoderarse de su objetivo.",
   "ABILITY_STRANGLER.CHAT_INTRO_M": " intenta mantener el dominio.",
