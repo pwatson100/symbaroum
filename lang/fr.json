@@ -221,6 +221,7 @@
     "COMBAT.CHAT_POISON_NOTEXTEND": "La victime était déjà empoisonnée.",
     "COMBAT.CHAT_POISON_SUCCESS1": " est empoisonnée. Dégats par round : ",
     "COMBAT.CHAT_POISON_SUCCESS2": ",  durée: ",
+    "COMBAT.CHAT_FLAMING_SUCCESS1": " brûle. A partir du round prochain, les dégâts sont de : ",
     "COMBAT.CHAT_MODIFIER": "Mod: ",
     "COMBAT.CHAT_DMG_PARAMS": "Modificateurs aux dégâts: ",
     "COMBAT.CHAT_DMG_PARAMS_HUNTER": "[chasseur] ",

@@ -223,6 +223,7 @@
   "COMBAT.CHAT_POISON_NOTEXTEND": "Victim was already poisoned.",
   "COMBAT.CHAT_POISON_SUCCESS1": " is poisoned. Damage per round : ",
   "COMBAT.CHAT_POISON_SUCCESS2": ",  duration: ",
+  "COMBAT.CHAT_FLAMING_SUCCESS1": " is burning. Starting next round, damage will be : ",
   "COMBAT.CHAT_MODIFIER": "Mod: ",
   "COMBAT.CHAT_DMG_PARAMS": "Damage modifiers: ",
   "COMBAT.CHAT_DMG_PARAMS_HUNTER": "[Hunter] ",

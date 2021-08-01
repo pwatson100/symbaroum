@@ -1557,6 +1557,8 @@ async function attackResult(rollData, functionStuff){
         poisonChatResult: "",
         printBleed: false,
         bleedChat: "",
+        printFlaming: false,
+        flamingChat: "",
     }
     if(functionStuff.autoParams != ""){templateData.subText += ", " + functionStuff.autoParams};
 
@@ -1650,6 +1652,23 @@ async function attackResult(rollData, functionStuff){
             tokenId: functionStuff.targetData.token.id,
             addEffect: "icons/svg/blood.svg"
         });
+    }
+    if(functionStuff.weapon.qualities.flaming && hasDamage){
+        let flamingRoundsRoll= 2;
+        let flamingRounds = 2;
+        let flamingDamage = " 2";
+        if(functionStuff.attackFromPC){
+            flamingRoundsRoll= new Roll("1d4").evaluate();
+            flamingRounds = flamingRoundsRoll.total;
+            flamingDamage = " 1d4"
+        }
+        flagDataArray.push({
+            tokenId: functionStuff.targetData.token.id,
+            addEffect: "icons/svg/fire.svg",
+            effectDuration: flamingRounds
+        });
+        templateData.printFlaming = true;
+        templateData.flamingChat = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_FLAMING_SUCCESS1') + flamingDamage  + game.i18n.localize('COMBAT.CHAT_POISON_SUCCESS2')  + flamingRounds.toString();
     }
     const html = await renderTemplate("systems/symbaroum/template/chat/combat.html", templateData);
     const chatData = {

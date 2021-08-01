@@ -204,6 +204,7 @@
   "COMBAT.CHAT_POISON_NOTEXTEND": "Das Ziel war bereits vergiftet.",
   "COMBAT.CHAT_POISON_SUCCESS1": " ist vergiftet. Schaden pro Runde : ",
   "COMBAT.CHAT_POISON_SUCCESS2": ",  dauer",
+  "COMBAT.CHAT_FLAMING_SUCCESS1": " is burning. Starting next round, damage will be : ",
   "COMBAT.CHAT_MODIFIER": "Mod: ",
   "COMBAT.CHAT_DMG_PARAMS": "Schadensmodifikator: ",
   "COMBAT.CHAT_DMG_PARAMS_HUNTER": "[Hunter's instinct] ",
