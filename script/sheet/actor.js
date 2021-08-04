@@ -116,7 +116,7 @@ export class SymbaroumActorSheet extends ActorSheet {
     event.preventDefault();
     const div = $(event.currentTarget).parents('.item');
     const ability = this.actor.items.get(div.data('itemId'));
-    await ability.makeAction(this.actor);
+    if(ability.data.data?.script) ability.data.data?.script(ability, this.actor);
   }
 
   async _prepareRollWeapon(event) {

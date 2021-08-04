@@ -1,4 +1,4 @@
-import { attackRoll, getPowerLevel } from './item.js';
+import { attackRoll, getPowerLevel, markScripted } from './item.js';
 import { prepareRollAttribute } from "../common/dialog.js";
 import { upgradeDice } from './roll.js';
 
@@ -86,11 +86,9 @@ export class SymbaroumActor extends Actor {
         // for (let item of Object.values(items)) {
         for( const [key, item] of items.entries() ) {
             item.prepareData();
-            
+            if((item.data.isAbility||item.data.isPower||item.data.isTrait) && !item.data.data?.script) markScripted(item);
             if (item.data.isPower) this._computePower(this.data, item.data);
             if (item.data.isGear) this._computeGear(this.data, item.data);
-
-
         }
     }
 
@@ -808,11 +806,9 @@ export class SymbaroumActor extends Actor {
       this._addBonusData(currentBonusExperience, item, itemBonusExperience, "value");
 
     }
-    
 
-
-    async usePower(powerItem){
-       await powerItem.makeAction(this);
+    async usePower(ability){
+        if(ability.data.data?.script) ability.data.data?.script(ability, this);
     }
 
     async rollArmor() {

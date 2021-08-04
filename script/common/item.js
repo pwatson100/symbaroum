@@ -466,7 +466,7 @@ export class SymbaroumItem extends Item {
         }).render(true);
     }
     
-    async makeAction(actor, level = 1){
+    /*async makeAction(actor, level = 1){
 
         if(this.data.data.reference === ""){
             await this.affectReference();
@@ -476,44 +476,6 @@ export class SymbaroumItem extends Item {
             return;
         }
 
-        const scriptedAbilities =
-        [{reference: "alchemy", level: [1, 2, 3], function: alchemy},
-        {reference: "acrobatics", level: [1, 2, 3], function: acrobatics},
-        //{reference: "backstab", level: [1, 2, 3], function: attackRoll},
-        {reference: "beastlore", level: [1, 2, 3], function: beastlore},
-        {reference: "berserker", level: [1, 2, 3], function: berserker},
-        {reference: "dominate", level: [1, 2, 3], function: dominatePrepare},
-        //{reference: "huntersinstinct", level: [1, 2, 3], function: attackRoll},
-        {reference: "leader", level: [1, 2, 3], function: leaderPrepare},
-        {reference: "loremaster", level: [1, 2, 3], function: loremaster},
-        {reference: "medicus", level: [1, 2, 3], function: medicusPrepare},
-        //{reference: "shieldfighter", level: [1, 2, 3], function: attackRoll},
-        {reference: "recovery", level: [1, 2, 3], function: recoveryPrepare},
-        {reference: "strangler", level: [1, 2, 3], function: stranglerPrepare},
-        {reference: "witchsight", level: [1, 2, 3], function: witchsight}];
-
-        const scriptedPowers = 
-        [{reference: "anathema", level: [1, 2, 3], function: anathemaPrepare},
-        {reference: "brimstonecascade", level: [1, 2, 3], function: brimstoneCascadePrepare},
-        {reference: "bendwill", level: [1, 2, 3], function: bendWillPrepare},
-        {reference: "blackbolt", level: [1, 2, 3], function: blackBoltPrepare},
-        {reference: "blessedshield", level: [1, 2, 3], function: blessedshieldPrepare},
-        {reference: "confusion", level: [1, 2, 3], function: confusionPrepare},
-        {reference: "curse", level: [1, 2, 3], function: cursePrepare},
-        {reference: "entanglingvines", level: [1, 2, 3], function: entanglingvinesPrepare},
-        {reference: "holyaura", level: [1, 2, 3], function: holyAuraPrepare},
-        {reference: "inheritwound", level: [1, 2, 3], function: inheritWound},
-        {reference: "larvaeboils", level: [1, 2, 3], function: larvaeBoilsPrepare},
-        {reference: "layonhands", level: [1, 2, 3], function: layonhandsPrepare},
-        {reference: "levitate", level: [1, 2, 3], function: levitatePrepare},
-        {reference: "maltransformation", level: [1, 2, 3], function: maltransformationPrepare},
-        {reference: "mindthrow", level: [1, 2, 3], function: mindthrowPrepare},
-        {reference: "priosburningglass", level: [1, 2, 3], function: priosburningglassPrepare},
-        {reference: "tormentingspirits", level: [1, 2, 3], function: tormentingspiritsPrepare},
-        {reference: "unnoticeable", level: [1, 2, 3], function: unnoticeablePrepare}];
-
-        const scriptedTraits = 
-        [{reference: "regeneration", level: [1, 2, 3], function: regeneration}];
         let list;
         if(this.data.type === "ability"){
             list = scriptedAbilities;
@@ -537,9 +499,47 @@ export class SymbaroumItem extends Item {
             ui.notifications.error("Not yet implemented");
             return;
         }
-    }
+    }*/
 }
 
+export const scriptedAbilities =
+[{reference: "alchemy", level: [1, 2, 3], function: alchemy},
+{reference: "acrobatics", level: [1, 2, 3], function: acrobatics},
+//{reference: "backstab", level: [1, 2, 3], function: attackRoll},
+{reference: "beastlore", level: [1, 2, 3], function: beastlore},
+{reference: "berserker", level: [1, 2, 3], function: berserker},
+{reference: "dominate", level: [1, 2, 3], function: dominatePrepare},
+//{reference: "huntersinstinct", level: [1, 2, 3], function: attackRoll},
+{reference: "leader", level: [1, 2, 3], function: leaderPrepare},
+{reference: "loremaster", level: [1, 2, 3], function: loremaster},
+{reference: "medicus", level: [1, 2, 3], function: medicusPrepare},
+//{reference: "shieldfighter", level: [1, 2, 3], function: attackRoll},
+{reference: "recovery", level: [1, 2, 3], function: recoveryPrepare},
+{reference: "strangler", level: [1, 2, 3], function: stranglerPrepare},
+{reference: "witchsight", level: [1, 2, 3], function: witchsight}];
+
+export const scriptedPowers = 
+[{reference: "anathema", level: [1, 2, 3], function: anathemaPrepare},
+{reference: "brimstonecascade", level: [1, 2, 3], function: brimstoneCascadePrepare},
+{reference: "bendwill", level: [1, 2, 3], function: bendWillPrepare},
+{reference: "blackbolt", level: [1, 2, 3], function: blackBoltPrepare},
+{reference: "blessedshield", level: [1, 2, 3], function: blessedshieldPrepare},
+{reference: "confusion", level: [1, 2, 3], function: confusionPrepare},
+{reference: "curse", level: [1, 2, 3], function: cursePrepare},
+{reference: "entanglingvines", level: [1, 2, 3], function: entanglingvinesPrepare},
+{reference: "holyaura", level: [1, 2, 3], function: holyAuraPrepare},
+{reference: "inheritwound", level: [1, 2, 3], function: inheritWound},
+{reference: "larvaeboils", level: [1, 2, 3], function: larvaeBoilsPrepare},
+{reference: "layonhands", level: [1, 2, 3], function: layonhandsPrepare},
+{reference: "levitate", level: [1, 2, 3], function: levitatePrepare},
+{reference: "maltransformation", level: [1, 2, 3], function: maltransformationPrepare},
+{reference: "mindthrow", level: [1, 2, 3], function: mindthrowPrepare},
+{reference: "priosburningglass", level: [1, 2, 3], function: priosburningglassPrepare},
+{reference: "tormentingspirits", level: [1, 2, 3], function: tormentingspiritsPrepare},
+{reference: "unnoticeable", level: [1, 2, 3], function: unnoticeablePrepare}];
+
+export const scriptedTraits = 
+[{reference: "regeneration", level: [1, 2, 3], function: regeneration}];
 
 const weaponReferences = [
     "1handed",
@@ -574,6 +574,27 @@ const weaponReferences = [
             return(game.i18n.localize('GEAR.OTHER'));
     }
     return(game.i18n.localize('GEAR.OTHER'));
+}
+
+export function markScripted(item){
+    if(item.data.data.reference){
+        let list;
+        if(item.data.type === "ability"){
+            list = scriptedAbilities;
+        }
+        else if(item.data.type === "mysticalPower"){
+            list = scriptedPowers;
+        }
+        else if(item.data.type === "trait"){
+            list = scriptedTraits;
+        }
+        const ability = list.find(element => (element.reference === item.data.data.reference));
+        if(ability){
+            item.data.data.script = ability.function;
+        }
+        else item.data.data.script = undefined;
+    }
+    else item.data.data.script = undefined;
 }
 
 /*get the target token, its actor, and evaluate which attribute this actor will use for opposition
