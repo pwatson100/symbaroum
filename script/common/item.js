@@ -591,10 +591,17 @@ export function markScripted(item){
         const ability = list.find(element => (element.reference === item.data.data.reference));
         if(ability){
             item.data.data.script = ability.function;
+            item.data.data.hasScript = true;
         }
-        else item.data.data.script = undefined;
+        else {
+            item.data.data.script = undefined;
+            item.data.data.hasScript = false;
+        }
     }
-    else item.data.data.script = undefined;
+    else{
+        item.data.data.script = undefined;
+        item.data.data.hasScript = false;
+    }
 }
 
 /*get the target token, its actor, and evaluate which attribute this actor will use for opposition
