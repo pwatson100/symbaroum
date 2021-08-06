@@ -386,6 +386,7 @@ export class SymbaroumItem extends Item {
              {label: game.i18n.localize('TRAIT_LABEL.DEVOUR'), value: "devour"},
              {label: game.i18n.localize('TRAIT_LABEL.DIMINUTIVE'), value: "diminutive"},
              {label: game.i18n.localize('TRAIT_LABEL.ENTHRALL'), value: "enthrall"},
+             {label: game.i18n.localize('TRAIT_LABEL.EARTHBOUND'), value: "earthbound"},
              {label: game.i18n.localize('TRAIT_LABEL.FREESPIRIT'), value: "freespirit"},
              {label: game.i18n.localize('TRAIT_LABEL.GRAPPLINGTONGUE'), value: "grapplingtongue"},
              {label: game.i18n.localize('TRAIT_LABEL.GRAVELYCOLD'), value: "gravelycold"},
@@ -412,6 +413,7 @@ export class SymbaroumItem extends Item {
              {label: game.i18n.localize('TRAIT_LABEL.REGENERATION'), value: "regeneration"},
              {label: game.i18n.localize('TRAIT_LABEL.ROBUST'), value: "robust"},
              {label: game.i18n.localize('TRAIT_LABEL.ROOTWALL'), value: "rootwall"},
+             {label: game.i18n.localize('TRAIT_LABEL.SHAPESHIFTER'), value: "shapeshifter"},
              {label: game.i18n.localize('TRAIT_LABEL.SPIRITFORM'), value: "spiritform"},
              {label: game.i18n.localize('TRAIT_LABEL.STURDY'), value: "sturdy"},
              {label: game.i18n.localize('TRAIT_LABEL.SUMMONER'), value: "summoner"},
@@ -423,6 +425,7 @@ export class SymbaroumItem extends Item {
              {label: game.i18n.localize('TRAIT_LABEL.UNDEAD'), value: "undead"},
              {label: game.i18n.localize('TRAIT_LABEL.WEB'), value: "web"},
              {label: game.i18n.localize('TRAIT_LABEL.WINGS'), value: "wings"},
+             {label: game.i18n.localize('TRAIT_LABEL.WISDOM_AGES'), value: "wisdomages"},
              {label: game.i18n.localize('TRAIT_LABEL.WRECKER'), value: "wrecker"}  
         ];
         let list;
@@ -503,16 +506,19 @@ export class SymbaroumItem extends Item {
 }
 
 export const scriptedAbilities =
-[{reference: "alchemy", level: [1, 2, 3], function: alchemy},
-{reference: "acrobatics", level: [1, 2, 3], function: acrobatics},
+[{reference: "alchemy", level: [1, 2, 3], function: simpleRollAbility},
+{reference: "acrobatics", level: [1, 2, 3], function: simpleRollAbility},
+{reference: "artifactcrafting", level: [1, 2, 3], function: simpleRollAbility},
 //{reference: "backstab", level: [1, 2, 3], function: attackRoll},
-{reference: "beastlore", level: [1, 2, 3], function: beastlore},
+{reference: "beastlore", level: [1, 2, 3], function: simpleRollAbility},
 {reference: "berserker", level: [1, 2, 3], function: berserker},
+{reference: "blacksmith", level: [1, 2, 3], function: simpleRollAbility},
 {reference: "dominate", level: [1, 2, 3], function: dominatePrepare},
 //{reference: "huntersinstinct", level: [1, 2, 3], function: attackRoll},
 {reference: "leader", level: [1, 2, 3], function: leaderPrepare},
-{reference: "loremaster", level: [1, 2, 3], function: loremaster},
+{reference: "loremaster", level: [1, 2, 3], function: simpleRollAbility},
 {reference: "medicus", level: [1, 2, 3], function: medicusPrepare},
+{reference: "quickdraw", level: [1, 2, 3], function: simpleRollAbility},
 //{reference: "shieldfighter", level: [1, 2, 3], function: attackRoll},
 {reference: "recovery", level: [1, 2, 3], function: recoveryPrepare},
 {reference: "strangler", level: [1, 2, 3], function: stranglerPrepare},
@@ -539,7 +545,9 @@ export const scriptedPowers =
 {reference: "unnoticeable", level: [1, 2, 3], function: unnoticeablePrepare}];
 
 export const scriptedTraits = 
-[{reference: "regeneration", level: [1, 2, 3], function: regeneration}];
+[{reference: "regeneration", level: [1, 2, 3], function: regeneration},
+{reference: "shapeshifter", level: [1, 2, 3], function: simpleRollAbility},
+{reference: "wisdomages", level: [1, 2, 3], function: simpleRollAbility}];
 
 const weaponReferences = [
     "1handed",
@@ -3667,33 +3675,32 @@ async function unnoticeablePrepare(ability, actor) {
 
 // ********************************************* ABILITIES *****************************************************
 
-async function acrobatics(ability, actor) {
-    let fsDefault = await buildFunctionStuffDefault(ability, actor);
-let specificStuff = {
-    castingAttributeName: "quick",
-    combat: false,
-    modifier: actor.data.data.combat.impeding*-1
-}
-let functionStuff = Object.assign({}, fsDefault , specificStuff);
-await standardAbilityActivation(functionStuff)
-}
-
-async function alchemy(ability, actor) {
-    let fsDefault = await buildFunctionStuffDefault(ability, actor);
+async function simpleRollAbility(ability, actor) {
     let specificStuff = {
-        castingAttributeName: "cunning",
-        combat: false
+        castingAttributeName: "cunning"
     }
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    await standardAbilityActivation(functionStuff)
-}
-
-async function beastlore(ability, actor) {
+    switch (ability.data.data.reference){
+        case "acrobatics":
+            specificStuff.castingAttributeName = "quick";
+            specificStuff.impeding = actor.data.data.combat.impeding;
+        break;
+        case "loremaster":
+            specificStuff.introText = actor.data.name + game.i18n.localize('ABILITY_LOREMASTER.CHAT_INTRO');
+            specificStuff.resultTextSuccess = actor.data.name + game.i18n.localize('ABILITY_LOREMASTER.CHAT_SUCCESS');
+            specificStuff.resultTextFail = actor.data.name + game.i18n.localize('ABILITY_LOREMASTER.CHAT_FAILURE');
+        break;
+        case "quickdraw":
+            specificStuff.castingAttributeName = "quick";
+            specificStuff.impeding = actor.data.data.combat.impeding;
+        break;
+        case "shapeshifter":
+            specificStuff.castingAttributeName = "resolute";
+        break;
+        case "wisdomages":
+            specificStuff.castingAttributeName = "resolute";
+        break;
+    }
     let fsDefault = await buildFunctionStuffDefault(ability, actor);
-    let specificStuff = {
-        castingAttributeName: "cunning",
-        combat: false
-    }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
     await standardAbilityActivation(functionStuff)
 }
@@ -3781,38 +3788,6 @@ async function leaderPrepare(ability, actor) {
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
     await standardPowerResult(null, functionStuff)
-}
-
-async function loremaster(ability, actor) {
-    
-    let targetData = {hasTarget : false, leaderTarget: false};
-    let powerLvl = getPowerLevel(ability);
-    const attribute = actor.data.data.attributes["cunning"];
-    let rollData = [];
-    rollData.push(await baseRoll(actor, "cunning", null, null, 0, 0));
-
-    let templateData = {
-        targetData : targetData,
-        hasTarget : targetData.hasTarget,
-        introText: actor.data.name + game.i18n.localize('ABILITY_LOREMASTER.CHAT_INTRO'),
-        introImg: actor.data.img,
-        targetText: "",
-        subText: ability.name + ", " + powerLvl.lvlName,
-        subImg: ability.img,
-        hasRoll: true,
-        rollString: `${game.i18n.localize(attribute.label)} : (${rollData[0].actingAttributeValue})`,
-        rollResult : formatRollResult(rollData),
-        resultText: actor.data.name + game.i18n.localize('ABILITY_LOREMASTER.CHAT_SUCCESS'),
-        finalText: ""
-    }; 
-    if(!rollData[0].hasSucceed){templateData.resultText = actor.data.name + game.i18n.localize('ABILITY_LOREMASTER.CHAT_FAILURE')};
-
-    const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
-    const chatData = {
-        user: game.user.id,
-        content: html
-    }
-    ChatMessage.create(chatData);
 }
 
 async function medicusPrepare(ability, actor) {
