@@ -575,6 +575,7 @@
     "TRAIT_LABEL.DEATHSTRUGGLE": "Agonie meurtrière",
     "TRAIT_LABEL.DEVOUR": "Dévoreur",
     "TRAIT_LABEL.DIMINUTIVE": "Minuscule",
+    "TRAIT_LABEL.EARTHBOUND": "Lien terrestre",
     "TRAIT_LABEL.ENTHRALL": "Possession",
     "TRAIT_LABEL.FREESPIRIT": "Esprit libre",
     "TRAIT_LABEL.GRAPPLINGTONGUE": "Langue agrippante",
@@ -602,6 +603,7 @@
     "TRAIT_LABEL.REGENERATION": "Régénération",
     "TRAIT_LABEL.ROBUST": "Robuste",
     "TRAIT_LABEL.ROOTWALL": "Mur de racines",
+    "POWER_LABEL.SHAPESHIFTER":"Métamorphe",
     "TRAIT_LABEL.SPIRITFORM": "Forme éthérée",
     "TRAIT_LABEL.STURDY": "Énergique",
     "TRAIT_LABEL.SUMMONER": "Invocateur",
@@ -613,6 +615,7 @@
     "TRAIT_LABEL.UNDEAD": "Mort-vivant",
     "TRAIT_LABEL.WEB": "Toile",
     "TRAIT_LABEL.WINGS": "Ailes",
+    "TRAIT_LABEL.WISDOM_AGES": "Sagesse séculaire",
     "TRAIT_LABEL.WRECKER": "Démolisseur",
   
     "TRAIT_REGENERATION.CHAT_ACTION": " régénère ",

@@ -574,6 +574,7 @@
   "TRAIT_LABEL.DEATHSTRUGGLE": "Lucha a Muerte",
   "TRAIT_LABEL.DEVOUR": "Devorador",
   "TRAIT_LABEL.DIMINUTIVE": "Diminuto",
+  "TRAIT_LABEL.EARTHBOUND": "Earth bound",
   "TRAIT_LABEL.ENTHRALL": "Hipnótico",
   "TRAIT_LABEL.FREESPIRIT": "Espíritu Libre",
   "TRAIT_LABEL.GRAPPLINGTONGUE": "Lengua Apresadora",
@@ -601,6 +602,7 @@
   "TRAIT_LABEL.REGENERATION": "Regeneración",
   "TRAIT_LABEL.ROBUST": "Robusto",
   "TRAIT_LABEL.ROOTWALL": "Muro de Raíces",
+  "POWER_LABEL.SHAPESHIFTER":"Shapeshifter",
   "TRAIT_LABEL.SPIRITFORM": "Forma Espiritual",
   "TRAIT_LABEL.STURDY": "Recio",
   "TRAIT_LABEL.SUMMONER": "Convocante",
@@ -612,6 +614,7 @@
   "TRAIT_LABEL.UNDEAD": "Muerto Viviente",
   "TRAIT_LABEL.WEB": "Telaraña",
   "TRAIT_LABEL.WINGS": "Alado",
+  "TRAIT_LABEL.WISDOM_AGES": "Wisdom of the ages",
   "TRAIT_LABEL.WRECKER": "Demoledor",
   
   "TRAIT_REGENERATION.CHAT_ACTION": " regenerates ",
