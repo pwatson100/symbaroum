@@ -172,6 +172,10 @@ export class SymbaroumActor extends Actor {
         }
         let attributeInit = data.data.initiative.attribute.toLowerCase();
         data.data.initiative.value = ((data.data.attributes[attributeInit].total) + (data.data.attributes.vigilant.total /100)) ;
+        let rrAbility = this.items.filter(item => item.data.data.reference === "rapidreflexes");
+        if(rrAbility.length != 0){
+            if(getPowerLevel(rrAbility[0]).level > 2) data.data.initiative.value += 20
+        }
         console.log("out _computeSecondaryAttributes "); // +JSON.stringify(data));
     }
 

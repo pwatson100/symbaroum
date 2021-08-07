@@ -581,6 +581,7 @@
   "TRAIT_LABEL.DEATHSTRUGGLE": "Death Struggle",
   "TRAIT_LABEL.DEVOUR": "Devour",
   "TRAIT_LABEL.DIMINUTIVE": "Diminutive",
+  "TRAIT_LABEL.EARTHBOUND": "Earth bound",
   "TRAIT_LABEL.ENTHRALL": "Enthrall",
   "TRAIT_LABEL.FREESPIRIT": "Free Spirit",
   "TRAIT_LABEL.GRAPPLINGTONGUE": "Grappling Tongue",
@@ -608,6 +609,7 @@
   "TRAIT_LABEL.REGENERATION": "Regeneration",
   "TRAIT_LABEL.ROBUST": "Robust",
   "TRAIT_LABEL.ROOTWALL": "Root Wall",
+  "POWER_LABEL.SHAPESHIFTER":"Shapeshifter",
   "TRAIT_LABEL.SPIRITFORM": "Spirit form",
   "TRAIT_LABEL.STURDY": "Sturdy",
   "TRAIT_LABEL.SUMMONER": "Summoner",
@@ -619,6 +621,7 @@
   "TRAIT_LABEL.UNDEAD": "Undead",
   "TRAIT_LABEL.WEB": "Web",
   "TRAIT_LABEL.WINGS": "Wings",
+  "TRAIT_LABEL.WISDOM_AGES": "Wisdom of the ages",
   "TRAIT_LABEL.WRECKER": "Wrecker",
 
   "TRAIT_REGENERATION.CHAT_ACTION": " regenerates ",
