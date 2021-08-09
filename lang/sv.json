@@ -574,6 +574,7 @@
   "TRAIT_LABEL.DEATHSTRUGGLE": "Dödsryckningar",
   "TRAIT_LABEL.DEVOUR": "Slukare",
   "TRAIT_LABEL.DIMINUTIVE": "Diminutiv",
+
   "TRAIT_LABEL.EARTHBOUND": "Jordnära",
   "TRAIT_LABEL.ENTHRALL": "Trollbinda",
   "TRAIT_LABEL.FREESPIRIT": "Fri själ",
@@ -616,7 +617,6 @@
   "TRAIT_LABEL.WINGS": "Vingar",
   "TRAIT_LABEL.WISDOM_AGES": "Eonernas visdom",
   "TRAIT_LABEL.WRECKER": "Bräckare",
-  
   "TRAIT_REGENERATION.CHAT_ACTION": " regenererar ",
   
   "WEAPON.HEADER": "Vapen",
