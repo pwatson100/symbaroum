@@ -106,6 +106,9 @@
   "ABILITY_MEDICUS.NOHERBALCURE": "Ingen örtkur",
   "ABILITY_MEDICUS.CHAT_FINAL": "Läkt tålighet :",
   "ABILITY_MEDICUS.CHAT_TARGET": "Patient :",
+  "ABILITY_MEDICUS.NO_TARGET": "Inget mål, Medicus-slag utan läkning",
+  "DIALOG.MEDICUS_EXAM": "Medicus-slag utan läkning",
+  "DIALOG.CUSTOM_HEALING_MODIFIER": "Speciell läkningsmodifierare",
 
   "ABILITY_STRANGLER.CHAT_INTRO": " försöker grabba tag i sitt mål.",
   "ABILITY_STRANGLER.CHAT_INTRO_M": " försöker bibehålla stryptaget.",
@@ -143,7 +146,7 @@
   "ARMOR.COST": "Kostnad",
   "ARMOR.QUALITY": "Kvalitet",
   "ARMOR.DESCRIPTION": "Beskrivning",
-  "ARMOR.BONUS_ONLY": "Travbar bepansring",
+  "ARMOR.BONUS_ONLY": "Extra bepansring",
 
   "ARTIFACT.NAME": "Namn",
   "ARTIFACT.ACTION": "Handling",
@@ -215,7 +218,7 @@
   "COMBAT.DAMAGE": "Orsakad skada: ",
   "COMBAT.CHAT_INTRO": " attackerar med ",
   "COMBAT.CHAT_SUCCESS": " träffar ",
-  "COMBAT.CHAT_FAILURE": " miss.",
+  "COMBAT.CHAT_FAILURE": " missar.",
   "COMBAT.CHAT_BLEED": " blöder och förlorar tålighet varje runda: ",
   "COMBAT.CHAT_POISON": " försöker förgifta ",
   "COMBAT.CHAT_POISON_FAILURE": "Inte förgiftad.",
@@ -223,9 +226,12 @@
   "COMBAT.CHAT_POISON_NOTEXTEND": "Målet var redan förgiftat.",
   "COMBAT.CHAT_POISON_SUCCESS1": " är förgiftad. Skada per runda: ",
   "COMBAT.CHAT_POISON_SUCCESS2": ",  varaktighet: ",
+  "COMBAT.CHAT_FLAMING_SUCCESS1": " brinner. Med början nästa runda kommer skadan att vara : ",
   "COMBAT.CHAT_MODIFIER": "Mod: ",
   "COMBAT.CHAT_DMG_PARAMS": "Skademodifiering: ",
   "COMBAT.CHAT_DMG_PARAMS_HUNTER": "[Jaktinstinkt] ",
+  "COMBAT.CHAT_DMG_PARAMS_IRON_FIST": "[Järnnäve] ",
+  "COMBAT.CHAT_DMG_PARAMS_FEAT_ST": "[Kraftprov] ",
   "COMBAT.CHAT_DMG_PARAMS_CUSTOM": "[Anpassad] ",
   "COMBAT.CHAT_DMG_PARAMS_BACKSTAB": "[Lönnstöt] ",
   "COMBAT.CHAT_DMG_PARAMS_ADVANTAGE": "[Övertag] ",
@@ -252,11 +258,13 @@
   "DIALOG.DAMAGE_IF_MODIFIER": "Järnnäve skadebonus",
   "DIALOG.2ATTACKS": "Två attacker?",
   "DIALOG.3ATTACKS": "Tre attacker?",
+  "DIALOG.FEAT_STRENGTH_DAMAGE": "Bonusskada från Kraftprov?",
+  "DIALOG.ROBUST_DMG": "Lägga till skada från Robust?",
 
   "DIALOG.CASTING_ATTRIBUTE": "Karaktärsdrag för mystisk kraft",
   "DIALOG.RESIST_ATTRIBUTE": "Karaktärsdrag för motstånd",
   "DIALOG.VERSUS": "Mot",
-  "DIALOG.ASK_CORRUPTION": "Target fully corrupted?",
+  "DIALOG.ASK_CORRUPTION": "Målet genomkorrumperat?",
   "DIALOG.ATTRIBUTE": "Karaktärsdrag",
   "DIALOG.MODIFIER": "Modifikation",
   "DIALOG.ADVANTAGE": "Övertag",
@@ -386,7 +394,7 @@
 
   "POWER_ANATHEMA.CHAT_INTRO": " försöker skingra en kraft.",
   "POWER_ANATHEMA.CHAT_SUCCESS": " skingrar kraften.",
-  "POWER_ANATHEMA.CHAT_FAILURE": " skingrar.",
+  "POWER_ANATHEMA.CHAT_FAILURE": " misslyckas.",
   
   "POWER_BENDWILL.CHAT_INTRO": " försöker bända offrets vilja.",
   "POWER_BENDWILL.CHAT_INTRO_M": " upprätthåller Bända vilja.",
@@ -439,8 +447,8 @@
   "POWER_LARVAEBOILS.CHAT_SUCCESS": " äts upp inifrån av larverna.",
   "POWER_LARVAEBOILS.CHAT_FAILURE": " motstår larverna.",
 
-  "POWER_PRIOSBURNINGGLASS.CHAT_INTRO":" tries to channel the Light of Prios at a target.",
-  "POWER_PRIOSBURNINGGLASS.CHAT_EXTRA":" might be stunned, test [resolute <-- resolute].",
+  "POWER_PRIOSBURNINGGLASS.CHAT_INTRO":" försöker kanalisera Prios ljus mot ett mål.",
+  "POWER_PRIOSBURNINGGLASS.CHAT_EXTRA":" kan bli bedövad, slå [Viljestark <-- Viljestark].",
 
   "POWER_TORMENTINGSPIRITS.CHAT_INTRO":" försöker åkalla plågoandar.",
   "POWER_TORMENTINGSPIRITS.CHAT_INTRO_M":" försöker upprätthålla plågoandarna.",
@@ -566,6 +574,8 @@
   "TRAIT_LABEL.DEATHSTRUGGLE": "Dödsryckningar",
   "TRAIT_LABEL.DEVOUR": "Slukare",
   "TRAIT_LABEL.DIMINUTIVE": "Diminutiv",
+
+  "TRAIT_LABEL.EARTHBOUND": "Jordnära",
   "TRAIT_LABEL.ENTHRALL": "Trollbinda",
   "TRAIT_LABEL.FREESPIRIT": "Fri själ",
   "TRAIT_LABEL.GRAPPLINGTONGUE": "Fångsttunga",
@@ -593,6 +603,7 @@
   "TRAIT_LABEL.REGENERATION": "Regeneration",
   "TRAIT_LABEL.ROBUST": "Robust",
   "TRAIT_LABEL.ROOTWALL": "Rotmur",
+  "POWER_LABEL.SHAPESHIFTER":"Formförändring",
   "TRAIT_LABEL.SPIRITFORM": "Andeform",
   "TRAIT_LABEL.STURDY": "Livskraftig",
   "TRAIT_LABEL.SUMMONER": "Frammanare",
@@ -604,8 +615,8 @@
   "TRAIT_LABEL.UNDEAD": "Vandöd",
   "TRAIT_LABEL.WEB": "Fångstnät",
   "TRAIT_LABEL.WINGS": "Vingar",
+  "TRAIT_LABEL.WISDOM_AGES": "Eonernas visdom",
   "TRAIT_LABEL.WRECKER": "Bräckare",
-  
   "TRAIT_REGENERATION.CHAT_ACTION": " regenererar ",
   
   "WEAPON.HEADER": "Vapen",
@@ -651,7 +662,7 @@
   "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE": "Visa modifikationer vid framgångsslag för karaktärsdrag.",
   "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE_HINT": "Välj för att visa modifikationer för karaktärsdrag innan framgångsslag slås.",
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Tillåt referensmodifikation",
-  "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Varning - enbart SL - tillåt att manuellt justera referensimplementation för förmågor, särdrag och mystiska krafter. Kräver omladdning (refresh)."
-
-    
+  "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Varning - enbart SL - tillåt att manuellt justera referensimplementation för förmågor, särdrag och mystiska krafter. Kräver omladdning (refresh).",
+  "SYMBAROUM.OPTIONAL_INIT_MANUAL": "Välj karaktärsdrag för Initiativ manuellt",
+  "SYMBAROUM.OPTIONAL_INIT_MANUAL_HINT": "Välj för att inaktivera automatisk utvärdering av karaktärsdrag för Initiativ."    
 }

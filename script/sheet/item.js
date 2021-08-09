@@ -33,9 +33,7 @@ export class SymbaroumItemSheet extends ItemSheet {
   
   async _prepareActivateAbility(event) {
     event.preventDefault();
-    const div = $(event.currentTarget).parents(".item");
-    //const ability = this.object.options.actor.getOwnedItem(div.data("itemId"));
     const ability = this.object;
-    await ability.makeAction(this.object.options?.actor);
+    if(ability.data.data?.script) ability.data.data?.script(ability, ability.parent);
   }
 }

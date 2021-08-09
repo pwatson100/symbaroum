@@ -1,3 +1,5 @@
+import { getPowerLevel } from './item.js';
+
 export async function rollAttribute(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier, armor, weapon, advantage, damModifier) {
   let dam = "";	
 
@@ -361,14 +363,17 @@ It won't work with NPC fixed values as input
 * @param {item object} weapon is the weapon that is used
 * @param {{isRanged: boolean, useBackstab: boolean, hasAdvantage: boolean, ignoreArm: boolean, modifier: string}} dmgData is an object of damage parameters.
 * @param {object} targetData is information on the target that will receive the damage (as returned by the getTarget function)
-* @param {boolean} critSuccess  for optional bonus damage on crits*/
+* @param {boolean} critSuccess  for optional bonus damage on crits
+* @param {integer} attack number - if > 0 some bonuses won't apply*/
 
-export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgData, targetData, critSuccess){
+export async function damageRollWithDiceParams(functionStuff, critSuccess, attackNumber){
   let newRollDmgString = "";  // for dice modificators like +1d4
   let modFixedDmg = 0;  // for fixed modificators like +1
   let damageAutoParams = "";
+  let dmgData = functionStuff.dmgData;
   let damageModFormula = dmgData.modifier;
   if(damageModFormula != ""){
+    damageModFormula += "[" + game.i18n.localize('DIALOG.DAMAGE_MODIFIER') + "]";
     damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_CUSTOM');
   }
 
@@ -379,7 +384,7 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
     }
   
   if(dmgData.hasAdvantage){
-    if(dmgData.useBackstab){
+    if(dmgData.useBackstab && !attackNumber){
       damageModFormula += " + 2d4["+game.i18n.localize("ABILITY_LABEL.BACKSTAB")+"]";
       damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_BACKSTAB');
     }
@@ -389,11 +394,38 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
       damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_ADVANTAGE');
     }
   }
-  if(dmgData.useBeastlore){
-    damageModFormula += " + " + dmgData.beastLoreDmg + "[" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "]";
+  if(functionStuff.beastLoreData.useBeastlore){
+    if(functionStuff.beastLoreData.beastLoreMaster) damageModFormula += " + 1d6[" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "]";
+    else damageModFormula += " + 1d4[" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "]";
     damageAutoParams += " [" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "] ";
   }
-  if(dmgData.leaderTarget){
+  if(dmgData.useRobustDmg && !attackNumber){
+    let robustLvl = 0;
+    let robust = functionStuff.actor.items.filter(element => element.data.data.reference === "robust");
+    if(robust.length > 0){
+        let powerLvl = getPowerLevel(robust[0]);
+        robustLvl = powerLvl.level;
+        if(robustLvl == 1){
+          damageModFormula += "+1d4["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
+        }
+        else if(robustLvl == 2){
+          damageModFormula += "+1d6["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
+        }
+        else if(robustLvl > 2){
+          damageModFormula += "+1d8["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
+        }
+        damageAutoParams += " [" + game.i18n.localize('TRAIT_LABEL.ROBUST') + "] ";
+    }
+  }
+  if(functionStuff.ironFistDmg){
+    if(functionStuff.ironFistDmgMaster && !attackNumber){
+      damageModFormula += "+1d8["+game.i18n.localize("ABILITY_LABEL.IRON_FIST")+"]";
+    }
+    else{
+      damageModFormula += "+1d4["+game.i18n.localize("ABILITY_LABEL.IRON_FIST")+"]";
+    }
+  }
+  if(functionStuff.targetData.leaderTarget){
     damageModFormula += " + 1d4" + game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
     damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
   }
@@ -403,33 +435,33 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
     damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_IGN_ARMOR');
   }
     // If the attack is made by a PC, roll damage and substract static value for armor (=max armor/2)
-    if(attackFromPC){  
+    if(functionStuff.attackFromPC){  
       //build roll string
-      newRollDmgString = weapon.damage.pc;
+      newRollDmgString = functionStuff.weapon.damage.pc;
       if(damageModFormula != ""){
         newRollDmgString += damageModFormula
       }
       if(modFixedDmg) {newRollDmgString += "+"+ modFixedDmg.toString()};
       if(!dmgData.ignoreArm){
-        newRollDmgString += " - " + targetData.actor.data.data.combat.protectionNpc.toString();
+        newRollDmgString += " - " + functionStuff.targetData.actor.data.data.combat.protectionNpc.toString();
       }
     }
     else{
       // If the attack is made by a NPC, evaluate static value for damage (=max damage/2) then roll armor and substract
      //build roll string
-      newRollDmgString = weapon.damage.npc.toString();
+      newRollDmgString = functionStuff.weapon.damage.npc.toString();
       if(modFixedDmg) {newRollDmgString += "+"+ modFixedDmg.toString()};
       if(damageModFormula != ""){
         let weaponModRoll= new Roll(damageModFormula).evaluate({maximize: true});
         let weaponModDmgValue = Math.ceil(weaponModRoll.total/2);
         newRollDmgString += "+"+ weaponModDmgValue.toString(); 
       }
-      if(!dmgData.ignoreArm){
-        newRollDmgString += " - (" + targetData.actor.data.data.combat.protectionPc + ")";
+      if(!dmgData.ignoreArm && functionStuff.targetData.actor.data.data.combat.protectionPc != 0){
+        newRollDmgString += " - (" + functionStuff.targetData.actor.data.data.combat.protectionPc + ")";
       }
+      else newRollDmgString += " - 0";
     }
     // final damage
-    console.log(newRollDmgString);
     let dmgRoll= new Roll(newRollDmgString).evaluate();
 
     return{
@@ -441,15 +473,27 @@ export async function damageRollWithDiceParams(attackFromPC, actor, weapon, dmgD
 }
 
 /* like damageRollWithDiceParams, but for spell damage and such */
-export async function simpleDamageRoll(attackFromPC, actor, damageFormula, targetData, ignoreArmor){
+export async function simpleDamageRoll(functionStuff, damageFormula){
+  if(functionStuff.dmgData.modifier != ""){
+    damageFormula += functionStuff.dmgData.modifier + "[" + game.i18n.localize('DIALOG.DAMAGE_MODIFIER') + "]";
+  }
+  if(functionStuff.beastLoreData.useBeastlore){
+    if(functionStuff.beastLoreData.beastLoreMaster) damageFormula += " + 1d6[" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "]";
+    else damageFormula += " + 1d4[" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "]";
+  }
+  if(functionStuff.dmgData.hasAdvantage){
+    damageFormula += " + 1d4"+game.i18n.localize("COMBAT.CHAT_DMG_PARAMS_ADVANTAGE");
+  }
+  if(functionStuff.targetData.leaderTarget){
+    damageFormula += " + 1d4" + game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
+  }
   // If the attack is made by a PC, roll damage and substract static value for armor (=max armor/2)
   let newRollDmgString = "";
-  if(attackFromPC){
+  if(functionStuff.attackFromPC){
     newRollDmgString = damageFormula;
     //build roll string
-    if(!ignoreArmor){
-      //      newRollDmgString += " - " + targetData.actor.data.data.combat.protectionNpc + "["+targetData.actor.data.data.combat.armor+"]";
-      newRollDmgString += " - " + targetData.actor.data.data.combat.protectionNpc.toString();
+    if(!functionStuff.dmgData.ignoreArm){
+      newRollDmgString += " - " + functionStuff.targetData.actor.data.data.combat.protectionNpc.toString();
     }
   }
   else{
@@ -459,8 +503,8 @@ export async function simpleDamageRoll(attackFromPC, actor, damageFormula, targe
 
    //build roll string
     newRollDmgString = weaponDmgValue.toString();
-    if(!ignoreArmor){
-      newRollDmgString += " - " + targetData.actor.data.data.combat.protectionPc + "["+targetData.actor.data.data.combat.armor+"]";
+    if(!functionStuff.dmgData.ignoreArm){
+      newRollDmgString += " - (" + functionStuff.targetData.actor.data.data.combat.protectionPc + ")";
     }
   }
   // final damage

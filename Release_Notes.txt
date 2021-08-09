@@ -136,3 +136,14 @@ Version 3.0.2
 
 Version 3.0.3
  - Staff Fighter bug fix
+
+ Version 3.0.4
+ - Enhanced combat now support correctly Iron fist and robust.
+ - BeastLore Master, Rapid reflexes Master, Strangler, Medicus scripts upgraded.
+ - Leader and BL damage bonus available on some powers.
+ - Flaming weapon quality added. 
+ - The Icons for Abilities, Traits etc. with active scripts will now show as a button.  
+      Those that have not yet been implemented will show a "no-entry" sign. 
+ - Corrected issue with item text box. 
+ - Swedish language improvements thanks to Weymyss.
+
