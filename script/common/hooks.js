@@ -44,6 +44,15 @@ Hooks.once('init', () => {
     type: Number,
   });
 
+    game.settings.register('symbaroum', 'systemMigrationVersion', {
+    name: 'World System Version',
+    hint: 'Used to automatically upgrade worlds data when needed.',
+    scope: 'world',
+    config: true,
+    default: '0',
+    type: String,
+  });
+
   game.settings.register('symbaroum', 'symbaroumDevMessageVersionNumber', {
     name: 'Message from the devs',
     hint: 'Used to track last message id from the Symbaroum devs',

@@ -94,6 +94,14 @@
                         <label for="{{item.id}}-data.number">{{localize "WEAPON.NUMBER"}}</label>
                         <input id="{{item.id}}-data.number" name="data.number" type="number" value="{{data.number}}"/>
                     </div>
+                    <div class="number">
+                        <label for="{{item.id}}-data.isArtifact">{{localize "ITEM.ARTIFACT"}}</label>
+                        {{#if data.isArtifact}}
+                        <input id="{{item.id}}-data.isArtifact" name="data.isArtifact" type="checkbox" value="artifact" checked/>
+                        {{else}}
+                        <input id="{{item.id}}-data.isArtifact" name="data.isArtifact" type="checkbox" value="artifact"/>
+                        {{/if}}
+                    </div>
                     <div class="quality">
                         <label for="{{item.id}}-data.quality">{{localize "WEAPON.QUALITY"}}</label>
                         <input name="data.quality" type="text" value="{{data.quality}}"/>

@@ -62,6 +62,8 @@ export class SymbaroumItem extends Item {
         data.isEquipment = data.type === "equipment";
         data.isArtifact = data.type === "artifact";
         data.isGear = data.isWeapon || data.isArmor || data.isEquipment || data.isArtifact;
+        if(data.data?.isArtifact) data.isAlsoArtifact = true;
+        else data.isAlsoArtifact = false;
 
         if(data.isGear) {
             data.isActive = data.data.state === "active";
