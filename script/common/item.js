@@ -926,13 +926,9 @@ function getEffect(token, effect){
 }
 
 function checkPainEffect(functionStuff, damage){
-    
-    let undead = functionStuff.targetData.actor.data.items.filter(element => element.data.data?.reference === "undead");
-    if(undead.length == 0){
-        if(damage.roll.total > functionStuff.targetData.actor.data.data.health.toughness.threshold)
-        {
-            return(true);
-        }
+    if(functionStuff.targetData.actor.data.data.health.toughness.threshold && (damage.roll.total > functionStuff.targetData.actor.data.data.health.toughness.threshold))
+    {
+        return(true);
     }
     return(false);
 }
