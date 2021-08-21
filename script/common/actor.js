@@ -122,7 +122,10 @@ export class SymbaroumActor extends Actor {
             if(featStLvl > 0) data.data.health.toughness.max += 5;
         }
 
-        data.data.health.toughness.threshold = Math.ceil(strong / 2) + data.data.bonus.toughness.threshold;
+        let undead = this.data.items.filter(element => element.data.data.reference === "undead");
+        if(undead.length > 0){
+            data.data.health.toughness.threshold = 0;
+        } else data.data.health.toughness.threshold = Math.ceil(strong / 2) + data.data.bonus.toughness.threshold;
         
         // Corruption Max
         let resolute = data.data.attributes.resolute.total;
