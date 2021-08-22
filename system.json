@@ -16,6 +16,20 @@
   ],
   "packs": [
     {
+      "name": "symbaroumsystemitemsen",
+      "label": "EN - System special Traits",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumsystemitemsen.db",
+      "entity": "Item"
+    },
+    {
+      "name": "symbaroumsystemitemsfr",
+      "label": "FR - Traits spéciaux du Système",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumsystemitemsfr.db",
+      "entity": "Item"
+    },
+    {
       "name": "systemuserguides",
       "label": "Symbaroum for FVTT system user guides",
       "system": "symbaroum",

@@ -738,6 +738,7 @@ async function buildFunctionStuffDefault(ability, actor) {
         functionStuff.corruption = true;
         functionStuff.impeding = actor.data.data.combat.impeding;
         functionStuff.casterMysticAbilities = await getMysticAbilities(actor);
+        if(!actor.data.data.health.corruption.max) functionStuff.corruption = false;
     }
     return(functionStuff)
 }
@@ -2001,7 +2002,6 @@ async function anathemaPrepare(ability, actor) {
     let specificStuff = {
         actor: actor,
         combat: false,
-        corruption: true,
         favour: favour,
         tradition: ["wizardry", "staffmagic", "theurgy"],
         checkMaintain: true,
@@ -2016,8 +2016,8 @@ async function anathemaPrepare(ability, actor) {
 async function anathemaResult(rollData, functionStuff){
     let flagDataArray = [];
     let introText = functionStuff.actor.data.name + game.i18n.localize('POWER_ANATHEMA.CHAT_INTRO');
-    
     let resultText = functionStuff.actor.data.name + game.i18n.localize('POWER_ANATHEMA.CHAT_SUCCESS');
+    let corruptionText ="";
     if(!rollData[0].hasSucceed){
         resultText = functionStuff.actor.data.name + game.i18n.localize('POWER_ANATHEMA.CHAT_FAILURE');
     }
@@ -2026,14 +2026,15 @@ async function anathemaResult(rollData, functionStuff){
         targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.token.data.name;
         if (functionStuff.targetData.autoParams != ""){targetText += ": " + functionStuff.targetData.autoParams}
     }
-    let corruption = await getCorruption(functionStuff);
-    let corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
+    if(functionStuff.corruption){
+        let corruption = await getCorruption(functionStuff);
+        corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
 
-    flagDataArray.push({
-        tokenId: functionStuff.token.id,
-        corruptionChange: corruption.value
-    });
-
+        flagDataArray.push({
+            tokenId: functionStuff.token.id,
+            corruptionChange: corruption.value
+        });
+    }
     let templateData = {
         targetData : functionStuff.targetData,
         hasTarget : functionStuff.targetData.hasTarget,
@@ -2047,7 +2048,7 @@ async function anathemaResult(rollData, functionStuff){
         rollResult : formatRollResult(rollData),
         resultText: resultText,
         finalText: "",
-        haveCorruption: true,
+        haveCorruption: functionStuff.corruption,
         corruptionText: corruptionText
     }
     if(functionStuff.autoParams != ""){templateData.subText += ", " + functionStuff.autoParams};
@@ -2081,7 +2082,6 @@ async function brimstoneCascadePrepare(ability, actor) {
     let fsDefault = await buildFunctionStuffDefault(ability, actor)
     let specificStuff = {
         checkMaintain: true,
-        corruption: true,
         contextualDamage: true,
         tradition: ["wizardry"],
         targetHasRapidReflexes: targetHasRapidReflexes,
@@ -2163,7 +2163,7 @@ async function brimstoneCascadeResult(rollData, functionStuff){
         }
 
     }
-    if(!functionStuff.isMaintained){
+    if(!functionStuff.isMaintained && functionStuff.corruption){
         haveCorruption = true;
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
@@ -2222,7 +2222,6 @@ async function bendWillPrepare(ability, actor) {
     let fsDefault = await buildFunctionStuffDefault(ability, actor)
     let specificStuff = {
         checkMaintain: true,
-        corruption: true,
         favour: favour,
         targetMandatory : true,
         targetData: targetData,
@@ -2252,7 +2251,6 @@ async function blackBoltPrepare(ability, actor) {
     let specificStuff = {
         checkMaintain: true,
         contextualDamage: true,
-        corruption: true,
         targetData: targetData,
         resultFunction: blackBoltResult
     }
@@ -2327,7 +2325,7 @@ async function blackBoltResult(rollData, functionStuff){
 
         }
     }
-    if(!functionStuff.isMaintained){
+    if(!functionStuff.isMaintained && functionStuff.corruption){
         haveCorruption = true;
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
@@ -2379,7 +2377,6 @@ async function blessedshieldPrepare(ability, actor) {
         combat: false,
         targetMandatory: false,
         checkMaintain: false,
-        corruption: true,
         tradition: ["theurgy"],
         resultFunction: blessedshieldResult
     }
@@ -2394,13 +2391,17 @@ async function blessedshieldPrepare(ability, actor) {
 
 async function blessedshieldResult(rollData, functionStuff){
     let flagDataArray = [];
-    let haveCorruption = true;
-    let corruption = await getCorruption(functionStuff);
-    let corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
-    flagDataArray.push({
-        tokenId: functionStuff.token.id,
-        corruptionChange: corruption.value
-    });
+    let haveCorruption = false;
+    let corruptionText = "";
+    if(!functionStuff.isMaintained && functionStuff.corruption){
+        haveCorruption = true;
+        let corruption = await getCorruption(functionStuff);
+        corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
+        flagDataArray.push({
+            tokenId: functionStuff.token.id,
+            corruptionChange: corruption.value
+        });
+    }
     let templateData = {
         targetData : functionStuff.targetData,
         hasTarget : false,
@@ -2477,7 +2478,6 @@ async function confusionPrepare(ability, actor) {
     let fsDefault = await buildFunctionStuffDefault(ability, actor)
     let specificStuff = {
         checkMaintain: true,
-        corruption: true,
         favour: favour,
         targetMandatory : true,
         targetData: targetData,
@@ -2522,7 +2522,7 @@ async function confusionResult(rollData, functionStuff){
     }
     let targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.token.data.name;
     if (functionStuff.targetData.autoParams != ""){targetText += ": " + functionStuff.targetData.autoParams}
-    if(!functionStuff.isMaintained){
+    if(!functionStuff.isMaintained && functionStuff.corruption){
         haveCorruption = true;
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
@@ -2583,7 +2583,6 @@ async function cursePrepare(ability, actor) {
     let fsDefault = await buildFunctionStuffDefault(ability, actor)
     let specificStuff = {
         checkMaintain: true,
-        corruption: true,
         targetData: targetData,
         resultFunction: curseResult,
         combat: false,
@@ -2608,13 +2607,15 @@ async function curseResult(rollData, functionStuff){
         introText = functionStuff.actor.data.name + game.i18n.localize('POWER_CURSE.CHAT_INTRO');
         hasRoll = false;
         rollData[0].hasSucceed = true;
-        haveCorruption = true;
-        corruption = await getCorruption(functionStuff);
-        corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
-        flagDataArray.push({
-            tokenId: functionStuff.token.id,
-            corruptionChange: corruption.value
-        });
+        if(functionStuff.corruption){
+            haveCorruption = true;
+            corruption = await getCorruption(functionStuff);
+            corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
+            flagDataArray.push({
+                tokenId: functionStuff.token.id,
+                corruptionChange: corruption.value
+            });
+        }
     }
     let resultText = functionStuff.targetData.token.data.name + game.i18n.localize('POWER_CURSE.CHAT_SUCCESS_N');
     if(functionStuff.powerLvl == 2){resultText = functionStuff.targetData.token.data.name + game.i18n.localize('POWER_CURSE.CHAT_SUCCESS_A')}
@@ -2676,7 +2677,6 @@ async function entanglingvinesPrepare(ability, actor) {
     let fsDefault = await buildFunctionStuffDefault(ability, actor)
     let specificStuff = {
         checkMaintain: true,
-        corruption: true,
         targetMandatory : true,
         targetData: targetData,
         notResistWhenFirstCast: true,
@@ -2706,14 +2706,15 @@ async function entanglingvinesResult(rollData, functionStuff){
     else{
         introText = functionStuff.actor.data.name + game.i18n.localize('POWER.CHAT_INTRO') + functionStuff.ability.name + " \".";
         rollString = await formatRollString(rollData[0], false, rollData[0].modifier)
-//rollString = `${rollData[0].actingAttributeLabel} : (${rollData[0].actingAttributeValue})`;
-        haveCorruption = true;
-        corruption = await getCorruption(functionStuff);
-        corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
-        flagDataArray.push({
-            tokenId: functionStuff.token.id,
-            corruptionChange: corruption.value
-        });
+        if(functionStuff.corruption){
+            haveCorruption = true;
+            corruption = await getCorruption(functionStuff);
+            corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
+            flagDataArray.push({
+                tokenId: functionStuff.token.id,
+                corruptionChange: corruption.value
+            });
+        }
     }
     if(rollData[0].hasSucceed){
         resultText = functionStuff.targetData.token.data.name + game.i18n.localize('POWER_ENTANGLINGVINES.CHAT_SUCCESS');
@@ -2785,7 +2786,6 @@ async function holyAuraPrepare(ability, actor) {
     let fsDefault = await buildFunctionStuffDefault(ability, actor)
     let specificStuff = {
         checkMaintain: true,
-        corruption: true,
         resultFunction: holyAuraResult,
         tradition: ["theurgy"]
     }
@@ -2798,7 +2798,7 @@ async function holyAuraResult(rollData, functionStuff){
     let haveCorruption = false;
     let corruptionText = "";
     let corruption;
-    if(!functionStuff.isMaintained){
+    if(!functionStuff.isMaintained && functionStuff.corruption){
         haveCorruption = true;
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
@@ -2905,13 +2905,14 @@ async function inheritWound(ability, actor){
     }
     let tradition = ["witchcraft", "theurgy"];
     let casterMysticAbilities = await getMysticAbilities(actor);
-    corruption = await getCorruption({tradition: tradition, casterMysticAbilities: casterMysticAbilities, actor: actor, attackFromPC: attackFromPC});
-    corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
-    flagDataArray.push({
-        tokenId: selectedToken.id,
-        corruptionChange: corruption.value
-    });
-
+    if(actor.data.data.health.corruption.max){
+        corruption = await getCorruption({tradition: tradition, casterMysticAbilities: casterMysticAbilities, actor: actor, attackFromPC: attackFromPC});
+        corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
+        flagDataArray.push({
+            tokenId: selectedToken.id,
+            corruptionChange: corruption.value
+        });
+    }
     let templateData = {
         targetData : targetData,
         hasTarget : targetData.hasTarget,
@@ -3018,7 +3019,6 @@ async function larvaeBoilsPrepare(ability, actor) {
         favour: -1*targetResMod.favour,
         checkMaintain: true,
         contextualDamage: true,
-        corruption: true,
         targetData: targetData,
         resultFunction: larvaeBoilsResult,
         tradition: ["witchcraft"]
@@ -3046,13 +3046,15 @@ async function larvaeBoilsResult(rollData, functionStuff){
         introText = functionStuff.actor.data.name + game.i18n.localize('POWER_LARVAEBOILS.CHAT_INTRO');
         hasRoll = false;
         rollData[0].hasSucceed = true;
-        haveCorruption = true;
-        corruption = await getCorruption(functionStuff);
-        corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
-        flagDataArray.push({
-            tokenId: functionStuff.token.id,
-            corruptionChange: corruption.value
-        });
+        if(functionStuff.corruption){
+            haveCorruption = true;
+            corruption = await getCorruption(functionStuff);
+            corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
+            flagDataArray.push({
+                tokenId: functionStuff.token.id,
+                corruptionChange: corruption.value
+            });
+        }
     }
     if(rollData[0].hasSucceed){
         //PC roll damage, NPCs do fixed damage = maximumdice/2
@@ -3139,7 +3141,6 @@ async function layonhandsPrepare(ability, actor) {
         combat: false,
         targetMandatory: true,
         checkMaintain: false,
-        corruption: true,
         tradition: ["witchcraft", "theurgy"]
     }
     
@@ -3205,7 +3206,6 @@ async function levitatePrepare(ability, actor) {
         checkMaintain: true,
         combat: false,
         targetMandatory: false,
-        corruption: true,
         tradition: ["theurgy", "wizardry"],
         resultFunction: standardPowerResult
     }
@@ -3244,7 +3244,6 @@ async function maltransformationPrepare(ability, actor) {
     let fsDefault = await buildFunctionStuffDefault(ability, actor)
     let specificStuff = {
         checkMaintain: true,
-        corruption: true,
         favour: favour,
         targetMandatory : true,
         targetData: targetData,
@@ -3266,7 +3265,6 @@ async function mindthrowPrepare(ability, actor) {
 
     let fsDefault = await buildFunctionStuffDefault(ability, actor)
     let specificStuff = {
-        corruption: true,
         contextualDamage: true,
         tradition: ["wizardry"],
         targetData: targetData,
@@ -3353,7 +3351,7 @@ async function mindthrowResult(rollData, functionStuff){
             }
         }
     }
-    if(!functionStuff.isMaintained){
+    if(!functionStuff.isMaintained && functionStuff.corruption){
         haveCorruption = true;
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
@@ -3408,7 +3406,6 @@ async function priosburningglassPrepare(ability, actor) {
     let fsDefault = await buildFunctionStuffDefault(ability, actor)
     let specificStuff = {
         checkMaintain: true,
-        corruption: true,
         contextualDamage: true,
         askCorruptedTarget: true,
         targetData: targetData,
@@ -3496,7 +3493,7 @@ async function priosburningglassResult(rollData, functionStuff){
             }
         }
     }
-    if(!functionStuff.isMaintained){
+    if(!functionStuff.isMaintained && functionStuff.corruption){
         haveCorruption = true;
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
@@ -3555,7 +3552,6 @@ async function tormentingspiritsPrepare(ability, actor) {
         combat: false,
         targetMandatory: true,
         checkMaintain: true,
-        corruption: true,
         targetData: targetData,
         resultFunction: tormentingspiritsResult,
         tradition: ["witchcraft"],
@@ -3580,13 +3576,15 @@ async function tormentingspiritsResult(rollData, functionStuff){
     }
     else{
         introText = functionStuff.actor.data.name + game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_INTRO');
-        haveCorruption = true;
-        corruption = await getCorruption(functionStuff);
-        corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
-        flagDataArray.push({
-            tokenId: functionStuff.token.id,
-            corruptionChange: corruption.value
-        });
+        if(functionStuff.corruption){
+            haveCorruption = true;
+            corruption = await getCorruption(functionStuff);
+            corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
+            flagDataArray.push({
+                tokenId: functionStuff.token.id,
+                corruptionChange: corruption.value
+            });
+        }
     }
     if(rollData[0].hasSucceed){
         if(functionStuff.powerLvl.level > 1){
@@ -3673,7 +3671,6 @@ async function unnoticeablePrepare(ability, actor) {
         combat: false,
         targetMandatory: false,
         checkMaintain: false,
-        corruption: true,
         tradition: ["wizardry", "theurgy"],
         addCasterEffect: ["systems/symbaroum/asset/image/invisible.png"]
     }
