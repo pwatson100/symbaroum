@@ -143,6 +143,33 @@
   box-shadow: inset 0 0 6px black;
 }
 
+// Is Scripted css
+.symbaroum.sheet.actor .isScripted {
+  box-shadow: -1.5px 1.5px 1.5px 1.5px hsl(0, 0%, 53%);
+  cursor: pointer;
+  border: solid 1px;
+  border-color: hsl(0, 6%, 75%);
+  margin: 0;
+  background-repeat: no-repeat;
+  height: 43px;
+  width: 50px;
+  background-size: 43px;
+}
+
+.symbaroum.sheet.actor .isScripted:hover {
+  box-shadow: -2px 2px 2px 2px hsl(71, 93%, 22%);
+}
+
+.symbaroum.sheet.actor .notScripted {
+  opacity: 0.8;
+  cursor: not-allowed;
+  background-repeat: no-repeat;
+  height: 45px;
+  width: 47px;
+  background-size: 45px;
+}
+// End of is Scripted css
+
 .symbaroum.sheet.actor .image-container .image {
   background-size: 26px;
   background-repeat: no-repeat;

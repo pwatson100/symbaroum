@@ -106,6 +106,9 @@
   "ABILITY_MEDICUS.NOHERBALCURE": "No herbal cure",
   "ABILITY_MEDICUS.CHAT_FINAL": "Toughness healed : ",
   "ABILITY_MEDICUS.CHAT_TARGET": "Patient : ",
+  "ABILITY_MEDICUS.NO_TARGET": "No target, medicus roll without healing",
+  "DIALOG.MEDICUS_EXAM": "Medicus roll without healing",
+  "DIALOG.CUSTOM_HEALING_MODIFIER": "Custom healing formula",
 
   "ABILITY_STRANGLER.CHAT_INTRO": " tries to seize its target.",
   "ABILITY_STRANGLER.CHAT_INTRO_M": " tries to maintain the stranglehold.",
@@ -223,9 +226,12 @@
   "COMBAT.CHAT_POISON_NOTEXTEND": "Victim was already poisoned.",
   "COMBAT.CHAT_POISON_SUCCESS1": " is poisoned. Damage per round : ",
   "COMBAT.CHAT_POISON_SUCCESS2": ",  duration: ",
+  "COMBAT.CHAT_FLAMING_SUCCESS1": " is burning. Starting next round, damage will be : ",
   "COMBAT.CHAT_MODIFIER": "Mod: ",
   "COMBAT.CHAT_DMG_PARAMS": "Damage modifiers: ",
   "COMBAT.CHAT_DMG_PARAMS_HUNTER": "[Hunter] ",
+  "COMBAT.CHAT_DMG_PARAMS_IRON_FIST": "[Iron Fist] ",
+  "COMBAT.CHAT_DMG_PARAMS_FEAT_ST": "[Feat of St] ",
   "COMBAT.CHAT_DMG_PARAMS_CUSTOM": "[Custom] ",
   "COMBAT.CHAT_DMG_PARAMS_BACKSTAB": "[Backstab] ",
   "COMBAT.CHAT_DMG_PARAMS_ADVANTAGE": "[Adv.] ",
@@ -252,6 +258,8 @@
   "DIALOG.DAMAGE_IF_MODIFIER": "Iron fist damage bonus",
   "DIALOG.2ATTACKS": "Attack twice?",
   "DIALOG.3ATTACKS": "Attack three times?",
+  "DIALOG.FEAT_STRENGTH_DAMAGE": "Bonus damage from Feat of Strength",
+  "DIALOG.ROBUST_DMG": "Add damage from Robust?",
 
   "DIALOG.CASTING_ATTRIBUTE": "Casting attribute",
   "DIALOG.RESIST_ATTRIBUTE": "Opposition attribute",
@@ -265,7 +273,7 @@
   "DIALOG.FAVOUR_NORMAL": "Normal",
   "DIALOG.FAVOUR_FAVOUR": "Favour", 
   "DIALOG.FAVOUR_DISFAVOUR": "Disfavour",
-  "DIALOG.DAMAGE_MODIFIER": "Dam. mod.",  
+  "DIALOG.DAMAGE_MODIFIER": "Other damage mod.",  
   "DIALOG.WEAPON_DAMAGE": "Dam. roll",  
   "DIALOG.CASTING": "Initial casting",
   "DIALOG.IMPEDING": "Include impeding malus?",
@@ -573,6 +581,7 @@
   "TRAIT_LABEL.DEATHSTRUGGLE": "Death Struggle",
   "TRAIT_LABEL.DEVOUR": "Devour",
   "TRAIT_LABEL.DIMINUTIVE": "Diminutive",
+  "TRAIT_LABEL.EARTHBOUND": "Earth bound",
   "TRAIT_LABEL.ENTHRALL": "Enthrall",
   "TRAIT_LABEL.FREESPIRIT": "Free Spirit",
   "TRAIT_LABEL.GRAPPLINGTONGUE": "Grappling Tongue",
@@ -600,6 +609,7 @@
   "TRAIT_LABEL.REGENERATION": "Regeneration",
   "TRAIT_LABEL.ROBUST": "Robust",
   "TRAIT_LABEL.ROOTWALL": "Root Wall",
+  "POWER_LABEL.SHAPESHIFTER":"Shapeshifter",
   "TRAIT_LABEL.SPIRITFORM": "Spirit form",
   "TRAIT_LABEL.STURDY": "Sturdy",
   "TRAIT_LABEL.SUMMONER": "Summoner",
@@ -611,6 +621,7 @@
   "TRAIT_LABEL.UNDEAD": "Undead",
   "TRAIT_LABEL.WEB": "Web",
   "TRAIT_LABEL.WINGS": "Wings",
+  "TRAIT_LABEL.WISDOM_AGES": "Wisdom of the ages",
   "TRAIT_LABEL.WRECKER": "Wrecker",
 
   "TRAIT_REGENERATION.CHAT_ACTION": " regenerates ",
@@ -658,5 +669,7 @@
   "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE": "Show modifers in targetted attribute rolls",
   "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE_HINT": "Check to enable QoL enhancement for showing attribute modifiers before making the roll",
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Allow reference modification",
-  "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Warning - GM Only - allow to manually adjust reference implementation for abilities, traits and mystical powers. Requires refresh."
+  "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Warning - GM Only - allow to manually adjust reference implementation for abilities, traits and mystical powers. Requires refresh.",
+  "SYMBAROUM.OPTIONAL_INIT_MANUAL": "Manually select initiative attribute",
+  "SYMBAROUM.OPTIONAL_INIT_MANUAL_HINT": "Check to desactive the automated evaluation of the attribute used for initiative."
 }
