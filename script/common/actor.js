@@ -122,28 +122,31 @@ export class SymbaroumActor extends Actor {
             if(featStLvl > 0) data.data.health.toughness.max += 5;
         }
 
-        let undead = this.data.items.filter(element => element.data.data.reference === "undead");
-        if(undead.length > 0){
+        let noPain = this.data.items.filter(element => element.data.data.reference === "nopainthreshold");
+        if(noPain.length > 0){
             data.data.health.toughness.threshold = 0;
         } else data.data.health.toughness.threshold = Math.ceil(strong / 2) + data.data.bonus.toughness.threshold;
         
         // Corruption Max
-        let resolute = data.data.attributes.resolute.total;
-        
-        let strongGift = this.data.items.filter(item => item.data.data.reference === "stronggift");
-        if(strongGift.length != 0){
-            let strongGiftLvl = getPowerLevel(strongGift[0]).level;
-            if(strongGift > 1) resolute = resolute*2;
+        let fullCorrupt = (this.data.items.filter(element => element.data.data.reference === "thoroughlycorrupt"));
+        if(fullCorrupt.length > 0){
+            data.data.health.corruption.threshold = 0;
+            data.data.health.corruption.max = 0;
+        } else{
+            let resolute = data.data.attributes.resolute.total;
+            
+            let strongGift = this.data.items.filter(item => item.data.data.reference === "stronggift");
+            if(strongGift.length != 0){
+                let strongGiftLvl = getPowerLevel(strongGift[0]).level;
+                if(strongGiftLvl > 1) resolute = resolute*2;
+            }
+            data.data.health.corruption.threshold = Math.ceil(resolute / 2) + data.data.bonus.corruption.threshold;
+            data.data.health.corruption.max = resolute + data.data.bonus.corruption.max;
         }
-        data.data.health.corruption.threshold = Math.ceil(resolute / 2) + data.data.bonus.corruption.threshold;
-        data.data.health.corruption.max = resolute + data.data.bonus.corruption.max;
-        
         let corr = data.data.health.corruption;
         corr.value = corr.temporary + corr.longterm + corr.permanent;
 
-        console.log("Experience cost");
         data.data.experience.spent = data.data.bonus.experience.cost - data.data.bonus.experience.value;
-        console.log("Experience total");
         data.data.experience.available = data.data.experience.total - data.data.experience.artifactrr - data.data.experience.spent;
         
         let extraArmorBonus = this._getExtraArmorBonuses();
