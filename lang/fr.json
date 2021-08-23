@@ -105,6 +105,9 @@
     "ABILITY_MEDICUS.NOHERBALCURE": "sans remède",
     "ABILITY_MEDICUS.CHAT_FINAL": "Points d'endurance soignés : ",
     "ABILITY_MEDICUS.CHAT_TARGET": "Bénéficiaire : ",
+    "ABILITY_MEDICUS.NO_TARGET": "Pas de cible selectionnée, test de médicus sans soins",
+    "DIALOG.MEDICUS_EXAM": "Test de médicus sans soins",
+    "DIALOG.CUSTOM_HEALING_MODIFIER": "Jet de soins personnalisée",
 
     "ABILITY_STRANGLER.CHAT_INTRO": " tente une prise de strangulation.",
     "ABILITY_STRANGLER.CHAT_INTRO_M": " essaye de maintenir sa prise.",
@@ -232,15 +235,18 @@
     "COMBAT.CHAT_SUCCESS": " touche ",
     "COMBAT.CHAT_FAILURE": " rate son coup.",
     "COMBAT.CHAT_BLEED": " reçoit une blessure hémorragique et subit des dégâts chaque round : ",
-    "COMBAT.CHAT_POISON": " tenter d'empoisonner ",
+    "COMBAT.CHAT_POISON": " tente d'empoisonner ",
     "COMBAT.CHAT_POISON_FAILURE": "Echec de l'empoisonnement.",
     "COMBAT.CHAT_POISON_EXTEND": "La victime était déjà empoisonnée, nouvelle durée: rounds: ",
     "COMBAT.CHAT_POISON_NOTEXTEND": "La victime était déjà empoisonnée.",
     "COMBAT.CHAT_POISON_SUCCESS1": " est empoisonnée. Dégats par round : ",
     "COMBAT.CHAT_POISON_SUCCESS2": ",  durée: ",
+    "COMBAT.CHAT_FLAMING_SUCCESS1": " brûle. A partir du round prochain, les dégâts sont de : ",
     "COMBAT.CHAT_MODIFIER": "Mod: ",
     "COMBAT.CHAT_DMG_PARAMS": "Modificateurs aux dégâts: ",
     "COMBAT.CHAT_DMG_PARAMS_HUNTER": "[chasseur] ",
+    "COMBAT.CHAT_DMG_PARAMS_IRON_FIST": "[P. de fer] ",
+    "COMBAT.CHAT_DMG_PARAMS_FEAT_ST": "[Ep. Force] ",
     "COMBAT.CHAT_DMG_PARAMS_CUSTOM": "[mod. libre] ",
     "COMBAT.CHAT_DMG_PARAMS_BACKSTAB": "[coup.traître] ",
     "COMBAT.CHAT_DMG_PARAMS_ADVANTAGE": "[avantage] ",
@@ -255,6 +261,7 @@
     "COMBAT.DAMAGE": "Dégâts infligés: ",
 
     "DIALOG.VERSUS": "Versus",
+    "DIALOG.ASK_CORRUPTION": "Cible totalement corrompue?",
     "DIALOG.ATTRIBUTE": "Attribut",
     "DIALOG.MODIFIER": "Mod. jet d'attribut",
     "DIALOG.ADVANTAGE": "Avantage",
@@ -262,7 +269,7 @@
     "DIALOG.FAVOUR_NORMAL": "Normal",
     "DIALOG.FAVOUR_FAVOUR": "Faveur", 
     "DIALOG.FAVOUR_DISFAVOUR": "Défaveur",
-    "DIALOG.DAMAGE_MODIFIER": "Mod. dégâts",
+    "DIALOG.DAMAGE_MODIFIER": "Autre mod. dégâts",
     "DIALOG.WEAPON_DAMAGE": "Dam. roll",  
     "DIALOG.CASTING": "Lancement du talent",
     "DIALOG.MAINTAINING": "Jet pour maintenir le talent",
@@ -280,9 +287,11 @@
     "DIALOG.DAMAGE_IF_MODIFIER": "Bonus dégâts Poigne de fer",
     "DIALOG.2ATTACKS": "Deux attaques?",
     "DIALOG.3ATTACKS": "Trois attaques?",
+    "DIALOG.FEAT_STRENGTH_DAMAGE": "Dégats Epreuve de Force",
     "DIALOG.IMPEDING": "Inclure malus d'armure?",
     "DIALOG.CASTING_ATTRIBUTE": "Attribut utilisé",
     "DIALOG.RESIST_ATTRIBUTE": "Attribut résisté",
+    "DIALOG.ROBUST_DMG": "Inclure bonus dégats de Robuste?",
 
     "EQUIPMENT.NAME": "Nom",
     "EQUIPMENT.COST": "Prix",
@@ -461,6 +470,9 @@
     "POWER_LAYONHANDS.CHAT_FINAL":"Points d'endurance soignés: ",
     "POWER_LAYONHANDS.CHAT_FAILURE":" échoue à soigner ",
 
+    "POWER_PRIOSBURNINGGLASS.CHAT_INTRO":" tente de canaliser la lumière de Prios vers une cible.",
+    "POWER_PRIOSBURNINGGLASS.CHAT_EXTRA":" peut être étoudi sur un test [Volonté <-- Volonté].",
+
     "POWER_TORMENTINGSPIRITS.CHAT_INTRO":" essaye d'appeller les esprits des morts.",
     "POWER_TORMENTINGSPIRITS.CHAT_INTRO_M":" essaye de maintenir les esprits tourmenteurs.",
     "POWER_TORMENTINGSPIRITS.CHAT_SUCCESS":" invoque les esprits tourmenteurs autour de  ",
@@ -582,6 +594,7 @@
     "TRAIT_LABEL.DEATHSTRUGGLE": "Agonie meurtrière",
     "TRAIT_LABEL.DEVOUR": "Dévoreur",
     "TRAIT_LABEL.DIMINUTIVE": "Minuscule",
+    "TRAIT_LABEL.EARTHBOUND": "Lien terrestre",
     "TRAIT_LABEL.ENTHRALL": "Possession",
     "TRAIT_LABEL.FREESPIRIT": "Esprit libre",
     "TRAIT_LABEL.GRAPPLINGTONGUE": "Langue agrippante",
@@ -609,6 +622,7 @@
     "TRAIT_LABEL.REGENERATION": "Régénération",
     "TRAIT_LABEL.ROBUST": "Robuste",
     "TRAIT_LABEL.ROOTWALL": "Mur de racines",
+    "POWER_LABEL.SHAPESHIFTER":"Métamorphe",
     "TRAIT_LABEL.SPIRITFORM": "Forme éthérée",
     "TRAIT_LABEL.STURDY": "Énergique",
     "TRAIT_LABEL.SUMMONER": "Invocateur",
@@ -620,6 +634,7 @@
     "TRAIT_LABEL.UNDEAD": "Mort-vivant",
     "TRAIT_LABEL.WEB": "Toile",
     "TRAIT_LABEL.WINGS": "Ailes",
+    "TRAIT_LABEL.WISDOM_AGES": "Sagesse séculaire",
     "TRAIT_LABEL.WRECKER": "Démolisseur",
   
     "TRAIT_REGENERATION.CHAT_ACTION": " régénère ",
@@ -673,7 +688,9 @@
     "SYMBAROUM.OPTIONAL_INIATITIVEROLLS": "Supress Initiative rolls",
     "SYMBAROUM.OPTIONAL_INIATITIVEROLLS_HINT": "Check to QoL disabling of Initiative rolls in chat",
     "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Modification des références",
-    "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Attention - MJ seulement - Permet de modifier les références des objets traits, talents et pouvoirs. A n'utiliser que si vous savez ce que vous faites."
+    "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Attention - MJ seulement - Permet de modifier les références des objets traits, talents et pouvoirs. A n'utiliser que si vous savez ce que vous faites.",
+    "SYMBAROUM.OPTIONAL_INIT_MANUAL": "Choisir manuellement l'attribut pour l'initiative",
+    "SYMBAROUM.OPTIONAL_INIT_MANUAL_HINT": "Désactive l'évaluation automatique de l'attribut à utiliser pour l'initiative des personnages. A cocher si vous utilisez vos propres talents."
   
 }
 

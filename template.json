@@ -362,6 +362,7 @@
       "templates": [
         "bonus"
       ],
+      "description": "",
       "power1": {
         "name": "",
         "description": "",

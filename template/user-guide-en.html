@@ -110,7 +110,7 @@
         To add an armor or weapon to a character sheet, drag it from the Item's selection to the armor or weapon section of the gear tab of the character sheet.
         Monsters with the "Natural weapon" trait should be given the weapon « Natural weapon » of the compendium, and those with the "Armored" trait should be given the "armored" Armor.
         <br>
-        When a PC or NPC add a weapon or an armor, to its sheet, its damage or protection value is automaticaly recalculated, taking into account the character abilities and traits (Man-at-arms, Robust, Iron Fist…). For weapons, the attribute is also evaluated, taking into account the class of the weapon.
+        When a PC or NPC add a weapon or an armor, to its sheet, its damage or protection value is automaticaly recalculated, taking into account the character abilities and traits (Man-at-arms, Robust…). For weapons, the attribute is also evaluated, taking into account the class of the weapon.
         The weapon/armor then appears on the character sheet with its final value printed. (dice value if it’s a PC sheet (ex: 1d8+1d6), fixed if it’s a monster sheet (ex: 7))
         <br>
         On the gear tab of the sheet, Weapons and armor have 3 states repredented bys a small icon, that you can change by clicking on it:
@@ -193,6 +193,33 @@
     </p>
     <br><br>
 
+    <h1>Abilities</span></h1>
+    <p>
+        Some abilities and traits, when given to a character (PC and NPC), will have effect on her character sheet and / or on dialog windows. 
+    </p>
+	<h3><strong>Dominate, Feat of strength, Feint, Knife Play, Sixthsense, Strong gift, Tactician</strong></h3>
+	<p>
+        Defense and attack attribute will be changed when the character uses relevant weapons.
+    </p>
+    <h3><strong>Shield fighter, Staff fighting, Steel throw, Natural warrior, Natural weapon</strong></h3>
+	<p>
+        Damage value of the weapon will be increased, and/or defense value. Please note that the extra bonus of Staff fighting when using a wooden staff or a mystic staff isn't included (please add +1 defense in the bonus tab of the relevant weapons).
+    </p>
+    <h3><strong>Man-at-arms, Armored, Robust, Survival instinct</strong></h3>
+	<p>
+        Protection value of the armor will be increased.
+    </p>
+    <h3><strong>Undead, Spirit form, Swarm</strong></h3>
+	<p>
+        Those traits will apply damage reduction when using Enhanced Combat (see Enhanced combat option)
+        Damage value of the weapon will be increased, and defense value. Please note that the extra bonus of Staff fighting when using a wooden staff or a mystic staff isn't included (please add +1 defense in the bonus tab of the relevant weapons).
+    </p>
+    <h3><strong>Beast Lore, Backstab, Feat of strength, Hunter's instinct, Iron Fist, Knife Play, Natural Warrior, Rapid Fire, Robust</strong></h3>
+	<p>
+        When using Enhanced Combat option, having those abilities and using the right weapon type will make specific options available in the attack window.
+    </p>
+    <br><br>
+
     <h1>Using Powers</span></h1>
     <p>
         Powers can be activated by clicking on the orange dice of the item sheet.
@@ -201,15 +228,15 @@
         <br>
         Power activation is a WIP. <br>
         For now, only those active powers are supported: <br>
-        Anathema,&nbsp; blessed shield, brimstone cascade,&nbsp;bend will,&nbsp;black bolt,&nbsp;confusion,&nbsp;curse,&nbsp;entangling vines,&nbsp;holy aura,&nbsp;inherit wound,&nbsp;larvae boils,&nbsp;lay on hands,&nbsp;levitate,&nbsp;tormenting spirits,&nbsp;unnoticeable
+        Anathema,&nbsp;blessed shield, brimstone cascade,&nbsp;bend will,&nbsp;black bolt,&nbsp;confusion,&nbsp;curse,&nbsp;entangling vines,&nbsp;holy aura,&nbsp;inherit wound,&nbsp;larvae boils,&nbsp;lay on hands,&nbsp;levitate,&nbsp;maltransformation,&nbsp;Prios burning glass,&nbsp;tormenting spirits,&nbsp;unnoticeable
         <br>
         the abilities:
         <br>
-        Alchemy, acrobatics, berserker,&nbsp;dominate,&nbsp;leader,&nbsp;loremaster,&nbsp;medicus,&nbsp;recovery,&nbsp;witchsight.
+        Alchemy, acrobatics, berserker,&nbsp;dominate,&nbsp;leader,&nbsp;loremaster,&nbsp;medicus,&nbsp;quickdraw,&nbsp;recovery,&nbsp;witchsight.
         <br>
         the traits:
         <br>
-        Regeneration.
+        Regeneration,&nbsp;Shapeshifter,&nbsp;Wisdom of the ages.
         <br><br>
         When you activate a power, it will take in account the relevant abilities of the character and its target (leader ability, rapid reflexes, steadfast, traditions, impeding armour...).
         It will open a dialog window for the acting player asking a few questions:
@@ -300,20 +327,24 @@
 
     <h2>Enhanced Combat:</h2>
     <p>
-        Enhance combat can be activated by selecting the option in the system settings.<br><br>
+        Enhance combat can be activated by selecting the option in the system settings. The purpose of EC is to accelerate combat, limit Players and GM fidgeting with character sheets, and vastly simplify NPC management.
+        <p> 
+            <a href="https://youtu.be/P615_E_GpLQ">This quick video</a> explains how to use the enhanced combat
+        </p>
+        <br><br>
         <strong>it is still a Work in Progress. Not every passive abilities have been integrated.</strong><br><br>
         Armor and weapons have to be equipped by the PCs and NPCs in order to be taken in account.<br>
         It automaticaly processes the attributes, traits&nbsp; and abilities of the attacker and its target, rolls the dice, evaluate damage.<br><br>
         The attribute used for attacking has to be defined on the weapon sheet. The defense attribute has to be selected on the character sheet. PCs and NPCs armors and weapons value have to be entered as 'dice' (for example a sword damage value would be 1d8 - the system will automaticaly transform this value to a fixed 4 when a NPC attacks a PC)
         <br><br>
         If a player character attacks a NPC, the player has to select its target, then click on a weapon to do the attack.
-        If a NPC attacks a PC, the GM select the target, then clicks on the NPC weapon.
+        If a NPC attacks a PC, the GM select the target, then clicks on the NPC weapon. 
         <br><br>
         A dialog window will appear, asking which abilities of the attacker to use (iron fist, hunter's instinct...).
         <br>
         &nbsp;<span class="img21">&nbsp;</span>&nbsp;
         <br>
-        Then the attack roll is made, and if it's a hit, damage is roll. Result is printed in the chat
+        Then the attack roll is made, and if it's a hit, damage is roll. Result is printed in the chat. If it's an NPC attack against a PC, then the damage is fixed and the armor is rolled, as per the rules - please note the Player don't have to initiate the defense and armor roll.
         <br>
         &nbsp;<span class="img22">&nbsp;</span>&nbsp;
         <br>
@@ -361,7 +392,6 @@
     </p>
 
     <br><br>
-
     <h1>Supported Modules</h1>
     <p><a href="https://foundryvtt.com/packages/dice-so-nice/">Dice-so-nice</a></p>
     <p><a href="https://foundryvtt.com/packages/statuscounter/">Status icons counters</a></p>

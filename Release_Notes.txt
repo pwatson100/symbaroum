@@ -124,6 +124,26 @@ A few macros have been added as documented in the user guide.
 Fixes:
  - #180 Compendium SV-Powers SV-Trais still has multiple languages and translations are missing (@Weymyss)
 
+Version 3.0.1
+ - Fixed version number
 
+Version 3.0.2
+ - Rapid Fire bug fix
+ - Changes to Iron First - it is now only automatically added in Enhanced combat
+ - Fix for #111 - Thanks to @NeV3rKilL for submitting the fix
+ - Fix for #206
+ - Additions of Maltransformation and Prios burning glass integration.
 
+Version 3.0.3
+ - Staff Fighter bug fix
+
+ Version 3.0.4
+ - Enhanced combat now support correctly Iron fist and robust.
+ - BeastLore Master, Rapid reflexes Master, Strangler, Medicus scripts upgraded.
+ - Leader and BL damage bonus available on some powers.
+ - Flaming weapon quality added. 
+ - The Icons for Abilities, Traits etc. with active scripts will now show as a button.  
+      Those that have not yet been implemented will show a "no-entry" sign. 
+ - Corrected issue with item text box. 
+ - Swedish language improvements thanks to Weymyss.
 
