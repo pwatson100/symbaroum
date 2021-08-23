@@ -215,8 +215,8 @@ export const migrateCompendium = async function (pack, worldSystemVersion) {
         }
         if (!isObjectEmpty(updateData)) {
             expandObject(updateData);
-            updateData["_id"] = ent.data.id;
-            await pack.update(updateData);
+            updateData["_id"] = ent.data._id;
+            await ent.update(updateData);
         }
     }
 };
