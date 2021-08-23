@@ -216,7 +216,7 @@ const migrateItemData = (item, worldTemplateVersion) => {
     }
 
     if (!isObjectEmpty(update)) {
-        update.id = item.id;
+        update._id = item.id;
     }
     return update;
 };
@@ -260,7 +260,7 @@ export const migrateCompendium = async function (pack, worldTemplateVersion) {
         }
         if (!isObjectEmpty(updateData)) {
             expandObject(updateData);
-            updateData["id"] = ent.id;
+            updateData["_id"] = ent.id;
             await pack.updateEntity(updateData);
         }
     }

@@ -140,6 +140,15 @@ Hooks.once('init', () => {
     config: true,
   });
 
+  game.settings.register('symbaroum', 'hideIniativeRolls', {
+    name: 'SYMBAROUM.OPTIONAL_INIATITIVEROLLS',
+    hint: 'SYMBAROUM.OPTIONAL_INIATITIVEROLLS_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });
+
 
   game.settings.register('symbaroum', 'manualInitValue', {
     name: 'SYMBAROUM.OPTIONAL_INIT_MANUAL',
@@ -199,8 +208,20 @@ Hooks.once('diceSoNiceReady', (dice3d) => {
   );
 });
 
+Hooks.on('preCreateChatMessage', (doc, message, options, userid) => {
+
+  if(message.flags !== undefined)
+  {
+    if( getProperty(message.flags,"core.initiativeRoll") && game.settings.get('symbaroum', 'hideIniativeRolls') ) {
+      return false;
+    }
+ }
+});
+
+
 /*Hook for the chatMessage that contain a button for the GM to apply status icons or damage to a token.*/
 Hooks.on('renderChatMessage', async (chatItem, html, data) => {
+
   const flagDataArray = await chatItem.getFlag(game.system.id, 'abilityRoll');
   if (flagDataArray) {
     await html.find('#applyEffect').click(async () => {
@@ -273,10 +294,10 @@ async function createBlessedShield(actor, protection = '1d4') {
 async function showReleaseNotes() {
   if (game.user.isGM) {
     try {
-      const newVer = '1';
-      const releaseNoteName = 'Symbaroum System guide EN';
-      const releasePackLabel = 'Symbaroum for FVTT system user guides';
-
+      const newVer = game.system.data.version;
+      const releaseNoteName = "Symbaroum System guide EN";
+      const releasePackLabel = "Symbaroum for FVTT system user guides";
+      
       let currentVer = '0';
       let oldReleaseNotes = game.journal.getName(releaseNoteName);
       if (oldReleaseNotes !== undefined && oldReleaseNotes !== null && oldReleaseNotes.getFlag('symbaroum', 'ver') !== undefined) {
