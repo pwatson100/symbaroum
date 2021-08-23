@@ -25,8 +25,14 @@ export class PlayerSheet2 extends PlayerSheet {
         let data = {
             id: this.actor.id,
             actor: foundry.utils.deepClone(this.actor.data),
-            data: foundry.utils.deepClone(this.actor.data.data)
+            data: foundry.utils.deepClone(this.actor.data.data),
+
         }
+        // Need to add in 
+        /* 
+            editable: this.editable,
+            cssClass: this.editable ? "editable" : "locked"
+        */
         return data;
     }
 }

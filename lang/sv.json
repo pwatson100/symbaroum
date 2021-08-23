@@ -133,22 +133,31 @@
 
   "ARMOR.NAME": "Namn",
   "ARMOR.PROTECTION": "Bepansring",
+  "ARMOR.PROTECTIONABBR": "Skydd",  
   "ARMOR.PROTECTION_SHORT": "Skydd",
   "ARMOR.BASE_PROT": "Basbepansring",
   "ARMOR.BONUS_PROT": "Bonusbepansring",
   "ARMOR.PC_PROTECTION": "PC skydd",
   "ARMOR.NPC_PROTECTION": "NPC skydd",
   "ARMOR.IMPEDING": "Begränsande",
+  "ARMOR.IMPEDINGABBR": "Begr.",  
   "ARMOR.DEFENSE": "Försvar",
   "ARMOR.COST": "Kostnad",
   "ARMOR.QUALITY": "Kvalitet",
   "ARMOR.DESCRIPTION": "Beskrivning",
   "ARMOR.BONUS_ONLY": "Travbar bepansring",
+  "ARMOR.ADDBUTTON": "Lägg till Rustning",
+  "ARMOR.DELETEBUTTON": "Ta bort Rustning",
+
 
   "ARTIFACT.NAME": "Namn",
   "ARTIFACT.ACTION": "Handling",
   "ARTIFACT.CORRUPTION": "Korruption",
+  "ARTIFACT.CORRUPTIONABBR": "Korr.",
   "ARTIFACT.DESCRIPTION": "Beskrivning",
+  "ARTIFACT.ADDBUTTON": "Lägg till Artefakt",
+  "ARTIFACT.DELETEBUTTON": "Ta bort Artefakt",  
+
 
   "ATTRIBUTE.DISCREET": "Diskret",
   "ATTRIBUTE.QUICK": "Kvick",
@@ -284,6 +293,9 @@
   "EQUIPMENT.NUMBER": "Nr",
   "EQUIPMENT.DESCRIPTION": "Beskrivning",
   "EQUIPMENT.QUANTITY_SHORT": "#",
+  "EQUIPMENT.ADDBUTTON": "Lägg till Utrustning",
+  "EQUIPMENT.DELETEBUTTON": "Ta bort Utrustning",
+
   
   "ERROR.NO_TOKEN_SELECTED": "Välj agerande Token.",
   
@@ -617,6 +629,7 @@
   "WEAPON.HEADER": "Vapen",
   "WEAPON.NAME": "Namn",
   "WEAPON.DAMAGE": "Skada",
+  "WEAPON.DAMAGEABBR": "Skada",
   "WEAPON.DAMAGE_SHORT": "Skada",
   "WEAPON.BASE_DAMAGE": "Basskada",
   "WEAPON.BONUS_DAMAGE": "Bonusskada",
@@ -625,8 +638,11 @@
   "WEAPON.QUALITY": "Kvalitet",
   "WEAPON.COST": "Kostnad",
   "WEAPON.ATTRIBUTE": "Karaktärsdrag",
+  "WEAPON.ATTRIBUTEABBR": "Attr.",  
   "WEAPON.DESCRIPTION": "Beskrivning",
   "WEAPON.NUMBER": "Nr",
+  "WEAPON.ADDBUTTON": "Lägg till Vapen",
+  "WEAPON.DELETEBUTTON": "Ta bort Vapen",
 
   "WEAPON_CLASS.LABEL": "Vapentyp",
   "WEAPON_CLASS.1HANDED": "Enhandsvapen",
