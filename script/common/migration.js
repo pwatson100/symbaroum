@@ -7,8 +7,7 @@ export const migrateWorld = async () => {
     let worldTemplateVersion;
     try{
         worldTemplateVersion = Number(game.settings.get("symbaroum", "worldTemplateVersion"));
-        console.log("worldTemplateVersion:");
-        console.log(worldTemplateVersion)
+        console.log(`worldTemplateVersion: ${worldTemplateVersion}`);
     }
     catch(e){
         console.error(e);
@@ -26,8 +25,7 @@ export const migrateWorld = async () => {
         console.error(e);
         worldSystemVersion = '0';
     }
-    console.log("worldSystemVersion:");
-    console.log(worldSystemVersion)
+    console.log(`worldSystemVersion: ${worldSystemVersion}`);
     const NEEDS_MIGRATION_VERSION = '3.0.6';
     const COMPATIBLE_MIGRATION_VERSION = '0' || isNaN('NaN');
     let needMigration = isNewerVersion(NEEDS_MIGRATION_VERSION, worldSystemVersion);
@@ -43,33 +41,40 @@ export const migrateWorld = async () => {
         }
 
         ui.notifications.info("New system version upgrades the world, please wait...");
-        for (let actor of game.actors.contents) {
+        for (let actor of game.actors) {
             try {
-                const update = migrateActorData(actor.data, worldSystemVersion);
-                if (!isObjectEmpty(update)) {
-                    await actor.update(update, {enforceTypes: false});
+                const updateData = migrateActorData(actor.toObject(), worldSystemVersion);
+                if (!foundry.utils.isObjectEmpty(updateData)) {
+                    console.log(`Migrating Actor entity ${actor.name}`);            
+                    await actor.update(updateData, {enforceTypes: false});
                 }
             } catch (e) {
+                e.message = `Failed migration for Actor ${actor.name}: ${e.message}`;
                 console.error(e);
             }
         }
-        for (let item of game.items.contents) {
+        for (let item of game.items) {
             try {
-                const update = migrateItemData(item.data, worldSystemVersion);
-                if (!isObjectEmpty(update)) {
-                    await item.update(update, {enforceTypes: false});
+                const updateData = migrateItemData(item.toObject(), worldSystemVersion);
+                if (!foundry.utils.isObjectEmpty(updateData)) {
+                    console.log(`Migrating Item entity ${item.name}`);  
+                    await item.update(updateData, {enforceTypes: false});
                 }
             } catch (e) {
+                e.message = `Failed migration for Item ${item.name}: ${e.message}`;
                 console.error(e);
             }
         }
-        for (let scene of game.scenes.contents) {
+        for (let scene of game.scenes) {
             try {
-                const update = migrateSceneData(scene.data, worldSystemVersion);
-                if (!isObjectEmpty(update)) {
-                    await scene.update(update, {enforceTypes: false});
+                const updateData = migrateSceneData(scene.data, worldSystemVersion);
+                if (!foundry.utils.isObjectEmpty(updateData)) {
+                    await scene.update(updateData, {enforceTypes: false});
+                    scene.tokens.forEach(t => t._actor = null);
+
                 }
             } catch (err) {
+                err.message = `Failed migration for Scene ${scene.name}: ${err.message}`;          
                 console.error(err);
             }
         }
@@ -96,64 +101,69 @@ const migrateOldWorld = async (worldTemplateVersion) => {
             }
         }).render(true);
     }
-    for (let actor of game.actors.contents) {
+    for (let actor of game.actors) {
         try {
-            const update = migrateOldActorData(actor.data, worldTemplateVersion);
-            if (!isObjectEmpty(update)) {
-                await actor.update(update, {enforceTypes: false});
+            const updateData = migrateOldActorData(actor.toObject(), worldSystemVersion);
+            if (!foundry.utils.isObjectEmpty(updateData)) {
+                console.log(`Migrating Actor entity ${actor.name}`);            
+                await actor.update(updateData, {enforceTypes: false});
             }
         } catch (e) {
+            e.message = `Failed migration for Actor ${actor.name}: ${e.message}`;
             console.error(e);
         }
     }
-    for (let item of game.items.contents) {
+    for (let item of game.items) {
         try {
-            const update = migrateOldItemData(item.data, worldTemplateVersion);
-            if (!isObjectEmpty(update)) {
-                await item.update(update, {enforceTypes: false});
+            const updateData = migrateOldItemData(item.toObject(), worldSystemVersion);
+            if (!foundry.utils.isObjectEmpty(updateData)) {
+                console.log(`Migrating Item entity ${item.name}`);  
+                await item.update(updateData, {enforceTypes: false});
             }
         } catch (e) {
+            e.message = `Failed migration for Item ${item.name}: ${e.message}`;
             console.error(e);
         }
-    }/*
-    for (let scene of game.scenes.contents) {
+    }
+    for (let scene of game.scenes) {
         try {
-            const update = migrateOldSceneData(scene.data, worldTemplateVersion);
-            if (!isObjectEmpty(update)) {
-                await scene.update(update, {enforceTypes: false});
+            const updateData = migrateOldSceneData(scene.data, worldSystemVersion);
+            if (!foundry.utils.isObjectEmpty(updateData)) {
+                await scene.update(updateData, {enforceTypes: false});
+                scene.tokens.forEach(t => t._actor = null);
+
             }
         } catch (err) {
+            err.message = `Failed migration for Scene ${scene.name}: ${err.message}`;          
             console.error(err);
         }
     }
-    for (let pack of game.packs.filter((p) => p.metadata.package === "world" && ["Actor", "Item", "Scene"].includes(p.metadata.entity))) {
-        await migrateOldCompendium(pack, worldTemplateVersion);
-    }*/
     game.settings.set("symbaroum", "worldTemplateVersion", 4);
     ui.notifications.info("Upgrade complete!");
 };
       
 const migrateActorData = (actor, worldSystemVersion) => {
-    let update = {};
-/*    this is an example
+    let updateData = {};
+    // Migrate actor template
+/*   Example
     if (isNewerVersion("2.21.0", worldSystemVersion)) {
         update = setValueIfNotExists(update, actor, "data.attributes.accurate.total", 0);
     };
-*/        
-    let itemsChanged = false;
-    const items = actor.items.map((item) => {
-        const itemUpdate = migrateItemData(item.data, worldSystemVersion);
-        if (!isObjectEmpty(itemUpdate)) {
-            itemsChanged = true;
-            return mergeObject(item, itemUpdate, {enforceTypes: false, inplace: false});
+    // Migrate Actor items
+*/  if (!actor.items) return updateData;
+    const items = actor.items.reduce((arr, i) => {
+        // Migrate the Owned Item
+        const itemData = i instanceof CONFIG.Item.documentClass ? i.toObject() : i;
+        let itemUpdate = migrateItemData(itemData);
+        if ( !isObjectEmpty(itemUpdate) ) {
+            itemUpdate._id = itemData._id;
+            arr.push(expandObject(itemUpdate));
         }
-        return item;
-    });
-    if (itemsChanged) {
-        update.items = items;
-    }
-    return update;
-};
+        return arr;
+    }, []);
+    if ( items.length > 0 ) updateData.items = items;
+    return updateData;
+}
 
 const migrateItemData = (item, worldSystemVersion) => {
     let update = {};
@@ -162,7 +172,7 @@ const migrateItemData = (item, worldSystemVersion) => {
         if (gearType.includes(item.type)) {
             update = setValueIfNotExists(update, item, "data.isArtifact", false);
             update = setValueIfNotExists(update, item, "data.power", [
-                {"name": "test", "description": "test", "action": "", "corruption": ""},
+                {"name": "", "description": "", "action": "", "corruption": ""},
                 {"name": "", "description": "", "action": "", "corruption": ""},
                 {"name": "", "description": "", "action": "", "corruption": ""},
                 {"name": "", "description": "", "action": "", "corruption": ""},
@@ -176,47 +186,67 @@ const migrateItemData = (item, worldSystemVersion) => {
     return update;
 };
 
-const migrateSceneData = (scene, worldSystemVersion) => {
-    const tokens = duplicate(scene.tokens);
-    return {
-        tokens: tokens.map((tokenData) => {
-            if (!tokenData.actorId || tokenData.actorLink || !tokenData.actorData.data) {
-                tokenData.actorData = {};
-                return tokenData;
-            }
-            const token = new Token(tokenData);
-            if (!token.actor) {
-                tokenData.actorId = null;
-                tokenData.actorData = {};
-            } else if (!tokenData.actorLink && token.data.actorData.items) {
-                const update = migrateActorData(token.data.actorData, worldSystemVersion);
-                console.log("ACTOR CHANGED", token.data.actorData, update);
-                tokenData.actorData = mergeObject(token.data.actorData, update);
-            }
-            return tokenData;
-        }),
-    };
-};
+export const migrateSceneData = function(scene) {
+    const tokens = scene.tokens.map(token => {
+        const t = token.toJSON();console.log(`test token ${token.actor.name}`); 
+        if (!t.actorId || t.actorLink) {
+            t.actorData = {};
+        }
+        else if (!game.actors.has(t.actorId)){
+        t.actorId = null;
+        t.actorData = {};
+        }
+        else if (!t.actorLink) {console.log(`bosse`); 
+        const actorData = duplicate(t.actorData);
+        actorData.type = token.actor?.type;
+        const update = migrateActorData(actorData);
+        ['items', 'effects'].forEach(embeddedName => {
+          if (!update[embeddedName]?.length) return;
+          const updates = new Map(update[embeddedName].map(u => [u._id, u]));
+          t.actorData[embeddedName].forEach(original => {
+            const update = updates.get(original._id);
+            if (update) mergeObject(original, update);
+          });
+          delete update[embeddedName];
+        });
+  
+        mergeObject(t.actorData, update);
+      }
+      return t;
+    });
+    return {tokens};
+  };
 
 export const migrateCompendium = async function (pack, worldSystemVersion) {
     const entity = pack.metadata.entity;
+    if ( !["Actor", "Item", "Scene"].includes(entity) ) return;
+    // Unlock the pack for editing
+    const wasLocked = pack.locked;
+    await pack.configure({locked: false});
 
     await pack.migrate();
     const content = await pack.getDocuments();
 
     for (let ent of content) {
         let updateData = {};
-        if (entity === "Item") {
-            updateData = migrateItemData(ent.data, worldSystemVersion);
-        } else if (entity === "Actor") {
-            updateData = migrateActorData(ent.data, worldSystemVersion);
-        } else if (entity === "Scene") {
-            updateData = migrateSceneData(ent.data, worldSystemVersion);
+        try {
+            if (entity === "Item") {
+                updateData = migrateItemData(ent.toObject(), worldSystemVersion);
+            } else if (entity === "Actor") {
+                updateData = migrateActorData(ent.toObject(), worldSystemVersion);
+            } else if (entity === "Scene") {
+                updateData = migrateSceneData(ent.data, worldSystemVersion);
+            }
+
+                // Save the entry, if data was changed
+            if ( foundry.utils.isObjectEmpty(updateData) ) continue;
+            await ent.update(updateData);
+            console.log(`Migrated ${entity} entity ${ent.name} in Compendium ${pack.collection}`);
         }
-        if (!isObjectEmpty(updateData)) {
-            expandObject(updateData);
-            updateData["_id"] = ent.data.id;
-            await pack.update(updateData);
+
+        catch(err) {
+            err.message = `Failed system migration for entity ${ent.name} in pack ${pack.collection}: ${err.message}`;
+            console.error(err);
         }
     }
 };
@@ -382,65 +412,67 @@ const migrateOldItemData = (item, worldTemplateVersion) => {
 };
 
 const migrateOldSceneData = (scene, worldTemplateVersion) => {
-    const tokens = duplicate(scene.tokens);
-    return {
-        tokens: tokens.map((tokenData) => {
-            if (!tokenData.actorId || tokenData.actorLink || !tokenData.actorData.data) {
-                tokenData.actorData = {};
-                return tokenData;
-            }
-            const token = new Token(tokenData);
-            //const token = tokenData.toObject();
-
-//            const token = canvas.scene.createEmbeddedDocuments("Token", tokenData)
-            if (!token.actor) {
-                tokenData.actorId = null;
-                tokenData.actorData = {};
-            } else if (!tokenData.actorLink && token.data.actorData.items) {
-                const update = migrateOldActorData(token.data.actorData, worldTemplateVersion);
-                console.log("ACTOR CHANGED", token.data.actorData, update);
-                tokenData.actorData = mergeObject(token.data.actorData, update);
-            }
-            return tokenData;
-        }),
-    };
+    const tokens = scene.tokens.map(token => {
+        const t = token.toJSON();console.log(`test token ${token.actor.name}`); 
+        if (!t.actorId || t.actorLink) {
+            t.actorData = {};
+        }
+        else if (!game.actors.has(t.actorId)){
+        t.actorId = null;
+        t.actorData = {};
+        }
+        else if (!t.actorLink) {console.log(`bosse`); 
+        const actorData = duplicate(t.actorData);
+        actorData.type = token.actor?.type;
+        const update = migrateOldActorData(actorData);
+        ['items', 'effects'].forEach(embeddedName => {
+          if (!update[embeddedName]?.length) return;
+          const updates = new Map(update[embeddedName].map(u => [u._id, u]));
+          t.actorData[embeddedName].forEach(original => {
+            const update = updates.get(original._id);
+            if (update) mergeObject(original, update);
+          });
+          delete update[embeddedName];
+        });
+  
+        mergeObject(t.actorData, update);
+      }
+      return t;
+    });
+    return {tokens};
 };
 
 export const migrateOldCompendium = async function (pack, worldTemplateVersion) {
     const entity = pack.metadata.entity;
+    if ( !["Actor", "Item", "Scene"].includes(entity) ) return;
+    // Unlock the pack for editing
+    const wasLocked = pack.locked;
+    await pack.configure({locked: false});
 
     await pack.migrate();
     const content = await pack.getDocuments();
 
     for (let ent of content) {
-        //let updateData = {};
-        if (entity === "Item") {
-            let updateData = migrateOldItemData(ent.data, worldTemplateVersion);
-            if (!isObjectEmpty(updateData)) {
-                expandObject(updateData);
-                updateData["_id"] = ent.data.id;
-                const updated = await Item.updateDocuments(updateData, pack);
+        let updateData = {};
+        try {
+            if (entity === "Item") {
+                updateData = migrateOldItemData(ent.toObject(), worldSystemVersion);
+            } else if (entity === "Actor") {
+                updateData = migrateOldActorData(ent.toObject(), worldSystemVersion);
+            } else if (entity === "Scene") {
+                updateData = migrateOldSceneData(ent.data, worldSystemVersion);
             }
-        } else if (entity === "Actor") {
-            let updateData = migrateOldActorData(ent.data, worldTemplateVersion);
-            if (!isObjectEmpty(updateData)) {
-                expandObject(updateData);
-                updateData["_id"] = ent.data.id;
-                const updated = await Actor.updateDocuments(updateData, pack);
-            }
-        } else if (entity === "Scene") {
-            let updateData = migrateOldSceneData(ent.data, worldTemplateVersion);
-            if (!isObjectEmpty(updateData)) {
-                expandObject(updateData);
-                updateData["_id"] = ent.data.id;
-                const updated = await Scene.updateDocuments(updateData, pack);
-            }
+
+                // Save the entry, if data was changed
+            if ( foundry.utils.isObjectEmpty(updateData) ) continue;
+            await ent.update(updateData);
+            console.log(`Migrated ${entity} entity ${ent.name} in Compendium ${pack.collection}`);
         }
-        /*if (!isObjectEmpty(updateData)) {
-            expandObject(updateData);
-            updateData["_id"] = ent.data.id;
-           await pack.updateEntity(updateData);
-        }*/
+
+        catch(err) {
+            err.message = `Failed system migration for entity ${ent.name} in pack ${pack.collection}: ${err.message}`;
+            console.error(err);
+        }
     }
 };
 
