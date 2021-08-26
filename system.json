@@ -2,7 +2,7 @@
   "name": "symbaroum",
   "title": "Symbaroum",
   "description": "Twilight falls. Davokar darkens.",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "minimumCoreVersion": "0.8.5",
   "compatibleCoreVersion": "0.8.8",
   "authors": ["Paul Watson", "Bithir", "Khaali"],
