@@ -87,9 +87,9 @@ export const migrateWorld = async () => {
 };
 
 
-const migrateOldWorld = async (worldTemplateVersion) => {
+const migrateOldWorld = async (worldSystemVersion) => {
     ui.notifications.info("New template detected; Upgrading the world, please wait...");
-    if (worldTemplateVersion < 3) {
+    if (worldSystemVersion < 3) {
         const htmlTemplate = await renderTemplate("systems/symbaroum/template/migration-warning.html");
         new Dialog({
             title: "WARNING", 
