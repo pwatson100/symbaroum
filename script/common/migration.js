@@ -470,7 +470,6 @@ export const migrateOldCompendium = async function (pack, worldTemplateVersion) 
             await ent.update(updateData);
             console.log(`Migrated ${entity} entity ${ent.name} in Compendium ${pack.collection}`);
         }
-
         catch(err) {
             err.message = `Failed system migration for entity ${ent.name} in pack ${pack.collection}: ${err.message}`;
             console.error(err);
