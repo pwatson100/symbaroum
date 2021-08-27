@@ -36,6 +36,7 @@ Hooks.once('init', () => {
   Items.registerSheet('symbaroum', ArtifactSheet, { types: ['artifact'], makeDefault: true });
   initializeHandlebars();
   game.settings.register('symbaroum', 'worldTemplateVersion', {
+    // worldTemplateVersion is deprecated - not to use anymore
     name: 'World Template Version',
     hint: 'Used to automatically upgrade worlds data when the template is upgraded.',
     scope: 'world',

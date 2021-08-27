@@ -7,14 +7,15 @@ export const migrateWorld = async () => {
     let worldTemplateVersion;
     try{
         worldTemplateVersion = Number(game.settings.get("symbaroum", "worldTemplateVersion"));
-        console.log(`worldTemplateVersion: ${worldTemplateVersion}`);
+        console.log(`Detected worldTemplateVersion: ${worldTemplateVersion}`);
     }
     catch(e){
         console.error(e);
         worldTemplateVersion = 1;
         console.log("No template version detected... Default to 1")
     }
-    if(worldTemplateVersion && game.user.isGM){ //the world hasn't been properly migrated since foundryVTT0.8
+    if(worldTemplateVersion && (worldTemplateVersion < 3.3) && game.user.isGM){ //the world hasn't been properly migrated since foundryVTT0.8
+//    if((worldTemplateVersion < 3.3) && game.user.isGM){ //the world hasn't been properly migrated since foundryVTT0.8
         migrateOldWorld(worldTemplateVersion)
     }
     let systemVersion = game.system.data.version;
@@ -25,7 +26,8 @@ export const migrateWorld = async () => {
         console.error(e);
         worldSystemVersion = '0';
     }
-    console.log(`worldSystemVersion: ${worldSystemVersion}`);
+    console.log(`Last migration on this world: ${worldSystemVersion}`);
+    // the NEEDS_MIGRATION_VERSION have to be increased for migration to happen
     const NEEDS_MIGRATION_VERSION = '3.0.6';
     const COMPATIBLE_MIGRATION_VERSION = '0' || isNaN('NaN');
     let needMigration = isNewerVersion(NEEDS_MIGRATION_VERSION, worldSystemVersion);
@@ -87,9 +89,9 @@ export const migrateWorld = async () => {
 };
 
 
-const migrateOldWorld = async (worldSystemVersion) => {
+const migrateOldWorld = async (worldTemplateVersion) => {
     ui.notifications.info("New template detected; Upgrading the world, please wait...");
-    if (worldSystemVersion < 3) {
+    if (worldTemplateVersion && (worldTemplateVersion < 3)) {
         const htmlTemplate = await renderTemplate("systems/symbaroum/template/migration-warning.html");
         new Dialog({
             title: "WARNING", 
@@ -103,7 +105,7 @@ const migrateOldWorld = async (worldSystemVersion) => {
     }
     for (let actor of game.actors) {
         try {
-            const updateData = migrateOldActorData(actor.toObject(), worldSystemVersion);
+            const updateData = migrateOldActorData(actor.toObject(), worldTemplateVersion);
             if (!foundry.utils.isObjectEmpty(updateData)) {
                 console.log(`Migrating Actor entity ${actor.name}`);            
                 await actor.update(updateData, {enforceTypes: false});
@@ -115,7 +117,7 @@ const migrateOldWorld = async (worldSystemVersion) => {
     }
     for (let item of game.items) {
         try {
-            const updateData = migrateOldItemData(item.toObject(), worldSystemVersion);
+            const updateData = migrateOldItemData(item.toObject(), worldTemplateVersion);
             if (!foundry.utils.isObjectEmpty(updateData)) {
                 console.log(`Migrating Item entity ${item.name}`);  
                 await item.update(updateData, {enforceTypes: false});
@@ -127,7 +129,7 @@ const migrateOldWorld = async (worldSystemVersion) => {
     }
     for (let scene of game.scenes) {
         try {
-            const updateData = migrateOldSceneData(scene.data, worldSystemVersion);
+            const updateData = migrateOldSceneData(scene.data, worldTemplateVersion);
             if (!foundry.utils.isObjectEmpty(updateData)) {
                 await scene.update(updateData, {enforceTypes: false});
                 scene.tokens.forEach(t => t._actor = null);
@@ -188,7 +190,7 @@ const migrateItemData = (item, worldSystemVersion) => {
 
 export const migrateSceneData = function(scene) {
     const tokens = scene.tokens.map(token => {
-        const t = token.toJSON();console.log(`test token ${token.actor.name}`); 
+        const t = token.toJSON(); 
         if (!t.actorId || t.actorLink) {
             t.actorData = {};
         }
@@ -196,7 +198,7 @@ export const migrateSceneData = function(scene) {
         t.actorId = null;
         t.actorData = {};
         }
-        else if (!t.actorLink) {console.log(`bosse`); 
+        else if (!t.actorLink) {
         const actorData = duplicate(t.actorData);
         actorData.type = token.actor?.type;
         const update = migrateActorData(actorData);
@@ -285,6 +287,7 @@ const migrateOldActorData = (actor, worldTemplateVersion) => {
     };
         
     let itemsChanged = false;
+    console.log(actor);
     const items = actor.items.map((item) => {
         const itemUpdate = migrateOldItemData(item, worldTemplateVersion);
         if (!isObjectEmpty(itemUpdate)) {
@@ -412,7 +415,7 @@ const migrateOldItemData = (item, worldTemplateVersion) => {
 
 const migrateOldSceneData = (scene, worldTemplateVersion) => {
     const tokens = scene.tokens.map(token => {
-        const t = token.toJSON();console.log(`test token ${token.actor.name}`); 
+        const t = token.toJSON();
         if (!t.actorId || t.actorLink) {
             t.actorData = {};
         }
@@ -420,7 +423,7 @@ const migrateOldSceneData = (scene, worldTemplateVersion) => {
         t.actorId = null;
         t.actorData = {};
         }
-        else if (!t.actorLink) {console.log(`bosse`); 
+        else if (!t.actorLink) { 
         const actorData = duplicate(t.actorData);
         actorData.type = token.actor?.type;
         const update = migrateOldActorData(actorData);
@@ -455,11 +458,11 @@ export const migrateOldCompendium = async function (pack, worldTemplateVersion) 
         let updateData = {};
         try {
             if (entity === "Item") {
-                updateData = migrateOldItemData(ent.toObject(), worldSystemVersion);
+                updateData = migrateOldItemData(ent.toObject(), worldTemplateVersion);
             } else if (entity === "Actor") {
-                updateData = migrateOldActorData(ent.toObject(), worldSystemVersion);
+                updateData = migrateOldActorData(ent.toObject(), worldTemplateVersion);
             } else if (entity === "Scene") {
-                updateData = migrateOldSceneData(ent.data, worldSystemVersion);
+                updateData = migrateOldSceneData(ent.data, worldTemplateVersion);
             }
 
                 // Save the entry, if data was changed

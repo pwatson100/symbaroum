@@ -11,10 +11,12 @@
                 </div>
             </div>
         </div>
-
         <div class="sheet-tabs tabs" data-group="primary">
             <b class="item" data-tab="description">{{localize "TAB.DESCRIPTION"}}</b>
             <b class="item" data-tab="bonus">{{localize "TAB.BONUS"}}</b>
+            {{#if data.isArtifact}}
+            <b class="item" data-tab="power">{{localize "TAB.POWER"}}</b>
+            {{/if}}
         </div>
 
         <div class="sheet-body">
@@ -29,12 +31,53 @@
                         <label>{{localize "EQUIPMENT.NUMBER"}}</label>
                         <input name="data.number" type="number" value="{{data.number}}"/>
                     </div>
+                    <div class="number">
+                        <label for="{{item.id}}-data.isArtifact">{{localize "ITEM.ARTIFACT"}}</label>
+                        {{#if data.isArtifact}}
+                        <input id="{{item.id}}-data.isArtifact" name="data.isArtifact" type="checkbox" value="artifact" checked/>
+                        {{else}}
+                        <input id="{{item.id}}-data.isArtifact" name="data.isArtifact" type="checkbox" value="artifact"/>
+                        {{/if}}
+                    </div>
                     {{editor content=data.description target="data.description" button=true owner=owner editable=true}}
                 </div>
             </div>
             <div class="tab" data-group="primary" data-tab="bonus">
                 {{> systems/symbaroum/template/sheet/tab/bonus.html}}
             </div>
+            {{#if data.isArtifact}}
+            <div class="tab" data-group="primary" data-tab="power">
+                <div class="power foreground border">
+                    {{#each data.power  as |power key|}}
+                    <h1>{{localize "TITLE.POWER"}} {{addOne key}}</h1> 
+                    <div class="name">
+                        <label>{{localize "WEAPON.NAME"}}</label>
+                        <input name="data.power.{{key}}.name" type="text" value="{{power.name}}" />
+                    </div>
+                    <div class="action">
+                        <label>{{localize "ARTIFACT.ACTION"}}</label>
+                        <select name="data.power.{{key}}.action">
+                            {{#select power.action}}
+                                <option value="-">-</option>
+                                <option value="A">{{localize "ACTION.ACTIVE"}}</option>
+                                <option value="M">{{localize "ACTION.MOVEMENT"}}</option>
+                                <option value="T">{{localize "ACTION.FULL_TURN"}}</option>
+                                <option value="F">{{localize "ACTION.FREE"}}</option>
+                                <option value="P">{{localize "ACTION.PASSIVE"}}</option>
+                                <option value="R">{{localize "ACTION.REACTION"}}</option>
+                                <option value="S">{{localize "ACTION.SPECIAL"}}</option>
+                            {{/select}}
+                        </select>
+                    </div>
+                    <div class="corruption">
+                        <label>{{localize "ARTIFACT.CORRUPTION"}}</label>
+                        <input name="data.power.{{key}}.corruption" type="text" value="{{power.corruption}}" />
+                    </div>
+                    {{editor content=this.description target=(keyIndex key) button=true owner=owner editable=true}}
+                    {{/each}}
+                </div>
+            </div>
+            {{/if}}
         </div>
     </div>
 </form>

@@ -338,7 +338,7 @@
             <div class="tab" data-group="primary" data-tab="power">
                 <div class="power foreground border">
                     {{#each data.power  as |power key|}}
-                    <h1>{{localize "TITLE.POWER"}} {{@index}}</h1>
+                    <h1>{{localize "TITLE.POWER"}} {{addOne key}}</h1> 
                     <div class="name">
                         <label>{{localize "WEAPON.NAME"}}</label>
                         <input name="data.power.{{key}}.name" type="text" value="{{power.name}}" />
@@ -362,7 +362,7 @@
                         <label>{{localize "ARTIFACT.CORRUPTION"}}</label>
                         <input name="data.power.{{key}}.corruption" type="text" value="{{power.corruption}}" />
                     </div>
-                    {{editor content=this.description target="data.power.{{@index}}.description" button=true owner=owner editable=true}}
+                    {{editor content=this.description target=(keyIndex key) button=true owner=owner editable=true}}
                     {{/each}}
                 </div>
             </div>
