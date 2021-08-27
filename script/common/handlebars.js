@@ -61,4 +61,11 @@ function registerHandlebarsHelpers() {
     if (v1 > v2) return options.fn(this);
     else return options.inverse(this);
   });
+  Handlebars.registerHelper('keyIndex', function (str) {
+    return 'data.power.' + str + '.description';
+  });
+  Handlebars.registerHelper('addOne', function (v1) {
+    let newOne = parseInt(v1) + 1;
+    return newOne;
+  });
 }

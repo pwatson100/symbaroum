@@ -36,12 +36,22 @@ Hooks.once('init', () => {
   Items.registerSheet('symbaroum', ArtifactSheet, { types: ['artifact'], makeDefault: true });
   initializeHandlebars();
   game.settings.register('symbaroum', 'worldTemplateVersion', {
+    // worldTemplateVersion is deprecated - not to use anymore
     name: 'World Template Version',
     hint: 'Used to automatically upgrade worlds data when the template is upgraded.',
     scope: 'world',
     config: true,
     default: 0,
     type: Number,
+  });
+
+    game.settings.register('symbaroum', 'systemMigrationVersion', {
+    name: 'World System Version',
+    hint: 'Used to automatically upgrade worlds data when needed.',
+    scope: 'world',
+    config: true,
+    default: '0',
+    type: String,
   });
 
   game.settings.register('symbaroum', 'symbaroumDevMessageVersionNumber', {
