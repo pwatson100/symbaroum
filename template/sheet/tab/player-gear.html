@@ -154,6 +154,27 @@
                             </td>                            
                         </tr>
                         {{/if}}
+                        {{#if item.data.isAlsoArtifact}}                        
+                        <tr class="artifact item" data-item-id="{{item.id}}">
+                            <td class="name">
+                                <div class="namefield">
+                                    <div class="image-container">
+                                        <div class="image" style="background-image: url('{{item.img}}')"></div>
+                                    </div>
+                                    <button class="item-edit ellipsis artifactname">{{item.name}}</button>
+                                </div>
+                            </td>
+                            <td class="state">
+                                {{#if item.data.isActive}}
+                                    <a class="item" title="{{localize 'GEAR.ACTIVE'}}"><i class="fas fa-tshirt"></i></a>
+                                {{else if item.data.isEquipped}}
+                                    <a class="item" title="{{localize 'GEAR.EQUIPPED'}}"><i class="fas fa-suitcase"></i></a>
+                                {{else}}
+                                    <a class="item" title="{{localize 'GEAR.OTHER'}}"><i class="fas fa-warehouse"></i></a>
+                                {{/if}}
+                            </td>                           
+                        </tr>
+                        {{/if}}
                         {{/each}}
                     </tbody>
                 </table>
