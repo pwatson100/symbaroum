@@ -159,6 +159,8 @@
   "ARTIFACT.DESCRIPTION": "Description",
   "ARTIFACT.ADDBUTTON": "Add Artifact",
   "ARTIFACT.DELETEBUTTON": "Delete Artifact",  
+  "ARTIFACT.POWER_ADDBUTTON": "Add power",
+  "ARTIFACT.POWER_DELETEBUTTON": "Delete power",  
 
   "ATTRIBUTE.ACCURATE": "Accurate",
   "ATTRIBUTE.CUNNING": "Cunning",

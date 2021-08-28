@@ -36,22 +36,28 @@ export class SymbaroumItemSheet extends ItemSheet {
     }
     let arr = this.item.data.data.power;
     delete arr[powerId];
-
+    let vals = Object.values(arr);
+    let newArr = {};
+    for(let i = 0; i<vals.length; i++) {
+      newArr[i] = vals[i];
+    }
     let update = { _id:this.item.id};
-    update["data.power"] = Object.values(arr);
+    update["data.power"] = newArr;
+    update["data.power.-="+vals.length] = null;
+    console.log(update);
     this.item.update(update);
   }
 
   async _onPowerCreate(event) {
     console.log("Adding power");
-    let arr = Object.values(this.item.data.data.power);
-    arr.push(
-      {"name": "", "description": "", "action": "", "corruption": ""}
-    );
+    let arr = this.item.data.data.power;
+    let keys = Object.keys(arr);
+    arr[keys.length] = {"name": "", "description": "", "action": "", "corruption": ""};
     let update = { 
       _id:this.item.id,
       "data.power": arr
     };
+    console.log(update);
     this.item.update(update);
   }
 
