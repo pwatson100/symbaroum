@@ -195,13 +195,8 @@
       },
       "artifact": {
         "isArtifact" : false,
-        "power": [
-          {"name": "", "description": "", "action": "", "corruption": ""},
-          {"name": "", "description": "", "action": "", "corruption": ""},
-          {"name": "", "description": "", "action": "", "corruption": ""},
-          {"name": "", "description": "", "action": "", "corruption": ""},
-          {"name": "", "description": "", "action": "", "corruption": ""}
-        ]
+        "power": {
+        }
       }
     },
     "trait": {
