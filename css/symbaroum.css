@@ -655,10 +655,23 @@
 
 .symbaroum.sheet.item h1 {
   width: 100%;
-  height: 30px;
-  line-height: 30px;
+  height: 2em;
+  line-height: 2em;
   border: 0 none;
-  font-size: 16px;
+  font-size: 1.2em;
+  margin: 0;
+  text-align: center;
+  background: url(../asset/image/title.jpg) repeat;
+  color: var(--color-title);
+  font-family: var(--font-text);
+}
+
+.symbaroum.sheet.item h2 {
+  width: 100%;
+  height: 1.5em;
+  line-height: 1.5em;
+  border: 0 none;
+  font-size: 1em;
   margin: 0;
   text-align: center;
   background: url(../asset/image/title.jpg) repeat;
@@ -2425,6 +2438,7 @@
 .symbaroum.sheet.item .armor .description,
 .symbaroum.sheet.item .armor .stats,
 .symbaroum.sheet.item .armor .qualities,
+.symbaroum.sheet.item .armor .artifact,
 .symbaroum.sheet.item .armor .bonus {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -2447,6 +2461,7 @@
 .symbaroum.sheet.item .armor .tab .protection,
 .symbaroum.sheet.item .armor .tab .impeding,
 .symbaroum.sheet.item .armor .tab .quality,
+.symbaroum.sheet.item .armor .tab .number,
 .symbaroum.sheet.item .armor .tab .cost {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -2457,15 +2472,7 @@
           flex-direction: row;
   -ms-flex-preferred-size: 100%;
       flex-basis: 100%;
-  margin: 5px 10px;
-}
-
-.symbaroum.sheet.item .armor .tab .protection {
-  margin-top: 10px;
-}
-
-.symbaroum.sheet.item .armor .tab .quality {
-  margin-bottom: 10px;
+  margin: 5px;
 }
 
 .symbaroum.sheet.item .armor .tab .qualities .scroll {
@@ -2494,18 +2501,11 @@
           justify-content: center;
 }
 
-.symbaroum.sheet.item .armor .tab .qualities .leftcolumn {
-  -ms-flex-preferred-size: calc(50% - 5px);
-      flex-basis: calc(50% - 5px);
-  margin-top: 10px;
-  margin-right: 5px;
-}
-
+.symbaroum.sheet.item .armor .tab .qualities .leftcolumn,
 .symbaroum.sheet.item .armor .tab .qualities .rightcolumn {
-  -ms-flex-preferred-size: calc(50% - 5px);
-      flex-basis: calc(50% - 5px);
-  margin-top: 10px;
-  margin-left: 5px;
+  -ms-flex-preferred-size: calc(50% - 10px);
+      flex-basis: calc(50% - 10px);
+  margin: 5px;
 }
 
 .symbaroum.sheet.item .armor .tab .bonus .scroll {
@@ -2530,18 +2530,67 @@
           flex-direction: row;
   -ms-flex-preferred-size: 100%;
       flex-basis: 100%;
-  margin: 5px 10px;
-}
-
-.symbaroum.sheet.item .armor .tab .bonus .attribute:first-child {
-  margin-top: 10px;
-}
-
-.symbaroum.sheet.item .armor .tab .bonus .attribute:last-child {
-  margin-bottom: 10px;
+  margin: 5px;
 }
 
 .symbaroum.sheet.item .artifact {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+  width: 100%;
+}
+
+.symbaroum.sheet.item .artifact .power-n {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  width: 100%;
+}
+
+.symbaroum.sheet.item .artifact .power-n .power-header,
+.symbaroum.sheet.item .artifact .power-add {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+      -ms-flex: auto;
+          flex: auto;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row;
+          flex-flow: row;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+  -ms-flex-preferred-size: 100%;
+      flex-basis: 100%;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  margin: 5px;
+  background: url(../asset/image/title.jpg) repeat;
+}
+
+.symbaroum.sheet.item .artifact .power-n .power-header .heading,
+.symbaroum.sheet.item .artifact .power-add .button {
+  width: 100%;
+}
+
+.symbaroum.sheet.item .artifact .power-n .name,
+.symbaroum.sheet.item .artifact .power-n .action,
+.symbaroum.sheet.item .artifact .power-n .corruption {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -2549,10 +2598,40 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  height: 100%;
+  -ms-flex-preferred-size: 100%;
+      flex-basis: 100%;
+  margin: 5px;
+}
+
+.symbaroum.sheet.item .artifact .power-n .power-header,
+.symbaroum.sheet.item .artifact .power-n .name,
+.symbaroum.sheet.item .artifact .power-n .action,
+.symbaroum.sheet.item .artifact .power-n .corruption,
+.symbaroum.sheet.item .artifact .power-n .editor {
+  margin: 5px;
+}
+
+.symbaroum.sheet.item .artifact .power-n .power-header .fas,
+.symbaroum.sheet.item .artifact .power-add .fas {
+  width: 20px;
+  margin: 5px;
+  color: var(--color-title);
+}
+
+.symbaroum.sheet.item .artifact .power-add .power-create {
+  white-space: nowrap;
+}
+
+.symbaroum.sheet.item .artifact .power-add .power-create label {
+  padding: 0px;
+}
+
+.symbaroum.sheet.item .artifact .power-n .power-header .heading,
+.symbaroum.sheet.item .artifact .power-add {
   width: 100%;
+  font-size: 18px;
+  font-family: var(--font-text);
+  color: var(--color-title);
 }
 
 .symbaroum.sheet.item .artifact .description,
@@ -2807,7 +2886,7 @@
           flex-direction: row;
   -ms-flex-preferred-size: 100%;
       flex-basis: 100%;
-  margin: 10px 10px 0 10px;
+  margin: 5px;
 }
 
 .symbaroum.sheet.item .equipment .tab .bonus .scroll {
@@ -3382,6 +3461,7 @@
 .symbaroum.sheet.item .weapon .description,
 .symbaroum.sheet.item .weapon .stats,
 .symbaroum.sheet.item .weapon .qualities,
+.symbaroum.sheet.item .weapon .artifact,
 .symbaroum.sheet.item .weapon .bonus {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -3416,15 +3496,7 @@
           flex-direction: row;
   -ms-flex-preferred-size: 100%;
       flex-basis: 100%;
-  margin: 5px 10px;
-}
-
-.symbaroum.sheet.item .weapon .tab .stats .attribute {
-  margin-top: 10px;
-}
-
-.symbaroum.sheet.item .weapon .tab .stats .quality {
-  margin-bottom: 10px;
+  margin: 5px;
 }
 
 .symbaroum.sheet.item .weapon .tab .qualities .scroll {
@@ -3453,18 +3525,11 @@
           justify-content: center;
 }
 
-.symbaroum.sheet.item .weapon .tab .qualities .leftcolumn {
-  -ms-flex-preferred-size: calc(50% - 5px);
-      flex-basis: calc(50% - 5px);
-  margin-top: 10px;
-  margin-right: 5px;
-}
-
+.symbaroum.sheet.item .weapon .tab .qualities .leftcolumn,
 .symbaroum.sheet.item .weapon .tab .qualities .rightcolumn {
-  -ms-flex-preferred-size: calc(50% - 5px);
-      flex-basis: calc(50% - 5px);
-  margin-top: 10px;
-  margin-left: 5px;
+  -ms-flex-preferred-size: calc(50% - 10px);
+      flex-basis: calc(50% - 10px);
+  margin: 5px;
 }
 
 .symbaroum.sheet.item .weapon .tab .bonus .scroll {
@@ -3489,15 +3554,7 @@
           flex-direction: row;
   -ms-flex-preferred-size: 100%;
       flex-basis: 100%;
-  margin: 5px 10px;
-}
-
-.symbaroum.sheet.item .weapon .tab .bonus .attribute:first-child {
-  margin-top: 10px;
-}
-
-.symbaroum.sheet.item .weapon .tab .bonus .attribute:last-child {
-  margin-bottom: 10px;
+  margin: 5px;
 }
 
 .symbaroum.attributes {
