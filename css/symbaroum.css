@@ -2860,6 +2860,7 @@
 }
 
 .symbaroum.sheet.item .equipment .description,
+.symbaroum.sheet.item .equipment .artifact,
 .symbaroum.sheet.item .equipment .bonus {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -2911,15 +2912,7 @@
           flex-direction: row;
   -ms-flex-preferred-size: 100%;
       flex-basis: 100%;
-  margin: 5px 10px;
-}
-
-.symbaroum.sheet.item .equipment .tab .bonus .attribute:first-child {
-  margin-top: 10px;
-}
-
-.symbaroum.sheet.item .equipment .tab .bonus .attribute:last-child {
-  margin-bottom: 10px;
+  margin: 5px;
 }
 
 .symbaroum.sheet.item .mystical-power {
