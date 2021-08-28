@@ -2,6 +2,8 @@ export class SymbaroumItemSheet extends ItemSheet {
   activateListeners(html) {
     super.activateListeners(html);
     html.find(".activate-ability").click(async ev => await this._prepareActivateAbility(ev));
+    html.find('.power-delete').click((ev) => this._onPowerDelete(ev));
+    html.find('.power-create').click((ev) => this._onPowerCreate(ev));
   }
 
   getData() {
@@ -24,6 +26,35 @@ export class SymbaroumItemSheet extends ItemSheet {
     ].concat(buttons);
     return buttons;
   }
+
+  async _onPowerDelete(event) {
+    console.log("Deleting power");
+    const div = $(event.currentTarget).parents('.power-n');
+    let powerId = parseInt(div.data("powerId"));        
+    if( isNaN(powerId) ) { 
+      return;
+    }
+    let arr = this.item.data.data.power;
+    delete arr[powerId];
+
+    let update = { _id:this.item.id};
+    update["data.power"] = Object.values(arr);
+    this.item.update(update);
+  }
+
+  async _onPowerCreate(event) {
+    console.log("Adding power");
+    let arr = Object.values(this.item.data.data.power);
+    arr.push(
+      {"name": "", "description": "", "action": "", "corruption": ""}
+    );
+    let update = { 
+      _id:this.item.id,
+      "data.power": arr
+    };
+    this.item.update(update);
+  }
+
 
   async _prepareRegisterAbility(event) {
     event.preventDefault();

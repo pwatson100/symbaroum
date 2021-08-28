@@ -1,0 +1,45 @@
+<div class="tab item" data-group="primary" data-tab="power">    
+    <div class="artifact foreground border">        
+        <h1>ARTIFACT POWERS</h1>
+        {{#each data.power  as |power key|}}
+        <div class="power-n" data-power-id="{{key}}">
+            <div class="power-header">                
+                <div class="heading"><h2>{{localize "TITLE.POWER"}} {{addOne key}} </h2></div>
+                {{#if @first}} {{else}}
+                <div class="button">
+                    <a class="power-control power-delete" title="{{localize ARTIFACT.DELETEBUTTON}}"><i class="fas fa-trash"></i></a>
+                </div> 
+                {{/if}}
+            </div>
+            <div class="name">
+                <label for="{{../item._id}}-data.power.{{key}}.name">{{localize "ARTIFACT.NAME"}}</label>
+                <input name="data.power.{{key}}.name" id="{{../item._id}}-data.power.{{key}}.name" type="text" value="{{power.name}}" />
+            </div>
+            <div class="action">
+                <label for="{{../item._id}}-data.power.{{key}}.action">{{localize "ARTIFACT.ACTION"}}</label>
+                <select id="{{../item._id}}-data.power.{{key}}.action" name="data.power.{{key}}.action">
+                    {{#select power.action}}
+                        <option value="-">-</option>
+                        <option value="A">{{localize "ACTION.ACTIVE"}}</option>
+                        <option value="M">{{localize "ACTION.MOVEMENT"}}</option>
+                        <option value="T">{{localize "ACTION.FULL_TURN"}}</option>
+                        <option value="F">{{localize "ACTION.FREE"}}</option>
+                        <option value="P">{{localize "ACTION.PASSIVE"}}</option>
+                        <option value="R">{{localize "ACTION.REACTION"}}</option>
+                        <option value="S">{{localize "ACTION.SPECIAL"}}</option>
+                    {{/select}}
+                </select>
+            </div>
+            <div class="corruption">
+                <label for="{{../item._id}}-data.power.{{key}}.corruption">{{localize "ARTIFACT.CORRUPTION"}}</label>
+                <input name="data.power.{{key}}.corruption" type="text" id="{{../item._id}}-data.power.{{key}}.corruption" value="{{power.corruption}}" />
+            </div>
+            {{editor content=this.description target=(keyIndex key) button=true owner=owner editable=true}}
+        </div>
+        {{/each}}
+        <div class="power-add">
+            <div class="button"></div>
+            <div><a class="power-control power-create" title="{{localize "ARTIFACT.ADDBUTTON"}}" data-type="power"><label>Add power</label><i class="fas fa-plus"></i></a></div>
+        </div>
+    </div>
+</div>

@@ -26,10 +26,10 @@
             <b class="item" data-tab="description">{{localize "TAB.DESCRIPTION"}}</b>
             <b class="item" data-tab="stats">{{localize "TAB.STATS"}}</b>
             <b class="item" data-tab="qualities">{{localize "TAB.QUALITIES"}}</b>
-            <b class="item" data-tab="bonus">{{localize "TAB.BONUS"}}</b>
             {{#if data.isArtifact}}
             <b class="item" data-tab="power">{{localize "TAB.POWER"}}</b>
             {{/if}}
+            <b class="item" data-tab="bonus">{{localize "TAB.BONUS"}}</b>
         </div>
         <div class="sheet-body">
             <div class="tab" data-group="primary" data-tab="description">
@@ -145,35 +145,7 @@
             </div>
             {{#if data.isArtifact}}
             <div class="tab" data-group="primary" data-tab="power">
-                <div class="power foreground border">
-                    {{#each data.power  as |power key|}}
-                    <h1>{{localize "TITLE.POWER"}} {{addOne key}}</h1> 
-                    <div class="name">
-                        <label>{{localize "WEAPON.NAME"}}</label>
-                        <input name="data.power.{{key}}.name" type="text" value="{{power.name}}" />
-                    </div>
-                    <div class="action">
-                        <label>{{localize "ARTIFACT.ACTION"}}</label>
-                        <select name="data.power.{{key}}.action">
-                            {{#select power.action}}
-                                <option value="-">-</option>
-                                <option value="A">{{localize "ACTION.ACTIVE"}}</option>
-                                <option value="M">{{localize "ACTION.MOVEMENT"}}</option>
-                                <option value="T">{{localize "ACTION.FULL_TURN"}}</option>
-                                <option value="F">{{localize "ACTION.FREE"}}</option>
-                                <option value="P">{{localize "ACTION.PASSIVE"}}</option>
-                                <option value="R">{{localize "ACTION.REACTION"}}</option>
-                                <option value="S">{{localize "ACTION.SPECIAL"}}</option>
-                            {{/select}}
-                        </select>
-                    </div>
-                    <div class="corruption">
-                        <label>{{localize "ARTIFACT.CORRUPTION"}}</label>
-                        <input name="data.power.{{key}}.corruption" type="text" value="{{power.corruption}}" />
-                    </div>
-                    {{editor content=this.description target=(keyIndex key) button=true owner=owner editable=true}}
-                    {{/each}}
-                </div>
+                {{> systems/symbaroum/template/sheet/tab/artifact.html}}
             </div>
             {{/if}}
         </div>
