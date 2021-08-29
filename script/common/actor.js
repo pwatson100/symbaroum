@@ -476,7 +476,7 @@ export class SymbaroumActor extends Actor {
     }
     
     _evaluateProtection(item, extraArmorBonus) {
-        console.log("_evaluateProtection ");
+        // console.log("_evaluateProtection ");
 
         let tooltip = "";
         let protection = item.data.data.baseProtection;

@@ -173,13 +173,7 @@ const migrateItemData = (item, worldSystemVersion) => {
         const gearType = [ "weapon", "armor", "equipment" ];
         if (gearType.includes(item.type)) {
             update = setValueIfNotExists(update, item, "data.isArtifact", false);
-            update = setValueIfNotExists(update, item, "data.power", [
-                {"name": "", "description": "", "action": "", "corruption": ""},
-                {"name": "", "description": "", "action": "", "corruption": ""},
-                {"name": "", "description": "", "action": "", "corruption": ""},
-                {"name": "", "description": "", "action": "", "corruption": ""},
-                {"name": "", "description": "", "action": "", "corruption": ""}
-              ])
+            update = setValueIfNotExists(update, item, "data.power", {});
         }
     }
     if (!isObjectEmpty(update)) {
