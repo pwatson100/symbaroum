@@ -27,8 +27,20 @@ export class SymbaroumItemSheet extends ItemSheet {
     return buttons;
   }
 
+
+  updateOutstandingMCEValues()
+  {
+    let upDate = this.item.data;
+    const editors = Object.values(this.editors).filter((editor) => editor.active);
+    for (const editor of editors) {
+      if(editor.mce)
+        setProperty(upDate, editor.target, editor.mce.getContent());
+    }    
+  }
+
   async _onPowerDelete(event) {
-    console.log("Deleting power");
+    this.updateOutstandingMCEValues();
+
     const div = $(event.currentTarget).parents('.power-n');
     let powerId = parseInt(div.data("powerId"));        
     if( isNaN(powerId) ) { 
@@ -44,12 +56,12 @@ export class SymbaroumItemSheet extends ItemSheet {
     let update = { _id:this.item.id};
     update["data.power"] = newArr;
     update["data.power.-="+vals.length] = null;
-    console.log(update);
-    this.item.update(update);
+    await this.item.update(update);
   }
 
   async _onPowerCreate(event) {
-    console.log("Adding power");
+    this.updateOutstandingMCEValues();
+    // Lets check editors
     let arr = this.item.data.data.power;
     let keys = Object.keys(arr);
     arr[keys.length] = {"name": "", "description": "", "action": "", "corruption": ""};
@@ -57,7 +69,6 @@ export class SymbaroumItemSheet extends ItemSheet {
       _id:this.item.id,
       "data.power": arr
     };
-    console.log(update);
     this.item.update(update);
   }
 
