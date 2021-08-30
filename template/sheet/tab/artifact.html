@@ -1,13 +1,13 @@
 <div class="tab item" data-group="primary" data-tab="power">    
     <div class="artifact foreground border">        
-        <h1>ARTIFACT POWERS</h1>
+        <h1>{{localize "ARTIFACT.TITLE"}}</h1>
         {{#each data.power  as |power key|}}
         <div class="power-n" data-power-id="{{key}}">
             <div class="power-header">                
                 <div class="heading"><h2>{{localize "TITLE.POWER"}} {{addOne key}} </h2></div>
                 {{#if @first}} {{else}}
                 <div class="button">
-                    <a class="power-control power-delete" title="{{localize ARTIFACT.DELETEBUTTON}}"><i class="fas fa-trash"></i></a>
+                    <a class="power-control power-delete" title="{{localize "ARTIFACT.POWER_DELETEBUTTON"}}"><i class="fas fa-trash"></i></a>
                 </div> 
                 {{/if}}
             </div>
@@ -39,7 +39,7 @@
         {{/each}}
         <div class="power-add">
             <div class="button"></div>
-            <div><a class="power-control power-create" title="{{localize "ARTIFACT.ADDBUTTON"}}" data-type="power"><label>Add power</label><i class="fas fa-plus"></i></a></div>
+            <div><a class="power-control power-create" title="{{localize "ARTIFACT.POWER_ADDBUTTON"}}" data-type="power"><label>{{localize "ARTIFACT.POWER_ADDBUTTON"}}</label><i class="fas fa-plus"></i></a></div>
         </div>
     </div>
 </div>

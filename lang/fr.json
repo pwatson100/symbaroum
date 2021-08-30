@@ -159,8 +159,11 @@
     "ARTIFACT.CORRUPTION": "Corruption",
     "ARTIFACT.CORRUPTIONABBR": "Corr.",    
     "ARTIFACT.DESCRIPTION": "Description",
+    "ARTIFACT.TITLE":"ARTIFACT POWERS",
     "ARTIFACT.ADDBUTTON": "Add Artifact",
-    "ARTIFACT.DELETEBUTTON": "Delete Artifact",    
+    "ARTIFACT.DELETEBUTTON": "Delete Artifact",
+    "ARTIFACT.POWER_ADDBUTTON": "Add artifact power",
+    "ARTIFACT.POWER_DELETEBUTTON": "Delete artifact power",     
 
     "ATTRIBUTE.ACCURATE": "Précision",
     "ATTRIBUTE.CUNNING": "Astuce",
