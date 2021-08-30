@@ -134,6 +134,9 @@
   "ACTION.MOVEMENT": "Förflyttning",
   "ACTION.FULL_TURN": "Hel runda",
 
+  "ACTOR.TypePlayer": "Spelar karaktär",
+  "ACTOR.TypeMonster": "Icke-spelare/monster karaktär",
+
   "ARMOR.NAME": "Namn",
   "ARMOR.PROTECTION": "Bepansring",
   "ARMOR.PROTECTIONABBR": "Skydd",  
@@ -341,6 +344,17 @@
   "ITEM.WEAPON": "Vapen",
   "ITEM.BOON": "Fördel",
   "ITEM.BURDEN": "Nackdel",
+
+  "ITEM.TypeTrait": "Särdrag",
+  "ITEM.TypeAbility": "Förmåga",
+  "ITEM.TypeArmor": "Rustning",
+  "ITEM.TypeArtifact": "Artefakt",
+  "ITEM.TypeEquipment": "Utrustning",
+  "ITEM.TypeMysticalpower": "Mystisk kraft",
+  "ITEM.TypeRitual": "Ritual",
+  "ITEM.TypeWeapon": "Vapen",
+  "ITEM.TypeBoon": "Fördel",
+  "ITEM.TypeBurden": "Nackdel",
 
   "MONEY.THALER": "Daler",
   "MONEY.SHILLING": "Skilling",
