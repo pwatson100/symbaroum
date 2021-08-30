@@ -746,9 +746,9 @@ export class SymbaroumActor extends Actor {
                         isArmor: true,
                         isActive: true, 
                         isEquipped: false
-                    }
-
+                    }                    
                 }, extraArmorBonus);
+            noArmor.isNoArmor = true;
             data.data.armors.push(noArmor);
             wearArmor = noArmor;
         }
