@@ -121,6 +121,9 @@
   "ACTION.MOVEMENT": "Bewegung",
   "ACTION.FULL_TURN": "Volle Runde",
 
+  "ACTOR.TypePlayer": "Player character",
+  "ACTOR.TypeMonster": "Non-player/monster character",
+
   "ARMOR.NAME": "Name",
   "ARMOR.PROTECTION": "Schutz",
   "ARMOR.PROTECTIONABBR": "Schu.",
@@ -318,6 +321,19 @@
   "ITEM.MYSTICAL_POWER": "Mystische Kraft",
   "ITEM.RITUAL": "Ritual",
   "ITEM.WEAPON": "Waffen",
+  "ITEM.BOON" : "Boon",
+  "ITEM.BURDEN": "Burden",
+
+  "ITEM.TypeTrait": "Merkmale",
+  "ITEM.TypeAbility": "Fähigkeit",
+  "ITEM.TypeArmor": "Rüstung",
+  "ITEM.TypeArtifact": "Artefakt",
+  "ITEM.TypeEquipment": "Ausrüstung",
+  "ITEM.TypeMysticalpower": "Mystische Kraft",
+  "ITEM.TypeRitual": "Ritual",
+  "ITEM.TypeWeapon": "Waffen",
+  "ITEM.TypeBoon": "Boon",
+  "ITEM.TypeBurden": "Burden",  
 
   "MONEY.THALER": "Taler",
   "MONEY.SHILLING": "Schilling",

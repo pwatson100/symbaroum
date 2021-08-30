@@ -134,6 +134,9 @@
   "ACTION.MOVEMENT": "Movimiento",
   "ACTION.FULL_TURN": "Todo el Turno",
 
+  "ACTOR.TypePlayer": "Player character",
+  "ACTOR.TypeMonster": "Non-player/monster character",
+
   "ARMOR.NAME": "Nombre",
   "ARMOR.PROTECTION": "Protección",
   "ARMOR.PROTECTIONABBR": "Prot.",  
@@ -339,6 +342,19 @@
   "ITEM.MYSTICAL_POWER": "Poder Místico",
   "ITEM.RITUAL": "Ritual",
   "ITEM.WEAPON": "Arma",
+  "ITEM.BOON" : "Boon",
+  "ITEM.BURDEN": "Burden",
+
+  "ITEM.TypeTrait": "Rasgo",
+  "ITEM.TypeAbility": "Habilidad",
+  "ITEM.TypeArmor": "Armadura",
+  "ITEM.TypeArtifact": "Artefacto",
+  "ITEM.TypeEquipment": "Equipamiento",
+  "ITEM.TypeMysticalpower": "Poder Místico",
+  "ITEM.TypeRitual": "Ritual",
+  "ITEM.TypeWeapon": "Arma",
+  "ITEM.TypeBoon": "Boon",
+  "ITEM.TypeBurden": "Burden",   
 
   "MONEY.THALER": "Tálero",
   "MONEY.SHILLING": "Chelín",
