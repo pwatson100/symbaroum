@@ -137,7 +137,7 @@ Version 3.0.2
 Version 3.0.3
  - Staff Fighter bug fix
 
- Version 3.0.4
+Version 3.0.4
  - Enhanced combat now support correctly Iron fist and robust.
  - BeastLore Master, Rapid reflexes Master, Strangler, Medicus scripts upgraded.
  - Leader and BL damage bonus available on some powers.
@@ -147,3 +147,10 @@ Version 3.0.3
  - Corrected issue with item text box. 
  - Swedish language improvements thanks to Weymyss.
 
+Version 3.0.6
+- Sorted ability list and Items
+- Major artifact changes - obsoleted artifact type of item, made so equipment, weapons and armor can become artifacts
+- Migration fixes
+- Compendium migration fixes
+- Gear page now should look prettier
+- Support for system traits (thoroughly corrupt, ignore pain threshold)
