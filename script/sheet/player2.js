@@ -37,7 +37,6 @@ export class PlayerSheet2 extends PlayerSheet {
         });
 
         data.items = items;
-        console.log(items.toObject());
         data.cssClass = this.isEditable ? "editable" : "locked";
         data.editable = this.isEditable;
 
