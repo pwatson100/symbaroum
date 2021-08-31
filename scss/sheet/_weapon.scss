@@ -9,6 +9,7 @@
 .symbaroum.sheet.item .weapon .description,
 .symbaroum.sheet.item .weapon .stats,
 .symbaroum.sheet.item .weapon .qualities,
+.symbaroum.sheet.item .weapon .artifact,
 .symbaroum.sheet.item .weapon .bonus {
     display: flex;
     flex-direction: row;
@@ -30,15 +31,7 @@
     display: flex;
     flex-direction: row;
     flex-basis: 100%;
-    margin: 5px 10px;
-}
-
-.symbaroum.sheet.item .weapon .tab .stats .attribute {
-    margin-top: 10px;
-}
-
-.symbaroum.sheet.item .weapon .tab .stats .quality {
-    margin-bottom: 10px;
+    margin: 5px;
 }
 
 .symbaroum.sheet.item .weapon .tab .qualities .scroll {
@@ -56,16 +49,10 @@
     justify-content: center;
 }
 
-.symbaroum.sheet.item .weapon .tab .qualities .leftcolumn {
-    flex-basis: calc(50% - 5px);
-    margin-top: 10px;
-    margin-right: 5px;
-}
-
+.symbaroum.sheet.item .weapon .tab .qualities .leftcolumn,
 .symbaroum.sheet.item .weapon .tab .qualities .rightcolumn {
-    flex-basis: calc(50% - 5px);
-    margin-top: 10px;
-    margin-left: 5px;
+    flex-basis: calc(50% - 10px);
+    margin: 5px;
 }
 
 .symbaroum.sheet.item .weapon .tab .bonus .scroll {
@@ -80,13 +67,5 @@
     display: flex;
     flex-direction: row;
     flex-basis: 100%;
-    margin: 5px 10px;
-}
-
-.symbaroum.sheet.item .weapon .tab .bonus .attribute:first-child {
-    margin-top: 10px;
-}
-
-.symbaroum.sheet.item .weapon .tab .bonus .attribute:last-child {
-    margin-bottom: 10px;
+    margin: 5px;
 }

@@ -22,16 +22,24 @@ export class PlayerSheet2 extends PlayerSheet {
     }
 
     getData() {
-        // const data = super.getData();
-        /*
-        if(!this.actor.data.isDataPrepared)
-            this.actor.prepareData();
-        */
         let data = {
             id: this.actor.id,
             actor: foundry.utils.deepClone(this.actor.data),
-            data: foundry.utils.deepClone(this.actor.data.data)
+            data: foundry.utils.deepClone(this.actor.data.data),        
         }
+
+        let items = Array.from(this.actor.data.items.values()).sort( (a, b) => {
+            if(a.data.type == b.data.type) {
+                return a.data.name == b.data.name ? 0 : a.data.name < b.data.name ? -1:1;
+            } else {                
+                return  (game.symbaroum.config.itemSortOrder.indexOf(a.data.type) - game.symbaroum.config.itemSortOrder.indexOf(b.data.type));
+            }
+        });
+
+        data.items = items;
+        data.cssClass = this.isEditable ? "editable" : "locked";
+        data.editable = this.isEditable;
+
         return data;
     }
 }

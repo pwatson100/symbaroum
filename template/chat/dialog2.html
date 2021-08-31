@@ -45,8 +45,8 @@
       <label>{{localize "DIALOG.MODIFIER"}}</label>
       <input id="bonus" type="number" value="{{defaultModifier}}" data-dtype="Number"/>
   </div>
-    <div class="favour">
-      <label class="lblfavour">{{radioBoxes groupName choices checked=defaultFavour localize=true}}</label>
+  <div class="favour">
+    <label class="lblfavour">{{radioBoxes groupName choices checked=defaultFavour localize=true}}</label>
   </div>
   {{#if askImpeding}}
   <div class="simplebox">
@@ -58,24 +58,31 @@
     <label>{{localize "DIALOG.ASK_CORRUPTION"}}</label><span class="lblfavour"><input type="checkbox" id="targetCorrupt" unchecked></span>
   </div>
   {{/if}}
-    {{#if isWeaponRoll}}
-    <div class="simplebox">
-      <label>{{localize "DIALOG.ADVANTAGE"}}</label><span class="lblfavour"><input type="checkbox" id="advantage" unchecked></span>
-    </div>
+  {{#if isWeaponRoll}}
     <div class="simplebox">
       <label>{{localize "DIALOG.IGNORE_ARMOR"}}</label><span class="lblfavour"><input type="checkbox" id="ignarm" unchecked></span>
     </div>
     <div class="damagemodifier">
-		<label>{{localize "DIALOG.DAMAGE_MODIFIER"}}</label><input id="dammodifier" value="{{defaultDamModifier}}" type="text" data-dtype="Text"/>
+      <label for="weapondamage">{{localize "WEAPON.BASE_DAMAGE"}}</label> <div class="weapondamage"><span id="weapondamage">{{weaponDamage}}</span></div>
     </div>
-    {{#if askIronFistAdept}}
+    {{#if ironFistAdept}}
     <div class="damagemodifier">
-      <label>{{localize "DIALOG.DAMAGE_IF_MODIFIER"}}</label> <input id="ironfistmodifier" value="1d4" type="text" data-dtype="Text"/> 
+      <label for="weapondamage">{{localize "DIALOG.DAMAGE_IF_MODIFIER"}}</label> <div class="weapondamage"><span id="weapondamage">{{d4}}</span></div>
     </div>
     {{/if}}
     {{#if askIronFistMaster}}
+    <div class="favour">
+      <label class="lblfavour">{{radioBoxes groupNameIF choicesIF checked="1" localize=true}}</label>
+    </div>
+    {{/if}}
+    {{#if featStFavour}}
     <div class="damagemodifier">
-      <label>{{localize "DIALOG.DAMAGE_IF_MODIFIER"}}</label> <input id="ironfistmodifier" value="1d8" type="text" data-dtype="Text"/> 
+      <label for="weapondamage">{{localize "ABILITY_LABEL.FEAT_STRENGTH"}}</label> <div class="weapondamage"><span id="weapondamage">{{localize "DIALOG.FAVOUR_FAVOUR"}}</span></div>
+    </div>
+    {{/if}}
+    {{#if askRobustDmg}}
+    <div class="simplebox">
+      <label>{{localize "DIALOG.ROBUST_DMG"}}{{robustDmgValue}}</label> <span class="lblfavour"><input type="checkbox" id="userobust" checked></span>
     </div>
     {{/if}}
     <div class="bonus">
@@ -92,15 +99,10 @@
       <label>{{localize "DIALOG.BACKSTAB"}}</label> <span class="lblfavour"><input type="checkbox" id="usebackstab" unchecked></span>
     </div>
     {{/if}}
-    {{#if askBeastlore}}
-    <div class="simplebox">
-      <label>{{localize "DIALOG.BEASTLORE"}}</label> <span class="lblfavour"><input type="checkbox" id="usebeastlore" unchecked></span>
-    </div>
-    {{/if}}
     {{#if askHuntersInstinct}}
     <div class="simplebox">
-      <label>{{localize "DIALOG.HUNTERS_INSTINCT"}}</label> <span class="lblfavour"><input type="checkbox" id="usehunter" unchecked></span>
-  </div>
+      <label>{{localize "DIALOG.HUNTERS_INSTINCT"}}{{hunterBonus}}</label> <span class="lblfavour"><input type="checkbox" id="usehunter" unchecked></span>
+    </div>
     {{/if}}
     {{#if askTwoAttacks}}
     <div class="simplebox">
@@ -112,23 +114,52 @@
       <label>{{localize "DIALOG.3ATTACKS"}}</label> <span class="lblfavour"><input type="checkbox" id="do3attacks" unchecked></span>
     </div>
     {{/if}}
-    <div class="infotext">
-      <p><span class="infotext"></span>{{removeMarkup autoparamsText}}</span></p>
-    </div>
+  {{/if}}
+  {{#if contextualDamage}}
+  <div class="simplebox">
+    <label>{{localize "DIALOG.ADVANTAGE"}}</label><span class="lblfavour"><input type="checkbox" id="advantage" unchecked></span>
+  </div>
+  {{#if askBeastlore}}
+  <div class="simplebox">
+    <label>{{localize "DIALOG.BEASTLORE"}}{{beastLoreDmg}}</label> <span class="lblfavour"><input type="checkbox" id="usebeastlore" unchecked></span>
+  </div>
+  {{/if}}
+  {{#if leaderTarget}}
+  <div class="damagemodifier">
+    <label for="weapondamage">{{localize "COMBAT.CHAT_DMG_PARAMS_LEADER"}}</label> <div class="weapondamage"><span id="weapondamage">{{d4}}</span></div>
+  </div>
+  {{/if}}
+  <div class="damagemodifier">
+    <label>{{localize "DIALOG.DAMAGE_MODIFIER"}}</label><input id="dammodifier" value="{{defaultDamModifier}}" type="text" data-dtype="Text"/>
+  </div>
+  {{/if}}
+  {{#if isArmorRoll}}
+  <div class="advantage">
+    <label>{{localize "DIALOG.DISADVANTAGE"}}</label> <span class="lblfavour"><input type="checkbox" {{defaultAdvantage}} id="advantage" value="1" data-dtype="Number"> </span>
+  </div>
+  {{/if}}
+  {{#if checkMaintain}}
+  <div class="maintain">
+    <label>{{localize "DIALOG.ISMAINTAINED"}}</label>
+    <select id="maintain">
+        <option  value="C" selected >{{localize "DIALOG.CASTING"}}</option>
+        <option  value="M" >{{localize "DIALOG.MAINTAINING"}}</option>
+    </select>
+  </div>
+  {{/if}}
+  {{#if medicus}}
+    {{#if hasTarget}}
+      <div class="simplebox">
+        <label>{{localize "DIALOG.MEDICUS_EXAM"}}</label><span class="lblfavour"><input type="checkbox" id="exam" unchecked></span>
+      </div>
+      <div class="simplebox">
+        <label>{{localize "ABILITY_MEDICUS.HERBALCURE"}}</label><span class="lblfavour"><input type="checkbox" id="herbalcure" unchecked></span>
+      </div>
+      <div class="damagemodifier">
+        <label>{{localize "DIALOG.CUSTOM_HEALING_MODIFIER"}}</label><input id="customhealing" value="" type="text" data-dtype="Text"/>
+      </div>
+      {{else}}
+      <h4>{{localize "ABILITY_MEDICUS.NO_TARGET"}}</h4>
     {{/if}}
-    {{#if isArmorRoll}}
-    <div class="advantage">
-      <label>{{localize "DIALOG.DISADVANTAGE"}}</label> <span class="lblfavour"><input type="checkbox" {{defaultAdvantage}} id="advantage" value="1" data-dtype="Number"> </span>
-    </div>
-    {{/if}}
-    
-    {{#if checkMaintain}}
-    <div class="maintain">
-      <label>{{localize "DIALOG.ISMAINTAINED"}}</label>
-      <select id="maintain">
-          <option  value="C" selected >{{localize "DIALOG.CASTING"}}</option>
-          <option  value="M" >{{localize "DIALOG.MAINTAINING"}}</option>
-      </select>
-    </div>
-    {{/if}}
+  {{/if}}
 </div>

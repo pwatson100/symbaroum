@@ -17,16 +17,30 @@
 
 .symbaroum.sheet.item h1 {
   width: 100%;
-  height: 30px;
-  line-height: 30px;
+  height: 2em;
+  line-height: 2em;
   border: 0 none;
-  font-size: 16px;
+  font-size: 1.2em;
   margin: 0;
   text-align: center;
   background: url(../asset/image/title.jpg) repeat;
   color: var(--color-title);
   font-family: var(--font-text);
 }
+
+.symbaroum.sheet.item h2 {
+  width: 100%;
+  height: 1.5em;
+  line-height: 1.5em;
+  border: 0 none;
+  font-size: 1.0em;
+  margin: 0;
+  text-align: center;
+  background: url(../asset/image/title.jpg) repeat;
+  color: var(--color-title);
+  font-family: var(--font-text);
+}
+
 
 .symbaroum.sheet.item label {
   font-size: 14px;

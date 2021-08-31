@@ -23,6 +23,7 @@ function preloadHandlebarsTemplates() {
     'systems/symbaroum/template/sheet/equipment.html',
     'systems/symbaroum/template/sheet/artifact.html',
     'systems/symbaroum/template/sheet/tab/bonus.html',
+    'systems/symbaroum/template/sheet/tab/artifact.html',
     'systems/symbaroum/template/sheet/attributes.html',
     'systems/symbaroum/template/chat/item.html',
     'systems/symbaroum/template/chat/ability.html',
@@ -40,7 +41,11 @@ function registerHandlebarsHelpers() {
   Handlebars.registerHelper('keepMarkup', function (text) {  
     return new Handlebars.SafeString(text);
   });
-    
+
+  Handlebars.registerHelper('localizeabbr', function (text) {  
+    return game.i18n.localize(text+"ABBR");
+  });
+
   // Ifis not equal
   Handlebars.registerHelper('ifne', function (v1, v2, options) {
     if (v1 !== v2) return options.fn(this);
@@ -56,5 +61,12 @@ function registerHandlebarsHelpers() {
   Handlebars.registerHelper('ifgt', function (v1, v2, options) {
     if (v1 > v2) return options.fn(this);
     else return options.inverse(this);
+  });
+  Handlebars.registerHelper('keyIndex', function (str) {
+    return 'data.power.' + str + '.description';
+  });
+  Handlebars.registerHelper('addOne', function (v1) {
+    let newOne = parseInt(v1) + 1;
+    return newOne;
   });
 }

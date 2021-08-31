@@ -1,25 +1,25 @@
-import { attackRoll, getPowerLevel } from './item.js';
+import { attackRoll, getPowerLevel, markScripted } from './item.js';
 import { prepareRollAttribute } from "../common/dialog.js";
 import { upgradeDice } from './roll.js';
 
 export class SymbaroumActor extends Actor {
   
     prepareData() {
-        console.log("In prepareData");
+        // console.log("In prepareData");
         super.prepareData();
         // this.data.items.forEach(item => item.prepareFinalAttributes());
         // let data = foundry.utils.deepClone(this.data);
-        console.log("Init data");
+        // console.log("Init data");
         this._initializeData(this.data);
-        console.log("Init data - complete");
+        // console.log("Init data - complete");
         this.data.numRituals = 0;
-        console.log("Compute items");    
+        // console.log("Compute items");    
         this._computeItems(this.data.items);
-        console.log("Compute items - complete");
-        console.log("Compute _computeSecondaryAttributes");
+        // console.log("Compute items - complete");
+        // console.log("Compute _computeSecondaryAttributes");
         this._computeSecondaryAttributes(this.data);
-        console.log("Compute _computeSecondaryAttributes");
-        console.log("Out prepareData");
+        // console.log("Compute _computeSecondaryAttributes");
+        // console.log("Out prepareData");
         this.data.isDataPrepared = true;
     }
 
@@ -86,11 +86,9 @@ export class SymbaroumActor extends Actor {
         // for (let item of Object.values(items)) {
         for( const [key, item] of items.entries() ) {
             item.prepareData();
-            
+            if((item.data.isAbility||item.data.isPower||item.data.isTrait) && !item.data.data?.script) markScripted(item);
             if (item.data.isPower) this._computePower(this.data, item.data);
             if (item.data.isGear) this._computeGear(this.data, item.data);
-
-
         }
     }
 
@@ -109,6 +107,7 @@ export class SymbaroumActor extends Actor {
             if(data.data.attributes[aKey].temporaryMod != 0 ){data.data.attributes[aKey].msg += "<br />"+game.i18n.localize("ATTRIBUTE.MODIFIER")+"("+data.data.attributes[aKey].temporaryMod.toString()+")"};
         }
         
+        // Toughness max
         let strong = data.data.attributes.strong.total;
         let sturdy = this.data.items.filter(item => item.data.data.reference === "sturdy");
         if(sturdy.length != 0){
@@ -116,19 +115,38 @@ export class SymbaroumActor extends Actor {
             if(sturdyLvl == 1) data.data.health.toughness.max = Math.ceil(strong*(1.5));
             else data.data.health.toughness.max = strong*(sturdyLvl)
         }
-        else data.data.health.toughness.max = (strong > 10 ? strong : 10) + data.data.bonus.toughness.max;       
-        data.data.health.toughness.threshold = Math.ceil(strong / 2) + data.data.bonus.toughness.threshold;
+        else data.data.health.toughness.max = (strong > 10 ? strong : 10) + data.data.bonus.toughness.max;
+        let featSt = this.data.items.filter(item => item.data.data.reference === "featofstrength");
+        if(featSt.length != 0){
+            let featStLvl = getPowerLevel(featSt[0]).level;
+            if(featStLvl > 0) data.data.health.toughness.max += 5;
+        }
+
+        let noPain = this.data.items.filter(element => element.data.data.reference === "nopainthreshold");
+        if(noPain.length > 0){
+            data.data.health.toughness.threshold = 0;
+        } else data.data.health.toughness.threshold = Math.ceil(strong / 2) + data.data.bonus.toughness.threshold;
         
-        let resolute = data.data.attributes.resolute.total;        
-        data.data.health.corruption.threshold = Math.ceil(resolute / 2) + data.data.bonus.corruption.threshold;
-        data.data.health.corruption.max = resolute + data.data.bonus.corruption.max;
-        
+        // Corruption Max
+        let fullCorrupt = (this.data.items.filter(element => element.data.data.reference === "thoroughlycorrupt"));
+        if(fullCorrupt.length > 0){
+            data.data.health.corruption.threshold = 0;
+            data.data.health.corruption.max = 0;
+        } else{
+            let resolute = data.data.attributes.resolute.total;
+            
+            let strongGift = this.data.items.filter(item => item.data.data.reference === "stronggift");
+            if(strongGift.length != 0){
+                let strongGiftLvl = getPowerLevel(strongGift[0]).level;
+                if(strongGiftLvl > 1) resolute = resolute*2;
+            }
+            data.data.health.corruption.threshold = Math.ceil(resolute / 2) + data.data.bonus.corruption.threshold;
+            data.data.health.corruption.max = resolute + data.data.bonus.corruption.max;
+        }
         let corr = data.data.health.corruption;
         corr.value = corr.temporary + corr.longterm + corr.permanent;
 
-        console.log("Experience cost");
         data.data.experience.spent = data.data.bonus.experience.cost - data.data.bonus.experience.value;
-        console.log("Experience total");
         data.data.experience.available = data.data.experience.total - data.data.experience.artifactrr - data.data.experience.spent;
         
         let extraArmorBonus = this._getExtraArmorBonuses();
@@ -155,9 +173,16 @@ export class SymbaroumActor extends Actor {
         if(activeWeapons.length > 0){
             data.data.weapons = this.evaluateWeapons(activeWeapons);
         }
+        if(!game.settings.get('symbaroum', 'manualInitValue')){
+            this._getInitiativeAttribute()
+        }
         let attributeInit = data.data.initiative.attribute.toLowerCase();
         data.data.initiative.value = ((data.data.attributes[attributeInit].total) + (data.data.attributes.vigilant.total /100)) ;
-        console.log("out _computeSecondaryAttributes "); // +JSON.stringify(data));
+
+        let rrAbility = this.items.filter(item => item.data.data.reference === "rapidreflexes");
+        if(rrAbility.length != 0){
+            if(getPowerLevel(rrAbility[0]).level > 2) data.data.initiative.value += 20
+        }
     }
 
     _computePower(data, item) {
@@ -251,6 +276,8 @@ export class SymbaroumActor extends Actor {
             if( baseDamage === undefined) {
                 baseDamage = "1d8";
             }
+            let sometimesOnBonusFromAbilities = "";
+            let sometimesOnBonusFromAbilitiesShort = "";
             let bonusDamage = "";
             let shortBonusDamage = "";
             if( item.data.data.bonusDamage !== undefined && item.data.data.bonusDamage != ""){
@@ -260,6 +287,11 @@ export class SymbaroumActor extends Actor {
                 }
                 bonusDamage = plus + item.data.data.bonusDamage;
                 shortBonusDamage += plus + item.data.data.bonusDamage;;
+            }
+            if(tacticianLvl > 2 && item.data.data.reference != "heavy"){
+                if(this.data.data.attributes.cunning.total > this.data.data.attributes[attribute].total){
+                    attribute = "cunning";
+                }
             }
             if(item.data.data?.isMelee){
                 if(polearmmasteryLvl > 0 && item.data.data.qualities.long){
@@ -281,32 +313,24 @@ export class SymbaroumActor extends Actor {
                     }
                 }
                 if(robustLvl == 1){
-                    /* Only on first attack, not remainder */
-                    bonusDamage += " +1d4["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
-                    shortBonusDamage += " +1d4";
+                    sometimesOnBonusFromAbilities += " +1d4["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
+                    sometimesOnBonusFromAbilitiesShort += " +1d4";
                     tooltip += game.i18n.localize("TRAIT_LABEL.ROBUST") + robustLvl.toString() + ", ";
                 }
                 else if(robustLvl == 2){
-                    /* Only on first attack, not remainder */
-                    bonusDamage += " +1d6["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
-                    shortBonusDamage += " +1d6";
+                    sometimesOnBonusFromAbilities += " +1d6["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
+                    sometimesOnBonusFromAbilitiesShort += " +1d6";
                     tooltip += game.i18n.localize("TRAIT_LABEL.ROBUST") + robustLvl.toString() + ", ";
                 }
                 else if(robustLvl > 2){
-                    /* Only on first attack, not remainder */
-                    bonusDamage += " +1d8["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
-                    shortBonusDamage += " +1d8";
+                    sometimesOnBonusFromAbilities += " +1d8["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
+                    sometimesOnBonusFromAbilitiesShort += " +1d8";
                     tooltip += game.i18n.localize("TRAIT_LABEL.ROBUST") + robustLvl.toString() + ", ";
                 }
                 if(flagBerserk){
                     bonusDamage += " +1d6["+game.i18n.localize("ABILITY_LABEL.BERSERKER")+"]";
                     shortBonusDamage += " +1d6";
                     tooltip += game.i18n.localize("ABILITY_LABEL.BERSERKER") + ", ";
-                }
-                if(ironFistLvl > 0){
-                    if(this.data.data.attributes.strong.total > this.data.data.attributes[attribute].total){
-                        attribute = "strong";
-                    }
                 }
                 if(dominate.length > 0){
                     if(this.data.data.attributes.persuasive.total > this.data.data.attributes[attribute].total){
@@ -323,12 +347,32 @@ export class SymbaroumActor extends Actor {
                         attribute = "quick";
                     }
                 }
-            }
-            if(tacticianLvl > 2 && item.data.data.reference != "heavy"){
-                if(this.data.data.attributes.cunning.total > this.data.data.attributes[attribute].total){
-                    attribute = "cunning";
+                if(ironFistLvl > 0){
+                    if(this.data.data.attributes.strong.total >= this.data.data.attributes[attribute].total){
+                        attribute = "strong";
+                        let featSt = this.data.items.filter(item => item.data.data.reference === "featofstrength");
+                        if((featSt.length != 0) && (this.data.data.health.toughness.value < (this.data.data.health.toughness.max/2))){
+                            let featStLvl = getPowerLevel(featSt[0]).level;
+                            if(featStLvl > 2) {
+                                bonusDamage += " +1d4["+game.i18n.localize("ABILITY_LABEL.FEAT_STRENGTH")+"]";
+                                shortBonusDamage += " +1d4";
+                                tooltip += game.i18n.localize("ABILITY_LABEL.FEAT_STRENGTH") + ", ";
+                            }
+                        }
+                    }
+                    if(ironFistLvl == 2){
+                        sometimesOnBonusFromAbilities += " +1d4["+game.i18n.localize("ABILITY_LABEL.IRON_FIST")+"]";
+                        sometimesOnBonusFromAbilitiesShort += " +1d4";
+                        tooltip += game.i18n.localize("ABILITY_LABEL.IRON_FIST") + ", ";
+                    }
+                    else if(ironFistLvl > 2){
+                        sometimesOnBonusFromAbilities += " +1d8["+game.i18n.localize("ABILITY_LABEL.IRON_FIST")+"]";
+                        sometimesOnBonusFromAbilitiesShort += " +1d8";
+                        tooltip += game.i18n.localize("ABILITY_LABEL.IRON_FIST") + ", ";
+                    }
                 }
             }
+
             
             if(item.data.data?.isDistance){
                 if(sixthsense.length > 0){
@@ -377,17 +421,26 @@ export class SymbaroumActor extends Actor {
             }
             let pcDamage = baseDamage + bonusDamage;
             let pcShort = baseDamage + shortBonusDamage;
+            let pcDamageExt = pcDamage + sometimesOnBonusFromAbilities;
+            let pcExtShort = pcShort + sometimesOnBonusFromAbilitiesShort;
             let DmgRoll= new Roll(pcDamage).evaluate({maximize: true});
             let npcDamage = Math.ceil(DmgRoll.total/2);
             let baseDmgRoll = new Roll(baseDamage).evaluate({maximize: true});
+            let DmgRollExt= new Roll(pcDamageExt).evaluate({maximize: true});
+            let npcDamageExt = Math.ceil(DmgRollExt.total/2);
             if(item.data.data.qualities?.massive) {
                 pcDamage = "2d"+(baseDmgRoll.total)+"kh"+bonusDamage;
                 pcShort = "2d"+(baseDmgRoll.total)+"kh"+shortBonusDamage;
+                pcDamageExt = pcDamage + sometimesOnBonusFromAbilities;
+                pcExtShort = pcShort + sometimesOnBonusFromAbilitiesShort;
             }
             if(item.data.data.qualities?.deepImpact){
-                pcDamage += "+1";
+                pcDamage += "+1d1["+game.i18n.localize("QUALITY.DEEPIMPACT")+"]";
                 pcShort += " +1";
-                npcDamage+= 1;
+                pcDamageExt += "+1d1["+game.i18n.localize("QUALITY.DEEPIMPACT")+"]";
+                pcExtShort += "+1"
+                npcDamage+=1;
+                npcDamageExt+=1;
                 tooltip += game.i18n.localize("QUALITY.DEEPIMPACT") + ", ";
             }
             let itemID = item.id;
@@ -407,9 +460,14 @@ export class SymbaroumActor extends Actor {
                 qualities: item.data.data.qualities,
                 damage: {
                     base: baseDamage, 
-                    bonus: bonusDamage, 
+                    bonus: bonusDamage,
+                    sometimesOnBonusFromAbilitiesShort: sometimesOnBonusFromAbilitiesShort,
+                    sometimesOnBonusFromAbilities: sometimesOnBonusFromAbilities,
                     pc: pcDamage, 
                     pcShort: pcShort,
+                    pcExtended: pcDamageExt,
+                    pcExtShort: pcExtShort,
+                    npcExtended: npcDamageExt,
                     npc: npcDamage
                 }
             })
@@ -418,7 +476,7 @@ export class SymbaroumActor extends Actor {
     }
     
     _evaluateProtection(item, extraArmorBonus) {
-        console.log("_evaluateProtection ");
+        // console.log("_evaluateProtection ");
 
         let tooltip = "";
         let protection = item.data.data.baseProtection;
@@ -688,15 +746,35 @@ export class SymbaroumActor extends Actor {
                         isArmor: true,
                         isActive: true, 
                         isEquipped: false
-                    }
-
+                    }                    
                 }, extraArmorBonus);
+            noArmor.isNoArmor = true;
             data.data.armors.push(noArmor);
             wearArmor = noArmor;
         }
         return(wearArmor)
     }
 
+    _getInitiativeAttribute() {
+        let attributeInit = "quick";
+        let sixthsenseLvl = 0;
+        let sixthsense = this.data.items.filter(element => element.data.data?.reference === "sixthsense");
+        if(sixthsense.length > 0){
+            sixthsenseLvl = getPowerLevel(sixthsense[0]).level;
+            if(sixthsenseLvl > 1){
+                if(this.data.data.attributes.vigilant.total > this.data.data.attributes[attributeInit].total){
+                    attributeInit = "vigilant";
+                }
+            }
+        }
+        let tactician = this.data.items.filter(element => element.data.data?.reference === "tactician");
+        if(tactician.length > 0){
+            if(this.data.data.attributes.cunning.total > this.data.data.attributes[attributeInit].total){
+                attributeInit = "cunning";
+            }
+        }
+        this.data.data.initiative.attribute = attributeInit;
+    }
     _getWeapons(data) {
         let weaponArray = this.data.items.filter(element => element.data.isWeapon);
         return(weaponArray)
@@ -738,11 +816,9 @@ export class SymbaroumActor extends Actor {
       this._addBonusData(currentBonusExperience, item, itemBonusExperience, "value");
 
     }
-    
 
-
-    async usePower(powerItem){
-       await powerItem.makeAction(this);
+    async usePower(ability){
+        if(ability.data.data?.script) ability.data.data?.script(ability, this);
     }
 
     async rollArmor() {
@@ -765,23 +841,4 @@ export class SymbaroumActor extends Actor {
         await prepareRollAttribute(this, attributeName, null, null);
     }
 
-    /*
-    async _preCreate(data, options, user) {
-        await super._preCreate(data, options, user);
-
-
-        setProperty(data, "token.bar1.attribute", 'health.toughness');
-        setProperty(data, "token.bar2.attribute",'combat.defense');
-        setProperty(data, "token.displayName",CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER);
-        setProperty(data, "token.displayBars",CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER);
-        setProperty(data, "token.disposition",CONST.TOKEN_DISPOSITIONS.NEUTRAL);
-        setProperty(data, "token.name",this.name);
-        setProperty(data, "img",'systems/symbaroum/asset/image/unknown-actor.png');
-
-        if (this.type === 'player') {
-            setProperty(data, "token.vision",true);
-            setProperty(data, "token.actorLink",true);
-        }        
-    }
-    */
 }
