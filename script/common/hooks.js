@@ -15,6 +15,7 @@ import { ArtifactSheet } from '../sheet/artifact.js';
 import { initializeHandlebars } from './handlebars.js';
 import { migrateWorld } from './migration.js';
 import { sendDevMessage } from './devmsg.js';
+import { SYMBAROUM } from './config.js';
 
 Hooks.once('init', () => {
   CONFIG.Actor.documentClass = SymbaroumActor;
@@ -33,8 +34,14 @@ Hooks.once('init', () => {
   Items.registerSheet('symbaroum', WeaponSheet, { types: ['weapon'], makeDefault: true });
   Items.registerSheet('symbaroum', ArmorSheet, { types: ['armor'], makeDefault: true });
   Items.registerSheet('symbaroum', EquipmentSheet, { types: ['equipment'], makeDefault: true });
-  Items.registerSheet('symbaroum', ArtifactSheet, { types: ['artifact'], makeDefault: true });
+  Items.registerSheet('symbaroum', ArtifactSheet, { types: ['artifact'], makeDefault: true });  
   initializeHandlebars();
+
+  game.symbaroum = { 
+    config: SYMBAROUM
+  };
+
+
   game.settings.register('symbaroum', 'worldTemplateVersion', {
     // worldTemplateVersion is deprecated - not to use anymore
     name: 'World Template Version',
