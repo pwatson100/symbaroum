@@ -5,21 +5,21 @@ import { upgradeDice } from './roll.js';
 export class SymbaroumActor extends Actor {
   
     prepareData() {
-        console.log("In prepareData");
+        // console.log("In prepareData");
         super.prepareData();
         // this.data.items.forEach(item => item.prepareFinalAttributes());
         // let data = foundry.utils.deepClone(this.data);
-        console.log("Init data");
+        // console.log("Init data");
         this._initializeData(this.data);
-        console.log("Init data - complete");
+        // console.log("Init data - complete");
         this.data.numRituals = 0;
-        console.log("Compute items");    
+        // console.log("Compute items");    
         this._computeItems(this.data.items);
-        console.log("Compute items - complete");
-        console.log("Compute _computeSecondaryAttributes");
+        // console.log("Compute items - complete");
+        // console.log("Compute _computeSecondaryAttributes");
         this._computeSecondaryAttributes(this.data);
-        console.log("Compute _computeSecondaryAttributes");
-        console.log("Out prepareData");
+        // console.log("Compute _computeSecondaryAttributes");
+        // console.log("Out prepareData");
         this.data.isDataPrepared = true;
     }
 
@@ -122,25 +122,31 @@ export class SymbaroumActor extends Actor {
             if(featStLvl > 0) data.data.health.toughness.max += 5;
         }
 
-        data.data.health.toughness.threshold = Math.ceil(strong / 2) + data.data.bonus.toughness.threshold;
+        let noPain = this.data.items.filter(element => element.data.data.reference === "nopainthreshold");
+        if(noPain.length > 0){
+            data.data.health.toughness.threshold = 0;
+        } else data.data.health.toughness.threshold = Math.ceil(strong / 2) + data.data.bonus.toughness.threshold;
         
         // Corruption Max
-        let resolute = data.data.attributes.resolute.total;
-        
-        let strongGift = this.data.items.filter(item => item.data.data.reference === "stronggift");
-        if(strongGift.length != 0){
-            let strongGiftLvl = getPowerLevel(strongGift[0]).level;
-            if(strongGift > 1) resolute = resolute*2;
+        let fullCorrupt = (this.data.items.filter(element => element.data.data.reference === "thoroughlycorrupt"));
+        if(fullCorrupt.length > 0){
+            data.data.health.corruption.threshold = 0;
+            data.data.health.corruption.max = 0;
+        } else{
+            let resolute = data.data.attributes.resolute.total;
+            
+            let strongGift = this.data.items.filter(item => item.data.data.reference === "stronggift");
+            if(strongGift.length != 0){
+                let strongGiftLvl = getPowerLevel(strongGift[0]).level;
+                if(strongGiftLvl > 1) resolute = resolute*2;
+            }
+            data.data.health.corruption.threshold = Math.ceil(resolute / 2) + data.data.bonus.corruption.threshold;
+            data.data.health.corruption.max = resolute + data.data.bonus.corruption.max;
         }
-        data.data.health.corruption.threshold = Math.ceil(resolute / 2) + data.data.bonus.corruption.threshold;
-        data.data.health.corruption.max = resolute + data.data.bonus.corruption.max;
-        
         let corr = data.data.health.corruption;
         corr.value = corr.temporary + corr.longterm + corr.permanent;
 
-        console.log("Experience cost");
         data.data.experience.spent = data.data.bonus.experience.cost - data.data.bonus.experience.value;
-        console.log("Experience total");
         data.data.experience.available = data.data.experience.total - data.data.experience.artifactrr - data.data.experience.spent;
         
         let extraArmorBonus = this._getExtraArmorBonuses();
@@ -172,11 +178,11 @@ export class SymbaroumActor extends Actor {
         }
         let attributeInit = data.data.initiative.attribute.toLowerCase();
         data.data.initiative.value = ((data.data.attributes[attributeInit].total) + (data.data.attributes.vigilant.total /100)) ;
+
         let rrAbility = this.items.filter(item => item.data.data.reference === "rapidreflexes");
         if(rrAbility.length != 0){
             if(getPowerLevel(rrAbility[0]).level > 2) data.data.initiative.value += 20
         }
-        console.log("out _computeSecondaryAttributes "); // +JSON.stringify(data));
     }
 
     _computePower(data, item) {
@@ -470,7 +476,7 @@ export class SymbaroumActor extends Actor {
     }
     
     _evaluateProtection(item, extraArmorBonus) {
-        console.log("_evaluateProtection ");
+        // console.log("_evaluateProtection ");
 
         let tooltip = "";
         let protection = item.data.data.baseProtection;
@@ -740,9 +746,9 @@ export class SymbaroumActor extends Actor {
                         isArmor: true,
                         isActive: true, 
                         isEquipped: false
-                    }
-
+                    }                    
                 }, extraArmorBonus);
+            noArmor.isNoArmor = true;
             data.data.armors.push(noArmor);
             wearArmor = noArmor;
         }
@@ -835,23 +841,4 @@ export class SymbaroumActor extends Actor {
         await prepareRollAttribute(this, attributeName, null, null);
     }
 
-    /*
-    async _preCreate(data, options, user) {
-        await super._preCreate(data, options, user);
-
-
-        setProperty(data, "token.bar1.attribute", 'health.toughness');
-        setProperty(data, "token.bar2.attribute",'combat.defense');
-        setProperty(data, "token.displayName",CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER);
-        setProperty(data, "token.displayBars",CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER);
-        setProperty(data, "token.disposition",CONST.TOKEN_DISPOSITIONS.NEUTRAL);
-        setProperty(data, "token.name",this.name);
-        setProperty(data, "img",'systems/symbaroum/asset/image/unknown-actor.png');
-
-        if (this.type === 'player') {
-            setProperty(data, "token.vision",true);
-            setProperty(data, "token.actorLink",true);
-        }        
-    }
-    */
 }

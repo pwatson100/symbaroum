@@ -6,8 +6,8 @@
             </div>
             <div class="wrapper-column">
                 <div class="name">
-                    <label for="{{item.id}}-item.name">{{localize "WEAPON.NAME"}}</label>
-                    <input id="{{item.id}}-item.name" name="name" type="text" value="{{item.name}}"/>
+                    <label for="{{item._id}}-item.name">{{localize "WEAPON.NAME"}}</label>
+                    <input id="{{item._id}}-item.name" name="name" type="text" value="{{item.name}}"/>
                 </div>
                 <div class="computedvalues">
                     <div class="wrapper-column">
@@ -26,9 +26,11 @@
             <b class="item" data-tab="description">{{localize "TAB.DESCRIPTION"}}</b>
             <b class="item" data-tab="stats">{{localize "TAB.STATS"}}</b>
             <b class="item" data-tab="qualities">{{localize "TAB.QUALITIES"}}</b>
+            {{#if data.isArtifact}}
+            <b class="item" data-tab="power">{{localize "TAB.POWER"}}</b>
+            {{/if}}
             <b class="item" data-tab="bonus">{{localize "TAB.BONUS"}}</b>
         </div>
-
         <div class="sheet-body">
             <div class="tab" data-group="primary" data-tab="description">
                 <div class="description foreground border">
@@ -40,8 +42,8 @@
                 <div class="stats foreground border">
                     <h1>{{localize "TITLE.STATS"}}</h1>
                     <div class="attribute">
-                        <label for="{{item.id}}-data.attribute">{{localize "WEAPON.ATTRIBUTE"}}</label>
-                        <select id="{{item.id}}-data.attribute" name="data.attribute">
+                        <label for="{{item._id}}-data.attribute">{{localize "WEAPON.ATTRIBUTE"}}</label>
+                        <select id="{{item._id}}-data.attribute" name="data.attribute">
                             {{#select data.attribute}}
                             <option value="accurate">{{localize "ATTRIBUTE.ACCURATE"}}</option>
                             <option value="cunning">{{localize "ATTRIBUTE.CUNNING"}}</option>
@@ -55,8 +57,8 @@
                         </select>
                     </div>
                     <div class="reference">
-                        <label for="{{item.id}}-data.reference">{{localize "WEAPON_CLASS.LABEL"}}</label>
-                        <select id="{{item.id}}-data.reference" name="data.reference">
+                        <label for="{{item._id}}-data.reference">{{localize "WEAPON_CLASS.LABEL"}}</label>
+                        <select id="{{item._id}}-data.reference" name="data.reference">
                             {{#select data.reference}}
                             <option value="1handed">{{localize "WEAPON_CLASS.1HANDED"}}</option>
                             <option value="short">{{localize "WEAPON_CLASS.SHORT"}}</option>
@@ -71,8 +73,8 @@
                         </select>
                     </div>
                     <div class="damage">
-                        <label for="{{item.id}}-data.baseDamage">{{localize "WEAPON.BASE_DAMAGE"}}</label>
-                        <select id="{{item.id}}-data.baseDamage" name="data.baseDamage">
+                        <label for="{{item._id}}-data.baseDamage">{{localize "WEAPON.BASE_DAMAGE"}}</label>
+                        <select id="{{item._id}}-data.baseDamage" name="data.baseDamage">
                             {{#select data.baseDamage}}
                             <option value="1d4">1d4</option>
                             <option value="1d6">1d6</option>
@@ -83,19 +85,27 @@
                         </select>
                     </div>
                     <div class="damage">
-                        <label for="{{item.id}}-data.bonusDamage" >{{localize "WEAPON.BONUS_DAMAGE"}}</label>
-                        <input id="{{item.id}}-data.bonusDamage" name="data.bonusDamage" type="text" value="{{data.bonusDamage}}"/>
+                        <label for="{{item._id}}-data.bonusDamage" >{{localize "WEAPON.BONUS_DAMAGE"}}</label>
+                        <input id="{{item._id}}-data.bonusDamage" name="data.bonusDamage" type="text" value="{{data.bonusDamage}}"/>
                     </div>
                     <div class="cost">
-                        <label for="{{item.id}}-data.cost">{{localize "WEAPON.COST"}}</label>
-                        <input id="{{item.id}}-data.cost" name="data.cost" type="text" value="{{data.cost}}"/>
+                        <label for="{{item._id}}-data.cost">{{localize "WEAPON.COST"}}</label>
+                        <input id="{{item._id}}-data.cost" name="data.cost" type="text" value="{{data.cost}}"/>
                     </div>
                     <div class="number">
-                        <label for="{{item.id}}-data.number">{{localize "WEAPON.NUMBER"}}</label>
-                        <input id="{{item.id}}-data.number" name="data.number" type="number" value="{{data.number}}"/>
+                        <label for="{{item._id}}-data.number">{{localize "WEAPON.NUMBER"}}</label>
+                        <input id="{{item._id}}-data.number" name="data.number" type="number" value="{{data.number}}"/>
+                    </div>
+                    <div class="number">
+                        <label for="{{item._id}}-data.isArtifact">{{localize "ITEM.ARTIFACT"}}</label>
+                        {{#if data.isArtifact}}
+                        <input id="{{item._id}}-data.isArtifact" name="data.isArtifact" type="checkbox" value="artifact" checked/>
+                        {{else}}
+                        <input id="{{item._id}}-data.isArtifact" name="data.isArtifact" type="checkbox" value="artifact"/>
+                        {{/if}}
                     </div>
                     <div class="quality">
-                        <label for="{{item.id}}-data.quality">{{localize "WEAPON.QUALITY"}}</label>
+                        <label for="{{item._id}}-data.quality">{{localize "WEAPON.QUALITY"}}</label>
                         <input name="data.quality" type="text" value="{{data.quality}}"/>
                     </div>
                 </div>
@@ -104,219 +114,219 @@
                 <div class="qualities foreground border">
                     <h1>{{localize "TITLE.QUALITIES"}}</h1>
                     <div class="leftcolumn">
-                        <label for="{{item.id}}-data.qualities.short">{{localize "QUALITY.SHORT"}}</label>
+                        <label for="{{item._id}}-data.qualities.short">{{localize "QUALITY.SHORT"}}</label>
                         {{#if data.qualities.short}}
-                        <input id="{{item.id}}-data.qualities.short" name="data.qualities.short" type="checkbox" value="short" checked/>
+                        <input id="{{item._id}}-data.qualities.short" name="data.qualities.short" type="checkbox" value="short" checked/>
                         {{else}}
-                        <input id="{{item.id}}-data.qualities.short" name="data.qualities.short" type="checkbox" value="short"/>
+                        <input id="{{item._id}}-data.qualities.short" name="data.qualities.short" type="checkbox" value="short"/>
                         {{/if}}
                     </div>
                     <div class="rightcolumn">
-                        <label for="{{item.id}}-data.qualities.long">{{localize "QUALITY.LONG"}}</label>
+                        <label for="{{item._id}}-data.qualities.long">{{localize "QUALITY.LONG"}}</label>
                         {{#if data.qualities.long}}
-                        <input id="{{item.id}}-data.qualities.long" name="data.qualities.long" type="checkbox" value="long" checked/>
+                        <input id="{{item._id}}-data.qualities.long" name="data.qualities.long" type="checkbox" value="long" checked/>
                         {{else}}
-                        <input id="{{item.id}}-data.qualities.long" name="data.qualities.long" type="checkbox" value="long"/>
+                        <input id="{{item._id}}-data.qualities.long" name="data.qualities.long" type="checkbox" value="long"/>
                         {{/if}}
                     </div>
                     <div class="leftcolumn">
-                        <label for="{{item.id}}-data.qualities.precise">{{localize "QUALITY.PRECISE"}}</label>
+                        <label for="{{item._id}}-data.qualities.precise">{{localize "QUALITY.PRECISE"}}</label>
                         {{#if data.qualities.precise}}
-                        <input id="{{item.id}}-data.qualities.precise" name="data.qualities.precise" type="checkbox" value="precise" checked/>
+                        <input id="{{item._id}}-data.qualities.precise" name="data.qualities.precise" type="checkbox" value="precise" checked/>
                         {{else}}
-                        <input id="{{item.id}}-data.qualities.precise" name="data.qualities.precise" type="checkbox" value="precise"/>
+                        <input id="{{item._id}}-data.qualities.precise" name="data.qualities.precise" type="checkbox" value="precise"/>
                         {{/if}}
                     </div>
                     <div class="rightcolumn">
-                        <label for="{{item.id}}-data.qualities.balanced">{{localize "QUALITY.BALANCED"}}</label>
+                        <label for="{{item._id}}-data.qualities.balanced">{{localize "QUALITY.BALANCED"}}</label>
                         {{#if data.qualities.balanced}}
-                        <input id="{{item.id}}-data.qualities.balanced" name="data.qualities.balanced" type="checkbox" value="balanced" checked/>
+                        <input id="{{item._id}}-data.qualities.balanced" name="data.qualities.balanced" type="checkbox" value="balanced" checked/>
                         {{else}}
-                        <input id="{{item.id}}-data.qualities.balanced" name="data.qualities.balanced" type="checkbox" value="balanced"/>
+                        <input id="{{item._id}}-data.qualities.balanced" name="data.qualities.balanced" type="checkbox" value="balanced"/>
                         {{/if}}
                     </div>
                     <div class="leftcolumn">
-                        <label for="{{item.id}}-data.qualities.deepImpact">{{localize "QUALITY.DEEPIMPACT"}}</label>
+                        <label for="{{item._id}}-data.qualities.deepImpact">{{localize "QUALITY.DEEPIMPACT"}}</label>
                         {{#if data.qualities.deepImpact}}
-                        <input id="{{item.id}}-data.qualities.deepImpact" name="data.qualities.deepImpact" type="checkbox" value="deepImpact" checked/>
+                        <input id="{{item._id}}-data.qualities.deepImpact" name="data.qualities.deepImpact" type="checkbox" value="deepImpact" checked/>
                         {{else}}
-                        <input id="{{item.id}}-data.qualities.deepImpact" name="data.qualities.deepImpact" type="checkbox" value="deepImpact"/>
+                        <input id="{{item._id}}-data.qualities.deepImpact" name="data.qualities.deepImpact" type="checkbox" value="deepImpact"/>
                         {{/if}}
                     </div>
                     <div class="rightcolumn">
-                        <label for="{{item.id}}-data.qualities.concealed">{{localize "QUALITY.CONCEALED"}}</label>
+                        <label for="{{item._id}}-data.qualities.concealed">{{localize "QUALITY.CONCEALED"}}</label>
                         {{#if data.qualities.concealed}}
-                        <input id="{{item.id}}-data.qualities.concealed" name="data.qualities.concealed" type="checkbox" value="concealed" checked/>
+                        <input id="{{item._id}}-data.qualities.concealed" name="data.qualities.concealed" type="checkbox" value="concealed" checked/>
                         {{else}}
-                        <input id="{{item.id}}-data.qualities.concealed" name="data.qualities.concealed" type="checkbox" value="concealed"/>
+                        <input id="{{item._id}}-data.qualities.concealed" name="data.qualities.concealed" type="checkbox" value="concealed"/>
                         {{/if}}
                     </div>
                     <div class="leftcolumn">
-                        <label for="{{item.id}}-data.qualities.bastard">{{localize "QUALITY.BASTARD"}}</label>
+                        <label for="{{item._id}}-data.qualities.bastard">{{localize "QUALITY.BASTARD"}}</label>
                         {{#if data.qualities.bastard}}
-                        <input id="{{item.id}}-data.qualities.bastard" name="data.qualities.bastard" type="checkbox" value="bastard" checked/>
+                        <input id="{{item._id}}-data.qualities.bastard" name="data.qualities.bastard" type="checkbox" value="bastard" checked/>
                         {{else}}
-                        <input id="{{item.id}}-data.qualities.bastard" name="data.qualities.bastard" type="checkbox" value="bastard"/>
+                        <input id="{{item._id}}-data.qualities.bastard" name="data.qualities.bastard" type="checkbox" value="bastard"/>
                         {{/if}}
                     </div>
                     <div class="rightcolumn">
-                        <label for="{{item.id}}-data.qualities.mystical">{{localize "QUALITY.MYSTICAL"}}</label>
+                        <label for="{{item._id}}-data.qualities.mystical">{{localize "QUALITY.MYSTICAL"}}</label>
                         {{#if data.qualities.mystical}}
-                        <input id="{{item.id}}-data.qualities.mystical" name="data.qualities.mystical" type="checkbox" value="mystical" checked/>
+                        <input id="{{item._id}}-data.qualities.mystical" name="data.qualities.mystical" type="checkbox" value="mystical" checked/>
                         {{else}}
-                        <input id="{{item.id}}-data.qualities.mystical" name="data.qualities.mystical" type="checkbox" value="mystical"/>
+                        <input id="{{item._id}}-data.qualities.mystical" name="data.qualities.mystical" type="checkbox" value="mystical"/>
                         {{/if}}
                     </div>
                     <div class="leftcolumn">
-                        <label for="{{item.id}}-data.qualities.blunt">{{localize "QUALITY.BLUNT"}}</label>
+                        <label for="{{item._id}}-data.qualities.blunt">{{localize "QUALITY.BLUNT"}}</label>
                         {{#if data.qualities.blunt}}
-                        <input id="{{item.id}}-data.qualities.blunt" name="data.qualities.blunt" type="checkbox" value="blunt" checked/>
+                        <input id="{{item._id}}-data.qualities.blunt" name="data.qualities.blunt" type="checkbox" value="blunt" checked/>
                         {{else}}
-                        <input id="{{item.id}}-data.qualities.blunt" name="data.qualities.blunt" type="checkbox" value="blunt"/>
+                        <input id="{{item._id}}-data.qualities.blunt" name="data.qualities.blunt" type="checkbox" value="blunt"/>
                         {{/if}}
                     </div>
                     <div class="rightcolumn">
-                        <label for="{{item.id}}-data.qualities.unwieldy">{{localize "QUALITY.UNWIELDY"}}</label>
+                        <label for="{{item._id}}-data.qualities.unwieldy">{{localize "QUALITY.UNWIELDY"}}</label>
                         {{#if data.qualities.unwieldy}}
-                        <input id="{{item.id}}-data.qualities.unwieldy" name="data.qualities.unwieldy" type="checkbox" value="unwieldy" checked/>
+                        <input id="{{item._id}}-data.qualities.unwieldy" name="data.qualities.unwieldy" type="checkbox" value="unwieldy" checked/>
                         {{else}}
-                        <input id="{{item.id}}-data.qualities.unwieldy" name="data.qualities.unwieldy" type="checkbox" value="unwieldy"/>
+                        <input id="{{item._id}}-data.qualities.unwieldy" name="data.qualities.unwieldy" type="checkbox" value="unwieldy"/>
                         {{/if}}
                     </div>
                     <div class="leftcolumn">
-                        <label for="{{item.id}}-data.qualities.wrecking">{{localize "QUALITY.WRECKING"}}</label>
+                        <label for="{{item._id}}-data.qualities.wrecking">{{localize "QUALITY.WRECKING"}}</label>
                         {{#if data.qualities.wrecking}}
-                        <input id="{{item.id}}-data.qualities.wrecking" name="data.qualities.wrecking" type="checkbox" value="wrecking" checked/>
+                        <input id="{{item._id}}-data.qualities.wrecking" name="data.qualities.wrecking" type="checkbox" value="wrecking" checked/>
                         {{else}}
-                        <input id="{{item.id}}-data.qualities.wrecking" name="data.qualities.wrecking" type="checkbox" value="wrecking"/>
+                        <input id="{{item._id}}-data.qualities.wrecking" name="data.qualities.wrecking" type="checkbox" value="wrecking"/>
                         {{/if}}
                     </div>
                     <div class="rightcolumn">
-                        <label for="{{item.id}}-data.qualities.jointed">{{localize "QUALITY.JOINTED"}}</label>
+                        <label for="{{item._id}}-data.qualities.jointed">{{localize "QUALITY.JOINTED"}}</label>
                         {{#if data.qualities.jointed}}
-                        <input id="{{item.id}}-data.qualities.jointed" name="data.qualities.jointed" type="checkbox" value="jointed" checked/>
+                        <input id="{{item._id}}-data.qualities.jointed" name="data.qualities.jointed" type="checkbox" value="jointed" checked/>
                         {{else}}
-                        <input id="{{item.id}}-data.qualities.jointed" name="data.qualities.jointed" type="checkbox" value="jointed"/>
+                        <input id="{{item._id}}-data.qualities.jointed" name="data.qualities.jointed" type="checkbox" value="jointed"/>
                         {{/if}}
                     </div>
                     <div class="leftcolumn">
-                        <label for="{{item.id}}-data.qualities.ensnaring">{{localize "QUALITY.ENSNARING"}}</label>
+                        <label for="{{item._id}}-data.qualities.ensnaring">{{localize "QUALITY.ENSNARING"}}</label>
                         {{#if data.qualities.ensnaring}}
-                        <input id="{{item.id}}-data.qualities.ensnaring" name="data.qualities.ensnaring" type="checkbox" value="ensnaring" checked/>
+                        <input id="{{item._id}}-data.qualities.ensnaring" name="data.qualities.ensnaring" type="checkbox" value="ensnaring" checked/>
                         {{else}}
-                        <input id="{{item.id}}-data.qualities.ensnaring" name="data.qualities.ensnaring" type="checkbox" value="ensnaring"/>
+                        <input id="{{item._id}}-data.qualities.ensnaring" name="data.qualities.ensnaring" type="checkbox" value="ensnaring"/>
                         {{/if}}
                     </div>
                     <div class="rightcolumn">
-                        <label for="{{item.id}}-data.qualities.massive">{{localize "QUALITY.MASSIVE"}}</label>
+                        <label for="{{item._id}}-data.qualities.massive">{{localize "QUALITY.MASSIVE"}}</label>
                         {{#if data.qualities.massive}}
-                        <input id="{{item.id}}-data.qualities.massive" name="data.qualities.massive" type="checkbox" value="massive" checked/>
+                        <input id="{{item._id}}-data.qualities.massive" name="data.qualities.massive" type="checkbox" value="massive" checked/>
                         {{else}}
-                        <input id="{{item.id}}-data.qualities.massive" name="data.qualities.massive" type="checkbox" value="massive"/>
+                        <input id="{{item._id}}-data.qualities.massive" name="data.qualities.massive" type="checkbox" value="massive"/>
                         {{/if}}
                     </div>
                     <div class="leftcolumn">
-                        <label for="{{item.id}}-data.qualities.bloodLetting">{{localize "QUALITY.BLOODLETTING"}}</label>
+                        <label for="{{item._id}}-data.qualities.bloodLetting">{{localize "QUALITY.BLOODLETTING"}}</label>
                         {{#if data.qualities.bloodLetting}}
-                        <input id="{{item.id}}-data.qualities.bloodLetting" name="data.qualities.bloodLetting" type="checkbox" value="bloodLetting" checked/>
+                        <input id="{{item._id}}-data.qualities.bloodLetting" name="data.qualities.bloodLetting" type="checkbox" value="bloodLetting" checked/>
                         {{else}}
-                        <input id="{{item.id}}-data.qualities.bloodLetting" name="data.qualities.bloodLetting" type="checkbox" value="bloodLetting"/>
+                        <input id="{{item._id}}-data.qualities.bloodLetting" name="data.qualities.bloodLetting" type="checkbox" value="bloodLetting"/>
                         {{/if}}
                     </div>
                     <div class="rightcolumn">
-                        <label for="{{item.id}}-data.qualities.returning">{{localize "QUALITY.RETURNING"}}</label>
+                        <label for="{{item._id}}-data.qualities.returning">{{localize "QUALITY.RETURNING"}}</label>
                         {{#if data.qualities.returning}}
-                        <input id="{{item.id}}-data.qualities.returning" name="data.qualities.returning" type="checkbox" value="returning" checked/>
+                        <input id="{{item._id}}-data.qualities.returning" name="data.qualities.returning" type="checkbox" value="returning" checked/>
                         {{else}}
-                        <input id="{{item.id}}-data.qualities.returning" name="data.qualities.returning" type="checkbox" value="returning"/>
+                        <input id="{{item._id}}-data.qualities.returning" name="data.qualities.returning" type="checkbox" value="returning"/>
                         {{/if}}
                     </div>
                     <div class="leftcolumn">
-                        <label for="{{item.id}}-data.qualities.areaCone">{{localize "QUALITY.AREAC"}}</label>
+                        <label for="{{item._id}}-data.qualities.areaCone">{{localize "QUALITY.AREAC"}}</label>
                         {{#if data.qualities.areaCone}}
-                        <input id="{{item.id}}-data.qualities.areaCone" name="data.qualities.areaCone" type="checkbox" value="areaCone" checked/>
+                        <input id="{{item._id}}-data.qualities.areaCone" name="data.qualities.areaCone" type="checkbox" value="areaCone" checked/>
                         {{else}}
-                        <input id="{{item.id}}-data.qualities.areaCone" name="data.qualities.areaCone" type="checkbox" value="areaCone"/>
+                        <input id="{{item._id}}-data.qualities.areaCone" name="data.qualities.areaCone" type="checkbox" value="areaCone"/>
                         {{/if}}
                     </div>
                     <div class="rightcolumn">
-                        <label for="{{item.id}}-data.qualities.areaMeleeRadius">{{localize "QUALITY.AREAMRR"}}</label>
+                        <label for="{{item._id}}-data.qualities.areaMeleeRadius">{{localize "QUALITY.AREAMRR"}}</label>
                         {{#if data.qualities.areaMeleeRadius}}
-                        <input id="{{item.id}}-data.qualities.areaMeleeRadius" name="data.qualities.areaMeleeRadius" type="checkbox" value="areaMeleeRadius" checked/>
+                        <input id="{{item._id}}-data.qualities.areaMeleeRadius" name="data.qualities.areaMeleeRadius" type="checkbox" value="areaMeleeRadius" checked/>
                         {{else}}
-                        <input id="{{item.id}}-data.qualities.areaMeleeRadius" name="data.qualities.areaMeleeRadius" type="checkbox" value="areaMeleeRadius"/>
+                        <input id="{{item._id}}-data.qualities.areaMeleeRadius" name="data.qualities.areaMeleeRadius" type="checkbox" value="areaMeleeRadius"/>
                         {{/if}}
                     </div>
                     <div class="leftcolumn">
-                        <label for="{{item.id}}-data.qualities.areaShortRadius">{{localize "QUALITY.AREASRR"}}</label>
+                        <label for="{{item._id}}-data.qualities.areaShortRadius">{{localize "QUALITY.AREASRR"}}</label>
                         {{#if data.qualities.areaShortRadius}}
-                        <input id="{{item.id}}-data.qualities.areaShortRadius" name="data.qualities.areaShortRadius" type="checkbox" value="areaShortRadius" checked/>
+                        <input id="{{item._id}}-data.qualities.areaShortRadius" name="data.qualities.areaShortRadius" type="checkbox" value="areaShortRadius" checked/>
                         {{else}}
-                        <input id="{{item.id}}-data.qualities.areaShortRadius" name="data.qualities.areaShortRadius" type="checkbox" value="areaShortRadius"/>
+                        <input id="{{item._id}}-data.qualities.areaShortRadius" name="data.qualities.areaShortRadius" type="checkbox" value="areaShortRadius"/>
                         {{/if}}
                     </div>
                     <div class="rightcolumn">
-                        <label for="{{item.id}}-data.qualities.thundering">{{localize "QUALITY.THUNDERING"}}</label>
+                        <label for="{{item._id}}-data.qualities.thundering">{{localize "QUALITY.THUNDERING"}}</label>
                         {{#if data.qualities.thundering}}
-                        <input id="{{item.id}}-data.qualities.thundering" name="data.qualities.thundering" type="checkbox" value="thundering" checked/>
+                        <input id="{{item._id}}-data.qualities.thundering" name="data.qualities.thundering" type="checkbox" value="thundering" checked/>
                         {{else}}
-                        <input id="{{item.id}}-data.qualities.thundering" name="data.qualities.thundering" type="checkbox" value="thundering"/>
+                        <input id="{{item._id}}-data.qualities.thundering" name="data.qualities.thundering" type="checkbox" value="thundering"/>
                         {{/if}}
                     </div>
                     <div class="leftcolumn">
-                        <label for="{{item.id}}-data.qualities.acidcoated">{{localize "QUALITY.ACIDCOATED"}}</label>
+                        <label for="{{item._id}}-data.qualities.acidcoated">{{localize "QUALITY.ACIDCOATED"}}</label>
                         {{#if data.qualities.acidcoated}}
-                        <input id="{{item.id}}-data.qualities.acidcoated" name="data.qualities.acidcoated" type="checkbox" value="acidcoated" checked/>
+                        <input id="{{item._id}}-data.qualities.acidcoated" name="data.qualities.acidcoated" type="checkbox" value="acidcoated" checked/>
                         {{else}}
-                        <input id="{{item.id}}-data.qualities.acidcoated" name="data.qualities.acidcoated" type="checkbox" value="acidcoated"/>
+                        <input id="{{item._id}}-data.qualities.acidcoated" name="data.qualities.acidcoated" type="checkbox" value="acidcoated"/>
                         {{/if}}
                     </div>
                     <div class="rightcolumn">
-                        <label for="{{item.id}}-data.qualities.bane">{{localize "QUALITY.BANE"}}</label>
+                        <label for="{{item._id}}-data.qualities.bane">{{localize "QUALITY.BANE"}}</label>
                         {{#if data.qualities.bane}}
-                        <input id="{{item.id}}-data.qualities.bane" name="data.qualities.bane" type="checkbox" value="bane" checked/>
+                        <input id="{{item._id}}-data.qualities.bane" name="data.qualities.bane" type="checkbox" value="bane" checked/>
                         {{else}}
-                        <input id="{{item.id}}-data.qualities.bane" name="data.qualities.bane" type="checkbox" value="bane"/>
+                        <input id="{{item._id}}-data.qualities.bane" name="data.qualities.bane" type="checkbox" value="bane"/>
                         {{/if}}
                     </div>
                     <div class="leftcolumn">
-                        <label for="{{item.id}}-data.qualities.deathrune">{{localize "QUALITY.DEATHRUNE"}}</label>
+                        <label for="{{item._id}}-data.qualities.deathrune">{{localize "QUALITY.DEATHRUNE"}}</label>
                         {{#if data.qualities.deathrune}}
-                        <input id="{{item.id}}-data.qualities.deathrune" name="data.qualities.deathrune" type="checkbox" value="deathrune" checked/>
+                        <input id="{{item._id}}-data.qualities.deathrune" name="data.qualities.deathrune" type="checkbox" value="deathrune" checked/>
                         {{else}}
-                        <input id="{{item.id}}-data.qualities.deathrune" name="data.qualities.deathrune" type="checkbox" value="deathrune"/>
+                        <input id="{{item._id}}-data.qualities.deathrune" name="data.qualities.deathrune" type="checkbox" value="deathrune"/>
                         {{/if}}
                     </div>
                     <div class="rightcolumn">
-                        <label for="{{item.id}}-data.qualities.desecrated">{{localize "QUALITY.DESECRATED"}}</label>
+                        <label for="{{item._id}}-data.qualities.desecrated">{{localize "QUALITY.DESECRATED"}}</label>
                         {{#if data.qualities.desecrated}}
-                        <input id="{{item.id}}-data.qualities.desecrated" name="data.qualities.desecrated" type="checkbox" value="desecrated" checked/>
+                        <input id="{{item._id}}-data.qualities.desecrated" name="data.qualities.desecrated" type="checkbox" value="desecrated" checked/>
                         {{else}}
-                        <input id="{{item.id}}-data.qualities.desecrated" name="data.qualities.desecrated" type="checkbox" value="desecrated"/>
+                        <input id="{{item._id}}-data.qualities.desecrated" name="data.qualities.desecrated" type="checkbox" value="desecrated"/>
                         {{/if}}
                     </div>
                     <div class="leftcolumn">
-                        <label for="{{item.id}}-data.qualities.flaming">{{localize "QUALITY.FLAMING"}}</label>
+                        <label for="{{item._id}}-data.qualities.flaming">{{localize "QUALITY.FLAMING"}}</label>
                         {{#if data.qualities.flaming}}
-                        <input id="{{item.id}}-data.qualities.flaming" name="data.qualities.flaming" type="checkbox" value="flaming" checked/>
+                        <input id="{{item._id}}-data.qualities.flaming" name="data.qualities.flaming" type="checkbox" value="flaming" checked/>
                         {{else}}
-                        <input id="{{item.id}}-data.qualities.flaming" name="data.qualities.flaming" type="checkbox" value="flaming"/>
+                        <input id="{{item._id}}-data.qualities.flaming" name="data.qualities.flaming" type="checkbox" value="flaming"/>
                         {{/if}}
                     </div>
                     <div class="rightcolumn">
-                        <label for="{{item.id}}-data.qualities.hallowed">{{localize "QUALITY.HALLOWED"}}</label>
+                        <label for="{{item._id}}-data.qualities.hallowed">{{localize "QUALITY.HALLOWED"}}</label>
                         {{#if data.qualities.hallowed}}
-                        <input id="{{item.id}}-data.qualities.hallowed" name="data.qualities.hallowed" type="checkbox" value="hallowed" checked/>
+                        <input id="{{item._id}}-data.qualities.hallowed" name="data.qualities.hallowed" type="checkbox" value="hallowed" checked/>
                         {{else}}
-                        <input id="{{item.id}}-data.qualities.hallowed" name="data.qualities.hallowed" type="checkbox" value="hallowed"/>
+                        <input id="{{item._id}}-data.qualities.hallowed" name="data.qualities.hallowed" type="checkbox" value="hallowed"/>
                         {{/if}}
                     </div>
                     <div class="leftcolumn">
-                        <label for="{{item.id}}-data.qualities.poison">{{localize "QUALITY.POISON"}}</label>
+                        <label for="{{item._id}}-data.qualities.poison">{{localize "QUALITY.POISON"}}</label>
                         {{#if data.qualities.poison}}
-                        <input id="{{item.id}}-data.qualities.poison" name="data.qualities.poison" type="checkbox" value="poison" checked/>
+                        <input id="{{item._id}}-data.qualities.poison" name="data.qualities.poison" type="checkbox" value="poison" checked/>
                         {{else}}
-                        <input id="{{item.id}}-data.qualities.poison" name="data.qualities.poison" type="checkbox" value="poison"/>
+                        <input id="{{item._id}}-data.qualities.poison" name="data.qualities.poison" type="checkbox" value="poison"/>
                         {{/if}}
                     </div>
                 </div>
@@ -324,6 +334,11 @@
             <div class="tab" data-group="primary" data-tab="bonus">
                 {{> systems/symbaroum/template/sheet/tab/bonus.html}}
             </div>
+            {{#if data.isArtifact}}
+            <div class="tab" data-group="primary" data-tab="power">
+                {{> systems/symbaroum/template/sheet/tab/artifact.html}}
+            </div>
+            {{/if}}
         </div>
     </div>
 </form>

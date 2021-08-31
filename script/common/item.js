@@ -49,18 +49,11 @@ export class SymbaroumItem extends Item {
             S:"ACTION.SPECIAL"
         }
 
+        data["type"+data.type.capitalize()] = true;
+        data["is"+data.type.capitalize()] = true;
         
-        data.isTrait = data.type === "trait";
-        data.isAbility = data.type === "ability";
-        data.isMysticalPower = data.type === "mysticalPower";
-        data.isRitual = data.type === "ritual";
-        data.isBurden = data.type === "burden";
-        data.isBoon = data.type === "boon";
         data.isPower = data.isTrait || data.isAbility || data.isMysticalPower || data.isRitual || data.isBurden || data.isBoon;
-        data.isWeapon = data.type === "weapon";
-        data.isArmor = data.type === "armor";
-        data.isEquipment = data.type === "equipment";
-        data.isArtifact = data.type === "artifact";
+        data.isArtifact = data.type === "artifact" || data.data?.isArtifact;
         data.isGear = data.isWeapon || data.isArmor || data.isEquipment || data.isArtifact;
 
         if(data.isGear) {
@@ -205,6 +198,40 @@ export class SymbaroumItem extends Item {
                 data.data.npcProtection +=  1;
             }
         }
+    }
+
+    _getArtifactInfo(field) {
+        let data = this.data;
+        if(data.type == "artifact") {
+            return `${data.data.power1[field]}/${data.data.power2[field]}/${data.data.power3[field]}`;
+        } else if(data.isArtifact ) {
+            if( data.power === null || data.power === {}) {
+                return "";
+            }
+            let keys = Object.keys(data.data.power);
+            let actionStr = "";
+            let notfirst = false;
+            
+            for(let i = 0; i<keys.length; i++) {
+                if(notfirst) {
+                    actionStr += '/';                    
+                } else {
+                    notfirst = true;
+                }
+                actionStr += data.data.power[keys[i]][field];
+            }
+            return actionStr;            
+        } else {
+            return "";
+        }
+    }
+
+    getArtifactActions() {
+        return this._getArtifactInfo("action");
+    }
+
+    getArtifactCorruptions() {    
+        return this._getArtifactInfo("corruption");
     }
 
     async sendToChat() {
@@ -738,6 +765,7 @@ async function buildFunctionStuffDefault(ability, actor) {
         functionStuff.corruption = true;
         functionStuff.impeding = actor.data.data.combat.impeding;
         functionStuff.casterMysticAbilities = await getMysticAbilities(actor);
+        if(!actor.data.data.health.corruption.max) functionStuff.corruption = false;
     }
     return(functionStuff)
 }
@@ -923,6 +951,14 @@ function getEffect(token, effect){
         }
         else return(false)
     }
+}
+
+function checkPainEffect(functionStuff, damage){
+    if(functionStuff.targetData.actor.data.data.health.toughness.threshold && (damage.roll.total > functionStuff.targetData.actor.data.data.health.toughness.threshold))
+    {
+        return(true);
+    }
+    return(false);
 }
 
 /*usualy called by any prepareAbility function, or the combat function
@@ -1552,7 +1588,7 @@ async function attackResult(rollData, functionStuff){
             hasDamage = true;
             rollDataElement.hasDamage = true;
             damage = await damageRollWithDiceParams(functionStuff, rollDataElement.critSuccess, attackNumber);
-            if(damage.roll.total > functionStuff.targetData.actor.data.data.health.toughness.threshold){pain = true}
+            pain = checkPainEffect(functionStuff, damage);
             rollDataElement.dmgFormula = game.i18n.localize('WEAPON.DAMAGE') + ": " + damage.roll._formula;
             rollDataElement.damageTooltip = new Handlebars.SafeString(await damage.roll.getTooltip());
             damageRollMod = game.i18n.localize('COMBAT.CHAT_DMG_PARAMS') + damage.autoParams;
@@ -1993,7 +2029,6 @@ async function anathemaPrepare(ability, actor) {
     let specificStuff = {
         actor: actor,
         combat: false,
-        corruption: true,
         favour: favour,
         tradition: ["wizardry", "staffmagic", "theurgy"],
         checkMaintain: true,
@@ -2008,8 +2043,8 @@ async function anathemaPrepare(ability, actor) {
 async function anathemaResult(rollData, functionStuff){
     let flagDataArray = [];
     let introText = functionStuff.actor.data.name + game.i18n.localize('POWER_ANATHEMA.CHAT_INTRO');
-    
     let resultText = functionStuff.actor.data.name + game.i18n.localize('POWER_ANATHEMA.CHAT_SUCCESS');
+    let corruptionText ="";
     if(!rollData[0].hasSucceed){
         resultText = functionStuff.actor.data.name + game.i18n.localize('POWER_ANATHEMA.CHAT_FAILURE');
     }
@@ -2018,14 +2053,15 @@ async function anathemaResult(rollData, functionStuff){
         targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.token.data.name;
         if (functionStuff.targetData.autoParams != ""){targetText += ": " + functionStuff.targetData.autoParams}
     }
-    let corruption = await getCorruption(functionStuff);
-    let corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
+    if(functionStuff.corruption){
+        let corruption = await getCorruption(functionStuff);
+        corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
 
-    flagDataArray.push({
-        tokenId: functionStuff.token.id,
-        corruptionChange: corruption.value
-    });
-
+        flagDataArray.push({
+            tokenId: functionStuff.token.id,
+            corruptionChange: corruption.value
+        });
+    }
     let templateData = {
         targetData : functionStuff.targetData,
         hasTarget : functionStuff.targetData.hasTarget,
@@ -2039,7 +2075,7 @@ async function anathemaResult(rollData, functionStuff){
         rollResult : formatRollResult(rollData),
         resultText: resultText,
         finalText: "",
-        haveCorruption: true,
+        haveCorruption: functionStuff.corruption,
         corruptionText: corruptionText
     }
     if(functionStuff.autoParams != ""){templateData.subText += ", " + functionStuff.autoParams};
@@ -2073,7 +2109,6 @@ async function brimstoneCascadePrepare(ability, actor) {
     let fsDefault = await buildFunctionStuffDefault(ability, actor)
     let specificStuff = {
         checkMaintain: true,
-        corruption: true,
         contextualDamage: true,
         tradition: ["wizardry"],
         targetHasRapidReflexes: targetHasRapidReflexes,
@@ -2119,7 +2154,7 @@ async function brimstoneCascadeResult(rollData, functionStuff){
     let damage = await simpleDamageRoll(functionStuff, damageDice);
     let damageTooltip = new Handlebars.SafeString(await damage.roll.getTooltip());
     damageTot = damage.roll.total;
-    if(damage.roll.total > functionStuff.targetData.actor.data.data.health.toughness.threshold){pain = true}
+    pain = checkPainEffect(functionStuff, damage);
     damageRollResult += await formatRollResult([damage]);
     let dmgFormula = game.i18n.localize('WEAPON.DAMAGE') + ": " + damage.roll._formula;
 
@@ -2155,7 +2190,7 @@ async function brimstoneCascadeResult(rollData, functionStuff){
         }
 
     }
-    if(!functionStuff.isMaintained){
+    if(!functionStuff.isMaintained && functionStuff.corruption){
         haveCorruption = true;
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
@@ -2214,7 +2249,6 @@ async function bendWillPrepare(ability, actor) {
     let fsDefault = await buildFunctionStuffDefault(ability, actor)
     let specificStuff = {
         checkMaintain: true,
-        corruption: true,
         favour: favour,
         targetMandatory : true,
         targetData: targetData,
@@ -2244,7 +2278,6 @@ async function blackBoltPrepare(ability, actor) {
     let specificStuff = {
         checkMaintain: true,
         contextualDamage: true,
-        corruption: true,
         targetData: targetData,
         resultFunction: blackBoltResult
     }
@@ -2281,7 +2314,7 @@ async function blackBoltResult(rollData, functionStuff){
         let damageDice = "1d6";
         let damage = await simpleDamageRoll(functionStuff, damageDice);
         damageTot = damage.roll.total;
-        if(damage.roll.total > functionStuff.targetData.actor.data.data.health.toughness.threshold){pain = true}
+        pain = checkPainEffect(functionStuff, damage);
         damageRollResult += await formatRollResult([damage]);
         dmgFormula = game.i18n.localize('WEAPON.DAMAGE') + ": " + damage.roll._formula;
         damageTooltip = new Handlebars.SafeString(await damage.roll.getTooltip());
@@ -2319,7 +2352,7 @@ async function blackBoltResult(rollData, functionStuff){
 
         }
     }
-    if(!functionStuff.isMaintained){
+    if(!functionStuff.isMaintained && functionStuff.corruption){
         haveCorruption = true;
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
@@ -2371,7 +2404,6 @@ async function blessedshieldPrepare(ability, actor) {
         combat: false,
         targetMandatory: false,
         checkMaintain: false,
-        corruption: true,
         tradition: ["theurgy"],
         resultFunction: blessedshieldResult
     }
@@ -2386,13 +2418,17 @@ async function blessedshieldPrepare(ability, actor) {
 
 async function blessedshieldResult(rollData, functionStuff){
     let flagDataArray = [];
-    let haveCorruption = true;
-    let corruption = await getCorruption(functionStuff);
-    let corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
-    flagDataArray.push({
-        tokenId: functionStuff.token.id,
-        corruptionChange: corruption.value
-    });
+    let haveCorruption = false;
+    let corruptionText = "";
+    if(!functionStuff.isMaintained && functionStuff.corruption){
+        haveCorruption = true;
+        let corruption = await getCorruption(functionStuff);
+        corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
+        flagDataArray.push({
+            tokenId: functionStuff.token.id,
+            corruptionChange: corruption.value
+        });
+    }
     let templateData = {
         targetData : functionStuff.targetData,
         hasTarget : false,
@@ -2469,7 +2505,6 @@ async function confusionPrepare(ability, actor) {
     let fsDefault = await buildFunctionStuffDefault(ability, actor)
     let specificStuff = {
         checkMaintain: true,
-        corruption: true,
         favour: favour,
         targetMandatory : true,
         targetData: targetData,
@@ -2514,7 +2549,7 @@ async function confusionResult(rollData, functionStuff){
     }
     let targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.token.data.name;
     if (functionStuff.targetData.autoParams != ""){targetText += ": " + functionStuff.targetData.autoParams}
-    if(!functionStuff.isMaintained){
+    if(!functionStuff.isMaintained && functionStuff.corruption){
         haveCorruption = true;
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
@@ -2575,7 +2610,6 @@ async function cursePrepare(ability, actor) {
     let fsDefault = await buildFunctionStuffDefault(ability, actor)
     let specificStuff = {
         checkMaintain: true,
-        corruption: true,
         targetData: targetData,
         resultFunction: curseResult,
         combat: false,
@@ -2600,13 +2634,15 @@ async function curseResult(rollData, functionStuff){
         introText = functionStuff.actor.data.name + game.i18n.localize('POWER_CURSE.CHAT_INTRO');
         hasRoll = false;
         rollData[0].hasSucceed = true;
-        haveCorruption = true;
-        corruption = await getCorruption(functionStuff);
-        corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
-        flagDataArray.push({
-            tokenId: functionStuff.token.id,
-            corruptionChange: corruption.value
-        });
+        if(functionStuff.corruption){
+            haveCorruption = true;
+            corruption = await getCorruption(functionStuff);
+            corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
+            flagDataArray.push({
+                tokenId: functionStuff.token.id,
+                corruptionChange: corruption.value
+            });
+        }
     }
     let resultText = functionStuff.targetData.token.data.name + game.i18n.localize('POWER_CURSE.CHAT_SUCCESS_N');
     if(functionStuff.powerLvl == 2){resultText = functionStuff.targetData.token.data.name + game.i18n.localize('POWER_CURSE.CHAT_SUCCESS_A')}
@@ -2668,7 +2704,6 @@ async function entanglingvinesPrepare(ability, actor) {
     let fsDefault = await buildFunctionStuffDefault(ability, actor)
     let specificStuff = {
         checkMaintain: true,
-        corruption: true,
         targetMandatory : true,
         targetData: targetData,
         notResistWhenFirstCast: true,
@@ -2698,14 +2733,15 @@ async function entanglingvinesResult(rollData, functionStuff){
     else{
         introText = functionStuff.actor.data.name + game.i18n.localize('POWER.CHAT_INTRO') + functionStuff.ability.name + " \".";
         rollString = await formatRollString(rollData[0], false, rollData[0].modifier)
-//rollString = `${rollData[0].actingAttributeLabel} : (${rollData[0].actingAttributeValue})`;
-        haveCorruption = true;
-        corruption = await getCorruption(functionStuff);
-        corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
-        flagDataArray.push({
-            tokenId: functionStuff.token.id,
-            corruptionChange: corruption.value
-        });
+        if(functionStuff.corruption){
+            haveCorruption = true;
+            corruption = await getCorruption(functionStuff);
+            corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
+            flagDataArray.push({
+                tokenId: functionStuff.token.id,
+                corruptionChange: corruption.value
+            });
+        }
     }
     if(rollData[0].hasSucceed){
         resultText = functionStuff.targetData.token.data.name + game.i18n.localize('POWER_ENTANGLINGVINES.CHAT_SUCCESS');
@@ -2777,7 +2813,6 @@ async function holyAuraPrepare(ability, actor) {
     let fsDefault = await buildFunctionStuffDefault(ability, actor)
     let specificStuff = {
         checkMaintain: true,
-        corruption: true,
         resultFunction: holyAuraResult,
         tradition: ["theurgy"]
     }
@@ -2790,7 +2825,7 @@ async function holyAuraResult(rollData, functionStuff){
     let haveCorruption = false;
     let corruptionText = "";
     let corruption;
-    if(!functionStuff.isMaintained){
+    if(!functionStuff.isMaintained && functionStuff.corruption){
         haveCorruption = true;
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
@@ -2897,13 +2932,14 @@ async function inheritWound(ability, actor){
     }
     let tradition = ["witchcraft", "theurgy"];
     let casterMysticAbilities = await getMysticAbilities(actor);
-    corruption = await getCorruption({tradition: tradition, casterMysticAbilities: casterMysticAbilities, actor: actor, attackFromPC: attackFromPC});
-    corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
-    flagDataArray.push({
-        tokenId: selectedToken.id,
-        corruptionChange: corruption.value
-    });
-
+    if(actor.data.data.health.corruption.max){
+        corruption = await getCorruption({tradition: tradition, casterMysticAbilities: casterMysticAbilities, actor: actor, attackFromPC: attackFromPC});
+        corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
+        flagDataArray.push({
+            tokenId: selectedToken.id,
+            corruptionChange: corruption.value
+        });
+    }
     let templateData = {
         targetData : targetData,
         hasTarget : targetData.hasTarget,
@@ -3010,7 +3046,6 @@ async function larvaeBoilsPrepare(ability, actor) {
         favour: -1*targetResMod.favour,
         checkMaintain: true,
         contextualDamage: true,
-        corruption: true,
         targetData: targetData,
         resultFunction: larvaeBoilsResult,
         tradition: ["witchcraft"]
@@ -3038,13 +3073,15 @@ async function larvaeBoilsResult(rollData, functionStuff){
         introText = functionStuff.actor.data.name + game.i18n.localize('POWER_LARVAEBOILS.CHAT_INTRO');
         hasRoll = false;
         rollData[0].hasSucceed = true;
-        haveCorruption = true;
-        corruption = await getCorruption(functionStuff);
-        corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
-        flagDataArray.push({
-            tokenId: functionStuff.token.id,
-            corruptionChange: corruption.value
-        });
+        if(functionStuff.corruption){
+            haveCorruption = true;
+            corruption = await getCorruption(functionStuff);
+            corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
+            flagDataArray.push({
+                tokenId: functionStuff.token.id,
+                corruptionChange: corruption.value
+            });
+        }
     }
     if(rollData[0].hasSucceed){
         //PC roll damage, NPCs do fixed damage = maximumdice/2
@@ -3131,7 +3168,6 @@ async function layonhandsPrepare(ability, actor) {
         combat: false,
         targetMandatory: true,
         checkMaintain: false,
-        corruption: true,
         tradition: ["witchcraft", "theurgy"]
     }
     
@@ -3197,7 +3233,6 @@ async function levitatePrepare(ability, actor) {
         checkMaintain: true,
         combat: false,
         targetMandatory: false,
-        corruption: true,
         tradition: ["theurgy", "wizardry"],
         resultFunction: standardPowerResult
     }
@@ -3236,7 +3271,6 @@ async function maltransformationPrepare(ability, actor) {
     let fsDefault = await buildFunctionStuffDefault(ability, actor)
     let specificStuff = {
         checkMaintain: true,
-        corruption: true,
         favour: favour,
         targetMandatory : true,
         targetData: targetData,
@@ -3258,7 +3292,6 @@ async function mindthrowPrepare(ability, actor) {
 
     let fsDefault = await buildFunctionStuffDefault(ability, actor)
     let specificStuff = {
-        corruption: true,
         contextualDamage: true,
         tradition: ["wizardry"],
         targetData: targetData,
@@ -3307,7 +3340,7 @@ async function mindthrowResult(rollData, functionStuff){
             let damageDice = "1d8";
             let damage = await simpleDamageRoll(functionStuff, damageDice);
             damageTot = damage.roll.total;
-            if(damage.roll.total > functionStuff.targetData.actor.data.data.health.toughness.threshold){pain = true}
+            pain = checkPainEffect(functionStuff, damage);
             damageRollResult += await formatRollResult([damage]);
             dmgFormula = game.i18n.localize('WEAPON.DAMAGE') + ": " + damage.roll._formula;
             damageTooltip = new Handlebars.SafeString(await damage.roll.getTooltip());
@@ -3345,7 +3378,7 @@ async function mindthrowResult(rollData, functionStuff){
             }
         }
     }
-    if(!functionStuff.isMaintained){
+    if(!functionStuff.isMaintained && functionStuff.corruption){
         haveCorruption = true;
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
@@ -3400,7 +3433,6 @@ async function priosburningglassPrepare(ability, actor) {
     let fsDefault = await buildFunctionStuffDefault(ability, actor)
     let specificStuff = {
         checkMaintain: true,
-        corruption: true,
         contextualDamage: true,
         askCorruptedTarget: true,
         targetData: targetData,
@@ -3451,7 +3483,7 @@ async function priosburningglassResult(rollData, functionStuff){
         }
         let damage = await simpleDamageRoll(functionStuff, damageDice);
         damageTot = damage.roll.total;
-        if(damage.roll.total > functionStuff.targetData.actor.data.data.health.toughness.threshold){pain = true}
+        pain = checkPainEffect(functionStuff, damage);
         damageRollResult += await formatRollResult([damage]);
         dmgFormula = game.i18n.localize('WEAPON.DAMAGE') + ": " + damage.roll._formula;
         damageTooltip = new Handlebars.SafeString(await damage.roll.getTooltip());
@@ -3488,7 +3520,7 @@ async function priosburningglassResult(rollData, functionStuff){
             }
         }
     }
-    if(!functionStuff.isMaintained){
+    if(!functionStuff.isMaintained && functionStuff.corruption){
         haveCorruption = true;
         corruption = await getCorruption(functionStuff);
         corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
@@ -3547,7 +3579,6 @@ async function tormentingspiritsPrepare(ability, actor) {
         combat: false,
         targetMandatory: true,
         checkMaintain: true,
-        corruption: true,
         targetData: targetData,
         resultFunction: tormentingspiritsResult,
         tradition: ["witchcraft"],
@@ -3572,13 +3603,15 @@ async function tormentingspiritsResult(rollData, functionStuff){
     }
     else{
         introText = functionStuff.actor.data.name + game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_INTRO');
-        haveCorruption = true;
-        corruption = await getCorruption(functionStuff);
-        corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
-        flagDataArray.push({
-            tokenId: functionStuff.token.id,
-            corruptionChange: corruption.value
-        });
+        if(functionStuff.corruption){
+            haveCorruption = true;
+            corruption = await getCorruption(functionStuff);
+            corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
+            flagDataArray.push({
+                tokenId: functionStuff.token.id,
+                corruptionChange: corruption.value
+            });
+        }
     }
     if(rollData[0].hasSucceed){
         if(functionStuff.powerLvl.level > 1){
@@ -3665,7 +3698,6 @@ async function unnoticeablePrepare(ability, actor) {
         combat: false,
         targetMandatory: false,
         checkMaintain: false,
-        corruption: true,
         tradition: ["wizardry", "theurgy"],
         addCasterEffect: ["systems/symbaroum/asset/image/invisible.png"]
     }
@@ -3926,7 +3958,7 @@ async function stranglerResult(rollData, functionStuff){
         functionStuff.dmgData.ignoreArm=true;
         damage = await simpleDamageRoll(functionStuff, "1d6");
         damageTot = damage.roll.total;
-        if(damage.roll.total > functionStuff.targetData.actor.data.data.health.toughness.threshold){pain = true}
+        pain = checkPainEffect(functionStuff, damage);
         damageRollResult += await formatRollResult([damage]);
         dmgFormula = game.i18n.localize('WEAPON.DAMAGE') + ": " + damage.roll._formula;
         damageTooltip = new Handlebars.SafeString(await damage.roll.getTooltip());

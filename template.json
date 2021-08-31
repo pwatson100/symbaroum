@@ -192,6 +192,11 @@
             "cost": 0
           }
         }
+      },
+      "artifact": {
+        "isArtifact" : false,
+        "power": {
+        }
       }
     },
     "trait": {
@@ -287,7 +292,8 @@
     },
     "weapon": {
       "templates": [
-        "bonus"
+        "bonus",
+        "artifact"
       ],
       "description": "",
       "reference": "1handed",
@@ -329,7 +335,8 @@
     },
     "armor": {
       "templates": [
-        "bonus"
+        "bonus",
+        "artifact"
       ],
       "description": "",
       "reference": "",
@@ -350,7 +357,8 @@
     },
     "equipment": {
       "templates": [
-        "bonus"
+        "bonus",
+        "artifact"
       ],
       "description": "",
       "reference": "",
