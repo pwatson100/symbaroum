@@ -26,9 +26,11 @@
             <b class="item" data-tab="description">{{localize "TAB.DESCRIPTION"}}</b>
             <b class="item" data-tab="stats">{{localize "TAB.STATS"}}</b>
             <b class="item" data-tab="qualities">{{localize "TAB.QUALITIES"}}</b>
+            {{#if data.isArtifact}}
+            <b class="item" data-tab="power">{{localize "TAB.POWER"}}</b>
+            {{/if}}
             <b class="item" data-tab="bonus">{{localize "TAB.BONUS"}}</b>
         </div>
-
         <div class="sheet-body">
             <div class="tab" data-group="primary" data-tab="description">
                 <div class="description foreground border">
@@ -62,6 +64,14 @@
                     <div class="cost">
                         <label for="{{id}}-data.cost">{{localize "ARMOR.COST"}}</label>
                         <input id="{{id}}-data.cost" name="data.cost" type="text" value="{{data.cost}}"/>
+                    </div>
+                    <div class="number">
+                        <label for="{{item.id}}-data.isArtifact">{{localize "ITEM.ARTIFACT"}}</label>
+                        {{#if data.isArtifact}}
+                        <input id="{{item.id}}-data.isArtifact" name="data.isArtifact" type="checkbox" value="artifact" checked/>
+                        {{else}}
+                        <input id="{{item.id}}-data.isArtifact" name="data.isArtifact" type="checkbox" value="artifact"/>
+                        {{/if}}
                     </div>
                     <div class="quality">
                         <label for="{{id}}-data.quality">{{localize "ARMOR.QUALITY"}}</label>
@@ -133,6 +143,11 @@
             <div class="tab" data-group="primary" data-tab="bonus">
                 {{> systems/symbaroum/template/sheet/tab/bonus.html}}
             </div>
+            {{#if data.isArtifact}}
+            <div class="tab" data-group="primary" data-tab="power">
+                {{> systems/symbaroum/template/sheet/tab/artifact.html}}
+            </div>
+            {{/if}}
         </div>
     </div>
 </form>

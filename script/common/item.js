@@ -49,18 +49,11 @@ export class SymbaroumItem extends Item {
             S:"ACTION.SPECIAL"
         }
 
+        data["type"+data.type.capitalize()] = true;
+        data["is"+data.type.capitalize()] = true;
         
-        data.isTrait = data.type === "trait";
-        data.isAbility = data.type === "ability";
-        data.isMysticalPower = data.type === "mysticalPower";
-        data.isRitual = data.type === "ritual";
-        data.isBurden = data.type === "burden";
-        data.isBoon = data.type === "boon";
         data.isPower = data.isTrait || data.isAbility || data.isMysticalPower || data.isRitual || data.isBurden || data.isBoon;
-        data.isWeapon = data.type === "weapon";
-        data.isArmor = data.type === "armor";
-        data.isEquipment = data.type === "equipment";
-        data.isArtifact = data.type === "artifact";
+        data.isArtifact = data.type === "artifact" || data.data?.isArtifact;
         data.isGear = data.isWeapon || data.isArmor || data.isEquipment || data.isArtifact;
 
         if(data.isGear) {
@@ -205,6 +198,40 @@ export class SymbaroumItem extends Item {
                 data.data.npcProtection +=  1;
             }
         }
+    }
+
+    _getArtifactInfo(field) {
+        let data = this.data;
+        if(data.type == "artifact") {
+            return `${data.data.power1[field]}/${data.data.power2[field]}/${data.data.power3[field]}`;
+        } else if(data.isArtifact ) {
+            if( data.power === null || data.power === {}) {
+                return "";
+            }
+            let keys = Object.keys(data.data.power);
+            let actionStr = "";
+            let notfirst = false;
+            
+            for(let i = 0; i<keys.length; i++) {
+                if(notfirst) {
+                    actionStr += '/';                    
+                } else {
+                    notfirst = true;
+                }
+                actionStr += data.data.power[keys[i]][field];
+            }
+            return actionStr;            
+        } else {
+            return "";
+        }
+    }
+
+    getArtifactActions() {
+        return this._getArtifactInfo("action");
+    }
+
+    getArtifactCorruptions() {    
+        return this._getArtifactInfo("corruption");
     }
 
     async sendToChat() {

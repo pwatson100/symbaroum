@@ -1,9 +1,78 @@
 .symbaroum.sheet.item .artifact {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    height: 100%;
+    flex-direction: column;
+    flex-wrap: nowrap;
     width: 100%;
+}
+
+.symbaroum.sheet.item .artifact .power-n {
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    width: 100%;    
+}
+.symbaroum.sheet.item .artifact .power-n .power-header,
+.symbaroum.sheet.item .artifact .power-add {
+    display: flex; 
+    flex: auto; 
+    flex-flow: row;
+    flex-wrap: nowrap;
+    flex-basis: 100%;
+    height:fit-content;
+    margin: 5px;
+    background: url(../asset/image/title.jpg) repeat;
+}
+
+.symbaroum.sheet.item .artifact .power-n .power-header .heading,
+.symbaroum.sheet.item .artifact .power-add .button
+{
+    width:100%;
+}
+
+
+.symbaroum.sheet.item .artifact .power-n .name,
+.symbaroum.sheet.item .artifact .power-n .action,
+.symbaroum.sheet.item .artifact .power-n .corruption
+{
+    display: flex;
+    flex-direction: row;
+    flex-basis: 100%;
+    margin: 5px;
+}
+
+.symbaroum.sheet.item .artifact .power-n .power-header,
+.symbaroum.sheet.item .artifact .power-n .name,
+.symbaroum.sheet.item .artifact .power-n .action,
+.symbaroum.sheet.item .artifact .power-n .corruption,
+.symbaroum.sheet.item .artifact .power-n .editor
+ {
+     margin:5px;
+ }
+
+
+.symbaroum.sheet.item .artifact .power-n .power-header .fas,
+.symbaroum.sheet.item .artifact .power-add  .fas {
+    width: 20px;
+    margin: 5px;
+    color: var(--color-title);  
+}
+
+.symbaroum.sheet.item .artifact .power-add  .power-create {
+    white-space: nowrap;
+}
+
+.symbaroum.sheet.item .artifact .power-add  .power-create label {
+    padding: 0px;
+}
+
+
+.symbaroum.sheet.item .artifact .power-n .power-header .heading,
+.symbaroum.sheet.item .artifact .power-add
+{
+    width: 100%;
+    font-size: 18px;
+    font-family: var(--font-text);
+    color: var(--color-title);  
 }
 
 .symbaroum.sheet.item .artifact .description,
@@ -29,6 +98,8 @@
     flex-direction: row;
     flex-basis: calc(50% - 15px);
 }
+
+// Remove all below once we are happy with the new artifacts
 
 .symbaroum.sheet.item .artifact .tab .action {
     margin: 10px 5px 0 10px;
