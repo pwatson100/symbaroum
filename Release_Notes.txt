@@ -154,3 +154,6 @@ Version 3.0.6
 - Compendium migration fixes
 - Gear page now should look prettier
 - Support for system traits (thoroughly corrupt, ignore pain threshold)
+
+Version 3.0.7
+- corrected a bug when using the system on The Forge.
