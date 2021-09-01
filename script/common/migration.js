@@ -1,5 +1,3 @@
-import { isNewerVersion } from '/common/utils/helpers.mjs';
-
 export const migrateWorld = async () => {
     /* WorldTemplateVersion was used on symbaroum for tracking template changes until foundryVTT 0.8
     After that, we use worldSystemVersion
@@ -30,7 +28,7 @@ export const migrateWorld = async () => {
     // the NEEDS_MIGRATION_VERSION have to be increased for migration to happen
     const NEEDS_MIGRATION_VERSION = '3.0.6';
     const COMPATIBLE_MIGRATION_VERSION = '0' || isNaN('NaN');
-    let needMigration = isNewerVersion(NEEDS_MIGRATION_VERSION, worldSystemVersion);
+    let needMigration = foundry.utils.isNewerVersion(NEEDS_MIGRATION_VERSION, worldSystemVersion);
     console.warn('needMigration', needMigration, systemVersion);
 
     if(needMigration && game.user.isGM){
@@ -148,7 +146,7 @@ const migrateActorData = (actor, worldSystemVersion) => {
     let updateData = {};
     // Migrate actor template
 /*   Example
-    if (isNewerVersion("2.21.0", worldSystemVersion)) {
+    if (foundry.utils.isNewerVersion("2.21.0", worldSystemVersion)) {
         update = setValueIfNotExists(update, actor, "data.attributes.accurate.total", 0);
     };
     // Migrate Actor items
@@ -169,7 +167,7 @@ const migrateActorData = (actor, worldSystemVersion) => {
 
 const migrateItemData = (item, worldSystemVersion) => {
     let update = {};
-    if (isNewerVersion("3.0.6", worldSystemVersion)) {
+    if (foundry.utils.isNewerVersion("3.0.6", worldSystemVersion)) {
         const gearType = [ "weapon", "armor", "equipment" ];
         if (gearType.includes(item.type)) {
             update = setValueIfNotExists(update, item, "data.isArtifact", false);
