@@ -243,6 +243,7 @@
   "COMBAT.CHAT_SUCCESS": " hits ",
   "COMBAT.CHAT_FAILURE": " miss.",
   "COMBAT.CHAT_BLEED": " bleeds and loses toughness each round: ",
+  "COMBAT.CHAT_CORRUPTED_ATTACK": "The attack inflict corruption: ",
   "COMBAT.CHAT_POISON": " tries to poison ",
   "COMBAT.CHAT_POISON_FAILURE": "No poisonning.",
   "COMBAT.CHAT_POISON_EXTEND": "Target was already poisoned, new duration: rounds: ",

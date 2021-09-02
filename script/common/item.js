@@ -1415,6 +1415,7 @@ export async function attackRoll(weapon, actor){
         useHuntersInstinct: false,
         hunterBonus: "",
         beastLoreData: getBeastLoreData(actor),
+        corruptingattack: "",
         dmgData: {
             isRanged: false,
             hunterIDmg: false,
@@ -1503,6 +1504,16 @@ export async function attackRoll(weapon, actor){
                     functionStuff.askTwoAttacks = true;
                 }
             }
+            let corruptingattack = actor.items.filter(item => item.data.data?.reference === "corruptingattack");
+            if(corruptingattack.length != 0){
+                if(corruptingattack[0].data.data.master.isActive){
+                    functionStuff.corruptingattack = "1d8";
+                } else if(corruptingattack[0].data.data.adept.isActive){
+                    functionStuff.corruptingattack = "1d6";
+                } else{
+                    functionStuff.corruptingattack = "1d4";
+                }
+            }
         }
         if(weapon.qualities.short){
             let knifeplay = actor.items.filter(item => item.data.data?.reference === "knifeplay");
@@ -1579,6 +1590,10 @@ async function attackResult(rollData, functionStuff){
     let hasDmgMod = "false";
     let attackNumber = 0;
     let mysticalWeapon = functionStuff.weapon.qualities.mystical;
+    let corruptionDmgFormula = ""
+    let printCorruption = false;
+    let corruptionChatResult ="";
+    let corruptionTooltip="";
 
     for(let rollDataElement of rollData){
 
@@ -1588,7 +1603,7 @@ async function attackResult(rollData, functionStuff){
             hasDamage = true;
             rollDataElement.hasDamage = true;
             damage = await damageRollWithDiceParams(functionStuff, rollDataElement.critSuccess, attackNumber);
-            pain = checkPainEffect(functionStuff, damage);
+            pain = pain || checkPainEffect(functionStuff, damage);
             rollDataElement.dmgFormula = game.i18n.localize('WEAPON.DAMAGE') + ": " + damage.roll._formula;
             rollDataElement.damageTooltip = new Handlebars.SafeString(await damage.roll.getTooltip());
             damageRollMod = game.i18n.localize('COMBAT.CHAT_DMG_PARAMS') + damage.autoParams;
@@ -1596,6 +1611,11 @@ async function attackResult(rollData, functionStuff){
             let finalDmg = await mathDamageProt(functionStuff.targetData.actor, damage.roll.total, {mysticalWeapon: mysticalWeapon});
             rollDataElement.dmg = finalDmg.damage;
             rollDataElement.dmgFormula += finalDmg.text;
+            if(functionStuff.corruptingattack != "" && rollDataElement.dmg > 0){
+                if(corruptionDmgFormula !="") corruptionDmgFormula += "+";
+                corruptionDmgFormula += functionStuff.corruptingattack;
+                printCorruption=true;
+            }
             rollDataElement.damageText = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + rollDataElement.dmg.toString();
             damageTot += rollDataElement.dmg;
         }
@@ -1632,8 +1652,18 @@ async function attackResult(rollData, functionStuff){
                 effectDuration: 1
             })
         }
-
     }
+
+    if(printCorruption){
+        let corruptionRoll= new Roll(corruptionDmgFormula).evaluate();
+        corruptionChatResult = game.i18n.localize('COMBAT.CHAT_CORRUPTED_ATTACK') + corruptionRoll.total.toString();
+        corruptionTooltip = new Handlebars.SafeString(await corruptionRoll.getTooltip());
+        flagDataArray.push({
+            tokenId: functionStuff.targetData.token.id,
+            corruptionChange: corruptionRoll.total
+        });
+    }
+
     let introText = functionStuff.token.data.name + game.i18n.localize('COMBAT.CHAT_INTRO') + functionStuff.weapon.name;
     let targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.token.data.name;
     if (functionStuff.targetData.autoParams != ""){targetText += ": " + functionStuff.targetData.autoParams}
@@ -1664,6 +1694,9 @@ async function attackResult(rollData, functionStuff){
         bleedChat: "",
         printFlaming: false,
         flamingChat: "",
+        printCorruption: printCorruption,
+        corruptionChatResult: corruptionChatResult,
+        corruptionTooltip: corruptionTooltip
     }
     if(functionStuff.autoParams != ""){templateData.subText += ", " + functionStuff.autoParams};
 

@@ -224,6 +224,7 @@
   "COMBAT.CHAT_SUCCESS": " trifft",
   "COMBAT.CHAT_FAILURE": " verfehlt.",
   "COMBAT.CHAT_BLEED": " blutet und verliert jede Runde zähigkeit: ",
+  "COMBAT.CHAT_CORRUPTED_ATTACK": "The attack inflict corruption: ",
   "COMBAT.CHAT_POISON": " versucht zu vergiften ",
   "COMBAT.CHAT_POISON_FAILURE": "Keine Vergiftung.",
   "COMBAT.CHAT_POISON_EXTEND": "Das Ziel war bereits vergiftet, neue Dauer: Runden: ",

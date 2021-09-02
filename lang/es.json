@@ -246,6 +246,7 @@
   "COMBAT.CHAT_SUCCESS": " golpea a ",
   "COMBAT.CHAT_FAILURE": " falla.",
   "COMBAT.CHAT_BLEED": " sangra y pierde resistencia cada ronda: ",
+  "COMBAT.CHAT_CORRUPTED_ATTACK": "The attack inflict corruption: ",
   "COMBAT.CHAT_POISON": " intenta envenenar ",
   "COMBAT.CHAT_POISON_FAILURE": "No envenena.",
   "COMBAT.CHAT_POISON_EXTEND": "El objetivo ya estaba envenenado, nueva duración: rondas: ",

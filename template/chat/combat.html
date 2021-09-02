@@ -44,6 +44,14 @@
         <h4>{{removeMarkup poisonRollResultString}}</h4>
         <div class="finalTxt">{{removeMarkup poisonChatResult}}</div>
         {{/if}}
+        {{#if printCorruption}}
+        <div class="finalTxt">
+            <div class="tooltip">
+                <p>{{corruptionChatResult}}</p>
+                <span class="tooltiptext">{{corruptionTooltip}}</span>
+            </div>
+        </div>
+        {{/if}}
         {{#if printBleed}}
         <div class="finalTxt">{{removeMarkup bleedChat}}</div>
         {{/if}}
