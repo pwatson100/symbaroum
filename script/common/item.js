@@ -1810,14 +1810,16 @@ async function standardPowerActivation(functionStuff) {
                 await modifierDialog(functionStuff)
             }
         }
-        let targetResMod = await checkResoluteModifiers(functionStuff.targetData.actor, functionStuff.targetData.autoParams, true, functionStuff.checkTargetSteadfast);
         if (functionStuff.targetData.resistAttributeName === "resolute"){
+            let targetResMod = await checkResoluteModifiers(functionStuff.targetData.actor, functionStuff.targetData.autoParams, true, functionStuff.checkTargetSteadfast);
             functionStuff.targetData.resistAttributeName = targetResMod.bestAttributeName;
             functionStuff.targetData.resistAttributeValue = targetResMod.bestAttributeValue;
             functionStuff.targetData.autoParams = targetResMod.autoParams;
             functionStuff.favour += -1*targetResMod.favour;
         } else if (functionStuff.targetData.resistAttributeName === "strong"){
+            let targetResMod = await checkResoluteModifiers(functionStuff.targetData.actor, functionStuff.targetData.autoParams, false, functionStuff.checkTargetSteadfast);
             functionStuff.favour += -1*targetResMod.favour;
+            functionStuff.targetData.autoParams = targetResMod.autoParams;
         }
     }
     await modifierDialog(functionStuff)
@@ -2649,6 +2651,8 @@ async function entanglingvinesPrepare(ability, actor) {
         tradition: ["witchcraft"]
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
+    let targetResMod = await checkResoluteModifiers(functionStuff.targetData.actor, functionStuff.targetData.autoParams, false, true);
+    functionStuff.favour += -1*targetResMod.favour;  
     await modifierDialog(functionStuff)
 }
 
@@ -2976,7 +2980,7 @@ async function larvaeBoilsPrepare(ability, actor) {
         ui.notifications.error(error);
         return;
     } 
-    let targetResMod = await checkResoluteModifiers(targetData.actor, "", false, true);;
+    let targetResMod = await checkResoluteModifiers(targetData.actor, "", false, true);
     targetData.autoParams += targetResMod.autoParams;
     let fsDefault = await buildFunctionStuffDefault(ability, actor)
     let specificStuff = {
