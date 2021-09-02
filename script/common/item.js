@@ -1806,7 +1806,8 @@ async function standardPowerActivation(functionStuff) {
                 return;
             }
             else {
-                functionStuff.targetData = {hasTarget : false}
+                functionStuff.targetData = {hasTarget : false};
+                await modifierDialog(functionStuff)
             }
         }
         let targetResMod = await checkResoluteModifiers(functionStuff.targetData.actor, functionStuff.targetData.autoParams, true, functionStuff.checkTargetSteadfast);
@@ -1814,7 +1815,9 @@ async function standardPowerActivation(functionStuff) {
             functionStuff.targetData.resistAttributeName = targetResMod.bestAttributeName;
             functionStuff.targetData.resistAttributeValue = targetResMod.bestAttributeValue;
             functionStuff.targetData.autoParams = targetResMod.autoParams;
-            functionStuff.favour += targetResMod.favour*(-1);
+            functionStuff.favour += -1*targetResMod.favour;
+        } else if (functionStuff.targetData.resistAttributeName === "strong"){
+            functionStuff.favour += -1*targetResMod.favour;
         }
     }
     await modifierDialog(functionStuff)
@@ -2010,85 +2013,19 @@ async function standardPowerResult(rollData, functionStuff){
 // ********************************************* POWERS *****************************************************
 
 async function anathemaPrepare(ability, actor) {
-    // get target
-    let targetData;
-    let favour = 0;
-    let hasTarget= true;
-    try{targetData = getTarget("resolute")} catch(error){
-        hasTarget= false;
-    }
-    if (hasTarget){
-        let targetResMod = await checkResoluteModifiers(targetData.actor, targetData.autoParams, true, false);
-        targetData.resistAttributeName = targetResMod.bestAttributeName;
-        targetData.resistAttributeValue = targetResMod.bestAttributeValue;
-        targetData.autoParams = targetResMod.autoParams;
-        favour += targetResMod.favour*-1;
-    }
-    else {targetData = {hasTarget : false, leaderTarget: false}}
     let fsDefault = await buildFunctionStuffDefault(ability, actor)
     let specificStuff = {
-        actor: actor,
-        combat: false,
-        favour: favour,
+        targetResitAttribute: "resolute",
         tradition: ["wizardry", "staffmagic", "theurgy"],
         checkMaintain: true,
-        impeding: actor.data.data.combat.impeding,
-        targetData: targetData,
-        resultFunction: anathemaResult
+        checkTargetSteadfast: true,
+        introText: actor.data.name + game.i18n.localize('POWER_ANATHEMA.CHAT_INTRO'),
+        resultTextSuccess: actor.data.name + game.i18n.localize('POWER_ANATHEMA.CHAT_SUCCESS'),
+        resultTextFail: actor.data.name + game.i18n.localize('POWER_ANATHEMA.CHAT_FAILURE')
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    await modifierDialog(functionStuff)
-}
-
-async function anathemaResult(rollData, functionStuff){
-    let flagDataArray = [];
-    let introText = functionStuff.actor.data.name + game.i18n.localize('POWER_ANATHEMA.CHAT_INTRO');
-    let resultText = functionStuff.actor.data.name + game.i18n.localize('POWER_ANATHEMA.CHAT_SUCCESS');
-    let corruptionText ="";
-    if(!rollData[0].hasSucceed){
-        resultText = functionStuff.actor.data.name + game.i18n.localize('POWER_ANATHEMA.CHAT_FAILURE');
-    }
-    let targetText = "";
-    if(functionStuff.targetData.hasTarget){
-        targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.token.data.name;
-        if (functionStuff.targetData.autoParams != ""){targetText += ": " + functionStuff.targetData.autoParams}
-    }
-    if(functionStuff.corruption){
-        let corruption = await getCorruption(functionStuff);
-        corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
-
-        flagDataArray.push({
-            tokenId: functionStuff.token.id,
-            corruptionChange: corruption.value
-        });
-    }
-    let templateData = {
-        targetData : functionStuff.targetData,
-        hasTarget : functionStuff.targetData.hasTarget,
-        introText: introText,
-        introImg: functionStuff.actor.data.img,
-        targetText: targetText,
-        subText: functionStuff.ability.name + " (" + functionStuff.powerLvl.lvlName + ")",
-        subImg: functionStuff.ability.img,
-        hasRoll: true,
-        rollString: await formatRollString(rollData[0], functionStuff.targetData.hasTarget, rollData[0].modifier),
-        rollResult : formatRollResult(rollData),
-        resultText: resultText,
-        finalText: "",
-        haveCorruption: functionStuff.corruption,
-        corruptionText: corruptionText
-    }
-    if(functionStuff.autoParams != ""){templateData.subText += ", " + functionStuff.autoParams};
-
-    const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
-    const chatData = {
-        user: game.user.id,
-        content: html,
-    }
-    let NewMessage = await ChatMessage.create(chatData);
-    if(flagDataArray.length > 0){
-        await createModifyTokenChatButton(flagDataArray);
-    }
+    functionStuff.targetData.hasTarget = true,
+    await standardPowerActivation(functionStuff)
 }
 
 async function brimstoneCascadePrepare(ability, actor) {
