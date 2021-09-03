@@ -10,7 +10,7 @@
                     <div class="attribute">
                         <button class="roll-attribute" style="width: 100%" data-attribute="{{key}}">{{localize attribute.label}}</button>
                         <span class="tooltip input">
-                            <input name="data.attributes.{{key}}.total" type="number" value="{{attribute.total}}" data-dtype="Number" disabled />
+                            <input name="data.attributes.{{key}}.total" type="text" value="{{#ifat ../symbaroumOptions.isNPC}}{{#ifgt attribute.modifier 0}}+{{/ifgt}}{{attribute.modifier}}{{else}}{{attribute.total}}{{/ifat}}" data-dtype="Number" disabled />
                             <span class="tooltiptext right">{{{attribute.msg}}}</span>
                         </span>
                     </div>
@@ -24,12 +24,12 @@
                         <div class="health-toughnesscol foreground">
                             <h1>{{localize "HEALTH.TOUGHNESS"}}</h1>
                             <div class="toughness-current" title="{{localize "TOOLTIP.HEALTH.TOUGHNESS_CURRENT"}}">
-                                <label for="{{actor.id}}-data.health.toughness.value">{{localize "HEALTH.TOUGHNESS_CURRENT"}}</label>
-                                <input id="{{actor.id}}-data.health.toughness.value" name="data.health.toughness.value" type="number" value="{{data.health.toughness.value}}" data-dtype="Number" />
+                                <label for="{{actor._id}}-data.health.toughness.value">{{localize "HEALTH.TOUGHNESS_CURRENT"}}</label>
+                                <input id="{{actor._id}}-data.health.toughness.value" name="data.health.toughness.value" type="number" value="{{data.health.toughness.value}}" data-dtype="Number" />
                             </div>
                             <div class="toughness-total" title="{{localize "TOOLTIP.HEALTH.TOUGHNESS_TOTAL"}}">
                                 <label>{{localize "HEALTH.TOUGHNESS_TOTAL"}}</label>
-                                <span class="tooltip input flex30">
+                                <span class="tooltip input flex30">                                    
                                     <input type="number" value="{{data.health.toughness.max}}" data-dtype="Number" disabled>
                                     <span class="tooltiptext right">{{localize "TOOLTIP.BONUS_TOTAL"}} {{data.health.toughness.max}} {{{data.bonus.toughness.max_msg}}}</span>
                                 </span>
@@ -38,8 +38,12 @@
                             <div class="toughness-threshold" title="{{localize "TOOLTIP.HEALTH.TOUGHNESS_THRESHOLD"}}">
                                 <label>{{localize "HEALTH.TOUGHNESS_THRESHOLD"}}</label>
                                 <span class="tooltip input flex30">
+                                    {{#if actor.hasNoPainThreshold }}
+                                    <input type="text" value="{{localize "HEALTH.TOUGHNESS_THRESHOLD_NA"}}" disabled />
+                                    {{else}}
                                     <input type="number" value="{{data.health.toughness.threshold}}" data-dtype="Number" disabled />
                                     <span class="tooltiptext right">{{localize "TOOLTIP.BONUS_TOTAL"}} {{data.health.toughness.threshold}} {{{data.bonus.toughness.threshold_msg}}}</span>
+                                    {{/if}}
                                 </span>
                             </div>
                         </div>
@@ -50,36 +54,48 @@
                         <div class="health-corruptioncol">
 
                             <div class="corruption-col1">
-                                <div class="corruption-current" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_CURRENT"}}">
+                                <div class="corruption-current" title="{{#if actor.isThoroughlyCorrupt}}{{localize "TOOLTIP.HEALTH.CORRUPTION_NA_TEXT"}}{{else}}{{localize "TOOLTIP.HEALTH.CORRUPTION_CURRENT"}}{{/if}}">
                                     <label>{{localize "HEALTH.CORRUPTION_CURRENT"}}</label>
+                                    {{#if actor.isThoroughlyCorrupt}}
+                                    <input type="text" value="{{localize "HEALTH.CORRUPTION_NA"}}" disabled />
+                                    {{else}}
                                     <input name="data.health.corruption.value" type="number" value="{{data.health.corruption.value}}" data-dtype="Number" disabled />
+                                    {{/if}}
                                 </div>
                                 <div class="corruption-temporary" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_TEMPORARY"}}">
-                                    <label for="{{actor.id}}-data.health.corruption.temporary">{{localize "HEALTH.CORRUPTION_TEMPORARY"}}</label>
-                                    <input id="{{actor.id}}-data.health.corruption.temporary" name="data.health.corruption.temporary" type="number" value="{{data.health.corruption.temporary}}" data-dtype="Number" />
+                                    <label for="{{actor._id}}-data.health.corruption.temporary">{{localize "HEALTH.CORRUPTION_TEMPORARY"}}</label>
+                                    <input id="{{actor._id}}-data.health.corruption.temporary" name="data.health.corruption.temporary" type="number" value="{{data.health.corruption.temporary}}" data-dtype="Number" {{#if actor.isThoroughlyCorrupt}}disabled{{/if}}/>
                                 </div>
                                 <div class="corruption-longterm" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_LONGTERM"}}">
-                                    <label for="{{actor.id}}-data.health.corruption.longterm">{{localize "HEALTH.CORRUPTION_LONGTERM"}}</label>
-                                    <input type="number" id="{{actor.id}}-data.health.corruption.longterm" name="data.health.corruption.longterm" value="{{data.health.corruption.longterm}}" data-dtype="Number" />
+                                    <label for="{{actor._id}}-data.health.corruption.longterm">{{localize "HEALTH.CORRUPTION_LONGTERM"}}</label>
+                                    <input type="number" id="{{actor._id}}-data.health.corruption.longterm" name="data.health.corruption.longterm" value="{{data.health.corruption.longterm}}" data-dtype="Number" {{#if actor.isThoroughlyCorrupt}}disabled{{/if}}/>
                                 </div>
                             </div> <!-- end of col 1 -->
                             <div class="corruption-col2">
                                 <div class="corruption-permanent" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_PERMANENT"}}">
-                                    <label for="{{actor.id}}-data.health.corruption.permanent">{{localize "HEALTH.CORRUPTION_PERMANENT"}}</label>
-                                    <input id="{{actor.id}}-data.health.corruption.permanent" name="data.health.corruption.permanent" type="number" value="{{data.health.corruption.permanent}}" data-dtype="Number" />
+                                    <label for="{{actor._id}}-data.health.corruption.permanent">{{localize "HEALTH.CORRUPTION_PERMANENT"}}</label>
+                                    <input id="{{actor._id}}-data.health.corruption.permanent" name="data.health.corruption.permanent" type="number" value="{{data.health.corruption.permanent}}" data-dtype="Number" {{#if actor.isThoroughlyCorrupt}}disabled{{/if}}/>
                                 </div>
                                 <div class="corruption-threshold">
                                     <label title="{{localize "TOOLTIP.HEALTH.CORRUPTION_THRESHOLD"}}">{{localize "HEALTH.CORRUPTION_THRESHOLD"}}</label>
                                     <span class="tooltip input flex30">
+                                        {{#if actor.isThoroughlyCorrupt}}
+                                        <input type="text" value="{{localize "HEALTH.CORRUPTION_NA"}}" disabled />
+                                        {{else}}
                                         <input name="data.health.corruption.threshold" type="number" value="{{data.health.corruption.threshold}}" data-dtype="Number" disabled />
                                         <span class="tooltiptext downleft">{{localize "TOOLTIP.BONUS_TOTAL"}} {{data.health.corruption.threshold}} {{{data.bonus.corruption.threshold_msg}}}</span>
+                                        {{/if}}
                                     </span>
                                 </div>
                                 <div class="corruption-max">
                                     <label title="{{localize "TOOLTIP.HEALTH.CORRUPTION_MAX"}}">{{localize "HEALTH.CORRUPTION_MAX"}}</label>
                                     <span class="tooltip input flex30">
+                                        {{#if actor.isThoroughlyCorrupt}}
+                                        <input type="text" value="{{localize "HEALTH.CORRUPTION_NA"}}" disabled />
+                                        {{else}}
                                         <input style="flex-basis: unset" name="data.health.corruption.max" type="number" value="{{data.health.corruption.max}}" data-dtype="Number" disabled />
                                         <span class="tooltiptext downleft">{{localize "TOOLTIP.BONUS_TOTAL"}} {{data.health.corruption.max}} {{{data.bonus.corruption.max_msg}}}</span>
+                                        {{/if}}
                                     </span>
                                 </div>
                             </div> <!-- end of col 2 -->
@@ -89,10 +105,11 @@
 
                 <div class="combat foreground">
                     <h1>{{localize "TITLE.COMBAT"}}</h1>
+                    {{#ifsetting "manualInitValue"}}
                     <div class="stat-modifiers">
                         <div class="initiative" title="{{localize "TOOLTIP.COMBAT.INITIATIVE"}}">
-                            <label for="{{actor.id}}-data.initiative.attribute">{{localize "INITIATIVE"}}</label>
-                            <select id="{{actor.id}}-data.initiative.attribute" name="data.initiative.attribute" class="attribute">
+                            <label for="{{actor._id}}-data.initiative.attribute">{{localize "INITIATIVE"}}</label>
+                            <select id="{{actor._id}}-data.initiative.attribute" name="data.initiative.attribute" class="attribute">
                                 {{#select data.initiative.attribute}}
                                     <option value="quick">{{localize "ATTRIBUTE.QUICK"}}</option>
                                     <option value="accurate">{{localize "ATTRIBUTE.ACCURATE"}}</option>
@@ -106,6 +123,7 @@
                             </select>
                         </div>
                     </div>
+                    {{/ifsetting}}
                     <div class="armor">
                         <div style="display:flex; width:100%">
                             <div class="image-container">
@@ -115,10 +133,10 @@
                         </div>
                         <div class="quality">
                             <label>{{localize "ARMOR.DEFENSE"}}</label>
-                            <input type="text" value={{localize data.defense.attributelabel}} disabled />
+                            <input type="text" value="{{localize data.defense.attributelabel}}"" disabled />
                             <span class="tooltip input">
-                                <input type="number" value="{{data.combat.defense}}" data-dtype="Number" disabled />
-                                {{#ife actor.type "monster"}} <span class="tooltiptext downleft">{{localize "TOOLTIP.BONUS_TOTAL"}} {{data.combat.defense}} ({{data.combat.defmod}})<br /> {{{data.combat.msg}}} </span> {{/ife}}
+                                <input type="text" value="{{#ifat ../symbaroumOptions.isNPC}}{{#ifgt data.combat.defmod 0}}+{{/ifgt}}{{data.combat.defmod}}{{else}}{{data.combat.defense}}{{/ifat}}" data-dtype="Number" disabled />
+                                {{#ife actor.type "monster"}} <span class="tooltiptext downleft">{{localize "TOOLTIP.BONUS_TOTAL"}} {{data.combat.defense}} ({{#ifgt data.combat.defmod 0}}+{{/ifgt}}{{data.combat.defmod}})<br /> {{{data.combat.msg}}} </span> {{/ife}}
                                 {{#ife actor.type "player"}} <span class="tooltiptext downleft">{{localize "TOOLTIP.BONUS_TOTAL"}} {{data.combat.defense}} <br /> {{{data.combat.msg}}} </span> {{/ife}}
                             </span>
                         </div>
@@ -198,3 +216,4 @@
         </div>
     </div>
 </div>
+{{log this}}

@@ -9,12 +9,12 @@
                     <label for="{{item._id}}-name">{{localize "ABILITY.NAME"}}</label>
                     <input id="{{item._id}}-name" name="name" type="text" value="{{item.name}}"/>
                 </div>
-                {{#if item.isGM }}
+                {{#ifat symbaroumOptions.isGM symbaroumOptions.allowShowReference }}
                 <div class="name">
                     <label for="{{item._id}}-data.reference">{{localize "ABILITY.REFERENCE"}}</label>
                     <input id="{{item._id}}-data.reference" name="data.reference" type="text" value="{{data.reference}}"/>
                 </div>
-                {{/if}}
+                {{/ifat}}
             </div>
             <div class="avatar">
                     <button class="activate-ability" ><img src="icons/vtt-512.png" /></button>

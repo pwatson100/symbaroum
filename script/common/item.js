@@ -35,7 +35,6 @@ export class SymbaroumItem extends Item {
         super.prepareData();
         this._initializeData(this.data);
         this._computeCombatData(this.data);
-        this.data.isGM = game.user.isGM && game.settings.get('symbaroum', 'allowShowReference'); // Show advanced settings
     }
 
     _initializeData(data) {
@@ -84,8 +83,6 @@ export class SymbaroumItem extends Item {
     }
 
     _computeExperienceCost(data) {
-        // console.log("computeExperienceCost "+JSON.stringify(data));
-
         let expCost = 0;
 
         if (data.isRitual) {

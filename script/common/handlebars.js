@@ -62,6 +62,12 @@ function registerHandlebarsHelpers() {
     if (v1 > v2) return options.fn(this);
     else return options.inverse(this);
   });
+  // if all true
+  Handlebars.registerHelper('ifat', function (...args) {
+    // remove handlebar options
+    let options = args.pop();
+    return args.indexOf(false) === -1 ? options.fn(this) : options.inverse(this);
+  });    
   Handlebars.registerHelper('keyIndex', function (str) {
     return 'data.power.' + str + '.description';
   });
@@ -69,4 +75,10 @@ function registerHandlebarsHelpers() {
     let newOne = parseInt(v1) + 1;
     return newOne;
   });
+  Handlebars.registerHelper('ifsetting', function (v1, options) {
+    if(game.settings.get('symbaroum',v1) ) return options.fn(this);
+      else return options.inverse(this);
+  });
+
+
 }

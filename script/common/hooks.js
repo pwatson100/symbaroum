@@ -16,6 +16,7 @@ import { initializeHandlebars } from './handlebars.js';
 import { migrateWorld } from './migration.js';
 import { sendDevMessage } from './devmsg.js';
 import { SYMBAROUM } from './config.js';
+import { MonsterSheet } from '../sheet/monster.js';
 
 Hooks.once('init', () => {
   CONFIG.Actor.documentClass = SymbaroumActor;
@@ -23,7 +24,8 @@ Hooks.once('init', () => {
   Actors.unregisterSheet('core', ActorSheet);
   Actors.registerSheet('symbaroum', PlayerSheet2, { types: ['player'], makeDefault: true });
   Actors.registerSheet('symbaroum', PlayerSheet, { types: ['player'], makeDefault: false });
-  Actors.registerSheet('symbaroum', PlayerSheet2, { types: ['monster'], makeDefault: true });
+  Actors.registerSheet('symbaroum', MonsterSheet, { types: ['monster'], makeDefault: true });
+  Actors.registerSheet('symbaroum', PlayerSheet2, { types: ['monster'], makeDefault: false });
   Items.unregisterSheet('core', ItemSheet);
   Items.registerSheet('symbaroum', TraitSheet, { types: ['trait'], makeDefault: true });
   Items.registerSheet('symbaroum', AbilitySheet, { types: ['ability'], makeDefault: true });

@@ -420,8 +420,12 @@
 }
 
 /* Common styles */
-.symbaroum.sheet.actor .window-content {
+.symbaroum.sheet.actor.player .window-content {
   background: url(../asset/image/background.jpg) repeat;
+}
+
+.symbaroum.sheet.actor.monster .window-content {
+  background: url(../asset/image/background-monster.webp) repeat;
 }
 
 .symbaroum.sheet.actor .window-content .editable {
@@ -431,7 +435,7 @@
 }
 
 .symbaroum.sheet.actor .foreground {
-  background: url(../asset/image/foreground.jpg) repeat;
+  background: url(../asset/image/foreground.webp) repeat;
 }
 
 .symbaroum.sheet.actor .border {
@@ -2026,7 +2030,7 @@
       flex-wrap: wrap;
   -ms-flex-preferred-size: 100%;
       flex-basis: 100%;
-  margin: 5px 0px 5px 0px;
+  margin-top: 5px;
 }
 
 .symbaroum.sheet.actor .player .main .combat .stat-modifiers .initiative,
@@ -2050,6 +2054,7 @@
   margin-bottom: 5px;
   margin-right: 5px;
   margin-left: 5px;
+  margin-top: 5px;
 }
 
 .symbaroum.sheet.actor .player .main .combat .armor .roll-armor,

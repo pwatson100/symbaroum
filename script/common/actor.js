@@ -99,8 +99,9 @@ export class SymbaroumActor extends Actor {
 
             data.data.attributes[aKey].bonus = data.data.bonus[aKey];
             data.data.attributes[aKey].total = data.data.attributes[aKey].value + data.data.bonus[aKey] + data.data.attributes[aKey].temporaryMod;
+            data.data.attributes[aKey].modifier = 10 - data.data.attributes[aKey].total;
             if(data.type === "monster") {
-                data.data.attributes[aKey].msg = game.i18n.localize("TOOLTIP.BONUS_TOTAL")+ ` ${data.data.attributes[aKey].total}`+" ("+(10 - data.data.attributes[aKey].total)+")<br />"+game.i18n.localize("ATTRIBUTE.BASE")+"("+data.data.attributes[aKey].value.toString()+")"+`${data.data.bonus[aKey + "_msg"]}`;
+                data.data.attributes[aKey].msg = game.i18n.localize("TOOLTIP.BONUS_TOTAL")+ ` ${data.data.attributes[aKey].total}`+" ("+data.data.attributes[aKey].npcModifier+")<br />"+game.i18n.localize("ATTRIBUTE.BASE")+"("+data.data.attributes[aKey].value.toString()+")"+`${data.data.bonus[aKey + "_msg"]}`;
             } else {
                 data.data.attributes[aKey].msg = game.i18n.localize("TOOLTIP.BONUS_TOTAL")+ ` ${data.data.attributes[aKey].total}`+"<br />"+game.i18n.localize("ATTRIBUTE.BASE")+"("+data.data.attributes[aKey].value.toString()+")"+`${data.data.bonus[aKey + "_msg"]}`;
             }
@@ -123,12 +124,14 @@ export class SymbaroumActor extends Actor {
         }
 
         let noPain = this.data.items.filter(element => element.data.data.reference === "nopainthreshold");
-        if(noPain.length > 0){
+        data.hasNoPainThreshold = noPain.length > 0;
+        if(noPain.length > 0){            
             data.data.health.toughness.threshold = 0;
         } else data.data.health.toughness.threshold = Math.ceil(strong / 2) + data.data.bonus.toughness.threshold;
         
         // Corruption Max
         let fullCorrupt = (this.data.items.filter(element => element.data.data.reference === "thoroughlycorrupt"));
+        data.isThoroughlyCorrupt = fullCorrupt.length > 0;
         if(fullCorrupt.length > 0){
             data.data.health.corruption.threshold = 0;
             data.data.health.corruption.max = 0;
