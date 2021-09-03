@@ -1564,6 +1564,11 @@ export async function attackRoll(weapon, actor){
                 functionStuff.favour += 1;
             }
         }
+        let colossal = actor.items.filter(element => element.data.data?.reference === "colossal");
+        if(colossal.length > 0 && colossal[0].data.data.adept.isActive){
+            functionStuff.favour += 1;
+            functionStuff.autoParams += game.i18n.localize('TRAIT_LABEL.COLOSSAL') + ", ";
+        }
         functionStuff.flagBerserk = actor.getFlag(game.system.id, 'berserker');
     }
     //all weapons
