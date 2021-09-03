@@ -457,11 +457,15 @@ export async function damageRollWithDiceParams(functionStuff, critSuccess, attac
         newRollDmgString += "+"+ weaponModDmgValue.toString(); 
       }
       if(!dmgData.ignoreArm && functionStuff.targetData.actor.data.data.combat.protectionPc != 0){
-        newRollDmgString += " - (" + functionStuff.targetData.actor.data.data.combat.protectionPc + ")";
+        if(functionStuff.weapon.damage.damageFavour){
+          newRollDmgString += " - (" + functionStuff.targetData.actor.data.data.combat.unfavourPcProt + ")";
+        }
+        else newRollDmgString += " - (" + functionStuff.targetData.actor.data.data.combat.protectionPc + ")";
       }
       else newRollDmgString += " - 0";
     }
     // final damage
+    console.log(newRollDmgString);
     let dmgRoll= new Roll(newRollDmgString).evaluate();
 
     return{
