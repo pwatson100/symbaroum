@@ -592,6 +592,7 @@
   "TRAIT.ACTIVE": "Aktiv",
   "TRAIT.ACTION": "Handling",
   "TRAIT.DESCRIPTION": "Beskrivning",
+  "TRAIT.MARKERTRAIT": "Trait has no levels",
 
   "TRAIT_LABEL.ACIDICATTACK": "Frätande attack",
   "TRAIT_LABEL.ACIDICBLOOD": "Frätande blod",

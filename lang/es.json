@@ -592,6 +592,8 @@
   "TRAIT.ACTIVE": "Activo",
   "TRAIT.ACTION": "Acción",
   "TRAIT.DESCRIPTION": "Descr.",
+  "TRAIT.MARKERTRAIT": "Trait has no levels",
+
 
   "TRAIT_LABEL.ACIDICATTACK": "Ataque Ácido",
   "TRAIT_LABEL.ACIDICBLOOD": "Sangre Ácida",

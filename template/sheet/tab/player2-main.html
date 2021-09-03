@@ -135,17 +135,17 @@
                             <label>{{localize "ARMOR.DEFENSE"}}</label>
                             <input type="text" value="{{localize data.defense.attributelabel}}"" disabled />
                             <span class="tooltip input">
-                                <input type="text" value="{{#ifat ../symbaroumOptions.isNPC}}{{#ifgt data.combat.defmod 0}}+{{/ifgt}}{{data.combat.defmod}}{{else}}{{data.combat.defense}}{{/ifat}}" data-dtype="Number" disabled />
-                                {{#ife actor.type "monster"}} <span class="tooltiptext downleft">{{localize "TOOLTIP.BONUS_TOTAL"}} {{data.combat.defense}} ({{#ifgt data.combat.defmod 0}}+{{/ifgt}}{{data.combat.defmod}})<br /> {{{data.combat.msg}}} </span> {{/ife}}
-                                {{#ife actor.type "player"}} <span class="tooltiptext downleft">{{localize "TOOLTIP.BONUS_TOTAL"}} {{data.combat.defense}} <br /> {{{data.combat.msg}}} </span> {{/ife}}
+                                <input type="text" value="{{#ifat symbaroumOptions.isNPC}}{{#ifgt data.combat.defmod 0}}+{{/ifgt}}{{data.combat.defmod}}{{else}}{{data.combat.defense}}{{/ifat}}" data-dtype="Number" disabled />
+                                {{#if symbaroumOptions.isNPC}}<span class="tooltiptext downleft">{{localize "TOOLTIP.BONUS_TOTAL"}} {{data.combat.defense}} ({{#ifgt data.combat.defmod 0}}+{{/ifgt}}{{data.combat.defmod}})<br /> {{{data.combat.msg}}} </span>
+                                {{else}} <span class="tooltiptext downleft">{{localize "TOOLTIP.BONUS_TOTAL"}} {{data.combat.defense}} <br /> {{{data.combat.msg}}} </span> {{/if}}
                             </span>
                         </div>
                         <div class="quality">
                             <div class="protection">
                                 <label>{{localize "ARMOR.PROTECTION"}}</label>
                                 <span class="tooltip input">
-                                    {{#ife actor.type "player"}}<input type="text" value="{{data.combat.protectionPc}}" disabled />{{/ife}}
-                                    {{#ife actor.type "monster"}}<input type="text" value="{{data.combat.protectionNpc}}" disabled />{{/ife}}
+                                    {{#if symbaroumOptions.isNPC}}<input type="text" value="{{data.combat.protectionNpc}}" disabled />
+                                    {{else}}<input type="text" value="{{data.combat.protectionPc}}" disabled />{{/if}}
                                     <span class="tooltiptext downleft">{{{data.combat.tooltipProt}}}</span>
                                 </span>
                             </div>
@@ -171,12 +171,11 @@
                                                 </div>
                                                 <button class="roll-weapon">{{item.name}}</button>
                                             </div>
-                                            {{#ife ../actor.type "player"}}
-                                                <div class="damage" title="{{item.tooltip}}">{{item.damage.pcExtShort}}</div>
-                                            {{/ife}}
-                                            {{#ife ../actor.type "monster"}}
+                                            {{#if ../symbaroumOptions.isNPC}}
                                                 <div class="damage" title="{{item.tooltip}}">{{item.damage.npcExtended}}</div>
-                                            {{/ife}}
+                                            {{else}}
+                                                <div class="damage" title="{{item.tooltip}}">{{item.damage.pcExtShort}}</div>
+                                            {{/if}}
                                         </div>
                                     {{/if}}
                                 {{/each}}

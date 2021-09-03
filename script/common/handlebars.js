@@ -51,7 +51,11 @@ function registerHandlebarsHelpers() {
     if (v1 !== v2) return options.fn(this);
     else return options.inverse(this);
   });
-
+  // if not
+  Handlebars.registerHelper('ifn', function (v1, options) {
+    if (!v1) return options.fn(this);
+    else return options.inverse(this);
+  });
   // if equal
   Handlebars.registerHelper('ife', function (v1, v2, options) {
     if (v1 === v2) return options.fn(this);

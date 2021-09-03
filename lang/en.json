@@ -602,6 +602,7 @@
   "TRAIT.ACTIVE": "Acquired",
   "TRAIT.ACTION": "Action",
   "TRAIT.DESCRIPTION": "Description",
+  "TRAIT.MARKERTRAIT": "Trait has no levels",
 
   "TRAIT_LABEL.ACIDICATTACK": "Acidic Attack",
   "TRAIT_LABEL.ACIDICBLOOD": "Acidic Blood",

@@ -219,7 +219,8 @@
         "isActive": false,
         "action": "",
         "description": ""
-      }
+      },
+      "marker": false
     },
     "ability": {
       "templates": [

@@ -593,6 +593,7 @@
     "TRAIT.ACTIVE": "Acquis",
     "TRAIT.ACTION": "Action",
     "TRAIT.DESCRIPTION": "Description",
+    "TRAIT.MARKERTRAIT": "Trait has no levels",
 
     "TRAIT_LABEL.ACIDICATTACK": "Attaque acide",
     "TRAIT_LABEL.ACIDICBLOOD": "Sang Acide",

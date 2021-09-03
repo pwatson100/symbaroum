@@ -23,10 +23,12 @@
 
         <div class="sheet-tabs tabs" data-group="primary">
             <b class="item" data-tab="description">{{localize "TAB.DESCRIPTION"}}</b>
+            {{#ifn data.marker}}            
             <b class="item" data-tab="novice">{{localize "TAB.NOVICE"}}</b>
             <b class="item" data-tab="adept">{{localize "TAB.ADEPT"}}</b>
             <b class="item" data-tab="master">{{localize "TAB.MASTER"}}</b>
             <b class="item" data-tab="bonus">{{localize "TAB.BONUS"}}</b>
+            {{/ifn}}
         </div>
 
         <div class="sheet-body">
@@ -34,6 +36,9 @@
                 <div class="description foreground border">
                     <h1>{{localize "TITLE.DESCRIPTION"}}</h1>
                     {{editor content=data.description target="data.description" button=true owner=owner editable=true}}
+                    <div class="marker" style="width:100%"><label for="{{item._id}}-data.marker">{{localize "TRAIT.MARKERTRAIT"}}</label>                        
+                        <input id="{{item._id}}-data.marker" name="data.marker" type="checkbox" value="active" {{#if data.marker}}checked{{/if}}/>
+                    </div>
                 </div>
             </div>
             <div class="tab" data-group="primary" data-tab="novice">
@@ -55,12 +60,8 @@
                     </div>
                     {{#if isOwned}}
                     <div class="active">
-                        <label for="{{item._id}}-data.novice.isActive">{{localize "TRAIT.ACTIVE"}}</label>
-                        {{#if data.novice.isActive}}
-                        <input id="{{item._id}}-data.novice.isActive" name="data.novice.isActive" type="checkbox" value="active" checked/>
-                        {{else}}
-                        <input id="{{item._id}}-data.novice.isActive" name="data.novice.isActive" type="checkbox" value="active"/>
-                        {{/if}}
+                        <label for="{{item._id}}-data.novice.isActive">{{localize "TRAIT.ACTIVE"}}</label>                        
+                        <input id="{{item._id}}-data.novice.isActive" name="data.novice.isActive" type="checkbox" value="active" {{#if data.novice.isActive}}checked{{/if}}/>                        
                     </div>
                     {{/if}}            
                     {{editor content=data.novice.description target="data.novice.description" button=true owner=owner editable=true}}

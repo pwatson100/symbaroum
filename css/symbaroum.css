@@ -3388,6 +3388,19 @@
   height: 166px;
 }
 
+.symbaroum.sheet.item .trait .tab .marker {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-preferred-size: 100%;
+      flex-basis: 100%;
+  margin: 5px 5px 5px 10px;
+}
+
 .symbaroum.sheet.item .trait .tab .active,
 .symbaroum.sheet.item .trait .tab .action {
   display: -webkit-box;
