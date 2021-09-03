@@ -161,6 +161,7 @@ export class SymbaroumActor extends Actor {
             armor: activeArmor.name,
             protectionPc: activeArmor.pc,
             protectionNpc: activeArmor.npc,
+            unfavourPcProt: activeArmor.unfavourPcProt,
             impeding: activeArmor.impeding,
             tooltipProt: activeArmor.tooltip,
             defense: totDefense,
@@ -257,7 +258,11 @@ export class SymbaroumActor extends Actor {
             naturalwarriorLvl = getPowerLevel(naturalwarrior[0]).level;
         }
         let flagBerserk = this.getFlag(game.system.id, 'berserker');
-
+        let colossalLvl = 0;
+        let colossal = this.data.items.filter(element => element.data.data?.reference === "colossal");
+        if(colossal.length > 0){
+            colossalLvl = getPowerLevel(colossal[0]).level;
+        }
         // check for abilities that changes attack attribute
         let dominate = this.data.items.filter(element => element.data.data?.reference === "dominate");
         let feint = this.data.items.filter(element => element.data.data?.reference === "feint");
@@ -280,6 +285,7 @@ export class SymbaroumActor extends Actor {
             let sometimesOnBonusFromAbilitiesShort = "";
             let bonusDamage = "";
             let shortBonusDamage = "";
+            let damageFavour = 0;
             if( item.data.data.bonusDamage !== undefined && item.data.data.bonusDamage != ""){
                 let plus = "+";
                 if(item.data.data.bonusDamage.charAt(0) === '+') {
@@ -373,7 +379,6 @@ export class SymbaroumActor extends Actor {
                 }
             }
 
-            
             if(item.data.data?.isDistance){
                 if(sixthsense.length > 0){
                     if(this.data.data.attributes.vigilant.total > this.data.data.attributes[attribute].total){
@@ -428,11 +433,13 @@ export class SymbaroumActor extends Actor {
             let baseDmgRoll = new Roll(baseDamage).evaluate({maximize: true});
             let DmgRollExt= new Roll(pcDamageExt).evaluate({maximize: true});
             let npcDamageExt = Math.ceil(DmgRollExt.total/2);
-            if(item.data.data.qualities?.massive) {
+            if(item.data.data.qualities?.massive || colossalLvl) {
                 pcDamage = "2d"+(baseDmgRoll.total)+"kh"+bonusDamage;
                 pcShort = "2d"+(baseDmgRoll.total)+"kh"+shortBonusDamage;
                 pcDamageExt = pcDamage + sometimesOnBonusFromAbilities;
                 pcExtShort = pcShort + sometimesOnBonusFromAbilitiesShort;
+                damageFavour = 1;
+                if(colossalLvl) tooltip += game.i18n.localize("TRAIT_LABEL.COLOSSAL") + ", ";
             }
             if(item.data.data.qualities?.deepImpact){
                 pcDamage += "+1d1["+game.i18n.localize("QUALITY.DEEPIMPACT")+"]";
@@ -468,7 +475,8 @@ export class SymbaroumActor extends Actor {
                     pcExtended: pcDamageExt,
                     pcExtShort: pcExtShort,
                     npcExtended: npcDamageExt,
-                    npc: npcDamage
+                    npc: npcDamage,
+                    damageFavour: damageFavour
                 }
             })
         }
@@ -542,21 +550,25 @@ export class SymbaroumActor extends Actor {
         }
         let pcProt = "";
         let armorRoll= null;
+        let unfavourPcProt = "0";
         if( protection === "0" && bonusProtection === "") {
             armorRoll = new Roll("0").evaluate({maximize: true});    
         } else if(protection === "0") {
             pcProt = bonusProtection;
+            unfavourPcProt = bonusProtection;
             armorRoll = new Roll(pcProt).evaluate({maximize: true});    
         } else {
             pcProt = protection + bonusProtection;
             armorRoll = new Roll(pcProt).evaluate({maximize: true});
+            let maxBaseArmor = new Roll(protection).evaluate({maximize: true});
+            unfavourPcProt = "2d"+(maxBaseArmor.total)+"kl"+bonusProtection;
         }
 
         let npcProt = Math.ceil(armorRoll.total/2);
-        
         if(item.data.data?.qualities?.reinforced){
             pcProt += "+1";
             npcProt+= 1;
+            unfavourPcProt += "+1";
         }
         return( {
             _id: item.id,
@@ -566,6 +578,7 @@ export class SymbaroumActor extends Actor {
             bonus: bonusProtection, 
             pc: pcProt, 
             npc: npcProt,
+            unfavourPcProt: unfavourPcProt,
             tooltip: tooltip,
             impeding: impeding,
             isActive: item.data.isActive,
@@ -691,6 +704,10 @@ export class SymbaroumActor extends Actor {
                 damageProt.holy = 0.25;
                 damageProt.mysticalWeapon = 0.25
             }
+        }
+        let colossal = this.data.items.filter(element => element.data.data?.reference === "colossal");
+        if(colossal.length > 0 && colossal[0].data.data.master.isActive){
+            damageProt.normal = 0;
         }
         return(damageProt)
     }

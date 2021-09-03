@@ -241,6 +241,7 @@
     "COMBAT.CHAT_SUCCESS": " touche ",
     "COMBAT.CHAT_FAILURE": " rate son coup.",
     "COMBAT.CHAT_BLEED": " reçoit une blessure hémorragique et subit des dégâts chaque round : ",
+    "COMBAT.CHAT_CORRUPTED_ATTACK": "L'attaque inflige de la corruption: ",
     "COMBAT.CHAT_POISON": " tente d'empoisonner ",
     "COMBAT.CHAT_POISON_FAILURE": "Echec de l'empoisonnement.",
     "COMBAT.CHAT_POISON_EXTEND": "La victime était déjà empoisonnée, nouvelle durée: rounds: ",

@@ -244,6 +244,7 @@
   "COMBAT.CHAT_SUCCESS": " träffar ",
   "COMBAT.CHAT_FAILURE": " missar.",
   "COMBAT.CHAT_BLEED": " blöder och förlorar tålighet varje runda: ",
+  "COMBAT.CHAT_CORRUPTED_ATTACK": "The attack inflict corruption: ",
   "COMBAT.CHAT_POISON": " försöker förgifta ",
   "COMBAT.CHAT_POISON_FAILURE": "Inte förgiftad.",
   "COMBAT.CHAT_POISON_EXTEND": "Målet var redan förgiftat, ny varaktighet: rundor: ",
