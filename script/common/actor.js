@@ -113,8 +113,8 @@ export class SymbaroumActor extends Actor {
         let sturdy = this.data.items.filter(item => item.data.data.reference === "sturdy");
         if(sturdy.length != 0){
             let sturdyLvl = getPowerLevel(sturdy[0]).level;
-            if(sturdyLvl == 1) data.data.health.toughness.max = Math.ceil(strong*(1.5));
-            else data.data.health.toughness.max = strong*(sturdyLvl)
+            if(sturdyLvl == 1) data.data.health.toughness.max = Math.ceil(strong*(1.5)) + data.data.bonus.toughness.max;
+            else data.data.health.toughness.max = strong*(sturdyLvl) + data.data.bonus.toughness.max;
         }
         else data.data.health.toughness.max = (strong > 10 ? strong : 10) + data.data.bonus.toughness.max;
         let featSt = this.data.items.filter(item => item.data.data.reference === "featofstrength");

@@ -718,5 +718,5 @@
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Allow reference modification",
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Warning - GM Only - allow to manually adjust reference implementation for abilities, traits and mystical powers. Requires refresh.",
   "SYMBAROUM.OPTIONAL_INIT_MANUAL": "Manually select initiative attribute",
-  "SYMBAROUM.OPTIONAL_INIT_MANUAL_HINT": "Check to desactive the automated evaluation of the attribute used for initiative."
+  "SYMBAROUM.OPTIONAL_INIT_MANUAL_HINT": "Check to de-active the automated evaluation of the attribute used for initiative."
 }
