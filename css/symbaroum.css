@@ -2014,6 +2014,49 @@
   margin-left: 5px;
 }
 
+.symbaroum.sheet.actor .player .main .combatheader {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+  border-top: none;
+  width: 100%;
+  background: url(../asset/image/title.jpg) repeat;
+}
+
+.symbaroum.sheet.actor .player .main .combatheader .iniheader {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+  border-top: none;
+}
+
+.symbaroum.sheet.actor .player .main .combatheader .iniheader .title {
+  color: var(--color-title);
+  text-align: center;
+  padding: 5px;
+}
+
+.symbaroum.sheet.actor .player .main .combatheader .iniheader label {
+  width: 3em;
+}
+
+.symbaroum.sheet.actor .player .main .combatheader .iniheader input {
+  width: 4em;
+  margin-right: 10px;
+}
+
 .symbaroum.sheet.actor .player .main .combat .initiative,
 .symbaroum.sheet.actor .player .main .combat .defenseAttr {
   display: -webkit-box;

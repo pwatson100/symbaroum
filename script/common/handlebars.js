@@ -79,10 +79,14 @@ function registerHandlebarsHelpers() {
     let newOne = parseInt(v1) + 1;
     return newOne;
   });
-  Handlebars.registerHelper('ifsetting', function (v1, options) {
+  Handlebars.registerHelper('ifSetting', function (v1, options) {
     if(game.settings.get('symbaroum',v1) ) return options.fn(this);
       else return options.inverse(this);
+  });  
+  Handlebars.registerHelper('toFixed', function (v1, v2) {
+    return v1.toFixed(v2);  
   });
+
 
 
 }

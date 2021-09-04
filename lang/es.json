@@ -335,7 +335,8 @@
   "HEALTH.CORRUPTION_THRESHOLD_MAX": "Umbral Corrup.",
   "HEALTH.CORRUPTION_MAX": "Umbral Abom.",
   
-  "INITIATIVE": "Iniciativa",
+  "INITIATIVE.TITLE": "Iniciativa",
+  "INITIATIVE.EXPLANATION": "Initiative shown as [primary attribute.vigilant]",
 
   "ITEM.TRAIT": "Rasgo",
   "ITEM.ABILITY": "Habilidad",

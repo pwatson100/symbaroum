@@ -104,11 +104,11 @@
                 </div>
 
                 <div class="combat foreground">
-                    <h1>{{localize "TITLE.COMBAT"}}</h1>
-                    {{#ifsetting "manualInitValue"}}
+                    <div class="combatheader"><div style="width:100%"><h1>{{localize "TITLE.COMBAT"}}</h1></div><div class="iniheader" title="{{localize "INITIATIVE.EXPLANATION"}}"><div class="title">{{localize "INITIATIVE.TITLE"}}</div><label style="white-space: nowrap"> {{localizeabbr data.initiative.label}}</label><input type="text" value="{{toFixed data.initiative.value 2}}" disabled> <div></div> </div></div>
+                    {{#ifSetting "manualInitValue"}}
                     <div class="stat-modifiers">
                         <div class="initiative" title="{{localize "TOOLTIP.COMBAT.INITIATIVE"}}">
-                            <label for="{{actor._id}}-data.initiative.attribute">{{localize "INITIATIVE"}}</label>
+                            <label for="{{actor._id}}-data.initiative.attribute">{{localize "INITIATIVE.TITLE"}}</label>
                             <select id="{{actor._id}}-data.initiative.attribute" name="data.initiative.attribute" class="attribute">
                                 {{#select data.initiative.attribute}}
                                     <option value="quick">{{localize "ATTRIBUTE.QUICK"}}</option>
@@ -123,7 +123,7 @@
                             </select>
                         </div>
                     </div>
-                    {{/ifsetting}}
+                    {{/ifSetting}}
                     <div class="armor">
                         <div style="display:flex; width:100%">
                             <div class="image-container">

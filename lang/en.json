@@ -176,7 +176,7 @@
   "ATTRIBUTE.VIGILANT": "Vigilant",
 
   "ATTRIBUTE.ACCURATEABBR": "ACC",
-  "ATTRIBUTE.CUNNINABBR": "CUN",
+  "ATTRIBUTE.CUNNINGABBR": "CUN",
   "ATTRIBUTE.DISCREETABBR": "DIS",
   "ATTRIBUTE.PERSUASIVEABBR": "PER",
   "ATTRIBUTE.QUICKABBR": "QUI",
@@ -336,7 +336,8 @@
   "HEALTH.CORRUPTION_THRESHOLD_MAX": "Cor. Threshold",
   "HEALTH.CORRUPTION_MAX": "Abom.",
   
-  "INITIATIVE": "Initiative",
+  "INITIATIVE.TITLE": "Initiative",
+  "INITIATIVE.EXPLANATION": "Initiative shown as [primary attribute.vigilant]",
 
   "ITEM.TRAIT": "Trait",
   "ITEM.ABILITY": "Ability",

@@ -101,7 +101,11 @@ export class SymbaroumActor extends Actor {
             data.data.attributes[aKey].total = data.data.attributes[aKey].value + data.data.bonus[aKey] + data.data.attributes[aKey].temporaryMod;
             data.data.attributes[aKey].modifier = 10 - data.data.attributes[aKey].total;
             if(data.type === "monster") {
-                data.data.attributes[aKey].msg = game.i18n.localize("TOOLTIP.BONUS_TOTAL")+ ` ${data.data.attributes[aKey].total}`+" ("+data.data.attributes[aKey].npcModifier+")<br />"+game.i18n.localize("ATTRIBUTE.BASE")+"("+data.data.attributes[aKey].value.toString()+")"+`${data.data.bonus[aKey + "_msg"]}`;
+                let modSign = "";
+                if(data.data.attributes[aKey].modifier > 0) {
+                    modSign = "+";
+                }
+                data.data.attributes[aKey].msg = game.i18n.localize("TOOLTIP.BONUS_TOTAL")+ ` ${data.data.attributes[aKey].total} (${modSign}${data.data.attributes[aKey].modifier})<br />${game.i18n.localize("ATTRIBUTE.BASE")}(${data.data.attributes[aKey].value.toString()}) ${data.data.bonus[aKey + "_msg"]}`;
             } else {
                 data.data.attributes[aKey].msg = game.i18n.localize("TOOLTIP.BONUS_TOTAL")+ ` ${data.data.attributes[aKey].total}`+"<br />"+game.i18n.localize("ATTRIBUTE.BASE")+"("+data.data.attributes[aKey].value.toString()+")"+`${data.data.bonus[aKey + "_msg"]}`;
             }
@@ -177,10 +181,11 @@ export class SymbaroumActor extends Actor {
             data.data.weapons = this.evaluateWeapons(activeWeapons);
         }
         if(!game.settings.get('symbaroum', 'manualInitValue')){
-            this._getInitiativeAttribute()
+            this._getInitiativeAttribute();
         }
         let attributeInit = data.data.initiative.attribute.toLowerCase();
         data.data.initiative.value = ((data.data.attributes[attributeInit].total) + (data.data.attributes.vigilant.total /100)) ;
+        data.data.initiative.label = data.data.attributes[attributeInit].label;
 
         let rrAbility = this.items.filter(item => item.data.data.reference === "rapidreflexes");
         if(rrAbility.length != 0){

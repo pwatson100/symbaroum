@@ -314,7 +314,8 @@
   "HEALTH.CORRUPTION_THRESHOLD_MAX": "Kor. Schwelle",
   "HEALTH.CORRUPTION_MAX": "Abso.",
   
-  "INITIATIVE": "Initiative",
+  "INITIATIVE.TITLE": "Initiative",
+  "INITIATIVE.EXPLANATION": "Initiative shown as [primary attribute.vigilant]",
 
   "ITEM.TRAIT": "Merkmale",
   "ITEM.ABILITY": "Fähigkeit",
