@@ -269,6 +269,10 @@
   "COMBAT.CHAT_DAMAGE_PAIN": " är bedövad av smärta.",
   "COMBAT.PARAMS_PRECISE": "[Precist vapen], ",
 
+  "CORRUPTION.CHAT_INTRO": " increases his degree of taint.",
+  "CORRUPTION.CHAT_THRESHOLD": " becomes Blight-marked (theshold reached).",
+  "CORRUPTION.CHAT_MAX": " turns into an abomination (max reached).",
+
   "DIALOG.AUTOPARAMS": "Inkluderade modifieringar: ",
   "DIALOG.BACKSTAB": "Använda Lönnstöt?",
   "DIALOG.BEASTLORE": "Monsterlärd extra skada?",
@@ -667,12 +671,13 @@
   "WEAPON.BONUS_DAMAGE": "Bonusskada",
   "WEAPON.PC_DAMAGE": "PC skada",
   "WEAPON.NPC_DAMAGE": "NPC skada",
+  "WEAPON.NONE": "None",
+  "WEAPON.NUMBER": "Nr",
   "WEAPON.QUALITY": "Kvalitet",
   "WEAPON.COST": "Kostnad",
   "WEAPON.ATTRIBUTE": "Karaktärsdrag",
   "WEAPON.ATTRIBUTEABBR": "Attr.",  
   "WEAPON.DESCRIPTION": "Beskrivning",
-  "WEAPON.NUMBER": "Nr",
   "WEAPON.ADDBUTTON": "Lägg till Vapen",
   "WEAPON.DELETEBUTTON": "Ta bort Vapen",
 

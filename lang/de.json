@@ -249,6 +249,10 @@
   "COMBAT.CHAT_DAMAGE_PAIN": " ist gelähmt vor Schmerzen.",
   "COMBAT.PARAMS_PRECISE": "[Präzise Waffe], ",
 
+  "CORRUPTION.CHAT_INTRO": " increases his degree of taint.",
+  "CORRUPTION.CHAT_THRESHOLD": " becomes Blight-marked (theshold reached).",
+  "CORRUPTION.CHAT_MAX": " turns into an abomination (max reached).",
+
   "DIALOG.AUTOPARAMS": "einbezogene Modifikatoren: ",
   "DIALOG.BACKSTAB": "Hinterhältiger Angriff?",
   "DIALOG.BEASTLORE": "Extra Schaden durch Bestienwissen?",
@@ -629,12 +633,13 @@
   "WEAPON.DAMAGE_SHORT": "Sch.",
   "WEAPON.BASE_DAMAGE": "Base damage",
   "WEAPON.BONUS_DAMAGE": "Bonus damage",
+  "WEAPON.NONE": "None",
+  "WEAPON.NUMBER": "Nummer",
   "WEAPON.QUALITY": "Qualität",
   "WEAPON.COST": "Kosten",
   "WEAPON.ATTRIBUTE": "Eigenschaft",
   "WEAPON.ATTRIBUTEABBR": "Eig.",  
   "WEAPON.DESCRIPTION": "Beschreibung",
-  "WEAPON.NUMBER": "Nummer",
   "WEAPON.ADDBUTTON": "Add Weapon",
   "WEAPON.DELETEBUTTON": "Delete Weapon",
 

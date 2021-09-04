@@ -26,7 +26,7 @@ export const migrateWorld = async () => {
     }
     console.log(`Last migration on this world: ${worldSystemVersion}`);
     // the NEEDS_MIGRATION_VERSION have to be increased for migration to happen
-    const NEEDS_MIGRATION_VERSION = '3.0.6';
+    const NEEDS_MIGRATION_VERSION = '3.0.8';
     const COMPATIBLE_MIGRATION_VERSION = '0' || isNaN('NaN');
     let needMigration = foundry.utils.isNewerVersion(NEEDS_MIGRATION_VERSION, worldSystemVersion);
     console.warn('needMigration', needMigration, systemVersion);
@@ -172,6 +172,11 @@ const migrateItemData = (item, worldSystemVersion) => {
         if (gearType.includes(item.type)) {
             update = setValueIfNotExists(update, item, "data.isArtifact", false);
             update = setValueIfNotExists(update, item, "data.power", {});
+        }
+    }
+    if (foundry.utils.isNewerVersion("3.0.8", worldSystemVersion)) {
+        if (item.type === "weapon") {
+            update = setValueIfNotExists(update, item, "data.alternativeDamage", "none");
         }
     }
     if (!isObjectEmpty(update)) {

@@ -267,6 +267,10 @@
     "COMBAT.PARAMS_PRECISE": "[arme précise], ",
     "COMBAT.DAMAGE": "Dégâts infligés: ",
 
+    "CORRUPTION.CHAT_INTRO": " dépasse un seuil de souillure.",
+    "CORRUPTION.CHAT_THRESHOLD": " est marqué par la corruption (seuil atteint).",
+    "CORRUPTION.CHAT_MAX": " devient une abomination (max atteint).",
+
     "DIALOG.VERSUS": "Versus",
     "DIALOG.ASK_CORRUPTION": "Cible totalement corrompue?",
     "DIALOG.ATTRIBUTE": "Attribut",
@@ -668,12 +672,13 @@
     "WEAPON.BONUS_DAMAGE": "Dégâts supplémentaires",
     "WEAPON.PC_DAMAGE": "Dégâts PJ",
     "WEAPON.NPC_DAMAGE": "Dégâts PNJ",
+    "WEAPON.NONE": "Aucun",
+    "WEAPON.NUMBER": "Nombre",
     "WEAPON.QUALITY": "Qualité",
     "WEAPON.COST": "Prix",
     "WEAPON.ATTRIBUTE": "Attribut",
     "WEAPON.ATTRIBUTEABBR": "Attr.",
     "WEAPON.DESCRIPTION": "Description",
-    "WEAPON.NUMBER": "Nombre",
     "WEAPON.ADDBUTTON": "Add Weapon",
     "WEAPON.DELETEBUTTON": "Delete Weapon",
   
