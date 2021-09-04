@@ -249,6 +249,10 @@
   "COMBAT.CHAT_DAMAGE_PAIN": " ist gelähmt vor Schmerzen.",
   "COMBAT.PARAMS_PRECISE": "[Präzise Waffe], ",
 
+  "CORRUPTION.CHAT_INTRO": " increases his degree of taint.",
+  "CORRUPTION.CHAT_THRESHOLD": " becomes Blight-marked (theshold reached).",
+  "CORRUPTION.CHAT_MAX": " turns into an abomination (max reached).",
+
   "DIALOG.AUTOPARAMS": "einbezogene Modifikatoren: ",
   "DIALOG.BACKSTAB": "Hinterhältiger Angriff?",
   "DIALOG.BEASTLORE": "Extra Schaden durch Bestienwissen?",

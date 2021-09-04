@@ -59,9 +59,15 @@
   </div>
   {{/if}}
   {{#if isWeaponRoll}}
+    {{#if ignoreArmor}}
+    <div class="simplebox">
+      <label>{{localize "DIALOG.IGNORE_ARMOR"}}</label><span class="lblfavour"><input type="checkbox" id="ignarm" checked></span>
+    </div>
+    {{else}}
     <div class="simplebox">
       <label>{{localize "DIALOG.IGNORE_ARMOR"}}</label><span class="lblfavour"><input type="checkbox" id="ignarm" unchecked></span>
     </div>
+    {{/if}}
     <div class="damagemodifier">
       <label for="weapondamage">{{localize "WEAPON.BASE_DAMAGE"}}</label> <div class="weapondamage"><span id="weapondamage">{{weaponDamage}}</span></div>
     </div>

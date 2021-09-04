@@ -272,6 +272,10 @@
   "COMBAT.CHAT_DAMAGE_PAIN": " está aturdido por el dolor.",
   "COMBAT.PARAMS_PRECISE": "[Arma precisa], ",
 
+  "CORRUPTION.CHAT_INTRO": " increases his degree of taint.",
+  "CORRUPTION.CHAT_THRESHOLD": " becomes Blight-marked (theshold reached).",
+  "CORRUPTION.CHAT_MAX": " turns into an abomination (max reached).",
+
   "DIALOG.AUTOPARAMS": "Modificadores incluidos: ",
   "DIALOG.BACKSTAB": "¿Usar Ataque Traicionero?",
   "DIALOG.HUNTERS_INSTINCT": "¿Objetivo del Instinto de Cazador?",

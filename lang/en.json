@@ -268,6 +268,10 @@
   "COMBAT.CHAT_DAMAGE_PAIN": " is stunned by pain.",
   "COMBAT.PARAMS_PRECISE": "[Precise weapon], ",
 
+  "CORRUPTION.CHAT_INTRO": " increases his degree of taint.",
+  "CORRUPTION.CHAT_THRESHOLD": " becomes Blight-marked (theshold reached).",
+  "CORRUPTION.CHAT_MAX": " turns into an abomination (max reached).",
+
   "DIALOG.AUTOPARAMS": "Included modifiers: ",
   "DIALOG.BACKSTAB": "Use Backstab?",
   "DIALOG.BEASTLORE": "Beast Lore dmg?",
