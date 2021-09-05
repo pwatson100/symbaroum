@@ -271,6 +271,7 @@
   "CORRUPTION.CHAT_INTRO": " increases his degree of taint.",
   "CORRUPTION.CHAT_THRESHOLD": " becomes Blight-marked (theshold reached).",
   "CORRUPTION.CHAT_MAX": " turns into an abomination (max reached).",
+  "CORRUPTION.CHAT_WARNING": " is close to a corruption treshold.",
 
   "DIALOG.AUTOPARAMS": "Included modifiers: ",
   "DIALOG.BACKSTAB": "Use Backstab?",
