@@ -322,7 +322,7 @@ export class SymbaroumActor extends Actor {
                 }
                 if(doAlternativeDamage){
                     let alternativeDamageLvl = 0;
-                    let alternativeDamage = this.data.items.filter(element => element.data.data.reference === "alternativeDamage");
+                    let alternativeDamage = this.data.items.filter(element => element.data.data.reference === "alternativedamage");
                     if(alternativeDamage.length > 0){
                         alternativeDamageLvl = getPowerLevel(alternativeDamage[0]).level;
                         let newdamage = upgradeDice(baseDamage, alternativeDamageLvl-1);
