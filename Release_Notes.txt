@@ -157,3 +157,12 @@ Version 3.0.6
 
 Version 3.0.7
 - corrected a bug when using the system on The Forge.
+
+Version 3.0.8
+- Weapons can now be configured to do alternative Damage.
+- 2 
+- Alternative Damage trait will upgrade 
+- In Enhanced Combat, alternate damage will apply directly to relevant attribute.
+- getting close to, or reaching corruption thresholds creates warning in chat (public chat if PC, GM-only chat if NPC)
+- Traits integrated in Enhanced combat: corrupting attack, colossal.
+- Steadfast Adept now works on entangling vines and Anathema
