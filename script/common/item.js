@@ -720,21 +720,27 @@ function formatRollResult(rollData){
 }
 
 async function checkCorruptionThreshold(actor, corruptionGained){
-    let img = "";
-    let introText = actor.data.name + game.i18n.localize('CORRUPTION.CHAT_INTRO');
-    let finalText="";
+    let img ="icons/magic/air/wind-vortex-swirl-purple.webp";
+    let introText = actor.data.name + game.i18n.localize('CORRUPTION.CHAT_WARNING');
+    let finalText=actor.data.name + game.i18n.localize('CORRUPTION.CHAT_WARNING');
     if(!actor.data.data.health.corruption.threshold) return;
     else if(actor.data.data.health.corruption.value < actor.data.data.health.corruption.threshold){
         if(actor.data.data.health.corruption.value+corruptionGained >= actor.data.data.health.corruption.threshold){
+            introText = actor.data.name + game.i18n.localize('CORRUPTION.CHAT_INTRO');
             finalText=actor.data.name + game.i18n.localize('CORRUPTION.CHAT_THRESHOLD');
-            img="icons/magic/unholy/hand-fire-skeleton-pink.webp";
-        } else return;
+            img="icons/magic/acid/dissolve-arm-flesh.webp";
+        }else if(actor.data.data.health.corruption.value+corruptionGained != actor.data.data.health.corruption.threshold -1){
+            return;            
+        }
     }
     else if(actor.data.data.health.corruption.value < actor.data.data.health.corruption.max){
         if(actor.data.data.health.corruption.value+corruptionGained >= actor.data.data.health.corruption.max){
+            introText = actor.data.name + game.i18n.localize('CORRUPTION.CHAT_INTRO');
             finalText=actor.data.name + game.i18n.localize('CORRUPTION.CHAT_MAX');
             img="icons/creatures/unholy/demon-horned-winged-laughing.webp";
-        } else return;
+        }else if(actor.data.data.health.corruption.value+corruptionGained != actor.data.data.health.corruption.max -1){
+            return;
+        }
     }
 
     let templateData = {
