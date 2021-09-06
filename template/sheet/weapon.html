@@ -88,6 +88,22 @@
                         <label for="{{item._id}}-data.bonusDamage" >{{localize "WEAPON.BONUS_DAMAGE"}}</label>
                         <input id="{{item._id}}-data.bonusDamage" name="data.bonusDamage" type="text" value="{{data.bonusDamage}}"/>
                     </div>
+                    <div class="attribute">
+                        <label for="{{item._id}}-data.alternativeDamage">{{localize "TRAIT_LABEL.ALTERNATIVEDAMAGE"}}</label>
+                        <select id="{{item._id}}-data.alternativeDamage" name="data.alternativeDamage">
+                            {{#select data.alternativeDamage}}
+                            <option value="none">{{localize "WEAPON.NONE"}}</option>
+                            <option value="resolute">{{localize "ATTRIBUTE.RESOLUTE"}}</option>
+                            <option value="strong">{{localize "ATTRIBUTE.STRONG"}}</option>
+                            <option value="accurate">{{localize "ATTRIBUTE.ACCURATE"}}</option>
+                            <option value="cunning">{{localize "ATTRIBUTE.CUNNING"}}</option>
+                            <option value="discreet">{{localize "ATTRIBUTE.DISCREET"}}</option>
+                            <option value="persuasive">{{localize "ATTRIBUTE.PERSUASIVE"}}</option>
+                            <option value="quick">{{localize "ATTRIBUTE.QUICK"}}</option>
+                            <option value="vigilant">{{localize "ATTRIBUTE.VIGILANT"}}</option>
+                            {{/select}}
+                        </select>
+                    </div>
                     <div class="cost">
                         <label for="{{item._id}}-data.cost">{{localize "WEAPON.COST"}}</label>
                         <input id="{{item._id}}-data.cost" name="data.cost" type="text" value="{{data.cost}}"/>

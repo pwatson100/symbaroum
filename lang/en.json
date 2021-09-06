@@ -176,7 +176,7 @@
   "ATTRIBUTE.VIGILANT": "Vigilant",
 
   "ATTRIBUTE.ACCURATEABBR": "ACC",
-  "ATTRIBUTE.CUNNINABBR": "CUN",
+  "ATTRIBUTE.CUNNINGABBR": "CUN",
   "ATTRIBUTE.DISCREETABBR": "DIS",
   "ATTRIBUTE.PERSUASIVEABBR": "PER",
   "ATTRIBUTE.QUICKABBR": "QUI",
@@ -243,6 +243,7 @@
   "COMBAT.CHAT_SUCCESS": " hits ",
   "COMBAT.CHAT_FAILURE": " miss.",
   "COMBAT.CHAT_BLEED": " bleeds and loses toughness each round: ",
+  "COMBAT.CHAT_CORRUPTED_ATTACK": "The attack inflict corruption: ",
   "COMBAT.CHAT_POISON": " tries to poison ",
   "COMBAT.CHAT_POISON_FAILURE": "No poisonning.",
   "COMBAT.CHAT_POISON_EXTEND": "Target was already poisoned, new duration: rounds: ",
@@ -266,6 +267,11 @@
   "COMBAT.CHAT_DAMAGE": " endures damage : ",
   "COMBAT.CHAT_DAMAGE_PAIN": " is stunned by pain.",
   "COMBAT.PARAMS_PRECISE": "[Precise weapon], ",
+
+  "CORRUPTION.CHAT_INTRO": " increases his degree of taint.",
+  "CORRUPTION.CHAT_THRESHOLD": " becomes Blight-marked (theshold reached).",
+  "CORRUPTION.CHAT_MAX": " turns into an abomination (max reached).",
+  "CORRUPTION.CHAT_WARNING": " is close to a corruption treshold.",
 
   "DIALOG.AUTOPARAMS": "Included modifiers: ",
   "DIALOG.BACKSTAB": "Use Backstab?",
@@ -673,12 +679,13 @@
   "WEAPON.BONUS_DAMAGE": "Bonus damage",
   "WEAPON.PC_DAMAGE": "PC Dmg",
   "WEAPON.NPC_DAMAGE": "NPC Dmg",
+  "WEAPON.NONE": "None",
+  "WEAPON.NUMBER": "Number",
   "WEAPON.QUALITY": "Quality",
   "WEAPON.COST": "Cost",
   "WEAPON.ATTRIBUTE": "Attribute",
   "WEAPON.ATTRIBUTEABBR": "Attr.",
   "WEAPON.DESCRIPTION": "Description",
-  "WEAPON.NUMBER": "Number",
   "WEAPON.ADDBUTTON": "Add Weapon",
   "WEAPON.DELETEBUTTON": "Delete Weapon",
 
