@@ -463,6 +463,8 @@ export class SymbaroumActor extends Actor {
                 img: item.data.img,
                 attribute: attribute,
                 attributeLabel: this.data.data.attributes[attribute].label, 
+                attributeValue: this.data.data.attributes[attribute].total,
+                attributeMod: (10 - this.data.data.attributes[attribute].total),
                 tooltip : tooltip,
                 isActive: item.data.isActive,
                 isEquipped: item.data.isEquipped,
