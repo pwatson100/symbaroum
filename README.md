@@ -1,16 +1,21 @@
-<p style="margin-left: 20%;"> <img src="/asset/image/symbaroum-banner.webp" alt="" width="600" height="466" /></p>
+<p style="margin-left: 20%;"> <img src="https://raw.githubusercontent.com/pwatson100/symbaroum/master/asset/image/symbaroum-banner.webp" alt="" width="600" height="466" /></p>
 <p style="width: 70%;  margin-left: 10%;">
-  <strong style="color: hsl(19, 70%, 37%);"><i>“Twilight falls. Davokar darkens.”</i> </strong>The goblin Fenya sounded calm, despite the flock of violings that swarmed eagerly around them – the nasty birds could predict bloodshed, they all knew that.
-  Kvarek felt the sweat on his palms threaten his grip on the spear and shouted over his shoulder: <i style="color: hsl(19, 70%, 37%);">“Magdala, faster!”</i> The witch didn’t answer, lost as she was to the sinister harmonies of the ritual, her hands caressing the pillar’s grim stone face.
+  <strong style="color: hsl(19, 49%, 59%);"><i>“Twilight falls. Davokar darkens.”</i> </strong> &nbsp; The goblin Fenya sounded calm, despite the flock of violings that swarmed eagerly around them – the nasty birds could predict bloodshed, they all knew that.
+  Kvarek felt the sweat on his palms threaten his grip on the spear and shouted over his shoulder: <i style="color: hsl(19, 49%, 59%);">“Magdala, faster!”</i> &nbsp; The witch didn’t answer, lost as she was to the sinister harmonies of the ritual, her hands caressing the pillar’s grim stone face.
   <br>
   A loud rumbling echoed through the ruin, as if some giant creature had awoken and stood up from under layer upon layer of stone and soil.
-  <i style="color: hsl(19, 70%, 37%);">“The witch said that the abominations come out at night,”</i> the goblin muttered. Kvarek’s knuckles whitened as he tightened the grip: <i style="color: hsl(19, 70%, 37%);">“No, only that they are hungriest after dark. They are not afraid of the evening sun, and not of …”</i> He was cut short by Magdala’s hoarse voice: <i style="color: hsl(19, 70%, 37%);">“The pillar has answered. I know where the mausoleum is.”</i>
+  <i style="color: hsl(19, 49%, 59%);">“The witch said that the abominations come out at night,”</i> &nbsp; the goblin muttered.
+  Kvarek’s knuckles whitened as he tightened the grip: <i style="color: hsl(19, 49%, 59%);">“No, only that they are hungriest after dark.
+    They are not afraid of the evening sun, and not of …”</i> <br> He was cut short by Magdala’s hoarse voice: <i style="color: hsl(19, 49%, 59%);">“The pillar has answered.
+    I know where the mausoleum is.”</i>
   <br>
-  Then, out of the ruins, the blight beast came at them, massive and roaring.
+  Then, out of the ruins, the blight beast came at them, massive and roaring. &nbsp;
   Its claws scraped the rocky ground, scouring out deep sores oozing pure corruption, leaving drops of black, mercury-like mildew on moss and stones in its wake.
   <br>
-  <i style="color: hsl(19, 70%, 37%);">“We cannot escape this,”</i> said Fenya. Magdala nodded agreement. <i style="color: hsl(19, 70%, 37%);">“Well then,”</i> Kvarek sighed,
-  <i style="color: hsl(19, 70%, 37%);">“this is where we make our stand, for the right to the treasures of Symbaroum.”</i>
+  <i style="color: hsl(19, 49%, 59%);">“We cannot escape this,”</i> &nbsp; said Fenya. Magdala nodded agreement.
+  <br>
+  <i style="color: hsl(19, 49%, 59%);">“Well then,”</i> &nbsp; Kvarek sighed,
+  <i style="color: hsl(19, 49%, 59%);">“this is where we make our stand, for the right to the treasures of Symbaroum.”</i>
 </p>
 <hr>
 <p>The <strong>OFFICIAL</strong> system for playing Symbaroum RPG on Foundry VTT.<br>
