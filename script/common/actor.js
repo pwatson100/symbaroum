@@ -160,7 +160,7 @@ export class SymbaroumActor extends Actor {
         let activeArmor = this._getActiveArmor(data, extraArmorBonus);
         let defense = this._getDefenseValue(data, activeArmor);
         let damageProt = this._getDamageProtection();
-        let totDefense = defense.attDefValue - activeArmor.impeding + data.data.bonus.defense;
+        let totDefense = defense.attDefValue - activeArmor.impeding + data.data.bonus.defense;        
 
         data.data.combat = {
             id: activeArmor.id,
@@ -171,6 +171,10 @@ export class SymbaroumActor extends Actor {
             impeding: activeArmor.impeding,
             tooltipProt: activeArmor.tooltip,
             defense: totDefense,
+            defenseAttribute: {
+                attribute: defense.attribute,
+                label: data.data.attributes[defense.attribute].label
+            },
             defmod: (10 - totDefense),
             msg: defense.defMsg,
             damageProt: damageProt
@@ -642,6 +646,7 @@ export class SymbaroumActor extends Actor {
             }
         }
         return({
+            attribute: attributeDef,
             attDefValue: attDefValue,
             defMsg: defMsg
         })

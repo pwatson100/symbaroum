@@ -150,6 +150,14 @@ Hooks.once('init', () => {
     default: false,
     config: true,
   });
+  game.settings.register('symbaroum', 'showNpcModifiers', {
+    name: 'SYMBAROUM.OPTIONAL_NPC_MODIFIERS',
+    hint: 'SYMBAROUM.OPTIONAL_NPC_MODIFIERS_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });  
   game.settings.register('symbaroum', 'allowShowReference', {
     name: 'SYMBAROUM.OPTIONAL_SHOWREFERENCE',
     hint: 'SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT',

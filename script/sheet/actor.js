@@ -70,7 +70,7 @@ export class SymbaroumActorSheet extends ActorSheet {
     event.preventDefault();
     const div = $(event.currentTarget).parents('.item');
     const item = this.actor.items.get(div.data('itemId'));
-    if (item !== null) item.sheet.render(true);
+    if (item) item.sheet.render(true);
   }
 
   _onItemDelete(event) {

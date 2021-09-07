@@ -315,7 +315,7 @@
   "HEALTH.CORRUPTION_MAX": "Abso.",
   
   "INITIATIVE.TITLE": "Initiative",
-  "INITIATIVE.EXPLANATION": "Initiative shown as [primary attribute.vigilant]",
+  "INITIATIVE.EXPLANATION": "Initiative shown as [initiative attribute.vigilant]",
 
   "ITEM.TRAIT": "Merkmale",
   "ITEM.ABILITY": "Fähigkeit",
@@ -658,6 +658,8 @@
   "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT": "Markieren um QoL Erweiterungen zu erlauben, damit für Proben alle Attribut Modifizierungen berücksichtigt werden",
   "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE": "Zeige Modifikatoren bei den Proben an",
   "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE_HINT": "Markieren um QoL Erweiterungen zu aktivieren die Modifikatoren vor dem Wurf anzuzeigen",
+  "SYMBAROUM.OPTIONAL_NPC_MODIFIERS": "Show NPC modifiers",
+  "SYMBAROUM.OPTIONAL_NPC_MODIFIERS_HINT": "Check to show NPC modifiers (-5 to +5) instead of attributes for NPCs on character sheet",
   "SYMBAROUM.OPTIONAL_INIATITIVEROLLS": "Supress Initiative rolls",
   "SYMBAROUM.OPTIONAL_INIATITIVEROLLS_HINT": "Check to QoL disabling of Initiative rolls in chat",
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Erlaube Beispiel modifizierungen",

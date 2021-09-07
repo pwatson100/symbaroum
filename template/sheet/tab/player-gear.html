@@ -22,11 +22,13 @@
                     {{#each actor.data.armors as |item|}}   
                         <tr class="armor item" data-item-id="{{item.id}}" >
                             <td>
-                                <div style="display:flex; flex-flow:nowrap">
+                                <div class="cell">
+                                <div class="namefield">
                                         <div class="image-container">
                                             <div class="image" style="background-image: url('{{item.img}}')"></div>
                                         </div>
                                         <button class="item-edit ellipsis armorname">{{item.name}}</button>
+                                </div>
                                 </div>
                             </td>
                             <td class="protection">
@@ -80,11 +82,13 @@
                 {{#each actor.data.weapons as |item|}}
                     <tr class="weapon item" data-item-id="{{item.id}}" >
                         <td>
+                            <div class="cell">
                             <div class="namefield">
                                     <div class="image-container">
                                         <div class="image" style="background-image: url('{{item.img}}')"></div>
                                     </div>
                                     <button class="item-edit ellipsis weaponname">{{item.name}}</button>
+                            </div>
                             </div>
                         </td>
                         <td class="damage">
@@ -133,11 +137,13 @@
                         {{#if item.data.isArtifact}}                        
                         <tr class="artifact item" data-item-id="{{item.id}}">
                             <td class="name">
+                                <div class="cell">
                                 <div class="namefield">
                                     <div class="image-container">
                                         <div class="image" style="background-image: url('{{item.img}}')"></div>
                                     </div>
                                     <button class="item-edit ellipsis artifactname">{{item.name}}</button>
+                                </div>
                                 </div>
                             </td>
                             <td class="action" title="{{item.getArtifactActions}}">
@@ -188,11 +194,13 @@
                         {{#if item.data.isEquipment}}                       
                         <tr class="equipment item" data-item-id="{{item.id}}">
                             <td class="name" title="{{item.name}}">
+                                <div class="cell">
                                 <div class="namefield">
                                     <div class="image-container">
                                         <div class="image" style="background-image: url('{{item.img}}')"></div>
                                     </div>                                
                                     <button class="item-edit ellipsis equipmentname">{{item.name}}</button>
+                                </div>
                                 </div>
                             </td>
                             <td class="quantity">

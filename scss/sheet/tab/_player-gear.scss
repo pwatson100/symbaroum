@@ -125,29 +125,45 @@
   text-align: center;
 }
 
+.symbaroum.sheet.actor .player .gear .wrapper-left .armors .armor td .cell,
+.symbaroum.sheet.actor .player .gear .wrapper-left .weapons .weapon td .cell,
+.symbaroum.sheet.actor .player .gear .wrapper-left .artifacts .artifact td .cell,
+.symbaroum.sheet.actor .player .gear .wrapper-right .equipments .equipment td .cell
+{
+  background: url(../asset/image/title.jpg) repeat;
+}
 
 .symbaroum.sheet.actor .player .gear .wrapper-left .armors .armor td .armorname,
 .symbaroum.sheet.actor .player .gear .wrapper-left .weapons .weapon td .weaponname,
 .symbaroum.sheet.actor .player .gear .wrapper-left .artifacts .artifact td .artifactname
 {
   width: 100%;
-  max-width: 100%;
+  max-width: 15em;
   min-width: 131px;
 }
 
-.symbaroum.sheet.actor .player .gear .wrapper-right .equipments .equipment td .equipmentname
+.symbaroum.sheet.actor .player .gear .wrapper-right .equipments .equipment td .namefield
 {
   width: 108px;
+  max-width: 10em;
 }
 
 .symbaroum.sheet.actor .player .gear .wrapper-left .armors .armor td .namefield,
 .symbaroum.sheet.actor .player .gear .wrapper-left .weapons .weapon td .namefield,
-.symbaroum.sheet.actor .player .gear .wrapper-left .artifacts .artifact td .namefield,
+.symbaroum.sheet.actor .player .gear .wrapper-left .artifacts .artifact td .namefield
+{
+  display:flex; 
+  flex-flow:nowrap;
+  min-width: 131px;
+}
+
 .symbaroum.sheet.actor .player .gear .wrapper-right .equipments .equipment td .namefield 
 {
   display:flex; 
   flex-flow:nowrap;
+  min-width: 108px;
 }
+
 
 .symbaroum.sheet.actor .player .gear .wrapper-left .armors .armor td .image-container,
 .symbaroum.sheet.actor .player .gear .wrapper-left .weapons .weapon td .image-container,
@@ -166,7 +182,7 @@
 .symbaroum.sheet.actor .player .gear .wrapper-right .equipments table td,
 .symbaroum.sheet.actor .player .gear .wrapper-right .equipments table th
 {
-  padding: 2px;
+  margin: 2px;
 }
 
 .symbaroum.sheet.actor .player .gear .wrapper-left .armors .armor td.protection,

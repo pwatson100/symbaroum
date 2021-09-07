@@ -10,7 +10,7 @@
                     <div class="attribute">
                         <button class="roll-attribute" style="width: 100%" data-attribute="{{key}}">{{localize attribute.label}}</button>
                         <span class="tooltip input">
-                            <input name="data.attributes.{{key}}.total" type="text" value="{{#ifat ../symbaroumOptions.isNPC}}{{#ifgt attribute.modifier 0}}+{{/ifgt}}{{attribute.modifier}}{{else}}{{attribute.total}}{{/ifat}}" data-dtype="Number" disabled />
+                            <input name="data.attributes.{{key}}.total" type="text" value="{{#ifat ../symbaroumOptions.showNpcModifiers ../symbaroumOptions.isNPC}}{{#ifgt attribute.modifier 0}}+{{/ifgt}}{{attribute.modifier}}{{else}}{{attribute.total}}{{/ifat}}" data-dtype="Number" disabled />
                             <span class="tooltiptext right">{{{attribute.msg}}}</span>
                         </span>
                     </div>
@@ -104,7 +104,14 @@
                 </div>
 
                 <div class="combat foreground">
-                    <div class="combatheader"><div style="width:100%"><h1>{{localize "TITLE.COMBAT"}}</h1></div><div class="iniheader" title="{{localize "INITIATIVE.EXPLANATION"}}"><div class="title">{{localize "INITIATIVE.TITLE"}}</div><label style="white-space: nowrap"> {{localizeabbr data.initiative.label}}</label><input type="text" value="{{toFixed data.initiative.value 2}}" disabled> <div></div> </div></div>
+                    <div class="combatheader">
+                        <div style="width:100%"><h1>{{localize "TITLE.COMBAT"}}</h1></div>
+                        <div class="iniheader" title="{{localize "INITIATIVE.EXPLANATION"}}">
+                            <div class="title">{{localize "INITIATIVE.TITLE"}}</div>
+                            <label style="white-space: nowrap"> {{localizeabbr data.initiative.label}}</label>
+                            <input type="text" value="{{toFixed data.initiative.value 2}}" disabled> 
+                        </div>
+                    </div>
                     {{#ifSetting "manualInitValue"}}
                     <div class="stat-modifiers">
                         <div class="initiative" title="{{localize "TOOLTIP.COMBAT.INITIATIVE"}}">
@@ -125,61 +132,63 @@
                     </div>
                     {{/ifSetting}}
                     <div class="armor">
-                        <div style="display:flex; width:100%">
+                        <div class="item-list">
+                            <div class="item-header">
+                                <b class="name">{{localize "ITEM.ARMOR"}}</b>
+                            </div>
+                        <div class="item-row">
                             <div class="image-container">
                                 <div class="image" style="background-image: url('{{data.combat.img}}')"></div>
                             </div>
-                            <button class="roll-armor">{{data.combat.armor}}</button>
-                        </div>
-                        <div class="quality">
-                            <label>{{localize "ARMOR.DEFENSE"}}</label>
-                            <input type="text" value="{{localize data.defense.attributelabel}}"" disabled />
-                            <span class="tooltip input">
-                                <input type="text" value="{{#ifat symbaroumOptions.isNPC}}{{#ifgt data.combat.defmod 0}}+{{/ifgt}}{{data.combat.defmod}}{{else}}{{data.combat.defense}}{{/ifat}}" data-dtype="Number" disabled />
-                                {{#if symbaroumOptions.isNPC}}<span class="tooltiptext downleft">{{localize "TOOLTIP.BONUS_TOTAL"}} {{data.combat.defense}} ({{#ifgt data.combat.defmod 0}}+{{/ifgt}}{{data.combat.defmod}})<br /> {{{data.combat.msg}}} </span>
-                                {{else}} <span class="tooltiptext downleft">{{localize "TOOLTIP.BONUS_TOTAL"}} {{data.combat.defense}} <br /> {{{data.combat.msg}}} </span> {{/if}}
-                            </span>
-                        </div>
-                        <div class="quality">
-                            <div class="protection">
-                                <label>{{localize "ARMOR.PROTECTION"}}</label>
+                            <button style="width:100%" class="roll-armor">
+                                <div style="width:100%;">{{data.combat.armor}}</div>
+                                <div>{{localizeabbr "ARMOR.PROTECTION"}}</div>
                                 <span class="tooltip input">
-                                    {{#if symbaroumOptions.isNPC}}<input type="text" value="{{data.combat.protectionNpc}}" disabled />
-                                    {{else}}<input type="text" value="{{data.combat.protectionPc}}" disabled />{{/if}}
+                                    {{#if symbaroumOptions.isNPC}}<input class="combatProt" type="text" value="{{data.combat.protectionNpc}}" disabled />
+                                    {{else}}<input class="combatProt" type="text" value="{{data.combat.protectionPc}}" disabled />{{/if}}
                                     <span class="tooltiptext downleft">{{{data.combat.tooltipProt}}}</span>
                                 </span>
-                            </div>
-                            <div class="protection">
-                                <label>{{localize "ARMOR.IMPEDING"}}</label>
-                                <input type="text" value="{{data.combat.impeding}}" disabled />
-                            </div>
+                                <div class="attribute" style="white-space: nowrap">{{localizeabbr data.combat.defenseAttribute.label}}</div>                                
+                                <span class="tooltip input armordefense">
+                                    <input type="text" value="{{#ifat symbaroumOptions.showNpcModifiers symbaroumOptions.isNPC}}{{#ifgt data.combat.defmod 0}}+{{/ifgt}}{{data.combat.defmod}}{{else}}{{data.combat.defense}}{{/ifat}}" data-dtype="Number" disabled />
+                                    {{#if symbaroumOptions.isNPC}}<span class="tooltiptext downleft">{{localize "TOOLTIP.BONUS_TOTAL"}} {{data.combat.defense}} ({{#ifgt data.combat.defmod 0}}+{{/ifgt}}{{data.combat.defmod}})<br /> {{{data.combat.msg}}} </span>
+                                    {{else}} <span class="tooltiptext downleft">{{localize "TOOLTIP.BONUS_TOTAL"}} {{data.combat.defense}} <br /> {{{data.combat.msg}}} </span> {{/if}}
+                                </span>
+                            </button>                            
                         </div>
                     </div>
-                    <div class="weapons">
-                        <div class="item-list">
-                            <div class="item-header" style="margin-bottom: 5px">
-                                <b class="name">{{localize "WEAPON.HEADER"}}</b>
-                                <b class="damage">{{localize "WEAPON.DAMAGE"}}</b>
-                            </div>
-                            <div class="items">
-                                {{#each actor.data.weapons as |item|}}
-                                    {{#if item.isActive}}
-                                        <div class="weapon item" data-item-id="{{item.id}}">
-                                            <div class="name">
-                                                <div class="image-container">
-                                                    <div class="image" style="background-image: url('{{item.img}}')"></div>
-                                                </div>
-                                                <button class="roll-weapon">{{item.name}}</button>
+                </div>
+                <div class="weapons">
+                    <div class="item-list">
+                        <div class="item-header">
+                            <b class="name">{{localize "WEAPON.HEADER"}}</b>
+                        </div>
+                        <div class="items">
+                            {{#each actor.data.weapons as |item|}}
+                                {{#if item.isActive}}
+                                    <div class="weapon item" data-item-id="{{item.id}}">
+                                        <div class="name">
+                                            <div class="image-container">
+                                                <div class="image" style="background-image: url('{{item.img}}')"></div>
                                             </div>
-                                            {{#if ../symbaroumOptions.isNPC}}
-                                                <div class="damage" title="{{item.tooltip}}">{{item.damage.npcExtended}}</div>
-                                            {{else}}
-                                                <div class="damage" title="{{item.tooltip}}">{{item.damage.pcExtShort}}</div>
-                                            {{/if}}
+                                            <button class="roll-weapon">
+                                                <div style="width:100%;">{{item.name}}</div>
+                                                <div>{{localizeabbr "WEAPON.DAMAGE"}}</div>
+                                                <span class="input">
+                                                    {{#if ../symbaroumOptions.isNPC}}<input class="weaponDam" type="text" title="{{item.tooltip}} value="{{item.damage.npcExtended}}" disabled />
+                                                    {{else}}<input class="weaponDam" type="text" title="{{item.tooltip}} value="{{item.damage.pcExtShort}}" disabled />{{/if}}
+                                                </span>
+                                                <div class="attribute" style="white-space: nowrap">{{localizeabbr ../data.combat.defenseAttribute.label}}</div>                                
+                                                <span class="tooltip input weaponAttribute">
+                                                    <input type="text" value="{{#ifat symbaroumOptions.showNpcModifiers symbaroumOptions.isNPC}}{{#ifgt data.combat.defmod 0}}+{{/ifgt}}{{data.combat.defmod}}{{else}}{{data.combat.defense}}{{/ifat}}" data-dtype="Number" disabled />
+                                                    {{#if ../symbaroumOptions.isNPC}}<span class="tooltiptext downleft">{{localize "TOOLTIP.BONUS_TOTAL"}} {{data.combat.defense}} ({{#ifgt data.combat.defmod 0}}+{{/ifgt}}{{data.combat.defmod}})<br /> {{{data.combat.msg}}} </span>
+                                                    {{else}} <span class="tooltiptext downleft">{{localize "TOOLTIP.BONUS_TOTAL"}} {{data.combat.defense}} <br /> {{{data.combat.msg}}} </span> {{/if}}
+                                                </span>                
+                                            </button>
                                         </div>
-                                    {{/if}}
-                                {{/each}}
-                            </div>
+                                    </div>
+                                {{/if}}
+                            {{/each}}
                         </div>
                     </div>
                 </div>

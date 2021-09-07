@@ -336,7 +336,7 @@
   "HEALTH.CORRUPTION_MAX": "Förstyggelse",
   
   "INITIATIVE.TITLE": "Initiativ",
-  "INITIATIVE.EXPLANATION": "Initiative shown as [primary attribute.vigilant]",
+  "INITIATIVE.EXPLANATION": "Initiative shown as [initiative attribute.vigilant]",
 
   "ITEM.TRAIT": "Särdrag",
   "ITEM.ABILITY": "Förmåga",
@@ -705,6 +705,8 @@
   "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT": "Välj för att behålla senaste modifikationer vid framgångsslag för karaktärsdrag",
   "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE": "Visa modifikationer vid framgångsslag för karaktärsdrag.",
   "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE_HINT": "Välj för att visa modifikationer för karaktärsdrag innan framgångsslag slås.",
+  "SYMBAROUM.OPTIONAL_NPC_MODIFIERS": "Show NPC modifiers",
+  "SYMBAROUM.OPTIONAL_NPC_MODIFIERS_HINT": "Check to show NPC modifiers (-5 to +5) instead of attributes for NPCs on character sheet",
   "SYMBAROUM.OPTIONAL_INIATITIVEROLLS": "Supress Initiative rolls",
   "SYMBAROUM.OPTIONAL_INIATITIVEROLLS_HINT": "Check to QoL disabling of Initiative rolls in chat",
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Tillåt referensmodifikation",

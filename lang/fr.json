@@ -332,7 +332,7 @@
     "HEALTH.CORRUPTION_MAX": "Maximale",
 
     "INITIATIVE.TITLE": "Initiative",
-    "INITIATIVE.EXPLANATION": "Initiative shown as [primary attribute.vigilant]",
+    "INITIATIVE.EXPLANATION": "Initiative shown as [initiative attribute.vigilant]",
 
     "ITEM.TRAIT": "Trait",
     "ITEM.ABILITY": "Talent",
@@ -706,6 +706,8 @@
     "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT": "Garder en mémoire les modificateurs d'un jet d'attribut sur l'autre.",
     "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE": "Affichage préventif du modificateur",
     "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE_HINT": "Affiche le modificateur de l'attribut de l'adversaire dans le menu déroulant de jet resisté d'attribut.",
+    "SYMBAROUM.OPTIONAL_NPC_MODIFIERS": "Show NPC modifiers",
+    "SYMBAROUM.OPTIONAL_NPC_MODIFIERS_HINT": "Check to show NPC modifiers (-5 to +5) instead of attributes for NPCs on character sheet",
     "SYMBAROUM.OPTIONAL_INIATITIVEROLLS": "Supress Initiative rolls",
     "SYMBAROUM.OPTIONAL_INIATITIVEROLLS_HINT": "Check to QoL disabling of Initiative rolls in chat",
     "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Modification des références",
