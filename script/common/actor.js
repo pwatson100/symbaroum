@@ -1,4 +1,4 @@
-import { attackRoll, getPowerLevel, markScripted } from './item.js';
+import { attackRoll, checkResoluteModifiers, getPowerLevel, markScripted } from './item.js';
 import { prepareRollAttribute } from "../common/dialog.js";
 import { upgradeDice } from './roll.js';
 
@@ -263,6 +263,7 @@ export class SymbaroumActor extends Actor {
         if(colossal.length > 0){
             colossalLvl = getPowerLevel(colossal[0]).level;
         }
+        let flagDancing = this.getFlag(game.system.id, 'dancingweapon');
         // check for abilities that changes attack attribute
         let dominate = this.data.items.filter(element => element.data.data?.reference === "dominate");
         let feint = this.data.items.filter(element => element.data.data?.reference === "feint");
@@ -319,6 +320,11 @@ export class SymbaroumActor extends Actor {
                     if(this.data.data.attributes.strong.total >= this.data.data.attributes[attribute].total){
                         attribute = "strong";
                     }
+                }
+                if(flagDancing){
+                    let resoluteMod = checkResoluteModifiers(this, "", true, false);
+                    attribute = resoluteMod.bestAttributeName;
+                    tooltip += game.i18n.localize("POWER_LABEL.DANCING_WEAPON") + ", ";
                 }
                 if(doAlternativeDamage){
                     let alternativeDamageLvl = 0;
@@ -634,6 +640,14 @@ export class SymbaroumActor extends Actor {
                 attDefValue = data.data.attributes[attributeDef].total
             }
         }
+
+        let flagDancing = this.getFlag(game.system.id, 'dancingweapon');
+        if(flagDancing){
+            let resoluteMod = checkResoluteModifiers(this, "", true, false);
+            attributeDef = resoluteMod.bestAttributeName;
+            attDefValue = data.data.attributes[attributeDef].total;
+        }
+
         data.data.defense.attribute = attributeDef;
         data.data.defense.attributelabel = data.data.attributes[attributeDef].label;
 

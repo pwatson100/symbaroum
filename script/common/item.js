@@ -559,6 +559,7 @@ export const scriptedPowers =
 {reference: "blessedshield", level: [1, 2, 3], function: blessedshieldPrepare},
 {reference: "confusion", level: [1, 2, 3], function: confusionPrepare},
 {reference: "curse", level: [1, 2, 3], function: cursePrepare},
+{reference: "dancingweapon", level: [1, 2, 3], function: dancingweapon},
 {reference: "entanglingvines", level: [1, 2, 3], function: entanglingvinesPrepare},
 {reference: "holyaura", level: [1, 2, 3], function: holyAuraPrepare},
 {reference: "inheritwound", level: [1, 2, 3], function: inheritWound},
@@ -814,7 +815,7 @@ async function buildFunctionStuffDefault(ability, actor) {
         resultFunction: standardPowerResult
     };
     if(ability.data.type === "mysticalPower"){
-        let actorResMod = await checkResoluteModifiers(actor, functionStuff.autoParams, true, false);
+        let actorResMod = checkResoluteModifiers(actor, functionStuff.autoParams, true, false);
         functionStuff.castingAttributeName = actorResMod.bestAttributeName;
         functionStuff.autoParams = actorResMod.autoParams;
         functionStuff.corruption = true;
@@ -953,7 +954,7 @@ async function getCorruption(functionStuff, corruptionFormula = "1d4"){
         } 
     }
     if(functionStuff.casterMysticAbilities.sorcery.hasAbility){
-        let castingAttribute = (await checkResoluteModifiers(functionStuff.actor)).bestAttributeName;
+        let castingAttribute = (checkResoluteModifiers(functionStuff.actor)).bestAttributeName;
         sorceryRoll = await baseRoll(functionStuff.actor, castingAttribute, null, null, 0, 0);
         if(sorceryRoll.hasSucceed){
             return({value: 1, tradition: "sorcery", sorceryRoll: sorceryRoll})
@@ -1334,7 +1335,7 @@ returns:{
     useSteadfastAdept {boolean},
     useSteadfastMaster {boolean}
     autoParams {string} detected and used abilities have been appended to autoParams}*/
-async function checkResoluteModifiers(actor, autoParams = "", checkLeader = false, checkSteadfast = false){
+export function checkResoluteModifiers(actor, autoParams = "", checkLeader = false, checkSteadfast = false){
     let useLeader = false;
     let hasSteadfast = false;
     let useSteadfastAdept = false;
@@ -1910,13 +1911,13 @@ async function standardPowerActivation(functionStuff) {
             }
         }
         if (functionStuff.targetData.resistAttributeName === "resolute"){
-            let targetResMod = await checkResoluteModifiers(functionStuff.targetData.actor, functionStuff.targetData.autoParams, true, functionStuff.checkTargetSteadfast);
+            let targetResMod = checkResoluteModifiers(functionStuff.targetData.actor, functionStuff.targetData.autoParams, true, functionStuff.checkTargetSteadfast);
             functionStuff.targetData.resistAttributeName = targetResMod.bestAttributeName;
             functionStuff.targetData.resistAttributeValue = targetResMod.bestAttributeValue;
             functionStuff.targetData.autoParams = targetResMod.autoParams;
             functionStuff.favour += -1*targetResMod.favour;
         } else if (functionStuff.targetData.resistAttributeName === "strong"){
-            let targetResMod = await checkResoluteModifiers(functionStuff.targetData.actor, functionStuff.targetData.autoParams, false, functionStuff.checkTargetSteadfast);
+            let targetResMod = checkResoluteModifiers(functionStuff.targetData.actor, functionStuff.targetData.autoParams, false, functionStuff.checkTargetSteadfast);
             functionStuff.favour += -1*targetResMod.favour;
             functionStuff.targetData.autoParams = targetResMod.autoParams;
         }
@@ -2281,7 +2282,7 @@ async function bendWillPrepare(ability, actor) {
         ui.notifications.error(error);
         return;
     }
-    let targetResMod = await checkResoluteModifiers(targetData.actor, targetData.autoParams, true, true);
+    let targetResMod = checkResoluteModifiers(targetData.actor, targetData.autoParams, true, true);
     let favour = -1*targetResMod.favour;
     targetData.resistAttributeName = targetResMod.bestAttributeName;
     targetData.resistAttributeValue = targetResMod.bestAttributeValue;
@@ -2539,7 +2540,7 @@ async function confusionPrepare(ability, actor) {
         ui.notifications.error(error);
         return;
     }
-    let targetResMod = await checkResoluteModifiers(targetData.actor, targetData.autoParams, true, true);
+    let targetResMod = checkResoluteModifiers(targetData.actor, targetData.autoParams, true, true);
     let favour = -1*targetResMod.favour;
     targetData.resistAttributeName = targetResMod.bestAttributeName;
     targetData.resistAttributeValue = targetResMod.bestAttributeValue;
@@ -2739,6 +2740,37 @@ async function curseResult(rollData, functionStuff){
     }
 }
 
+async function dancingweapon(ability, actor) {
+    let fsDefault = await buildFunctionStuffDefault(ability, actor);
+    let specificStuff = {
+        isMaintained: false,
+        tradition: ["staffmagic", "trollsinging"],
+        corruption: false
+    };
+    let functionStuff = Object.assign({}, fsDefault , specificStuff);
+
+    if(!functionStuff.attackFromPC){
+        functionStuff.gmOnlyChatResult = true
+    }
+    let flagData = await actor.getFlag(game.system.id, 'dancingweapon');
+    if(flagData){
+        await actor.unsetFlag(game.system.id, 'dancingweapon');
+        functionStuff.introText = actor.name + game.i18n.localize('ABILITY_BERSERKER.CHAT_DESACTIVATE');
+        functionStuff.resultTextSuccess = game.i18n.localize('ABILITY_BERSERKER.CHAT_RESULT_DESACTIVATE');
+        functionStuff.removeCasterEffect= ["systems/symbaroum/asset/image/powers/dancingweapon.svg"]
+    }
+    else{
+        flagData = functionStuff.powerLvl.level;
+        functionStuff.introText = actor.name + game.i18n.localize('ABILITY_BERSERKER.CHAT_ACTIVATE');
+        await actor.setFlag(game.system.id, 'dancingweapon', flagData);
+        functionStuff.addCasterEffect = ["systems/symbaroum/asset/image/powers/dancingweapon.svg"];
+        if(functionStuff.powerLvl.level == 2) functionStuff.resultTextSuccess = game.i18n.localize('ABILITY_BERSERKER.CHAT_RESULT_LVL2');
+        else if(functionStuff.powerLvl.level > 2) functionStuff.resultTextSuccess = game.i18n.localize('ABILITY_BERSERKER.CHAT_RESULT_LVL3');
+        else functionStuff.resultTextSuccess = game.i18n.localize('ABILITY_BERSERKER.CHAT_RESULT_LVL1');
+    }
+    await standardPowerResult(null, functionStuff);
+}
+
 async function entanglingvinesPrepare(ability, actor) {
     let targetData;
     try{targetData = getTarget("strong")} catch(error){      
@@ -2756,7 +2788,7 @@ async function entanglingvinesPrepare(ability, actor) {
         tradition: ["witchcraft"]
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    let targetResMod = await checkResoluteModifiers(functionStuff.targetData.actor, functionStuff.targetData.autoParams, false, true);
+    let targetResMod = checkResoluteModifiers(functionStuff.targetData.actor, functionStuff.targetData.autoParams, false, true);
     functionStuff.favour += -1*targetResMod.favour;  
     await modifierDialog(functionStuff)
 }
@@ -2968,7 +3000,7 @@ async function inheritWound(ability, actor){
         return;
     }
     let powerLvl = getPowerLevel(ability);
-    let actorResMod = await checkResoluteModifiers(actor, "", true, false);
+    let actorResMod = checkResoluteModifiers(actor, "", true, false);
     let favour = 0;
     let castingAttributeName = actorResMod.bestAttributeName;
 
@@ -3088,7 +3120,7 @@ async function larvaeBoilsPrepare(ability, actor) {
         ui.notifications.error(error);
         return;
     } 
-    let targetResMod = await checkResoluteModifiers(targetData.actor, "", false, true);
+    let targetResMod = checkResoluteModifiers(targetData.actor, "", false, true);
     targetData.autoParams += targetResMod.autoParams;
     let fsDefault = await buildFunctionStuffDefault(ability, actor)
     let specificStuff = {
@@ -3313,7 +3345,7 @@ async function maltransformationPrepare(ability, actor) {
         ui.notifications.error(error);
         return;
     }
-    let targetResMod = await checkResoluteModifiers(targetData.actor, targetData.autoParams, true, true);
+    let targetResMod = checkResoluteModifiers(targetData.actor, targetData.autoParams, true, true);
     let favour = -1*targetResMod.favour;
     targetData.resistAttributeName = targetResMod.bestAttributeName;
     targetData.resistAttributeValue = targetResMod.bestAttributeValue;
