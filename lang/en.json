@@ -152,6 +152,7 @@
   "ARMOR.QUALITY": "Quality",
   "ARMOR.DESCRIPTION": "Description",
   "ARMOR.BONUS_ONLY": "Stackable protection",
+  "ARMOR.DEFENSE_ATTRIBUTE" : "Defend using",
   "ARMOR.ADDBUTTON": "Add Armor",
   "ARMOR.DELETEBUTTON": "Delete Armor",
 
@@ -319,14 +320,14 @@
   "GEAR.OTHER": "Other",
   "GEAR.STATE": "State",
 
-  "HEALTH.TOUGHNESS": "Toughness",
+  "HEALTH.TOUGHNESS": "TOUGHNESS",
   "HEALTH.TOUGHNESS_MAX": "Tgh. Max",
   "HEALTH.TOUGHNESS_CURRENT": "Current",
   "HEALTH.TOUGHNESS_TOTAL": "Total",
   "HEALTH.TOUGHNESS_THRESHOLD": "Threshold",
   "HEALTH.TOUGHNESS_THRESHOLD_MAX": "Tgh. Threshold",  
   "HEALTH.TOUGHNESS_THRESHOLD_NA": "N/A",
-  "HEALTH.CORRUPTION": "Corruption",
+  "HEALTH.CORRUPTION": "CORRUPTION",
   "HEALTH.CORRUPTION_NA": "N/A",
   "HEALTH.CORRUPTION_CURRENT": "Current",
   "HEALTH.CORRUPTION_TEMPORARY": "Temporary",
@@ -684,6 +685,7 @@
   "WEAPON.ATTRIBUTEABBR": "Attr.",
   "WEAPON.DESCRIPTION": "Description",
   "WEAPON.NUMBER": "Number",
+  "WEAPON.ATTACK_ATTRIBUTE":"Attack using",
   "WEAPON.ADDBUTTON": "Add Weapon",
   "WEAPON.DELETEBUTTON": "Delete Weapon",
 
@@ -698,7 +700,7 @@
   "WEAPON_CLASS.THROWN": "Thrown",
 
   "SYMBAROUM.OPTIONAL_CRIT": "Optional Critical Rolls",
-  "SYMBAROUM.OPTIONAL_CRIT_HINT": "Check to enable Hit bonus and Defence fumbles on dice rolls of 1 and 20 as detailed Core Book p. 179",
+  "SYMBAROUM.OPTIONAL_CRIT_HINT": "Check to enable Hit bonus and Defense fumbles on dice rolls of 1 and 20 as detailed Core Book p. 179",
   "SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE": "Always able to succeed of fail",
   "SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE_HINT": "Check to always succeed on a 1 and fail on a 20",
   "SYMBAROUM.OPTIONAL_RARECRIT": "Optional Rare Critical Rolls",

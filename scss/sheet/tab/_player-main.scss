@@ -5,6 +5,17 @@
   flex-basis: 100%;
 }
 
+.symbaroum.sheet.actor .player .main .attributes .attributes-header {
+  display:flex;
+  flex-direction: row;
+  flex-wrap:nowrap;
+}
+
+.symbaroum.sheet.actor .player .main .attributes .attributes-header .modify-attributes {
+  width: 3em;
+}
+
+
 .symbaroum.sheet.actor .player .section1 {
   display: flex;
   flex-direction: row;

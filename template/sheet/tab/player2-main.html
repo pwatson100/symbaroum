@@ -4,8 +4,9 @@
         <div class="section1">
 
             <div class="attributes foreground">
-                <h1>{{localize "TITLE.ATTRIBUTES"}}</h1>
-                <button class="modify-attribute">{{localize "ATTRIBUTE.MODIFY"}}</button>
+                <div class="attributes-header">
+                <h1>{{localize "TITLE.ATTRIBUTES"}}</h1><button class="modify-attributes" title="{{localize "ATTRIBUTE.MODIFY"}}"><i style="color: var(--color-label);"  class="fas fa-cog"></i></a>
+                </div>            
                 {{#each data.attributes as |attribute key|}}
                     <div class="attribute">
                         <button class="roll-attribute" style="width: 100%" data-attribute="{{key}}">{{localize attribute.label}}</button>
@@ -144,11 +145,11 @@
                                     <div style="width:100%;">{{data.combat.armor}}</div>
                                     <div>{{localizeabbr "ARMOR.PROTECTION"}}</div>
                                     <span class="tooltip input">
-                                        {{#if symbaroumOptions.isNPC}}<input class="combatProt" type="text" value="{{data.combat.protectionNpc}}" disabled />
-                                        {{else}}<input class="combatProt" type="text" value="{{data.combat.protectionPc}}" disabled />{{/if}}
+                                        {{#if symbaroumOptions.isNPC}}<input class="combatProt ellipsis" type="text" title="{{data.combat.protectionNpc}}" value="{{data.combat.protectionNpc}}" disabled />
+                                        {{else}}<input class="combatProt ellipsis" type="text" title="{{data.combat.protectionPc}}" value="{{data.combat.protectionPc}}" disabled />{{/if}}
                                         <span class="tooltiptext downleft">{{{data.combat.tooltipProt}}}</span>
                                     </span>
-                                    <div class="attribute" style="white-space: nowrap">{{localizeabbr data.combat.defenseAttribute.label}}</div>                                
+                                    <div class="attribute" title="{{localize "ARMOR.DEFENCE_ATTRIBUTE"}} {{localize data.combat.defenseAttribute.label}}" style="white-space: nowrap">{{localizeabbr data.combat.defenseAttribute.label}}</div>                                
                                     <span class="tooltip input armordefense">
                                         <input type="text" value="{{#ifat symbaroumOptions.showNpcModifiers symbaroumOptions.isNPC}}{{#ifgt data.combat.defmod 0}}+{{/ifgt}}{{data.combat.defmod}}{{else}}{{data.combat.defense}}{{/ifat}}" data-dtype="Number" disabled />
                                         {{#if symbaroumOptions.isNPC}}<span class="tooltiptext downleft">{{localize "TOOLTIP.BONUS_TOTAL"}} {{data.combat.defense}} ({{#ifgt data.combat.defmod 0}}+{{/ifgt}}{{data.combat.defmod}})<br /> {{{data.combat.msg}}} </span>
@@ -175,10 +176,10 @@
                                                     <div style="width:100%;">{{item.name}}</div>
                                                     <div>{{localizeabbr "WEAPON.DAMAGE"}}</div>
                                                     <span class="input">
-                                                        {{#if ../symbaroumOptions.isNPC}}<input class="weaponDam" type="text" title="{{item.tooltip}}" value="{{item.damage.npcExtended}}" disabled />
-                                                        {{else}}<input class="weaponDam" type="text" title="{{item.tooltip}}" value="{{item.damage.pcExtShort}}" disabled />{{/if}}
+                                                        {{#if ../symbaroumOptions.isNPC}}<input class="weaponDam ellipsis" type="text" title="{{item.damage.npcExtended}} {{item.tooltip}}" value="{{item.damage.npcExtended}}" disabled />
+                                                        {{else}}<input class="weaponDam ellipsis" type="text" title="{{item.damage.pcExtShort}} {{item.tooltip}}" value="{{item.damage.pcExtShort}}" disabled />{{/if}}
                                                     </span>
-                                                    <div class="attribute" style="white-space: nowrap">{{localizeabbr item.attributeLabel}}</div>                                
+                                                    <div class="attribute" title="{{localize "WEAPON.ATTACK_ATTRIBUTE"}} {{localize item.attributeLabel}}" style="white-space: nowrap">{{localizeabbr item.attributeLabel}}</div>                                
                                                     <div class="input weaponAttribute">
                                                         <input type="text" value="{{#ifat ../symbaroumOptions.showNpcModifiers ../symbaroumOptions.isNPC}}{{#ifgt item.attributeMod 0}}+{{/ifgt}}{{item.attributeMod}}{{else}}{{item.attributeValue}}{{/ifat}}" data-dtype="Number" disabled />
                                                     </div>                
@@ -196,7 +197,7 @@
     </div> <!-- end of frustration -->
 
 
-    <div class="abilities-powers foreground border">
+    <div class="abilities-powers foreground">
         <h1>{{localize "TITLE.ABILITIES_POWERS"}}</h1>
         <div class="traits">
             {{#each items as |item key|}}
