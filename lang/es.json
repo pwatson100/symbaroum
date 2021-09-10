@@ -470,6 +470,11 @@
   "POWER_CURSE.CHAT_FAILURE": " no puede mantener la maldición.",
   "POWER_CURSE.CHAT_FAIL_FINAL": "La maldición ya no tiene efecto en ",
   
+  "POWER_DANCINGWEAPON.CHAT_ACTIVATE": " is using his dancing weapon.",
+  "POWER_DANCINGWEAPON.CHAT_DESACTIVATE": " isn't using dancing weapon anymore.",
+  "POWER_DANCINGWEAPON.CHAT_RESULT_ACTIVATE": "Combat stats are replaced by Resolute.",
+  "POWER_DANCINGWEAPON.CHAT_RESULT_DESACTIVATE": "Combat stats revert to normal.",
+  
   "POWER_ENTANGLINGVINES.CHAT_INTRO_M": " tries to break free from the vines.",
   "POWER_ENTANGLINGVINES.CHAT_SUCCESS": " is entangled in the vines.",
   "POWER_ENTANGLINGVINES.CHAT_FAILURE": " breaks free from the vines.",

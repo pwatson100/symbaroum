@@ -470,6 +470,11 @@
   "POWER_CURSE.CHAT_FAILURE": " kan inte upprätthålla förhäxningen.",
   "POWER_CURSE.CHAT_FAIL_FINAL": "Förhäxningen har inte längre någon effekt på ",
   
+  "POWER_DANCINGWEAPON.CHAT_ACTIVATE": " is using his dancing weapon.",
+  "POWER_DANCINGWEAPON.CHAT_DESACTIVATE": " isn't using dancing weapon anymore.",
+  "POWER_DANCINGWEAPON.CHAT_RESULT_ACTIVATE": "Combat stats are replaced by Resolute.",
+  "POWER_DANCINGWEAPON.CHAT_RESULT_DESACTIVATE": "Combat stats revert to normal.",
+  
   "POWER_ENTANGLINGVINES.CHAT_INTRO_M": " försöker bryta sig loss från rankorna.",
   "POWER_ENTANGLINGVINES.CHAT_SUCCESS": " är intrasslad i rankorna.",
   "POWER_ENTANGLINGVINES.CHAT_FAILURE": " tar sig loss från rankorna.",

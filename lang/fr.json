@@ -466,6 +466,11 @@
     "POWER_CURSE.CHAT_FAILURE": " ne parvient pas à maintenir la malédiction.",
     "POWER_CURSE.CHAT_FAIL_FINAL": "La malédiction n'a plus d'effet sur ",
   
+    "POWER_DANCINGWEAPON.CHAT_ACTIVATE": " utilise son arme dansante.",
+    "POWER_DANCINGWEAPON.CHAT_DESACTIVATE": " n'utilise plus son arme dansante.",
+    "POWER_DANCINGWEAPON.CHAT_RESULT_ACTIVATE": "Les attributs de combat sont remplacés par Volonté.",
+    "POWER_DANCINGWEAPON.CHAT_RESULT_DESACTIVATE": "Les attributs de combat redeviennent normaux.",
+  
     "POWER_ENTANGLINGVINES.CHAT_INTRO_M": " essaye de briser l'étreinte des plantes.",
     "POWER_ENTANGLINGVINES.CHAT_SUCCESS": " est enchevêtré dans la végétation.",
     "POWER_ENTANGLINGVINES.CHAT_FAILURE": " se libère de l'enchevêtrement de plantes.",
