@@ -246,6 +246,7 @@
   "COMBAT.CHAT_SUCCESS": " golpea a ",
   "COMBAT.CHAT_FAILURE": " falla.",
   "COMBAT.CHAT_BLEED": " sangra y pierde resistencia cada ronda: ",
+  "COMBAT.CHAT_CORRUPTED_ATTACK": "The attack inflict corruption: ",
   "COMBAT.CHAT_POISON": " intenta envenenar ",
   "COMBAT.CHAT_POISON_FAILURE": "No envenena.",
   "COMBAT.CHAT_POISON_EXTEND": "El objetivo ya estaba envenenado, nueva duración: rondas: ",
@@ -270,6 +271,11 @@
   "COMBAT.CHAT_DAMAGE": " recibe daño : ",
   "COMBAT.CHAT_DAMAGE_PAIN": " está aturdido por el dolor.",
   "COMBAT.PARAMS_PRECISE": "[Arma precisa], ",
+
+  "CORRUPTION.CHAT_INTRO": " increases his degree of taint.",
+  "CORRUPTION.CHAT_THRESHOLD": " becomes Blight-marked (theshold reached).",
+  "CORRUPTION.CHAT_MAX": " turns into an abomination (max reached).",
+  "CORRUPTION.CHAT_WARNING": " is close to a corruption treshold.",
 
   "DIALOG.AUTOPARAMS": "Modificadores incluidos: ",
   "DIALOG.BACKSTAB": "¿Usar Ataque Traicionero?",
@@ -464,6 +470,11 @@
   "POWER_CURSE.CHAT_SUCCESS_M": " está condenado (1d6 daño por cada acción).",
   "POWER_CURSE.CHAT_FAILURE": " no puede mantener la maldición.",
   "POWER_CURSE.CHAT_FAIL_FINAL": "La maldición ya no tiene efecto en ",
+  
+  "POWER_DANCINGWEAPON.CHAT_ACTIVATE": " is using his dancing weapon.",
+  "POWER_DANCINGWEAPON.CHAT_DESACTIVATE": " isn't using dancing weapon anymore.",
+  "POWER_DANCINGWEAPON.CHAT_RESULT_ACTIVATE": "Combat stats are replaced by Resolute.",
+  "POWER_DANCINGWEAPON.CHAT_RESULT_DESACTIVATE": "Combat stats revert to normal.",
   
   "POWER_ENTANGLINGVINES.CHAT_INTRO_M": " tries to break free from the vines.",
   "POWER_ENTANGLINGVINES.CHAT_SUCCESS": " is entangled in the vines.",
@@ -669,12 +680,13 @@
   "WEAPON.BONUS_DAMAGE": "Bonus damage",
   "WEAPON.PC_DAMAGE": "PC Dmg",
   "WEAPON.NPC_DAMAGE": "NPC Dmg",
+  "WEAPON.NONE": "None",
+  "WEAPON.NUMBER": "Número",
   "WEAPON.QUALITY": "Calidad",
   "WEAPON.COST": "Precio",
   "WEAPON.ATTRIBUTE": "Atributo",
   "WEAPON.ATTRIBUTEABBR": "Atri.",  
   "WEAPON.DESCRIPTION": "Descr.",
-  "WEAPON.NUMBER": "Número",
   "WEAPON.ADDBUTTON": "Add Weapon",
   "WEAPON.DELETEBUTTON": "Delete Weapon",
 

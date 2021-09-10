@@ -224,6 +224,7 @@
   "COMBAT.CHAT_SUCCESS": " trifft",
   "COMBAT.CHAT_FAILURE": " verfehlt.",
   "COMBAT.CHAT_BLEED": " blutet und verliert jede Runde zähigkeit: ",
+  "COMBAT.CHAT_CORRUPTED_ATTACK": "The attack inflict corruption: ",
   "COMBAT.CHAT_POISON": " versucht zu vergiften ",
   "COMBAT.CHAT_POISON_FAILURE": "Keine Vergiftung.",
   "COMBAT.CHAT_POISON_EXTEND": "Das Ziel war bereits vergiftet, neue Dauer: Runden: ",
@@ -247,6 +248,11 @@
   "COMBAT.CHAT_DAMAGE": " erleidet Schaden : ",
   "COMBAT.CHAT_DAMAGE_PAIN": " ist gelähmt vor Schmerzen.",
   "COMBAT.PARAMS_PRECISE": "[Präzise Waffe], ",
+
+  "CORRUPTION.CHAT_INTRO": " increases his degree of taint.",
+  "CORRUPTION.CHAT_THRESHOLD": " becomes Blight-marked (theshold reached).",
+  "CORRUPTION.CHAT_MAX": " turns into an abomination (max reached).",
+  "CORRUPTION.CHAT_WARNING": " is close to a corruption treshold.",
 
   "DIALOG.AUTOPARAMS": "einbezogene Modifikatoren: ",
   "DIALOG.BACKSTAB": "Hinterhältiger Angriff?",
@@ -439,6 +445,11 @@
   "POWER_CURSE.CHAT_FAILURE": " kann den Fluch nicht aufrecht erhalten.",
   "POWER_CURSE.CHAT_FAIL_FINAL": "Der Fluch hat keinen Effekt mehr auf ",
   
+  "POWER_DANCINGWEAPON.CHAT_ACTIVATE": " is using his dancing weapon.",
+  "POWER_DANCINGWEAPON.CHAT_DESACTIVATE": " isn't using dancing weapon anymore.",
+  "POWER_DANCINGWEAPON.CHAT_RESULT_ACTIVATE": "Combat stats are replaced by Resolute.",
+  "POWER_DANCINGWEAPON.CHAT_RESULT_DESACTIVATE": "Combat stats revert to normal.",
+  
   "POWER_ENTANGLINGVINES.CHAT_INTRO_M": " tries to break free from the vines.",
   "POWER_ENTANGLINGVINES.CHAT_SUCCESS": " is entangled in the vines.",
   "POWER_ENTANGLINGVINES.CHAT_FAILURE": " breaks free from the vines.",
@@ -630,12 +641,13 @@
   "WEAPON.DAMAGE_SHORT": "Sch.",
   "WEAPON.BASE_DAMAGE": "Base damage",
   "WEAPON.BONUS_DAMAGE": "Bonus damage",
+  "WEAPON.NONE": "None",
+  "WEAPON.NUMBER": "Nummer",
   "WEAPON.QUALITY": "Qualität",
   "WEAPON.COST": "Kosten",
   "WEAPON.ATTRIBUTE": "Eigenschaft",
   "WEAPON.ATTRIBUTEABBR": "Eig.",  
   "WEAPON.DESCRIPTION": "Beschreibung",
-  "WEAPON.NUMBER": "Nummer",
   "WEAPON.ADDBUTTON": "Add Weapon",
   "WEAPON.DELETEBUTTON": "Delete Weapon",
 

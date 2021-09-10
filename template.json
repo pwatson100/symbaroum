@@ -300,6 +300,7 @@
       "reference": "1handed",
       "baseDamage": "1d8",
       "bonusDamage": "",
+      "alternativeDamage": "none",
       "qualities": {
         "bastard": false,
         "returning": false,

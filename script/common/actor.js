@@ -1,4 +1,4 @@
-import { attackRoll, getPowerLevel, markScripted } from './item.js';
+import { attackRoll, checkResoluteModifiers, getPowerLevel, markScripted } from './item.js';
 import { prepareRollAttribute } from "../common/dialog.js";
 import { upgradeDice } from './roll.js';
 
@@ -168,6 +168,7 @@ export class SymbaroumActor extends Actor {
             armor: activeArmor.name,
             protectionPc: activeArmor.pc,
             protectionNpc: activeArmor.npc,
+            unfavourPcProt: activeArmor.unfavourPcProt,
             impeding: activeArmor.impeding,
             tooltipProt: activeArmor.tooltip,
             defense: totDefense,
@@ -269,7 +270,12 @@ export class SymbaroumActor extends Actor {
             naturalwarriorLvl = getPowerLevel(naturalwarrior[0]).level;
         }
         let flagBerserk = this.getFlag(game.system.id, 'berserker');
-
+        let colossalLvl = 0;
+        let colossal = this.data.items.filter(element => element.data.data?.reference === "colossal");
+        if(colossal.length > 0){
+            colossalLvl = getPowerLevel(colossal[0]).level;
+        }
+        let flagDancing = this.getFlag(game.system.id, 'dancingweapon');
         // check for abilities that changes attack attribute
         let dominate = this.data.items.filter(element => element.data.data?.reference === "dominate");
         let feint = this.data.items.filter(element => element.data.data?.reference === "feint");
@@ -282,7 +288,7 @@ export class SymbaroumActor extends Actor {
         }
         for(let item of activeWeapons){
             let attribute = item.data.data.attribute;
-            
+            let doAlternativeDamage = item.data.data.alternativeDamage !== "none";
             let tooltip = "";
             let baseDamage = item.data.data.baseDamage;
             if( baseDamage === undefined) {
@@ -292,6 +298,7 @@ export class SymbaroumActor extends Actor {
             let sometimesOnBonusFromAbilitiesShort = "";
             let bonusDamage = "";
             let shortBonusDamage = "";
+            let damageFavour = 0;
             if( item.data.data.bonusDamage !== undefined && item.data.data.bonusDamage != ""){
                 let plus = "+";
                 if(item.data.data.bonusDamage.charAt(0) === '+') {
@@ -306,44 +313,6 @@ export class SymbaroumActor extends Actor {
                 }
             }
             if(item.data.data?.isMelee){
-                if(polearmmasteryLvl > 0 && item.data.data.qualities.long){
-                    let newdamage = upgradeDice(baseDamage, 1);
-                    baseDamage = newdamage;
-                    tooltip += game.i18n.localize("ABILITY_LABEL.POLEARM_MASTERY") + ", ";
-                }
-                if(shieldfighterLvl > 0){
-                    if(["1handed", "short", "unarmed"].includes(item.data.data.reference)){
-                        let newdamage = upgradeDice(baseDamage, 1);
-                        baseDamage = newdamage;
-                        tooltip += game.i18n.localize("ABILITY_LABEL.SHIELD_FIGHTER") + ", ";
-                    }
-                    else if(item.data.data.reference === "shield"){
-                        if(shieldfighterLvl > 2){
-                            let newdamage = upgradeDice(baseDamage, 2);
-                            baseDamage = newdamage;
-                        }
-                    }
-                }
-                if(robustLvl == 1){
-                    sometimesOnBonusFromAbilities += " +1d4["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
-                    sometimesOnBonusFromAbilitiesShort += " +1d4";
-                    tooltip += game.i18n.localize("TRAIT_LABEL.ROBUST") + robustLvl.toString() + ", ";
-                }
-                else if(robustLvl == 2){
-                    sometimesOnBonusFromAbilities += " +1d6["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
-                    sometimesOnBonusFromAbilitiesShort += " +1d6";
-                    tooltip += game.i18n.localize("TRAIT_LABEL.ROBUST") + robustLvl.toString() + ", ";
-                }
-                else if(robustLvl > 2){
-                    sometimesOnBonusFromAbilities += " +1d8["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
-                    sometimesOnBonusFromAbilitiesShort += " +1d8";
-                    tooltip += game.i18n.localize("TRAIT_LABEL.ROBUST") + robustLvl.toString() + ", ";
-                }
-                if(flagBerserk){
-                    bonusDamage += " +1d6["+game.i18n.localize("ABILITY_LABEL.BERSERKER")+"]";
-                    shortBonusDamage += " +1d6";
-                    tooltip += game.i18n.localize("ABILITY_LABEL.BERSERKER") + ", ";
-                }
                 if(dominate.length > 0){
                     if(this.data.data.attributes.persuasive.total > this.data.data.attributes[attribute].total){
                         attribute = "persuasive";
@@ -362,73 +331,134 @@ export class SymbaroumActor extends Actor {
                 if(ironFistLvl > 0){
                     if(this.data.data.attributes.strong.total >= this.data.data.attributes[attribute].total){
                         attribute = "strong";
-                        let featSt = this.data.items.filter(item => item.data.data.reference === "featofstrength");
-                        if((featSt.length != 0) && (this.data.data.health.toughness.value < (this.data.data.health.toughness.max/2))){
-                            let featStLvl = getPowerLevel(featSt[0]).level;
-                            if(featStLvl > 2) {
-                                bonusDamage += " +1d4["+game.i18n.localize("ABILITY_LABEL.FEAT_STRENGTH")+"]";
-                                shortBonusDamage += " +1d4";
-                                tooltip += game.i18n.localize("ABILITY_LABEL.FEAT_STRENGTH") + ", ";
+                    }
+                }
+                if(flagDancing){
+                    let resoluteMod = checkResoluteModifiers(this, "", true, false);
+                    attribute = resoluteMod.bestAttributeName;
+                    tooltip += game.i18n.localize("POWER_LABEL.DANCING_WEAPON") + ", ";
+                }
+                if(doAlternativeDamage){
+                    let alternativeDamageLvl = 0;
+                    let alternativeDamage = this.data.items.filter(element => element.data.data.reference === "alternativedamage");
+                    if(alternativeDamage.length > 0){
+                        alternativeDamageLvl = getPowerLevel(alternativeDamage[0]).level;
+                        let newdamage = upgradeDice(baseDamage, alternativeDamageLvl-1);
+                        baseDamage = newdamage;
+                        tooltip += game.i18n.localize("TRAIT_LABEL.ALTERNATIVEDAMAGE") + ", ";
+                    }
+                } else{
+                    if(polearmmasteryLvl > 0 && item.data.data.qualities.long){
+                        let newdamage = upgradeDice(baseDamage, 1);
+                        baseDamage = newdamage;
+                        tooltip += game.i18n.localize("ABILITY_LABEL.POLEARM_MASTERY") + ", ";
+                    }
+                    if(shieldfighterLvl > 0){
+                        if(["1handed", "short", "unarmed"].includes(item.data.data.reference)){
+                            let newdamage = upgradeDice(baseDamage, 1);
+                            baseDamage = newdamage;
+                            tooltip += game.i18n.localize("ABILITY_LABEL.SHIELD_FIGHTER") + ", ";
+                        }
+                        else if(item.data.data.reference === "shield"){
+                            if(shieldfighterLvl > 2){
+                                let newdamage = upgradeDice(baseDamage, 2);
+                                baseDamage = newdamage;
                             }
                         }
                     }
-                    if(ironFistLvl == 2){
-                        sometimesOnBonusFromAbilities += " +1d4["+game.i18n.localize("ABILITY_LABEL.IRON_FIST")+"]";
+                    if(robustLvl == 1){
+                        sometimesOnBonusFromAbilities += " +1d4["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
                         sometimesOnBonusFromAbilitiesShort += " +1d4";
-                        tooltip += game.i18n.localize("ABILITY_LABEL.IRON_FIST") + ", ";
+                        tooltip += game.i18n.localize("TRAIT_LABEL.ROBUST") + robustLvl.toString() + ", ";
                     }
-                    else if(ironFistLvl > 2){
-                        sometimesOnBonusFromAbilities += " +1d8["+game.i18n.localize("ABILITY_LABEL.IRON_FIST")+"]";
+                    else if(robustLvl == 2){
+                        sometimesOnBonusFromAbilities += " +1d6["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
+                        sometimesOnBonusFromAbilitiesShort += " +1d6";
+                        tooltip += game.i18n.localize("TRAIT_LABEL.ROBUST") + robustLvl.toString() + ", ";
+                    }
+                    else if(robustLvl > 2){
+                        sometimesOnBonusFromAbilities += " +1d8["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
                         sometimesOnBonusFromAbilitiesShort += " +1d8";
-                        tooltip += game.i18n.localize("ABILITY_LABEL.IRON_FIST") + ", ";
+                        tooltip += game.i18n.localize("TRAIT_LABEL.ROBUST") + robustLvl.toString() + ", ";
+                    }
+                    if(flagBerserk){
+                        bonusDamage += " +1d6["+game.i18n.localize("ABILITY_LABEL.BERSERKER")+"]";
+                        shortBonusDamage += " +1d6";
+                        tooltip += game.i18n.localize("ABILITY_LABEL.BERSERKER") + ", ";
+                    }
+                    if(ironFistLvl > 0){
+                        if(this.data.data.attributes.strong.total >= this.data.data.attributes[attribute].total){
+                            attribute = "strong";
+                            let featSt = this.data.items.filter(item => item.data.data.reference === "featofstrength");
+                            if((featSt.length != 0) && (this.data.data.health.toughness.value < (this.data.data.health.toughness.max/2))){
+                                let featStLvl = getPowerLevel(featSt[0]).level;
+                                if(featStLvl > 2) {
+                                    bonusDamage += " +1d4["+game.i18n.localize("ABILITY_LABEL.FEAT_STRENGTH")+"]";
+                                    shortBonusDamage += " +1d4";
+                                    tooltip += game.i18n.localize("ABILITY_LABEL.FEAT_STRENGTH") + ", ";
+                                }
+                            }
+                        }
+                        if(ironFistLvl == 2){
+                            sometimesOnBonusFromAbilities += " +1d4["+game.i18n.localize("ABILITY_LABEL.IRON_FIST")+"]";
+                            sometimesOnBonusFromAbilitiesShort += " +1d4";
+                            tooltip += game.i18n.localize("ABILITY_LABEL.IRON_FIST") + ", ";
+                        }
+                        else if(ironFistLvl > 2){
+                            sometimesOnBonusFromAbilities += " +1d8["+game.i18n.localize("ABILITY_LABEL.IRON_FIST")+"]";
+                            sometimesOnBonusFromAbilitiesShort += " +1d8";
+                            tooltip += game.i18n.localize("ABILITY_LABEL.IRON_FIST") + ", ";
+                        }
                     }
                 }
             }
-
-            
             if(item.data.data?.isDistance){
                 if(sixthsense.length > 0){
                     if(this.data.data.attributes.vigilant.total > this.data.data.attributes[attribute].total){
                         attribute = "vigilant";
                     }
                 }
-                if(item.data.data.reference === "thrown"){
-                    let steelthrow = this.data.items.filter(element => element.data.data.reference === "steelthrow");
-                    if(steelthrow.length > 0){
-                        let newdamage = upgradeDice(baseDamage, 1);
-                        baseDamage = newdamage;
-                        tooltip += game.i18n.localize("ABILITY_LABEL.STEEL_THROW") + ", ";
+                if(!doAlternativeDamage){
+                    if(item.data.data.reference === "thrown"){
+                        let steelthrow = this.data.items.filter(element => element.data.data.reference === "steelthrow");
+                        if(steelthrow.length > 0){
+                            let newdamage = upgradeDice(baseDamage, 1);
+                            baseDamage = newdamage;
+                            tooltip += game.i18n.localize("ABILITY_LABEL.STEEL_THROW") + ", ";
+                        }
                     }
-                }
-                if(item.data.data.reference === "ranged"){
-                    if(marksmanLvl > 0){
-                        let newdamage = upgradeDice(baseDamage, 1);
-                        baseDamage = newdamage;
-                        tooltip += game.i18n.localize("ABILITY_LABEL.MARKSMAN") + ", ";
+                    if(item.data.data.reference === "ranged"){
+                        if(marksmanLvl > 0){
+                            let newdamage = upgradeDice(baseDamage, 1);
+                            baseDamage = newdamage;
+                            tooltip += game.i18n.localize("ABILITY_LABEL.MARKSMAN") + ", ";
+                        }
                     }
                 }
             }
-            if(item.data.data.reference === "heavy"){
-                if(twohandedforceLvl > 0){
-                    let newdamage = upgradeDice(baseDamage, 1);
-                    baseDamage = newdamage;
-                    tooltip += game.i18n.localize("ABILITY_LABEL.2HANDED_FORCE") + ", ";
+            if(!doAlternativeDamage){
+                if(item.data.data.reference === "heavy"){
+                    if(twohandedforceLvl > 0){
+                        let newdamage = upgradeDice(baseDamage, 1);
+                        baseDamage = newdamage;
+                        tooltip += game.i18n.localize("ABILITY_LABEL.2HANDED_FORCE") + ", ";
+                    }
                 }
-            }
-            if(item.data.data.reference === "unarmed"){
-                if(naturalweaponLvl > 0){
-                    let newdamage = upgradeDice(baseDamage, naturalweaponLvl);
-                    baseDamage = newdamage;
-                    tooltip += game.i18n.localize("TRAIT_LABEL.NATURALWEAPON") + naturalweaponLvl.toString() + ", ";
-                }
-                if(naturalwarriorLvl > 0){
-                    let newdamage = upgradeDice(baseDamage, 1);
-                    baseDamage = newdamage;
-                    tooltip += game.i18n.localize("ABILITY_LABEL.NATURAL_WARRIOR") + naturalwarriorLvl.toString() + ", ";
-                }
-                if(naturalwarriorLvl > 2){
-                    bonusDamage += " +1d6["+game.i18n.localize("ABILITY_LABEL.NATURAL_WARRIOR")+"]";
-                    shortBonusDamage += " +1d6";
+                if(item.data.data.reference === "unarmed"){
+                    if(naturalweaponLvl > 0){
+                        let newdamage = upgradeDice(baseDamage, naturalweaponLvl);
+                        baseDamage = newdamage;
+                        tooltip += game.i18n.localize("TRAIT_LABEL.NATURALWEAPON") + naturalweaponLvl.toString() + ", ";
+                    }
+                    if(naturalwarriorLvl > 0){
+                        let newdamage = upgradeDice(baseDamage, 1);
+                        baseDamage = newdamage;
+                        tooltip += game.i18n.localize("ABILITY_LABEL.NATURAL_WARRIOR") + naturalwarriorLvl.toString() + ", ";
+                    }
+                    if(naturalwarriorLvl > 2){
+                        bonusDamage += " +1d6["+game.i18n.localize("ABILITY_LABEL.NATURAL_WARRIOR")+"]";
+                        shortBonusDamage += " +1d6";
+                    }
                 }
             }
             let pcDamage = baseDamage + bonusDamage;
@@ -440,11 +470,13 @@ export class SymbaroumActor extends Actor {
             let baseDmgRoll = new Roll(baseDamage).evaluate({maximize: true});
             let DmgRollExt= new Roll(pcDamageExt).evaluate({maximize: true});
             let npcDamageExt = Math.ceil(DmgRollExt.total/2);
-            if(item.data.data.qualities?.massive) {
+            if(item.data.data.qualities?.massive || (colossalLvl && !doAlternativeDamage)) {
                 pcDamage = "2d"+(baseDmgRoll.total)+"kh"+bonusDamage;
                 pcShort = "2d"+(baseDmgRoll.total)+"kh"+shortBonusDamage;
                 pcDamageExt = pcDamage + sometimesOnBonusFromAbilities;
                 pcExtShort = pcShort + sometimesOnBonusFromAbilitiesShort;
+                damageFavour = 1;
+                if(colossalLvl) tooltip += game.i18n.localize("TRAIT_LABEL.COLOSSAL") + ", ";
             }
             if(item.data.data.qualities?.deepImpact){
                 pcDamage += "+1d1["+game.i18n.localize("QUALITY.DEEPIMPACT")+"]";
@@ -471,6 +503,7 @@ export class SymbaroumActor extends Actor {
                 reference: item.data.data.reference, 
                 isMelee: item.data.data.isMelee, 
                 isDistance: item.data.data.isDistance,
+                doAlternativeDamage: doAlternativeDamage,
                 qualities: item.data.data.qualities,
                 damage: {
                     base: baseDamage, 
@@ -482,7 +515,9 @@ export class SymbaroumActor extends Actor {
                     pcExtended: pcDamageExt,
                     pcExtShort: pcExtShort,
                     npcExtended: npcDamageExt,
-                    npc: npcDamage
+                    npc: npcDamage,
+                    damageFavour: damageFavour,
+                    alternativeDamageAttribute: item.data.data.alternativeDamage
                 }
             })
         }
@@ -556,21 +591,25 @@ export class SymbaroumActor extends Actor {
         }
         let pcProt = "";
         let armorRoll= null;
+        let unfavourPcProt = "0";
         if( protection === "0" && bonusProtection === "") {
             armorRoll = new Roll("0").evaluate({maximize: true});    
         } else if(protection === "0") {
             pcProt = bonusProtection;
+            unfavourPcProt = bonusProtection;
             armorRoll = new Roll(pcProt).evaluate({maximize: true});    
         } else {
             pcProt = protection + bonusProtection;
             armorRoll = new Roll(pcProt).evaluate({maximize: true});
+            let maxBaseArmor = new Roll(protection).evaluate({maximize: true});
+            unfavourPcProt = "2d"+(maxBaseArmor.total)+"kl"+bonusProtection;
         }
 
         let npcProt = Math.ceil(armorRoll.total/2);
-        
         if(item.data.data?.qualities?.reinforced){
             pcProt += "+1";
             npcProt+= 1;
+            unfavourPcProt += "+1";
         }
         return( {
             _id: item.id,
@@ -580,6 +619,7 @@ export class SymbaroumActor extends Actor {
             bonus: bonusProtection, 
             pc: pcProt, 
             npc: npcProt,
+            unfavourPcProt: unfavourPcProt,
             tooltip: tooltip,
             impeding: impeding,
             isActive: item.data.isActive,
@@ -614,6 +654,14 @@ export class SymbaroumActor extends Actor {
                 attDefValue = data.data.attributes[attributeDef].total
             }
         }
+
+        let flagDancing = this.getFlag(game.system.id, 'dancingweapon');
+        if(flagDancing){
+            let resoluteMod = checkResoluteModifiers(this, "", true, false);
+            attributeDef = resoluteMod.bestAttributeName;
+            attDefValue = data.data.attributes[attributeDef].total;
+        }
+
         data.data.defense.attribute = attributeDef;
         data.data.defense.attributelabel = data.data.attributes[attributeDef].label;
 
@@ -706,6 +754,10 @@ export class SymbaroumActor extends Actor {
                 damageProt.holy = 0.25;
                 damageProt.mysticalWeapon = 0.25
             }
+        }
+        let colossal = this.data.items.filter(element => element.data.data?.reference === "colossal");
+        if(colossal.length > 0 && colossal[0].data.data.master.isActive){
+            damageProt.normal = 0;
         }
         return(damageProt)
     }

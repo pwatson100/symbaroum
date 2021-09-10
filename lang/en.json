@@ -244,6 +244,7 @@
   "COMBAT.CHAT_SUCCESS": " hits ",
   "COMBAT.CHAT_FAILURE": " miss.",
   "COMBAT.CHAT_BLEED": " bleeds and loses toughness each round: ",
+  "COMBAT.CHAT_CORRUPTED_ATTACK": "The attack inflict corruption: ",
   "COMBAT.CHAT_POISON": " tries to poison ",
   "COMBAT.CHAT_POISON_FAILURE": "No poisonning.",
   "COMBAT.CHAT_POISON_EXTEND": "Target was already poisoned, new duration: rounds: ",
@@ -267,6 +268,11 @@
   "COMBAT.CHAT_DAMAGE": " endures damage : ",
   "COMBAT.CHAT_DAMAGE_PAIN": " is stunned by pain.",
   "COMBAT.PARAMS_PRECISE": "[Precise weapon], ",
+
+  "CORRUPTION.CHAT_INTRO": " increases his degree of taint.",
+  "CORRUPTION.CHAT_THRESHOLD": " becomes Blight-marked (theshold reached).",
+  "CORRUPTION.CHAT_MAX": " turns into an abomination (max reached).",
+  "CORRUPTION.CHAT_WARNING": " is close to a corruption treshold.",
 
   "DIALOG.AUTOPARAMS": "Included modifiers: ",
   "DIALOG.BACKSTAB": "Use Backstab?",
@@ -466,6 +472,11 @@
   "POWER_CURSE.CHAT_SUCCESS_M": " is heavily cursed (1d6 damage for each action).",
   "POWER_CURSE.CHAT_FAILURE": " can't maintain the curse.",
   "POWER_CURSE.CHAT_FAIL_FINAL": "The curse has no more effect on ",
+  
+  "POWER_DANCINGWEAPON.CHAT_ACTIVATE": " is using his dancing weapon.",
+  "POWER_DANCINGWEAPON.CHAT_DESACTIVATE": " isn't using dancing weapon anymore.",
+  "POWER_DANCINGWEAPON.CHAT_RESULT_ACTIVATE": "Combat stats are replaced by Resolute.",
+  "POWER_DANCINGWEAPON.CHAT_RESULT_DESACTIVATE": "Combat stats revert to normal.",
   
   "POWER_ENTANGLINGVINES.CHAT_INTRO_M": " tries to break free from the vines.",
   "POWER_ENTANGLINGVINES.CHAT_SUCCESS": " is entangled in the vines.",
@@ -679,6 +690,8 @@
   "WEAPON.BONUS_DAMAGE": "Bonus damage",
   "WEAPON.PC_DAMAGE": "PC Dmg",
   "WEAPON.NPC_DAMAGE": "NPC Dmg",
+  "WEAPON.NONE": "None",
+  "WEAPON.NUMBER": "Number",
   "WEAPON.QUALITY": "Quality",
   "WEAPON.COST": "Cost",
   "WEAPON.ATTRIBUTE": "Attribute",
