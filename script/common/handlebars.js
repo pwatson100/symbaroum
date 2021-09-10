@@ -51,7 +51,11 @@ function registerHandlebarsHelpers() {
     if (v1 !== v2) return options.fn(this);
     else return options.inverse(this);
   });
-
+  // if not
+  Handlebars.registerHelper('ifn', function (v1, options) {
+    if (!v1) return options.fn(this);
+    else return options.inverse(this);
+  });
   // if equal
   Handlebars.registerHelper('ife', function (v1, v2, options) {
     if (v1 === v2) return options.fn(this);
@@ -62,6 +66,14 @@ function registerHandlebarsHelpers() {
     if (v1 > v2) return options.fn(this);
     else return options.inverse(this);
   });
+  // if all true
+  Handlebars.registerHelper('ifat', function (...args) {
+    // remove handlebar options
+    let options = args.pop();
+    console.log("inat:",args,":");
+
+    return args.indexOf(false) === -1 ? options.fn(this) : options.inverse(this);
+  });    
   Handlebars.registerHelper('keyIndex', function (str) {
     return 'data.power.' + str + '.description';
   });
@@ -69,4 +81,14 @@ function registerHandlebarsHelpers() {
     let newOne = parseInt(v1) + 1;
     return newOne;
   });
+  Handlebars.registerHelper('ifSetting', function (v1, options) {
+    if(game.settings.get('symbaroum',v1) ) return options.fn(this);
+      else return options.inverse(this);
+  });  
+  Handlebars.registerHelper('toFixed', function (v1, v2) {
+    return v1.toFixed(v2);  
+  });
+
+
+
 }

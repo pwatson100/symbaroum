@@ -341,7 +341,8 @@
   "HEALTH.CORRUPTION_THRESHOLD_MAX": "Korruptionströskel",
   "HEALTH.CORRUPTION_MAX": "Förstyggelse",
   
-  "INITIATIVE": "Initiativ",
+  "INITIATIVE.TITLE": "Initiativ",
+  "INITIATIVE.EXPLANATION": "Initiative shown as [initiative attribute.vigilant]",
 
   "ITEM.TRAIT": "Särdrag",
   "ITEM.ABILITY": "Förmåga",
@@ -603,6 +604,7 @@
   "TRAIT.ACTIVE": "Aktiv",
   "TRAIT.ACTION": "Handling",
   "TRAIT.DESCRIPTION": "Beskrivning",
+  "TRAIT.MARKERTRAIT": "Trait has no levels",
 
   "TRAIT_LABEL.ACIDICATTACK": "Frätande attack",
   "TRAIT_LABEL.ACIDICBLOOD": "Frätande blod",
@@ -715,6 +717,8 @@
   "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT": "Välj för att behålla senaste modifikationer vid framgångsslag för karaktärsdrag",
   "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE": "Visa modifikationer vid framgångsslag för karaktärsdrag.",
   "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE_HINT": "Välj för att visa modifikationer för karaktärsdrag innan framgångsslag slås.",
+  "SYMBAROUM.OPTIONAL_NPC_MODIFIERS": "Show NPC modifiers",
+  "SYMBAROUM.OPTIONAL_NPC_MODIFIERS_HINT": "Check to show NPC modifiers (-5 to +5) instead of attributes for NPCs on character sheet",
   "SYMBAROUM.OPTIONAL_INIATITIVEROLLS": "Supress Initiative rolls",
   "SYMBAROUM.OPTIONAL_INIATITIVEROLLS_HINT": "Check to QoL disabling of Initiative rolls in chat",
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Tillåt referensmodifikation",

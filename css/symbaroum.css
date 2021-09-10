@@ -394,8 +394,12 @@
 }
 
 /* Common styles */
-.symbaroum.sheet.actor .window-content {
-  background: url(../asset/image/background.jpg) repeat;
+.symbaroum.sheet.actor.player .window-content {
+  background: url(../asset/image/background.webp) repeat;
+}
+
+.symbaroum.sheet.actor.monster .window-content {
+  background: url(../asset/image/background-monster.webp) repeat;
 }
 
 .symbaroum.sheet.actor .window-content .editable {
@@ -403,7 +407,7 @@
 }
 
 .symbaroum.sheet.actor .foreground {
-  background: url(../asset/image/foreground.jpg) repeat;
+  background: url(../asset/image/foreground.webp) repeat;
 }
 
 .symbaroum.sheet.actor .border {
@@ -1385,24 +1389,44 @@
   text-align: center;
 }
 
+.symbaroum.sheet.actor .player .gear .wrapper-left .armors .armor td .cell,
+.symbaroum.sheet.actor .player .gear .wrapper-left .weapons .weapon td .cell,
+.symbaroum.sheet.actor .player .gear .wrapper-left .artifacts .artifact td .cell,
+.symbaroum.sheet.actor .player .gear .wrapper-right .equipments .equipment td .cell {
+  background: url(../asset/image/title.jpg) repeat;
+}
+
 .symbaroum.sheet.actor .player .gear .wrapper-left .armors .armor td .armorname,
 .symbaroum.sheet.actor .player .gear .wrapper-left .weapons .weapon td .weaponname,
 .symbaroum.sheet.actor .player .gear .wrapper-left .artifacts .artifact td .artifactname {
   width: 100%;
-  max-width: 100%;
+  max-width: 15em;
   min-width: 131px;
 }
 
-.symbaroum.sheet.actor .player .gear .wrapper-right .equipments .equipment td .equipmentname {
+.symbaroum.sheet.actor .player .gear .wrapper-right .equipments .equipment td .namefield {
   width: 108px;
+  max-width: 10em;
 }
 
 .symbaroum.sheet.actor .player .gear .wrapper-left .armors .armor td .namefield,
 .symbaroum.sheet.actor .player .gear .wrapper-left .weapons .weapon td .namefield,
-.symbaroum.sheet.actor .player .gear .wrapper-left .artifacts .artifact td .namefield,
+.symbaroum.sheet.actor .player .gear .wrapper-left .artifacts .artifact td .namefield {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-flow: nowrap;
+      flex-flow: nowrap;
+  min-width: 131px;
+}
+
 .symbaroum.sheet.actor .player .gear .wrapper-right .equipments .equipment td .namefield {
   display: flex;
-  flex-flow: nowrap;
+
+  -ms-flex-flow: nowrap;
+      flex-flow: nowrap;
+  min-width: 108px;
+
 }
 
 .symbaroum.sheet.actor .player .gear .wrapper-left .armors .armor td .image-container,
@@ -1420,7 +1444,7 @@
 .symbaroum.sheet.actor .player .gear .wrapper-left .artifacts table th,
 .symbaroum.sheet.actor .player .gear .wrapper-right .equipments table td,
 .symbaroum.sheet.actor .player .gear .wrapper-right .equipments table th {
-  padding: 2px;
+  margin: 2px;
 }
 
 .symbaroum.sheet.actor .player .gear .wrapper-left .armors .armor td.protection,
@@ -1508,6 +1532,22 @@
   flex-basis: 100%;
 }
 
+.symbaroum.sheet.actor .player .main .attributes .attributes-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+}
+
+.symbaroum.sheet.actor .player .main .attributes .attributes-header .modify-attributes {
+  width: 3em;
+}
+
 .symbaroum.sheet.actor .player .section1 {
   display: flex;
   flex-direction: row;
@@ -1534,12 +1574,19 @@
 
 .symbaroum.sheet.actor .corruption-col1,
 .symbaroum.sheet.actor .corruption-col2 {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  flex-basis: calc(50% - 5px);
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -ms-flex-preferred-size: calc(50%);
+      flex-basis: calc(50%);
+
   border-top: none;
-  margin-right: 5px;
 }
 
 .symbaroum.sheet.actor .toughness {
@@ -1663,8 +1710,10 @@
 .symbaroum.sheet.actor .player .main .health2 .corruption-permanent label,
 .symbaroum.sheet.actor .player .main .health2 .corruption-threshold label,
 .symbaroum.sheet.actor .player .main .health2 .corruption-max label {
-  flex-basis: 70%;
-  padding: 0px;
+
+  -ms-flex-preferred-size: 70%;
+      flex-basis: 70%;
+
 }
 
 .symbaroum.sheet.actor .player .main .health .toughness-current input,
@@ -1685,7 +1734,7 @@
 .symbaroum.sheet.actor .player .main .health2 .toughness-threshold,
 .symbaroum.sheet.actor .player .main .health2 .corruption-longterm,
 .symbaroum.sheet.actor .player .main .health2 .corruption-max {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .symbaroum.sheet.actor .player .main .combat {
@@ -1698,14 +1747,69 @@
   margin-left: 5px;
 }
 
+.symbaroum.sheet.actor .player .main .combat .combatheader,
+.symbaroum.sheet.actor .player .main .combat .combatheader {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+  border-top: none;
+  width: 100%;
+  background: url(../asset/image/title.jpg) repeat;
+}
+
+.symbaroum.sheet.actor .player .main .combat .combatheader .iniheader {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+  border-top: none;
+}
+
+.symbaroum.sheet.actor .player .main .combat .combatheader .iniheader .title {
+  color: var(--color-title);
+  text-align: center;
+  padding: 5px;
+}
+
+.symbaroum.sheet.actor .player .main .combat .combatheader .iniheader label {
+  width: 3em;
+}
+
+.symbaroum.sheet.actor .player .main .combat .combatheader .iniheader input {
+  width: 4em;
+  margin-right: 5px;
+}
+
 .symbaroum.sheet.actor .player .main .combat .initiative,
 .symbaroum.sheet.actor .player .main .combat .defenseAttr {
+
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-  flex-wrap: wrap;
-  flex-basis: 100%;
-  margin: 5px 0px 5px 0px;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -ms-flex-preferred-size: 100%;
+      flex-basis: 100%;
+  margin-top: 5px;
+
 }
 
 .symbaroum.sheet.actor .player .main .combat .stat-modifiers .initiative,
@@ -1721,20 +1825,61 @@
   margin-bottom: 5px;
   margin-right: 5px;
   margin-left: 5px;
+  margin-top: 5px;
 }
 
 .symbaroum.sheet.actor .player .main .combat .armor .roll-armor,
-.symbaroum.sheet.actor .player .main .combat .armor .protection,
-.symbaroum.sheet.actor .player .main .combat .armor .defense,
-.symbaroum.sheet.actor .player .main .combat .armor .quality {
+.symbaroum.sheet.actor .player .main .combat .weapons .roll-weapon {
+  display: -webkit-box;
+  display: -ms-flexbox;
+
   display: flex;
   flex-direction: row;
   /* justify-content: center; */
 }
 
-/* .symbaroum.sheet.actor .player .main .combat .armor .roll-armor, */
-.symbaroum.sheet.actor .player .main .combat .armor .quality {
-  flex-basis: 100%;
+
+.symbaroum.sheet.actor .player .main .combat .armor .item-header,
+.symbaroum.sheet.actor .player .main .combat .weapons .item-header {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.symbaroum.sheet.actor .player .main .combat .armor .item-row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+  background-image: url(../asset/image/title.jpg);
+  background-repeat: repeat;
+}
+
+.symbaroum.sheet.actor .player .main .combat .armor .roll-armor .combatProt,
+.symbaroum.sheet.actor .player .main .combat .weapons .roll-weapon .weaponDam {
+  width: 8em;
+  min-width: 8em;
+  height: 28px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.symbaroum.sheet.actor .player .main .combat .armor .roll-armor .attribute,
+.symbaroum.sheet.actor .player .main .combat .weapons .roll-weapon .attribute {
+  width: 4em;
+  min-width: 4em;
+  margin-right: 5px;
+}
+
+.symbaroum.sheet.actor .player .main .combat .armor .roll-armor .armordefense,
+.symbaroum.sheet.actor .player .main .combat .armor .roll-armor .armordefense input,
+.symbaroum.sheet.actor .player .main .combat .weapons .roll-weapon .weaponAttribute,
+.symbaroum.sheet.actor .player .main .combat .weapons .roll-weapon .weaponAttribute input {
+  width: 4em;
+  min-width: 4em;
+  height: 28px;
+
 }
 
 .symbaroum.sheet.actor .player .main .combat .armor .roll-armor {
@@ -1745,45 +1890,37 @@
   margin-top: 5px;
 }
 
-.symbaroum.sheet.actor .player .main .combat .armor .protection {
-  flex-basis: 50%;
-}
-
-.symbaroum.sheet.actor .player .main .combat .armor .defense {
-  flex-basis: calc(50% - 5px);
-  margin-top: 5px;
-  margin-left: 5px;
-}
-
-.symbaroum.sheet.actor .player .main .combat .armor .initiative label,
-.symbaroum.sheet.actor .player .main .combat .armor .quality label,
-.symbaroum.sheet.actor .player .main .combat .armor .protection label,
-.symbaroum.sheet.actor .player .main .combat .armor .defense label {
+.symbaroum.sheet.actor .player .main .combat .armor .initiative label {
   width: 10em;
   min-width: 10em;
 }
 
-.symbaroum.sheet.actor .player .main .combat .armor .protection input,
-.symbaroum.sheet.actor .player .main .combat .armor .defense input {
-  width: 100%;
-}
-
 .symbaroum.sheet.actor .player .main .combat .weapons {
+
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  flex-basis: 100%;
-  margin: 0 5px 5px 5px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -ms-flex-preferred-size: 100%;
+      flex-basis: 100%;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin: 5px;
   height: 120px;
 }
 
+.symbaroum.sheet.actor .player .main .combat .armor .item-list .name,
 .symbaroum.sheet.actor .player .main .combat .weapons .item-list .name {
   display: flex;
-  flex-basis: 70%;
-  justify-content: center;
-}
 
-.symbaroum.sheet.actor .player .main .combat .weapons .item-list .damage {
-  flex-basis: 30%;
+  -ms-flex-preferred-size: 100%;
+      flex-basis: 100%;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .symbaroum.sheet.actor .player .main .combat .weapons .item-list .weapon {
@@ -2625,6 +2762,19 @@
 
 .symbaroum.sheet.item .trait .description .editor {
   height: 166px;
+}
+
+.symbaroum.sheet.item .trait .tab .marker {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-preferred-size: 100%;
+      flex-basis: 100%;
+  margin: 5px 5px 5px 10px;
 }
 
 .symbaroum.sheet.item .trait .tab .active,

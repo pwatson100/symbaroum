@@ -1,6 +1,6 @@
 <div class="gear">
     <div class="wrapper-left">
-        <div class="armors foreground border">
+        <div class="armors foreground">
             <h1>{{localize "TITLE.ARMORS"}}</h1>
             <div class="scrollable">
                 <table>
@@ -22,11 +22,13 @@
                     {{#each actor.data.armors as |item|}}   
                         <tr class="armor item" data-item-id="{{item.id}}" >
                             <td>
-                                <div style="display:flex; flex-flow:nowrap">
+                                <div class="cell">
+                                <div class="namefield">
                                         <div class="image-container">
                                             <div class="image" style="background-image: url('{{item.img}}')"></div>
                                         </div>
                                         <button class="item-edit ellipsis armorname">{{item.name}}</button>
+                                </div>
                                 </div>
                             </td>
                             <td class="protection">
@@ -61,7 +63,7 @@
                 </table>
             </div>
         </div>
-        <div class="weapons foreground border">
+        <div class="weapons foreground">
         <h1>{{localize "TITLE.WEAPONS"}}</h1>
         <div class="scrollable">
             <table>
@@ -80,11 +82,13 @@
                 {{#each actor.data.weapons as |item|}}
                     <tr class="weapon item" data-item-id="{{item.id}}" >
                         <td>
+                            <div class="cell">
                             <div class="namefield">
                                     <div class="image-container">
                                         <div class="image" style="background-image: url('{{item.img}}')"></div>
                                     </div>
                                     <button class="item-edit ellipsis weaponname">{{item.name}}</button>
+                            </div>
                             </div>
                         </td>
                         <td class="damage">
@@ -113,7 +117,7 @@
             </table>
             </div>
         </div>
-        <div class="artifacts foreground border">
+        <div class="artifacts foreground">
             <h1>{{localize "TITLE.ARTIFACTS"}}</h1>
             <div class="scrollable">
                 <table>
@@ -133,11 +137,13 @@
                         {{#if item.data.isArtifact}}                        
                         <tr class="artifact item" data-item-id="{{item.id}}">
                             <td class="name">
+                                <div class="cell">
                                 <div class="namefield">
                                     <div class="image-container">
                                         <div class="image" style="background-image: url('{{item.img}}')"></div>
                                     </div>
                                     <button class="item-edit ellipsis artifactname">{{item.name}}</button>
+                                </div>
                                 </div>
                             </td>
                             <td class="action" title="{{item.getArtifactActions}}">
@@ -169,7 +175,7 @@
         </div>
     </div>
     <div class="wrapper-right">
-        <div class="equipments foreground border">
+        <div class="equipments foreground">
             <h1>{{localize "TITLE.EQUIPMENTS"}}</h1>
             <div class="scrollable">
                 <table>
@@ -188,11 +194,13 @@
                         {{#if item.data.isEquipment}}                       
                         <tr class="equipment item" data-item-id="{{item.id}}">
                             <td class="name" title="{{item.name}}">
+                                <div class="cell">
                                 <div class="namefield">
                                     <div class="image-container">
                                         <div class="image" style="background-image: url('{{item.img}}')"></div>
                                     </div>                                
                                     <button class="item-edit ellipsis equipmentname">{{item.name}}</button>
+                                </div>
                                 </div>
                             </td>
                             <td class="quantity">
@@ -217,7 +225,7 @@
                 </table>
             </div>
         </div>
-        <div class="money foreground border">
+        <div class="money foreground">
             <h1>{{localize "TITLE.MONEY"}}</h1>
             <div class="thaler">
                 <label>{{localize "MONEY.THALER"}}</label>

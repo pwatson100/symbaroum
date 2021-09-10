@@ -341,7 +341,8 @@
   "HEALTH.CORRUPTION_THRESHOLD_MAX": "Umbral Corrup.",
   "HEALTH.CORRUPTION_MAX": "Umbral Abom.",
   
-  "INITIATIVE": "Iniciativa",
+  "INITIATIVE.TITLE": "Iniciativa",
+  "INITIATIVE.EXPLANATION": "Initiative shown as [initiative attribute.vigilant]",
 
   "ITEM.TRAIT": "Rasgo",
   "ITEM.ABILITY": "Habilidad",
@@ -603,6 +604,8 @@
   "TRAIT.ACTIVE": "Activo",
   "TRAIT.ACTION": "Acción",
   "TRAIT.DESCRIPTION": "Descr.",
+  "TRAIT.MARKERTRAIT": "Trait has no levels",
+
 
   "TRAIT_LABEL.ACIDICATTACK": "Ataque Ácido",
   "TRAIT_LABEL.ACIDICBLOOD": "Sangre Ácida",
@@ -715,6 +718,8 @@
   "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT": "Marcar para permitir mejoras de QoL para mantener todos los modificadores cuando se hagan pruebas de atributos",
   "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE": "Mostrar modificadores en tiradas de atributo con objetivo",
   "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE_HINT": "Marcar para permitir mejoras de QoL para mostrar los mod de los atributos antes de la tirada",
+  "SYMBAROUM.OPTIONAL_NPC_MODIFIERS": "Show NPC modifiers",
+  "SYMBAROUM.OPTIONAL_NPC_MODIFIERS_HINT": "Check to show NPC modifiers (-5 to +5) instead of attributes for NPCs on character sheet",
   "SYMBAROUM.OPTIONAL_INIATITIVEROLLS": "Supress Initiative rolls",
   "SYMBAROUM.OPTIONAL_INIATITIVEROLLS_HINT": "Check to QoL disabling of Initiative rolls in chat",
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Permitir modificaciones de referencias",

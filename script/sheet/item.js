@@ -7,11 +7,19 @@ export class SymbaroumItemSheet extends ItemSheet {
   }
 
   getData() {
-    return { 
+    let data = { 
       id:this.item.id,
-      item:foundry.utils.deepClone(this.item.data),
-      data: foundry.utils.deepClone(this.item.data.data)
+      item: this.item.data,
+      data: foundry.utils.deepClone(this.item.data.data),
+      cssClass : this.isEditable ? "editable" : "locked",
+      editable : this.isEditable
     };
+
+    data.symbaroumOptions = {
+      isGM: game.user.isGM,
+      allowShowReference:  game.settings.get('symbaroum', 'allowShowReference')
+    };
+    return data;
   }
 
   _getHeaderButtons() {
@@ -69,6 +77,7 @@ export class SymbaroumItemSheet extends ItemSheet {
       _id:this.item.id,
       "data.power": arr
     };
+    
     this.item.update(update);
   }
 
