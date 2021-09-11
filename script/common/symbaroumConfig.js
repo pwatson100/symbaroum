@@ -42,7 +42,6 @@ export class SymbaroumConfig extends FormApplication {
   async _updateObject(event, formData) {
     await game.settings.set('symbaroum', 'switchCharBGColour', formData.charBGColour);
     await game.settings.set('symbaroum', 'switchNpcBGColour', formData.npcBGColour);
-    ui.notifications.info(game.i18n.localize('ALIENRPG.Consumables'));
   }
   close() {
     super.close();
