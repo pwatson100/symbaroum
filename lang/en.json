@@ -737,5 +737,15 @@
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Allow reference modification",
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Warning - GM Only - allow to manually adjust reference implementation for abilities, traits and mystical powers. Requires refresh.",
   "SYMBAROUM.OPTIONAL_INIT_MANUAL": "Manually select initiative attribute",
-  "SYMBAROUM.OPTIONAL_INIT_MANUAL_HINT": "Check to de-active the automated evaluation of the attribute used for initiative."
+  "SYMBAROUM.OPTIONAL_INIT_MANUAL_HINT": "Check to de-active the automated evaluation of the attribute used for initiative.",
+  "SYMBAROUM.OPTIONAL_PC_COLOUR SELECTOR":"Select PC Background Color",
+  "SYMBAROUM.OPTIONAL_NPC_COLOUR SELECTOR":"Select NPC Background Color",
+  "SYMBAROUM.OPTIONAL_RESET_NOTE": "NOTE: Submit and Reset will cause FVTT to reload.",
+  "SYMBAROUM.OPTIONAL_SUBMIT_BUTTON":"Submit",
+  "SYMBAROUM.OPTIONAL_RESET_PC_BUTTON":"Reset PC Config",
+  "SYMBAROUM.OPTIONAL_RESET_NPC_BUTTON":"Reset NPC Config",
+  "SYMBAROUM.OPTIONAL_CONFIG_MENULABEL": "Configure Symbaroum Settings",
+  "SYMBAROUM.OPTIONAL_CONFIG_MENUHINT": "Configure PC and NPC sheet background color (These are Client based settings).",
+  "SYMBAROUM.OPTIONAL_ADD_MENUNAME": "Add Symbaroum Settings button",
+  "SYMBAROUM.OPTIONAL_ADD_MENUHINT": "Add Colour setting button to Main Config panel."
 }

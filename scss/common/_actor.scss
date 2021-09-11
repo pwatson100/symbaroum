@@ -1,9 +1,9 @@
 .symbaroum.sheet.actor.player .window-content {
-  background: url(../asset/image/background.webp) repeat;
+  background: var(--color-charBG);
 }
 
 .symbaroum.sheet.actor.monster .window-content {
-  background: url(../asset/image/background-monster.webp) repeat;
+  background: var(--color-npcBG);
 }
 
 .symbaroum.sheet.actor .window-content .editable {
