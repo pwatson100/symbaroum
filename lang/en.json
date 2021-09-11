@@ -152,6 +152,7 @@
   "ARMOR.QUALITY": "Quality",
   "ARMOR.DESCRIPTION": "Description",
   "ARMOR.BONUS_ONLY": "Stackable protection",
+  "ARMOR.DEFENSE_ATTRIBUTE" : "Defend using",
   "ARMOR.ADDBUTTON": "Add Armor",
   "ARMOR.DELETEBUTTON": "Delete Armor",
 
@@ -325,13 +326,15 @@
   "GEAR.OTHER": "Other",
   "GEAR.STATE": "State",
 
-  "HEALTH.TOUGHNESS": "Toughness",
+  "HEALTH.TOUGHNESS": "TOUGHNESS",
   "HEALTH.TOUGHNESS_MAX": "Tgh. Max",
   "HEALTH.TOUGHNESS_CURRENT": "Current",
   "HEALTH.TOUGHNESS_TOTAL": "Total",
   "HEALTH.TOUGHNESS_THRESHOLD": "Threshold",
-  "HEALTH.TOUGHNESS_THRESHOLD_MAX": "Tgh. Threshold",
-  "HEALTH.CORRUPTION": "Corruption",
+  "HEALTH.TOUGHNESS_THRESHOLD_MAX": "Tgh. Threshold",  
+  "HEALTH.TOUGHNESS_THRESHOLD_NA": "N/A",
+  "HEALTH.CORRUPTION": "CORRUPTION",
+  "HEALTH.CORRUPTION_NA": "N/A",
   "HEALTH.CORRUPTION_CURRENT": "Current",
   "HEALTH.CORRUPTION_TEMPORARY": "Temporary",
   "HEALTH.CORRUPTION_LONGTERM": "Daily",
@@ -340,7 +343,8 @@
   "HEALTH.CORRUPTION_THRESHOLD_MAX": "Cor. Threshold",
   "HEALTH.CORRUPTION_MAX": "Abom.",
   
-  "INITIATIVE": "Initiative",
+  "INITIATIVE.TITLE": "Initiative",
+  "INITIATIVE.EXPLANATION": "Initiative shown as [initiative attribute.vigilant]",
 
   "ITEM.TRAIT": "Trait",
   "ITEM.ABILITY": "Ability",
@@ -590,7 +594,8 @@
   "TOOLTIP.EXPERIENCE_SPENT": "Total experience spent on abilities, traits, boons and burdens",
   "TOOLTIP.EXPERIENCE_AVAILABLE": "Your current available (unspent) experience points",
   
-  "TOOLTIP.HEALTH.CORRUPTION_CURRENT": "Your current total corruption",
+  "TOOLTIP.HEALTH.CORRUPTION_NA_TEXT": "This is thoroughly corrupt",
+  "TOOLTIP.HEALTH.CORRUPTION_CURRENT": "Your current total corruption",  
   "TOOLTIP.HEALTH.CORRUPTION_TEMPORARY": "Your temporary (scene) corruption",
   "TOOLTIP.HEALTH.CORRUPTION_LONGTERM": "Your corruption that lasts longer than a scene",
   "TOOLTIP.HEALTH.CORRUPTION_PERMANENT": "Permanent corruption gained",
@@ -610,6 +615,7 @@
   "TRAIT.ACTIVE": "Acquired",
   "TRAIT.ACTION": "Action",
   "TRAIT.DESCRIPTION": "Description",
+  "TRAIT.MARKERTRAIT": "Trait has no levels",
 
   "TRAIT_LABEL.ACIDICATTACK": "Acidic Attack",
   "TRAIT_LABEL.ACIDICBLOOD": "Acidic Blood",
@@ -691,6 +697,8 @@
   "WEAPON.ATTRIBUTE": "Attribute",
   "WEAPON.ATTRIBUTEABBR": "Attr.",
   "WEAPON.DESCRIPTION": "Description",
+  "WEAPON.NUMBER": "Number",
+  "WEAPON.ATTACK_ATTRIBUTE":"Attack using",
   "WEAPON.ADDBUTTON": "Add Weapon",
   "WEAPON.DELETEBUTTON": "Delete Weapon",
 
@@ -705,7 +713,7 @@
   "WEAPON_CLASS.THROWN": "Thrown",
 
   "SYMBAROUM.OPTIONAL_CRIT": "Optional Critical Rolls",
-  "SYMBAROUM.OPTIONAL_CRIT_HINT": "Check to enable Hit bonus and Defence fumbles on dice rolls of 1 and 20 as detailed Core Book p. 179",
+  "SYMBAROUM.OPTIONAL_CRIT_HINT": "Check to enable Hit bonus and Defense fumbles on dice rolls of 1 and 20 as detailed Core Book p. 179",
   "SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE": "Always able to succeed of fail",
   "SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE_HINT": "Check to always succeed on a 1 and fail on a 20",
   "SYMBAROUM.OPTIONAL_RARECRIT": "Optional Rare Critical Rolls",
@@ -722,10 +730,12 @@
   "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT": "Check to enable QoL enhancement for keeping all modifiers when rolling attribute tests",
   "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE": "Show modifers in targetted attribute rolls",
   "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE_HINT": "Check to enable QoL enhancement for showing attribute modifiers before making the roll",
+  "SYMBAROUM.OPTIONAL_NPC_MODIFIERS": "Show NPC modifiers",
+  "SYMBAROUM.OPTIONAL_NPC_MODIFIERS_HINT": "Check to show NPC modifiers (-5 to +5) instead of attributes for NPCs on character sheet",
   "SYMBAROUM.OPTIONAL_INIATITIVEROLLS": "Supress Initiative rolls",
   "SYMBAROUM.OPTIONAL_INIATITIVEROLLS_HINT": "Check to QoL disabling of Initiative rolls in chat",
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Allow reference modification",
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Warning - GM Only - allow to manually adjust reference implementation for abilities, traits and mystical powers. Requires refresh.",
   "SYMBAROUM.OPTIONAL_INIT_MANUAL": "Manually select initiative attribute",
-  "SYMBAROUM.OPTIONAL_INIT_MANUAL_HINT": "Check to desactive the automated evaluation of the attribute used for initiative."
+  "SYMBAROUM.OPTIONAL_INIT_MANUAL_HINT": "Check to de-active the automated evaluation of the attribute used for initiative."
 }

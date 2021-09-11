@@ -1,5 +1,9 @@
-.symbaroum.sheet.actor .window-content {
-  background: url(../asset/image/background.jpg) repeat;
+.symbaroum.sheet.actor.player .window-content {
+  background: url(../asset/image/background.webp) repeat;
+}
+
+.symbaroum.sheet.actor.monster .window-content {
+  background: url(../asset/image/background-monster.webp) repeat;
 }
 
 .symbaroum.sheet.actor .window-content .editable {
@@ -7,7 +11,7 @@
 }
 
 .symbaroum.sheet.actor .foreground {
-  background: url(../asset/image/foreground.jpg) repeat;
+  background: url(../asset/image/foreground.webp) repeat;
 }
 
 .symbaroum.sheet.actor .border {
