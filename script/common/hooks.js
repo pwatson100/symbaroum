@@ -186,11 +186,21 @@ Hooks.once('init', () => {
     config: true,
   });
 
+  game.settings.register('symbaroum', 'charBGChoice', {
+    restricted: false,
+    type: String,
+    config: false,
+    scope: 'client',
+  });
+  game.settings.register('symbaroum', 'npcBGChoice', {
+    restricted: false,
+    type: String,
+    config: false,
+    scope: 'client',
+  });
+
   game.settings.register('symbaroum', 'switchCharBGColour', {
     name: 'SYMBAROUM.OPTIONAL_PC_COLOUR SELECTOR',
-    label: 'ALIENRPG.Colpick',
-    hint: 'ALIENRPG.ColpickHint',
-    icon: 'fas fa-dice-d20',
     restricted: false,
     type: String,
     config: false,
@@ -202,9 +212,6 @@ Hooks.once('init', () => {
   });
   game.settings.register('symbaroum', 'switchNpcBGColour', {
     name: 'SYMBAROUM.OPTIONAL_NPC_COLOUR SELECTOR',
-    label: 'ALIENRPG.Colpick',
-    hint: 'ALIENRPG.ColpickHint',
-    icon: 'fas fa-dice-d20',
     restricted: false,
     type: String,
     config: false,

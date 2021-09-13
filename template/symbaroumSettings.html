@@ -1,34 +1,64 @@
 <form autocomplete="off">
-  <div class="tab active">
+  <div class="tab-active">
     <div class="form-group">
-      <label>{{localize "SYMBAROUM.OPTIONAL_PC_COLOUR SELECTOR"}}</label>
-      <div class="form-fields">
-        <input type="text" name="charBGColour" value="{{charBGColour}}" data-dtype="String" />
-        <input type="color" name="fontColourSelector" value="{{charBGColour}}" data-edit="charBGColour" />
-      </div>
+      <label>{{localize 'SYMBAROUM.OPTIONAL_PC_CHAR_BG_IMGS'}}</label>
+      <select name="charBGImage" id="charBGImage">
+        <option value="url(../asset/image/background/blue_light.webp) repeat">Light Blue Image</option>
+        <option value="url(../asset/image/background/blue_square_light.webp) repeat">Light Blue Squares Image</option>
+        <option value="url(../asset/image/background/brown_dark.webp) repeat">Dark Brown Image</option>
+        <option value="url(../asset/image/background/greeen_flower_dark.webp) repeat">Dark Green Flower Image</option>
+        <option value="url(../asset/image/background/greeen_flower_light.webp) repeat">Light Green Flower Image</option>
+        <option value="url(../asset/image/background/green_gold_dark.webp) repeat">Green and Gold Dark Image</option>
+        <option value="url(../asset/image/background/green_gold_light.webp) repeat">Green and Gold Light Image</option>
+        <option value="url(../asset/image/background/orange_light.webp) repeat">Light Orange Image</option>
+        <option value="url(../asset/image/background/purple_flower_light.webp) repeat">Light Purple Flower Image</option>
+        <option value="url(../asset/image/background/red_compass_light.webp) repeat">Light Red Compass Image</option>
+        <option value="url(../asset/image/background/red_flower_light.webp) repeat">Light Red Flower Image</option>
+        <option value="url(../asset/image/background/red_square_light.webp) repeat">Light Red Square Image</option>
+        <option value="none">{{localize 'SYMBAROUM.OPTIONAL_COLOR_PICKER'}}</option>
+      </select>
     </div>
-  </div>
 
-  {{#if isGM}}
+    <div style="display:none" id="pcColPanel">
+      <input type="hidden" name="charBGColour" value="{{charBGColour}}" id="charBGColour" data-dtype="String" />
+      <label>{{localize 'SYMBAROUM.OPTIONAL_PC_COLOUR SELECTOR'}}</label>
+      <input type="color" name="ColourSelector" value="{{charBGColour}}" data-edit="charBGColour" />
+    </div>
+
+    <hr>
+
     <div class="form-group">
+      <label>{{localize 'SYMBAROUM.OPTIONAL_NPC_CHAR_BG_IMGS'}}</label>
+      <select name="npcBGImage" id="npcBGImage">
+        <option value="url(../asset/image/background/blue_light.webp) repeat">Light Blue Image</option>
+        <option value="url(../asset/image/background/blue_square_light.webp) repeat">Light Blue Squares Image</option>
+        <option value="url(../asset/image/background/brown_dark.webp) repeat">Dark Brown Image</option>
+        <option value="url(../asset/image/background/greeen_flower_dark.webp) repeat">Dark Green Flower Image</option>
+        <option value="url(../asset/image/background/greeen_flower_light.webp) repeat">Light Green Flower Image</option>
+        <option value="url(../asset/image/background/green_gold_dark.webp) repeat">Green and Gold Dark Image</option>
+        <option value="url(../asset/image/background/green_gold_light.webp) repeat">Green and Gold Light Image</option>
+        <option value="url(../asset/image/background/orange_light.webp) repeat">Light Orange Image</option>
+        <option value="url(../asset/image/background/purple_flower_light.webp) repeat">Light Purple Flower Image</option>
+        <option value="url(../asset/image/background/red_compass_light.webp) repeat">Light Red Compass Image</option>
+        <option value="url(../asset/image/background/red_flower_light.webp) repeat">Light Red Flower Image</option>
+        <option value="url(../asset/image/background/red_square_light.webp) repeat">Light Red Square Image</option>
+        <option value="none">{{localize 'SYMBAROUM.OPTIONAL_COLOR_PICKER'}}</option>
+      </select>
+
+    </div>
+
+    <div style="display:none" id="npcColPanel">
+      <input type="hidden" name="npcBGColour" value="{{npcBGColour}}" id="npcBGColour" data-dtype="String" />
       <label>{{localize "SYMBAROUM.OPTIONAL_NPC_COLOUR SELECTOR"}}</label>
-      <div class="form-fields">
-        <input type="text" name="npcBGColour" value="{{npcBGColour}}" data-dtype="String" />
-        <input type="color" name="fontColourSelector" value="{{npcBGColour}}" data-edit="npcBGColour" />
-      </div>
+      <input type="color" name="ColourSelector" value="{{npcBGColour}}" data-edit="npcBGColour" />
     </div>
-    </div>
-  {{/if}}
+    <p><i style="font-size: smaller">{{localize "SYMBAROUM.OPTIONAL_RESET_NOTE"}}</i></p>
 
-
-  <p><i style="font-size: smaller">{{localize "SYMBAROUM.OPTIONAL_RESET_NOTE"}}</i></p>
-
-  <div class="form-group buttons-save">
-    <button type="submit" name="submit"><b>{{localize "SYMBAROUM.OPTIONAL_SUBMIT_BUTTON"}}</b></button>
-    <button type="button" name="resetPC"><b>{{localize "SYMBAROUM.OPTIONAL_RESET_PC_BUTTON"}}</b></button>
-    {{#if isGM}}
+    <div class="form-group buttons-save">
+      <button type="submit" name="submit"><b>{{localize "SYMBAROUM.OPTIONAL_SUBMIT_BUTTON"}}</b></button>
+      <button type="button" name="resetPC"><b>{{localize "SYMBAROUM.OPTIONAL_RESET_PC_BUTTON"}}</b></button>
       <button type="button" name="resetNPC"><b>{{localize "SYMBAROUM.OPTIONAL_RESET_NPC_BUTTON"}}</b></button>
-    {{/if}}
+    </div>
 
-  </div>
+    {{log "CONTEXT!!!!"}} {{log this}}
 </form>
