@@ -1129,8 +1129,8 @@
   --color-border: black;
   --color-shadow: #a48b02;
   --font-text: "Philosopher", serif;
-  --color-charBG: none;
-  --color-npcBG: none;
+  --color-charBG: "url(../asset/image/background/green_flower_light.webp) repeat";
+  --color-npcBG: "url(../asset/image/background/purple_flower_light.webp) repeat";
 }
 
 /* Tabs styles */
