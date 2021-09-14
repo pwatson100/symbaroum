@@ -198,28 +198,64 @@ Hooks.once('init', () => {
     config: false,
     scope: 'client',
   });
+  game.settings.register('symbaroum', 'titleBGChoice', {
+    restricted: false,
+    type: String,
+    config: false,
+    scope: 'client',
+  });
+  game.settings.register('symbaroum', 'editableChoice', {
+    restricted: false,
+    type: String,
+    config: false,
+    scope: 'client',
+  });
+  game.settings.register('symbaroum', 'nonEditableChoice', {
+    restricted: false,
+    type: String,
+    config: false,
+    scope: 'client',
+  });
 
   game.settings.register('symbaroum', 'switchCharBGColour', {
-    name: 'SYMBAROUM.OPTIONAL_PC_COLOUR SELECTOR',
+    name: 'SYMBAROUM.OPTIONAL_PC_COLOUR_SELECTOR',
     restricted: false,
     type: String,
     config: false,
     scope: 'client',
-    default: '#abff2e',
-    onChange: () => {
-      location.reload();
-    },
+    default: 'url(../asset/image/background/green_flower_light.webp) repeat',
   });
   game.settings.register('symbaroum', 'switchNpcBGColour', {
-    name: 'SYMBAROUM.OPTIONAL_NPC_COLOUR SELECTOR',
+    name: 'SYMBAROUM.OPTIONAL_NPC_COLOUR_SELECTOR',
     restricted: false,
     type: String,
     config: false,
     scope: 'client',
-    default: '#abff2e',
-    onChange: () => {
-      location.reload();
-    },
+    default: 'url(../asset/image/background/purple_flower_light.webp) repeat',
+  });
+  game.settings.register('symbaroum', 'switchTitleColour', {
+    name: 'SYMBAROUM.OPTIONAL_TITLE_COLOUR_SELECTOR',
+    restricted: false,
+    type: String,
+    config: false,
+    scope: 'client',
+    default: 'url(../asset/image/background/title.webp)',
+  });
+  game.settings.register('symbaroum', 'switchEditableColour', {
+    name: 'SYMBAROUM.OPTIONAL_EDITABLE_COLOUR_SELECTOR',
+    restricted: false,
+    type: String,
+    config: false,
+    scope: 'client',
+    default: 'url(../asset/image/background/editable.webp)',
+  });
+  game.settings.register('symbaroum', 'switchNoNEditableColour', {
+    name: 'SYMBAROUM.OPTIONAL_EDITABLE_COLOUR_SELECTOR',
+    restricted: false,
+    type: String,
+    config: false,
+    scope: 'client',
+    default: 'url(../asset/image/background/not-editable.webp)',
   });
 
   game.settings.registerMenu('symbaroum', 'symbaroumSettings', {
@@ -367,6 +403,10 @@ async function setupConfigOptions() {
   let r = document.querySelector(':root');
   await r.style.setProperty('--color-charBG', game.settings.get('symbaroum', 'switchCharBGColour'));
   await r.style.setProperty('--color-npcBG', game.settings.get('symbaroum', 'switchNpcBGColour'));
+  await r.style.setProperty('--title-image', game.settings.get('symbaroum', 'titleBGChoice'));
+  await r.style.setProperty('--title-color', game.settings.get('symbaroum', 'switchTitleColour'));
+  await r.style.setProperty('--box-editable', game.settings.get('symbaroum', 'switchEditableColour'));
+  await r.style.setProperty('--box-non-editable', game.settings.get('symbaroum', 'switchNoNEditableColour'));
 }
 
 async function createBlessedShield(actor, protection = '1d4') {

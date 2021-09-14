@@ -11,7 +11,7 @@
   font-weight: bold;
   color: var(--color-label);
   font-family: var(--font-text);
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
   width: 100%;
   text-align: center;
   padding: 5px;
@@ -26,17 +26,17 @@
   font-weight: bold;
   color: var(--color-label);
   font-family: var(--font-text);
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
   width: 10em;
-  min-width: 10em;  
+  min-width: 10em;
   text-align: center;
   padding: 5px;
 }
 
 .symbaroum.dialog input[type='checkbox'] {
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   border: 1px solid var(--color-border);
-  box-shadow: inset 0 0 6px black;
+  // box-shadow: inset 0 0 6px black;
   color: var(--color-text);
   width: 100%;
   height: auto;
@@ -45,7 +45,7 @@
 .symbaroum.dialog input[type='text'],
 .symbaroum.dialog input[type='number'],
 .symbaroum.dialog select {
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   border: 1px solid var(--color-border);
   box-shadow: inset 0 0 6px black;
   color: var(--color-text);
