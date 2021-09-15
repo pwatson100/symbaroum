@@ -250,7 +250,7 @@ Hooks.on('preCreateChatMessage', (doc, message, options, userid) => {
 Hooks.on('renderChatMessage', async (chatItem, html, data) => {
 
   const flagDataArray = await chatItem.getFlag(game.system.id, 'abilityRoll');
-  if (flagDataArray) {
+  if (flagDataArray && game.user.isGM) {
     await html.find('#applyEffect').click(async () => {
       for (let flagData of flagDataArray) {
         if (flagData.tokenId) {
