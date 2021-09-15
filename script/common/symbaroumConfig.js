@@ -35,7 +35,6 @@ export class SymbaroumConfig extends FormApplication {
       icon: 'fas fa-cogs',
       template: 'systems/symbaroum/template/symbaroumSettings.html',
       width: 700,
-      height: 600,
       closeOnSubmit: true,
     });
   }
@@ -196,13 +195,17 @@ export class SymbaroumConfig extends FormApplication {
   }
 
   async _showColOption(event, mChild, iValue) {
-    // debugger;
     event.preventDefault();
     let li = $(event.currentTarget).parents('.tab-active');
     let li2 = li.children(mChild);
+    let tHeight = parseInt(li[0].offsetParent.style.height.replace(/[^0-9]/g, ''));
     if (li2[0].style.display === 'none' && iValue === 'none') {
+      tHeight = tHeight + 30;
+      li[0].offsetParent.style.height = tHeight.toString() + 'px';
       li2[0].style.display = 'block';
     } else {
+      tHeight = tHeight - 30;
+      li[0].offsetParent.style.height = tHeight.toString() + 'px';
       li2[0].style.display = 'none';
     }
   }

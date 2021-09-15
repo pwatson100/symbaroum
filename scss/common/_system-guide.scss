@@ -258,3 +258,22 @@
   background-size: 100%;
   border: 0;
 }
+
+#pause {
+  background: none;
+  & > img {
+    content: url('../asset/image/head.webp');
+    width: 200px;
+    height: 200px;
+    top: -50px;
+    left: calc(50% - 100px);
+    opacity: 0.7;
+    -webkit-animation: rotation 10s infinite linear;
+    animation: rotation 10s infinite linear;
+  }
+  h3 {
+    font-family: 'IM Fell DW Pica SC';
+    font-size: 32px;
+    text-shadow: 0px 3px 5px rgba(0, 0, 0, 1);
+  }
+}
