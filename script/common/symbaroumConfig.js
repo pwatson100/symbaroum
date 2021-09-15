@@ -203,7 +203,7 @@ export class SymbaroumConfig extends FormApplication {
       tHeight = tHeight + 30;
       li[0].offsetParent.style.height = tHeight.toString() + 'px';
       li2[0].style.display = 'block';
-    } else {
+    } else if (li2[0].style.display != 'none') {
       tHeight = tHeight - 30;
       li[0].offsetParent.style.height = tHeight.toString() + 'px';
       li2[0].style.display = 'none';
