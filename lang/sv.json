@@ -341,7 +341,7 @@
   "HEALTH.CORRUPTION_THRESHOLD_MAX": "Korruptionströskel",
   "HEALTH.CORRUPTION_MAX": "Förstyggelse",
     
-  "INITIATIVE": "Initiativ",
+  "INITIATIVE.TITLE": "Initiativ",
   "INITIATIVE.EXPLANATION": "Initiative shown as [initiative attribute.vigilant]",
 
   "ITEM.TRAIT": "Särdrag",
