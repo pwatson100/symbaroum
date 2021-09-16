@@ -340,7 +340,7 @@
   "HEALTH.CORRUPTION_THRESHOLD": "Tröskel",
   "HEALTH.CORRUPTION_THRESHOLD_MAX": "Korruptionströskel",
   "HEALTH.CORRUPTION_MAX": "Förstyggelse",
-  
+    
   "INITIATIVE.TITLE": "Initiativ",
   "INITIATIVE.EXPLANATION": "Initiative shown as [initiative attribute.vigilant]",
 
@@ -496,6 +496,14 @@
   "POWER_LARVAEBOILS.CHAT_INTRO_M": " upprätthåller larvernas framfart.",
   "POWER_LARVAEBOILS.CHAT_SUCCESS": " äts upp inifrån av larverna.",
   "POWER_LARVAEBOILS.CHAT_FAILURE": " motstår larverna.",
+    
+  "POWER_LAYONHANDS.DIALOG":"How close is your target?",
+  "POWER_LAYONHANDS.TOUCH":"Touch",
+  "POWER_LAYONHANDS.REMOTE":"Line of sight",
+  "POWER_LAYONHANDS.CHAT_INTRO":" awakes the lifeforce.",
+  "POWER_LAYONHANDS.CHAT_SUCCESS":" heals ",
+  "POWER_LAYONHANDS.CHAT_FINAL":"Toughness healed: ",
+  "POWER_LAYONHANDS.CHAT_FAILURE":" fails to heal ",
 
   "POWER_PRIOSBURNINGGLASS.CHAT_INTRO":" försöker kanalisera Prios ljus mot ett mål.",
   "POWER_PRIOSBURNINGGLASS.CHAT_EXTRA":" kan bli bedövad, slå [Viljestark <-- Viljestark].",

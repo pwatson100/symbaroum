@@ -279,6 +279,7 @@
 
   "DIALOG.AUTOPARAMS": "Modificadores incluidos: ",
   "DIALOG.BACKSTAB": "¿Usar Ataque Traicionero?",
+  "DIALOG.BEASTLORE": "+BeastLore dmg?",
   "DIALOG.HUNTERS_INSTINCT": "¿Objetivo del Instinto de Cazador?",
   "DIALOG.ISMAINTAINED": "¿Nuevo casteo o lo mantienes?",
   "DIALOG.USE_POISON": "¿Se aplicó el veneno?",
@@ -318,6 +319,8 @@
   "EQUIPMENT.QUANTITY_SHORT": "Cant.",
   "EQUIPMENT.ADDBUTTON": "Add Equipment",
   "EQUIPMENT.DELETEBUTTON": "Delete Equipment",
+
+  "ERROR.NO_TOKEN_SELECTED": "Select the acting token.",
 
   "EXPERIENCE": "Experiencia",
 
@@ -496,6 +499,14 @@
   "POWER_LARVAEBOILS.CHAT_INTRO_M": " mantiene la Erupción de Larvas.",
   "POWER_LARVAEBOILS.CHAT_SUCCESS": " es comido desde el interior por las larvas.",
   "POWER_LARVAEBOILS.CHAT_FAILURE": " resiste a las larvas.",
+    
+  "POWER_LAYONHANDS.DIALOG":"How close is your target?",
+  "POWER_LAYONHANDS.TOUCH":"Touch",
+  "POWER_LAYONHANDS.REMOTE":"Line of sight",
+  "POWER_LAYONHANDS.CHAT_INTRO":" awakes the lifeforce.",
+  "POWER_LAYONHANDS.CHAT_SUCCESS":" heals ",
+  "POWER_LAYONHANDS.CHAT_FINAL":"Toughness healed: ",
+  "POWER_LAYONHANDS.CHAT_FAILURE":" fails to heal ",
 
   "POWER_PRIOSBURNINGGLASS.CHAT_INTRO":" tries to channel the Light of Prios at a target.",
   "POWER_PRIOSBURNINGGLASS.CHAT_EXTRA":" might be stunned, test [resolute <-- resolute].",
@@ -605,7 +616,6 @@
   "TRAIT.ACTION": "Acción",
   "TRAIT.DESCRIPTION": "Descr.",
   "TRAIT.MARKERTRAIT": "Trait has no levels",
-
 
   "TRAIT_LABEL.ACIDICATTACK": "Ataque Ácido",
   "TRAIT_LABEL.ACIDICBLOOD": "Sangre Ácida",
