@@ -556,6 +556,7 @@
   "TOOLTIP.EXPERIENCE_SPENT": "Deine für Fähigkeiten, Kräfte und Vorteile ausgegebenen Erfahrungspunkte",
   "TOOLTIP.EXPERIENCE_AVAILABLE": "Deine verfügbaren (nicht ausgegebenen) Erfahrungspunkte",
 
+  "TOOLTIP.HEALTH.CORRUPTION_NA_TEXT": "This is thoroughly corrupt",
   "TOOLTIP.HEALTH.CORRUPTION_CURRENT": "Deine aktuelle Korruption",
   "TOOLTIP.HEALTH.CORRUPTION_TEMPORARY": "Deine temporäre Korruption",
   "TOOLTIP.HEALTH.CORRUPTION_LONGTERM": "Deine Corruption die mehr als eine Szene anhält",

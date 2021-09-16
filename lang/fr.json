@@ -159,11 +159,11 @@
     "ARTIFACT.CORRUPTION": "Corruption",
     "ARTIFACT.CORRUPTIONABBR": "Corr.",    
     "ARTIFACT.DESCRIPTION": "Description",
-    "ARTIFACT.TITLE":"ARTIFACT POWERS",
-    "ARTIFACT.ADDBUTTON": "Add Artifact",
-    "ARTIFACT.DELETEBUTTON": "Delete Artifact",
-    "ARTIFACT.POWER_ADDBUTTON": "Add artifact power",
-    "ARTIFACT.POWER_DELETEBUTTON": "Delete artifact power",     
+    "ARTIFACT.TITLE":"POUVOIRS D'ARTEFACT",
+    "ARTIFACT.ADDBUTTON": "Ajouter Artefact",
+    "ARTIFACT.DELETEBUTTON": "Supprimer l'Artefact",
+    "ARTIFACT.POWER_ADDBUTTON": "Ajouter un pouvoir",
+    "ARTIFACT.POWER_DELETEBUTTON": "Supprimer ce pouvoir",     
 
     "ATTRIBUTE.ACCURATE": "Précision",
     "ATTRIBUTE.CUNNING": "Astuce",
@@ -585,6 +585,7 @@
     "TOOLTIP.EXPERIENCE_SPENT": "Points d'expérience dépensés sur les talents, traits, atouts et fardeaux",
     "TOOLTIP.EXPERIENCE_AVAILABLE": "Vos points d'expérience disponibles (non dépensés)",
     
+    "TOOLTIP.HEALTH.CORRUPTION_NA_TEXT": "Complètement corrompue.",
     "TOOLTIP.HEALTH.CORRUPTION_CURRENT": "Votre total de corruption actuel",
     "TOOLTIP.HEALTH.CORRUPTION_TEMPORARY": "Votre corruption temporaire (pour cette scène)",
     "TOOLTIP.HEALTH.CORRUPTION_LONGTERM": "Votre corruption long-terme (au-delà de la scène)",
@@ -718,13 +719,13 @@
     "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT": "Garder en mémoire les modificateurs d'un jet d'attribut sur l'autre.",
     "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE": "Affichage préventif du modificateur",
     "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE_HINT": "Affiche le modificateur de l'attribut de l'adversaire dans le menu déroulant de jet resisté d'attribut.",
-    "SYMBAROUM.OPTIONAL_NPC_MODIFIERS": "Afficher les attributs des PNJs sous forme de modificateurs",
-    "SYMBAROUM.OPTIONAL_NPC_MODIFIERS_HINT": "Cochez pour que les attributes des PNJs s'affichent sous forme de modificateurs (-5 to +5) sur leurs feuilles de personnage, plutôt qu'en format classique (5 à 15)",
+    "SYMBAROUM.OPTIONAL_NPC_MODIFIERS": "Attributs PNJs simplifiés",
+    "SYMBAROUM.OPTIONAL_NPC_MODIFIERS_HINT": "Cochez pour que les attributes des PNJs s'affichent sous forme de modificateurs (-5 à +5) sur leurs feuilles de personnage, plutôt qu'en format classique (5 à 15)",
     "SYMBAROUM.OPTIONAL_INIATITIVEROLLS": "Cacher les jets d'initiative",
     "SYMBAROUM.OPTIONAL_INIATITIVEROLLS_HINT": "Cocher pour que les résultats des jets d'initiatives n'apparaissent pas dans le Chat.",
     "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Modification des références",
     "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Attention - MJ seulement - Permet de modifier les références des objets traits, talents et pouvoirs. A n'utiliser que si vous savez ce que vous faites.",
-    "SYMBAROUM.OPTIONAL_INIT_MANUAL": "Choisir manuellement l'attribut pour l'initiative",
+    "SYMBAROUM.OPTIONAL_INIT_MANUAL": "Attribut d'initiative manuel",
     "SYMBAROUM.OPTIONAL_INIT_MANUAL_HINT": "Désactive l'évaluation automatique de l'attribut à utiliser pour l'initiative des personnages. A cocher si vous utilisez vos propres talents."
   
 }

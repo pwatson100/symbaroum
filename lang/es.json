@@ -595,6 +595,7 @@
   "TOOLTIP.EXPERIENCE_SPENT": "Experiencia total gastada en habilidades, rasgos, dones y cargas.",
   "TOOLTIP.EXPERIENCE_AVAILABLE": "Tus puntos de experiencia (no gastados) disponibles actualmente",
   
+  "TOOLTIP.HEALTH.CORRUPTION_NA_TEXT": "This is thoroughly corrupt",
   "TOOLTIP.HEALTH.CORRUPTION_CURRENT": "Tu corrupción total actual",
   "TOOLTIP.HEALTH.CORRUPTION_TEMPORARY": "Tu corrupción temporal (escena)",
   "TOOLTIP.HEALTH.CORRUPTION_LONGTERM": "Tu corrupción que dura más que una escena",

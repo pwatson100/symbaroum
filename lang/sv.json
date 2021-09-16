@@ -592,6 +592,7 @@
   "TOOLTIP.EXPERIENCE_SPENT": "Alla erfarenhetspoäng som spenderats på förmågor, mystiska krafter, etc",
   "TOOLTIP.EXPERIENCE_AVAILABLE": "Dina nuvarande tillgängliga erfarenehtspoäng",
   
+  "TOOLTIP.HEALTH.CORRUPTION_NA_TEXT": "This is thoroughly corrupt",
   "TOOLTIP.HEALTH.CORRUPTION_CURRENT": "Din nuvarande totala korruption",
   "TOOLTIP.HEALTH.CORRUPTION_TEMPORARY": "Din temporära korruption - varar scenen ut",
   "TOOLTIP.HEALTH.CORRUPTION_LONGTERM": "Korruption som varar längre än en scen",
