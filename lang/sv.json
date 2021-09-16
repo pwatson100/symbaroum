@@ -341,8 +341,7 @@
   "HEALTH.CORRUPTION_THRESHOLD_MAX": "Korruptionströskel",
   "HEALTH.CORRUPTION_MAX": "Förstyggelse",
   
-  "INITIATIVE.TITLE": "Initiativ",
-  "INITIATIVE.EXPLANATION": "Initiative shown as [initiative attribute.vigilant]",
+  "INITIATIVE": "Initiativ",
 
   "ITEM.TRAIT": "Särdrag",
   "ITEM.ABILITY": "Förmåga",
@@ -471,11 +470,6 @@
   "POWER_CURSE.CHAT_FAILURE": " kan inte upprätthålla förhäxningen.",
   "POWER_CURSE.CHAT_FAIL_FINAL": "Förhäxningen har inte längre någon effekt på ",
   
-  "POWER_DANCINGWEAPON.CHAT_ACTIVATE": " is using his dancing weapon.",
-  "POWER_DANCINGWEAPON.CHAT_DESACTIVATE": " isn't using dancing weapon anymore.",
-  "POWER_DANCINGWEAPON.CHAT_RESULT_ACTIVATE": "Combat stats are replaced by Resolute.",
-  "POWER_DANCINGWEAPON.CHAT_RESULT_DESACTIVATE": "Combat stats revert to normal.",
-  
   "POWER_ENTANGLINGVINES.CHAT_INTRO_M": " försöker bryta sig loss från rankorna.",
   "POWER_ENTANGLINGVINES.CHAT_SUCCESS": " är intrasslad i rankorna.",
   "POWER_ENTANGLINGVINES.CHAT_FAILURE": " tar sig loss från rankorna.",
@@ -496,6 +490,14 @@
   "POWER_LARVAEBOILS.CHAT_INTRO_M": " upprätthåller larvernas framfart.",
   "POWER_LARVAEBOILS.CHAT_SUCCESS": " äts upp inifrån av larverna.",
   "POWER_LARVAEBOILS.CHAT_FAILURE": " motstår larverna.",
+    
+  "POWER_LAYONHANDS.DIALOG":"How close is your target?",
+  "POWER_LAYONHANDS.TOUCH":"Touch",
+  "POWER_LAYONHANDS.REMOTE":"Line of sight",
+  "POWER_LAYONHANDS.CHAT_INTRO":" awakes the lifeforce.",
+  "POWER_LAYONHANDS.CHAT_SUCCESS":" heals ",
+  "POWER_LAYONHANDS.CHAT_FINAL":"Toughness healed: ",
+  "POWER_LAYONHANDS.CHAT_FAILURE":" fails to heal ",
 
   "POWER_PRIOSBURNINGGLASS.CHAT_INTRO":" försöker kanalisera Prios ljus mot ett mål.",
   "POWER_PRIOSBURNINGGLASS.CHAT_EXTRA":" kan bli bedövad, slå [Viljestark <-- Viljestark].",
@@ -604,7 +606,6 @@
   "TRAIT.ACTIVE": "Aktiv",
   "TRAIT.ACTION": "Handling",
   "TRAIT.DESCRIPTION": "Beskrivning",
-  "TRAIT.MARKERTRAIT": "Trait has no levels",
 
   "TRAIT_LABEL.ACIDICATTACK": "Frätande attack",
   "TRAIT_LABEL.ACIDICBLOOD": "Frätande blod",
@@ -717,8 +718,6 @@
   "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT": "Välj för att behålla senaste modifikationer vid framgångsslag för karaktärsdrag",
   "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE": "Visa modifikationer vid framgångsslag för karaktärsdrag.",
   "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE_HINT": "Välj för att visa modifikationer för karaktärsdrag innan framgångsslag slås.",
-  "SYMBAROUM.OPTIONAL_NPC_MODIFIERS": "Show NPC modifiers",
-  "SYMBAROUM.OPTIONAL_NPC_MODIFIERS_HINT": "Check to show NPC modifiers (-5 to +5) instead of attributes for NPCs on character sheet",
   "SYMBAROUM.OPTIONAL_INIATITIVEROLLS": "Supress Initiative rolls",
   "SYMBAROUM.OPTIONAL_INIATITIVEROLLS_HINT": "Check to QoL disabling of Initiative rolls in chat",
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Tillåt referensmodifikation",
