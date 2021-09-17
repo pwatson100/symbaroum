@@ -7,13 +7,14 @@
 }
 
 .symbaroum.chat.roll .foreground {
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--chat-background) repeat;
   padding: 10px;
 }
 
 .symbaroum.chat.roll .border {
   border: 1px solid transparent;
-  border-image: url(../asset/image/title.jpg) 20/5px round;
+  border-color: var(--color-border);
+  border-image: var(--chat-roll-border) 20/10px;
 }
 
 .symbaroum.chat.roll strong {

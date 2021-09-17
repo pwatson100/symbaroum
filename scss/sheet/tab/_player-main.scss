@@ -6,15 +6,14 @@
 }
 
 .symbaroum.sheet.actor .player .main .attributes .attributes-header {
-  display:flex;
+  display: flex;
   flex-direction: row;
-  flex-wrap:nowrap;
+  flex-wrap: nowrap;
 }
 
 .symbaroum.sheet.actor .player .main .attributes .attributes-header .modify-attributes {
   width: 3em;
 }
-
 
 .symbaroum.sheet.actor .player .section1 {
   display: flex;
@@ -204,14 +203,13 @@
 }
 
 .symbaroum.sheet.actor .player .main .combat .combatheader,
-.symbaroum.sheet.actor .player .main .combat .combatheader
-{
+.symbaroum.sheet.actor .player .main .combat .combatheader {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   border-top: none;
   width: 100%;
-  background: url(../asset/image/title.jpg) repeat;  
+  background: var(--title-color) repeat;
 }
 
 .symbaroum.sheet.actor .player .main .combat .combatheader .iniheader {
@@ -224,7 +222,7 @@
 .symbaroum.sheet.actor .player .main .combat .combatheader .iniheader .title {
   color: var(--color-title);
   text-align: center;
-  padding: 5px;  
+  padding: 5px;
 }
 
 .symbaroum.sheet.actor .player .main .combat .combatheader .iniheader label {
@@ -235,7 +233,6 @@
   width: 4em;
   margin-right: 5px;
 }
-
 
 .symbaroum.sheet.actor .player .main .combat .initiative,
 .symbaroum.sheet.actor .player .main .combat .defenseAttr {
@@ -277,16 +274,15 @@
 }
 
 .symbaroum.sheet.actor .player .main .combat .armor .item-row {
-  display:flex;
-  width:100%;
-  flex-wrap:nowrap;
-  background-image: url(../asset/image/title.jpg);
-  background-repeat:repeat;
+  display: flex;
+  width: 100%;
+  flex-wrap: nowrap;
+  background-image: var(--title-color);
+  background-repeat: repeat;
 }
 
 .symbaroum.sheet.actor .player .main .combat .armor .roll-armor .combatProt,
-.symbaroum.sheet.actor .player .main .combat .weapons .roll-weapon .weaponDam
-{
+.symbaroum.sheet.actor .player .main .combat .weapons .roll-weapon .weaponDam {
   width: 8em;
   min-width: 8em;
   height: 28px;
@@ -295,8 +291,7 @@
 }
 
 .symbaroum.sheet.actor .player .main .combat .armor .roll-armor .attribute,
-.symbaroum.sheet.actor .player .main .combat .weapons .roll-weapon .attribute  
-{
+.symbaroum.sheet.actor .player .main .combat .weapons .roll-weapon .attribute {
   width: 4em;
   min-width: 4em;
   margin-right: 5px;
@@ -305,11 +300,10 @@
 .symbaroum.sheet.actor .player .main .combat .armor .roll-armor .armordefense,
 .symbaroum.sheet.actor .player .main .combat .armor .roll-armor .armordefense input,
 .symbaroum.sheet.actor .player .main .combat .weapons .roll-weapon .weaponAttribute,
-.symbaroum.sheet.actor .player .main .combat .weapons .roll-weapon .weaponAttribute input
-{
+.symbaroum.sheet.actor .player .main .combat .weapons .roll-weapon .weaponAttribute input {
   width: 4em;
-  min-width:4em;
-  height:28px;
+  min-width: 4em;
+  height: 28px;
 }
 
 .symbaroum.sheet.actor .player .main .combat .armor .roll-armor {
@@ -349,7 +343,7 @@
 }
 
 .symbaroum.sheet.actor .player .main .combat .weapons .item-list .weapon .damage {
-  background: url(../asset/image/not-editable.jpg) repeat;
+  background: var(--box-non-editable) repeat;
   border: 1px solid var(--color-border);
   border-left: none;
   box-shadow: inset 0 0 6px black;
@@ -374,7 +368,7 @@
   left: 618px;
   font-size: 32px;
   color: var(--color-text);
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   height: 36px;
   width: 36px;
   text-align: center;
@@ -407,7 +401,7 @@
 .symbaroum.sheet.actor .player .main .abilities-powers .traits .trait .actions {
   flex-basis: 15%;
   color: var(--color-text);
-  background: url(../asset/image/not-editable.jpg) repeat;
+  background: var(--box-non-editable) repeat;
   text-align: center;
   border: 1px solid var(--color-border);
   border-left: none;
