@@ -470,6 +470,14 @@
   "POWER_LARVAEBOILS.CHAT_INTRO_M": " hält den Larvenfrass aufrecht.",
   "POWER_LARVAEBOILS.CHAT_SUCCESS": " wird von innen von den Larven gefressen.",
   "POWER_LARVAEBOILS.CHAT_FAILURE": " wiedersteht dem Larvenfrass.",
+    
+  "POWER_LAYONHANDS.DIALOG":"How close is your target?",
+  "POWER_LAYONHANDS.TOUCH":"Touch",
+  "POWER_LAYONHANDS.REMOTE":"Line of sight",
+  "POWER_LAYONHANDS.CHAT_INTRO":" awakes the lifeforce.",
+  "POWER_LAYONHANDS.CHAT_SUCCESS":" heals ",
+  "POWER_LAYONHANDS.CHAT_FINAL":"Toughness healed: ",
+  "POWER_LAYONHANDS.CHAT_FAILURE":" fails to heal ",
 
   "POWER_PRIOSBURNINGGLASS.CHAT_INTRO":" tries to channel the Light of Prios at a target.",
   "POWER_PRIOSBURNINGGLASS.CHAT_EXTRA":" might be stunned, test [resolute <-- resolute].",
@@ -548,6 +556,7 @@
   "TOOLTIP.EXPERIENCE_SPENT": "Deine für Fähigkeiten, Kräfte und Vorteile ausgegebenen Erfahrungspunkte",
   "TOOLTIP.EXPERIENCE_AVAILABLE": "Deine verfügbaren (nicht ausgegebenen) Erfahrungspunkte",
 
+  "TOOLTIP.HEALTH.CORRUPTION_NA_TEXT": "This is thoroughly corrupt",
   "TOOLTIP.HEALTH.CORRUPTION_CURRENT": "Deine aktuelle Korruption",
   "TOOLTIP.HEALTH.CORRUPTION_TEMPORARY": "Deine temporäre Korruption",
   "TOOLTIP.HEALTH.CORRUPTION_LONGTERM": "Deine Corruption die mehr als eine Szene anhält",
