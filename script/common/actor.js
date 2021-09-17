@@ -487,6 +487,10 @@ export class SymbaroumActor extends Actor {
                 npcDamageExt+=1;
                 tooltip += game.i18n.localize("QUALITY.DEEPIMPACT") + ", ";
             }
+            let attributeMod = 0;
+            if(item.data.data.qualities.precise) {
+                attributeMod = 1;
+            }
             let itemID = item.id;
             weaponArray.push({
                 id: itemID,
@@ -495,8 +499,8 @@ export class SymbaroumActor extends Actor {
                 img: item.data.img,
                 attribute: attribute,
                 attributeLabel: this.data.data.attributes[attribute].label, 
-                attributeValue: this.data.data.attributes[attribute].total,
-                attributeMod: (10 - this.data.data.attributes[attribute].total),
+                attributeValue: this.data.data.attributes[attribute].total + attributeMod,
+                attributeMod: (10 - attributeMod - this.data.data.attributes[attribute].total),
                 tooltip : tooltip,
                 isActive: item.data.isActive,
                 isEquipped: item.data.isEquipped,
