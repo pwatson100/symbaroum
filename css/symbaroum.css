@@ -144,6 +144,10 @@
   padding: 5px;
 }
 
+.symbaroum.dialog .lblfavour .checkbox {
+  white-space: nowrap;
+}
+
 .symbaroum.dialog .weapondamage {
   padding-left: 5px;
 }
@@ -218,6 +222,11 @@
   flex-direction: row;
   flex-basis: 100%;
   margin: 5px 10px;
+}
+
+.symbaroum.dialog input[type=text][disabled],
+.symbaroum.dialog input[type=number][disabled] {
+  background: url(../asset/image/not-editable.jpg) repeat;
 }
 
 .symbaroum.chat.item {

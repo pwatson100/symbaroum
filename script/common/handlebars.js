@@ -70,8 +70,6 @@ function registerHandlebarsHelpers() {
   Handlebars.registerHelper('ifat', function (...args) {
     // remove handlebar options
     let options = args.pop();
-    console.log("inat:",args,":");
-
     return args.indexOf(false) === -1 ? options.fn(this) : options.inverse(this);
   });    
   Handlebars.registerHelper('keyIndex', function (str) {
