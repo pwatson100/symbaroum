@@ -100,5 +100,5 @@
 
 .symbaroum.dialog input[type='text'][disabled],
 .symbaroum.dialog input[type='number'][disabled] {
-  background: url(../asset/image/not-editable.jpg) repeat;
+  background: var(--box-non-editable) repeat;
 }

@@ -9,15 +9,13 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon) 
   let askImpeding = actor.data.data.combat.impeding !== 0 && weapon === null && armor === null;
   let weaponModifier = {};
   weaponModifier.attribute = [];
+  weaponModifier.attributeModifiers = [];
   weaponModifier.damageChoices = [];
   weaponModifier.damageBonus = [];
   
   if(weapon !== null)
   {
     calculateWeaponModifiers(actor, weapon, weaponModifier);
-    weaponModifier.damageChoicesLength = weaponModifier.damageChoices.length;
-    weaponModifier.damageBonusLength = weaponModifier.damageBonus.length;
-    // console.log("Weapon Modifier",weaponModifier);
   }
 
   const html = await renderTemplate('systems/symbaroum/template/chat/dialog.html', {
@@ -243,6 +241,16 @@ function calculateWeaponModifiers(actor, weapon, weaponModifier)
       "damMod":damMod
     };
     weaponModifier.damageChoices.push(choice);
+  }
+
+  if(true) {
+    if(weapon.qualities.precise) {
+      let attributeModifier = {
+        label: game.i18n.localize("QUALITY.PRECISE"),
+        modifier: "+1"
+      }
+      weaponModifier.attributeModifiers.push(attributeModifier);
+    }
   }
 }
 

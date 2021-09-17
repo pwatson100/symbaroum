@@ -17,17 +17,26 @@
             {{/select}}
         </select>
     </div>
-    {{/if}}
+  {{/if}}
         
-    <div class="bonus">
-      <label for="modifier">{{localize "DIALOG.MODIFIER"}}</label>
-      <input id="modifier" type="number" value="{{roll_defaults.modifier}}" data-dtype="Number"/>
-   </div>
+  <div class="bonus">
+    <label for="modifier">{{localize "DIALOG.MODIFIER"}}</label>
+    <input id="modifier" type="number" value="{{roll_defaults.modifier}}" data-dtype="Number"/>
+  </div>
+
+  {{#ifgt weaponModifier.attributeModifiers.length 0}}
+    {{#each weaponModifier.attributeModifiers as |aMod|}}
+      <div class="bonus">
+        <label>{{aMod.label}}</label>
+        <input type="text" value="{{aMod.modifier}}" data-dtype="Text" disabled/>
+      </div>
+    {{/each}}
+  {{/ifgt}}
 
     
-   <div class="favour">
-     <label class="lblfavour">{{radioBoxes groupName choices checked=roll_defaults.selectedFavour localize=true}}</label>
-   </div>
+  <div class="favour">
+    <label class="lblfavour">{{radioBoxes groupName choices checked=roll_defaults.selectedFavour localize=true}}</label>
+  </div>
 
     {{#if askImpeding}}
     <div class="simplebox">
@@ -41,12 +50,12 @@
     <div class="damagemodifier">
       <label for="weapondamage">{{localize "DIALOG.WEAPON_DAMAGE"}}</label><input id="modifier" disabled type="text" value="{{weaponDamage}}" data-dtype="Text"/>
     </div>
-      {{#ifgt weaponModifier.damageBonusLength 0}}
+      {{#ifgt weaponModifier.damageBonus.length 0}}
         {{#each weaponModifier.damageBonus as |bonus|}}
           <div class="damagemodifier"><label>{{bonus.label}}</label><input id="{{bonus.label}}-modifier" disabled type="text" value="{{bonus.damageModifier}}" data-dtype="Text"/></div>
         {{/each}}
       {{/ifgt}}
-      {{#ifgt weaponModifier.damageChoicesLength 0}}
+      {{#ifgt weaponModifier.damageChoices.length 0}}
         {{#each weaponModifier.damageChoices as |choicebonus|}}
           {{#ife choicebonus.type "radio"}}          
             <div class="favour"><label class="lblfavour">{{radioBoxes choicebonus.identifier choicebonus.alternatives checked=choicebonus.defaultSelect localize=false}}</label></div>
