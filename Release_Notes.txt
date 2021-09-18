@@ -167,3 +167,8 @@ Version 3.0.8
 - Traits integrated in Enhanced combat: corrupting attack, colossal.
 - Steadfast Adept now works on entangling vines and Anathema
 - Damage of Massive weapons wielded by NPCs is now correctly calculated in Enhanced combat.
+
+Version 3.0.9
+- New backgrounds provided by AshesForAshe (AshesForAshe#6498)
+- Many improvements on the character sheets (main page weapons & armors)
+- Monster character sheet can now show +/- instead of values (configurable under options)

@@ -9,15 +9,16 @@
 
 .symbaroum.chat.combat .foreground,
 .symbaroum.chat.ability .foreground {
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   padding: 10px;
 }
 
 .symbaroum.chat.combat .border,
 .symbaroum.chat.ability .border {
   border: 1px solid transparent;
-  -o-border-image: url(../asset/image/title.jpg) 20/5px round;
-     border-image: url(../asset/image/title.jpg) 20/5px round;
+  border-color: var(--title-color);
+  -o-border-image: var(--title-image) 20/10px;
+     border-image: var(--title-image) 20/10px;
 }
 
 .symbaroum.chat.combatstrong,
@@ -152,10 +153,14 @@
   font-weight: bold;
   color: var(--color-label);
   font-family: var(--font-text);
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
   width: 100%;
   text-align: center;
   padding: 5px;
+}
+
+.symbaroum.dialog .lblfavour .checkbox {
+  white-space: nowrap;
 }
 
 .symbaroum.dialog .weapondamage {
@@ -167,7 +172,7 @@
   font-weight: bold;
   color: var(--color-label);
   font-family: var(--font-text);
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
   width: 10em;
   min-width: 10em;
   text-align: center;
@@ -175,10 +180,8 @@
 }
 
 .symbaroum.dialog input[type=checkbox] {
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   border: 1px solid var(--color-border);
-  -webkit-box-shadow: inset 0 0 6px black;
-          box-shadow: inset 0 0 6px black;
   color: var(--color-text);
   width: 100%;
   height: auto;
@@ -187,7 +190,7 @@
 .symbaroum.dialog input[type=text],
 .symbaroum.dialog input[type=number],
 .symbaroum.dialog select {
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   border: 1px solid var(--color-border);
   -webkit-box-shadow: inset 0 0 6px black;
           box-shadow: inset 0 0 6px black;
@@ -244,6 +247,11 @@
   margin: 5px 10px;
 }
 
+.symbaroum.dialog input[type=text][disabled],
+.symbaroum.dialog input[type=number][disabled] {
+  background: var(--box-non-editable) repeat;
+}
+
 .symbaroum.chat.item {
   color: var(--color-text);
   font-family: var(--font-text);
@@ -253,14 +261,15 @@
 }
 
 .symbaroum.chat.item .foreground {
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   padding: 10px;
 }
 
 .symbaroum.chat.item .border {
   border: 1px solid transparent;
-  -o-border-image: url(../asset/image/title.jpg) 20/5px round;
-     border-image: url(../asset/image/title.jpg) 20/5px round;
+  border-color: var(--title-color);
+  -o-border-image: var(--title-image) 20/10px;
+     border-image: var(--title-image) 20/10px;
 }
 
 .symbaroum.chat.item strong {
@@ -311,14 +320,15 @@
 }
 
 .symbaroum.chat.roll .foreground {
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--chat-background) repeat;
   padding: 10px;
 }
 
 .symbaroum.chat.roll .border {
   border: 1px solid transparent;
-  -o-border-image: url(../asset/image/title.jpg) 20/5px round;
-     border-image: url(../asset/image/title.jpg) 20/5px round;
+  border-color: var(--color-border);
+  -o-border-image: var(--chat-roll-border) 20/10px;
+     border-image: var(--chat-roll-border) 20/10px;
 }
 
 .symbaroum.chat.roll strong {
@@ -421,11 +431,11 @@
 
 /* Common styles */
 .symbaroum.sheet.actor.player .window-content {
-  background: url(../asset/image/background.webp) repeat;
+  background: var(--color-charBG);
 }
 
 .symbaroum.sheet.actor.monster .window-content {
-  background: url(../asset/image/background-monster.webp) repeat;
+  background: var(--color-npcBG);
 }
 
 .symbaroum.sheet.actor .window-content .editable {
@@ -440,8 +450,9 @@
 
 .symbaroum.sheet.actor .border {
   border: 10px solid transparent;
-  -o-border-image: url(../asset/image/title.jpg) 20/10px round;
-     border-image: url(../asset/image/title.jpg) 20/10px round;
+  border-color: var(--title-color);
+  -o-border-image: var(--title-image) 20/10px;
+     border-image: var(--title-image) 20/10px;
 }
 
 .symbaroum.sheet.actor h1 {
@@ -452,7 +463,7 @@
   font-size: 16px;
   margin: 0;
   text-align: center;
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
   color: var(--color-title);
   font-family: var(--font-text);
 }
@@ -462,7 +473,7 @@
   font-weight: bold;
   color: var(--color-label);
   font-family: var(--font-text);
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
   width: 10em;
   text-align: center;
   padding: 5px;
@@ -473,7 +484,7 @@
   font-weight: bold;
   color: var(--color-label);
   font-family: var(--font-text);
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
   text-align: center;
   padding: 0;
   cursor: pointer;
@@ -491,7 +502,7 @@
 
 .symbaroum.sheet.actor input[type=text],
 .symbaroum.sheet.actor input[type=number] {
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   border: 1px solid var(--color-border);
   -webkit-box-shadow: inset 0 0 6px black;
           box-shadow: inset 0 0 6px black;
@@ -509,7 +520,7 @@
 }
 
 .symbaroum.sheet.actor select {
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   border: 1px solid var(--color-border);
   -webkit-box-shadow: inset 0 0 6px black;
           box-shadow: inset 0 0 6px black;
@@ -522,6 +533,9 @@
   border-radius: 0;
   -moz-appearance: textfield;
   text-align: center;
+  border-color: var(--title-color);
+  -o-border-image: var(--title-image) 20/10px;
+     border-image: var(--title-image) 20/10px;
 }
 
 .symbaroum.sheet.actor input[type=number]::-webkit-outer-spin-button,
@@ -532,7 +546,7 @@
 
 .symbaroum.sheet.actor input[type=text][disabled],
 .symbaroum.sheet.actor input[type=number][disabled] {
-  background: url(../asset/image/not-editable.jpg) repeat;
+  background: var(--box-non-editable) repeat;
 }
 
 .symbaroum.sheet.actor .item-list {
@@ -558,7 +572,7 @@
   font-weight: bold;
   color: var(--color-label);
   font-family: var(--font-text);
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
   text-align: center;
   padding: 5px;
   border: none;
@@ -579,7 +593,7 @@
 }
 
 .symbaroum.sheet.actor .image-container {
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   border: 1px solid var(--color-border);
   -webkit-box-shadow: inset 0 0 6px black;
           box-shadow: inset 0 0 6px black;
@@ -638,7 +652,7 @@
 }
 
 .symbaroum.sheet.item .window-content {
-  background: url(../asset/image/background.jpg) repeat;
+  background: var(--color-charBG);
 }
 
 .symbaroum.sheet.item .window-content .editable {
@@ -648,13 +662,14 @@
 }
 
 .symbaroum.sheet.item .foreground {
-  background: url(../asset/image/foreground.jpg) repeat;
+  background: url(../asset/image/foreground.webp) repeat;
 }
 
 .symbaroum.sheet.item .border {
   border: 10px solid transparent;
-  -o-border-image: url(../asset/image/title.jpg) 20/10px round;
-     border-image: url(../asset/image/title.jpg) 20/10px round;
+  border-color: var(--title-color);
+  -o-border-image: var(--title-image) 20/10px;
+     border-image: var(--title-image) 20/10px;
 }
 
 .symbaroum.sheet.item h1 {
@@ -665,7 +680,7 @@
   font-size: 1.2em;
   margin: 0;
   text-align: center;
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
   color: var(--color-title);
   font-family: var(--font-text);
 }
@@ -678,7 +693,7 @@
   font-size: 1em;
   margin: 0;
   text-align: center;
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
   color: var(--color-title);
   font-family: var(--font-text);
 }
@@ -688,7 +703,7 @@
   font-weight: bold;
   color: var(--color-label);
   font-family: var(--font-text);
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
   width: 100%;
   text-align: center;
   padding: 5px;
@@ -709,13 +724,13 @@
 
 .symbaroum.sheet.item input[type=text][disabled],
 .symbaroum.sheet.item input[type=number][disabled] {
-  background: url(../asset/image/not-editable.jpg) repeat;
+  background: var(--box-non-editable) repeat;
 }
 
 .symbaroum.sheet.item input[type=text],
 .symbaroum.sheet.item input[type=number],
 .symbaroum.sheet.item select {
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   border: 1px solid var(--color-border);
   -webkit-box-shadow: inset 0 0 6px black;
           box-shadow: inset 0 0 6px black;
@@ -773,7 +788,7 @@
 }
 
 .symbaroum.sheet.item .sheet-header .avatar {
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   border: 1px solid black;
   -webkit-box-shadow: inset 0 0 6px black;
           box-shadow: inset 0 0 6px black;
@@ -857,7 +872,7 @@
   color: var(--color-text);
   height: 100%;
   width: 100%;
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   -webkit-box-shadow: inset 0 0 6px black;
           box-shadow: inset 0 0 6px black;
 }
@@ -877,7 +892,7 @@
 }
 
 .symbaroum.sheet.item .editor .tox .tox-toolbar__primary {
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-image) repeat;
 }
 
 .symbaroum.sheet.item .editor .tox .tox-tbtn svg:hover {
@@ -902,7 +917,7 @@
   font-size: 18px;
   margin: 5px;
   padding: 5px;
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
   font-family: var(--font-text);
 }
 
@@ -929,8 +944,19 @@
 .img01 {
   display: block;
   background-image: url("../asset/image/system-guide/01.webp");
-  width: 608px;
-  height: 218px;
+  width: 750px;
+  height: 179px;
+  margin-left: auto;
+  margin-right: auto;
+  background-size: 100%;
+  border: 0;
+}
+
+.img01-01 {
+  display: block;
+  background-image: url("../asset/image/system-guide/01-01.webp");
+  width: 300px;
+  height: 550px;
   margin-left: auto;
   margin-right: auto;
   background-size: 100%;
@@ -962,8 +988,8 @@
 .img04 {
   display: block;
   background-image: url("../asset/image/system-guide/04.webp");
-  width: 694px;
-  height: 146px;
+  width: 654px;
+  height: 244px;
   margin-left: auto;
   margin-right: auto;
   background-size: 100%;
@@ -973,8 +999,8 @@
 .img06 {
   display: block;
   background-image: url("../asset/image/system-guide/06.webp");
-  width: 204px;
-  height: 176px;
+  width: 284px;
+  height: 554px;
   margin-left: auto;
   margin-right: auto;
   background-size: 100%;
@@ -1083,8 +1109,8 @@
 .img16 {
   display: block;
   background-image: url("../asset/image/system-guide/16.webp");
-  width: 609px;
-  height: 83px;
+  width: 750px;
+  height: 145px;
   margin-left: auto;
   margin-right: auto;
   background-size: 100%;
@@ -1094,8 +1120,8 @@
 .img17 {
   display: block;
   background-image: url("../asset/image/system-guide/17.webp");
-  width: 280px;
-  height: 202px;
+  width: 400px;
+  height: 278px;
   margin-left: auto;
   margin-right: auto;
   background-size: 100%;
@@ -1116,8 +1142,8 @@
 .img19 {
   display: block;
   background-image: url("../asset/image/system-guide/19.webp");
-  width: 399px;
-  height: 241px;
+  width: 400px;
+  height: 201px;
   margin-left: auto;
   margin-right: auto;
   background-size: 100%;
@@ -1171,8 +1197,8 @@
 .img05 {
   display: block;
   background-image: url("../asset/image/system-guide/armor-add.webp");
-  width: 477px;
-  height: 116px;
+  width: 677px;
+  height: 218px;
   margin-left: auto;
   margin-right: auto;
   background-size: 100%;
@@ -1182,8 +1208,8 @@
 .img24 {
   display: block;
   background-image: url("../asset/image/system-guide/weapon-state.webp");
-  width: 462px;
-  height: 175px;
+  width: 682px;
+  height: 355px;
   margin-left: auto;
   margin-right: auto;
   background-size: 100%;
@@ -1212,6 +1238,25 @@
   border: 0;
 }
 
+#pause {
+  background: none;
+}
+#pause > img {
+  content: url("../asset/image/head.webp");
+  width: 200px;
+  height: 200px;
+  top: -50px;
+  left: calc(50% - 100px);
+  opacity: 0.7;
+  -webkit-animation: rotation 10s infinite linear;
+  animation: rotation 10s infinite linear;
+}
+#pause h3 {
+  font-family: "IM Fell DW Pica SC";
+  font-size: 32px;
+  text-shadow: 0px 3px 5px black;
+}
+
 @font-face {
   font-family: "Philosopher";
   src: url("../asset/font/philosopher-bold.ttf");
@@ -1225,6 +1270,14 @@
   --color-border: black;
   --color-shadow: #a48b02;
   --font-text: "Philosopher", serif;
+  --color-charBG: "url(../asset/image/background/green_flower_light.webp) repeat";
+  --color-npcBG: "url(../asset/image/background/purple_flower_light.webp) repeat";
+  --title-image: "url(../asset/image/background/title.webp)";
+  --title-color: black;
+  --box-editable: "url(../asset/image/background/editable.webp)";
+  --box-non-editable: "url(../asset/image/background/not-editable.webp)";
+  --chat-background: "url(../asset/image/background/editable.webp)";
+  --chat-roll-border: "url(../asset/image/background/title.webp)";
 }
 
 /* Tabs styles */
@@ -1392,7 +1445,7 @@
   color: var(--color-text);
   height: 100%;
   width: 100%;
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   -webkit-box-shadow: inset 0 0 6px black;
           box-shadow: inset 0 0 6px black;
 }
@@ -1421,7 +1474,7 @@
 }
 
 .symbaroum.sheet.actor .player .bio .editor .tox .tox-toolbar__primary {
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
 }
 
 .symbaroum.sheet.actor .player .bio .editor .tox .tox-tbtn svg:hover {
@@ -1534,7 +1587,7 @@
   font-weight: bold;
   color: var(--color-label);
   font-family: var(--font-text);
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
   text-align: center;
   border: none;
   border-radius: 0;
@@ -1572,7 +1625,7 @@
 .symbaroum.sheet.actor .player .gear .wrapper-left .artifacts .artifact td .action,
 .symbaroum.sheet.actor .player .gear .wrapper-left .artifacts .artifact td .corruption,
 .symbaroum.sheet.actor .player .gear .wrapper-right .equipments .equipment td .quantity {
-  background: url(../asset/image/not-editable.jpg) repeat;
+  background: var(--box-non-editable) repeat;
   border: 1px solid var(--color-border);
   -webkit-box-shadow: inset 0 0 6px black;
           box-shadow: inset 0 0 6px black;
@@ -1585,7 +1638,7 @@
 .symbaroum.sheet.actor .player .gear .wrapper-left .weapons .weapon td .cell,
 .symbaroum.sheet.actor .player .gear .wrapper-left .artifacts .artifact td .cell,
 .symbaroum.sheet.actor .player .gear .wrapper-right .equipments .equipment td .cell {
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
 }
 
 .symbaroum.sheet.actor .player .gear .wrapper-left .armors .armor td .armorname,
@@ -2058,7 +2111,7 @@
       flex-wrap: nowrap;
   border-top: none;
   width: 100%;
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
 }
 
 .symbaroum.sheet.actor .player .main .combat .combatheader .iniheader {
@@ -2157,7 +2210,7 @@
   width: 100%;
   -ms-flex-wrap: nowrap;
       flex-wrap: nowrap;
-  background-image: url(../asset/image/title.jpg);
+  background-image: var(--title-color);
   background-repeat: repeat;
 }
 
@@ -2242,7 +2295,7 @@
 }
 
 .symbaroum.sheet.actor .player .main .combat .weapons .item-list .weapon .damage {
-  background: url(../asset/image/not-editable.jpg) repeat;
+  background: var(--box-non-editable) repeat;
   border: 1px solid var(--color-border);
   border-left: none;
   -webkit-box-shadow: inset 0 0 6px black;
@@ -2275,7 +2328,7 @@
   left: 618px;
   font-size: 32px;
   color: var(--color-text);
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   height: 36px;
   width: 36px;
   text-align: center;
@@ -2327,7 +2380,7 @@
   -ms-flex-preferred-size: 15%;
       flex-basis: 15%;
   color: var(--color-text);
-  background: url(../asset/image/not-editable.jpg) repeat;
+  background: var(--box-non-editable) repeat;
   text-align: center;
   border: 1px solid var(--color-border);
   border-left: none;
@@ -2391,7 +2444,7 @@
   color: var(--color-text);
   height: 100%;
   width: 100%;
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   -webkit-box-shadow: inset 0 0 6px black;
           box-shadow: inset 0 0 6px black;
 }
@@ -2411,7 +2464,7 @@
 }
 
 .symbaroum.sheet.actor .player .note .wrapper .editor .tox .tox-toolbar__primary {
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
 }
 
 .symbaroum.sheet.actor .player .note .wrapper .editor .tox .tox-tbtn svg:hover {
@@ -2652,6 +2705,10 @@
   width: 100%;
 }
 
+.symbaroum.sheet.item .artifact .power-n .editor {
+  width: calc(100% - 10px);
+}
+
 .symbaroum.sheet.item .artifact .power-n .power-header,
 .symbaroum.sheet.item .artifact .power-add {
   display: -webkit-box;
@@ -2672,7 +2729,7 @@
   height: -moz-fit-content;
   height: fit-content;
   margin: 5px;
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
 }
 
 .symbaroum.sheet.item .artifact .power-n .power-header .heading,
@@ -3148,7 +3205,7 @@
 }
 
 .symbaroum.sheet.actor .player .sheet-header .avatar {
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   border: 1px solid black;
   -webkit-box-shadow: inset 0 0 6px black;
           box-shadow: inset 0 0 6px black;
@@ -3277,7 +3334,7 @@
   font-size: 18px;
   margin: 5px;
   padding: 5px;
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
   font-family: var(--font-text);
   height: -webkit-fit-content;
   height: -moz-fit-content;
@@ -3656,7 +3713,7 @@
 }
 
 .symbaroum.attributes {
-  background: url(../asset/image/background.jpg) repeat;
+  background: var(--color-charBG);
 }
 
 .symbaroum.attributes .window-content .editable {
@@ -3666,13 +3723,13 @@
 }
 
 .symbaroum.attributes .foreground {
-  background: url(../asset/image/foreground.jpg) repeat;
+  background: url(../asset/image/foreground.webp) repeat;
 }
 
 .symbaroum.attributes .border {
   border: 10px solid transparent;
-  -o-border-image: url(../asset/image/title.jpg) 20/10px round;
-     border-image: url(../asset/image/title.jpg) 20/10px round;
+  -o-border-image: var(--title-image) 20/10px round;
+     border-image: var(--title-image) 20/10px round;
 }
 
 .symbaroum.attributes h1 {
@@ -3683,7 +3740,7 @@
   font-size: 16px;
   margin: 0;
   text-align: center;
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-image) repeat;
   color: var(--color-title);
   font-family: var(--font-text);
 }
@@ -3693,7 +3750,7 @@
   font-weight: bold;
   color: var(--color-label);
   font-family: var(--font-text);
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-image) repeat;
   width: 10em;
   text-align: center;
   padding: 5px;
@@ -3704,7 +3761,7 @@
   font-weight: bold;
   color: var(--color-label);
   font-family: var(--font-text);
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-image) repeat;
   text-align: center;
   padding: 0;
   cursor: pointer;
@@ -3722,7 +3779,7 @@
 
 .symbaroum.attributes input[type=text],
 .symbaroum.attributes input[type=number] {
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   border: 1px solid var(--color-border);
   -webkit-box-shadow: inset 0 0 6px black;
           box-shadow: inset 0 0 6px black;
@@ -3740,11 +3797,11 @@
 }
 
 .symbaroum.attributes input[type=number][disabled] {
-  background: url(../asset/image/not-editable.jpg) repeat;
+  background: var(--box-non-editable) repeat;
 }
 
 .symbaroum.attributes .fixed {
-  background: url(../asset/image/not-editable.jpg) repeat;
+  background: var(--box-non-editable) repeat;
   border: 1px solid var(--color-border);
   -webkit-box-shadow: inset 0 0 6px black;
           box-shadow: inset 0 0 6px black;
@@ -3815,7 +3872,7 @@
 }
 
 .symbaroum.attributes .col-header {
-  background: url(../asset/image/not-editable.jpg) repeat;
+  background: var(--box-non-editable) repeat;
   border: 1px solid var(--color-border);
   border-left: none;
   -webkit-box-shadow: inset 0 0 6px black;
