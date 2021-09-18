@@ -944,8 +944,19 @@
 .img01 {
   display: block;
   background-image: url("../asset/image/system-guide/01.webp");
-  width: 608px;
-  height: 218px;
+  width: 750px;
+  height: 179px;
+  margin-left: auto;
+  margin-right: auto;
+  background-size: 100%;
+  border: 0;
+}
+
+.img01-01 {
+  display: block;
+  background-image: url("../asset/image/system-guide/01-01.webp");
+  width: 300px;
+  height: 550px;
   margin-left: auto;
   margin-right: auto;
   background-size: 100%;
@@ -977,8 +988,8 @@
 .img04 {
   display: block;
   background-image: url("../asset/image/system-guide/04.webp");
-  width: 694px;
-  height: 146px;
+  width: 654px;
+  height: 244px;
   margin-left: auto;
   margin-right: auto;
   background-size: 100%;
@@ -988,8 +999,8 @@
 .img06 {
   display: block;
   background-image: url("../asset/image/system-guide/06.webp");
-  width: 204px;
-  height: 176px;
+  width: 284px;
+  height: 554px;
   margin-left: auto;
   margin-right: auto;
   background-size: 100%;
@@ -1098,8 +1109,8 @@
 .img16 {
   display: block;
   background-image: url("../asset/image/system-guide/16.webp");
-  width: 609px;
-  height: 83px;
+  width: 750px;
+  height: 145px;
   margin-left: auto;
   margin-right: auto;
   background-size: 100%;
@@ -1109,8 +1120,8 @@
 .img17 {
   display: block;
   background-image: url("../asset/image/system-guide/17.webp");
-  width: 280px;
-  height: 202px;
+  width: 400px;
+  height: 278px;
   margin-left: auto;
   margin-right: auto;
   background-size: 100%;
@@ -1131,8 +1142,8 @@
 .img19 {
   display: block;
   background-image: url("../asset/image/system-guide/19.webp");
-  width: 399px;
-  height: 241px;
+  width: 400px;
+  height: 201px;
   margin-left: auto;
   margin-right: auto;
   background-size: 100%;
@@ -1186,8 +1197,8 @@
 .img05 {
   display: block;
   background-image: url("../asset/image/system-guide/armor-add.webp");
-  width: 477px;
-  height: 116px;
+  width: 677px;
+  height: 218px;
   margin-left: auto;
   margin-right: auto;
   background-size: 100%;
@@ -1197,8 +1208,8 @@
 .img24 {
   display: block;
   background-image: url("../asset/image/system-guide/weapon-state.webp");
-  width: 462px;
-  height: 175px;
+  width: 682px;
+  height: 355px;
   margin-left: auto;
   margin-right: auto;
   background-size: 100%;
