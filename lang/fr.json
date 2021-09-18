@@ -487,6 +487,7 @@
     "POWER_INHERITWOUND.CHAT_FAILURE": " ne parvient pas à transférer les blessures.",
     "POWER_INHERITWOUND.CHAT_HEALED": " voit son endurance soignée de: ",
     "POWER_INHERITWOUND.CHAT_DAMAGE": " reçoit des dégâts: ",
+    "POWER_INHERITWOUND.CHAT_REDIRECT": ";  Les poisons et saignements sont également redirigés.",
 
     "POWER_LARVAEBOILS.CHAT_INTRO": " lance des larves grouillantes sur sa victime.",
     "POWER_LARVAEBOILS.CHAT_INTRO_M": " tente de maintenir les larves grouillantes.",

@@ -493,6 +493,7 @@
   "POWER_INHERITWOUND.CHAT_FAILURE": " can't transfer the wounds.",
   "POWER_INHERITWOUND.CHAT_HEALED": " receives toughness healing for: ",
   "POWER_INHERITWOUND.CHAT_DAMAGE": " recieved damage: ",
+  "POWER_INHERITWOUND.CHAT_REDIRECT": ";  poison and bleeding are also transfered.",
 
   "POWER_LARVAEBOILS.CHAT_INTRO": " throws larvaes.",
   "POWER_LARVAEBOILS.CHAT_INTRO_M": " maintains the larvaes surge.",

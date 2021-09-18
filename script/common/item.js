@@ -2865,7 +2865,7 @@ async function inheritWound(ability, actor){
         });
 
         if(powerLvl.level >= 2){
-            templateData.finalText += ";  Les poisons et saignements sont également redirigés."
+            templateData.finalText += game.i18n.localize('POWER_INHERITWOUND.CHAT_REDIRECT');
             const pEffect = "icons/svg/poison.svg";
             let poisonedEffectCounter = await getEffect(targetData.token, pEffect);
             if(poisonedEffectCounter){

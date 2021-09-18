@@ -491,6 +491,7 @@
   "POWER_INHERITWOUND.CHAT_FAILURE": " kan inte överföra någon skada.",
   "POWER_INHERITWOUND.CHAT_HEALED": " tar emot Tålighetsläkning för: ",
   "POWER_INHERITWOUND.CHAT_DAMAGE": " mottagen skada: ",
+  "POWER_INHERITWOUND.CHAT_REDIRECT": ";  poison and bleeding are also transfered.",
 
   "POWER_LARVAEBOILS.CHAT_INTRO": " planterar larver inuti fiendens kropp.",
   "POWER_LARVAEBOILS.CHAT_INTRO_M": " upprätthåller larvernas framfart.",
