@@ -18,7 +18,7 @@ import { sendDevMessage } from './devmsg.js';
 import { SYMBAROUM } from './config.js';
 import { MonsterSheet } from '../sheet/monster.js';
 import { SymbaroumConfig } from './symbaroumConfig.js';
-import { ecCommsListener } from './eccomms.js';
+import { SymbaroumCommsListener } from './symbcomms.js';
 
 Hooks.once('init', () => {
   CONFIG.Actor.documentClass = SymbaroumActor;
@@ -487,9 +487,7 @@ async function tidyReleaseNotes11() {
 async function setupEmit()
 {
   console.log("Setting up listener");
-  game.socket.on("system.symbaroum", ecCommsListener.receiveData);
-
-//  ecCommsListener.receiveData({ "the test":"test"});
+  SymbaroumCommsListener.ready();
 }
 
 Hooks.on('createToken', async (token, options, userID) => {
