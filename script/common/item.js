@@ -530,6 +530,18 @@ function formatRollResult(rollData){
     return(rollResult);
 }
 
+async function createResultChatMessage(templateHtml, templateData, flagDataArray){
+    const html = await renderTemplate(templateHtml, templateData);
+    const chatData = {
+        user: game.user.id,
+        content: html,
+    }
+    let chatResultMessage = await ChatMessage.create(chatData);
+    if(flagDataArray){
+        await chatResultMessage.setFlag(game.system.id, 'tokenModification', flagDataArray);
+    }
+}
+
 async function checkCorruptionThreshold(actor, corruptionGained){
     let img ="icons/magic/air/wind-vortex-swirl-purple.webp";
     let introText = actor.data.name + game.i18n.localize('CORRUPTION.CHAT_WARNING');
@@ -1607,6 +1619,7 @@ async function attackResult(rollData, functionStuff){
         templateData.printFlaming = true;
         templateData.flamingChat = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_FLAMING_SUCCESS1') + flamingDamage  + game.i18n.localize('COMBAT.CHAT_POISON_SUCCESS2')  + flamingRounds.toString();
     }
+    //createResultChatMessage("systems/symbaroum/template/chat/combat.html", templateData, flagDataArray)
     const html = await renderTemplate("systems/symbaroum/template/chat/combat.html", templateData);
     const chatData = {
         user: game.user.id,
