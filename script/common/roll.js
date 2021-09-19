@@ -295,7 +295,9 @@ To apply temporary corruption on the token
 }
 */
 export async function createModifyTokenChatButton(actionsDataArray){
-
+  console.log("Here we are");
+  game.socket.emit("system.symbaroum", { data: "this is a test"} );
+  
   const html = await renderTemplate("systems/symbaroum/template/chat/applyEffectsButton.html");
   let gmList =  ChatMessage.getWhisperRecipients('GM');
   if(gmList.length > 0){
