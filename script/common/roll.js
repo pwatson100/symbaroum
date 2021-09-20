@@ -301,6 +301,21 @@ export async function createModifyTokenChatButton(actionsDataArray){
       type: "GMMessage",
       data: actionsDataArray
     });
+/*
+  game.socket.emit("system.symbaroum", { data: "this is a test"} );
+  console.log("emit done");
+  const html = await renderTemplate("systems/symbaroum/template/chat/applyEffectsButton.html");
+  let gmList =  ChatMessage.getWhisperRecipients('GM');
+  if(gmList.length > 0){
+    const chatData = {
+        user: game.user.id,
+        content: html,
+        whisper: gmList,
+        blind: true
+    }
+    let NewMessage = await ChatMessage.create(chatData);
+    await NewMessage.setFlag(game.system.id, 'abilityRoll', actionsDataArray);
+  }*/
 }
 
 /*formatDice produces a string of any rolls with any ignored dice within a css class of .strike

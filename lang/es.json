@@ -494,6 +494,7 @@
   "POWER_INHERITWOUND.CHAT_FAILURE": " no puede transferir las heridas.",
   "POWER_INHERITWOUND.CHAT_HEALED": " recibe una curación de su resistencia de: ",
   "POWER_INHERITWOUND.CHAT_DAMAGE": " daños recibidos: ",
+  "POWER_INHERITWOUND.CHAT_REDIRECT": ";  poison and bleeding are also transfered.",
 
   "POWER_LARVAEBOILS.CHAT_INTRO": " lanza larvas.",
   "POWER_LARVAEBOILS.CHAT_INTRO_M": " mantiene la Erupción de Larvas.",
