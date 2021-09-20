@@ -272,6 +272,7 @@
     "CORRUPTION.CHAT_MAX": " devient une abomination (max atteint).",
     "CORRUPTION.CHAT_WARNING": " approche du seuil de soullure.",
 
+    "DIALOG.SYSTEM_MESSAGE":"Symbaroum system message",
     "DIALOG.VERSUS": "Versus",
     "DIALOG.ASK_CORRUPTION": "Cible totalement corrompue?",
     "DIALOG.ATTRIBUTE": "Attribut",

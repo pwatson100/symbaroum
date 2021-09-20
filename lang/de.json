@@ -254,6 +254,7 @@
   "CORRUPTION.CHAT_MAX": " turns into an abomination (max reached).",
   "CORRUPTION.CHAT_WARNING": " is close to a corruption treshold.",
 
+  "DIALOG.SYSTEM_MESSAGE":"Symbaroum system message",
   "DIALOG.AUTOPARAMS": "einbezogene Modifikatoren: ",
   "DIALOG.BACKSTAB": "Hinterhältiger Angriff?",
   "DIALOG.BEASTLORE": "Extra Schaden durch Bestienwissen?",
