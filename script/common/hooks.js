@@ -401,62 +401,6 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
 });
 
 
-/*Hook for the chatMessage that contain a button for the GM to apply status icons or damage to a token.*/
-/*Hooks.on('renderChatMessage', async (chatItem, html, data) => {
-  const flagDataArray = await chatItem.getFlag(game.system.id, 'abilityRoll');
-  if (flagDataArray && game.user.isGM) {
-    await html.find('#applyEffect').click(async () => {
-      for (let flagData of flagDataArray) {
-        if (flagData.tokenId) {
-          let token = canvas.tokens.objects.children.find((token) => token.id === flagData.tokenId);
-          let statusCounterMod = false;
-          if (game.modules.get('statuscounter')?.active) {
-            statusCounterMod = true;
-          }
-          if (flagData.addEffect) {
-            if (token == undefined) {
-              return;
-            }
-            let duration = 1;
-            if (flagData.effectDuration) {
-              duration = flagData.effectDuration;
-            }
-            modifyEffectOnToken(token, flagData.addEffect, 1, duration, flagData.effectStuff);
-          }
-          if (flagData.removeEffect) {
-            modifyEffectOnToken(token, flagData.removeEffect, 0, 0);
-          }
-          if (flagData.modifyEffectDuration) {
-            modifyEffectOnToken(token, flagData.modifyEffectDuration, 2, flagData.effectDuration);
-          }
-
-          if (flagData.toughnessChange) {
-            let newToughness = Math.max(0, Math.min(token.actor.data.data.health.toughness.max, token.actor.data.data.health.toughness.value + flagData.toughnessChange));
-            await token.actor.update({ 'data.health.toughness.value': newToughness });
-          }
-          if (flagData.attributeChange) {
-            let newMod = token.actor.data.data.attributes[flagData.attributeName].temporaryMod + flagData.attributeChange;
-            let linkMod = 'data.attributes.' + flagData.attributeName + '.temporaryMod';
-            await token.actor.update({ [linkMod]: newMod });
-          }
-          if (flagData.corruptionChange) {
-            let newCorruption = token.actor.data.data.health.corruption.temporary + flagData.corruptionChange;
-            await token.actor.update({ 'data.health.corruption.temporary': newCorruption });
-          }
-          if (flagData.addObject) {
-            let actor = token.actor;
-            if (flagData.addObject == 'blessedshield') {
-              await createBlessedShield(actor, flagData.protection);
-            }
-          }
-        }
-      }
-      await chatItem.unsetFlag(game.system.id, 'abilityRoll');
-      return;
-    });
-  }
-});*/
-
 // This sets the css DOM objects we will change with the registered settings
 async function setupConfigOptions() {
   let r = document.querySelector(':root');
@@ -466,12 +410,6 @@ async function setupConfigOptions() {
   await r.style.setProperty('--title-color', game.settings.get('symbaroum', 'switchTitleColour'));
   await r.style.setProperty('--box-editable', game.settings.get('symbaroum', 'switchEditableColour'));
   await r.style.setProperty('--box-non-editable', game.settings.get('symbaroum', 'switchNoNEditableColour'));
-}
-
-async function setupEmit(){
-  // debugger;
-  console.log('symbaroum socket setup');
-  game.socket.on("system.symbaroum", ecCommsListener.receiveData);
 }
 
 async function ecChatCreate(data){

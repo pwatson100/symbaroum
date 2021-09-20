@@ -3,13 +3,13 @@ export class SymbaroumCommsListener
 {
     static async receiveData(data) 
     {
-        console.log("in recive data", data, game.user.isGM);
+        console.log("in receive data", data, game.user.isGM);
         if(game.user.isGM && data["GMMessage"] !== null )
         {
             console.log("in GMMessage", game.user.isGM)
             const html = await renderTemplate("systems/symbaroum/template/chat/applyEffectsButton.html");
             const chatData = {
-                speaker: ChatMessage.getSpeaker({alias:"Symbaruom system message"}),
+                speaker: ChatMessage.getSpeaker({alias:"Symbaroum system message"}),
                 whisper: [game.user],
                 content: html
             };
