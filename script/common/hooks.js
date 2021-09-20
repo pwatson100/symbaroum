@@ -18,6 +18,7 @@ import { sendDevMessage } from './devmsg.js';
 import { SYMBAROUM } from './config.js';
 import { MonsterSheet } from '../sheet/monster.js';
 import { SymbaroumConfig } from './symbaroumConfig.js';
+import { SymbaroumCommsListener } from './symbcomms.js';
 
 Hooks.once('init', () => {
   CONFIG.Actor.documentClass = SymbaroumActor;
@@ -286,6 +287,7 @@ Hooks.once('ready', () => {
   sendDevMessage();
   showReleaseNotes();
   setupConfigOptions();
+  setupEmit();
 });
 
 // create/remove the quick access config button
@@ -398,6 +400,7 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
   }
 });
 
+
 // This sets the css DOM objects we will change with the registered settings
 async function setupConfigOptions() {
   let r = document.querySelector(':root');
@@ -407,6 +410,10 @@ async function setupConfigOptions() {
   await r.style.setProperty('--title-color', game.settings.get('symbaroum', 'switchTitleColour'));
   await r.style.setProperty('--box-editable', game.settings.get('symbaroum', 'switchEditableColour'));
   await r.style.setProperty('--box-non-editable', game.settings.get('symbaroum', 'switchNoNEditableColour'));
+}
+
+async function ecChatCreate(data){
+  console.log("Received: ",data);
 }
 
 async function createBlessedShield(actor, protection = '1d4') {
@@ -480,6 +487,12 @@ async function tidyReleaseNotes11() {
   if (old11ReleaseNotes !== undefined && old11ReleaseNotes !== null) {
     await old11ReleaseNotes.delete();
   }
+}
+
+async function setupEmit()
+{
+  console.log("Setting up listener");
+  SymbaroumCommsListener.ready();
 }
 
 Hooks.on('createToken', async (token, options, userID) => {

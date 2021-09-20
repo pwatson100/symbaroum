@@ -530,6 +530,18 @@ function formatRollResult(rollData){
     return(rollResult);
 }
 
+async function createResultChatMessage(templateHtml, templateData, flagDataArray){
+    const html = await renderTemplate(templateHtml, templateData);
+    const chatData = {
+        user: game.user.id,
+        content: html,
+    }
+    let chatResultMessage = await ChatMessage.create(chatData);
+    if(flagDataArray){
+        await chatResultMessage.setFlag(game.system.id, 'tokenModification', flagDataArray);
+    }
+}
+
 async function checkCorruptionThreshold(actor, corruptionGained){
     let img ="icons/magic/air/wind-vortex-swirl-purple.webp";
     let introText = actor.data.name + game.i18n.localize('CORRUPTION.CHAT_WARNING');
@@ -1578,87 +1590,9 @@ async function attackResult(rollData, functionStuff){
     if(functionStuff.autoParams != ""){templateData.subText += ", " + functionStuff.autoParams};
 
     if(functionStuff.poison > 0 && !targetDies && damageTot > 0){
-
-        templateData.poisonChatIntro = functionStuff.token.data.name + game.i18n.localize('COMBAT.CHAT_POISON') + functionStuff.targetData.token.data.name;
-        let poisonDamage = "0";
-        let poisonRounds = "0";
-        let poisonedTimeLeft = 0;
-        const effect = "icons/svg/poison.svg";
-        switch (functionStuff.poison){
-          case 1:
-            if(functionStuff.attackFromPC){
-              poisonDamage = "1d4";
-              poisonRounds = "1d4";
-            }
-            else{
-              poisonDamage = "2";
-              poisonRounds = "2";
-            };
-            break;
-          case 2:
-            if(functionStuff.attackFromPC){
-              poisonDamage = "1d6";
-              poisonRounds = "1d6";
-            }
-            else{
-              poisonDamage = "3";
-              poisonRounds = "3";
-            };
-            break;
-          case 3:
-            if(functionStuff.attackFromPC){
-              poisonDamage = "1d8";
-              poisonRounds = "1d8";
-            }
-            else{
-              poisonDamage = "4";
-              poisonRounds = "4";
-            };
-            break;
-        }
-      
-        let poisonRoll = await baseRoll(functionStuff.actor, "cunning", functionStuff.targetData.actor, "strong", 0, 0);
-            
-        if(!poisonRoll.hasSucceed){
-            templateData.poisonChatResult = game.i18n.localize('COMBAT.CHAT_POISON_FAILURE');     
-        }
-        else{
-        let PoisonRoundsRoll= new Roll(poisonRounds).evaluate();
-        let NewPoisonRounds = PoisonRoundsRoll.total;
-        let poisonedEffectCounter = getEffect(functionStuff.targetData.token, effect);
-        if(poisonedEffectCounter){
-            //target already poisoned
-            //get the number of rounds left
-            if(game.modules.get("statuscounter")?.active){
-                poisonedTimeLeft = await EffectCounter.findCounterValue(functionStuff.targetData.token, effect);  
-                if(NewPoisonRounds > poisonedTimeLeft){
-                    flagDataArray.push({
-                        tokenId: functionStuff.targetData.token.id,
-                        modifyEffectDuration: "icons/svg/poison.svg",
-                        effectDuration: NewPoisonRounds
-                    })
-                
-                    templateData.poisonChatResult = game.i18n.localize('COMBAT.CHAT_POISON_EXTEND') + NewPoisonRounds.toString();
-                }
-                else{
-                    templateData.poisonChatResult = game.i18n.localize('COMBAT.CHAT_POISON_NOTEXTEND');
-                }
-            }
-            else{templateData.poisonChatResult = game.i18n.localize('COMBAT.CHAT_POISON_NOTEXTEND')}
-          }
-          else{
-            //new poisonning  
-            flagDataArray.push({
-                tokenId: functionStuff.targetData.token.id,
-                addEffect: "icons/svg/poison.svg",
-                effectDuration: NewPoisonRounds
-            });
-            templateData.poisonChatResult = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_POISON_SUCCESS1') + poisonDamage  + game.i18n.localize('COMBAT.CHAT_POISON_SUCCESS2')  + NewPoisonRounds.toString();
-          }
-        }
-        templateData.printPoison = true;
-        templateData.poisonRollString = await formatRollString(poisonRoll, functionStuff.targetData.hasTarget, 0);
-        templateData.poisonRollResultString = await formatRollResult([poisonRoll]);
+        let poisonRes= await poisonCalc(functionStuff);
+        if(poisonRes.flagData) flagDataArray.push(poisonRes.flagData);
+        templateData = Object.assign(templateData, poisonRes);
     }
     if(functionStuff.bleed > 0 && !targetDies && damageTot > 0){
         templateData.printBleed = true;
@@ -1685,6 +1619,7 @@ async function attackResult(rollData, functionStuff){
         templateData.printFlaming = true;
         templateData.flamingChat = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_FLAMING_SUCCESS1') + flamingDamage  + game.i18n.localize('COMBAT.CHAT_POISON_SUCCESS2')  + flamingRounds.toString();
     }
+    //createResultChatMessage("systems/symbaroum/template/chat/combat.html", templateData, flagDataArray)
     const html = await renderTemplate("systems/symbaroum/template/chat/combat.html", templateData);
     const chatData = {
         user: game.user.id,
@@ -2865,7 +2800,7 @@ async function inheritWound(ability, actor){
         });
 
         if(powerLvl.level >= 2){
-            templateData.finalText += ";  Les poisons et saignements sont également redirigés."
+            templateData.finalText += game.i18n.localize('POWER_INHERITWOUND.CHAT_REDIRECT');
             const pEffect = "icons/svg/poison.svg";
             let poisonedEffectCounter = await getEffect(targetData.token, pEffect);
             if(poisonedEffectCounter){
@@ -3940,6 +3875,92 @@ async function stranglerResult(rollData, functionStuff){
     if(flagDataArray.length > 0){
         await createModifyTokenChatButton(flagDataArray);
     }
+}
+
+
+async function poisonCalc(functionStuff){
+    let poisonRes ={};
+    poisonRes.printPoison = false;
+    poisonRes.poisonChatIntro = functionStuff.token.data.name + game.i18n.localize('COMBAT.CHAT_POISON') + functionStuff.targetData.token.data.name;
+    let poisonDamage = "0";
+    let poisonRounds = "0";
+    let poisonedTimeLeft = 0;
+    const effect = "icons/svg/poison.svg";
+    switch (functionStuff.poison){
+    case 1:
+        if(functionStuff.attackFromPC){
+        poisonDamage = "1d4";
+        poisonRounds = "1d4";
+        }
+        else{
+        poisonDamage = "2";
+        poisonRounds = "2";
+        };
+        break;
+    case 2:
+        if(functionStuff.attackFromPC){
+        poisonDamage = "1d6";
+        poisonRounds = "1d6";
+        }
+        else{
+        poisonDamage = "3";
+        poisonRounds = "3";
+        };
+        break;
+    case 3:
+        if(functionStuff.attackFromPC){
+        poisonDamage = "1d8";
+        poisonRounds = "1d8";
+        }
+        else{
+        poisonDamage = "4";
+        poisonRounds = "4";
+        };
+        break;
+    }
+
+    let poisonRoll = await baseRoll(functionStuff.actor, "cunning", functionStuff.targetData.actor, "strong", 0, 0);
+        
+    if(!poisonRoll.hasSucceed){
+        poisonRes.poisonChatResult = game.i18n.localize('COMBAT.CHAT_POISON_FAILURE');     
+    }
+    else{
+        let PoisonRoundsRoll= new Roll(poisonRounds).evaluate();
+        let NewPoisonRounds = PoisonRoundsRoll.total;
+        let poisonedEffectCounter = getEffect(functionStuff.targetData.token, effect);
+        if(poisonedEffectCounter){
+            //target already poisoned
+            //get the number of rounds left
+            if(game.modules.get("statuscounter")?.active){
+                poisonedTimeLeft = await EffectCounter.findCounterValue(functionStuff.targetData.token, effect);  
+                if(NewPoisonRounds > poisonedTimeLeft){
+                    poisonRes.flagData = {
+                        tokenId: functionStuff.targetData.token.id,
+                        modifyEffectDuration: "icons/svg/poison.svg",
+                        effectDuration: NewPoisonRounds
+                    };
+                    poisonRes.poisonChatResult = game.i18n.localize('COMBAT.CHAT_POISON_EXTEND') + NewPoisonRounds.toString();
+                }
+                else{
+                    poisonRes.poisonChatResult = game.i18n.localize('COMBAT.CHAT_POISON_NOTEXTEND');
+                }
+            }
+            else{poisonRes.poisonChatResult = game.i18n.localize('COMBAT.CHAT_POISON_NOTEXTEND')}
+        }
+        else{
+            //new poisonning  
+            poisonRes.flagData ={
+                tokenId: functionStuff.targetData.token.id,
+                addEffect: "icons/svg/poison.svg",
+                effectDuration: NewPoisonRounds
+            };
+            poisonRes.poisonChatResult = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_POISON_SUCCESS1') + poisonDamage  + game.i18n.localize('COMBAT.CHAT_POISON_SUCCESS2')  + NewPoisonRounds.toString();
+        }
+    }
+    poisonRes.printPoison = true;
+    poisonRes.poisonRollString = await formatRollString(poisonRoll, functionStuff.targetData.hasTarget, 0);
+    poisonRes.poisonRollResultString = await formatRollResult([poisonRoll]);
+    return(poisonRes);
 }
 
 async function witchsight(ability, actor) {

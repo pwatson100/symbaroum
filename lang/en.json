@@ -493,6 +493,7 @@
   "POWER_INHERITWOUND.CHAT_FAILURE": " can't transfer the wounds.",
   "POWER_INHERITWOUND.CHAT_HEALED": " receives toughness healing for: ",
   "POWER_INHERITWOUND.CHAT_DAMAGE": " recieved damage: ",
+  "POWER_INHERITWOUND.CHAT_REDIRECT": ";  poison and bleeding are also transfered.",
 
   "POWER_LARVAEBOILS.CHAT_INTRO": " throws larvaes.",
   "POWER_LARVAEBOILS.CHAT_INTRO_M": " maintains the larvaes surge.",
@@ -749,6 +750,9 @@
   "SYMBAROUM.OPTIONAL_ADD_MENUHINT": "Add Colour setting button to Main Config panel.",
   "SYMBAROUM.OPTIONAL_PC_CHAR_BG_IMGS":"Character Background Images",
   "SYMBAROUM.OPTIONAL_NPC_CHAR_BG_IMGS":"NPC Background Images",
+  "SYMBAROUM.OPTIONAL_DEFAULT_IMAGE":"Default Image",
+  "SYMBAROUM.OPTIONAL_NEW_IMAGE":"New Image",
+  "SYMBAROUM.OPTIONAL_NEW_LIGHTER":"New Lighter Image",
   "SYMBAROUM.OPTIONAL_COLOR_PICKER":"Plain Color Picker",
   "SYMBAROUM.OPTIONAL_TITLE_COLOUR_SELECTOR": "Select Title Background Color",
   "SYMBAROUM.OPTIONAL_TITLE_BG_IMGS":"Title Background Images",

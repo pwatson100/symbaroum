@@ -487,6 +487,7 @@
     "POWER_INHERITWOUND.CHAT_FAILURE": " ne parvient pas à transférer les blessures.",
     "POWER_INHERITWOUND.CHAT_HEALED": " voit son endurance soignée de: ",
     "POWER_INHERITWOUND.CHAT_DAMAGE": " reçoit des dégâts: ",
+    "POWER_INHERITWOUND.CHAT_REDIRECT": ";  Les poisons et saignements sont également redirigés.",
 
     "POWER_LARVAEBOILS.CHAT_INTRO": " lance des larves grouillantes sur sa victime.",
     "POWER_LARVAEBOILS.CHAT_INTRO_M": " tente de maintenir les larves grouillantes.",
@@ -726,7 +727,33 @@
     "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Modification des références",
     "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Attention - MJ seulement - Permet de modifier les références des objets traits, talents et pouvoirs. A n'utiliser que si vous savez ce que vous faites.",
     "SYMBAROUM.OPTIONAL_INIT_MANUAL": "Attribut d'initiative manuel",
-    "SYMBAROUM.OPTIONAL_INIT_MANUAL_HINT": "Désactive l'évaluation automatique de l'attribut à utiliser pour l'initiative des personnages. A cocher si vous utilisez vos propres talents."
+    "SYMBAROUM.OPTIONAL_INIT_MANUAL_HINT": "Désactive l'évaluation automatique de l'attribut à utiliser pour l'initiative des personnages. A cocher si vous utilisez vos propres talents.",
+    "SYMBAROUM.OPTIONAL_PC_COLOUR_SELECTOR":"Choisir la couleur de fond PJ",
+    "SYMBAROUM.OPTIONAL_NPC_COLOUR_SELECTOR":"Choisir la couleur de fond PNJ",
+    "SYMBAROUM.OPTIONAL_RESET_NOTE": "NOTE: Appliquer et réinitialiser provoquera le rechargement de Foundry.",
+    "SYMBAROUM.OPTIONAL_SUBMIT_BUTTON":"Appliquer",
+    "SYMBAROUM.OPTIONAL_RESET_PC_BUTTON":"Réinitialiser Config PJ",
+    "SYMBAROUM.OPTIONAL_RESET_NPC_BUTTON":"Réinitialiser Config PNJ",
+    "SYMBAROUM.OPTIONAL_CONFIG_MENULABEL": "Aspect du système",
+    "SYMBAROUM.OPTIONAL_CONFIG_MENUHINT": "Configuration des couleurs de fond des feuilles de PJ et PNJ (configuration locale).",
+    "SYMBAROUM.OPTIONAL_ADD_MENUNAME": "Bouton Aspect du système",
+    "SYMBAROUM.OPTIONAL_ADD_MENUHINT": "Ajoutage un bouton pour le paramètrage de l'aspect du système au panneau de configuration générale.",
+    "SYMBAROUM.OPTIONAL_PC_CHAR_BG_IMGS":"Texture de fond des feuilles de PJ",
+    "SYMBAROUM.OPTIONAL_NPC_CHAR_BG_IMGS":"Texture de fond des feuilles de PNJ",
+    "SYMBAROUM.OPTIONAL_DEFAULT_IMAGE":"Texture par défaut",
+    "SYMBAROUM.OPTIONAL_NEW_IMAGE":"Nouvelle texture",
+    "SYMBAROUM.OPTIONAL_NEW_LIGHTER":"Nouvelle texture plus lumineuse",
+    "SYMBAROUM.OPTIONAL_COLOR_PICKER":"Choisir la couleur",
+    "SYMBAROUM.OPTIONAL_TITLE_COLOUR_SELECTOR": "Choisir la couleur de fond des titres",
+    "SYMBAROUM.OPTIONAL_TITLE_BG_IMGS":"Texture de fond des titres",
+    "SYMBAROUM.OPTIONAL_RESET_TITLE_BUTTON":"Réinitialiser la couleur de fond des titres",
+    "SYMBAROUM.OPTIONAL_RESET_EDITABLE_BUTTON" :"Réinitialiser la couleur de fond des champs modifiables",
+    "SYMBAROUM.OPTIONAL_EDITABLE_COLOUR_SELECTOR": "Choisir la couleur de fond des champs modifiables",
+    "SYMBAROUM.OPTIONAL_EDITABLE_BG_IMGS": "Texture de fond des champs modifiables",
+    "SYMBAROUM.OPTIONAL_NON_EDITABLE_COLOUR_SELECTOR": "Choisir la couleur de fond des champs fixes",
+    "SYMBAROUM.OPTIONAL_NON_EDITABLE_BG_IMGS": "Texture de fond des champs fixes",
+    "SYMBAROUM.OPTIONAL_RESET_NON_EDITABLE_BUTTON" :"Réinitialiser la couleur de fond des champs fixes",
+    "SYMBAROUM.OPTIONAL_RESET_ALL_BUTTON": "Reinitialiser les paramètres"
   
 }
 

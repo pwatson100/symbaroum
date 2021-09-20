@@ -295,19 +295,11 @@ To apply temporary corruption on the token
 }
 */
 export async function createModifyTokenChatButton(actionsDataArray){
-
-  const html = await renderTemplate("systems/symbaroum/template/chat/applyEffectsButton.html");
-  let gmList =  ChatMessage.getWhisperRecipients('GM');
-  if(gmList.length > 0){
-    const chatData = {
-        user: game.user.id,
-        content: html,
-        whisper: gmList,
-        blind: true
-    }
-    let NewMessage = await ChatMessage.create(chatData);
-    await NewMessage.setFlag(game.system.id, 'abilityRoll', actionsDataArray);
-  }
+  game.symbaroum.emit(
+    { 
+      type: "GMMessage",
+      data: actionsDataArray
+    });
 }
 
 /*formatDice produces a string of any rolls with any ignored dice within a css class of .strike

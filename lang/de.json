@@ -465,6 +465,7 @@
   "POWER_INHERITWOUND.CHAT_FAILURE": " kann die Wunden nicht transferieren.",
   "POWER_INHERITWOUND.CHAT_HEALED": " erhält Zähigkeitsheilung für: ",
   "POWER_INHERITWOUND.CHAT_DAMAGE": " erhält Schaden: ",
+  "POWER_INHERITWOUND.CHAT_REDIRECT": ";  poison and bleeding are also transfered.",
 
   "POWER_LARVAEBOILS.CHAT_INTRO": " beschwört Larven.",
   "POWER_LARVAEBOILS.CHAT_INTRO_M": " hält den Larvenfrass aufrecht.",
