@@ -1776,7 +1776,7 @@ async function standardPowerResult(rollData, functionStuff){
         }
         
         if(healResult){
-            console.log(healResult)
+            // console.log(healResult)
             templateData.hasDamage = healResult.hasDamage;
             templateData.damageText = healResult.damageText;
             templateData.dmgFormula = healResult.dmgFormula;

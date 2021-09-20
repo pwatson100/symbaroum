@@ -412,10 +412,6 @@ async function setupConfigOptions() {
   await r.style.setProperty('--box-non-editable', game.settings.get('symbaroum', 'switchNoNEditableColour'));
 }
 
-async function ecChatCreate(data){
-  console.log("Received: ",data);
-}
-
 async function createBlessedShield(actor, protection = '1d4') {
   let data = {
     name: game.i18n.localize('POWER_LABEL.BLESSED_SHIELD'),
@@ -450,7 +446,7 @@ async function showReleaseNotes() {
 
       let newReleasePack = game.packs.find((p) => p.metadata.label === releasePackLabel);
       if (newReleasePack === null || newReleasePack === undefined) {
-        console.log('No pack found');
+        console.error('No pack found');
         // This is bad - the symbaroum pack does not exist in the system packages
         return;
       }
@@ -475,7 +471,7 @@ async function showReleaseNotes() {
       // Show journal
       await newReleaseJournal.sheet.render(true, { sheetMode: 'text' });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } // end of try
   } // end of if(isgm)
 } // end of function
@@ -491,7 +487,7 @@ async function tidyReleaseNotes11() {
 
 async function setupEmit()
 {
-  console.log("Setting up listener");
+  console.info("Setting up Symbaroum emit system");
   SymbaroumCommsListener.ready();
 }
 
