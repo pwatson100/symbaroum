@@ -573,6 +573,7 @@
   "TOOLTIP.COMBAT.INITIATIVE": "Die Eigenschaft auf die deine Initiative basiert",
   "TOOLTIP.COMBAT.DEFENSE": "Die Eigenschaft auf die deine Verteidigung basiert",
 
+  "TOOLTIP.DELETE_ABILITY" : "Delete ability",
   "TOOLTIP.POWER_ACTIONS" : "Art der Aktivierung (A - Aktiv, P - Passiv, S - Speziell, etc)",
 
   "TRAIT.NAME": "Name",

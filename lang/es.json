@@ -612,6 +612,7 @@
   "TOOLTIP.COMBAT.INITIATIVE": "El atributo en el que se basa su iniciativa",
   "TOOLTIP.COMBAT.DEFENSE": "El atributo en el que se basa su defensa",
   
+  "TOOLTIP.DELETE_ABILITY" : "Delete ability",
   "TOOLTIP.POWER_ACTIONS" : "Tipo de activación (A - activa, P - pasiva, S - especial, etc)",
 
   "TRAIT.NAME": "Nombre",

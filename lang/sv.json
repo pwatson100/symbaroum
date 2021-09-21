@@ -609,6 +609,7 @@
   "TOOLTIP.COMBAT.INITIATIVE": "Det karaktärsdrag som ditt initiativ baseras på",
   "TOOLTIP.COMBAT.DEFENSE": "Det karaktärsdrag som ditt försvar baseras på",
   
+  "TOOLTIP.DELETE_ABILITY" : "Delete ability",
   "TOOLTIP.POWER_ACTIONS" : "Typ av aktivering (A - Aktiv, P - Passiv, S - special, etc)",
 
   "TRAIT.NAME": "Namn",
