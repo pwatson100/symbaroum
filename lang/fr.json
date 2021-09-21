@@ -107,7 +107,7 @@
     "ABILITY_MEDICUS.CHAT_TARGET": "Bénéficiaire : ",
     "ABILITY_MEDICUS.NO_TARGET": "Pas de cible selectionnée, test de médicus sans soins",
     "DIALOG.MEDICUS_EXAM": "Test de médicus sans soins",
-    "DIALOG.CUSTOM_HEALING_MODIFIER": "Jet de soins personnalisée",
+    "DIALOG.CUSTOM_HEALING_MODIFIER": "Jet de soins personnalisé",
 
     "ABILITY_STRANGLER.CHAT_INTRO": " tente une prise de strangulation.",
     "ABILITY_STRANGLER.CHAT_INTRO_M": " essaye de maintenir sa prise.",
@@ -133,8 +133,8 @@
     "ACTION.MOVEMENT": "Mouvement",
     "ACTION.FULL_TURN": "Tour Entier",
 
-    "ACTOR.TypePlayer": "Player character",
-    "ACTOR.TypeMonster": "Non-player/monster character",
+    "ACTOR.TypePlayer": "Personnage Joueur",
+    "ACTOR.TypeMonster": "Personnage Non-Joueur",
 
     "ARMOR.NAME": "Nom",
     "ARMOR.PROTECTION": "Protection",
@@ -151,8 +151,8 @@
     "ARMOR.QUALITY": "Qualité",
     "ARMOR.DESCRIPTION": "Description",
     "ARMOR.BONUS_ONLY": "Protection additionnelle",
-    "ARMOR.ADDBUTTON": "Add Armor",
-    "ARMOR.DELETEBUTTON": "Delete Armor",  
+    "ARMOR.ADDBUTTON": "Ajouter une armure",
+    "ARMOR.DELETEBUTTON": "Supprimer l'armure",  
 
     "ARTIFACT.NAME": "Nom",
     "ARTIFACT.ACTION": "Action",
@@ -160,7 +160,7 @@
     "ARTIFACT.CORRUPTIONABBR": "Corr.",    
     "ARTIFACT.DESCRIPTION": "Description",
     "ARTIFACT.TITLE":"POUVOIRS D'ARTEFACT",
-    "ARTIFACT.ADDBUTTON": "Ajouter Artefact",
+    "ARTIFACT.ADDBUTTON": "Ajouter un Artefact",
     "ARTIFACT.DELETEBUTTON": "Supprimer l'Artefact",
     "ARTIFACT.POWER_ADDBUTTON": "Ajouter un pouvoir",
     "ARTIFACT.POWER_DELETEBUTTON": "Supprimer ce pouvoir",     
@@ -272,7 +272,7 @@
     "CORRUPTION.CHAT_MAX": " devient une abomination (max atteint).",
     "CORRUPTION.CHAT_WARNING": " approche du seuil de soullure.",
 
-    "DIALOG.SYSTEM_MESSAGE":"Symbaroum system message",
+    "DIALOG.SYSTEM_MESSAGE":"Message du système Symbaroum",
     "DIALOG.VERSUS": "Versus",
     "DIALOG.ASK_CORRUPTION": "Cible totalement corrompue?",
     "DIALOG.ATTRIBUTE": "Attribut",
@@ -283,7 +283,7 @@
     "DIALOG.FAVOUR_FAVOUR": "Faveur", 
     "DIALOG.FAVOUR_DISFAVOUR": "Défaveur",
     "DIALOG.DAMAGE_MODIFIER": "Autre mod. dégâts",
-    "DIALOG.WEAPON_DAMAGE": "Dam. roll",  
+    "DIALOG.WEAPON_DAMAGE": "Jet de dégâts",  
     "DIALOG.CASTING": "Lancement du talent",
     "DIALOG.MAINTAINING": "Jet pour maintenir le talent",
     "DIALOG.AUTOPARAMS": "Modificateurs déjà comptés: ",
@@ -311,8 +311,8 @@
     "EQUIPMENT.NUMBER": "Nombre",
     "EQUIPMENT.DESCRIPTION": "Description",
     "EQUIPMENT.QUANTITY_SHORT":"Qté",
-    "EQUIPMENT.ADDBUTTON": "Add Equipment",
-    "EQUIPMENT.DELETEBUTTON": "Delete Equipment",  
+    "EQUIPMENT.ADDBUTTON": "Ajouter un équipment",
+    "EQUIPMENT.DELETEBUTTON": "Supprimer l'équipment",  
 
     "ERROR.NO_TOKEN_SELECTED": "Selectionnez le token concerné, et uniquement ce token.",
 
@@ -339,7 +339,7 @@
     "HEALTH.CORRUPTION_MAX": "Maximale",
 
     "INITIATIVE.TITLE": "Initiative",
-    "INITIATIVE.EXPLANATION": "Initiative shown as [initiative attribute.vigilant]",
+    "INITIATIVE.EXPLANATION": "Initiative indiquée comme [Attribut utilisé.vigilance]",
 
     "ITEM.TRAIT": "Trait",
     "ITEM.ABILITY": "Talent",
@@ -349,8 +349,8 @@
     "ITEM.MYSTICAL_POWER": "Pouvoir Mystique",
     "ITEM.RITUAL": "Rituel",
     "ITEM.WEAPON": "Arme",
-    "ITEM.BOON" : "Boon",
-    "ITEM.BURDEN": "Burden",
+    "ITEM.BOON" : "Atout",
+    "ITEM.BURDEN": "Fardeau",
   
     "ITEM.TypeTrait": "Trait",
     "ITEM.TypeAbility": "Talent",
@@ -360,8 +360,8 @@
     "ITEM.TypeMysticalpower": "Pouvoir Mystique",
     "ITEM.TypeRitual": "Rituel",
     "ITEM.TypeWeapon": "Arme",
-    "ITEM.TypeBoon": "Boon",
-    "ITEM.TypeBurden": "Burden",   
+    "ITEM.TypeBoon": "Atout",
+    "ITEM.TypeBurden": "Fardeau",   
   
     "MONEY.THALER": "Thaler",
     "MONEY.SHILLING": "Shilling",
@@ -547,8 +547,8 @@
     "RITUAL.TRADITION": "Tradition",
     "RITUAL.DESCRIPTION": "Description",
 
-    "ROLL.CRITSHORT":"crit",
-    "ROLL.ADVANTAGESHORT":"adv",
+    "ROLL.CRITSHORT":"Crit",
+    "ROLL.ADVANTAGESHORT":"Av",
   
     "TAB.MAIN": "PRINCIPAL",
     "TAB.GEAR": "ÉQUIPEMENTS",
@@ -602,6 +602,7 @@
     "TOOLTIP.COMBAT.INITIATIVE": "L'attribut principal utilisé pour calculer votre initiative",
     "TOOLTIP.COMBAT.DEFENSE": "L'attribut utilisé pour calculer votre défense",
     
+    "TOOLTIP.DELETE_ABILITY" : "Supprimer ce talent",
     "TOOLTIP.POWER_ACTIONS" : "Type d'action (A - active, P - passive, S - spéciale, etc)",
 
     "TRAIT.NAME": "Nom",
@@ -690,8 +691,9 @@
     "WEAPON.ATTRIBUTE": "Attribut",
     "WEAPON.ATTRIBUTEABBR": "Attr.",
     "WEAPON.DESCRIPTION": "Description",
-    "WEAPON.ADDBUTTON": "Add Weapon",
-    "WEAPON.DELETEBUTTON": "Delete Weapon",
+    "WEAPON.ATTACK_ATTRIBUTE":"Attaque avec",
+    "WEAPON.ADDBUTTON": "Ajouter une arme",
+    "WEAPON.DELETEBUTTON": "Supprimer cette arme",
   
     "WEAPON_CLASS.LABEL": "Type d'arme",
     "WEAPON_CLASS.1HANDED": "Arme à une main",
