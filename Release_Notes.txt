@@ -172,3 +172,6 @@ Version 3.0.9
 - New backgrounds provided by AshesForAshe (AshesForAshe#6498)
 - Many improvements on the character sheets (main page weapons & armors)
 - Monster character sheet can now show +/- instead of values (configurable under options)
+- New configuration settings dialogue for sheet, title backgrounds and editable/non-editable fields (textures or colours).
+-    These are client based setting so can be adjusted by each user.  
+
