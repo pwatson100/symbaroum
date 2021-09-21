@@ -274,6 +274,7 @@
   "CORRUPTION.CHAT_MAX": " förvandlas till en styggelse (max korruption uppnådd).",
   "CORRUPTION.CHAT_WARNING": " är nära en korruptionströskel.",
 
+  "DIALOG.SYSTEM_MESSAGE":"Symbaroum systemmeddelande",
   "DIALOG.AUTOPARAMS": "Inkluderade modifieringar: ",
   "DIALOG.BACKSTAB": "Använda Lönnstöt?",
   "DIALOG.BEASTLORE": "Monsterlärd extra skada?",

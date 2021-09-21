@@ -457,7 +457,7 @@ export async function damageRollWithDiceParams(functionStuff, critSuccess, attac
       else newRollDmgString += " - 0";
     }
     // final damage
-    console.log(newRollDmgString);
+    // console.log(newRollDmgString);
     let dmgRoll= new Roll(newRollDmgString).evaluate();
 
     return{

@@ -277,6 +277,7 @@
   "CORRUPTION.CHAT_MAX": " turns into an abomination (max reached).",
   "CORRUPTION.CHAT_WARNING": " is close to a corruption treshold.",
 
+  "DIALOG.SYSTEM_MESSAGE":"Symbaroum system message",
   "DIALOG.AUTOPARAMS": "Modificadores incluidos: ",
   "DIALOG.BACKSTAB": "¿Usar Ataque Traicionero?",
   "DIALOG.BEASTLORE": "+BeastLore dmg?",

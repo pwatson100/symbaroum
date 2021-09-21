@@ -56,7 +56,6 @@ export class PlayerSheet2 extends PlayerSheet {
         } else {
             this.constructor.defaultOptions.classes = ["symbaroum", "sheet", "actor", "monster"];
         }
-//        console.log(this.constructor.defaultOptions);
 
         super.render(args);
     }
