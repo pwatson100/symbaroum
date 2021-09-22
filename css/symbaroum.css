@@ -673,6 +673,26 @@
   cursor: pointer;
 }
 
+.symbaroum.sheet.item button {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--color-label);
+  font-family: var(--font-text);
+  background: var(--title-color) repeat;
+  text-align: center;
+  padding: 0;
+  cursor: pointer;
+  border: none;
+  border-radius: 0;
+  margin: 0;
+}
+
+.symbaroum.sheet.actor button:hover {
+  color: var(--color-active);
+  text-shadow: 0 0 10px var(--color-active);
+  box-shadow: none;
+}
+
 .symbaroum.sheet.item input[type=text][disabled],
 .symbaroum.sheet.item input[type=number][disabled] {
   background: var(--box-non-editable) repeat;
