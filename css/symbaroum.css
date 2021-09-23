@@ -17,7 +17,6 @@
 .symbaroum.chat.ability .border {
   border: 1px solid transparent;
   border-color: var(--title-color);
-  border-image: var(--title-image) 20/10px;
 }
 
 .symbaroum.chat.combatstrong,
@@ -245,7 +244,6 @@
 .symbaroum.chat.item .border {
   border: 1px solid transparent;
   border-color: var(--title-color);
-  border-image: var(--title-image) 20/10px;
 }
 
 .symbaroum.chat.item strong {
