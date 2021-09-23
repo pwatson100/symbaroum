@@ -175,3 +175,5 @@ Version 3.0.9
 - New configuration settings dialogue for sheet, title backgrounds and editable/non-editable fields (textures or colours).
 -    These are client based setting so can be adjusted by each user.  
 
+Version 3.0.10
+- corrected issues with the sheet configuration dialogue for new worlds and users. 
