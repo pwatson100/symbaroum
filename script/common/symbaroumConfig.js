@@ -40,24 +40,44 @@ export class SymbaroumConfig extends FormApplication {
   }
 
   getData(options) {
-    return foundry.utils.mergeObject({
+    const newData = {
       charBGChoice: game.settings.get('symbaroum', 'charBGChoice'),
-      charBGColour: game.settings.get('symbaroum', 'switchCharBGColour'),
       npcBGChoice: game.settings.get('symbaroum', 'npcBGChoice'),
-      npcBGColour: game.settings.get('symbaroum', 'switchNpcBGColour'),
       titleBGChoice: game.settings.get('symbaroum', 'titleBGChoice'),
-      titleBGColour: game.settings.get('symbaroum', 'switchTitleColour'),
       editableChoice: game.settings.get('symbaroum', 'editableChoice'),
-      editableColour: game.settings.get('symbaroum', 'switchEditableColour'),
       noneditableChoice: game.settings.get('symbaroum', 'nonEditableChoice'),
-      noneditableColour: game.settings.get('symbaroum', 'switchNoNEditableColour'),
-    });
+    };
+    if (game.settings.get('symbaroum', 'charBGChoice') === 'none') {
+      newData['charBGColour'] = game.settings.get('symbaroum', 'switchCharBGColour');
+    } else {
+      newData['charBGColour'] = '#000000';
+    }
+    if (game.settings.get('symbaroum', 'npcBGChoice') === 'none') {
+      newData['npcBGColour'] = game.settings.get('symbaroum', 'switchNpcBGColour');
+    } else {
+      newData['npcBGColour'] = '#000000';
+    }
+    if (game.settings.get('symbaroum', 'titleBGChoice') === 'none') {
+      newData['titleBGColour'] = game.settings.get('symbaroum', 'switchTitleColour');
+    } else {
+      newData['titleBGColour'] = '#000000';
+    }
+    if (game.settings.get('symbaroum', 'editableChoice') === 'none') {
+      newData['editableColour'] = game.settings.get('symbaroum', 'switchEditableColour');
+    } else {
+      newData['editableColour'] = '#000000';
+    }
+    if (game.settings.get('symbaroum', 'nonEditableChoice') === 'none') {
+      newData['noneditableColour'] = game.settings.get('symbaroum', 'switchNoNEditableColour');
+    } else {
+      newData['noneditableColour'] = '#000000';
+    }
+
+    return foundry.utils.mergeObject(newData);
   }
 
   activateListeners(html) {
     super.activateListeners(html);
-    // html.find('#charBGImage').change(this._showPCColOption.bind(this));
-    // html.find('#npcBGImage').change(this._showNPCColOption.bind(this));
     html.find('#charBGImage').change((ev) => this._showColOption(ev, '#pcColPanel', charBGImage.value));
     html.find('#npcBGImage').change((ev) => this._showColOption(ev, '#npcColPanel', npcBGImage.value));
     html.find('#titleBGImage').change((ev) => this._showColOption(ev, '#titleColPanel', titleBGImage.value));
@@ -144,7 +164,7 @@ export class SymbaroumConfig extends FormApplication {
     await game.settings.set('symbaroum', 'nonEditableChoice', formData.nonEditableImage);
 
     if (charBGImage.value === 'none') {
-      if (formData.npcBGColour.length > 0 && formData.charBGColour[0] != '#') {
+      if (formData.charBGColour.length > 0 && formData.charBGColour[0] != '#') {
         formData.charBGColour = '#000000';
       }
       await game.settings.set('symbaroum', 'switchCharBGColour', formData.charBGColour);
