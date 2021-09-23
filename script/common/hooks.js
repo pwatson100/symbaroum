@@ -192,30 +192,35 @@ Hooks.once('init', () => {
     type: String,
     config: false,
     scope: 'client',
+    default: 'url(../asset/image/background/green_flower_light.webp) repeat',
   });
   game.settings.register('symbaroum', 'npcBGChoice', {
     restricted: false,
     type: String,
     config: false,
     scope: 'client',
+    default: 'url(../asset/image/background/purple_flower_light.webp) repeat',
   });
   game.settings.register('symbaroum', 'titleBGChoice', {
     restricted: false,
     type: String,
     config: false,
     scope: 'client',
+    default: 'url(../asset/image/background/title.webp)',
   });
   game.settings.register('symbaroum', 'editableChoice', {
     restricted: false,
     type: String,
     config: false,
     scope: 'client',
+    default: 'url(../asset/image/background/editable.webp)',
   });
   game.settings.register('symbaroum', 'nonEditableChoice', {
     restricted: false,
     type: String,
     config: false,
     scope: 'client',
+    default: 'url(../asset/image/background/not-editable.webp)',
   });
 
   game.settings.register('symbaroum', 'switchCharBGColour', {
@@ -400,7 +405,6 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
   }
 });
 
-
 // This sets the css DOM objects we will change with the registered settings
 async function setupConfigOptions() {
   let r = document.querySelector(':root');
@@ -485,9 +489,8 @@ async function tidyReleaseNotes11() {
   }
 }
 
-async function setupEmit()
-{
-  console.info("Setting up Symbaroum emit system");
+async function setupEmit() {
+  console.info('Setting up Symbaroum emit system');
   SymbaroumCommsListener.ready();
 }
 
