@@ -1209,7 +1209,7 @@
   animation: rotation 10s infinite linear;
 }
 #pause h3 {
-  font-family: "IM Fell DW Pica SC";
+  font-family: var(--font-text);
   font-size: 32px;
   text-shadow: 0px 3px 5px black;
 }
