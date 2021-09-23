@@ -2938,11 +2938,6 @@
   background: url(../asset/image/foreground.webp) repeat;
 }
 
-.symbaroum.attributes .border {
-  border: 10px solid transparent;
-  border-image: var(--title-image) 20/10px round;
-}
-
 .symbaroum.attributes h1 {
   width: 100%;
   height: 30px;
