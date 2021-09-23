@@ -1,4 +1,4 @@
-import { attackRoll, getPowerLevel, markScripted } from './item.js';
+import { attackRoll, checkResoluteModifiers, getPowerLevel, markScripted } from './item.js';
 import { prepareRollAttribute } from "../common/dialog.js";
 import { upgradeDice } from './roll.js';
 
@@ -99,8 +99,13 @@ export class SymbaroumActor extends Actor {
 
             data.data.attributes[aKey].bonus = data.data.bonus[aKey];
             data.data.attributes[aKey].total = data.data.attributes[aKey].value + data.data.bonus[aKey] + data.data.attributes[aKey].temporaryMod;
+            data.data.attributes[aKey].modifier = 10 - data.data.attributes[aKey].total;
             if(data.type === "monster") {
-                data.data.attributes[aKey].msg = game.i18n.localize("TOOLTIP.BONUS_TOTAL")+ ` ${data.data.attributes[aKey].total}`+" ("+(10 - data.data.attributes[aKey].total)+")<br />"+game.i18n.localize("ATTRIBUTE.BASE")+"("+data.data.attributes[aKey].value.toString()+")"+`${data.data.bonus[aKey + "_msg"]}`;
+                let modSign = "";
+                if(data.data.attributes[aKey].modifier > 0) {
+                    modSign = "+";
+                }
+                data.data.attributes[aKey].msg = game.i18n.localize("TOOLTIP.BONUS_TOTAL")+ ` ${data.data.attributes[aKey].total} (${modSign}${data.data.attributes[aKey].modifier})<br />${game.i18n.localize("ATTRIBUTE.BASE")}(${data.data.attributes[aKey].value.toString()}) ${data.data.bonus[aKey + "_msg"]}`;
             } else {
                 data.data.attributes[aKey].msg = game.i18n.localize("TOOLTIP.BONUS_TOTAL")+ ` ${data.data.attributes[aKey].total}`+"<br />"+game.i18n.localize("ATTRIBUTE.BASE")+"("+data.data.attributes[aKey].value.toString()+")"+`${data.data.bonus[aKey + "_msg"]}`;
             }
@@ -112,8 +117,8 @@ export class SymbaroumActor extends Actor {
         let sturdy = this.data.items.filter(item => item.data.data.reference === "sturdy");
         if(sturdy.length != 0){
             let sturdyLvl = getPowerLevel(sturdy[0]).level;
-            if(sturdyLvl == 1) data.data.health.toughness.max = Math.ceil(strong*(1.5));
-            else data.data.health.toughness.max = strong*(sturdyLvl)
+            if(sturdyLvl == 1) data.data.health.toughness.max = Math.ceil(strong*(1.5)) + data.data.bonus.toughness.max;
+            else data.data.health.toughness.max = strong*(sturdyLvl) + data.data.bonus.toughness.max;
         }
         else data.data.health.toughness.max = (strong > 10 ? strong : 10) + data.data.bonus.toughness.max;
         let featSt = this.data.items.filter(item => item.data.data.reference === "featofstrength");
@@ -123,12 +128,14 @@ export class SymbaroumActor extends Actor {
         }
 
         let noPain = this.data.items.filter(element => element.data.data.reference === "nopainthreshold");
-        if(noPain.length > 0){
+        data.hasNoPainThreshold = noPain.length > 0;
+        if(noPain.length > 0){            
             data.data.health.toughness.threshold = 0;
         } else data.data.health.toughness.threshold = Math.ceil(strong / 2) + data.data.bonus.toughness.threshold;
         
         // Corruption Max
         let fullCorrupt = (this.data.items.filter(element => element.data.data.reference === "thoroughlycorrupt"));
+        data.isThoroughlyCorrupt = fullCorrupt.length > 0;
         if(fullCorrupt.length > 0){
             data.data.health.corruption.threshold = 0;
             data.data.health.corruption.max = 0;
@@ -153,7 +160,7 @@ export class SymbaroumActor extends Actor {
         let activeArmor = this._getActiveArmor(data, extraArmorBonus);
         let defense = this._getDefenseValue(data, activeArmor);
         let damageProt = this._getDamageProtection();
-        let totDefense = defense.attDefValue - activeArmor.impeding + data.data.bonus.defense;
+        let totDefense = defense.attDefValue - activeArmor.impeding + data.data.bonus.defense;        
 
         data.data.combat = {
             id: activeArmor.id,
@@ -165,6 +172,10 @@ export class SymbaroumActor extends Actor {
             impeding: activeArmor.impeding,
             tooltipProt: activeArmor.tooltip,
             defense: totDefense,
+            defenseAttribute: {
+                attribute: defense.attribute,
+                label: data.data.attributes[defense.attribute].label
+            },
             defmod: (10 - totDefense),
             msg: defense.defMsg,
             damageProt: damageProt
@@ -175,10 +186,11 @@ export class SymbaroumActor extends Actor {
             data.data.weapons = this.evaluateWeapons(activeWeapons);
         }
         if(!game.settings.get('symbaroum', 'manualInitValue')){
-            this._getInitiativeAttribute()
+            this._getInitiativeAttribute();
         }
         let attributeInit = data.data.initiative.attribute.toLowerCase();
         data.data.initiative.value = ((data.data.attributes[attributeInit].total) + (data.data.attributes.vigilant.total /100)) ;
+        data.data.initiative.label = data.data.attributes[attributeInit].label;
 
         let rrAbility = this.items.filter(item => item.data.data.reference === "rapidreflexes");
         if(rrAbility.length != 0){
@@ -192,7 +204,7 @@ export class SymbaroumActor extends Actor {
             this.data.numRituals = this.data.numRituals + 1;
             if( this.data.numRituals > 6 ) {
                 // This needs to check if running with alternative rules for additional rituals, APG p.102                
-              item.data.bonus.experience.cost = game.settings.get('symbaroum', 'optionalMoreRituals') ? 10 : 0;
+                item.data.bonus.experience.cost = game.settings.get('symbaroum', 'optionalMoreRituals') ? 10 : 0;
             }
         }
         
@@ -263,6 +275,7 @@ export class SymbaroumActor extends Actor {
         if(colossal.length > 0){
             colossalLvl = getPowerLevel(colossal[0]).level;
         }
+        let flagDancing = this.getFlag(game.system.id, 'dancingweapon');
         // check for abilities that changes attack attribute
         let dominate = this.data.items.filter(element => element.data.data?.reference === "dominate");
         let feint = this.data.items.filter(element => element.data.data?.reference === "feint");
@@ -319,6 +332,11 @@ export class SymbaroumActor extends Actor {
                     if(this.data.data.attributes.strong.total >= this.data.data.attributes[attribute].total){
                         attribute = "strong";
                     }
+                }
+                if(flagDancing){
+                    let resoluteMod = checkResoluteModifiers(this, "", true, false);
+                    attribute = resoluteMod.bestAttributeName;
+                    tooltip += game.i18n.localize("POWER_LABEL.DANCING_WEAPON") + ", ";
                 }
                 if(doAlternativeDamage){
                     let alternativeDamageLvl = 0;
@@ -469,6 +487,10 @@ export class SymbaroumActor extends Actor {
                 npcDamageExt+=1;
                 tooltip += game.i18n.localize("QUALITY.DEEPIMPACT") + ", ";
             }
+            let attributeMod = 0;
+            if(item.data.data.qualities.precise) {
+                attributeMod = 1;
+            }
             let itemID = item.id;
             weaponArray.push({
                 id: itemID,
@@ -477,6 +499,8 @@ export class SymbaroumActor extends Actor {
                 img: item.data.img,
                 attribute: attribute,
                 attributeLabel: this.data.data.attributes[attribute].label, 
+                attributeValue: this.data.data.attributes[attribute].total + attributeMod,
+                attributeMod: (10 - attributeMod - this.data.data.attributes[attribute].total),
                 tooltip : tooltip,
                 isActive: item.data.isActive,
                 isEquipped: item.data.isEquipped,
@@ -634,6 +658,14 @@ export class SymbaroumActor extends Actor {
                 attDefValue = data.data.attributes[attributeDef].total
             }
         }
+
+        let flagDancing = this.getFlag(game.system.id, 'dancingweapon');
+        if(flagDancing){
+            let resoluteMod = checkResoluteModifiers(this, "", true, false);
+            attributeDef = resoluteMod.bestAttributeName;
+            attDefValue = data.data.attributes[attributeDef].total;
+        }
+
         data.data.defense.attribute = attributeDef;
         data.data.defense.attributelabel = data.data.attributes[attributeDef].label;
 
@@ -668,6 +700,7 @@ export class SymbaroumActor extends Actor {
             }
         }
         return({
+            attribute: attributeDef,
             attDefValue: attDefValue,
             defMsg: defMsg
         })

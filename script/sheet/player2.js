@@ -6,7 +6,7 @@ export class PlayerSheet2 extends PlayerSheet {
 
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
-            classes: ["symbaroum", "sheet", "actor"],
+            classes: ["symbaroum", "sheet", "actor", "player"],
             template: "systems/symbaroum/template/sheet/player2.html",
             width: 800,
             height: 1000,
@@ -40,6 +40,23 @@ export class PlayerSheet2 extends PlayerSheet {
         data.cssClass = this.isEditable ? "editable" : "locked";
         data.editable = this.isEditable;
 
+        data.symbaroumOptions = {
+            isGM: game.user.isGM,
+            isNPC: this.actor.type === "monster",
+            showNpcModifiers: game.settings.get('symbaroum', 'showNpcModifiers')
+        };
+
         return data;
+    }
+
+    render(args)
+    {
+        if(this.actor.type === "monster") {
+            this.constructor.defaultOptions.classes = ["symbaroum", "sheet", "actor"];
+        } else {
+            this.constructor.defaultOptions.classes = ["symbaroum", "sheet", "actor", "monster"];
+        }
+
+        super.render(args);
     }
 }

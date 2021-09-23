@@ -99,5 +99,8 @@
   - Foundry VTT support is covered by the following license: [Limited License Agreement for module development 09/02/2020](https://foundryvtt.com/article/license/).
 </p>
 <p>
+  - A big thank you to AshesToAshe (AshesForAshe#6498) for providing many of the character sheet backgrounds.
+</p>
+<p>
   - Additional art under Creative Commons 3.0 BY license: icons by Delapouite and Lorc - More info available at https://game-icons.net
 </p>

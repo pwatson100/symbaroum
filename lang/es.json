@@ -277,8 +277,10 @@
   "CORRUPTION.CHAT_MAX": " turns into an abomination (max reached).",
   "CORRUPTION.CHAT_WARNING": " is close to a corruption treshold.",
 
+  "DIALOG.SYSTEM_MESSAGE":"Symbaroum system message",
   "DIALOG.AUTOPARAMS": "Modificadores incluidos: ",
   "DIALOG.BACKSTAB": "¿Usar Ataque Traicionero?",
+  "DIALOG.BEASTLORE": "+BeastLore dmg?",
   "DIALOG.HUNTERS_INSTINCT": "¿Objetivo del Instinto de Cazador?",
   "DIALOG.ISMAINTAINED": "¿Nuevo casteo o lo mantienes?",
   "DIALOG.USE_POISON": "¿Se aplicó el veneno?",
@@ -319,6 +321,8 @@
   "EQUIPMENT.ADDBUTTON": "Add Equipment",
   "EQUIPMENT.DELETEBUTTON": "Delete Equipment",
 
+  "ERROR.NO_TOKEN_SELECTED": "Select the acting token.",
+
   "EXPERIENCE": "Experiencia",
 
   "GEAR.ACTIVE": "Activo",
@@ -341,7 +345,8 @@
   "HEALTH.CORRUPTION_THRESHOLD_MAX": "Umbral Corrup.",
   "HEALTH.CORRUPTION_MAX": "Umbral Abom.",
   
-  "INITIATIVE": "Iniciativa",
+  "INITIATIVE.TITLE": "Iniciativa",
+  "INITIATIVE.EXPLANATION": "Initiative shown as [initiative attribute.vigilant]",
 
   "ITEM.TRAIT": "Rasgo",
   "ITEM.ABILITY": "Habilidad",
@@ -470,6 +475,11 @@
   "POWER_CURSE.CHAT_FAILURE": " no puede mantener la maldición.",
   "POWER_CURSE.CHAT_FAIL_FINAL": "La maldición ya no tiene efecto en ",
   
+  "POWER_DANCINGWEAPON.CHAT_ACTIVATE": " is using his dancing weapon.",
+  "POWER_DANCINGWEAPON.CHAT_DESACTIVATE": " isn't using dancing weapon anymore.",
+  "POWER_DANCINGWEAPON.CHAT_RESULT_ACTIVATE": "Combat stats are replaced by Resolute.",
+  "POWER_DANCINGWEAPON.CHAT_RESULT_DESACTIVATE": "Combat stats revert to normal.",
+  
   "POWER_ENTANGLINGVINES.CHAT_INTRO_M": " tries to break free from the vines.",
   "POWER_ENTANGLINGVINES.CHAT_SUCCESS": " is entangled in the vines.",
   "POWER_ENTANGLINGVINES.CHAT_FAILURE": " breaks free from the vines.",
@@ -485,11 +495,20 @@
   "POWER_INHERITWOUND.CHAT_FAILURE": " no puede transferir las heridas.",
   "POWER_INHERITWOUND.CHAT_HEALED": " recibe una curación de su resistencia de: ",
   "POWER_INHERITWOUND.CHAT_DAMAGE": " daños recibidos: ",
+  "POWER_INHERITWOUND.CHAT_REDIRECT": ";  poison and bleeding are also transfered.",
 
   "POWER_LARVAEBOILS.CHAT_INTRO": " lanza larvas.",
   "POWER_LARVAEBOILS.CHAT_INTRO_M": " mantiene la Erupción de Larvas.",
   "POWER_LARVAEBOILS.CHAT_SUCCESS": " es comido desde el interior por las larvas.",
   "POWER_LARVAEBOILS.CHAT_FAILURE": " resiste a las larvas.",
+    
+  "POWER_LAYONHANDS.DIALOG":"How close is your target?",
+  "POWER_LAYONHANDS.TOUCH":"Touch",
+  "POWER_LAYONHANDS.REMOTE":"Line of sight",
+  "POWER_LAYONHANDS.CHAT_INTRO":" awakes the lifeforce.",
+  "POWER_LAYONHANDS.CHAT_SUCCESS":" heals ",
+  "POWER_LAYONHANDS.CHAT_FINAL":"Toughness healed: ",
+  "POWER_LAYONHANDS.CHAT_FAILURE":" fails to heal ",
 
   "POWER_PRIOSBURNINGGLASS.CHAT_INTRO":" tries to channel the Light of Prios at a target.",
   "POWER_PRIOSBURNINGGLASS.CHAT_EXTRA":" might be stunned, test [resolute <-- resolute].",
@@ -578,6 +597,7 @@
   "TOOLTIP.EXPERIENCE_SPENT": "Experiencia total gastada en habilidades, rasgos, dones y cargas.",
   "TOOLTIP.EXPERIENCE_AVAILABLE": "Tus puntos de experiencia (no gastados) disponibles actualmente",
   
+  "TOOLTIP.HEALTH.CORRUPTION_NA_TEXT": "This is thoroughly corrupt",
   "TOOLTIP.HEALTH.CORRUPTION_CURRENT": "Tu corrupción total actual",
   "TOOLTIP.HEALTH.CORRUPTION_TEMPORARY": "Tu corrupción temporal (escena)",
   "TOOLTIP.HEALTH.CORRUPTION_LONGTERM": "Tu corrupción que dura más que una escena",
@@ -592,12 +612,14 @@
   "TOOLTIP.COMBAT.INITIATIVE": "El atributo en el que se basa su iniciativa",
   "TOOLTIP.COMBAT.DEFENSE": "El atributo en el que se basa su defensa",
   
+  "TOOLTIP.DELETE_ABILITY" : "Delete ability",
   "TOOLTIP.POWER_ACTIONS" : "Tipo de activación (A - activa, P - pasiva, S - especial, etc)",
 
   "TRAIT.NAME": "Nombre",
   "TRAIT.ACTIVE": "Activo",
   "TRAIT.ACTION": "Acción",
   "TRAIT.DESCRIPTION": "Descr.",
+  "TRAIT.MARKERTRAIT": "Trait has no levels",
 
   "TRAIT_LABEL.ACIDICATTACK": "Ataque Ácido",
   "TRAIT_LABEL.ACIDICBLOOD": "Sangre Ácida",
@@ -710,12 +732,38 @@
   "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT": "Marcar para permitir mejoras de QoL para mantener todos los modificadores cuando se hagan pruebas de atributos",
   "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE": "Mostrar modificadores en tiradas de atributo con objetivo",
   "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE_HINT": "Marcar para permitir mejoras de QoL para mostrar los mod de los atributos antes de la tirada",
+  "SYMBAROUM.OPTIONAL_NPC_MODIFIERS": "Show NPC modifiers",
+  "SYMBAROUM.OPTIONAL_NPC_MODIFIERS_HINT": "Check to show NPC modifiers (-5 to +5) instead of attributes for NPCs on character sheet",
   "SYMBAROUM.OPTIONAL_INIATITIVEROLLS": "Supress Initiative rolls",
   "SYMBAROUM.OPTIONAL_INIATITIVEROLLS_HINT": "Check to QoL disabling of Initiative rolls in chat",
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Permitir modificaciones de referencias",
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Atención - Solo GM - permite ajustar manualmente las referencias en la implementación de habilidades, rasgos y poderes místicos. Requiere reiniciar.",
   "SYMBAROUM.OPTIONAL_INIT_MANUAL": "Manually select initiative attribute",
-  "SYMBAROUM.OPTIONAL_INIT_MANUAL_HINT": "Check to desactive the automated evaluation of the attribute used for initiative."
-
-  
+  "SYMBAROUM.OPTIONAL_INIT_MANUAL_HINT": "Check to desactive the automated evaluation of the attribute used for initiative.",
+  "SYMBAROUM.OPTIONAL_PC_COLOUR_SELECTOR":"Select PC Background Color",
+  "SYMBAROUM.OPTIONAL_NPC_COLOUR_SELECTOR":"Select NPC Background Color",
+  "SYMBAROUM.OPTIONAL_RESET_NOTE": "NOTE: Submit and Reset will cause FVTT to reload.",
+  "SYMBAROUM.OPTIONAL_SUBMIT_BUTTON":"Submit",
+  "SYMBAROUM.OPTIONAL_RESET_PC_BUTTON":"Reset PC Config",
+  "SYMBAROUM.OPTIONAL_RESET_NPC_BUTTON":"Reset NPC Config",
+  "SYMBAROUM.OPTIONAL_CONFIG_MENULABEL": "Configure Symbaroum Settings",
+  "SYMBAROUM.OPTIONAL_CONFIG_MENUHINT": "Configure PC and NPC sheet background color (These are Client based settings).",
+  "SYMBAROUM.OPTIONAL_ADD_MENUNAME": "Add Symbaroum Settings button",
+  "SYMBAROUM.OPTIONAL_ADD_MENUHINT": "Add Colour setting button to Main Config panel.",
+  "SYMBAROUM.OPTIONAL_PC_CHAR_BG_IMGS":"Character Background Images",
+  "SYMBAROUM.OPTIONAL_NPC_CHAR_BG_IMGS":"NPC Background Images",
+  "SYMBAROUM.OPTIONAL_DEFAULT_IMAGE":"Default Image",
+  "SYMBAROUM.OPTIONAL_NEW_IMAGE":"New Image",
+  "SYMBAROUM.OPTIONAL_NEW_LIGHTER":"New Lighter Image",
+  "SYMBAROUM.OPTIONAL_COLOR_PICKER":"Plain Color Picker",
+  "SYMBAROUM.OPTIONAL_TITLE_COLOUR_SELECTOR": "Select Title Background Color",
+  "SYMBAROUM.OPTIONAL_TITLE_BG_IMGS":"Title Background Images",
+  "SYMBAROUM.OPTIONAL_RESET_TITLE_BUTTON":"Reset Title Config",
+  "SYMBAROUM.OPTIONAL_RESET_EDITABLE_BUTTON" :"Reset Editable Field",
+  "SYMBAROUM.OPTIONAL_EDITABLE_COLOUR_SELECTOR": "Select Editable Field Color",
+  "SYMBAROUM.OPTIONAL_EDITABLE_BG_IMGS": "Editable Field Background Images",
+  "SYMBAROUM.OPTIONAL_NON_EDITABLE_COLOUR_SELECTOR": "Select Non-Editable Field Color",
+  "SYMBAROUM.OPTIONAL_NON_EDITABLE_BG_IMGS": "Non-Editable Field Background Images",
+  "SYMBAROUM.OPTIONAL_RESET_NON_EDITABLE_BUTTON" :"Reset Non-Editable Field",
+  "SYMBAROUM.OPTIONAL_RESET_ALL_BUTTON": "Reset all settings to defaults"
 }

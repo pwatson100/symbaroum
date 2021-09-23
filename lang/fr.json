@@ -107,7 +107,7 @@
     "ABILITY_MEDICUS.CHAT_TARGET": "Bénéficiaire : ",
     "ABILITY_MEDICUS.NO_TARGET": "Pas de cible selectionnée, test de médicus sans soins",
     "DIALOG.MEDICUS_EXAM": "Test de médicus sans soins",
-    "DIALOG.CUSTOM_HEALING_MODIFIER": "Jet de soins personnalisée",
+    "DIALOG.CUSTOM_HEALING_MODIFIER": "Jet de soins personnalisé",
 
     "ABILITY_STRANGLER.CHAT_INTRO": " tente une prise de strangulation.",
     "ABILITY_STRANGLER.CHAT_INTRO_M": " essaye de maintenir sa prise.",
@@ -133,8 +133,8 @@
     "ACTION.MOVEMENT": "Mouvement",
     "ACTION.FULL_TURN": "Tour Entier",
 
-    "ACTOR.TypePlayer": "Player character",
-    "ACTOR.TypeMonster": "Non-player/monster character",
+    "ACTOR.TypePlayer": "Personnage Joueur",
+    "ACTOR.TypeMonster": "Personnage Non-Joueur",
 
     "ARMOR.NAME": "Nom",
     "ARMOR.PROTECTION": "Protection",
@@ -151,19 +151,19 @@
     "ARMOR.QUALITY": "Qualité",
     "ARMOR.DESCRIPTION": "Description",
     "ARMOR.BONUS_ONLY": "Protection additionnelle",
-    "ARMOR.ADDBUTTON": "Add Armor",
-    "ARMOR.DELETEBUTTON": "Delete Armor",  
+    "ARMOR.ADDBUTTON": "Ajouter une armure",
+    "ARMOR.DELETEBUTTON": "Supprimer l'armure",  
 
     "ARTIFACT.NAME": "Nom",
     "ARTIFACT.ACTION": "Action",
     "ARTIFACT.CORRUPTION": "Corruption",
     "ARTIFACT.CORRUPTIONABBR": "Corr.",    
     "ARTIFACT.DESCRIPTION": "Description",
-    "ARTIFACT.TITLE":"ARTIFACT POWERS",
-    "ARTIFACT.ADDBUTTON": "Add Artifact",
-    "ARTIFACT.DELETEBUTTON": "Delete Artifact",
-    "ARTIFACT.POWER_ADDBUTTON": "Add artifact power",
-    "ARTIFACT.POWER_DELETEBUTTON": "Delete artifact power",     
+    "ARTIFACT.TITLE":"POUVOIRS D'ARTEFACT",
+    "ARTIFACT.ADDBUTTON": "Ajouter un Artefact",
+    "ARTIFACT.DELETEBUTTON": "Supprimer l'Artefact",
+    "ARTIFACT.POWER_ADDBUTTON": "Ajouter un pouvoir",
+    "ARTIFACT.POWER_DELETEBUTTON": "Supprimer ce pouvoir",     
 
     "ATTRIBUTE.ACCURATE": "Précision",
     "ATTRIBUTE.CUNNING": "Astuce",
@@ -272,6 +272,7 @@
     "CORRUPTION.CHAT_MAX": " devient une abomination (max atteint).",
     "CORRUPTION.CHAT_WARNING": " approche du seuil de soullure.",
 
+    "DIALOG.SYSTEM_MESSAGE":"Message du système Symbaroum",
     "DIALOG.VERSUS": "Versus",
     "DIALOG.ASK_CORRUPTION": "Cible totalement corrompue?",
     "DIALOG.ATTRIBUTE": "Attribut",
@@ -282,7 +283,7 @@
     "DIALOG.FAVOUR_FAVOUR": "Faveur", 
     "DIALOG.FAVOUR_DISFAVOUR": "Défaveur",
     "DIALOG.DAMAGE_MODIFIER": "Autre mod. dégâts",
-    "DIALOG.WEAPON_DAMAGE": "Dam. roll",  
+    "DIALOG.WEAPON_DAMAGE": "Jet de dégâts",  
     "DIALOG.CASTING": "Lancement du talent",
     "DIALOG.MAINTAINING": "Jet pour maintenir le talent",
     "DIALOG.AUTOPARAMS": "Modificateurs déjà comptés: ",
@@ -310,8 +311,8 @@
     "EQUIPMENT.NUMBER": "Nombre",
     "EQUIPMENT.DESCRIPTION": "Description",
     "EQUIPMENT.QUANTITY_SHORT":"Qté",
-    "EQUIPMENT.ADDBUTTON": "Add Equipment",
-    "EQUIPMENT.DELETEBUTTON": "Delete Equipment",  
+    "EQUIPMENT.ADDBUTTON": "Ajouter un équipment",
+    "EQUIPMENT.DELETEBUTTON": "Supprimer l'équipment",  
 
     "ERROR.NO_TOKEN_SELECTED": "Selectionnez le token concerné, et uniquement ce token.",
 
@@ -337,7 +338,8 @@
     "HEALTH.CORRUPTION_THRESHOLD_MAX": "Seuil de Cor.",
     "HEALTH.CORRUPTION_MAX": "Maximale",
 
-    "INITIATIVE": "Initiative",
+    "INITIATIVE.TITLE": "Initiative",
+    "INITIATIVE.EXPLANATION": "Initiative indiquée comme [Attribut utilisé.vigilance]",
 
     "ITEM.TRAIT": "Trait",
     "ITEM.ABILITY": "Talent",
@@ -347,8 +349,8 @@
     "ITEM.MYSTICAL_POWER": "Pouvoir Mystique",
     "ITEM.RITUAL": "Rituel",
     "ITEM.WEAPON": "Arme",
-    "ITEM.BOON" : "Boon",
-    "ITEM.BURDEN": "Burden",
+    "ITEM.BOON" : "Atout",
+    "ITEM.BURDEN": "Fardeau",
   
     "ITEM.TypeTrait": "Trait",
     "ITEM.TypeAbility": "Talent",
@@ -358,8 +360,8 @@
     "ITEM.TypeMysticalpower": "Pouvoir Mystique",
     "ITEM.TypeRitual": "Rituel",
     "ITEM.TypeWeapon": "Arme",
-    "ITEM.TypeBoon": "Boon",
-    "ITEM.TypeBurden": "Burden",   
+    "ITEM.TypeBoon": "Atout",
+    "ITEM.TypeBurden": "Fardeau",   
   
     "MONEY.THALER": "Thaler",
     "MONEY.SHILLING": "Shilling",
@@ -466,6 +468,11 @@
     "POWER_CURSE.CHAT_FAILURE": " ne parvient pas à maintenir la malédiction.",
     "POWER_CURSE.CHAT_FAIL_FINAL": "La malédiction n'a plus d'effet sur ",
   
+    "POWER_DANCINGWEAPON.CHAT_ACTIVATE": " utilise son arme dansante.",
+    "POWER_DANCINGWEAPON.CHAT_DESACTIVATE": " n'utilise plus son arme dansante.",
+    "POWER_DANCINGWEAPON.CHAT_RESULT_ACTIVATE": "Les attributs de combat sont remplacés par Volonté.",
+    "POWER_DANCINGWEAPON.CHAT_RESULT_DESACTIVATE": "Les attributs de combat redeviennent normaux.",
+  
     "POWER_ENTANGLINGVINES.CHAT_INTRO_M": " essaye de briser l'étreinte des plantes.",
     "POWER_ENTANGLINGVINES.CHAT_SUCCESS": " est enchevêtré dans la végétation.",
     "POWER_ENTANGLINGVINES.CHAT_FAILURE": " se libère de l'enchevêtrement de plantes.",
@@ -481,6 +488,7 @@
     "POWER_INHERITWOUND.CHAT_FAILURE": " ne parvient pas à transférer les blessures.",
     "POWER_INHERITWOUND.CHAT_HEALED": " voit son endurance soignée de: ",
     "POWER_INHERITWOUND.CHAT_DAMAGE": " reçoit des dégâts: ",
+    "POWER_INHERITWOUND.CHAT_REDIRECT": ";  Les poisons et saignements sont également redirigés.",
 
     "POWER_LARVAEBOILS.CHAT_INTRO": " lance des larves grouillantes sur sa victime.",
     "POWER_LARVAEBOILS.CHAT_INTRO_M": " tente de maintenir les larves grouillantes.",
@@ -539,8 +547,8 @@
     "RITUAL.TRADITION": "Tradition",
     "RITUAL.DESCRIPTION": "Description",
 
-    "ROLL.CRITSHORT":"crit",
-    "ROLL.ADVANTAGESHORT":"adv",
+    "ROLL.CRITSHORT":"Crit",
+    "ROLL.ADVANTAGESHORT":"Av",
   
     "TAB.MAIN": "PRINCIPAL",
     "TAB.GEAR": "ÉQUIPEMENTS",
@@ -579,6 +587,7 @@
     "TOOLTIP.EXPERIENCE_SPENT": "Points d'expérience dépensés sur les talents, traits, atouts et fardeaux",
     "TOOLTIP.EXPERIENCE_AVAILABLE": "Vos points d'expérience disponibles (non dépensés)",
     
+    "TOOLTIP.HEALTH.CORRUPTION_NA_TEXT": "Complètement corrompue.",
     "TOOLTIP.HEALTH.CORRUPTION_CURRENT": "Votre total de corruption actuel",
     "TOOLTIP.HEALTH.CORRUPTION_TEMPORARY": "Votre corruption temporaire (pour cette scène)",
     "TOOLTIP.HEALTH.CORRUPTION_LONGTERM": "Votre corruption long-terme (au-delà de la scène)",
@@ -593,12 +602,14 @@
     "TOOLTIP.COMBAT.INITIATIVE": "L'attribut principal utilisé pour calculer votre initiative",
     "TOOLTIP.COMBAT.DEFENSE": "L'attribut utilisé pour calculer votre défense",
     
+    "TOOLTIP.DELETE_ABILITY" : "Supprimer ce talent",
     "TOOLTIP.POWER_ACTIONS" : "Type d'action (A - active, P - passive, S - spéciale, etc)",
 
     "TRAIT.NAME": "Nom",
     "TRAIT.ACTIVE": "Acquis",
     "TRAIT.ACTION": "Action",
     "TRAIT.DESCRIPTION": "Description",
+    "TRAIT.MARKERTRAIT": "Trait sans niveau",
 
     "TRAIT_LABEL.ACIDICATTACK": "Attaque acide",
     "TRAIT_LABEL.ACIDICBLOOD": "Sang Acide",
@@ -680,8 +691,9 @@
     "WEAPON.ATTRIBUTE": "Attribut",
     "WEAPON.ATTRIBUTEABBR": "Attr.",
     "WEAPON.DESCRIPTION": "Description",
-    "WEAPON.ADDBUTTON": "Add Weapon",
-    "WEAPON.DELETEBUTTON": "Delete Weapon",
+    "WEAPON.ATTACK_ATTRIBUTE":"Attaque avec",
+    "WEAPON.ADDBUTTON": "Ajouter une arme",
+    "WEAPON.DELETEBUTTON": "Supprimer cette arme",
   
     "WEAPON_CLASS.LABEL": "Type d'arme",
     "WEAPON_CLASS.1HANDED": "Arme à une main",
@@ -711,12 +723,40 @@
     "SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT": "Garder en mémoire les modificateurs d'un jet d'attribut sur l'autre.",
     "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE": "Affichage préventif du modificateur",
     "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE_HINT": "Affiche le modificateur de l'attribut de l'adversaire dans le menu déroulant de jet resisté d'attribut.",
-    "SYMBAROUM.OPTIONAL_INIATITIVEROLLS": "Supress Initiative rolls",
-    "SYMBAROUM.OPTIONAL_INIATITIVEROLLS_HINT": "Check to QoL disabling of Initiative rolls in chat",
+    "SYMBAROUM.OPTIONAL_NPC_MODIFIERS": "Attributs PNJs simplifiés",
+    "SYMBAROUM.OPTIONAL_NPC_MODIFIERS_HINT": "Cochez pour que les attributes des PNJs s'affichent sous forme de modificateurs (-5 à +5) sur leurs feuilles de personnage, plutôt qu'en format classique (5 à 15)",
+    "SYMBAROUM.OPTIONAL_INIATITIVEROLLS": "Cacher les jets d'initiative",
+    "SYMBAROUM.OPTIONAL_INIATITIVEROLLS_HINT": "Cocher pour que les résultats des jets d'initiatives n'apparaissent pas dans le Chat.",
     "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Modification des références",
     "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Attention - MJ seulement - Permet de modifier les références des objets traits, talents et pouvoirs. A n'utiliser que si vous savez ce que vous faites.",
-    "SYMBAROUM.OPTIONAL_INIT_MANUAL": "Choisir manuellement l'attribut pour l'initiative",
-    "SYMBAROUM.OPTIONAL_INIT_MANUAL_HINT": "Désactive l'évaluation automatique de l'attribut à utiliser pour l'initiative des personnages. A cocher si vous utilisez vos propres talents."
+    "SYMBAROUM.OPTIONAL_INIT_MANUAL": "Attribut d'initiative manuel",
+    "SYMBAROUM.OPTIONAL_INIT_MANUAL_HINT": "Désactive l'évaluation automatique de l'attribut à utiliser pour l'initiative des personnages. A cocher si vous utilisez vos propres talents.",
+    "SYMBAROUM.OPTIONAL_PC_COLOUR_SELECTOR":"Choisir la couleur de fond PJ",
+    "SYMBAROUM.OPTIONAL_NPC_COLOUR_SELECTOR":"Choisir la couleur de fond PNJ",
+    "SYMBAROUM.OPTIONAL_RESET_NOTE": "NOTE: Appliquer et réinitialiser provoquera le rechargement de Foundry.",
+    "SYMBAROUM.OPTIONAL_SUBMIT_BUTTON":"Appliquer",
+    "SYMBAROUM.OPTIONAL_RESET_PC_BUTTON":"Réinitialiser Config PJ",
+    "SYMBAROUM.OPTIONAL_RESET_NPC_BUTTON":"Réinitialiser Config PNJ",
+    "SYMBAROUM.OPTIONAL_CONFIG_MENULABEL": "Aspect du système",
+    "SYMBAROUM.OPTIONAL_CONFIG_MENUHINT": "Configuration des couleurs de fond des feuilles de PJ et PNJ (configuration locale).",
+    "SYMBAROUM.OPTIONAL_ADD_MENUNAME": "Bouton Aspect du système",
+    "SYMBAROUM.OPTIONAL_ADD_MENUHINT": "Ajoutage un bouton pour le paramètrage de l'aspect du système au panneau de configuration générale.",
+    "SYMBAROUM.OPTIONAL_PC_CHAR_BG_IMGS":"Texture de fond des feuilles de PJ",
+    "SYMBAROUM.OPTIONAL_NPC_CHAR_BG_IMGS":"Texture de fond des feuilles de PNJ",
+    "SYMBAROUM.OPTIONAL_DEFAULT_IMAGE":"Texture par défaut",
+    "SYMBAROUM.OPTIONAL_NEW_IMAGE":"Nouvelle texture",
+    "SYMBAROUM.OPTIONAL_NEW_LIGHTER":"Nouvelle texture plus lumineuse",
+    "SYMBAROUM.OPTIONAL_COLOR_PICKER":"Choisir la couleur",
+    "SYMBAROUM.OPTIONAL_TITLE_COLOUR_SELECTOR": "Choisir la couleur de fond des titres",
+    "SYMBAROUM.OPTIONAL_TITLE_BG_IMGS":"Texture de fond des titres",
+    "SYMBAROUM.OPTIONAL_RESET_TITLE_BUTTON":"Réinitialiser la couleur de fond des titres",
+    "SYMBAROUM.OPTIONAL_RESET_EDITABLE_BUTTON" :"Réinitialiser la couleur de fond des champs modifiables",
+    "SYMBAROUM.OPTIONAL_EDITABLE_COLOUR_SELECTOR": "Choisir la couleur de fond des champs modifiables",
+    "SYMBAROUM.OPTIONAL_EDITABLE_BG_IMGS": "Texture de fond des champs modifiables",
+    "SYMBAROUM.OPTIONAL_NON_EDITABLE_COLOUR_SELECTOR": "Choisir la couleur de fond des champs fixes",
+    "SYMBAROUM.OPTIONAL_NON_EDITABLE_BG_IMGS": "Texture de fond des champs fixes",
+    "SYMBAROUM.OPTIONAL_RESET_NON_EDITABLE_BUTTON" :"Réinitialiser la couleur de fond des champs fixes",
+    "SYMBAROUM.OPTIONAL_RESET_ALL_BUTTON": "Reinitialiser les paramètres"
   
 }
 

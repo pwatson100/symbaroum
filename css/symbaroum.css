@@ -9,14 +9,15 @@
 
 .symbaroum.chat.combat .foreground,
 .symbaroum.chat.ability .foreground {
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   padding: 10px;
 }
 
 .symbaroum.chat.combat .border,
 .symbaroum.chat.ability .border {
   border: 1px solid transparent;
-  border-image: url(../asset/image/title.jpg) 20/5px round;
+  border-color: var(--title-color);
+  border-image: var(--title-image) 20/10px;
 }
 
 .symbaroum.chat.combatstrong,
@@ -137,10 +138,14 @@
   font-weight: bold;
   color: var(--color-label);
   font-family: var(--font-text);
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
   width: 100%;
   text-align: center;
   padding: 5px;
+}
+
+.symbaroum.dialog .lblfavour .checkbox {
+  white-space: nowrap;
 }
 
 .symbaroum.dialog .weapondamage {
@@ -152,7 +157,7 @@
   font-weight: bold;
   color: var(--color-label);
   font-family: var(--font-text);
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
   width: 10em;
   min-width: 10em;
   text-align: center;
@@ -160,9 +165,8 @@
 }
 
 .symbaroum.dialog input[type=checkbox] {
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   border: 1px solid var(--color-border);
-  box-shadow: inset 0 0 6px black;
   color: var(--color-text);
   width: 100%;
   height: auto;
@@ -171,7 +175,7 @@
 .symbaroum.dialog input[type=text],
 .symbaroum.dialog input[type=number],
 .symbaroum.dialog select {
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   border: 1px solid var(--color-border);
   box-shadow: inset 0 0 6px black;
   color: var(--color-text);
@@ -220,6 +224,11 @@
   margin: 5px 10px;
 }
 
+.symbaroum.dialog input[type=text][disabled],
+.symbaroum.dialog input[type=number][disabled] {
+  background: var(--box-non-editable) repeat;
+}
+
 .symbaroum.chat.item {
   color: var(--color-text);
   font-family: var(--font-text);
@@ -229,13 +238,14 @@
 }
 
 .symbaroum.chat.item .foreground {
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   padding: 10px;
 }
 
 .symbaroum.chat.item .border {
   border: 1px solid transparent;
-  border-image: url(../asset/image/title.jpg) 20/5px round;
+  border-color: var(--title-color);
+  border-image: var(--title-image) 20/10px;
 }
 
 .symbaroum.chat.item strong {
@@ -286,13 +296,14 @@
 }
 
 .symbaroum.chat.roll .foreground {
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--chat-background) repeat;
   padding: 10px;
 }
 
 .symbaroum.chat.roll .border {
   border: 1px solid transparent;
-  border-image: url(../asset/image/title.jpg) 20/5px round;
+  border-color: var(--color-border);
+  border-image: var(--chat-roll-border) 20/10px;
 }
 
 .symbaroum.chat.roll strong {
@@ -394,8 +405,12 @@
 }
 
 /* Common styles */
-.symbaroum.sheet.actor .window-content {
-  background: url(../asset/image/background.jpg) repeat;
+.symbaroum.sheet.actor.player .window-content {
+  background: var(--color-charBG);
+}
+
+.symbaroum.sheet.actor.monster .window-content {
+  background: var(--color-npcBG);
 }
 
 .symbaroum.sheet.actor .window-content .editable {
@@ -403,12 +418,13 @@
 }
 
 .symbaroum.sheet.actor .foreground {
-  background: url(../asset/image/foreground.jpg) repeat;
+  background: url(../asset/image/foreground.webp) repeat;
 }
 
 .symbaroum.sheet.actor .border {
   border: 10px solid transparent;
-  border-image: url(../asset/image/title.jpg) 20/10px round;
+  border-color: var(--title-color);
+  border-image: var(--title-image) 20/10px;
 }
 
 .symbaroum.sheet.actor h1 {
@@ -419,7 +435,7 @@
   font-size: 16px;
   margin: 0;
   text-align: center;
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
   color: var(--color-title);
   font-family: var(--font-text);
 }
@@ -429,7 +445,7 @@
   font-weight: bold;
   color: var(--color-label);
   font-family: var(--font-text);
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
   width: 10em;
   text-align: center;
   padding: 5px;
@@ -440,7 +456,7 @@
   font-weight: bold;
   color: var(--color-label);
   font-family: var(--font-text);
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
   text-align: center;
   padding: 0;
   cursor: pointer;
@@ -457,7 +473,7 @@
 
 .symbaroum.sheet.actor input[type=text],
 .symbaroum.sheet.actor input[type=number] {
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   border: 1px solid var(--color-border);
   box-shadow: inset 0 0 6px black;
   color: var(--color-text);
@@ -474,7 +490,7 @@
 }
 
 .symbaroum.sheet.actor select {
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   border: 1px solid var(--color-border);
   box-shadow: inset 0 0 6px black;
   color: var(--color-text);
@@ -486,6 +502,8 @@
   border-radius: 0;
   -moz-appearance: textfield;
   text-align: center;
+  border-color: var(--title-color);
+  border-image: var(--title-image) 20/10px;
 }
 
 .symbaroum.sheet.actor input[type=number]::-webkit-outer-spin-button,
@@ -496,7 +514,7 @@
 
 .symbaroum.sheet.actor input[type=text][disabled],
 .symbaroum.sheet.actor input[type=number][disabled] {
-  background: url(../asset/image/not-editable.jpg) repeat;
+  background: var(--box-non-editable) repeat;
 }
 
 .symbaroum.sheet.actor .item-list {
@@ -515,7 +533,7 @@
   font-weight: bold;
   color: var(--color-label);
   font-family: var(--font-text);
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
   text-align: center;
   padding: 5px;
   border: none;
@@ -534,7 +552,7 @@
 }
 
 .symbaroum.sheet.actor .image-container {
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   border: 1px solid var(--color-border);
   box-shadow: inset 0 0 6px black;
 }
@@ -589,7 +607,7 @@
 }
 
 .symbaroum.sheet.item .window-content {
-  background: url(../asset/image/background.jpg) repeat;
+  background: var(--color-charBG);
 }
 
 .symbaroum.sheet.item .window-content .editable {
@@ -597,12 +615,13 @@
 }
 
 .symbaroum.sheet.item .foreground {
-  background: url(../asset/image/foreground.jpg) repeat;
+  background: url(../asset/image/foreground.webp) repeat;
 }
 
 .symbaroum.sheet.item .border {
   border: 10px solid transparent;
-  border-image: url(../asset/image/title.jpg) 20/10px round;
+  border-color: var(--title-color);
+  border-image: var(--title-image) 20/10px;
 }
 
 .symbaroum.sheet.item h1 {
@@ -613,7 +632,7 @@
   font-size: 1.2em;
   margin: 0;
   text-align: center;
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
   color: var(--color-title);
   font-family: var(--font-text);
 }
@@ -626,7 +645,7 @@
   font-size: 1em;
   margin: 0;
   text-align: center;
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
   color: var(--color-title);
   font-family: var(--font-text);
 }
@@ -636,7 +655,7 @@
   font-weight: bold;
   color: var(--color-label);
   font-family: var(--font-text);
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
   width: 100%;
   text-align: center;
   padding: 5px;
@@ -654,15 +673,35 @@
   cursor: pointer;
 }
 
+.symbaroum.sheet.item button {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--color-label);
+  font-family: var(--font-text);
+  background: var(--title-color) repeat;
+  text-align: center;
+  padding: 0;
+  cursor: pointer;
+  border: none;
+  border-radius: 0;
+  margin: 0;
+}
+
+.symbaroum.sheet.actor button:hover {
+  color: var(--color-active);
+  text-shadow: 0 0 10px var(--color-active);
+  box-shadow: none;
+}
+
 .symbaroum.sheet.item input[type=text][disabled],
 .symbaroum.sheet.item input[type=number][disabled] {
-  background: url(../asset/image/not-editable.jpg) repeat;
+  background: var(--box-non-editable) repeat;
 }
 
 .symbaroum.sheet.item input[type=text],
 .symbaroum.sheet.item input[type=number],
 .symbaroum.sheet.item select {
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   border: 1px solid var(--color-border);
   box-shadow: inset 0 0 6px black;
   color: var(--color-text);
@@ -710,7 +749,7 @@
 }
 
 .symbaroum.sheet.item .sheet-header .avatar {
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   border: 1px solid black;
   box-shadow: inset 0 0 6px black;
   flex: 0 0 auto;
@@ -767,7 +806,7 @@
   color: var(--color-text);
   height: 100%;
   width: 100%;
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   box-shadow: inset 0 0 6px black;
 }
 
@@ -786,7 +825,7 @@
 }
 
 .symbaroum.sheet.item .editor .tox .tox-toolbar__primary {
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-image) repeat;
 }
 
 .symbaroum.sheet.item .editor .tox .tox-tbtn svg:hover {
@@ -803,7 +842,7 @@
   font-size: 18px;
   margin: 5px;
   padding: 5px;
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
   font-family: var(--font-text);
 }
 
@@ -829,8 +868,19 @@
 .img01 {
   display: block;
   background-image: url("../asset/image/system-guide/01.webp");
-  width: 608px;
-  height: 218px;
+  width: 750px;
+  height: 179px;
+  margin-left: auto;
+  margin-right: auto;
+  background-size: 100%;
+  border: 0;
+}
+
+.img01-01 {
+  display: block;
+  background-image: url("../asset/image/system-guide/01-01.webp");
+  width: 300px;
+  height: 550px;
   margin-left: auto;
   margin-right: auto;
   background-size: 100%;
@@ -862,8 +912,8 @@
 .img04 {
   display: block;
   background-image: url("../asset/image/system-guide/04.webp");
-  width: 694px;
-  height: 146px;
+  width: 654px;
+  height: 244px;
   margin-left: auto;
   margin-right: auto;
   background-size: 100%;
@@ -873,8 +923,8 @@
 .img06 {
   display: block;
   background-image: url("../asset/image/system-guide/06.webp");
-  width: 204px;
-  height: 176px;
+  width: 284px;
+  height: 554px;
   margin-left: auto;
   margin-right: auto;
   background-size: 100%;
@@ -983,8 +1033,8 @@
 .img16 {
   display: block;
   background-image: url("../asset/image/system-guide/16.webp");
-  width: 609px;
-  height: 83px;
+  width: 750px;
+  height: 145px;
   margin-left: auto;
   margin-right: auto;
   background-size: 100%;
@@ -994,8 +1044,8 @@
 .img17 {
   display: block;
   background-image: url("../asset/image/system-guide/17.webp");
-  width: 280px;
-  height: 202px;
+  width: 400px;
+  height: 278px;
   margin-left: auto;
   margin-right: auto;
   background-size: 100%;
@@ -1016,8 +1066,8 @@
 .img19 {
   display: block;
   background-image: url("../asset/image/system-guide/19.webp");
-  width: 399px;
-  height: 241px;
+  width: 400px;
+  height: 201px;
   margin-left: auto;
   margin-right: auto;
   background-size: 100%;
@@ -1071,8 +1121,8 @@
 .img05 {
   display: block;
   background-image: url("../asset/image/system-guide/armor-add.webp");
-  width: 477px;
-  height: 116px;
+  width: 677px;
+  height: 218px;
   margin-left: auto;
   margin-right: auto;
   background-size: 100%;
@@ -1082,8 +1132,8 @@
 .img24 {
   display: block;
   background-image: url("../asset/image/system-guide/weapon-state.webp");
-  width: 462px;
-  height: 175px;
+  width: 682px;
+  height: 355px;
   margin-left: auto;
   margin-right: auto;
   background-size: 100%;
@@ -1112,6 +1162,58 @@
   border: 0;
 }
 
+.config-button {
+  display: block;
+  background-image: url("../asset/image/system-guide/config-button.webp");
+  width: 293px;
+  height: 121px;
+  margin-left: auto;
+  margin-right: auto;
+  background-size: 100%;
+  border: 0;
+}
+
+.configuration-settings {
+  display: block;
+  background-image: url("../asset/image/system-guide/configuration-settings.webp");
+  width: 499px;
+  height: 326px;
+  margin-left: auto;
+  margin-right: auto;
+  background-size: 100%;
+  border: 0;
+}
+
+.configuration-settings-cp {
+  display: block;
+  background-image: url("../asset/image/system-guide/configuration-settings-cp.webp");
+  width: 495px;
+  height: 327px;
+  margin-left: auto;
+  margin-right: auto;
+  background-size: 100%;
+  border: 0;
+}
+
+#pause {
+  background: none;
+}
+#pause > img {
+  content: url("../asset/image/head.webp");
+  width: 200px;
+  height: 200px;
+  top: -50px;
+  left: calc(50% - 100px);
+  opacity: 0.7;
+  -webkit-animation: rotation 10s infinite linear;
+  animation: rotation 10s infinite linear;
+}
+#pause h3 {
+  font-family: var(--font-text);
+  font-size: 32px;
+  text-shadow: 0px 3px 5px black;
+}
+
 @font-face {
   font-family: "Philosopher";
   src: url("../asset/font/philosopher-bold.ttf");
@@ -1125,6 +1227,14 @@
   --color-border: black;
   --color-shadow: #a48b02;
   --font-text: "Philosopher", serif;
+  --color-charBG: "url(../asset/image/background/green_flower_light.webp) repeat";
+  --color-npcBG: "url(../asset/image/background/purple_flower_light.webp) repeat";
+  --title-image: "url(../asset/image/background/title.webp)";
+  --title-color: black;
+  --box-editable: "url(../asset/image/background/editable.webp)";
+  --box-non-editable: "url(../asset/image/background/not-editable.webp)";
+  --chat-background: "url(../asset/image/background/editable.webp)";
+  --chat-roll-border: "url(../asset/image/background/title.webp)";
 }
 
 /* Tabs styles */
@@ -1226,7 +1336,7 @@
   color: var(--color-text);
   height: 100%;
   width: 100%;
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   box-shadow: inset 0 0 6px black;
 }
 
@@ -1254,7 +1364,7 @@
 }
 
 .symbaroum.sheet.actor .player .bio .editor .tox .tox-toolbar__primary {
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
 }
 
 .symbaroum.sheet.actor .player .bio .editor .tox .tox-tbtn svg:hover {
@@ -1339,7 +1449,7 @@
   font-weight: bold;
   color: var(--color-label);
   font-family: var(--font-text);
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
   text-align: center;
   border: none;
   border-radius: 0;
@@ -1377,7 +1487,7 @@
 .symbaroum.sheet.actor .player .gear .wrapper-left .artifacts .artifact td .action,
 .symbaroum.sheet.actor .player .gear .wrapper-left .artifacts .artifact td .corruption,
 .symbaroum.sheet.actor .player .gear .wrapper-right .equipments .equipment td .quantity {
-  background: url(../asset/image/not-editable.jpg) repeat;
+  background: var(--box-non-editable) repeat;
   border: 1px solid var(--color-border);
   box-shadow: inset 0 0 6px black;
   height: 28px;
@@ -1385,24 +1495,38 @@
   text-align: center;
 }
 
+.symbaroum.sheet.actor .player .gear .wrapper-left .armors .armor td .cell,
+.symbaroum.sheet.actor .player .gear .wrapper-left .weapons .weapon td .cell,
+.symbaroum.sheet.actor .player .gear .wrapper-left .artifacts .artifact td .cell,
+.symbaroum.sheet.actor .player .gear .wrapper-right .equipments .equipment td .cell {
+  background: var(--title-color) repeat;
+}
+
 .symbaroum.sheet.actor .player .gear .wrapper-left .armors .armor td .armorname,
 .symbaroum.sheet.actor .player .gear .wrapper-left .weapons .weapon td .weaponname,
 .symbaroum.sheet.actor .player .gear .wrapper-left .artifacts .artifact td .artifactname {
   width: 100%;
-  max-width: 100%;
+  max-width: 15em;
   min-width: 131px;
 }
 
-.symbaroum.sheet.actor .player .gear .wrapper-right .equipments .equipment td .equipmentname {
+.symbaroum.sheet.actor .player .gear .wrapper-right .equipments .equipment td .namefield {
   width: 108px;
+  max-width: 10em;
 }
 
 .symbaroum.sheet.actor .player .gear .wrapper-left .armors .armor td .namefield,
 .symbaroum.sheet.actor .player .gear .wrapper-left .weapons .weapon td .namefield,
-.symbaroum.sheet.actor .player .gear .wrapper-left .artifacts .artifact td .namefield,
+.symbaroum.sheet.actor .player .gear .wrapper-left .artifacts .artifact td .namefield {
+  display: flex;
+  flex-flow: nowrap;
+  min-width: 131px;
+}
+
 .symbaroum.sheet.actor .player .gear .wrapper-right .equipments .equipment td .namefield {
   display: flex;
   flex-flow: nowrap;
+  min-width: 108px;
 }
 
 .symbaroum.sheet.actor .player .gear .wrapper-left .armors .armor td .image-container,
@@ -1420,7 +1544,7 @@
 .symbaroum.sheet.actor .player .gear .wrapper-left .artifacts table th,
 .symbaroum.sheet.actor .player .gear .wrapper-right .equipments table td,
 .symbaroum.sheet.actor .player .gear .wrapper-right .equipments table th {
-  padding: 2px;
+  margin: 2px;
 }
 
 .symbaroum.sheet.actor .player .gear .wrapper-left .armors .armor td.protection,
@@ -1508,6 +1632,16 @@
   flex-basis: 100%;
 }
 
+.symbaroum.sheet.actor .player .main .attributes .attributes-header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.symbaroum.sheet.actor .player .main .attributes .attributes-header .modify-attributes {
+  width: 3em;
+}
+
 .symbaroum.sheet.actor .player .section1 {
   display: flex;
   flex-direction: row;
@@ -1537,9 +1671,8 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  flex-basis: calc(50% - 5px);
+  flex-basis: calc(50%);
   border-top: none;
-  margin-right: 5px;
 }
 
 .symbaroum.sheet.actor .toughness {
@@ -1664,7 +1797,6 @@
 .symbaroum.sheet.actor .player .main .health2 .corruption-threshold label,
 .symbaroum.sheet.actor .player .main .health2 .corruption-max label {
   flex-basis: 70%;
-  padding: 0px;
 }
 
 .symbaroum.sheet.actor .player .main .health .toughness-current input,
@@ -1685,7 +1817,7 @@
 .symbaroum.sheet.actor .player .main .health2 .toughness-threshold,
 .symbaroum.sheet.actor .player .main .health2 .corruption-longterm,
 .symbaroum.sheet.actor .player .main .health2 .corruption-max {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .symbaroum.sheet.actor .player .main .combat {
@@ -1698,6 +1830,38 @@
   margin-left: 5px;
 }
 
+.symbaroum.sheet.actor .player .main .combat .combatheader,
+.symbaroum.sheet.actor .player .main .combat .combatheader {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  border-top: none;
+  width: 100%;
+  background: var(--title-color) repeat;
+}
+
+.symbaroum.sheet.actor .player .main .combat .combatheader .iniheader {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  border-top: none;
+}
+
+.symbaroum.sheet.actor .player .main .combat .combatheader .iniheader .title {
+  color: var(--color-title);
+  text-align: center;
+  padding: 5px;
+}
+
+.symbaroum.sheet.actor .player .main .combat .combatheader .iniheader label {
+  width: 3em;
+}
+
+.symbaroum.sheet.actor .player .main .combat .combatheader .iniheader input {
+  width: 4em;
+  margin-right: 5px;
+}
+
 .symbaroum.sheet.actor .player .main .combat .initiative,
 .symbaroum.sheet.actor .player .main .combat .defenseAttr {
   display: flex;
@@ -1705,7 +1869,7 @@
   justify-content: center;
   flex-wrap: wrap;
   flex-basis: 100%;
-  margin: 5px 0px 5px 0px;
+  margin-top: 5px;
 }
 
 .symbaroum.sheet.actor .player .main .combat .stat-modifiers .initiative,
@@ -1721,20 +1885,53 @@
   margin-bottom: 5px;
   margin-right: 5px;
   margin-left: 5px;
+  margin-top: 5px;
 }
 
 .symbaroum.sheet.actor .player .main .combat .armor .roll-armor,
-.symbaroum.sheet.actor .player .main .combat .armor .protection,
-.symbaroum.sheet.actor .player .main .combat .armor .defense,
-.symbaroum.sheet.actor .player .main .combat .armor .quality {
+.symbaroum.sheet.actor .player .main .combat .weapons .roll-weapon {
   display: flex;
   flex-direction: row;
   /* justify-content: center; */
 }
 
-/* .symbaroum.sheet.actor .player .main .combat .armor .roll-armor, */
-.symbaroum.sheet.actor .player .main .combat .armor .quality {
-  flex-basis: 100%;
+.symbaroum.sheet.actor .player .main .combat .armor .item-header,
+.symbaroum.sheet.actor .player .main .combat .weapons .item-header {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.symbaroum.sheet.actor .player .main .combat .armor .item-row {
+  display: flex;
+  width: 100%;
+  flex-wrap: nowrap;
+  background-image: var(--title-color);
+  background-repeat: repeat;
+}
+
+.symbaroum.sheet.actor .player .main .combat .armor .roll-armor .combatProt,
+.symbaroum.sheet.actor .player .main .combat .weapons .roll-weapon .weaponDam {
+  width: 8em;
+  min-width: 8em;
+  height: 28px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.symbaroum.sheet.actor .player .main .combat .armor .roll-armor .attribute,
+.symbaroum.sheet.actor .player .main .combat .weapons .roll-weapon .attribute {
+  width: 4em;
+  min-width: 4em;
+  margin-right: 5px;
+}
+
+.symbaroum.sheet.actor .player .main .combat .armor .roll-armor .armordefense,
+.symbaroum.sheet.actor .player .main .combat .armor .roll-armor .armordefense input,
+.symbaroum.sheet.actor .player .main .combat .weapons .roll-weapon .weaponAttribute,
+.symbaroum.sheet.actor .player .main .combat .weapons .roll-weapon .weaponAttribute input {
+  width: 4em;
+  min-width: 4em;
+  height: 28px;
 }
 
 .symbaroum.sheet.actor .player .main .combat .armor .roll-armor {
@@ -1745,45 +1942,26 @@
   margin-top: 5px;
 }
 
-.symbaroum.sheet.actor .player .main .combat .armor .protection {
-  flex-basis: 50%;
-}
-
-.symbaroum.sheet.actor .player .main .combat .armor .defense {
-  flex-basis: calc(50% - 5px);
-  margin-top: 5px;
-  margin-left: 5px;
-}
-
-.symbaroum.sheet.actor .player .main .combat .armor .initiative label,
-.symbaroum.sheet.actor .player .main .combat .armor .quality label,
-.symbaroum.sheet.actor .player .main .combat .armor .protection label,
-.symbaroum.sheet.actor .player .main .combat .armor .defense label {
+.symbaroum.sheet.actor .player .main .combat .armor .initiative label {
   width: 10em;
   min-width: 10em;
-}
-
-.symbaroum.sheet.actor .player .main .combat .armor .protection input,
-.symbaroum.sheet.actor .player .main .combat .armor .defense input {
-  width: 100%;
 }
 
 .symbaroum.sheet.actor .player .main .combat .weapons {
   display: flex;
   flex-direction: column;
   flex-basis: 100%;
-  margin: 0 5px 5px 5px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin: 5px;
   height: 120px;
 }
 
+.symbaroum.sheet.actor .player .main .combat .armor .item-list .name,
 .symbaroum.sheet.actor .player .main .combat .weapons .item-list .name {
   display: flex;
-  flex-basis: 70%;
+  flex-basis: 100%;
   justify-content: center;
-}
-
-.symbaroum.sheet.actor .player .main .combat .weapons .item-list .damage {
-  flex-basis: 30%;
 }
 
 .symbaroum.sheet.actor .player .main .combat .weapons .item-list .weapon {
@@ -1793,7 +1971,7 @@
 }
 
 .symbaroum.sheet.actor .player .main .combat .weapons .item-list .weapon .damage {
-  background: url(../asset/image/not-editable.jpg) repeat;
+  background: var(--box-non-editable) repeat;
   border: 1px solid var(--color-border);
   border-left: none;
   box-shadow: inset 0 0 6px black;
@@ -1818,7 +1996,7 @@
   left: 618px;
   font-size: 32px;
   color: var(--color-text);
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   height: 36px;
   width: 36px;
   text-align: center;
@@ -1852,7 +2030,7 @@
 .symbaroum.sheet.actor .player .main .abilities-powers .traits .trait .actions {
   flex-basis: 15%;
   color: var(--color-text);
-  background: url(../asset/image/not-editable.jpg) repeat;
+  background: var(--box-non-editable) repeat;
   text-align: center;
   border: 1px solid var(--color-border);
   border-left: none;
@@ -1894,7 +2072,7 @@
   color: var(--color-text);
   height: 100%;
   width: 100%;
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   box-shadow: inset 0 0 6px black;
 }
 
@@ -1913,7 +2091,7 @@
 }
 
 .symbaroum.sheet.actor .player .note .wrapper .editor .tox .tox-toolbar__primary {
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
 }
 
 .symbaroum.sheet.actor .player .note .wrapper .editor .tox .tox-tbtn svg:hover {
@@ -2070,6 +2248,10 @@
   width: 100%;
 }
 
+.symbaroum.sheet.item .artifact .power-n .editor {
+  width: calc(100% - 10px);
+}
+
 .symbaroum.sheet.item .artifact .power-n .power-header,
 .symbaroum.sheet.item .artifact .power-add {
   display: flex;
@@ -2079,7 +2261,7 @@
   flex-basis: 100%;
   height: fit-content;
   margin: 5px;
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
 }
 
 .symbaroum.sheet.item .artifact .power-n .power-header .heading,
@@ -2400,7 +2582,7 @@
 }
 
 .symbaroum.sheet.actor .player .sheet-header .avatar {
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   border: 1px solid black;
   box-shadow: inset 0 0 6px black;
   flex: 0 0 auto;
@@ -2480,7 +2662,7 @@
   font-size: 18px;
   margin: 5px;
   padding: 5px;
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-color) repeat;
   font-family: var(--font-text);
   height: fit-content;
 }
@@ -2627,6 +2809,13 @@
   height: 166px;
 }
 
+.symbaroum.sheet.item .trait .tab .marker {
+  display: flex;
+  flex-direction: row;
+  flex-basis: 100%;
+  margin: 5px 5px 5px 10px;
+}
+
 .symbaroum.sheet.item .trait .tab .active,
 .symbaroum.sheet.item .trait .tab .action {
   display: flex;
@@ -2738,7 +2927,7 @@
 }
 
 .symbaroum.attributes {
-  background: url(../asset/image/background.jpg) repeat;
+  background: var(--color-charBG);
 }
 
 .symbaroum.attributes .window-content .editable {
@@ -2746,12 +2935,12 @@
 }
 
 .symbaroum.attributes .foreground {
-  background: url(../asset/image/foreground.jpg) repeat;
+  background: url(../asset/image/foreground.webp) repeat;
 }
 
 .symbaroum.attributes .border {
   border: 10px solid transparent;
-  border-image: url(../asset/image/title.jpg) 20/10px round;
+  border-image: var(--title-image) 20/10px round;
 }
 
 .symbaroum.attributes h1 {
@@ -2762,7 +2951,7 @@
   font-size: 16px;
   margin: 0;
   text-align: center;
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-image) repeat;
   color: var(--color-title);
   font-family: var(--font-text);
 }
@@ -2772,7 +2961,7 @@
   font-weight: bold;
   color: var(--color-label);
   font-family: var(--font-text);
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-image) repeat;
   width: 10em;
   text-align: center;
   padding: 5px;
@@ -2783,7 +2972,7 @@
   font-weight: bold;
   color: var(--color-label);
   font-family: var(--font-text);
-  background: url(../asset/image/title.jpg) repeat;
+  background: var(--title-image) repeat;
   text-align: center;
   padding: 0;
   cursor: pointer;
@@ -2800,7 +2989,7 @@
 
 .symbaroum.attributes input[type=text],
 .symbaroum.attributes input[type=number] {
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   border: 1px solid var(--color-border);
   box-shadow: inset 0 0 6px black;
   color: var(--color-text);
@@ -2817,11 +3006,11 @@
 }
 
 .symbaroum.attributes input[type=number][disabled] {
-  background: url(../asset/image/not-editable.jpg) repeat;
+  background: var(--box-non-editable) repeat;
 }
 
 .symbaroum.attributes .fixed {
-  background: url(../asset/image/not-editable.jpg) repeat;
+  background: var(--box-non-editable) repeat;
   border: 1px solid var(--color-border);
   box-shadow: inset 0 0 6px black;
   font-size: 14px;
@@ -2872,7 +3061,7 @@
 }
 
 .symbaroum.attributes .col-header {
-  background: url(../asset/image/not-editable.jpg) repeat;
+  background: var(--box-non-editable) repeat;
   border: 1px solid var(--color-border);
   border-left: none;
   box-shadow: inset 0 0 6px black;

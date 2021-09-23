@@ -168,4 +168,14 @@
       <h4>{{localize "ABILITY_MEDICUS.NO_TARGET"}}</h4>
     {{/if}}
   {{/if}}
+  {{#if poisoner}}
+  <div class="bonus">
+    <label>{{localize "DIALOG.USE_POISON"}}</label>
+    <select id="poisoner">
+      <option value="1">{{localize "DIALOG.LIGHT_POISON"}}</option>
+      <option value="2">{{localize "DIALOG.MEDIUM_POISON"}}</option>
+      <option value="3">{{localize "DIALOG.STRONG_POISON"}}</option>
+  </select>
+  </div>
+  {{/if}}
 </div>

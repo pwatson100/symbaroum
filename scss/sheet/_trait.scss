@@ -22,6 +22,15 @@
     height: 166px;
 }
 
+
+.symbaroum.sheet.item .trait .tab .marker
+{
+    display: flex;
+    flex-direction: row;
+    flex-basis:100%;
+    margin: 5px 5px 5px 10px;
+}
+
 .symbaroum.sheet.item .trait .tab .active,
 .symbaroum.sheet.item .trait .tab .action {
     display: flex;

@@ -5,12 +5,12 @@ export const migrateWorld = async () => {
     let worldTemplateVersion;
     try{
         worldTemplateVersion = Number(game.settings.get("symbaroum", "worldTemplateVersion"));
-        console.log(`Detected worldTemplateVersion: ${worldTemplateVersion}`);
+        console.info(`Detected worldTemplateVersion: ${worldTemplateVersion}`);
     }
     catch(e){
         console.error(e);
         worldTemplateVersion = 1;
-        console.log("No template version detected... Default to 1")
+        console.info("No template version detected... Default to 1")
     }
     if(worldTemplateVersion && (worldTemplateVersion < 3.3) && game.user.isGM){ //the world hasn't been properly migrated since foundryVTT0.8
 //    if((worldTemplateVersion < 3.3) && game.user.isGM){ //the world hasn't been properly migrated since foundryVTT0.8
@@ -24,7 +24,7 @@ export const migrateWorld = async () => {
         console.error(e);
         worldSystemVersion = '0';
     }
-    console.log(`Last migration on this world: ${worldSystemVersion}`);
+    console.info(`Last migration on this world: ${worldSystemVersion}`);
     // the NEEDS_MIGRATION_VERSION have to be increased for migration to happen
     const NEEDS_MIGRATION_VERSION = '3.0.8';
     const COMPATIBLE_MIGRATION_VERSION = '0' || isNaN('NaN');
@@ -45,7 +45,7 @@ export const migrateWorld = async () => {
             try {
                 const updateData = migrateActorData(actor.toObject(), worldSystemVersion);
                 if (!foundry.utils.isObjectEmpty(updateData)) {
-                    console.log(`Migrating Actor entity ${actor.name}`);            
+                    console.info(`Migrating Actor entity ${actor.name}`);            
                     await actor.update(updateData, {enforceTypes: false});
                 }
             } catch (e) {
@@ -57,7 +57,7 @@ export const migrateWorld = async () => {
             try {
                 const updateData = migrateItemData(item.toObject(), worldSystemVersion);
                 if (!foundry.utils.isObjectEmpty(updateData)) {
-                    console.log(`Migrating Item entity ${item.name}`);  
+                    console.info(`Migrating Item entity ${item.name}`);  
                     await item.update(updateData, {enforceTypes: false});
                 }
             } catch (e) {
@@ -105,7 +105,7 @@ const migrateOldWorld = async (worldTemplateVersion) => {
         try {
             const updateData = migrateOldActorData(actor.toObject(), worldTemplateVersion);
             if (!foundry.utils.isObjectEmpty(updateData)) {
-                console.log(`Migrating Actor entity ${actor.name}`);            
+                console.info(`Migrating Actor entity ${actor.name}`);            
                 await actor.update(updateData, {enforceTypes: false});
             }
         } catch (e) {
@@ -117,7 +117,7 @@ const migrateOldWorld = async (worldTemplateVersion) => {
         try {
             const updateData = migrateOldItemData(item.toObject(), worldTemplateVersion);
             if (!foundry.utils.isObjectEmpty(updateData)) {
-                console.log(`Migrating Item entity ${item.name}`);  
+                console.info(`Migrating Item entity ${item.name}`);  
                 await item.update(updateData, {enforceTypes: false});
             }
         } catch (e) {
@@ -240,7 +240,7 @@ export const migrateCompendium = async function (pack, worldSystemVersion) {
                 // Save the entry, if data was changed
             if ( foundry.utils.isObjectEmpty(updateData) ) continue;
             await ent.update(updateData);
-            console.log(`Migrated ${entity} entity ${ent.name} in Compendium ${pack.collection}`);
+            console.info(`Migrated ${entity} entity ${ent.name} in Compendium ${pack.collection}`);
         }
         catch(err) {
             err.message = `Failed system migration for entity ${ent.name} in pack ${pack.collection}: ${err.message}`;
@@ -284,7 +284,7 @@ const migrateOldActorData = (actor, worldTemplateVersion) => {
     };
         
     let itemsChanged = false;
-    console.log(actor);
+    // console.log(actor);
     const items = actor.items.map((item) => {
         const itemUpdate = migrateOldItemData(item, worldTemplateVersion);
         if (!isObjectEmpty(itemUpdate)) {
@@ -465,7 +465,7 @@ export const migrateOldCompendium = async function (pack, worldTemplateVersion) 
                 // Save the entry, if data was changed
             if ( foundry.utils.isObjectEmpty(updateData) ) continue;
             await ent.update(updateData);
-            console.log(`Migrated ${entity} entity ${ent.name} in Compendium ${pack.collection}`);
+            console.info(`Migrated ${entity} entity ${ent.name} in Compendium ${pack.collection}`);
         }
         catch(err) {
             err.message = `Failed system migration for entity ${ent.name} in pack ${pack.collection}: ${err.message}`;

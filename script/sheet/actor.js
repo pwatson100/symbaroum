@@ -70,7 +70,7 @@ export class SymbaroumActorSheet extends ActorSheet {
     event.preventDefault();
     const div = $(event.currentTarget).parents('.item');
     const item = this.actor.items.get(div.data('itemId'));
-    if (item !== null) item.sheet.render(true);
+    if (item) item.sheet.render(true);
   }
 
   _onItemDelete(event) {
@@ -93,8 +93,7 @@ export class SymbaroumActorSheet extends ActorSheet {
     event.preventDefault();
     const div = $(event.currentTarget).parents('.item');
     const item = this.actor.items.get(div.data('itemId'));
-    console.log(div);
-    console.log(item);
+
     if (item === null || item === undefined) {
       return;
     }
@@ -110,7 +109,6 @@ export class SymbaroumActorSheet extends ActorSheet {
         data = { _id: item.id, id: item.id, 'data.state': 'active' };
         break;
     }    
-    console.log(data);
     
     this.actor.updateEmbeddedDocuments("Item", [data]); // Used to have render:false    
   }
