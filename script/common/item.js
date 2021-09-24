@@ -503,11 +503,17 @@ function getTargets(targetAttributeName, maxTargets = 1) {
 }
 
 /* get the selected token ID */
-function getTokenId(){
+function getTokenId(actor){
     let selected = canvas.tokens.controlled;
     if(selected.length > 1 || selected.length == 0){
         ui.notifications.error(game.i18n.localize('ERROR.NO_TOKEN_SELECTED'))
         return;
+    }
+    if(actor){
+        if(selected[0].actor.data._id !== actor.data._id){
+            ui.notifications.error(game.i18n.localize('ERROR.NO_TOKEN_SELECTED'))
+            return; 
+        }
     }
     return(selected[0])
 }
@@ -1261,12 +1267,11 @@ It won't work with NPC fixed values as input
 
 export async function attackRoll(weapon, actor){
     // get selected token
-    let selected = canvas.tokens.controlled;
-    if(selected.length == 0 || selected.length > 1){
-        ui.notifications.error(game.i18n.localize('ERROR.NO_TOKEN_SELECTED'));
+    let token;
+    try{token = getTokenId()} catch(error){      
+        ui.notifications.error(error);
         return;
     }
-    let token = selected[0];
     // get target token, actor and defense value
     let targetData;
     try{targetData = getTarget("defense")} catch(error){      
