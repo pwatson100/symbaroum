@@ -610,7 +610,7 @@ async function buildFunctionStuffDefault(ability, actor) {
         actor: actor,
         askTargetAttribute: false,
         askCastingAttribute: false,
-        attackFromPC: actor.hasPlayerOwner,
+        attackFromPC: actor.type !== "monster",
         autoParams: "",
         beastLoreData: getBeastLoreData(actor),
         checkMaintain: false,
@@ -1287,7 +1287,7 @@ export async function attackRoll(weapon, actor){
         featStFavour: false,
         ironFistDmg: false,
         ironFistDmgMaster: false,
-        attackFromPC: actor.hasPlayerOwner,
+        attackFromPC: actor.type !== "monster",
         flagBerserk: false,
         autoParams: "",
         bleed: false,
@@ -2823,7 +2823,7 @@ async function inheritWound(ability, actor){
     let corruptionText = "";
     let corruption;
     let selectedToken;
-    let attackFromPC = actor.hasPlayerOwner;
+    let attackFromPC = actor.type !== "monster";
     try{selectedToken = getTokenId()} catch(error){      
         ui.notifications.error(error);
         return;
