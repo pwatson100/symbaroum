@@ -177,3 +177,6 @@ Version 3.0.9
 
 Version 3.0.10
 - corrected issues with the sheet configuration dialogue for new worlds and users. 
+
+Version 3.1.0
+- Bumped version number to solve an issue with the modules import version checking.
