@@ -133,7 +133,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{#each actor.items as |item|}}
+                        {{#each items as |item|}}
                         {{#if item.data.isArtifact}}                        
                         <tr class="artifact item" data-item-id="{{item.id}}">
                             <td class="name">
@@ -190,7 +190,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{#each actor.items as |item|}}
+                        {{#each items as |item|}}
                         {{#if item.data.isEquipment}}                       
                         <tr class="equipment item" data-item-id="{{item.id}}">
                             <td class="name" title="{{item.name}}">
