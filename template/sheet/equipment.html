@@ -6,8 +6,8 @@
             </div>
             <div class="wrapper-column">
                 <div class="name">
-                    <label>{{localize "EQUIPMENT.NAME"}}</label>
-                    <input name="name" type="text" value="{{item.name}}"/>
+                    <label for="{{id}}-name">{{localize "EQUIPMENT.NAME"}}</label>
+                    <input name="name" id="{{id}}-name" type="text" value="{{item.name}}"/>
                 </div>
             </div>
         </div>
@@ -24,19 +24,19 @@
                 <div class="description foreground border">
                     <h1>{{localize "TITLE.DESCRIPTION"}}</h1>
                     <div class="cost">
-                        <label>{{localize "EQUIPMENT.COST"}}</label>
-                        <input name="data.cost" type="text" value="{{data.cost}}"/>
+                        <label for="{{id}}-data.cost">{{localize "EQUIPMENT.COST"}}</label>
+                        <input id="{{id}}-data.cost" name="data.cost" type="text" value="{{data.cost}}"/>
                     </div>
                     <div class="number">
-                        <label>{{localize "EQUIPMENT.NUMBER"}}</label>
-                        <input name="data.number" type="number" value="{{data.number}}"/>
+                        <label for="{{id}}-data.number">{{localize "EQUIPMENT.NUMBER"}}</label>
+                        <input id="{{id}}-data.number" name="data.number" type="number" value="{{data.number}}"/>
                     </div>
                     <div class="number">
-                        <label for="{{item.id}}-data.isArtifact">{{localize "ITEM.ARTIFACT"}}</label>
+                        <label for="{{id}}-data.isArtifact">{{localize "ITEM.ARTIFACT"}}</label>
                         {{#if data.isArtifact}}
-                        <input id="{{item.id}}-data.isArtifact" name="data.isArtifact" type="checkbox" value="artifact" checked/>
+                        <input id="{{id}}-data.isArtifact" name="data.isArtifact" type="checkbox" value="artifact" checked/>
                         {{else}}
-                        <input id="{{item.id}}-data.isArtifact" name="data.isArtifact" type="checkbox" value="artifact"/>
+                        <input id="{{id}}-data.isArtifact" name="data.isArtifact" type="checkbox" value="artifact"/>
                         {{/if}}
                     </div>
                     {{editor content=data.description target="data.description" button=true owner=owner editable=true}}
