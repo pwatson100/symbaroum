@@ -1402,8 +1402,12 @@ export async function attackRoll(weapon, actor){
             let backstabAbil = actor.items.filter(item => item.data.data?.reference === "backstab");
             if(backstabAbil.length != 0){
                 functionStuff.askBackstab = true;
+                functionStuff.backstabDmg = " + 1d4["+game.i18n.localize("ABILITY_LABEL.BACKSTAB")+"]";
                 if(backstabAbil[0].data.data.adept.isActive){
                     functionStuff.dmgData.backstabBleed = true
+                }
+                if(backstabAbil[0].data.data.master.isActive){
+                    functionStuff.backstabDmg =  " + 1d8["+game.i18n.localize("ABILITY_LABEL.BACKSTAB")+"]";
                 }
             }
         }
