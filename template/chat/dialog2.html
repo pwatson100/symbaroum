@@ -64,6 +64,14 @@
   </div>
   {{/if}}
   {{#if isWeaponRoll}}
+    {{#if precise}}
+    <div class="damagemodifier">
+      <label for="precise">{{localize "COMBAT.PARAMS_PRECISE"}}</label> <div class="weapondamage"><span id="weapondamage">{{localize "COMBAT.CHAT_MODIFIER"}}1</span></div>
+    </div>
+    {{/if}}
+  <div class="damagemodifier">
+    <label for="weapondamage">{{localize "WEAPON.BASE_DAMAGE"}}</label> <div class="weapondamage"><span id="weapondamage">{{weaponDamage}}</span></div>
+  </div>
     {{#if ignoreArmor}}
     <div class="simplebox">
       <label>{{localize "DIALOG.IGNORE_ARMOR"}}</label><span class="lblfavour"><input type="checkbox" id="ignarm" checked></span>
@@ -73,9 +81,6 @@
       <label>{{localize "DIALOG.IGNORE_ARMOR"}}</label><span class="lblfavour"><input type="checkbox" id="ignarm" unchecked></span>
     </div>
     {{/if}}
-    <div class="damagemodifier">
-      <label for="weapondamage">{{localize "WEAPON.BASE_DAMAGE"}}</label> <div class="weapondamage"><span id="weapondamage">{{weaponDamage}}</span></div>
-    </div>
     {{#if ironFistAdept}}
     <div class="damagemodifier">
       <label for="weapondamage">{{localize "DIALOG.DAMAGE_IF_MODIFIER"}}</label> <div class="weapondamage"><span id="weapondamage">{{d4}}</span></div>

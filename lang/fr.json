@@ -266,7 +266,7 @@
     "COMBAT.CHAT_DAMAGE_DYING": " est mortellement blessé.",
     "COMBAT.CHAT_DAMAGE": " reçoit des dégâts : ",
     "COMBAT.CHAT_DAMAGE_PAIN": " est sonné par la douleur.",
-    "COMBAT.PARAMS_PRECISE": "[arme précise], ",
+    "COMBAT.PARAMS_PRECISE": "arme précise, ",
     "COMBAT.DAMAGE": "Dégâts infligés: ",
 
     "CORRUPTION.CHAT_INTRO": " dépasse un seuil de souillure.",

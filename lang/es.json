@@ -272,7 +272,7 @@
   "COMBAT.CHAT_DAMAGE_DYING": " está gravemente herido.",
   "COMBAT.CHAT_DAMAGE": " recibe daño : ",
   "COMBAT.CHAT_DAMAGE_PAIN": " está aturdido por el dolor.",
-  "COMBAT.PARAMS_PRECISE": "[Arma precisa], ",
+  "COMBAT.PARAMS_PRECISE": "Arma precisa, ",
 
   "CORRUPTION.CHAT_INTRO": " increases his degree of taint.",
   "CORRUPTION.CHAT_THRESHOLD": " becomes Blight-marked (theshold reached).",

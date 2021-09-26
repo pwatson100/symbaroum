@@ -873,6 +873,7 @@ async function modifierDialog(functionStuff){
     let leaderTarget = functionStuff.targetData.leaderTarget ?? false;
     let medicus = functionStuff.medicus ?? false;
     let poisoner = functionStuff.poisoner ?? false;
+    let precise = functionStuff.precise ?? false;
     let targetImpeding = functionStuff.targetImpeding ?? false;
     let weaponDamage = "";
     let actorWeapons;
@@ -955,6 +956,7 @@ async function modifierDialog(functionStuff){
         targetImpeding: targetImpeding,
         weapons : actorWeapons,
         medicus : medicus,
+        precise: precise,
         poisoner: poisoner
     });
     let title;
@@ -1080,6 +1082,7 @@ async function modifierDialog(functionStuff){
                             functionStuff.dmgData.hunterIDmg = false;
                         }
                     }
+                    if(precise) functionStuff.modifier += 1;
                 }
                 if(medicus){
                     if(hasTarget){
@@ -1461,7 +1464,7 @@ export async function attackRoll(weapon, actor){
     //all weapons
     if(!functionStuff.askWeapon){
         if(functionStuff.weapon.qualities.precise){
-            functionStuff.modifier += 1;
+            functionStuff.precise = 1;
             functionStuff.autoParams += game.i18n.localize('COMBAT.PARAMS_PRECISE')
         }
     };

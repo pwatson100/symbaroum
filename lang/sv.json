@@ -269,7 +269,7 @@
   "COMBAT.CHAT_DAMAGE_DYING": " är dödligt sårad.",
   "COMBAT.CHAT_DAMAGE": " tar skada : ",
   "COMBAT.CHAT_DAMAGE_PAIN": " är bedövad av smärta.",
-  "COMBAT.PARAMS_PRECISE": "[Precist vapen], ",
+  "COMBAT.PARAMS_PRECISE": "Precist vapen, ",
 
   "CORRUPTION.CHAT_INTRO": " ökar sin korruptionsgrad.",
   "CORRUPTION.CHAT_THRESHOLD": " blir styggelsemärkt (når korruptionströskel).",
