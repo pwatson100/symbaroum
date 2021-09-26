@@ -147,6 +147,8 @@
   "ARMOR.NPC_PROTECTION": "NPC Prot.",
   "ARMOR.IMPEDING": "Impeding",
   "ARMOR.IMPEDINGABBR": "Imp.",
+  "ARMOR.IMPEDINGLONG": "impeding armor",
+  "ARMOR.IMPEDING_TARGET": "armor impeding target",
   "ARMOR.DEFENSE": "Defense",
   "ARMOR.COST": "Cost",
   "ARMOR.QUALITY": "Quality",

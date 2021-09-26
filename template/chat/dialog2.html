@@ -53,6 +53,11 @@
     <label>{{localize "DIALOG.IMPEDING"}}</label> <span class="lblfavour"><input type="checkbox" id="impeding" checked></span>
   </div>
   {{/if}}
+  {{#if targetImpeding}}
+  <div class="simplebox">
+    <label>{{localize "ARMOR.IMPEDING_TARGET"}}</label> <span class="lblfavour"><input type="checkbox" id="impTarget" checked></span>
+  </div>
+  {{/if}}
   {{#if askCorruptedTarget}}
   <div class="simplebox">
     <label>{{localize "DIALOG.ASK_CORRUPTION"}}</label><span class="lblfavour"><input type="checkbox" id="targetCorrupt" unchecked></span>

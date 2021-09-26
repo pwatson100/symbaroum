@@ -873,6 +873,7 @@ async function modifierDialog(functionStuff){
     let leaderTarget = functionStuff.targetData.leaderTarget ?? false;
     let medicus = functionStuff.medicus ?? false;
     let poisoner = functionStuff.poisoner ?? false;
+    let targetImpeding = functionStuff.targetImpeding ?? false;
     let weaponDamage = "";
     let actorWeapons;
     let askImpeding = false;
@@ -951,6 +952,7 @@ async function modifierDialog(functionStuff){
         defaultDamModifier: "",
         checkMaintain: functionStuff.checkMaintain,
         askWeapon: functionStuff.askWeapon,
+        targetImpeding: targetImpeding,
         weapons : actorWeapons,
         medicus : medicus,
         poisoner: poisoner
@@ -1010,7 +1012,13 @@ async function modifierDialog(functionStuff){
                 if(askImpeding){
                     if(html.find("#impeding")[0].checked){
                         functionStuff.modifier += -functionStuff.impeding;
-                        functionStuff.autoParams += game.i18n.localize("ARMOR.IMPEDING") + ", ";
+                        functionStuff.autoParams += game.i18n.localize("ARMOR.IMPEDINGLONG") + ", ";
+                    }
+                }
+                if(targetImpeding){
+                    if(html.find("#impTarget")[0].checked){
+                        functionStuff.modifier += functionStuff.targetImpeding;
+                        functionStuff.autoParams += game.i18n.localize("ARMOR.IMPEDING_TARGET") + ", ";
                     }
                 }
                 if(askCorruptedTarget){
@@ -2000,6 +2008,7 @@ async function brimstoneCascadePrepare(ability, actor) {
         contextualDamage: true,
         tradition: ["wizardry"],
         targetHasRapidReflexes: targetHasRapidReflexes,
+        targetImpeding: targetData.actor.data.data.combat.impedingMov,
         targetData: targetData,
         resultFunction: brimstoneCascadeResult
     }
@@ -2171,6 +2180,7 @@ async function blackBoltPrepare(ability, actor) {
         checkMaintain: true,
         contextualDamage: true,
         targetData: targetData,
+        targetImpeding: targetData.actor.data.data.combat.impedingMov,
         resultFunction: blackBoltResult
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
@@ -3254,6 +3264,7 @@ async function mindthrowPrepare(ability, actor) {
         contextualDamage: true,
         tradition: ["wizardry"],
         targetData: targetData,
+        targetImpeding: targetData.actor.data.data.combat.impedingMov,
         resultFunction: mindthrowResult
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
