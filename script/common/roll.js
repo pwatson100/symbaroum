@@ -376,14 +376,15 @@ export async function damageRollWithDiceParams(functionStuff, critSuccess, attac
     }
   
   if(dmgData.hasAdvantage){
+    damageModFormula += " + 1d4"+game.i18n.localize("COMBAT.CHAT_DMG_PARAMS_ADVANTAGE");
+    damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_ADVANTAGE');
     if(dmgData.useBackstab && !attackNumber){
-      damageModFormula += " + 2d4["+game.i18n.localize("ABILITY_LABEL.BACKSTAB")+"]";
+      damageModFormula += functionStuff.backstabDmg;
       damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_BACKSTAB');
     }
     else
     {
-      damageModFormula += " + 1d4"+game.i18n.localize("COMBAT.CHAT_DMG_PARAMS_ADVANTAGE");
-      damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_ADVANTAGE');
+      
     }
   }
   if(functionStuff.beastLoreData.useBeastlore){
