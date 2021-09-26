@@ -147,6 +147,8 @@
   "ARMOR.NPC_PROTECTION": "NPC Prot.",
   "ARMOR.IMPEDING": "Impeding",
   "ARMOR.IMPEDINGABBR": "Imp.",
+  "ARMOR.IMPEDINGLONG": "impeding armor",
+  "ARMOR.IMPEDING_TARGET": "armor impeding target",
   "ARMOR.DEFENSE": "Defense",
   "ARMOR.COST": "Cost",
   "ARMOR.QUALITY": "Quality",
@@ -267,7 +269,7 @@
   "COMBAT.CHAT_DAMAGE_DYING": " is fataly wounded.",
   "COMBAT.CHAT_DAMAGE": " endures damage : ",
   "COMBAT.CHAT_DAMAGE_PAIN": " is stunned by pain.",
-  "COMBAT.PARAMS_PRECISE": "[Precise weapon], ",
+  "COMBAT.PARAMS_PRECISE": "Precise weapon, ",
 
   "CORRUPTION.CHAT_INTRO": " increases his degree of taint.",
   "CORRUPTION.CHAT_THRESHOLD": " becomes Blight-marked (theshold reached).",

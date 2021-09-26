@@ -644,7 +644,7 @@ async function buildFunctionStuffDefault(ability, actor) {
         functionStuff.castingAttributeName = actorResMod.bestAttributeName;
         functionStuff.autoParams = actorResMod.autoParams;
         functionStuff.corruption = true;
-        functionStuff.impeding = actor.data.data.combat.impeding;
+        functionStuff.impeding = actor.data.data.combat.impedingMagic;
         functionStuff.casterMysticAbilities = await getMysticAbilities(actor);
         if(!actor.data.data.health.corruption.max) functionStuff.corruption = false;
     }
@@ -873,6 +873,8 @@ async function modifierDialog(functionStuff){
     let leaderTarget = functionStuff.targetData.leaderTarget ?? false;
     let medicus = functionStuff.medicus ?? false;
     let poisoner = functionStuff.poisoner ?? false;
+    let precise = functionStuff.precise ?? false;
+    let targetImpeding = functionStuff.targetImpeding ?? false;
     let weaponDamage = "";
     let actorWeapons;
     let askImpeding = false;
@@ -951,8 +953,10 @@ async function modifierDialog(functionStuff){
         defaultDamModifier: "",
         checkMaintain: functionStuff.checkMaintain,
         askWeapon: functionStuff.askWeapon,
+        targetImpeding: targetImpeding,
         weapons : actorWeapons,
         medicus : medicus,
+        precise: precise,
         poisoner: poisoner
     });
     let title;
@@ -1010,7 +1014,13 @@ async function modifierDialog(functionStuff){
                 if(askImpeding){
                     if(html.find("#impeding")[0].checked){
                         functionStuff.modifier += -functionStuff.impeding;
-                        functionStuff.autoParams += game.i18n.localize("ARMOR.IMPEDING") + ", ";
+                        functionStuff.autoParams += game.i18n.localize("ARMOR.IMPEDINGLONG") + ", ";
+                    }
+                }
+                if(targetImpeding){
+                    if(html.find("#impTarget")[0].checked){
+                        functionStuff.modifier += functionStuff.targetImpeding;
+                        functionStuff.autoParams += game.i18n.localize("ARMOR.IMPEDING_TARGET") + ", ";
                     }
                 }
                 if(askCorruptedTarget){
@@ -1072,6 +1082,7 @@ async function modifierDialog(functionStuff){
                             functionStuff.dmgData.hunterIDmg = false;
                         }
                     }
+                    if(precise) functionStuff.modifier += 1;
                 }
                 if(medicus){
                     if(hasTarget){
@@ -1453,7 +1464,7 @@ export async function attackRoll(weapon, actor){
     //all weapons
     if(!functionStuff.askWeapon){
         if(functionStuff.weapon.qualities.precise){
-            functionStuff.modifier += 1;
+            functionStuff.precise = 1;
             functionStuff.autoParams += game.i18n.localize('COMBAT.PARAMS_PRECISE')
         }
     };
@@ -2000,6 +2011,7 @@ async function brimstoneCascadePrepare(ability, actor) {
         contextualDamage: true,
         tradition: ["wizardry"],
         targetHasRapidReflexes: targetHasRapidReflexes,
+        targetImpeding: targetData.actor.data.data.combat.impedingMov,
         targetData: targetData,
         resultFunction: brimstoneCascadeResult
     }
@@ -2171,6 +2183,7 @@ async function blackBoltPrepare(ability, actor) {
         checkMaintain: true,
         contextualDamage: true,
         targetData: targetData,
+        targetImpeding: targetData.actor.data.data.combat.impedingMov,
         resultFunction: blackBoltResult
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
@@ -3254,6 +3267,7 @@ async function mindthrowPrepare(ability, actor) {
         contextualDamage: true,
         tradition: ["wizardry"],
         targetData: targetData,
+        targetImpeding: targetData.actor.data.data.combat.impedingMov,
         resultFunction: mindthrowResult
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
@@ -3684,7 +3698,7 @@ async function simpleRollAbility(ability, actor) {
     switch (ability.data.data.reference){
         case "acrobatics":
             specificStuff.castingAttributeName = "quick";
-            specificStuff.impeding = actor.data.data.combat.impeding;
+            specificStuff.impeding = actor.data.data.combat.impedingMov;
         break;
         case "loremaster":
             specificStuff.introText = actor.data.name + game.i18n.localize('ABILITY_LOREMASTER.CHAT_INTRO');
@@ -3693,7 +3707,7 @@ async function simpleRollAbility(ability, actor) {
         break;
         case "quickdraw":
             specificStuff.castingAttributeName = "quick";
-            specificStuff.impeding = actor.data.data.combat.impeding;
+            specificStuff.impeding = actor.data.data.combat.impedingMov;
         break;
         case "shapeshifter":
             specificStuff.castingAttributeName = "resolute";

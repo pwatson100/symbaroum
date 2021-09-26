@@ -39,6 +39,8 @@ export class SymbaroumActor extends Actor {
                 baseProtection: "0",
                 bonusProtection: "",
                 impeding: 0,
+                impedingMov: 0,
+                impedingMagic: 0,
                 qualities: {
                     flexible: false,
                     cumbersome: false,
@@ -168,7 +170,7 @@ export class SymbaroumActor extends Actor {
         let activeArmor = this._getActiveArmor(data, extraArmorBonus);
         let defense = this._getDefenseValue(data, activeArmor);
         let damageProt = this._getDamageProtection();
-        let totDefense = defense.attDefValue - activeArmor.impeding + data.data.bonus.defense;        
+        let totDefense = defense.attDefValue - activeArmor.impedingMov + data.data.bonus.defense;        
 
         data.data.combat = {
             id: activeArmor.id,
@@ -178,6 +180,8 @@ export class SymbaroumActor extends Actor {
             protectionNpc: activeArmor.npc,
             unfavourPcProt: activeArmor.unfavourPcProt,
             impeding: activeArmor.impeding,
+            impedingMov: activeArmor.impedingMov,
+            impedingMagic: activeArmor.impedingMagic,
             tooltipProt: activeArmor.tooltip,
             defense: totDefense,
             defenseAttribute: {
@@ -545,6 +549,8 @@ export class SymbaroumActor extends Actor {
             protection = "0";
         }
         let impeding = item.data.data.impeding;
+        let impedingMov=impeding;
+        let impedingMagic=impeding;
         let bonusProtection = "";
         if(item.data.data.bonusProtection !== undefined && item.data.data.bonusProtection != ""){
             let plus = "+";
@@ -555,6 +561,20 @@ export class SymbaroumActor extends Actor {
         }
         if(protection != "0" || bonusProtection == "")
         {
+            let armoredmystic = this.items.filter(element => element.data.data?.reference === "armoredmystic");
+            if(armoredmystic.length > 0){
+                let powerLvl = getPowerLevel(armoredmystic[0]);
+                if(powerLvl.level>0 && ["1d4", "1d6"].includes(protection)){
+                    impedingMagic = 0;
+                }
+                if(powerLvl.level>1 && protection === "1d8"){
+                    impedingMagic = 0;
+                }
+                if(powerLvl.level>2){
+                    bonusProtection += "+1d4";
+                    tooltip += game.i18n.localize("ABILITY_LABEL.ARMORED_MYSTIC") + ", ";
+                }
+            }
             let manatarms = this.items.filter(element => element.data.data?.reference === "manatarms");
             if(manatarms.length > 0){
                 let powerLvl = getPowerLevel(manatarms[0]);
@@ -562,7 +582,7 @@ export class SymbaroumActor extends Actor {
                 protection = newprot;
                 tooltip += game.i18n.localize("ABILITY_LABEL.MAN-AT-ARMS") + ", ";
                 if(powerLvl.level > 1){
-                    impeding = 0;
+                    impedingMov = 0;
                 }
             }
             let naturalarmor = this.items.filter(element => element.data.data?.reference === "armored");
@@ -634,6 +654,8 @@ export class SymbaroumActor extends Actor {
             unfavourPcProt: unfavourPcProt,
             tooltip: tooltip,
             impeding: impeding,
+            impedingMov: impedingMov,
+            impedingMagic: impedingMagic,
             isActive: item.data.isActive,
             isEquipped: item.data.isEquipped, 
             img: item.img} );
@@ -683,7 +705,7 @@ export class SymbaroumActor extends Actor {
             attDefValue = 5;
             defMsg = `${game.i18n.localize("ABILITY_LABEL.BERSERKER")} 5`;
         }
-        defMsg += `<br/>${game.i18n.localize("ARMOR.IMPEDING")}(${-1 * activeArmor.impeding})<br/>${data.data.bonus.defense_msg}`;
+        defMsg += `<br/>${game.i18n.localize("ARMOR.IMPEDINGLONG")}(${-1 * activeArmor.impedingMov})<br/>${data.data.bonus.defense_msg}`;
         let robust = this.data.items.filter(element => element.data.data?.reference === "robust");
         if(robust.length > 0){
             let powerLvl = getPowerLevel(robust[0]);
