@@ -614,7 +614,7 @@ async function buildFunctionStuffDefault(ability, actor) {
         autoParams: "",
         beastLoreData: getBeastLoreData(actor),
         checkMaintain: false,
-        checkTargetSteadfast: false,
+        targetSteadfastLevel: 0,  //0 means ignore steadfast
         combat: false,
         contextualDamage: false,
         corruption: false,
@@ -640,7 +640,7 @@ async function buildFunctionStuffDefault(ability, actor) {
         resultFunction: standardPowerResult
     };
     if(ability.data.type === "mysticalPower"){
-        let actorResMod = checkResoluteModifiers(actor, functionStuff.autoParams, true, false);
+        let actorResMod = checkResoluteModifiers(actor, functionStuff.autoParams);
         functionStuff.castingAttributeName = actorResMod.bestAttributeName;
         functionStuff.autoParams = actorResMod.autoParams;
         functionStuff.corruption = true;
@@ -1149,6 +1149,33 @@ async function modifierDialog(functionStuff){
     dialog.render(true);
 }
 
+export function checkSteadfastMod(actor, autoParams = "", neededLevel = 1){
+    let hasSteadfast = false;
+    let useSteadfastAdept = false;
+    let useSteadfastMaster = false;
+    let favour = 0;
+    let steadfastAb = actor.items.filter(item => item.data.data?.reference === "steadfast");
+    if(steadfastAb.length > 0){
+        hasSteadfast = true;
+        let powerLvl = getPowerLevel(steadfastAb[0]);
+        if(powerLvl.level >= neededLevel){
+            useSteadfastAdept = true;
+            favour = 1;
+            autoParams += game.i18n.localize('ABILITY_LABEL.STEADFAST') + " (" + powerLvl.lvlName + "), ";
+        }
+        if(powerLvl.level > 2){
+            useSteadfastMaster = true;
+        }
+    }
+    return{
+        favour: favour,
+        hasSteadfast: hasSteadfast,
+        useSteadfastAdept: useSteadfastAdept,
+        useSteadfastMaster: useSteadfastMaster,
+        autoParams: autoParams
+    }
+}
+
 /*a character that uses resolute, or a target that defend with resolute, mays have ability modifiers
 This function checks : 
 - leader novice (may use persuasive in place of resolute).
@@ -1165,52 +1192,24 @@ returns:{
     useSteadfastAdept {boolean},
     useSteadfastMaster {boolean}
     autoParams {string} detected and used abilities have been appended to autoParams}*/
-export function checkResoluteModifiers(actor, autoParams = "", checkLeader = false, checkSteadfast = false){
+export function checkResoluteModifiers(actor, autoParams = ""){
     let useLeader = false;
-    let hasSteadfast = false;
-    let useSteadfastAdept = false;
-    let useSteadfastMaster = false;
-    let favour = 0;
     let bestAttributeName = "resolute";
     let bestAttributeValue = actor.data.data.attributes["resolute"].value + actor.data.data.bonus["resolute"];
-    if(checkLeader){
-        let hasLeader = actor.items.filter(item => item.data.data?.reference === "leader");
-        if(hasLeader.length > 0){
-            let persuasiveV = actor.data.data.attributes["persuasive"].value + actor.data.data.bonus["persuasive"];
-            if(bestAttributeValue < persuasiveV) {
-                bestAttributeName = "persuasive";
-                bestAttributeValue = persuasiveV;
-                useLeader = true;
-                autoParams += game.i18n.localize('ABILITY_LABEL.LEADER') + ", ";
-            }
-        }
-    }
-    if(checkSteadfast){
-        let steadfastAb = actor.items.filter(item => item.data.data?.reference === "steadfast");
-        if(steadfastAb.length > 0){
-            hasSteadfast = true;
-            let powerLvl = getPowerLevel(steadfastAb[0]);
-            if(powerLvl.level == 2){
-                useSteadfastAdept = true;
-                favour = 1;
-                autoParams += game.i18n.localize('ABILITY_LABEL.STEADFAST') + " (" + game.i18n.localize('ABILITY.ADEPT') + "), ";
-            }
-            if(powerLvl.level > 2){
-                useSteadfastMaster = true;
-                useSteadfastAdept = true;
-                favour = 1;
-                autoParams += game.i18n.localize('ABILITY_LABEL.STEADFAST') + " (" + game.i18n.localize('ABILITY.MASTER') + "), ";
-            }
+    let hasLeader = actor.items.filter(item => item.data.data?.reference === "leader");
+    if(hasLeader.length > 0){
+        let persuasiveV = actor.data.data.attributes["persuasive"].value + actor.data.data.bonus["persuasive"];
+        if(bestAttributeValue < persuasiveV) {
+            bestAttributeName = "persuasive";
+            bestAttributeValue = persuasiveV;
+            useLeader = true;
+            autoParams += game.i18n.localize('ABILITY_LABEL.LEADER') + ", ";
         }
     }
     return{
         useLeader: useLeader,
         bestAttributeName: bestAttributeName,
         bestAttributeValue: bestAttributeValue,
-        favour: favour,
-        hasSteadfast: hasSteadfast,
-        useSteadfastAdept: useSteadfastAdept,
-        useSteadfastMaster: useSteadfastMaster,
         autoParams: autoParams
     }
 }
@@ -1597,7 +1596,10 @@ async function attackResult(rollData, functionStuff){
     if(functionStuff.autoParams != ""){templateData.subText += ", " + functionStuff.autoParams};
 
     if(functionStuff.poison > 0 && !targetDies && damageTot > 0){
-        let poisonRoll = await baseRoll(functionStuff.actor, "cunning", functionStuff.targetData.actor, "strong", 0, 0);
+        let targetResMod = checkSteadfastMod(functionStuff.targetData.actor, functionStuff.targetData.autoParams, 1);
+        let poisonFavour = -1*targetResMod.favour;
+        functionStuff.targetData.autoParams += targetResMod.autoParams;
+        let poisonRoll = await baseRoll(functionStuff.actor, "cunning", functionStuff.targetData.actor, "strong", poisonFavour, 0);
         let poisonRes= await poisonCalc(functionStuff, poisonRoll);
         if(poisonRes.flagData) flagDataArray.push(poisonRes.flagData);
         templateData = Object.assign(templateData, poisonRes);
@@ -1663,15 +1665,15 @@ async function standardPowerActivation(functionStuff) {
             }
         }
         if (functionStuff.targetData.resistAttributeName === "resolute"){
-            let targetResMod = checkResoluteModifiers(functionStuff.targetData.actor, functionStuff.targetData.autoParams, true, functionStuff.checkTargetSteadfast);
+            let targetResMod = checkResoluteModifiers(functionStuff.targetData.actor, functionStuff.targetData.autoParams);
             functionStuff.targetData.resistAttributeName = targetResMod.bestAttributeName;
             functionStuff.targetData.resistAttributeValue = targetResMod.bestAttributeValue;
-            functionStuff.targetData.autoParams = targetResMod.autoParams;
+            functionStuff.targetData.autoParams += targetResMod.autoParams;
+        }
+        if (functionStuff.targetSteadfastLevel){
+            let targetResMod = checkSteadfastMod(functionStuff.targetData.actor, functionStuff.targetData.autoParams, functionStuff.targetSteadfastLevel);
             functionStuff.favour += -1*targetResMod.favour;
-        } else if (functionStuff.targetData.resistAttributeName === "strong"){
-            let targetResMod = checkResoluteModifiers(functionStuff.targetData.actor, functionStuff.targetData.autoParams, false, functionStuff.checkTargetSteadfast);
-            functionStuff.favour += -1*targetResMod.favour;
-            functionStuff.targetData.autoParams = targetResMod.autoParams;
+            functionStuff.targetData.autoParams += targetResMod.autoParams;
         }
     }
     await modifierDialog(functionStuff)
@@ -1959,7 +1961,7 @@ async function anathemaPrepare(ability, actor) {
         targetResitAttribute: "resolute",
         tradition: ["wizardry", "staffmagic", "theurgy"],
         checkMaintain: true,
-        checkTargetSteadfast: true,
+        targetSteadfastLevel: 2,
         introText: actor.data.name + game.i18n.localize('POWER_ANATHEMA.CHAT_INTRO'),
         resultTextSuccess: actor.data.name + game.i18n.localize('POWER_ANATHEMA.CHAT_SUCCESS'),
         resultTextFail: actor.data.name + game.i18n.localize('POWER_ANATHEMA.CHAT_FAILURE')
@@ -2131,7 +2133,7 @@ async function bendWillPrepare(ability, actor) {
     }
     let specificStuff = {
         checkMaintain: true,
-        checkTargetSteadfast: true,
+        targetSteadfastLevel: 2,
         targetMandatory : true,
         targetData: targetData,
         targetResitAttribute: "resolute",
@@ -2385,11 +2387,12 @@ async function confusionPrepare(ability, actor) {
         ui.notifications.error(error);
         return;
     }
-    let targetResMod = checkResoluteModifiers(targetData.actor, targetData.autoParams, true, true);
-    let favour = -1*targetResMod.favour;
+    let targetResMod = checkResoluteModifiers(targetData.actor, targetData.autoParams);
+    let targetStdMod = checkSteadfastMod(targetData.actor, targetData.autoParams, 2);
+    let favour = -1*targetStdMod.favour;
     targetData.resistAttributeName = targetResMod.bestAttributeName;
     targetData.resistAttributeValue = targetResMod.bestAttributeValue;
-    targetData.autoParams = targetResMod.autoParams;
+    targetData.autoParams = targetResMod.autoParams+ targetStdMod.autoParams;
     let fsDefault;
     try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
         ui.notifications.error(error);
@@ -2642,8 +2645,9 @@ async function entanglingvinesPrepare(ability, actor) {
         tradition: ["witchcraft"]
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    let targetResMod = checkResoluteModifiers(functionStuff.targetData.actor, functionStuff.targetData.autoParams, false, true);
+    let targetResMod = checkSteadfastMod(functionStuff.targetData.actor, functionStuff.targetData.autoParams, 1);
     functionStuff.favour += -1*targetResMod.favour;  
+    functionStuff.targetData.autoParams += targetResMod.autoParams;
     await modifierDialog(functionStuff)
 }
 
@@ -2858,7 +2862,7 @@ async function inheritWound(ability, actor){
         return;
     }
     let powerLvl = getPowerLevel(ability);
-    let actorResMod = checkResoluteModifiers(actor, "", true, false);
+    let actorResMod = checkResoluteModifiers(actor, "");
     let favour = 0;
     let castingAttributeName = actorResMod.bestAttributeName;
 
@@ -2977,7 +2981,7 @@ async function larvaeBoilsPrepare(ability, actor) {
         ui.notifications.error(error);
         return;
     } 
-    let targetResMod = checkResoluteModifiers(targetData.actor, "", false, true);
+    let targetResMod = checkSteadfastMod(targetData.actor, targetData.autoParams, 1);
     targetData.autoParams += targetResMod.autoParams;
     let fsDefault;
     try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
@@ -3006,7 +3010,6 @@ async function larvaeBoilsResult(rollData, functionStuff){
     let finalText = "";
     let hasRoll;
     let finalDamage = 0;
-
     if(functionStuff.isMaintained){
         introText = functionStuff.actor.data.name + game.i18n.localize('POWER_LARVAEBOILS.CHAT_INTRO_M');
         hasRoll = true;
@@ -3064,7 +3067,7 @@ async function larvaeBoilsResult(rollData, functionStuff){
         subText: functionStuff.ability.name + " (" + functionStuff.powerLvl.lvlName + ")",
         subImg: functionStuff.ability.img,
         hasRoll: hasRoll,
-        rollString: `${rollData[0].actingAttributeLabel} : (${rollData[0].actingAttributeValue})`,
+        rollString: await formatRollString(rollData[0], functionStuff.targetData.hasTarget, rollData[0].modifier),
         rollResult : formatRollResult(rollData),
         resultText: resultText,
         finalText: finalText,
@@ -3208,11 +3211,12 @@ async function maltransformationPrepare(ability, actor) {
         ui.notifications.error(error);
         return;
     }
-    let targetResMod = checkResoluteModifiers(targetData.actor, targetData.autoParams, true, true);
-    let favour = -1*targetResMod.favour;
+    let targetResMod = checkResoluteModifiers(targetData.actor, targetData.autoParams);
+    let targetStdMod = checkSteadfastMod(targetData.actor, targetData.autoParams, 2);
+    let favour = -1*targetStdMod.favour;
     targetData.resistAttributeName = targetResMod.bestAttributeName;
     targetData.resistAttributeValue = targetResMod.bestAttributeValue;
-    targetData.autoParams = targetResMod.autoParams;
+    targetData.autoParams = targetResMod.autoParams + targetStdMod.autoParams;
     let fsDefault;
     try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
         ui.notifications.error(error);
@@ -3751,7 +3755,7 @@ async function dominatePrepare(ability, actor) {
         castingAttributeName: "persuasive",
         targetMandatory: true,
         targetResitAttribute: "resolute",
-        checkTargetSteadfast: true,
+        targetSteadfastLevel: 2,
         addTargetEffect: ["icons/svg/terror.svg"],
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
@@ -4122,6 +4126,9 @@ async function poisonerPrepare(ability, actor) {
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
     if(ability.data.data.reference === "poisoner") {functionStuff.poisoner = true}
     else functionStuff.poison = functionStuff.powerLvl.level;
+    let targetResMod = checkSteadfastMod(functionStuff.targetData.actor, functionStuff.targetData.autoParams, 1);
+    functionStuff.favour += -1*targetResMod.favour;
+    functionStuff.targetData.autoParams = targetResMod.autoParams;
     await modifierDialog(functionStuff)
 }
 

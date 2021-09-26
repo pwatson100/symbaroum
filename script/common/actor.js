@@ -334,7 +334,7 @@ export class SymbaroumActor extends Actor {
                     }
                 }
                 if(flagDancing){
-                    let resoluteMod = checkResoluteModifiers(this, "", true, false);
+                    let resoluteMod = checkResoluteModifiers(this, "");
                     attribute = resoluteMod.bestAttributeName;
                     tooltip += game.i18n.localize("POWER_LABEL.DANCING_WEAPON") + ", ";
                 }
@@ -661,7 +661,7 @@ export class SymbaroumActor extends Actor {
 
         let flagDancing = this.getFlag(game.system.id, 'dancingweapon');
         if(flagDancing){
-            let resoluteMod = checkResoluteModifiers(this, "", true, false);
+            let resoluteMod = checkResoluteModifiers(this, "");
             attributeDef = resoluteMod.bestAttributeName;
             attDefValue = data.data.attributes[attributeDef].total;
         }
