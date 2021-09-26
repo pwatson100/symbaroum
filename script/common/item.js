@@ -503,11 +503,15 @@ function getTargets(targetAttributeName, maxTargets = 1) {
 }
 
 /* get the selected token ID */
-function getTokenId(){
+async function getTokenId(actor){
     let selected = canvas.tokens.controlled;
     if(selected.length > 1 || selected.length == 0){
-        ui.notifications.error(game.i18n.localize('ERROR.NO_TOKEN_SELECTED'))
-        return;
+        throw game.i18n.localize('ERROR.NO_TOKEN_SELECTED');
+    }
+    if(actor){
+        if(selected[0].actor.data._id !== actor.data._id){
+            throw game.i18n.localize('ERROR.NO_TOKEN_SELECTED');
+        }
     }
     return(selected[0])
 }
@@ -600,11 +604,7 @@ async function checkCorruptionThreshold(actor, corruptionGained){
 }
 
 async function buildFunctionStuffDefault(ability, actor) {
-    let selectedToken;
-    try{selectedToken = getTokenId()} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
+    let selectedToken= await getTokenId(actor);
     let functionStuff = {
         ability: ability,
         actor: actor,
@@ -614,6 +614,7 @@ async function buildFunctionStuffDefault(ability, actor) {
         autoParams: "",
         beastLoreData: getBeastLoreData(actor),
         checkMaintain: false,
+        targetSteadfastLevel: 0,  //0 means ignore steadfast
         combat: false,
         contextualDamage: false,
         corruption: false,
@@ -639,7 +640,7 @@ async function buildFunctionStuffDefault(ability, actor) {
         resultFunction: standardPowerResult
     };
     if(ability.data.type === "mysticalPower"){
-        let actorResMod = checkResoluteModifiers(actor, functionStuff.autoParams, true, false);
+        let actorResMod = checkResoluteModifiers(actor, functionStuff.autoParams);
         functionStuff.castingAttributeName = actorResMod.bestAttributeName;
         functionStuff.autoParams = actorResMod.autoParams;
         functionStuff.corruption = true;
@@ -647,7 +648,7 @@ async function buildFunctionStuffDefault(ability, actor) {
         functionStuff.casterMysticAbilities = await getMysticAbilities(actor);
         if(!actor.data.data.health.corruption.max) functionStuff.corruption = false;
     }
-    return(functionStuff)
+    return(functionStuff);
 }
 
 function  getBeastLoreData (actor){
@@ -1148,6 +1149,33 @@ async function modifierDialog(functionStuff){
     dialog.render(true);
 }
 
+export function checkSteadfastMod(actor, autoParams = "", neededLevel = 1){
+    let hasSteadfast = false;
+    let useSteadfastAdept = false;
+    let useSteadfastMaster = false;
+    let favour = 0;
+    let steadfastAb = actor.items.filter(item => item.data.data?.reference === "steadfast");
+    if(steadfastAb.length > 0){
+        hasSteadfast = true;
+        let powerLvl = getPowerLevel(steadfastAb[0]);
+        if(powerLvl.level >= neededLevel){
+            useSteadfastAdept = true;
+            favour = 1;
+            autoParams += game.i18n.localize('ABILITY_LABEL.STEADFAST') + " (" + powerLvl.lvlName + "), ";
+        }
+        if(powerLvl.level > 2){
+            useSteadfastMaster = true;
+        }
+    }
+    return{
+        favour: favour,
+        hasSteadfast: hasSteadfast,
+        useSteadfastAdept: useSteadfastAdept,
+        useSteadfastMaster: useSteadfastMaster,
+        autoParams: autoParams
+    }
+}
+
 /*a character that uses resolute, or a target that defend with resolute, mays have ability modifiers
 This function checks : 
 - leader novice (may use persuasive in place of resolute).
@@ -1164,52 +1192,24 @@ returns:{
     useSteadfastAdept {boolean},
     useSteadfastMaster {boolean}
     autoParams {string} detected and used abilities have been appended to autoParams}*/
-export function checkResoluteModifiers(actor, autoParams = "", checkLeader = false, checkSteadfast = false){
+export function checkResoluteModifiers(actor, autoParams = ""){
     let useLeader = false;
-    let hasSteadfast = false;
-    let useSteadfastAdept = false;
-    let useSteadfastMaster = false;
-    let favour = 0;
     let bestAttributeName = "resolute";
     let bestAttributeValue = actor.data.data.attributes["resolute"].value + actor.data.data.bonus["resolute"];
-    if(checkLeader){
-        let hasLeader = actor.items.filter(item => item.data.data?.reference === "leader");
-        if(hasLeader.length > 0){
-            let persuasiveV = actor.data.data.attributes["persuasive"].value + actor.data.data.bonus["persuasive"];
-            if(bestAttributeValue < persuasiveV) {
-                bestAttributeName = "persuasive";
-                bestAttributeValue = persuasiveV;
-                useLeader = true;
-                autoParams += game.i18n.localize('ABILITY_LABEL.LEADER') + ", ";
-            }
-        }
-    }
-    if(checkSteadfast){
-        let steadfastAb = actor.items.filter(item => item.data.data?.reference === "steadfast");
-        if(steadfastAb.length > 0){
-            hasSteadfast = true;
-            let powerLvl = getPowerLevel(steadfastAb[0]);
-            if(powerLvl.level == 2){
-                useSteadfastAdept = true;
-                favour = 1;
-                autoParams += game.i18n.localize('ABILITY_LABEL.STEADFAST') + " (" + game.i18n.localize('ABILITY.ADEPT') + "), ";
-            }
-            if(powerLvl.level > 2){
-                useSteadfastMaster = true;
-                useSteadfastAdept = true;
-                favour = 1;
-                autoParams += game.i18n.localize('ABILITY_LABEL.STEADFAST') + " (" + game.i18n.localize('ABILITY.MASTER') + "), ";
-            }
+    let hasLeader = actor.items.filter(item => item.data.data?.reference === "leader");
+    if(hasLeader.length > 0){
+        let persuasiveV = actor.data.data.attributes["persuasive"].value + actor.data.data.bonus["persuasive"];
+        if(bestAttributeValue < persuasiveV) {
+            bestAttributeName = "persuasive";
+            bestAttributeValue = persuasiveV;
+            useLeader = true;
+            autoParams += game.i18n.localize('ABILITY_LABEL.LEADER') + ", ";
         }
     }
     return{
         useLeader: useLeader,
         bestAttributeName: bestAttributeName,
         bestAttributeValue: bestAttributeValue,
-        favour: favour,
-        hasSteadfast: hasSteadfast,
-        useSteadfastAdept: useSteadfastAdept,
-        useSteadfastMaster: useSteadfastMaster,
         autoParams: autoParams
     }
 }
@@ -1261,12 +1261,11 @@ It won't work with NPC fixed values as input
 
 export async function attackRoll(weapon, actor){
     // get selected token
-    let selected = canvas.tokens.controlled;
-    if(selected.length == 0 || selected.length > 1){
-        ui.notifications.error(game.i18n.localize('ERROR.NO_TOKEN_SELECTED'));
+    let token;
+    try{token = await getTokenId(actor)} catch(error){      
+        ui.notifications.error(error);
         return;
     }
-    let token = selected[0];
     // get target token, actor and defense value
     let targetData;
     try{targetData = getTarget("defense")} catch(error){      
@@ -1597,7 +1596,10 @@ async function attackResult(rollData, functionStuff){
     if(functionStuff.autoParams != ""){templateData.subText += ", " + functionStuff.autoParams};
 
     if(functionStuff.poison > 0 && !targetDies && damageTot > 0){
-        let poisonRoll = await baseRoll(functionStuff.actor, "cunning", functionStuff.targetData.actor, "strong", 0, 0);
+        let targetResMod = checkSteadfastMod(functionStuff.targetData.actor, functionStuff.targetData.autoParams, 1);
+        let poisonFavour = -1*targetResMod.favour;
+        functionStuff.targetData.autoParams += targetResMod.autoParams;
+        let poisonRoll = await baseRoll(functionStuff.actor, "cunning", functionStuff.targetData.actor, "strong", poisonFavour, 0);
         let poisonRes= await poisonCalc(functionStuff, poisonRoll);
         if(poisonRes.flagData) flagDataArray.push(poisonRes.flagData);
         templateData = Object.assign(templateData, poisonRes);
@@ -1627,7 +1629,6 @@ async function attackResult(rollData, functionStuff){
         templateData.printFlaming = true;
         templateData.flamingChat = functionStuff.targetData.token.data.name + game.i18n.localize('COMBAT.CHAT_FLAMING_SUCCESS1') + flamingDamage  + game.i18n.localize('COMBAT.CHAT_POISON_SUCCESS2')  + flamingRounds.toString();
     }
-    //createResultChatMessage("systems/symbaroum/template/chat/combat.html", templateData, flagDataArray)
     const html = await renderTemplate("systems/symbaroum/template/chat/combat.html", templateData);
     const chatData = {
         user: game.user.id,
@@ -1664,15 +1665,15 @@ async function standardPowerActivation(functionStuff) {
             }
         }
         if (functionStuff.targetData.resistAttributeName === "resolute"){
-            let targetResMod = checkResoluteModifiers(functionStuff.targetData.actor, functionStuff.targetData.autoParams, true, functionStuff.checkTargetSteadfast);
+            let targetResMod = checkResoluteModifiers(functionStuff.targetData.actor, functionStuff.targetData.autoParams);
             functionStuff.targetData.resistAttributeName = targetResMod.bestAttributeName;
             functionStuff.targetData.resistAttributeValue = targetResMod.bestAttributeValue;
-            functionStuff.targetData.autoParams = targetResMod.autoParams;
+            functionStuff.targetData.autoParams += targetResMod.autoParams;
+        }
+        if (functionStuff.targetSteadfastLevel){
+            let targetResMod = checkSteadfastMod(functionStuff.targetData.actor, functionStuff.targetData.autoParams, functionStuff.targetSteadfastLevel);
             functionStuff.favour += -1*targetResMod.favour;
-        } else if (functionStuff.targetData.resistAttributeName === "strong"){
-            let targetResMod = checkResoluteModifiers(functionStuff.targetData.actor, functionStuff.targetData.autoParams, false, functionStuff.checkTargetSteadfast);
-            functionStuff.favour += -1*targetResMod.favour;
-            functionStuff.targetData.autoParams = targetResMod.autoParams;
+            functionStuff.targetData.autoParams += targetResMod.autoParams;
         }
     }
     await modifierDialog(functionStuff)
@@ -1690,7 +1691,6 @@ async function standardAbilityActivation(functionStuff) {
             }
         }
     }
-
     await modifierDialog(functionStuff)
 }
 
@@ -1952,19 +1952,23 @@ async function standardPowerResult(rollData, functionStuff){
 // ********************************************* POWERS *****************************************************
 
 async function anathemaPrepare(ability, actor) {
-    let fsDefault = await buildFunctionStuffDefault(ability, actor)
+    let fsDefault;
+    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
+        ui.notifications.error(error);
+        return;
+    }
     let specificStuff = {
         targetResitAttribute: "resolute",
         tradition: ["wizardry", "staffmagic", "theurgy"],
         checkMaintain: true,
-        checkTargetSteadfast: true,
+        targetSteadfastLevel: 2,
         introText: actor.data.name + game.i18n.localize('POWER_ANATHEMA.CHAT_INTRO'),
         resultTextSuccess: actor.data.name + game.i18n.localize('POWER_ANATHEMA.CHAT_SUCCESS'),
         resultTextFail: actor.data.name + game.i18n.localize('POWER_ANATHEMA.CHAT_FAILURE')
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    functionStuff.targetData.hasTarget = true,
-    await standardPowerActivation(functionStuff)
+    functionStuff.targetData.hasTarget = true;
+    standardPowerActivation(functionStuff);
 }
 
 async function brimstoneCascadePrepare(ability, actor) {
@@ -1980,9 +1984,13 @@ async function brimstoneCascadePrepare(ability, actor) {
     let rrAbility = targetData.actor.items.filter(item => item.data.data.reference === "rapidreflexes");
     if(rrAbility.length != 0){
         targetHasRapidReflexes = true;
-        targetData.autoParams += "Rapid Reflexes, ";
+        targetData.autoParams += game.i18n.localize('ABILITY_LABEL.RAPID_REFLEXES');
     }
-    let fsDefault = await buildFunctionStuffDefault(ability, actor)
+    let fsDefault;
+    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
+        ui.notifications.error(error);
+        return;
+    }
     let specificStuff = {
         checkMaintain: true,
         contextualDamage: true,
@@ -2118,20 +2126,19 @@ async function bendWillPrepare(ability, actor) {
         ui.notifications.error(error);
         return;
     }
-    let targetResMod = checkResoluteModifiers(targetData.actor, targetData.autoParams, true, true);
-    let favour = -1*targetResMod.favour;
-    targetData.resistAttributeName = targetResMod.bestAttributeName;
-    targetData.resistAttributeValue = targetResMod.bestAttributeValue;
-    targetData.autoParams = targetResMod.autoParams;
-    let fsDefault = await buildFunctionStuffDefault(ability, actor)
+    let fsDefault;
+    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
+        ui.notifications.error(error);
+        return;
+    }
     let specificStuff = {
         checkMaintain: true,
-        favour: favour,
+        targetSteadfastLevel: 2,
         targetMandatory : true,
         targetData: targetData,
+        targetResitAttribute: "resolute",
         resultFunction: standardPowerResult,
         activelyMaintaninedTargetEffect: ["systems/symbaroum/asset/image/puppet.png"],
-        combat: false,
         tradition: ["witchcraft", "wizardry"],
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
@@ -2141,7 +2148,7 @@ async function bendWillPrepare(ability, actor) {
     functionStuff.resultTextFail = functionStuff.targetData.token.data.name + game.i18n.localize('POWER_BENDWILL.CHAT_FAILURE');
     functionStuff.targetText = game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + functionStuff.targetData.token.data.name;
     functionStuff.finalText = "";
-    await modifierDialog(functionStuff)
+    standardPowerActivation(functionStuff);
 }
 
 async function blackBoltPrepare(ability, actor) {
@@ -2151,7 +2158,11 @@ async function blackBoltPrepare(ability, actor) {
         ui.notifications.error(error);
         return;
     }
-    let fsDefault = await buildFunctionStuffDefault(ability, actor)
+    let fsDefault;
+    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
+        ui.notifications.error(error);
+        return;
+    }
     let specificStuff = {
         checkMaintain: true,
         contextualDamage: true,
@@ -2276,12 +2287,12 @@ async function blackBoltResult(rollData, functionStuff){
 }
 
 async function blessedshieldPrepare(ability, actor) {
-    let fsDefault = await buildFunctionStuffDefault(ability, actor);
+    let fsDefault;
+    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
+        ui.notifications.error(error);
+        return;
+    }
     let specificStuff = {
-        isMaintained: false,
-        combat: false,
-        targetMandatory: false,
-        checkMaintain: false,
         tradition: ["theurgy"],
         resultFunction: blessedshieldResult
     }
@@ -2376,19 +2387,23 @@ async function confusionPrepare(ability, actor) {
         ui.notifications.error(error);
         return;
     }
-    let targetResMod = checkResoluteModifiers(targetData.actor, targetData.autoParams, true, true);
-    let favour = -1*targetResMod.favour;
+    let targetResMod = checkResoluteModifiers(targetData.actor, targetData.autoParams);
+    let targetStdMod = checkSteadfastMod(targetData.actor, targetData.autoParams, 2);
+    let favour = -1*targetStdMod.favour;
     targetData.resistAttributeName = targetResMod.bestAttributeName;
     targetData.resistAttributeValue = targetResMod.bestAttributeValue;
-    targetData.autoParams = targetResMod.autoParams;
-    let fsDefault = await buildFunctionStuffDefault(ability, actor)
+    targetData.autoParams = targetResMod.autoParams+ targetStdMod.autoParams;
+    let fsDefault;
+    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
+        ui.notifications.error(error);
+        return;
+    }
     let specificStuff = {
         checkMaintain: true,
         favour: favour,
         targetMandatory : true,
         targetData: targetData,
         resultFunction: confusionResult,
-        combat: false,
         tradition: ["trollsinging", "wizardry"]
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
@@ -2481,18 +2496,20 @@ async function confusionResult(rollData, functionStuff){
 }
 
 async function cursePrepare(ability, actor) {
-    
     let targetData;
     try{targetData = getTarget()} catch(error){      
         ui.notifications.error(error);
         return;
     }
-    let fsDefault = await buildFunctionStuffDefault(ability, actor)
+    let fsDefault;
+    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
+        ui.notifications.error(error);
+        return;
+    }
     let specificStuff = {
         checkMaintain: true,
         targetData: targetData,
         resultFunction: curseResult,
-        combat: false,
         tradition: ["witchcraft"],
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
@@ -2577,9 +2594,12 @@ async function curseResult(rollData, functionStuff){
 }
 
 async function dancingweapon(ability, actor) {
-    let fsDefault = await buildFunctionStuffDefault(ability, actor);
+    let fsDefault;
+    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
+        ui.notifications.error(error);
+        return;
+    }
     let specificStuff = {
-        isMaintained: false,
         tradition: ["staffmagic", "trollsinging"],
         corruption: false
     };
@@ -2611,19 +2631,23 @@ async function entanglingvinesPrepare(ability, actor) {
         ui.notifications.error(error);
         return;
     }
-    let fsDefault = await buildFunctionStuffDefault(ability, actor)
+    let fsDefault;
+    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
+        ui.notifications.error(error);
+        return;
+    }
     let specificStuff = {
         checkMaintain: true,
         targetMandatory : true,
         targetData: targetData,
         notResistWhenFirstCast: true,
         resultFunction: entanglingvinesResult,
-        combat: false,
         tradition: ["witchcraft"]
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    let targetResMod = checkResoluteModifiers(functionStuff.targetData.actor, functionStuff.targetData.autoParams, false, true);
+    let targetResMod = checkSteadfastMod(functionStuff.targetData.actor, functionStuff.targetData.autoParams, 1);
     functionStuff.favour += -1*targetResMod.favour;  
+    functionStuff.targetData.autoParams += targetResMod.autoParams;
     await modifierDialog(functionStuff)
 }
 
@@ -2723,7 +2747,11 @@ async function entanglingvinesResult(rollData, functionStuff){
 }
 
 async function holyAuraPrepare(ability, actor) {
-    let fsDefault = await buildFunctionStuffDefault(ability, actor)
+    let fsDefault;
+    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
+        ui.notifications.error(error);
+        return;
+    }
     let specificStuff = {
         checkMaintain: true,
         resultFunction: holyAuraResult,
@@ -2834,7 +2862,7 @@ async function inheritWound(ability, actor){
         return;
     }
     let powerLvl = getPowerLevel(ability);
-    let actorResMod = checkResoluteModifiers(actor, "", true, false);
+    let actorResMod = checkResoluteModifiers(actor, "");
     let favour = 0;
     let castingAttributeName = actorResMod.bestAttributeName;
 
@@ -2948,15 +2976,18 @@ async function inheritWound(ability, actor){
 }
 
 async function larvaeBoilsPrepare(ability, actor) {
- 
     let targetData;
     try{targetData = getTarget("strong")} catch(error){      
         ui.notifications.error(error);
         return;
     } 
-    let targetResMod = checkResoluteModifiers(targetData.actor, "", false, true);
+    let targetResMod = checkSteadfastMod(targetData.actor, targetData.autoParams, 1);
     targetData.autoParams += targetResMod.autoParams;
-    let fsDefault = await buildFunctionStuffDefault(ability, actor)
+    let fsDefault;
+    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
+        ui.notifications.error(error);
+        return;
+    }
     let specificStuff = {
         favour: -1*targetResMod.favour,
         checkMaintain: true,
@@ -2979,7 +3010,6 @@ async function larvaeBoilsResult(rollData, functionStuff){
     let finalText = "";
     let hasRoll;
     let finalDamage = 0;
-
     if(functionStuff.isMaintained){
         introText = functionStuff.actor.data.name + game.i18n.localize('POWER_LARVAEBOILS.CHAT_INTRO_M');
         hasRoll = true;
@@ -3037,7 +3067,7 @@ async function larvaeBoilsResult(rollData, functionStuff){
         subText: functionStuff.ability.name + " (" + functionStuff.powerLvl.lvlName + ")",
         subImg: functionStuff.ability.img,
         hasRoll: hasRoll,
-        rollString: `${rollData[0].actingAttributeLabel} : (${rollData[0].actingAttributeValue})`,
+        rollString: await formatRollString(rollData[0], functionStuff.targetData.hasTarget, rollData[0].modifier),
         rollResult : formatRollResult(rollData),
         resultText: resultText,
         finalText: finalText,
@@ -3079,11 +3109,13 @@ async function larvaeBoilsResult(rollData, functionStuff){
 }
 
 async function layonhandsPrepare(ability, actor) {
-    let fsDefault = await buildFunctionStuffDefault(ability, actor);
+    let fsDefault;
+    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
+        ui.notifications.error(error);
+        return;
+    }
     let specificStuff = {
-        combat: false,
         targetMandatory: true,
-        checkMaintain: false,
         tradition: ["witchcraft", "theurgy"]
     }
     
@@ -3143,17 +3175,17 @@ async function layonhandsPrepare(ability, actor) {
 }
 
 async function levitatePrepare(ability, actor) {
-    let fsDefault = await buildFunctionStuffDefault(ability, actor);
-
+    let fsDefault;
+    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
+        ui.notifications.error(error);
+        return;
+    }
     let specificStuff = {
         checkMaintain: true,
-        combat: false,
-        targetMandatory: false,
         tradition: ["theurgy", "wizardry"],
         resultFunction: standardPowerResult
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
-
     let targetData;
     if(functionStuff.powerLvl.level > 1){
         try{targetData = getTarget("strong")} catch(error){
@@ -3179,19 +3211,23 @@ async function maltransformationPrepare(ability, actor) {
         ui.notifications.error(error);
         return;
     }
-    let targetResMod = checkResoluteModifiers(targetData.actor, targetData.autoParams, true, true);
-    let favour = -1*targetResMod.favour;
+    let targetResMod = checkResoluteModifiers(targetData.actor, targetData.autoParams);
+    let targetStdMod = checkSteadfastMod(targetData.actor, targetData.autoParams, 2);
+    let favour = -1*targetStdMod.favour;
     targetData.resistAttributeName = targetResMod.bestAttributeName;
     targetData.resistAttributeValue = targetResMod.bestAttributeValue;
-    targetData.autoParams = targetResMod.autoParams;
-    let fsDefault = await buildFunctionStuffDefault(ability, actor)
+    targetData.autoParams = targetResMod.autoParams + targetStdMod.autoParams;
+    let fsDefault;
+    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
+        ui.notifications.error(error);
+        return;
+    }
     let specificStuff = {
         checkMaintain: true,
         favour: favour,
         targetMandatory : true,
         targetData: targetData,
         resultFunction: standardPowerResult,
-        combat: false,
         activelyMaintaninedTargetEffect: ["systems/symbaroum/asset/image/frog.png"],
         tradition: ["witchcraft"]
     }
@@ -3205,8 +3241,11 @@ async function mindthrowPrepare(ability, actor) {
     try{targetData = getTarget("quick")} catch(error){
         targetData = {hasTarget : false, leaderTarget: false}
     }
-
-    let fsDefault = await buildFunctionStuffDefault(ability, actor)
+    let fsDefault;
+    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
+        ui.notifications.error(error);
+        return;
+    }
     let specificStuff = {
         contextualDamage: true,
         tradition: ["wizardry"],
@@ -3347,7 +3386,11 @@ async function priosburningglassPrepare(ability, actor) {
         ui.notifications.error(error);
         return;
     }
-    let fsDefault = await buildFunctionStuffDefault(ability, actor)
+    let fsDefault;
+    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
+        ui.notifications.error(error);
+        return;
+    }
     let specificStuff = {
         checkMaintain: true,
         contextualDamage: true,
@@ -3492,9 +3535,12 @@ async function tormentingspiritsPrepare(ability, actor) {
         ui.notifications.error(error);
         return;
     }
-    let fsDefault = await buildFunctionStuffDefault(ability, actor)
+    let fsDefault;
+    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
+        ui.notifications.error(error);
+        return;
+    }
     let specificStuff = {
-        combat: false,
         targetMandatory: true,
         checkMaintain: true,
         targetData: targetData,
@@ -3612,11 +3658,12 @@ async function tormentingspiritsResult(rollData, functionStuff){
 }
 
 async function unnoticeablePrepare(ability, actor) {
-    let fsDefault = await buildFunctionStuffDefault(ability, actor);
+    let fsDefault;
+    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
+        ui.notifications.error(error);
+        return;
+    }
     let specificStuff = {
-        combat: false,
-        targetMandatory: false,
-        checkMaintain: false,
         tradition: ["wizardry", "theurgy"],
         addCasterEffect: ["systems/symbaroum/asset/image/invisible.png"]
     }
@@ -3651,13 +3698,21 @@ async function simpleRollAbility(ability, actor) {
             specificStuff.castingAttributeName = "resolute";
         break;
     }
-    let fsDefault = await buildFunctionStuffDefault(ability, actor);
+    let fsDefault;
+    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
+        ui.notifications.error(error);
+        return;
+    }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
     await standardAbilityActivation(functionStuff)
 }
 
 async function berserker(ability, actor) {
-    let fsDefault = await buildFunctionStuffDefault(ability, actor);
+    let fsDefault;
+    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
+        ui.notifications.error(error);
+        return;
+    }
     let specificStuff = {
         isMaintained: false
     };
@@ -3691,15 +3746,16 @@ async function dominatePrepare(ability, actor) {
         ui.notifications.error("Need dominate Adept level");
         return;
     }
-    
-    let fsDefault = await buildFunctionStuffDefault(ability, actor);
+    let fsDefault;
+    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
+        ui.notifications.error(error);
+        return;
+    }
     let specificStuff = {
         castingAttributeName: "persuasive",
         targetMandatory: true,
         targetResitAttribute: "resolute",
-        checkTargetSteadfast: true,
-        checkMaintain: false,
-        isMaintained: false,
+        targetSteadfastLevel: 2,
         addTargetEffect: ["icons/svg/terror.svg"],
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
@@ -3727,14 +3783,14 @@ async function leaderPrepare(ability, actor) {
         ui.notifications.error(error);
         return;
     }
-    
-    let fsDefault = await buildFunctionStuffDefault(ability, actor);
+    let fsDefault;
+    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
+        ui.notifications.error(error);
+        return;
+    }
     let specificStuff = {
         targetMandatory: true,
         targetData: targetData,
-        checkTargetSteadfast: false,
-        checkMaintain: false,
-        isMaintained: false,
         addTargetEffect: ["icons/svg/eye.svg"],
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
@@ -3742,7 +3798,11 @@ async function leaderPrepare(ability, actor) {
 }
 
 async function medicusPrepare(ability, actor) {
-    let fsDefault = await buildFunctionStuffDefault(ability, actor);
+    let fsDefault;
+    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
+        ui.notifications.error(error);
+        return;
+    }
     let specificStuff = {
         castingAttributeName: "cunning",
         combat: false,
@@ -3775,10 +3835,12 @@ async function medicusPrepare(ability, actor) {
 }
 
 async function recoveryPrepare(ability, actor) {
-    let fsDefault = await buildFunctionStuffDefault(ability, actor);
+    let fsDefault;
+    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
+        ui.notifications.error(error);
+        return;
+    }
     let specificStuff = {
-        combat: false,
-        isMaintained: false,
         castingAttributeName: "resolute"
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
@@ -3845,7 +3907,11 @@ async function stranglerPrepared(ability, actor, maintained) {
         }
     }
     specificStuff.targetData = targetData;
-    let fsDefault = await buildFunctionStuffDefault(ability, actor)
+    let fsDefault;
+    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
+        ui.notifications.error(error);
+        return;
+    }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
     await modifierDialog(functionStuff)
 }
@@ -4047,7 +4113,11 @@ async function poisonerPrepare(ability, actor) {
         ui.notifications.error(error);
         return;
     }
-    let fsDefault = await buildFunctionStuffDefault(ability, actor)
+    let fsDefault;
+    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
+        ui.notifications.error(error);
+        return;
+    }
     let specificStuff = {
         castingAttributeName: "cunning",
         targetData: targetData,
@@ -4056,6 +4126,9 @@ async function poisonerPrepare(ability, actor) {
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
     if(ability.data.data.reference === "poisoner") {functionStuff.poisoner = true}
     else functionStuff.poison = functionStuff.powerLvl.level;
+    let targetResMod = checkSteadfastMod(functionStuff.targetData.actor, functionStuff.targetData.autoParams, 1);
+    functionStuff.favour += -1*targetResMod.favour;
+    functionStuff.targetData.autoParams = targetResMod.autoParams;
     await modifierDialog(functionStuff)
 }
 
@@ -4102,7 +4175,11 @@ async function poisonerResult(rollData, functionStuff){
 }
 
 async function regeneration(ability, actor){
-    let fsDefault = await buildFunctionStuffDefault(ability, actor);
+    let fsDefault;
+    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
+        ui.notifications.error(error);
+        return;
+    }
     let specificStuff = {
         isMaintained: false
     };
