@@ -13,8 +13,16 @@ export class SymbaroumActor extends Actor {
         this._initializeData(this.data);
         // console.log("Init data - complete");
         this.data.numRituals = 0;
-        // console.log("Compute items");    
-        this._computeItems(this.data.items);
+        // console.log("Compute items");
+        console.log("original items",this.data.items);
+        let items = this.data.items.contents.sort( (a, b) => {
+            if(a.data.type == b.data.type) {
+                return a.data.name == b.data.name ? 0 : a.data.name < b.data.name ? -1:1;
+            } else {                
+                return  (game.symbaroum.config.itemSortOrder.indexOf(a.data.type) - game.symbaroum.config.itemSortOrder.indexOf(b.data.type));
+            }
+        });
+        this._computeItems(items);
         // console.log("Compute items - complete");
         // console.log("Compute _computeSecondaryAttributes");
         this._computeSecondaryAttributes(this.data);
@@ -805,6 +813,13 @@ export class SymbaroumActor extends Actor {
         let wearArmor;
         data.data.armors = [];
         let armorList = this.data.items.filter(element => element.data.isArmor);
+        armorList = Array.from(armorList.values()).sort( (a, b) => {
+            if(a.data.type == b.data.type) {
+                return a.data.name == b.data.name ? 0 : a.data.name < b.data.name ? -1:1;
+            } else {                
+                return  (game.symbaroum.config.itemSortOrder.indexOf(a.data.type) - game.symbaroum.config.itemSortOrder.indexOf(b.data.type));
+            }
+        });
         // for( const [key, armor] of this.data.items.entries() ) {
         for(let armor of armorList){
 
@@ -870,6 +885,14 @@ export class SymbaroumActor extends Actor {
     }
     _getWeapons(data) {
         let weaponArray = this.data.items.filter(element => element.data.isWeapon);
+        weaponArray = Array.from(weaponArray.values()).sort( (a, b) => {
+            if(a.data.type == b.data.type) {
+                return a.data.name == b.data.name ? 0 : a.data.name < b.data.name ? -1:1;
+            } else {                
+                return  (game.symbaroum.config.itemSortOrder.indexOf(a.data.type) - game.symbaroum.config.itemSortOrder.indexOf(b.data.type));
+            }
+        });
+        
         return(weaponArray)
     }
 

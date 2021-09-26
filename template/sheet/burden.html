@@ -6,12 +6,12 @@
             </div>
             <div class="wrapper-column">
                 <div class="name">
-                    <label>{{localize "BURDEN.NAME"}}</label>
-                    <input name="name" type="text" value="{{item.name}}"/>
+                    <label for="{{id}}-name">{{localize "BURDEN.NAME"}}</label>
+                    <input id="{{id}}-name" name="name" type="text" value="{{item.name}}"/>
                 </div>
                 <div class="level">
-                    <label>{{localize "BURDEN.LEVEL"}}</label>
-                    <input name="data.level" type="text" value="{{data.level}}" data-dtype="Number"/>
+                    <label for="{{id}}-data.level">{{localize "BURDEN.LEVEL"}}</label>
+                    <input id="{{id}}-data.level" name="data.level" type="text" value="{{data.level}}" data-dtype="Number"/>
                 </div>
             </div>                
         </div>
