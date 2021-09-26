@@ -644,7 +644,7 @@ async function buildFunctionStuffDefault(ability, actor) {
         functionStuff.castingAttributeName = actorResMod.bestAttributeName;
         functionStuff.autoParams = actorResMod.autoParams;
         functionStuff.corruption = true;
-        functionStuff.impeding = actor.data.data.combat.impeding;
+        functionStuff.impeding = actor.data.data.combat.impedingMagic;
         functionStuff.casterMysticAbilities = await getMysticAbilities(actor);
         if(!actor.data.data.health.corruption.max) functionStuff.corruption = false;
     }
@@ -3684,7 +3684,7 @@ async function simpleRollAbility(ability, actor) {
     switch (ability.data.data.reference){
         case "acrobatics":
             specificStuff.castingAttributeName = "quick";
-            specificStuff.impeding = actor.data.data.combat.impeding;
+            specificStuff.impeding = actor.data.data.combat.impedingMov;
         break;
         case "loremaster":
             specificStuff.introText = actor.data.name + game.i18n.localize('ABILITY_LOREMASTER.CHAT_INTRO');
@@ -3693,7 +3693,7 @@ async function simpleRollAbility(ability, actor) {
         break;
         case "quickdraw":
             specificStuff.castingAttributeName = "quick";
-            specificStuff.impeding = actor.data.data.combat.impeding;
+            specificStuff.impeding = actor.data.data.combat.impedingMov;
         break;
         case "shapeshifter":
             specificStuff.castingAttributeName = "resolute";
