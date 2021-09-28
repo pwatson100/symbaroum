@@ -656,11 +656,10 @@ function  getBeastLoreData (actor){
     let beastLoreMaster = false;
 let beastlore = actor.items.filter(item => item.data.data?.reference === "beastlore");
     if(beastlore.length != 0){
-        let beastLoreLvl = getPowerLevel(beastlore[0]).level;
-        if(beastLoreLvl > 1){
+        if(beastlore[0].data.data.adept.isActive){
             askBeastlore = true;
         }
-        if(beastLoreLvl > 2){
+        if(beastlore[0].data.data.master.isActive){
             beastLoreMaster = true;
         }
     }
@@ -1208,7 +1207,7 @@ export function checkResoluteModifiers(actor, autoParams = ""){
     let bestAttributeName = "resolute";
     let bestAttributeValue = actor.data.data.attributes["resolute"].value + actor.data.data.bonus["resolute"];
     let hasLeader = actor.items.filter(item => item.data.data?.reference === "leader");
-    if(hasLeader.length > 0){
+    if(hasLeader.length > 0 && hasLeader[0].data.data.novice.isActive){
         let persuasiveV = actor.data.data.attributes["persuasive"].value + actor.data.data.bonus["persuasive"];
         if(bestAttributeValue < persuasiveV) {
             bestAttributeName = "persuasive";
@@ -1349,7 +1348,7 @@ export async function attackRoll(weapon, actor){
     if(weapon && weapon.isDistance){
         if(!functionStuff.useHuntersInstinct){
             let hunterInstinct = actor.items.filter(item => item.data.data?.reference === "huntersinstinct");
-            if(hunterInstinct.length != 0){
+            if(hunterInstinct.length != 0 && hunterInstinct[0].data.data.novice.isActive){
                 functionStuff.askHuntersInstinct = true;
                 functionStuff.hunterBonus = " (" + game.i18n.localize('DIALOG.FAVOUR_FAVOUR')
                 if(hunterInstinct[0].data.data.adept.isActive){
@@ -1365,7 +1364,7 @@ export async function attackRoll(weapon, actor){
             if(rapidfire[0].data.data.master.isActive){
                 functionStuff.askThreeAttacks = true;
             }
-            else{
+            else if(rapidfire[0].data.data.novice.isActive){
                 functionStuff.askTwoAttacks = true;
             }
         }
@@ -1396,7 +1395,7 @@ export async function attackRoll(weapon, actor){
                     functionStuff.corruptingattack = "1d8";
                 } else if(corruptingattack[0].data.data.adept.isActive){
                     functionStuff.corruptingattack = "1d6";
-                } else{
+                } else if(corruptingattack[0].data.data.novice.isActive){
                     functionStuff.corruptingattack = "1d4";
                 }
             }
@@ -1424,11 +1423,10 @@ export async function attackRoll(weapon, actor){
         }
         let ironFist = actor.items.filter(item => item.data.data?.reference === "ironfist");
         if(ironFist.length > 0){
-            let powerLvl = getPowerLevel(ironFist[0]);
-            if(powerLvl.level > 1){
+            if(ironFist[0].data.data.adept.isActive){
                 functionStuff.ironFistDmg = true;
                 functionStuff.autoParams += game.i18n.localize('ABILITY_LABEL.IRON_FIST') + ", ";
-                if(powerLvl.level > 2){
+                if(ironFist[0].data.data.master.isActive){
                     functionStuff.ironFistDmgMaster = true;
                 }
             }
@@ -1448,8 +1446,7 @@ export async function attackRoll(weapon, actor){
         }
         let featSt = actor.items.filter(item => item.data.data.reference === "featofstrength");
         if((featSt.length != 0) && (actor.data.data.health.toughness.value <= (actor.data.data.health.toughness.max/2)) && (weapon.attribute == "strong")){
-            let featStLvl = getPowerLevel(featSt[0]).level;
-            if(featStLvl > 1) {
+            if(featSt[0].data.data.adept.isActive){
                 functionStuff.featStFavour = true;
                 functionStuff.favour += 1;
             }
