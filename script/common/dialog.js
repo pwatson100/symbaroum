@@ -11,7 +11,6 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon) 
   weaponModifier.attribute = [];
   weaponModifier.attributeModifiers = [];
   weaponModifier.damageChoices = [];
-  weaponModifier.damageBonus = [];
   
   if(weapon !== null)
   {
@@ -61,21 +60,21 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon) 
           }
           attri_defaults.additionalModifier = damModifier;
 
-          for(let bonus of weaponModifier.damageBonus) {
-            damModifier += `${bonus.damageModifier}[${bonus.label}]`;            
-          }
           for(let optionalBonus of weaponModifier.damageChoices) {
-            if(optionalBonus.type === "check") {
+            if(optionalBonus.type === "fixed") {
+              damModifier += `${optionalBonus.alternatives.damMod}[${optionalBonus.label}]`
+            } else if(optionalBonus.type === "check") {
               // Find if the box is checked
-              let ticked = html.find(`#${optionalBonus.label}`);
+              let ticked = html.find(`#${optionalBonus.id}`);
+              console.log("Hfm", ticked, optionalBonus);
               if( ticked.length > 0 && ticked[0].checked )
-                damModifier += ticked[0].value;
+                damModifier += `${optionalBonus.alternatives.damMod}[${optionalBonus.label}]`;
             } else if( optionalBonus.type === "radio") {
               // Find the selected radio button
-              let radioSelection = html.find("input[name='"+optionalBonus.identifier+"']");
+              let radioSelection = html.find(`input[name='${optionalBonus.id}']`);
               for( let f of radioSelection) {
                 if( f.checked ) 
-                  damModifier += f.value;
+                  damModifier += `${f.value}[${optionalBonus.label}]`;
               }
             }
           }
@@ -101,7 +100,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon) 
             }            
             attri_defaults.impeding = html.find("#impeding")[0].checked ? "checked":"";
           }
-          // console.log("Damage bonus",damModifier);
+          console.log("Damage bonus",damModifier);
           await rollAttribute(actor, attributeName, getTarget(), targetAttributeName, favour, modifier, armor, weapon, advantage, damModifier);
           },
       },
@@ -174,12 +173,11 @@ function calculateWeaponModifiers(actor, weapon, weaponModifier)
     let choice = {};
     choice["label"] = robust[0].name;
     choice["type"] = "check";
+    choice["id"] = robust[0].id;
     let damMod = `+1d${(dice+1)*2}`;
     let damlabel =  `(${damMod})`;
-    damMod = `${damMod}[${robust[0].name}]`;
     choice["alternatives"] = {
-      "label":damlabel,
-      "damMod":damMod
+      "damMod":damMod,
     };
     choice["restrition"] = "1st-attack"; // Only apply damage bonus to first attack
     weaponModifier.damageChoices.push(choice);
@@ -192,24 +190,30 @@ function calculateWeaponModifiers(actor, weapon, weaponModifier)
     if( power.level > 0) {
       weaponModifier.attribute.push( {
           attribute:"strong",
-          label: ironFist[0].name
+          label: ironFist[0].name,
+          id: ironFist[0].id
         });
     }
     if( power.level === 2) {
-      let bonus = {};
-      bonus.label = ironFist[0].name;
-      bonus.damageModifier = "+1d4";
-      // No choice
-      weaponModifier.damageBonus.push(bonus);
+      let choice = {};
+      choice.label = ironFist[0].name;
+      choice["type"] = "fixed";
+      choice["alternatives"] = {
+        "damMod":"+1d4"
+      };
+         // No choice
+      weaponModifier.damageChoices.push(choice);
     } else if( power.level === 3) {
       let choice = {};
       choice["type"] = "radio";
       choice["label"] = ironFist[0].name;
-      choice["identifier"] = "weapMod_"+ironFist[0].name;
-      choice["defaultSelect"] = `+1d4[${ironFist[0].name}]`;
+      choice["id"] = ironFist[0].id;
+      choice["defaultSelect"] = `+1d4`;
       choice["alternatives"] = {};
-      choice["alternatives"][`+1d4[${ironFist[0].name}]`] = `${ironFist[0].name} - ${power.lvlName} (1d4)`;
-      choice["alternatives"][`+1d8[${ironFist[0].name}]`] = `${ironFist[0].name} - ${power.lvlName} (1d8)`;
+      // Change this to fixed values
+      // Add in alternatives.damageModifier
+      choice["alternatives"][`+1d4`] = `${ironFist[0].name} - ${power.lvlName} (1d4)`;
+      choice["alternatives"][`+1d8`] = `${ironFist[0].name} - ${power.lvlName} (1d8)`;
       weaponModifier.damageChoices.push(choice);
     }
   }
@@ -232,13 +236,12 @@ function calculateWeaponModifiers(actor, weapon, weaponModifier)
   if( weapon.isDistance && hunterInstinct.length > 0 && hunterInstinct[0].getLevel().level > 1) {
     let choice = {};
     choice["label"] = hunterInstinct[0].name;
+    choice["id"] = hunterInstinct[0].id;
     choice["type"] = "check";
     let damMod = `+1d4`;
-    let damlabel =  `(${damMod})`;
-    damMod = `${damMod}[${hunterInstinct[0].name}]`;
+    let damlabel =  `(${damMod})`;    
     choice["alternatives"] = {
-      "label":damlabel,
-      "damMod":damMod
+      "damMod":damMod,
     };
     weaponModifier.damageChoices.push(choice);
   }
@@ -247,6 +250,7 @@ function calculateWeaponModifiers(actor, weapon, weaponModifier)
     if(weapon.qualities.precise) {
       let attributeModifier = {
         label: game.i18n.localize("QUALITY.PRECISE"),
+        id: weapon.id,
         modifier: "+1"
       }
       weaponModifier.attributeModifiers.push(attributeModifier);
