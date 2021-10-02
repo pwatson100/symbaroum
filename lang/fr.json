@@ -6,6 +6,7 @@
     "ABILITY.DESCRIPTION": "Description",
 
     "ABILITY.CHAT_TARGET_VICTIM": "Victime: ",
+    "ABILITY.RESIST_ROLL": " essaye de resister:",
     "ABILITYREF.DIALOG_TITLE": "Indiquez le talent ou le pouvoir correspondant",
     "ABILITYREF.DIALOG": "Cette référence vous permettra d'utiliser les jets et fenêtres de dialogues intégrés au système pour les talents, pouvoirs et traits. S'il s'agit d'un talent personnalisé ou si vous ne souhaitez pas utiliser ces options du système, choisissez \"Aucun\". Attention: vous ne pourrez plus changer la référence de cet objet par la suite. Pour ce faire, il vous faudra supprimer l'objet et en créer un nouveau.",
     "ABILITY_LABEL.DEFAULT": "Autre",
@@ -266,6 +267,7 @@
     "COMBAT.CHAT_DAMAGE_DYING": " est mortellement blessé.",
     "COMBAT.CHAT_DAMAGE": " reçoit des dégâts : ",
     "COMBAT.CHAT_DAMAGE_PAIN": " est sonné par la douleur.",
+    "COMBAT.DEFENSE_ROLL": " essaie de se défendre contre l'attaque.",
     "COMBAT.PARAMS_PRECISE": "arme précise, ",
     "COMBAT.DAMAGE": "Dégâts infligés: ",
 
@@ -758,7 +760,9 @@
     "SYMBAROUM.OPTIONAL_NON_EDITABLE_COLOUR_SELECTOR": "Choisir la couleur de fond des champs fixes",
     "SYMBAROUM.OPTIONAL_NON_EDITABLE_BG_IMGS": "Texture de fond des champs fixes",
     "SYMBAROUM.OPTIONAL_RESET_NON_EDITABLE_BUTTON" :"Réinitialiser la couleur de fond des champs fixes",
-    "SYMBAROUM.OPTIONAL_RESET_ALL_BUTTON": "Reinitialiser les paramètres"
+    "SYMBAROUM.OPTIONAL_RESET_ALL_BUTTON": "Reinitialiser les paramètres",
+    "SYMBAROUM.OPTIONAL_PLAYER_RESIST" :"Bouton jet de résistance",
+    "SYMBAROUM.OPTIONAL_PLAYER_RESIST_HINT" :"Quand un PNJ attaque avec un pouvoir ou avec l'option Combats accélérés, cette option crée un bouton dans le chat du joueur visé, qu'il devra cliquer pour lancer le jet de résistance ou de défense."
   
 }
 

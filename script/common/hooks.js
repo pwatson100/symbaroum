@@ -1,5 +1,5 @@
 import { SymbaroumActor } from './actor.js';
-import { SymbaroumItem } from './item.js';
+import { SymbaroumItem, buildRolls } from './item.js';
 import { PlayerSheet } from '../sheet/player.js';
 import { PlayerSheet2 } from '../sheet/player2.js';
 import { TraitSheet } from '../sheet/trait.js';
@@ -77,6 +77,15 @@ Hooks.once('init', () => {
   game.settings.register('symbaroum', 'combatAutomation', {
     name: 'SYMBAROUM.OPTIONAL_AUTOCOMBAT',
     hint: 'SYMBAROUM.OPTIONAL_AUTOCOMBAT_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });
+
+  game.settings.register('symbaroum', 'playerResistButton', {
+    name: 'SYMBAROUM.OPTIONAL_PLAYER_RESIST',
+    hint: 'SYMBAROUM.OPTIONAL_PLAYER_RESIST_HINT',
     scope: 'world',
     type: Boolean,
     default: false,
@@ -351,7 +360,7 @@ Hooks.on('preCreateChatMessage', (doc, message, options, userid) => {
 
 /*Hook for the chatMessage that contain a button for the GM to apply status icons or damage to a token.*/
 Hooks.on('renderChatMessage', async (chatItem, html, data) => {
-  const flagDataArray = await chatItem.getFlag(game.system.id, 'abilityRoll');
+  const flagDataArray = await chatItem.getFlag(game.system.id, 'applyEffects');
   if (flagDataArray && game.user.isGM) {
     await html.find('#applyEffect').click(async () => {
       for (let flagData of flagDataArray) {
@@ -399,7 +408,26 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
           }
         }
       }
-      await chatItem.unsetFlag(game.system.id, 'abilityRoll');
+      await chatItem.unsetFlag(game.system.id, 'applyEffects');
+      return;
+    });
+  }
+  const functionStuff = await chatItem.getFlag(game.system.id, 'resistRoll');
+  if (functionStuff) {
+    await html.find('#applyEffect').click(async () => {
+      let tok = canvas.tokens.objects.children.find((token) => token.id === functionStuff.tokenId);
+      let targetToken = canvas.tokens.objects.children.find((token) => token.id === functionStuff.targetData.tokenId);
+      if(tok === undefined || targetToken === undefined){
+        ui.notifications.error("Can't find token.");
+        return;
+      }
+      functionStuff.token = tok;
+      functionStuff.actor = tok.actor;
+      functionStuff.targetData.token = targetToken;
+      functionStuff.targetData.actor = targetToken.actor;
+      console.log("from hook: ", functionStuff);
+      buildRolls(functionStuff);
+      await chatItem.unsetFlag(game.system.id, 'resistRoll');
       return;
     });
   }

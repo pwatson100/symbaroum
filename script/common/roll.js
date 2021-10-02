@@ -27,7 +27,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
 		modifier++;
   }
   
-  let rollResults = await baseRoll(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier);
+  let rollResults = await baseRoll(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier, false);
   
   if (hasArmor && !rollResults.hasSucceed) {
     if (armor.protectionPc !== '') {
@@ -169,6 +169,20 @@ export function getAttributeValue(actor, attributeName) {
   }
 }
 
+/* Get the Players owning an actor, that is not a GM and that is connected */
+export async function getOwnerPlayer(actor){
+    let permissions = Object.entries(actor.data.permission);
+    let ownerIds = permissions.reduce((idValue, e) => {
+        if(e[1] === CONST.ENTITY_PERMISSIONS.OWNER) {
+            idValue.push(e[0]);
+        }
+        return idValue
+    },[])
+    let owningPlayers = game.users.filter(user => user.active && !user.isGM && ownerIds.includes(user.data._id));
+    console.log(owningPlayers);
+    return(owningPlayers)
+}
+
 /*Base roll, to be use for self rolls, resisted rolls, attack rolls, defense rolls...
 * @param {actor object} actor is the actor that do the roll (usually a PC)
 * @param {string} actingAttribute is the name of the attribute used for action, and can also be "defense"
@@ -193,14 +207,18 @@ export function getAttributeValue(actor, attributeName) {
   {string}  diceBreakdown, //HTML formatted string
   {boolean}  critSuccess,
   {boolean}  critFail, */
-export async function baseRoll(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier) {
+export async function baseRoll(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier = 0, resistRoll = false) {
+  if(resistRoll){return(await doBaseRoll(targetActor, targetAttributeName, actor, actingAttributeName, -1*favour, -1*modifier, resistRoll))}
+  else{return(await doBaseRoll(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier, resistRoll))}
+}
+
+async function doBaseRoll(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier, resistRoll){
   let d20str = "1d20";
   let hasSucceed = false;
+  let trueActorSucceeded = resistRoll;
   let critGood = false;
   let critBad = false;
   let diceBreakdown = "";
-  if(modifier == null){modifier = 0};
-  
 	if(favour > 0) d20str="2d20kl";
 	else if(favour < 0) d20str="2d20kh";
   
@@ -237,19 +255,20 @@ export async function baseRoll(actor, actingAttributeName, targetActor, targetAt
 
   if(attributeRoll.total <= diceTarget){
     hasSucceed = true;
+    trueActorSucceeded = !resistRoll;
   }
    
   // Check option - always succeed on 1, always fail on 20
 	if(game.settings.get('symbaroum', 'optionalCrit') || game.settings.get('symbaroum', 'optionalRareCrit') ) {     
     if( attributeRoll.total === 1 || attributeRoll.total === 20 ) {
       if( game.settings.get('symbaroum', 'optionalCrit') ) {
-          critBad = attributeRoll.total === 20;
+          critBad = attributeRoll.total === 20 && !resistRoll;
           critGood = !critBad;
       }    
       if( game.settings.get('symbaroum', 'optionalRareCrit') ) {
         let secondRoll = new Roll("1d20").evaluate();        
-        critGood = critGood && secondRoll.total <= diceTarget;
-        critBad = critBad && secondRoll.total > diceTarget;
+        critGood = (critGood && secondRoll.total <= diceTarget && !resistRoll) || (critGood && secondRoll.total > diceTarget && resistRoll);
+        critBad = (critBad && secondRoll.total > diceTarget && !resistRoll) || (critGood && secondRoll.total <= diceTarget && resistRoll);
         diceBreakdown = `${diceBreakdown} &amp; <span class="${critGood?"critical":critBad?"fumble":"normal"}">${secondRoll.results}</span>`;
       }
     }
@@ -260,6 +279,7 @@ export async function baseRoll(actor, actingAttributeName, targetActor, targetAt
     actingAttributeLabel: actingAttributeLabel,
     resistAttributeValue: resistAttributeValue,
     targetAttributeLabel: targetAttributeLabel,
+    trueActorSucceeded: trueActorSucceeded,
     hasSucceed: hasSucceed,
     diceTarget: diceTarget,
     diceResult: attributeRoll.total,
@@ -299,6 +319,18 @@ export async function createModifyTokenChatButton(actionsDataArray){
     { 
       type: "GMMessage",
       data: actionsDataArray
+    });
+}
+
+export async function createResistRollChatButton(functionStuff){
+  const emitData = Object.assign({}, functionStuff);
+  emitData.actor = null;
+  emitData.token = null;
+  emitData.targetData.token = null;
+  emitData.targetData.actor = null;
+  game.symbaroum.emit({ 
+      type: "ResistRoll",
+      data: emitData
     });
 }
 
