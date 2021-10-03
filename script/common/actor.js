@@ -128,14 +128,11 @@ export class SymbaroumActor extends Actor {
         if(sturdy.length != 0){
             let sturdyLvl = getPowerLevel(sturdy[0]).level;
             if(sturdyLvl == 1) data.data.health.toughness.max = Math.ceil(strong*(1.5)) + data.data.bonus.toughness.max;
-            else data.data.health.toughness.max = strong*(sturdyLvl) + data.data.bonus.toughness.max;
+            else if(sturdyLvl > 1) data.data.health.toughness.max = strong*(sturdyLvl) + data.data.bonus.toughness.max;
         }
         else data.data.health.toughness.max = (strong > 10 ? strong : 10) + data.data.bonus.toughness.max;
         let featSt = this.data.items.filter(item => item.data.data.reference === "featofstrength");
-        if(featSt.length != 0){
-            let featStLvl = getPowerLevel(featSt[0]).level;
-            if(featStLvl > 0) data.data.health.toughness.max += 5;
-        }
+        if(featSt.length != 0 && featSt[0].data.data.novice.isActive) data.data.health.toughness.max += 5;
 
         let noPain = this.data.items.filter(element => element.data.data.reference === "nopainthreshold");
         data.hasNoPainThreshold = noPain.length > 0;
@@ -154,8 +151,7 @@ export class SymbaroumActor extends Actor {
             
             let strongGift = this.data.items.filter(item => item.data.data.reference === "stronggift");
             if(strongGift.length != 0){
-                let strongGiftLvl = getPowerLevel(strongGift[0]).level;
-                if(strongGiftLvl > 1) resolute = resolute*2;
+                if(strongGift[0].data.data.adept.isActive) resolute = resolute*2;
             }
             data.data.health.corruption.threshold = Math.ceil(resolute / 2) + data.data.bonus.corruption.threshold;
             data.data.health.corruption.max = resolute + data.data.bonus.corruption.max;
@@ -206,7 +202,7 @@ export class SymbaroumActor extends Actor {
 
         let rrAbility = this.items.filter(item => item.data.data.reference === "rapidreflexes");
         if(rrAbility.length != 0){
-            if(getPowerLevel(rrAbility[0]).level > 2) data.data.initiative.value += 20
+            if(rrAbility[0].data.data.master.isActive) data.data.initiative.value += 20
         }
     }
 
@@ -403,8 +399,7 @@ export class SymbaroumActor extends Actor {
                             attribute = "strong";
                             let featSt = this.data.items.filter(item => item.data.data.reference === "featofstrength");
                             if((featSt.length != 0) && (this.data.data.health.toughness.value < (this.data.data.health.toughness.max/2))){
-                                let featStLvl = getPowerLevel(featSt[0]).level;
-                                if(featStLvl > 2) {
+                                if(featSt[0].data.data.master.isActive){
                                     bonusDamage += " +1d4["+game.i18n.localize("ABILITY_LABEL.FEAT_STRENGTH")+"]";
                                     shortBonusDamage += " +1d4";
                                     tooltip += game.i18n.localize("ABILITY_LABEL.FEAT_STRENGTH") + ", ";

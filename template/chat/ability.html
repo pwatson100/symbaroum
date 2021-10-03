@@ -11,6 +11,9 @@
         <div class="subText">{{removeMarkup subText}}</div>            
         <img src="{{subImg}}"/>
         {{#if hasRoll}}
+            {{#if resistRoll}}
+            <h4>{{resistRollText}}</h4>
+            {{/if}}
         <h4>{{rollString}}</h4>
         <h4>{{rollResult}}</h4>
         {{/if}}
