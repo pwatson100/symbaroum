@@ -1126,6 +1126,7 @@ async function modifierDialog(functionStuff){
                         let userArray = await getOwnerPlayer(functionStuff.targetData.actor);
                         if(userArray.length>0 && game.settings.get('symbaroum', 'playerResistButton')){
                             functionStuff.targetUserId=userArray[0].data._id;
+                            functionStuff.targetUserName=userArray[0].data.name;
                             createResistRollChatButton(functionStuff);
                         }
                         else{

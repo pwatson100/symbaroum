@@ -225,6 +225,9 @@
 
     "CHAT.GMTEXT_BUTTON": "Ce bouton ne peut être utilisé que par le MJ. Il affecte les résultats de l'action aux tokens.",
     "CHAT.APPLY_BUTTON": "Appliquer les résultats au token",
+    "CHAT.RESIST_TEXT_BUTTON": " peut tenter de résister à l'attaque avec  ",
+    "CHAT.RESIST_BUTTON": "Jet de résistance",
+    "CHAT.GM_INFO_RESIST": " doit cliquer sur le bouton \"Jet de résistance\" dans le Chat pour lancer le dé de résistance contre l'attaque.",
     "CHAT.DEATH_ROLL": "Test de Mort",
     "CHAT.SUCCEED": "Réussite",
     "CHAT.FAILED": "Echec",

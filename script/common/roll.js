@@ -323,7 +323,20 @@ export async function createModifyTokenChatButton(actionsDataArray){
 }
 
 export async function createResistRollChatButton(functionStuff){
+  //inform the GM
+  const html = await renderTemplate("systems/symbaroum/template/chat/chatInfoMessage.html", {
+    infoText: functionStuff.targetUserName + game.i18n.localize("CHAT.GM_INFO_RESIST")
+  });
+  const chatData = {
+      speaker: ChatMessage.getSpeaker({alias:game.i18n.localize("DIALOG.SYSTEM_MESSAGE")}),
+      whisper: [game.user],
+      content: html
+  };
+  ChatMessage.create(chatData);
+  //send data message to the player session
+  console.log("toto");
   const emitData = Object.assign({}, functionStuff);
+  emitData.mainText= functionStuff.targetData.name + game.i18n.localize("CHAT.RESIST_TEXT_BUTTON") + getAttributeLabel(functionStuff.targetData.actor, functionStuff.targetData.resistAttributeName);
   emitData.actor = null;
   emitData.token = null;
   emitData.targetData.token = null;

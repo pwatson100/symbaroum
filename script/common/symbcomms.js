@@ -18,7 +18,7 @@ export class SymbaroumCommsListener
         {
             let templateData = {
                 introText: data.data.introText,
-                mainText: data.data.targetData.name + game.i18n.localize("CHAT.RESIST_TEXT_BUTTON") + data.data.targetData.resistAttributeName,
+                mainText: data.data.mainText
             }
             const html = await renderTemplate("systems/symbaroum/template/chat/resistButton.html", templateData);
             const chatData = {
