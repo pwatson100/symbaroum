@@ -271,6 +271,7 @@
     "COMBAT.CHAT_DAMAGE_DYING": " est mortellement blessé.",
     "COMBAT.CHAT_DAMAGE": " reçoit des dégâts : ",
     "COMBAT.CHAT_DAMAGE_PAIN": " est sonné par la douleur.",
+    "COMBAT.CHAT_JOINTED_SECONDARY": "L'arme articulée touche malgré la défense (Calculez les dégats secondaires avec la qualité articulée).",
     "COMBAT.DEFENSE_ROLL": " essaie de se défendre contre l'attaque.",
     "COMBAT.PARAMS_PRECISE": "arme précise, ",
     "COMBAT.DAMAGE": "Dégâts infligés: ",

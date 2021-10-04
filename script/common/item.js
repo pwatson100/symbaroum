@@ -1515,10 +1515,12 @@ async function attackResult(rollData, functionStuff){
     }
 
     for(let rollDataElement of rollData){
-
         rollDataElement.finalText="";
-        if(rollDataElement.trueActorSucceeded){
-            rollDataElement.resultText = functionStuff.token.data.name + game.i18n.localize('COMBAT.CHAT_SUCCESS') + functionStuff.targetData.name;
+        rollDataElement.resultText = functionStuff.token.data.name + game.i18n.localize('COMBAT.CHAT_SUCCESS') + functionStuff.targetData.name;
+        if(functionStuff.weapon.qualities.jointed && !rollDataElement.trueActorSucceeded && rollDataElement.diceResult%2!=0){
+            rollDataElement.resultText = game.i18n.localize('COMBAT.CHAT_JOINTED_SECONDARY');
+        }
+        else if(rollDataElement.trueActorSucceeded){
             hasDamage = true;
             rollDataElement.hasDamage = true;
             damage = await damageRollWithDiceParams(functionStuff, rollDataElement.critSuccess, attackNumber);
@@ -1548,7 +1550,7 @@ async function attackResult(rollData, functionStuff){
     }
     if(damageTot <= 0){
         damageTot = 0;
-        damageText = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_NUL');
+        damageFinalText = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_NUL');
     }
     else{
         if(damageTot >= targetValue){

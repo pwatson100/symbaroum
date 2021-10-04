@@ -254,6 +254,7 @@
   "COMBAT.CHAT_DAMAGE_DYING": " ist schwer verwundet.",
   "COMBAT.CHAT_DAMAGE": " erleidet Schaden : ",
   "COMBAT.CHAT_DAMAGE_PAIN": " ist gelähmt vor Schmerzen.",
+  "COMBAT.CHAT_JOINTED_SECONDARY": "Defence succeeds, but the jointed weapon hits anyway (see jointed quality for evaluating damage).",
   "COMBAT.DEFENSE_ROLL": " tries to defend against the attack.",
   "COMBAT.PARAMS_PRECISE": "Präzise Waffe, ",
 
