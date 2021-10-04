@@ -95,6 +95,7 @@
   "ABILITY_DOMINATE_ADEPT.CHAT_SUCCESS": " får sin fiende att tveka.",
   "ABILITY_DOMINATE_MASTER.CHAT_SUCCESS": " betvingar sin fiende.",
 
+  "ABILITY_LEADER.CHAT_SUCCESS": "Allies gain +1d4 damage against ",
   "ABILITY_LOREMASTER.CHAT_INTRO": " gräver djupt i sin samlade kunskap.",
   "ABILITY_LOREMASTER.CHAT_SUCCESS": " känner till något om detta.",
   "ABILITY_LOREMASTER.CHAT_FAILURE": " har ingen aning.",
@@ -273,6 +274,7 @@
   "COMBAT.CHAT_DAMAGE_DYING": " är dödligt sårad.",
   "COMBAT.CHAT_DAMAGE": " tar skada : ",
   "COMBAT.CHAT_DAMAGE_PAIN": " är bedövad av smärta.",
+  "COMBAT.CHAT_JOINTED_SECONDARY": "Defence succeeds, but the jointed weapon hits anyway (see jointed quality for evaluating damage).",
   "COMBAT.DEFENSE_ROLL": " tries to defend against the attack.",
   "COMBAT.PARAMS_PRECISE": "Precist vapen, ",
 

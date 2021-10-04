@@ -95,6 +95,7 @@
   "ABILITY_DOMINATE_ADEPT.CHAT_SUCCESS": " hace que su objetivo dude.",
   "ABILITY_DOMINATE_MASTER.CHAT_SUCCESS": " somete a su enemigo.",
 
+  "ABILITY_LEADER.CHAT_SUCCESS": "Allies gain +1d4 damage against ",
   "ABILITY_LOREMASTER.CHAT_INTRO": " comparte algo de su sabiduría.",
   "ABILITY_LOREMASTER.CHAT_SUCCESS": " sabe algo al respecto.",
   "ABILITY_LOREMASTER.CHAT_FAILURE": " no tiene ni idea.",
@@ -273,6 +274,7 @@
   "COMBAT.CHAT_DAMAGE_DYING": " está gravemente herido.",
   "COMBAT.CHAT_DAMAGE": " recibe daño : ",
   "COMBAT.CHAT_DAMAGE_PAIN": " está aturdido por el dolor.",
+  "COMBAT.CHAT_JOINTED_SECONDARY": "Defence succeeds, but the jointed weapon hits anyway (see jointed quality for evaluating damage).",
   "COMBAT.DEFENSE_ROLL": " tries to defend against the attack.",
   "COMBAT.PARAMS_PRECISE": "Arma precisa, ",
 

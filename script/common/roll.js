@@ -427,10 +427,6 @@ export async function damageRollWithDiceParams(functionStuff, critSuccess, attac
       damageModFormula += functionStuff.backstabDmg;
       damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_BACKSTAB');
     }
-    else
-    {
-      
-    }
   }
   if(functionStuff.beastLoreData.useBeastlore){
     if(functionStuff.beastLoreData.beastLoreMaster) damageModFormula += " + 1d6[" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "]";
@@ -473,7 +469,7 @@ export async function damageRollWithDiceParams(functionStuff, critSuccess, attac
     damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_IGN_ARMOR');
   }
     // If the attack is made by a PC, roll damage and substract static value for armor (=max armor/2)
-    if(functionStuff.attackFromPC){  
+    if(functionStuff.attackFromPC || functionStuff.targetData.actor.type === "monster"){  
       //build roll string
       newRollDmgString = functionStuff.weapon.damage.pc;
       if(damageModFormula != ""){
@@ -531,7 +527,7 @@ export async function simpleDamageRoll(functionStuff, damageFormula){
   }
   // If the attack is made by a PC, roll damage and substract static value for armor (=max armor/2)
   let newRollDmgString = "";
-  if(functionStuff.attackFromPC){
+  if(functionStuff.attackFromPC || functionStuff.targetData.actor.type === "monster"){
     newRollDmgString = damageFormula;
     //build roll string
     if(!functionStuff.dmgData.ignoreArm){
