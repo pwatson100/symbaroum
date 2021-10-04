@@ -95,6 +95,7 @@
   "ABILITY_DOMINATE_ADEPT.CHAT_SUCCESS": " makes is target hesitate.",
   "ABILITY_DOMINATE_MASTER.CHAT_SUCCESS": " subdues his ennemy.",
 
+  "ABILITY_LEADER.CHAT_SUCCESS": "Allies gain +1d4 damage against ",
   "ABILITY_LOREMASTER.CHAT_INTRO": " spouts some lore.",
   "ABILITY_LOREMASTER.CHAT_SUCCESS": " knows something about this.",
   "ABILITY_LOREMASTER.CHAT_FAILURE": " doesn't have a clue.",

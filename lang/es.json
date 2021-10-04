@@ -95,6 +95,7 @@
   "ABILITY_DOMINATE_ADEPT.CHAT_SUCCESS": " hace que su objetivo dude.",
   "ABILITY_DOMINATE_MASTER.CHAT_SUCCESS": " somete a su enemigo.",
 
+  "ABILITY_LEADER.CHAT_SUCCESS": "Allies gain +1d4 damage against ",
   "ABILITY_LOREMASTER.CHAT_INTRO": " comparte algo de su sabiduría.",
   "ABILITY_LOREMASTER.CHAT_SUCCESS": " sabe algo al respecto.",
   "ABILITY_LOREMASTER.CHAT_FAILURE": " no tiene ni idea.",

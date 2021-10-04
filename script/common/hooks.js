@@ -366,25 +366,17 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
       for (let flagData of flagDataArray) {
         if (flagData.tokenId) {
           let token = canvas.tokens.objects.children.find((token) => token.id === flagData.tokenId);
-          let statusCounterMod = false;
-          if (game.modules.get('statuscounter')?.active) {
-            statusCounterMod = true;
+          if (token === undefined) {
+            return;
           }
           if (flagData.addEffect) {
-            if (token == undefined) {
-              return;
-            }
-            let duration = 1;
-            if (flagData.effectDuration) {
-              duration = flagData.effectDuration;
-            }
-            modifyEffectOnToken(token, flagData.addEffect, 1, duration, flagData.effectStuff);
+            modifyEffectOnToken(token, flagData.addEffect, 1, flagData);
           }
           if (flagData.removeEffect) {
-            modifyEffectOnToken(token, flagData.removeEffect, 0, 0);
+            modifyEffectOnToken(token, flagData.removeEffect, 0, flagData);
           }
           if (flagData.modifyEffectDuration) {
-            modifyEffectOnToken(token, flagData.modifyEffectDuration, 2, flagData.effectDuration);
+            modifyEffectOnToken(token, flagData.modifyEffectDuration, 2, flagData);
           }
 
           if (flagData.toughnessChange) {
@@ -532,26 +524,29 @@ Hooks.on('createToken', async (token, options, userID) => {
 /* action = 0 : remove effect
    action = 1 : add effect
    action = 2 : modify effect duration */
-export async function modifyEffectOnToken(token, effect, action, duration, effectStuff) {
+export async function modifyEffectOnToken(token, effect, action, options) {
   let statusCounterMod = false;
   if (game.modules.get('statuscounter')?.active) {
     statusCounterMod = true;
   }
+  let duration = options.effectDuration ?? 1;
   if (action == 1) {
     //add effect
     if (statusCounterMod) {
       let alreadyHereEffect = await EffectCounter.findCounter(token, effect);
       if (alreadyHereEffect == undefined) {
-        if (effectStuff) {
-          let statusEffect = new EffectCounter(effectStuff, effect, token, false);
+        if (options.effectStuff) {
+          let statusEffect = new EffectCounter(options.effectStuff, effect, token, false);
           await statusEffect.update();
+        } else if(options.overlay){
+          token.toggleEffect(effect, {overlay:options.overlay});
         } else {
           let statusEffect = new EffectCounter(duration, effect, token, false);
           await statusEffect.update();
         }
       }
     } else {
-      token.toggleEffect(effect);
+      token.toggleEffect(effect, {overlay:options.overlay});
     }
   } else if (action == 0) {
     //remove effect

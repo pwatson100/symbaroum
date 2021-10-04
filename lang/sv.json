@@ -95,6 +95,7 @@
   "ABILITY_DOMINATE_ADEPT.CHAT_SUCCESS": " får sin fiende att tveka.",
   "ABILITY_DOMINATE_MASTER.CHAT_SUCCESS": " betvingar sin fiende.",
 
+  "ABILITY_LEADER.CHAT_SUCCESS": "Allies gain +1d4 damage against ",
   "ABILITY_LOREMASTER.CHAT_INTRO": " gräver djupt i sin samlade kunskap.",
   "ABILITY_LOREMASTER.CHAT_SUCCESS": " känner till något om detta.",
   "ABILITY_LOREMASTER.CHAT_FAILURE": " har ingen aning.",

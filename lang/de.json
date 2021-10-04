@@ -82,6 +82,7 @@
   
   "ABILITY_ERROR.TARGET": "Du musst ein Ziel auswählen",
 
+  "ABILITY_LEADER.CHAT_SUCCESS": "Allies gain +1d4 damage against ",
   "ABILITY_LOREMASTER.CHAT_INTRO": " weiss vielleicht etwas darüber.",
   "ABILITY_LOREMASTER.CHAT_SUCCESS": " weiss etwas darüber.",
   "ABILITY_LOREMASTER.CHAT_FAILURE": " hat keine Ahnung.",

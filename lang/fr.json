@@ -94,6 +94,7 @@
     "ABILITY_DOMINATE_ADEPT.CHAT_SUCCESS": " intimide sa cible, qui ne l'attaquera pas ce tour-ci.",
     "ABILITY_DOMINATE_MASTER.CHAT_SUCCESS": " soumet sa cible, qui renonce au combat.",
 
+    "ABILITY_LEADER.CHAT_SUCCESS": "Les alliés recoivent un bonus aux dégâts de 1d4 contre ",
     "ABILITY_LOREMASTER.CHAT_INTRO": " étale ses connaissances.",
     "ABILITY_LOREMASTER.CHAT_SUCCESS": " sait quelque chose sur ce sujet.",
     "ABILITY_LOREMASTER.CHAT_FAILURE": " ne sait pas grand chose à ce sujet.",
