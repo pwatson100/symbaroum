@@ -464,6 +464,7 @@
     "POWER_BRIMSTONECASC.CHAT_INTRO": " déchaine le feu vers sa cible.",
     "POWER_BRIMSTONECASC.CHAT_SUCCESS": " est brûlé.", 
     "POWER_BRIMSTONECASC.CHAT_FAILURE": " évite une partie des flammes.",
+    "POWER_BRIMSTONECASC.CHAT_FAILURE_RR": " évite complètement les flammes.",
   
     "POWER_CONFUSION.EFFECT12": " reste immobile, clignant des yeux bêtement.",
     "POWER_CONFUSION.EFFECT34": " attaque son allié le plus proche.",

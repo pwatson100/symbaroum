@@ -466,8 +466,9 @@
   "POWER_BLESSEDSHIELD.PROTECTED": " är beskyddad",
   
   "POWER_BRIMSTONECASC.CHAT_INTRO": " kastar eld mot sitt mål.",
-  "POWER_BRIMSTONECASC.CHAT_SUCCESS": " blir bränd.",  
+  "POWER_BRIMSTONECASC.CHAT_SUCCESS": " blir bränd.",
   "POWER_BRIMSTONECASC.CHAT_FAILURE": " undviker en del av skadan.",
+  "POWER_BRIMSTONECASC.CHAT_FAILURE_RR": " avoids all of the damage.",
   
   "POWER_CONFUSION.EFFECT12": " står stilla och blinkar dumt.",
   "POWER_CONFUSION.EFFECT34": " attackerar sin närmaste vän.",

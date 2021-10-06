@@ -468,8 +468,9 @@
   "POWER_BLESSEDSHIELD.PROTECTED": " is protected",
   
   "POWER_BRIMSTONECASC.CHAT_INTRO": " throws fire at its target.",
-  "POWER_BRIMSTONECASC.CHAT_SUCCESS": " gets burned.",  
+  "POWER_BRIMSTONECASC.CHAT_SUCCESS": " gets burned.",
   "POWER_BRIMSTONECASC.CHAT_FAILURE": " avoids part of the damage.",
+  "POWER_BRIMSTONECASC.CHAT_FAILURE_RR": " avoids all of the damage.",
   
   "POWER_CONFUSION.EFFECT12": " stands still, blinking stupidly.",
   "POWER_CONFUSION.EFFECT34": " attacks whichever of its allies is closest.",
