@@ -6,6 +6,7 @@
   "ABILITY.DESCRIPTION": "Description",
 
   "ABILITY.CHAT_TARGET_VICTIM": "Victim: ",
+  "ABILITY.RESIST_ROLL": " tries to resist:",
   "ABILITYREF.DIALOG_TITLE": "Choose corresponding integrated ability",
   "ABILITYREF.DIALOG": "This will allow you to use integrated rolls for this specific ability. If it's a homebrew ability or if you do not want to use the scripts, select \"No reference\". Warning : you won't be able to reference after that, if you want to you'll have to create a new ability.",
   
@@ -94,6 +95,7 @@
   "ABILITY_DOMINATE_ADEPT.CHAT_SUCCESS": " makes is target hesitate.",
   "ABILITY_DOMINATE_MASTER.CHAT_SUCCESS": " subdues his ennemy.",
 
+  "ABILITY_LEADER.CHAT_SUCCESS": "Allies gain +1d4 damage against ",
   "ABILITY_LOREMASTER.CHAT_INTRO": " spouts some lore.",
   "ABILITY_LOREMASTER.CHAT_SUCCESS": " knows something about this.",
   "ABILITY_LOREMASTER.CHAT_FAILURE": " doesn't have a clue.",
@@ -147,6 +149,8 @@
   "ARMOR.NPC_PROTECTION": "NPC Prot.",
   "ARMOR.IMPEDING": "Impeding",
   "ARMOR.IMPEDINGABBR": "Imp.",
+  "ARMOR.IMPEDINGLONG": "impeding armor",
+  "ARMOR.IMPEDING_TARGET": "armor impeding target",
   "ARMOR.DEFENSE": "Defense",
   "ARMOR.COST": "Cost",
   "ARMOR.QUALITY": "Quality",
@@ -224,6 +228,9 @@
 
   "CHAT.GMTEXT_BUTTON": "This button is for GM use only. It will apply the effects to the tokens.",
   "CHAT.APPLY_BUTTON": "Apply results to the token",
+  "CHAT.RESIST_TEXT_BUTTON": " can resist the attack using ",
+  "CHAT.RESIST_BUTTON": "Roll resistance",
+  "CHAT.GM_INFO_RESIST": " must click on the \"resit\" button in his chat log for rolling resistance against the attack.",
   "CHAT.DEATH_ROLL": "Death Roll",
   "CHAT.SUCCEED": "Succeed",
   "CHAT.FAILED": "Failed",
@@ -267,7 +274,9 @@
   "COMBAT.CHAT_DAMAGE_DYING": " is fataly wounded.",
   "COMBAT.CHAT_DAMAGE": " endures damage : ",
   "COMBAT.CHAT_DAMAGE_PAIN": " is stunned by pain.",
-  "COMBAT.PARAMS_PRECISE": "[Precise weapon], ",
+  "COMBAT.CHAT_JOINTED_SECONDARY": "Defence succeeds, but the jointed weapon hits anyway (see jointed quality for evaluating damage).",
+  "COMBAT.DEFENSE_ROLL": " tries to defend against the attack.",
+  "COMBAT.PARAMS_PRECISE": "Precise weapon, ",
 
   "CORRUPTION.CHAT_INTRO": " increases his degree of taint.",
   "CORRUPTION.CHAT_THRESHOLD": " becomes Blight-marked (theshold reached).",
@@ -459,8 +468,9 @@
   "POWER_BLESSEDSHIELD.PROTECTED": " is protected",
   
   "POWER_BRIMSTONECASC.CHAT_INTRO": " throws fire at its target.",
-  "POWER_BRIMSTONECASC.CHAT_SUCCESS": " gets burned.",  
+  "POWER_BRIMSTONECASC.CHAT_SUCCESS": " gets burned.",
   "POWER_BRIMSTONECASC.CHAT_FAILURE": " avoids part of the damage.",
+  "POWER_BRIMSTONECASC.CHAT_FAILURE_RR": " avoids all of the damage.",
   
   "POWER_CONFUSION.EFFECT12": " stands still, blinking stupidly.",
   "POWER_CONFUSION.EFFECT34": " attacks whichever of its allies is closest.",
@@ -765,5 +775,7 @@
   "SYMBAROUM.OPTIONAL_NON_EDITABLE_COLOUR_SELECTOR": "Select Non-Editable Field Color",
   "SYMBAROUM.OPTIONAL_NON_EDITABLE_BG_IMGS": "Non-Editable Field Background Images",
   "SYMBAROUM.OPTIONAL_RESET_NON_EDITABLE_BUTTON" :"Reset Non-Editable Field",
-  "SYMBAROUM.OPTIONAL_RESET_ALL_BUTTON": "Reset all settings to defaults"
+  "SYMBAROUM.OPTIONAL_RESET_ALL_BUTTON": "Reset all settings to defaults",
+  "SYMBAROUM.OPTIONAL_PLAYER_RESIST" :"Resist rolls button",
+  "SYMBAROUM.OPTIONAL_PLAYER_RESIST_HINT" :"When NPCs use powers that can be resisted, or attack with Combat Enhancement options, instead of rolling directly this option creates a button in the relevant player Chat that the Player will have to click on for the resist roll to be done."
 }

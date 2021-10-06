@@ -66,11 +66,11 @@
                         <input id="{{id}}-data.cost" name="data.cost" type="text" value="{{data.cost}}"/>
                     </div>
                     <div class="number">
-                        <label for="{{item.id}}-data.isArtifact">{{localize "ITEM.ARTIFACT"}}</label>
+                        <label for="{{id}}-data.isArtifact">{{localize "ITEM.ARTIFACT"}}</label>
                         {{#if data.isArtifact}}
-                        <input id="{{item.id}}-data.isArtifact" name="data.isArtifact" type="checkbox" value="artifact" checked/>
+                        <input id="{{id}}-data.isArtifact" name="data.isArtifact" type="checkbox" value="artifact" checked/>
                         {{else}}
-                        <input id="{{item.id}}-data.isArtifact" name="data.isArtifact" type="checkbox" value="artifact"/>
+                        <input id="{{id}}-data.isArtifact" name="data.isArtifact" type="checkbox" value="artifact"/>
                         {{/if}}
                     </div>
                     <div class="quality">

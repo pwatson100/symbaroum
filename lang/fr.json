@@ -6,6 +6,7 @@
     "ABILITY.DESCRIPTION": "Description",
 
     "ABILITY.CHAT_TARGET_VICTIM": "Victime: ",
+    "ABILITY.RESIST_ROLL": " essaye de resister:",
     "ABILITYREF.DIALOG_TITLE": "Indiquez le talent ou le pouvoir correspondant",
     "ABILITYREF.DIALOG": "Cette référence vous permettra d'utiliser les jets et fenêtres de dialogues intégrés au système pour les talents, pouvoirs et traits. S'il s'agit d'un talent personnalisé ou si vous ne souhaitez pas utiliser ces options du système, choisissez \"Aucun\". Attention: vous ne pourrez plus changer la référence de cet objet par la suite. Pour ce faire, il vous faudra supprimer l'objet et en créer un nouveau.",
     "ABILITY_LABEL.DEFAULT": "Autre",
@@ -93,6 +94,7 @@
     "ABILITY_DOMINATE_ADEPT.CHAT_SUCCESS": " intimide sa cible, qui ne l'attaquera pas ce tour-ci.",
     "ABILITY_DOMINATE_MASTER.CHAT_SUCCESS": " soumet sa cible, qui renonce au combat.",
 
+    "ABILITY_LEADER.CHAT_SUCCESS": "Les alliés recoivent un bonus aux dégâts de 1d4 contre ",
     "ABILITY_LOREMASTER.CHAT_INTRO": " étale ses connaissances.",
     "ABILITY_LOREMASTER.CHAT_SUCCESS": " sait quelque chose sur ce sujet.",
     "ABILITY_LOREMASTER.CHAT_FAILURE": " ne sait pas grand chose à ce sujet.",
@@ -145,7 +147,9 @@
     "ARMOR.PC_PROTECTION": "Prot. PJ",
     "ARMOR.NPC_PROTECTION": "Prot. PNJ",
     "ARMOR.IMPEDING": "Gênante",
-    "ARMOR.IMPEDINGABBR": "Gên.",    
+    "ARMOR.IMPEDINGABBR": "Gên.",
+    "ARMOR.IMPEDINGLONG": "Armure Gênante",
+    "ARMOR.IMPEDING_TARGET": "Armure Gênante cible",
     "ARMOR.DEFENSE": "Défense",
     "ARMOR.COST": "Prix",
     "ARMOR.QUALITY": "Qualité",
@@ -222,6 +226,9 @@
 
     "CHAT.GMTEXT_BUTTON": "Ce bouton ne peut être utilisé que par le MJ. Il affecte les résultats de l'action aux tokens.",
     "CHAT.APPLY_BUTTON": "Appliquer les résultats au token",
+    "CHAT.RESIST_TEXT_BUTTON": " peut tenter de résister à l'attaque avec  ",
+    "CHAT.RESIST_BUTTON": "Jet de résistance",
+    "CHAT.GM_INFO_RESIST": " doit cliquer sur le bouton \"Jet de résistance\" dans le Chat pour lancer le dé de résistance contre l'attaque.",
     "CHAT.DEATH_ROLL": "Test de Mort",
     "CHAT.SUCCEED": "Réussite",
     "CHAT.FAILED": "Echec",
@@ -264,7 +271,9 @@
     "COMBAT.CHAT_DAMAGE_DYING": " est mortellement blessé.",
     "COMBAT.CHAT_DAMAGE": " reçoit des dégâts : ",
     "COMBAT.CHAT_DAMAGE_PAIN": " est sonné par la douleur.",
-    "COMBAT.PARAMS_PRECISE": "[arme précise], ",
+    "COMBAT.CHAT_JOINTED_SECONDARY": "L'arme articulée touche malgré la défense (Calculez les dégats secondaires avec la qualité articulée).",
+    "COMBAT.DEFENSE_ROLL": " essaie de se défendre contre l'attaque.",
+    "COMBAT.PARAMS_PRECISE": "arme précise, ",
     "COMBAT.DAMAGE": "Dégâts infligés: ",
 
     "CORRUPTION.CHAT_INTRO": " dépasse un seuil de souillure.",
@@ -381,7 +390,7 @@
     "POWER_LABEL.BLACK_BREATH":"Souffle corrupteur",
     "POWER_LABEL.BLESSED_SHIELD":"Bouclier Sanctifié",
     "POWER_LABEL.BLINDING_SYMBOL":"Symbole aveuglant",
-    "POWER_LABEL.BRIMSTONE_CASCADE":"Cascade de souffre",
+    "POWER_LABEL.BRIMSTONE_CASCADE":"Cascade de soufre",
     "POWER_LABEL.COMBAT_HYMN":"Hymne guerrier",
     "POWER_LABEL.CONFUSION":"Confusion",
     "POWER_LABEL.CURSE":"Malédiction",
@@ -455,6 +464,7 @@
     "POWER_BRIMSTONECASC.CHAT_INTRO": " déchaine le feu vers sa cible.",
     "POWER_BRIMSTONECASC.CHAT_SUCCESS": " est brûlé.", 
     "POWER_BRIMSTONECASC.CHAT_FAILURE": " évite une partie des flammes.",
+    "POWER_BRIMSTONECASC.CHAT_FAILURE_RR": " évite complètement les flammes.",
   
     "POWER_CONFUSION.EFFECT12": " reste immobile, clignant des yeux bêtement.",
     "POWER_CONFUSION.EFFECT34": " attaque son allié le plus proche.",
@@ -756,7 +766,9 @@
     "SYMBAROUM.OPTIONAL_NON_EDITABLE_COLOUR_SELECTOR": "Choisir la couleur de fond des champs fixes",
     "SYMBAROUM.OPTIONAL_NON_EDITABLE_BG_IMGS": "Texture de fond des champs fixes",
     "SYMBAROUM.OPTIONAL_RESET_NON_EDITABLE_BUTTON" :"Réinitialiser la couleur de fond des champs fixes",
-    "SYMBAROUM.OPTIONAL_RESET_ALL_BUTTON": "Reinitialiser les paramètres"
+    "SYMBAROUM.OPTIONAL_RESET_ALL_BUTTON": "Reinitialiser les paramètres",
+    "SYMBAROUM.OPTIONAL_PLAYER_RESIST" :"Bouton jet de résistance",
+    "SYMBAROUM.OPTIONAL_PLAYER_RESIST_HINT" :"Quand un PNJ attaque avec un pouvoir ou avec l'option Combats accélérés, cette option crée un bouton dans le chat du joueur visé, qu'il devra cliquer pour lancer le jet de résistance ou de défense."
   
 }
 
