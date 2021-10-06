@@ -5,9 +5,12 @@
             "message":"<h1>Welcome to the Symbaroum system</h1><br />We are happy that you are using our system and wish you best of luck.<br/>If you want to give some feedback on the system, the developers are active on both the Foundry Discord (channel #free-league) and Davokar Explorers Discord."
         },
         {
-            "version":5,
-            "message":"<h1>Symbaroum 3.0.3</h1><br />We are happy to let you know that the unofficial Symbaroum for Foundry 0.8 is now up to version 3.0.3. While the changes has not been massive, there has been many small quality updates to make your life as GM easier and provide a Symbaroum System with less bugs. If you have comments, please visit the #free-league channel on the Foundry Discord.  You can also see open features and bugs on our github page and are welcome to contribute."
+            "version":8,
+            "message":"<h1>Symbaroum 3.0.8</h1><br />We are happy to let you know that the offical Symbaroum for Foundry 0.8 is now up to version 3.0.8. <br />This release includes alternative damage weapons and chat warning/alert messages when characters get corruption levels close/equal to their thresholds (see relase notes for complete info)<br />There has also been some work to make the gear page behave more consistent when you have items with long names or use the PopOut! module.<br /><br /> As always, if you have comments, please visit the #free-league channel on the Foundry Discord or join #symbaroum-vtt-foundry on Davokar Explorers League Discord.  You can also see open features and bugs on our github page and are welcome to contribute. If you have comments, positive or negative feedback, please visit the #free-league channel on the Foundry Discord.  You can also see open features and bugs on our github page and are welcome to contribute."
+        },
+        {
+            "version":9,
+            "message":"<h1>Foundry Symbaroum Official</h1><br />The Foundry VTT Symbaroum system is now Official with the release of the Free League modules - buy them at <a href='https://freeleaguepublishing.com/en/store/?collection_id=79768780848'>Free League Store</a> to help your game, or just to support further modules to be produced.<br /><br />  The team is still the same, with the passionate, awesome and humble devs dedicating their free time to enhance the system.<br /><br /> As always, drop by either the <a href='https://discord.gg/foundryvtt'>Foundry VTT #free-league</a> discord, or the <a href='https://discord.gg/nDJccWZz'>Davokar Explorers league</a> discord, where the team are active to help or assist."
         }
-
     ]    
 }

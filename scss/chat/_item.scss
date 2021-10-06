@@ -7,13 +7,14 @@
 }
 
 .symbaroum.chat.item .foreground {
-  background: url(../asset/image/editable.jpg) repeat;
+  background: var(--box-editable) repeat;
   padding: 10px;
 }
 
 .symbaroum.chat.item .border {
   border: 1px solid transparent;
-  border-image: url(../asset/image/title.jpg) 20/5px round;
+  border-color: var(--title-color);
+  // border-image: var(--title-image) 20/10px;
 }
 
 .symbaroum.chat.item strong {

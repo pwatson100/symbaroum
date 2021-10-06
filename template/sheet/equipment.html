@@ -6,14 +6,16 @@
             </div>
             <div class="wrapper-column">
                 <div class="name">
-                    <label>{{localize "EQUIPMENT.NAME"}}</label>
-                    <input name="name" type="text" value="{{item.name}}"/>
+                    <label for="{{id}}-name">{{localize "EQUIPMENT.NAME"}}</label>
+                    <input name="name" id="{{id}}-name" type="text" value="{{item.name}}"/>
                 </div>
             </div>
         </div>
-
         <div class="sheet-tabs tabs" data-group="primary">
             <b class="item" data-tab="description">{{localize "TAB.DESCRIPTION"}}</b>
+            {{#if data.isArtifact}}
+            <b class="item" data-tab="power">{{localize "TAB.POWER"}}</b>
+            {{/if}}
             <b class="item" data-tab="bonus">{{localize "TAB.BONUS"}}</b>
         </div>
 
@@ -22,12 +24,20 @@
                 <div class="description foreground border">
                     <h1>{{localize "TITLE.DESCRIPTION"}}</h1>
                     <div class="cost">
-                        <label>{{localize "EQUIPMENT.COST"}}</label>
-                        <input name="data.cost" type="text" value="{{data.cost}}"/>
+                        <label for="{{id}}-data.cost">{{localize "EQUIPMENT.COST"}}</label>
+                        <input id="{{id}}-data.cost" name="data.cost" type="text" value="{{data.cost}}"/>
                     </div>
                     <div class="number">
-                        <label>{{localize "EQUIPMENT.NUMBER"}}</label>
-                        <input name="data.number" type="number" value="{{data.number}}"/>
+                        <label for="{{id}}-data.number">{{localize "EQUIPMENT.NUMBER"}}</label>
+                        <input id="{{id}}-data.number" name="data.number" type="number" value="{{data.number}}"/>
+                    </div>
+                    <div class="number">
+                        <label for="{{id}}-data.isArtifact">{{localize "ITEM.ARTIFACT"}}</label>
+                        {{#if data.isArtifact}}
+                        <input id="{{id}}-data.isArtifact" name="data.isArtifact" type="checkbox" value="artifact" checked/>
+                        {{else}}
+                        <input id="{{id}}-data.isArtifact" name="data.isArtifact" type="checkbox" value="artifact"/>
+                        {{/if}}
                     </div>
                     {{editor content=data.description target="data.description" button=true owner=owner editable=true}}
                 </div>
@@ -35,6 +45,11 @@
             <div class="tab" data-group="primary" data-tab="bonus">
                 {{> systems/symbaroum/template/sheet/tab/bonus.html}}
             </div>
+            {{#if data.isArtifact}}
+            <div class="tab" data-group="primary" data-tab="power">
+                {{> systems/symbaroum/template/sheet/tab/artifact.html}}
+            </div>
+            {{/if}}
         </div>
     </div>
 </form>

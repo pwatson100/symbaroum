@@ -1,5 +1,5 @@
 import { SymbaroumActor } from './actor.js';
-import { SymbaroumItem } from './item.js';
+import { SymbaroumItem, buildRolls } from './item.js';
 import { PlayerSheet } from '../sheet/player.js';
 import { PlayerSheet2 } from '../sheet/player2.js';
 import { TraitSheet } from '../sheet/trait.js';
@@ -15,6 +15,10 @@ import { ArtifactSheet } from '../sheet/artifact.js';
 import { initializeHandlebars } from './handlebars.js';
 import { migrateWorld } from './migration.js';
 import { sendDevMessage } from './devmsg.js';
+import { SYMBAROUM } from './config.js';
+import { MonsterSheet } from '../sheet/monster.js';
+import { SymbaroumConfig } from './symbaroumConfig.js';
+import { SymbaroumCommsListener } from './symbcomms.js';
 
 Hooks.once('init', () => {
   CONFIG.Actor.documentClass = SymbaroumActor;
@@ -22,7 +26,8 @@ Hooks.once('init', () => {
   Actors.unregisterSheet('core', ActorSheet);
   Actors.registerSheet('symbaroum', PlayerSheet2, { types: ['player'], makeDefault: true });
   Actors.registerSheet('symbaroum', PlayerSheet, { types: ['player'], makeDefault: false });
-  Actors.registerSheet('symbaroum', PlayerSheet2, { types: ['monster'], makeDefault: true });
+  Actors.registerSheet('symbaroum', MonsterSheet, { types: ['monster'], makeDefault: true });
+  Actors.registerSheet('symbaroum', PlayerSheet2, { types: ['monster'], makeDefault: false });
   Items.unregisterSheet('core', ItemSheet);
   Items.registerSheet('symbaroum', TraitSheet, { types: ['trait'], makeDefault: true });
   Items.registerSheet('symbaroum', AbilitySheet, { types: ['ability'], makeDefault: true });
@@ -35,7 +40,14 @@ Hooks.once('init', () => {
   Items.registerSheet('symbaroum', EquipmentSheet, { types: ['equipment'], makeDefault: true });
   Items.registerSheet('symbaroum', ArtifactSheet, { types: ['artifact'], makeDefault: true });
   initializeHandlebars();
+
+  game.symbaroum = {
+    config: SYMBAROUM,
+    SymbaroumConfig,
+  };
+
   game.settings.register('symbaroum', 'worldTemplateVersion', {
+    // worldTemplateVersion is deprecated - not to use anymore
     name: 'World Template Version',
     hint: 'Used to automatically upgrade worlds data when the template is upgraded.',
     scope: 'world',
@@ -44,7 +56,7 @@ Hooks.once('init', () => {
     type: Number,
   });
 
-    game.settings.register('symbaroum', 'systemMigrationVersion', {
+  game.settings.register('symbaroum', 'systemMigrationVersion', {
     name: 'World System Version',
     hint: 'Used to automatically upgrade worlds data when needed.',
     scope: 'world',
@@ -65,6 +77,15 @@ Hooks.once('init', () => {
   game.settings.register('symbaroum', 'combatAutomation', {
     name: 'SYMBAROUM.OPTIONAL_AUTOCOMBAT',
     hint: 'SYMBAROUM.OPTIONAL_AUTOCOMBAT_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });
+
+  game.settings.register('symbaroum', 'playerResistButton', {
+    name: 'SYMBAROUM.OPTIONAL_PLAYER_RESIST',
+    hint: 'SYMBAROUM.OPTIONAL_PLAYER_RESIST_HINT',
     scope: 'world',
     type: Boolean,
     default: false,
@@ -140,6 +161,14 @@ Hooks.once('init', () => {
     default: false,
     config: true,
   });
+  game.settings.register('symbaroum', 'showNpcModifiers', {
+    name: 'SYMBAROUM.OPTIONAL_NPC_MODIFIERS',
+    hint: 'SYMBAROUM.OPTIONAL_NPC_MODIFIERS_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });
   game.settings.register('symbaroum', 'allowShowReference', {
     name: 'SYMBAROUM.OPTIONAL_SHOWREFERENCE',
     hint: 'SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT',
@@ -149,6 +178,14 @@ Hooks.once('init', () => {
     config: true,
   });
 
+  game.settings.register('symbaroum', 'hideIniativeRolls', {
+    name: 'SYMBAROUM.OPTIONAL_INIATITIVEROLLS',
+    hint: 'SYMBAROUM.OPTIONAL_INIATITIVEROLLS_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });
 
   game.settings.register('symbaroum', 'manualInitValue', {
     name: 'SYMBAROUM.OPTIONAL_INIT_MANUAL',
@@ -158,13 +195,118 @@ Hooks.once('init', () => {
     default: false,
     config: true,
   });
+
+  game.settings.register('symbaroum', 'charBGChoice', {
+    restricted: false,
+    type: String,
+    config: false,
+    scope: 'client',
+    default: 'url(../asset/image/background/green_flower_light.webp) repeat',
+  });
+  game.settings.register('symbaroum', 'npcBGChoice', {
+    restricted: false,
+    type: String,
+    config: false,
+    scope: 'client',
+    default: 'url(../asset/image/background/purple_flower_light.webp) repeat',
+  });
+  game.settings.register('symbaroum', 'titleBGChoice', {
+    restricted: false,
+    type: String,
+    config: false,
+    scope: 'client',
+    default: 'url(../asset/image/background/title.webp)',
+  });
+  game.settings.register('symbaroum', 'editableChoice', {
+    restricted: false,
+    type: String,
+    config: false,
+    scope: 'client',
+    default: 'url(../asset/image/background/editable.webp)',
+  });
+  game.settings.register('symbaroum', 'nonEditableChoice', {
+    restricted: false,
+    type: String,
+    config: false,
+    scope: 'client',
+    default: 'url(../asset/image/background/not-editable.webp)',
+  });
+
+  game.settings.register('symbaroum', 'switchCharBGColour', {
+    name: 'SYMBAROUM.OPTIONAL_PC_COLOUR_SELECTOR',
+    restricted: false,
+    type: String,
+    config: false,
+    scope: 'client',
+    default: 'url(../asset/image/background/green_flower_light.webp) repeat',
+  });
+  game.settings.register('symbaroum', 'switchNpcBGColour', {
+    name: 'SYMBAROUM.OPTIONAL_NPC_COLOUR_SELECTOR',
+    restricted: false,
+    type: String,
+    config: false,
+    scope: 'client',
+    default: 'url(../asset/image/background/purple_flower_light.webp) repeat',
+  });
+  game.settings.register('symbaroum', 'switchTitleColour', {
+    name: 'SYMBAROUM.OPTIONAL_TITLE_COLOUR_SELECTOR',
+    restricted: false,
+    type: String,
+    config: false,
+    scope: 'client',
+    default: 'url(../asset/image/background/title.webp)',
+  });
+  game.settings.register('symbaroum', 'switchEditableColour', {
+    name: 'SYMBAROUM.OPTIONAL_EDITABLE_COLOUR_SELECTOR',
+    restricted: false,
+    type: String,
+    config: false,
+    scope: 'client',
+    default: 'url(../asset/image/background/editable.webp)',
+  });
+  game.settings.register('symbaroum', 'switchNoNEditableColour', {
+    name: 'SYMBAROUM.OPTIONAL_EDITABLE_COLOUR_SELECTOR',
+    restricted: false,
+    type: String,
+    config: false,
+    scope: 'client',
+    default: 'url(../asset/image/background/not-editable.webp)',
+  });
+
+  game.settings.registerMenu('symbaroum', 'symbaroumSettings', {
+    name: 'SYMBAROUM.OPTIONAL_CONFIG_MENULABEL',
+    label: 'SYMBAROUM.OPTIONAL_CONFIG_MENULABEL',
+    hint: 'SYMBAROUM.OPTIONAL_CONFIG_MENUHINT',
+    icon: 'fas fa-palette',
+    type: SymbaroumConfig,
+    restricted: false,
+  });
+
+  // register setting for add/remove menu button
+  game.settings.register('symbaroum', 'addMenuButton', {
+    name: 'SYMBAROUM.OPTIONAL_ADD_MENUNAME',
+    hint: 'SYMBAROUM.OPTIONAL_ADD_MENUHINT',
+    scope: 'world',
+    config: true,
+    default: SymbaroumConfig.getDefaults.addMenuButton,
+    type: Boolean,
+    onChange: (enabled) => {
+      SymbaroumConfig.toggleConfigButton(enabled);
+    },
+  });
 });
 
-  
 Hooks.once('ready', () => {
   migrateWorld();
   sendDevMessage();
   showReleaseNotes();
+  setupConfigOptions();
+  setupEmit();
+});
+
+// create/remove the quick access config button
+Hooks.once('renderSettings', () => {
+  SymbaroumConfig.toggleConfigButton(JSON.parse(game.settings.get('symbaroum', 'addMenuButton')));
 });
 
 Hooks.on('preCreateActor', (doc, createData, options, userid) => {
@@ -208,33 +350,33 @@ Hooks.once('diceSoNiceReady', (dice3d) => {
   );
 });
 
+Hooks.on('preCreateChatMessage', (doc, message, options, userid) => {
+  if (message.flags !== undefined) {
+    if (getProperty(message.flags, 'core.initiativeRoll') && game.settings.get('symbaroum', 'hideIniativeRolls')) {
+      return false;
+    }
+  }
+});
+
 /*Hook for the chatMessage that contain a button for the GM to apply status icons or damage to a token.*/
 Hooks.on('renderChatMessage', async (chatItem, html, data) => {
-  const flagDataArray = await chatItem.getFlag(game.system.id, 'abilityRoll');
-  if (flagDataArray) {
+  const flagDataArray = await chatItem.getFlag(game.system.id, 'applyEffects');
+  if (flagDataArray && game.user.isGM) {
     await html.find('#applyEffect').click(async () => {
       for (let flagData of flagDataArray) {
         if (flagData.tokenId) {
           let token = canvas.tokens.objects.children.find((token) => token.id === flagData.tokenId);
-          let statusCounterMod = false;
-          if (game.modules.get('statuscounter')?.active) {
-            statusCounterMod = true;
+          if (token === undefined) {
+            return;
           }
           if (flagData.addEffect) {
-            if (token == undefined) {
-              return;
-            }
-            let duration = 1;
-            if (flagData.effectDuration) {
-              duration = flagData.effectDuration;
-            }
-            modifyEffectOnToken(token, flagData.addEffect, 1, duration, flagData.effectStuff);
+            modifyEffectOnToken(token, flagData.addEffect, 1, flagData);
           }
           if (flagData.removeEffect) {
-            modifyEffectOnToken(token, flagData.removeEffect, 0, 0);
+            modifyEffectOnToken(token, flagData.removeEffect, 0, flagData);
           }
           if (flagData.modifyEffectDuration) {
-            modifyEffectOnToken(token, flagData.modifyEffectDuration, 2, flagData.effectDuration);
+            modifyEffectOnToken(token, flagData.modifyEffectDuration, 2, flagData);
           }
 
           if (flagData.toughnessChange) {
@@ -258,11 +400,41 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
           }
         }
       }
-      await chatItem.unsetFlag(game.system.id, 'abilityRoll');
+      await chatItem.unsetFlag(game.system.id, 'applyEffects');
+      return;
+    });
+  }
+  const functionStuff = await chatItem.getFlag(game.system.id, 'resistRoll');
+  if (functionStuff) {
+    await html.find('#applyEffect').click(async () => {
+      let tok = canvas.tokens.objects.children.find((token) => token.id === functionStuff.tokenId);
+      let targetToken = canvas.tokens.objects.children.find((token) => token.id === functionStuff.targetData.tokenId);
+      if(tok === undefined || targetToken === undefined){
+        ui.notifications.error("Can't find token.");
+        return;
+      }
+      functionStuff.token = tok;
+      functionStuff.actor = tok.actor;
+      functionStuff.targetData.token = targetToken;
+      functionStuff.targetData.actor = targetToken.actor;
+      console.log("from hook: ", functionStuff);
+      buildRolls(functionStuff);
+      await chatItem.unsetFlag(game.system.id, 'resistRoll');
       return;
     });
   }
 });
+
+// This sets the css DOM objects we will change with the registered settings
+async function setupConfigOptions() {
+  let r = document.querySelector(':root');
+  await r.style.setProperty('--color-charBG', game.settings.get('symbaroum', 'switchCharBGColour'));
+  await r.style.setProperty('--color-npcBG', game.settings.get('symbaroum', 'switchNpcBGColour'));
+  await r.style.setProperty('--title-image', game.settings.get('symbaroum', 'titleBGChoice'));
+  await r.style.setProperty('--title-color', game.settings.get('symbaroum', 'switchTitleColour'));
+  await r.style.setProperty('--box-editable', game.settings.get('symbaroum', 'switchEditableColour'));
+  await r.style.setProperty('--box-non-editable', game.settings.get('symbaroum', 'switchNoNEditableColour'));
+}
 
 async function createBlessedShield(actor, protection = '1d4') {
   let data = {
@@ -282,7 +454,7 @@ async function createBlessedShield(actor, protection = '1d4') {
 async function showReleaseNotes() {
   if (game.user.isGM) {
     try {
-      const newVer = '1';
+      const newVer = game.system.data.version;
       const releaseNoteName = 'Symbaroum System guide EN';
       const releasePackLabel = 'Symbaroum for FVTT system user guides';
 
@@ -298,7 +470,7 @@ async function showReleaseNotes() {
 
       let newReleasePack = game.packs.find((p) => p.metadata.label === releasePackLabel);
       if (newReleasePack === null || newReleasePack === undefined) {
-        console.log('No pack found');
+        console.error('No pack found');
         // This is bad - the symbaroum pack does not exist in the system packages
         return;
       }
@@ -323,7 +495,7 @@ async function showReleaseNotes() {
       // Show journal
       await newReleaseJournal.sheet.render(true, { sheetMode: 'text' });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } // end of try
   } // end of if(isgm)
 } // end of function
@@ -337,38 +509,47 @@ async function tidyReleaseNotes11() {
   }
 }
 
+async function setupEmit() {
+  console.info('Setting up Symbaroum emit system');
+  SymbaroumCommsListener.ready();
+}
+
 Hooks.on('createToken', async (token, options, userID) => {
   let flagBerserk = token.actor.getFlag(game.system.id, 'berserker');
-  if(flagBerserk){
-    modifyEffectOnToken(token._object,"systems/symbaroum/asset/image/berserker.svg", 1, 1);
+  if (flagBerserk) {
+    modifyEffectOnToken(token._object, 'systems/symbaroum/asset/image/berserker.svg', 1, 1);
   }
-})
+});
 
 /* action = 0 : remove effect
    action = 1 : add effect
    action = 2 : modify effect duration */
-export async function modifyEffectOnToken(token, effect, action, duration, effectStuff){
+export async function modifyEffectOnToken(token, effect, action, options) {
   let statusCounterMod = false;
   if (game.modules.get('statuscounter')?.active) {
     statusCounterMod = true;
   }
-  if (action == 1) { //add effect
+  let duration = options.effectDuration ?? 1;
+  if (action == 1) {
+    //add effect
     if (statusCounterMod) {
       let alreadyHereEffect = await EffectCounter.findCounter(token, effect);
       if (alreadyHereEffect == undefined) {
-        if (effectStuff) {
-          let statusEffect = new EffectCounter(effectStuff, effect, token, false);
+        if (options.effectStuff) {
+          let statusEffect = new EffectCounter(options.effectStuff, effect, token, false);
           await statusEffect.update();
+        } else if(options.overlay){
+          token.toggleEffect(effect, {overlay:options.overlay});
         } else {
           let statusEffect = new EffectCounter(duration, effect, token, false);
           await statusEffect.update();
         }
       }
     } else {
-      token.toggleEffect(effect);
+      token.toggleEffect(effect, {overlay:options.overlay});
     }
-  }
-  else if (action == 0){ //remove effect
+  } else if (action == 0) {
+    //remove effect
     if (statusCounterMod) {
       let statusEffectCounter = await EffectCounter.findCounter(token, effect);
       if (statusEffectCounter != undefined) {
@@ -377,8 +558,8 @@ export async function modifyEffectOnToken(token, effect, action, duration, effec
     } else {
       token.toggleEffect(effect);
     }
-  }
-  else { //modify duration - only with Status counter mod
+  } else {
+    //modify duration - only with Status counter mod
     if (statusCounterMod) {
       let statusEffectCounter = await EffectCounter.findCounter(token, effect);
       if (statusEffectCounter != undefined) {

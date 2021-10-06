@@ -43,7 +43,7 @@
     <div class="combat foreground border">
         <h1>{{localize "TITLE.COMBAT"}}</h1>
         <div class="initiative" title="{{localize "TOOLTIP.COMBAT.INITIATIVE"}}">
-            <label>{{localize "INITIATIVE"}}</label>
+            <label>{{localize "INITIATIVE.TITLE"}}</label>
             <select name="data.initiative.attribute" class="attribute">
                 {{#select data.initiative.attribute}}
                 <option value="quick">{{localize "ATTRIBUTE.QUICK"}}</option>
@@ -112,7 +112,7 @@
                         </div>
                         <div class="actions" title="{{localize "TOOLTIP.POWER_ACTIONS"}}">{{item.data.actions}}</div>
                         <div class="button">
-                            <a class="item-control item-delete" title="Delete Trait"><i class="fas fa-trash"></i></a>
+                            <a class="item-control item-delete" title="{{localize "TOOLTIP.DELETE_ABILITY"}}"><i class="fas fa-trash"></i></a>
                         </div>
                     </div>
                 {{/if}}

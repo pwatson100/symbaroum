@@ -137,7 +137,7 @@ Version 3.0.2
 Version 3.0.3
  - Staff Fighter bug fix
 
- Version 3.0.4
+Version 3.0.4
  - Enhanced combat now support correctly Iron fist and robust.
  - BeastLore Master, Rapid reflexes Master, Strangler, Medicus scripts upgraded.
  - Leader and BL damage bonus available on some powers.
@@ -147,3 +147,52 @@ Version 3.0.3
  - Corrected issue with item text box. 
  - Swedish language improvements thanks to Weymyss.
 
+Version 3.0.6
+- Sorted ability list and Items
+- Major artifact changes - obsoleted artifact type of item, made so equipment, weapons and armor can become artifacts
+- Migration fixes
+- Compendium migration fixes
+- Gear page now should look prettier
+- Support for system traits (thoroughly corrupt, ignore pain threshold)
+
+Version 3.0.7
+- corrected a bug when using the system on The Forge.
+
+Version 3.0.8
+- Weapons can now be configured to do alternative Damage.
+- 2 alternative damage unarmed weapons in EN and FR weapons conpendiums
+- Alternative Damage trait will upgrade alternative damage unarmed weapons
+- In Enhanced Combat, alternate damage will apply directly to relevant attribute.
+- getting close to, or reaching corruption thresholds creates warning in chat (public chat if PC, GM-only chat if NPC)
+- Traits integrated in Enhanced combat: corrupting attack, colossal.
+- Steadfast Adept now works on entangling vines and Anathema
+- Damage of Massive weapons wielded by NPCs is now correctly calculated in Enhanced combat.
+
+Version 3.0.9
+- New backgrounds provided by AshesForAshe (AshesForAshe#6498)
+- Many improvements on the character sheets (main page weapons & armors)
+- Monster character sheet can now show +/- instead of values (configurable under options)
+- New configuration settings dialogue for sheet, title backgrounds and editable/non-editable fields (textures or colours).
+-    These are client based setting so can be adjusted by each user.  
+
+Version 3.0.10
+- corrected issues with the sheet configuration dialogue for new worlds and users. 
+
+Version 3.1.0
+- Bumped version number to solve an issue with the modules import version checking.
+
+Version 3.1.1
+- Chat result text of resisted rolls are now written from player's perspective.
+- Added message for jointed weapons secondary attack in EC.
+- corrected bug when a power or attack was used from the character sheet, while a different token was selected on the screen.
+- Steadfast now correctly works against poison
+- Black bolt now add the "paralysis" status icon to the target
+- Larvaeboils chat now correctly prints the roll
+- Corrected issue #250: bug when some abilities were affected to a character without novice level checked but still had effect
+- Corrected issue #254 : Backstab (master) now implemented
+- Corrected issue #251 : Man-at-Arms (Adept) now modify only impeding for defense and abilities based on quick (and not for using mystic powers)
+- Implemented "Armored Mystic" ability, "Poisoner" ability, "Poisonous" Trait.
+- When quick is used as the resisting attribute (Brimstone cascade...), impeding armor is now correctly included
+- Precise weapon in EC combat: modifier now appear more clearly in dialog window
+- Resist chat button option
+- Code Simplification and debuging

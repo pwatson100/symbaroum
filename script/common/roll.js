@@ -27,7 +27,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
 		modifier++;
   }
   
-  let rollResults = await baseRoll(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier);
+  let rollResults = await baseRoll(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier, false);
   
   if (hasArmor && !rollResults.hasSucceed) {
     if (armor.protectionPc !== '') {
@@ -64,7 +64,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
       weaponResults.value = weaponRoll.total;
       weaponResults.name = weapon.name; 
       weaponResults.diceBreakdown = tooltip;
-      console.log(tooltip);
+
       weaponResults.img = weapon.img;
     }
   }
@@ -169,6 +169,20 @@ export function getAttributeValue(actor, attributeName) {
   }
 }
 
+/* Get the Players owning an actor, that is not a GM and that is connected */
+export async function getOwnerPlayer(actor){
+    let permissions = Object.entries(actor.data.permission);
+    let ownerIds = permissions.reduce((idValue, e) => {
+        if(e[1] === CONST.ENTITY_PERMISSIONS.OWNER) {
+            idValue.push(e[0]);
+        }
+        return idValue
+    },[])
+    let owningPlayers = game.users.filter(user => user.active && !user.isGM && ownerIds.includes(user.data._id));
+    console.log(owningPlayers);
+    return(owningPlayers)
+}
+
 /*Base roll, to be use for self rolls, resisted rolls, attack rolls, defense rolls...
 * @param {actor object} actor is the actor that do the roll (usually a PC)
 * @param {string} actingAttribute is the name of the attribute used for action, and can also be "defense"
@@ -193,14 +207,18 @@ export function getAttributeValue(actor, attributeName) {
   {string}  diceBreakdown, //HTML formatted string
   {boolean}  critSuccess,
   {boolean}  critFail, */
-export async function baseRoll(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier) {
+export async function baseRoll(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier = 0, resistRoll = false) {
+  if(resistRoll){return(await doBaseRoll(targetActor, targetAttributeName, actor, actingAttributeName, -1*favour, -1*modifier, resistRoll))}
+  else{return(await doBaseRoll(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier, resistRoll))}
+}
+
+async function doBaseRoll(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier, resistRoll){
   let d20str = "1d20";
   let hasSucceed = false;
+  let trueActorSucceeded = resistRoll;
   let critGood = false;
   let critBad = false;
   let diceBreakdown = "";
-  if(modifier == null){modifier = 0};
-  
 	if(favour > 0) d20str="2d20kl";
 	else if(favour < 0) d20str="2d20kh";
   
@@ -237,19 +255,20 @@ export async function baseRoll(actor, actingAttributeName, targetActor, targetAt
 
   if(attributeRoll.total <= diceTarget){
     hasSucceed = true;
+    trueActorSucceeded = !resistRoll;
   }
    
   // Check option - always succeed on 1, always fail on 20
 	if(game.settings.get('symbaroum', 'optionalCrit') || game.settings.get('symbaroum', 'optionalRareCrit') ) {     
     if( attributeRoll.total === 1 || attributeRoll.total === 20 ) {
       if( game.settings.get('symbaroum', 'optionalCrit') ) {
-          critBad = attributeRoll.total === 20;
+          critBad = attributeRoll.total === 20 && !resistRoll;
           critGood = !critBad;
       }    
       if( game.settings.get('symbaroum', 'optionalRareCrit') ) {
         let secondRoll = new Roll("1d20").evaluate();        
-        critGood = critGood && secondRoll.total <= diceTarget;
-        critBad = critBad && secondRoll.total > diceTarget;
+        critGood = (critGood && secondRoll.total <= diceTarget && !resistRoll) || (critGood && secondRoll.total > diceTarget && resistRoll);
+        critBad = (critBad && secondRoll.total > diceTarget && !resistRoll) || (critGood && secondRoll.total <= diceTarget && resistRoll);
         diceBreakdown = `${diceBreakdown} &amp; <span class="${critGood?"critical":critBad?"fumble":"normal"}">${secondRoll.results}</span>`;
       }
     }
@@ -260,6 +279,7 @@ export async function baseRoll(actor, actingAttributeName, targetActor, targetAt
     actingAttributeLabel: actingAttributeLabel,
     resistAttributeValue: resistAttributeValue,
     targetAttributeLabel: targetAttributeLabel,
+    trueActorSucceeded: trueActorSucceeded,
     hasSucceed: hasSucceed,
     diceTarget: diceTarget,
     diceResult: attributeRoll.total,
@@ -295,19 +315,36 @@ To apply temporary corruption on the token
 }
 */
 export async function createModifyTokenChatButton(actionsDataArray){
+  game.symbaroum.emit(
+    { 
+      type: "GMMessage",
+      data: actionsDataArray
+    });
+}
 
-  const html = await renderTemplate("systems/symbaroum/template/chat/applyEffectsButton.html");
-  let gmList =  ChatMessage.getWhisperRecipients('GM');
-  if(gmList.length > 0){
-    const chatData = {
-        user: game.user.id,
-        content: html,
-        whisper: gmList,
-        blind: true
-    }
-    let NewMessage = await ChatMessage.create(chatData);
-    await NewMessage.setFlag(game.system.id, 'abilityRoll', actionsDataArray);
-  }
+export async function createResistRollChatButton(functionStuff){
+  //inform the GM
+  const html = await renderTemplate("systems/symbaroum/template/chat/chatInfoMessage.html", {
+    infoText: functionStuff.targetUserName + game.i18n.localize("CHAT.GM_INFO_RESIST")
+  });
+  const chatData = {
+      speaker: ChatMessage.getSpeaker({alias:game.i18n.localize("DIALOG.SYSTEM_MESSAGE")}),
+      whisper: [game.user],
+      content: html
+  };
+  ChatMessage.create(chatData);
+  //send data message to the player session
+  console.log("toto");
+  const emitData = Object.assign({}, functionStuff);
+  emitData.mainText= functionStuff.targetData.name + game.i18n.localize("CHAT.RESIST_TEXT_BUTTON") + getAttributeLabel(functionStuff.targetData.actor, functionStuff.targetData.resistAttributeName);
+  emitData.actor = null;
+  emitData.token = null;
+  emitData.targetData.token = null;
+  emitData.targetData.actor = null;
+  game.symbaroum.emit({ 
+      type: "ResistRoll",
+      data: emitData
+    });
 }
 
 /*formatDice produces a string of any rolls with any ignored dice within a css class of .strike
@@ -384,14 +421,11 @@ export async function damageRollWithDiceParams(functionStuff, critSuccess, attac
     }
   
   if(dmgData.hasAdvantage){
+    damageModFormula += " + 1d4"+game.i18n.localize("COMBAT.CHAT_DMG_PARAMS_ADVANTAGE");
+    damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_ADVANTAGE');
     if(dmgData.useBackstab && !attackNumber){
-      damageModFormula += " + 2d4["+game.i18n.localize("ABILITY_LABEL.BACKSTAB")+"]";
+      damageModFormula += functionStuff.backstabDmg;
       damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_BACKSTAB');
-    }
-    else
-    {
-      damageModFormula += " + 1d4"+game.i18n.localize("COMBAT.CHAT_DMG_PARAMS_ADVANTAGE");
-      damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_ADVANTAGE');
     }
   }
   if(functionStuff.beastLoreData.useBeastlore){
@@ -435,7 +469,7 @@ export async function damageRollWithDiceParams(functionStuff, critSuccess, attac
     damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_IGN_ARMOR');
   }
     // If the attack is made by a PC, roll damage and substract static value for armor (=max armor/2)
-    if(functionStuff.attackFromPC){  
+    if(functionStuff.attackFromPC || functionStuff.targetData.actor.type === "monster"){  
       //build roll string
       newRollDmgString = functionStuff.weapon.damage.pc;
       if(damageModFormula != ""){
@@ -457,11 +491,15 @@ export async function damageRollWithDiceParams(functionStuff, critSuccess, attac
         newRollDmgString += "+"+ weaponModDmgValue.toString(); 
       }
       if(!dmgData.ignoreArm && functionStuff.targetData.actor.data.data.combat.protectionPc != 0){
-        newRollDmgString += " - (" + functionStuff.targetData.actor.data.data.combat.protectionPc + ")";
+        if(functionStuff.weapon.damage.damageFavour){
+          newRollDmgString += " - (" + functionStuff.targetData.actor.data.data.combat.unfavourPcProt + ")";
+        }
+        else newRollDmgString += " - (" + functionStuff.targetData.actor.data.data.combat.protectionPc + ")";
       }
       else newRollDmgString += " - 0";
     }
     // final damage
+    // console.log(newRollDmgString);
     let dmgRoll= new Roll(newRollDmgString).evaluate();
 
     return{
@@ -489,7 +527,7 @@ export async function simpleDamageRoll(functionStuff, damageFormula){
   }
   // If the attack is made by a PC, roll damage and substract static value for armor (=max armor/2)
   let newRollDmgString = "";
-  if(functionStuff.attackFromPC){
+  if(functionStuff.attackFromPC || functionStuff.targetData.actor.type === "monster"){
     newRollDmgString = damageFormula;
     //build roll string
     if(!functionStuff.dmgData.ignoreArm){

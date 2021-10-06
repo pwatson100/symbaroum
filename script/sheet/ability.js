@@ -20,6 +20,7 @@ export class AbilitySheet extends SymbaroumItemSheet {
 
     getData() {
         const data = super.getData();
+        data.isOwned = this.item.isOwned;
         return data;
     }
 

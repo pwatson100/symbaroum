@@ -195,13 +195,8 @@
       },
       "artifact": {
         "isArtifact" : false,
-        "power": [
-          {"name": "", "description": "", "action": "", "corruption": ""},
-          {"name": "", "description": "", "action": "", "corruption": ""},
-          {"name": "", "description": "", "action": "", "corruption": ""},
-          {"name": "", "description": "", "action": "", "corruption": ""},
-          {"name": "", "description": "", "action": "", "corruption": ""}
-        ]
+        "power": {
+        }
       }
     },
     "trait": {
@@ -224,7 +219,8 @@
         "isActive": false,
         "action": "",
         "description": ""
-      }
+      },
+      "marker": false
     },
     "ability": {
       "templates": [
@@ -304,6 +300,7 @@
       "reference": "1handed",
       "baseDamage": "1d8",
       "bonusDamage": "",
+      "alternativeDamage": "none",
       "qualities": {
         "bastard": false,
         "returning": false,

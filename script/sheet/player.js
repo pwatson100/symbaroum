@@ -32,7 +32,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
         html.find(".roll-attribute").click(async ev => await this._prepareRollAttribute(ev));
         html.find(".roll-armor").click(async ev => await this._prepareRollArmor(ev));
         html.find(".roll-weapon").click(async ev => await this._prepareRollWeapon(ev));
-        html.find(".modify-attribute").click(async ev => await this._modifyAttributes(ev));
+        html.find(".modify-attributes").click(async ev => await this._modifyAttributes(ev));
     }
 
     _getHeaderButtons() {
