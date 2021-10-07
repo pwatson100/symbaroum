@@ -96,7 +96,7 @@ export class SymbaroumActor extends Actor {
         // for (let item of Object.values(items)) {
         for( const [key, item] of items.entries() ) {
             item.prepareData();
-            if((item.data.isAbility||item.data.isPower||item.data.isTrait) && !item.data.data?.script) markScripted(item);
+            if((item.data.isAbility||item.data.isMysticalPower||item.data.isTrait) && !item.data.data?.script) markScripted(item);
             if (item.data.isPower) this._computePower(this.data, item.data);
             if (item.data.isGear) this._computeGear(this.data, item.data);
         }

@@ -425,6 +425,8 @@ const weaponReferences = [
 }
 
 export function markScripted(item){
+    item.data.data.script = undefined;
+    item.data.data.hasScript = false;
     if(item.data.data.reference){
         let list;
         if(item.data.type === "ability"){
@@ -436,19 +438,14 @@ export function markScripted(item){
         else if(item.data.type === "trait"){
             list = scriptedTraits;
         }
+        else{
+            return;
+        }
         const ability = list.find(element => (element.reference === item.data.data.reference));
         if(ability){
             item.data.data.script = ability.function;
             item.data.data.hasScript = true;
         }
-        else {
-            item.data.data.script = undefined;
-            item.data.data.hasScript = false;
-        }
-    }
-    else{
-        item.data.data.script = undefined;
-        item.data.data.hasScript = false;
     }
 }
 
