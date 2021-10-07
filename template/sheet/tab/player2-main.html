@@ -25,8 +25,8 @@
                         <div class="health-toughnesscol foreground">
                             <h1>{{localize "HEALTH.TOUGHNESS"}}</h1>
                             <div class="toughness-current" title="{{localize "TOOLTIP.HEALTH.TOUGHNESS_CURRENT"}}">
-                                <label for="{{actor._id}}-data.health.toughness.value">{{localize "HEALTH.TOUGHNESS_CURRENT"}}</label>
-                                <input id="{{actor._id}}-data.health.toughness.value" name="data.health.toughness.value" type="number" value="{{data.health.toughness.value}}" data-dtype="Number" />
+                                <label for="{{id}}-data.health.toughness.value">{{localize "HEALTH.TOUGHNESS_CURRENT"}}</label>
+                                <input id="{{id}}-data.health.toughness.value" name="data.health.toughness.value" type="number" value="{{data.health.toughness.value}}" data-dtype="Number" />
                             </div>
                             <div class="toughness-total" title="{{localize "TOOLTIP.HEALTH.TOUGHNESS_TOTAL"}}">
                                 <label>{{localize "HEALTH.TOUGHNESS_TOTAL"}}</label>
@@ -64,18 +64,18 @@
                                     {{/if}}
                                 </div>
                                 <div class="corruption-temporary" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_TEMPORARY"}}">
-                                    <label for="{{actor._id}}-data.health.corruption.temporary">{{localize "HEALTH.CORRUPTION_TEMPORARY"}}</label>
-                                    <input id="{{actor._id}}-data.health.corruption.temporary" name="data.health.corruption.temporary" type="number" value="{{data.health.corruption.temporary}}" data-dtype="Number" {{#if actor.isThoroughlyCorrupt}}disabled{{/if}}/>
+                                    <label for="{{id}}-data.health.corruption.temporary">{{localize "HEALTH.CORRUPTION_TEMPORARY"}}</label>
+                                    <input id="{{id}}-data.health.corruption.temporary" name="data.health.corruption.temporary" type="number" value="{{data.health.corruption.temporary}}" data-dtype="Number" {{#if actor.isThoroughlyCorrupt}}disabled{{/if}}/>
                                 </div>
                                 <div class="corruption-longterm" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_LONGTERM"}}">
-                                    <label for="{{actor._id}}-data.health.corruption.longterm">{{localize "HEALTH.CORRUPTION_LONGTERM"}}</label>
-                                    <input type="number" id="{{actor._id}}-data.health.corruption.longterm" name="data.health.corruption.longterm" value="{{data.health.corruption.longterm}}" data-dtype="Number" {{#if actor.isThoroughlyCorrupt}}disabled{{/if}}/>
+                                    <label for="{{id}}-data.health.corruption.longterm">{{localize "HEALTH.CORRUPTION_LONGTERM"}}</label>
+                                    <input type="number" id="{{id}}-data.health.corruption.longterm" name="data.health.corruption.longterm" value="{{data.health.corruption.longterm}}" data-dtype="Number" {{#if actor.isThoroughlyCorrupt}}disabled{{/if}}/>
                                 </div>
                             </div> <!-- end of col 1 -->
                             <div class="corruption-col2">
                                 <div class="corruption-permanent" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_PERMANENT"}}">
-                                    <label for="{{actor._id}}-data.health.corruption.permanent">{{localize "HEALTH.CORRUPTION_PERMANENT"}}</label>
-                                    <input id="{{actor._id}}-data.health.corruption.permanent" name="data.health.corruption.permanent" type="number" value="{{data.health.corruption.permanent}}" data-dtype="Number" {{#if actor.isThoroughlyCorrupt}}disabled{{/if}}/>
+                                    <label for="{{id}}-data.health.corruption.permanent">{{localize "HEALTH.CORRUPTION_PERMANENT"}}</label>
+                                    <input id="{{id}}-data.health.corruption.permanent" name="data.health.corruption.permanent" type="number" value="{{data.health.corruption.permanent}}" data-dtype="Number" {{#if actor.isThoroughlyCorrupt}}disabled{{/if}}/>
                                 </div>
                                 <div class="corruption-threshold">
                                     <label title="{{localize "TOOLTIP.HEALTH.CORRUPTION_THRESHOLD"}}">{{localize "HEALTH.CORRUPTION_THRESHOLD"}}</label>
@@ -116,8 +116,8 @@
                     {{#ifSetting "manualInitValue"}}
                     <div class="stat-modifiers">
                         <div class="initiative" title="{{localize "TOOLTIP.COMBAT.INITIATIVE"}}">
-                            <label for="{{actor._id}}-data.initiative.attribute">{{localize "INITIATIVE.TITLE"}}</label>
-                            <select id="{{actor._id}}-data.initiative.attribute" name="data.initiative.attribute" class="attribute">
+                            <label for="{{id}}-data.initiative.attribute">{{localize "INITIATIVE.TITLE"}}</label>
+                            <select id="{{id}}-data.initiative.attribute" name="data.initiative.attribute" class="attribute">
                                 {{#select data.initiative.attribute}}
                                     <option value="quick">{{localize "ATTRIBUTE.QUICK"}}</option>
                                     <option value="accurate">{{localize "ATTRIBUTE.ACCURATE"}}</option>
@@ -215,7 +215,7 @@
                         </div>
                         <div class="actions" title="{{localize "TOOLTIP.POWER_ACTIONS"}}">{{item.data.data.actions}}</div>
                         <div class="button">
-                            <a class="item-control item-delete" title="Delete Trait"><i class="fas fa-trash"></i></a>
+                            <a class="item-control item-delete" title="{{localize "TOOLTIP.DELETE_ABILITY"}}"><i class="fas fa-trash"></i></a>
                         </div>
                     </div>
                 {{/if}}

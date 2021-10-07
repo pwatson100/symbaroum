@@ -13,8 +13,16 @@ export class SymbaroumActor extends Actor {
         this._initializeData(this.data);
         // console.log("Init data - complete");
         this.data.numRituals = 0;
-        // console.log("Compute items");    
-        this._computeItems(this.data.items);
+        // console.log("Compute items");
+        console.log("original items",this.data.items);
+        let items = this.data.items.contents.sort( (a, b) => {
+            if(a.data.type == b.data.type) {
+                return a.data.name == b.data.name ? 0 : a.data.name < b.data.name ? -1:1;
+            } else {                
+                return  (game.symbaroum.config.itemSortOrder.indexOf(a.data.type) - game.symbaroum.config.itemSortOrder.indexOf(b.data.type));
+            }
+        });
+        this._computeItems(items);
         // console.log("Compute items - complete");
         // console.log("Compute _computeSecondaryAttributes");
         this._computeSecondaryAttributes(this.data);
@@ -31,6 +39,8 @@ export class SymbaroumActor extends Actor {
                 baseProtection: "0",
                 bonusProtection: "",
                 impeding: 0,
+                impedingMov: 0,
+                impedingMagic: 0,
                 qualities: {
                     flexible: false,
                     cumbersome: false,
@@ -86,7 +96,7 @@ export class SymbaroumActor extends Actor {
         // for (let item of Object.values(items)) {
         for( const [key, item] of items.entries() ) {
             item.prepareData();
-            if((item.data.isAbility||item.data.isPower||item.data.isTrait) && !item.data.data?.script) markScripted(item);
+            if((item.data.isAbility||item.data.isMysticalPower||item.data.isTrait) && !item.data.data?.script) markScripted(item);
             if (item.data.isPower) this._computePower(this.data, item.data);
             if (item.data.isGear) this._computeGear(this.data, item.data);
         }
@@ -118,14 +128,11 @@ export class SymbaroumActor extends Actor {
         if(sturdy.length != 0){
             let sturdyLvl = getPowerLevel(sturdy[0]).level;
             if(sturdyLvl == 1) data.data.health.toughness.max = Math.ceil(strong*(1.5)) + data.data.bonus.toughness.max;
-            else data.data.health.toughness.max = strong*(sturdyLvl) + data.data.bonus.toughness.max;
+            else if(sturdyLvl > 1) data.data.health.toughness.max = strong*(sturdyLvl) + data.data.bonus.toughness.max;
         }
         else data.data.health.toughness.max = (strong > 10 ? strong : 10) + data.data.bonus.toughness.max;
         let featSt = this.data.items.filter(item => item.data.data.reference === "featofstrength");
-        if(featSt.length != 0){
-            let featStLvl = getPowerLevel(featSt[0]).level;
-            if(featStLvl > 0) data.data.health.toughness.max += 5;
-        }
+        if(featSt.length != 0 && featSt[0].data.data.novice.isActive) data.data.health.toughness.max += 5;
 
         let noPain = this.data.items.filter(element => element.data.data.reference === "nopainthreshold");
         data.hasNoPainThreshold = noPain.length > 0;
@@ -144,8 +151,7 @@ export class SymbaroumActor extends Actor {
             
             let strongGift = this.data.items.filter(item => item.data.data.reference === "stronggift");
             if(strongGift.length != 0){
-                let strongGiftLvl = getPowerLevel(strongGift[0]).level;
-                if(strongGiftLvl > 1) resolute = resolute*2;
+                if(strongGift[0].data.data.adept.isActive) resolute = resolute*2;
             }
             data.data.health.corruption.threshold = Math.ceil(resolute / 2) + data.data.bonus.corruption.threshold;
             data.data.health.corruption.max = resolute + data.data.bonus.corruption.max;
@@ -160,7 +166,7 @@ export class SymbaroumActor extends Actor {
         let activeArmor = this._getActiveArmor(data, extraArmorBonus);
         let defense = this._getDefenseValue(data, activeArmor);
         let damageProt = this._getDamageProtection();
-        let totDefense = defense.attDefValue - activeArmor.impeding + data.data.bonus.defense;        
+        let totDefense = defense.attDefValue - activeArmor.impedingMov + data.data.bonus.defense;        
 
         data.data.combat = {
             id: activeArmor.id,
@@ -170,6 +176,8 @@ export class SymbaroumActor extends Actor {
             protectionNpc: activeArmor.npc,
             unfavourPcProt: activeArmor.unfavourPcProt,
             impeding: activeArmor.impeding,
+            impedingMov: activeArmor.impedingMov,
+            impedingMagic: activeArmor.impedingMagic,
             tooltipProt: activeArmor.tooltip,
             defense: totDefense,
             defenseAttribute: {
@@ -194,7 +202,7 @@ export class SymbaroumActor extends Actor {
 
         let rrAbility = this.items.filter(item => item.data.data.reference === "rapidreflexes");
         if(rrAbility.length != 0){
-            if(getPowerLevel(rrAbility[0]).level > 2) data.data.initiative.value += 20
+            if(rrAbility[0].data.data.master.isActive) data.data.initiative.value += 20
         }
     }
 
@@ -334,7 +342,7 @@ export class SymbaroumActor extends Actor {
                     }
                 }
                 if(flagDancing){
-                    let resoluteMod = checkResoluteModifiers(this, "", true, false);
+                    let resoluteMod = checkResoluteModifiers(this, "");
                     attribute = resoluteMod.bestAttributeName;
                     tooltip += game.i18n.localize("POWER_LABEL.DANCING_WEAPON") + ", ";
                 }
@@ -391,8 +399,7 @@ export class SymbaroumActor extends Actor {
                             attribute = "strong";
                             let featSt = this.data.items.filter(item => item.data.data.reference === "featofstrength");
                             if((featSt.length != 0) && (this.data.data.health.toughness.value < (this.data.data.health.toughness.max/2))){
-                                let featStLvl = getPowerLevel(featSt[0]).level;
-                                if(featStLvl > 2) {
+                                if(featSt[0].data.data.master.isActive){
                                     bonusDamage += " +1d4["+game.i18n.localize("ABILITY_LABEL.FEAT_STRENGTH")+"]";
                                     shortBonusDamage += " +1d4";
                                     tooltip += game.i18n.localize("ABILITY_LABEL.FEAT_STRENGTH") + ", ";
@@ -537,6 +544,8 @@ export class SymbaroumActor extends Actor {
             protection = "0";
         }
         let impeding = item.data.data.impeding;
+        let impedingMov=impeding;
+        let impedingMagic=impeding;
         let bonusProtection = "";
         if(item.data.data.bonusProtection !== undefined && item.data.data.bonusProtection != ""){
             let plus = "+";
@@ -547,6 +556,20 @@ export class SymbaroumActor extends Actor {
         }
         if(protection != "0" || bonusProtection == "")
         {
+            let armoredmystic = this.items.filter(element => element.data.data?.reference === "armoredmystic");
+            if(armoredmystic.length > 0){
+                let powerLvl = getPowerLevel(armoredmystic[0]);
+                if(powerLvl.level>0 && ["1d4", "1d6"].includes(protection)){
+                    impedingMagic = 0;
+                }
+                if(powerLvl.level>1 && protection === "1d8"){
+                    impedingMagic = 0;
+                }
+                if(powerLvl.level>2){
+                    bonusProtection += "+1d4";
+                    tooltip += game.i18n.localize("ABILITY_LABEL.ARMORED_MYSTIC") + ", ";
+                }
+            }
             let manatarms = this.items.filter(element => element.data.data?.reference === "manatarms");
             if(manatarms.length > 0){
                 let powerLvl = getPowerLevel(manatarms[0]);
@@ -554,7 +577,7 @@ export class SymbaroumActor extends Actor {
                 protection = newprot;
                 tooltip += game.i18n.localize("ABILITY_LABEL.MAN-AT-ARMS") + ", ";
                 if(powerLvl.level > 1){
-                    impeding = 0;
+                    impedingMov = 0;
                 }
             }
             let naturalarmor = this.items.filter(element => element.data.data?.reference === "armored");
@@ -626,6 +649,8 @@ export class SymbaroumActor extends Actor {
             unfavourPcProt: unfavourPcProt,
             tooltip: tooltip,
             impeding: impeding,
+            impedingMov: impedingMov,
+            impedingMagic: impedingMagic,
             isActive: item.data.isActive,
             isEquipped: item.data.isEquipped, 
             img: item.img} );
@@ -661,7 +686,7 @@ export class SymbaroumActor extends Actor {
 
         let flagDancing = this.getFlag(game.system.id, 'dancingweapon');
         if(flagDancing){
-            let resoluteMod = checkResoluteModifiers(this, "", true, false);
+            let resoluteMod = checkResoluteModifiers(this, "");
             attributeDef = resoluteMod.bestAttributeName;
             attDefValue = data.data.attributes[attributeDef].total;
         }
@@ -675,7 +700,7 @@ export class SymbaroumActor extends Actor {
             attDefValue = 5;
             defMsg = `${game.i18n.localize("ABILITY_LABEL.BERSERKER")} 5`;
         }
-        defMsg += `<br/>${game.i18n.localize("ARMOR.IMPEDING")}(${-1 * activeArmor.impeding})<br/>${data.data.bonus.defense_msg}`;
+        defMsg += `<br/>${game.i18n.localize("ARMOR.IMPEDINGLONG")}(${-1 * activeArmor.impedingMov})<br/>${data.data.bonus.defense_msg}`;
         let robust = this.data.items.filter(element => element.data.data?.reference === "robust");
         if(robust.length > 0){
             let powerLvl = getPowerLevel(robust[0]);
@@ -783,6 +808,13 @@ export class SymbaroumActor extends Actor {
         let wearArmor;
         data.data.armors = [];
         let armorList = this.data.items.filter(element => element.data.isArmor);
+        armorList = Array.from(armorList.values()).sort( (a, b) => {
+            if(a.data.type == b.data.type) {
+                return a.data.name == b.data.name ? 0 : a.data.name < b.data.name ? -1:1;
+            } else {                
+                return  (game.symbaroum.config.itemSortOrder.indexOf(a.data.type) - game.symbaroum.config.itemSortOrder.indexOf(b.data.type));
+            }
+        });
         // for( const [key, armor] of this.data.items.entries() ) {
         for(let armor of armorList){
 
@@ -848,6 +880,14 @@ export class SymbaroumActor extends Actor {
     }
     _getWeapons(data) {
         let weaponArray = this.data.items.filter(element => element.data.isWeapon);
+        weaponArray = Array.from(weaponArray.values()).sort( (a, b) => {
+            if(a.data.type == b.data.type) {
+                return a.data.name == b.data.name ? 0 : a.data.name < b.data.name ? -1:1;
+            } else {                
+                return  (game.symbaroum.config.itemSortOrder.indexOf(a.data.type) - game.symbaroum.config.itemSortOrder.indexOf(b.data.type));
+            }
+        });
+        
         return(weaponArray)
     }
 
