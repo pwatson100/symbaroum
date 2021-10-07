@@ -630,6 +630,7 @@ async function buildFunctionStuffDefault(ability, actor) {
         resultTextFail: selectedToken.data.name + game.i18n.localize('POWER.CHAT_FAILURE'),
         resistRollText: "",
         hasDamage: false, // for damage dealing powers
+        isAlternativeDamage: false,
         dmgData: {
             modifier: "",
             hasAdvantage: false,
@@ -832,7 +833,7 @@ function getEffect(token, effect){
 }
 
 function checkPainEffect(functionStuff, damage){
-    if(functionStuff.targetData.actor.data.data.health.toughness.threshold && (damage.roll.total > functionStuff.targetData.actor.data.data.health.toughness.threshold))
+    if(!functionStuff.isAlternativeDamage && functionStuff.targetData.actor.data.data.health.toughness.threshold && (damage.roll.total > functionStuff.targetData.actor.data.data.health.toughness.threshold))
     {
         return(true);
     }
@@ -1510,7 +1511,7 @@ async function attackResult(rollData, functionStuff){
     let corruptionTooltip="";
     let targetValue = functionStuff.targetData.actor.data.data.health.toughness.value;
     if(functionStuff.isAlternativeDamage){
-        targetValue = getAttributeValue(functionStuff.actor, functionStuff.alternativeDamageAttribute);
+        targetValue = getAttributeValue(functionStuff.targetData.actor, functionStuff.alternativeDamageAttribute);
     }
 
     for(let rollDataElement of rollData){
@@ -1803,9 +1804,6 @@ async function poisonCalc(functionStuff, poisonRoll){
 
 async function standardPowerResult(rollData, functionStuff){
     switch (functionStuff.ability.data.reference){
-        case "tormentingspirits":
-            tormentingspiritsResult(rollData, functionStuff);
-            return;
         case "strangler":
             stranglerResult(rollData, functionStuff);
             return;
@@ -1965,7 +1963,7 @@ async function standardPowerResult(rollData, functionStuff){
     if(doDamage){
         let targetValue = functionStuff.targetData.actor.data.data.health.toughness.value;
         if(functionStuff.isAlternativeDamage){
-            targetValue = getAttributeValue(functionStuff.actor, functionStuff.alternativeDamageAttribute);
+            targetValue = getAttributeValue(functionStuff.targetData.actor, functionStuff.alternativeDamageAttribute);
         }
         let damage = await simpleDamageRoll(functionStuff, damageDice);
         damageTot = damage.roll.total;
@@ -1974,6 +1972,11 @@ async function standardPowerResult(rollData, functionStuff){
         dmgFormula = game.i18n.localize('WEAPON.DAMAGE') + ": " + damage.roll._formula;
         damageText = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
         damageTooltip = new Handlebars.SafeString(await damage.roll.getTooltip());
+
+        if(functionStuff.isAlternativeDamage){
+            dmgFormula +=  " ("+getAttributeLabel(functionStuff.targetData.actor, functionStuff.alternativeDamageAttribute)+")";
+            damageText +=  " ("+getAttributeLabel(functionStuff.targetData.actor, functionStuff.alternativeDamageAttribute)+")";
+        }
         if(damageTot <= 0){
             damageTot = 0;
             damageText = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_NUL');
@@ -2735,121 +2738,27 @@ async function tormentingspiritsPrepare(ability, actor) {
         return;
     }
     let specificStuff = {
+        notResisted: true,
+        isAlternativeDamage: true,
+        alternativeDamageAttribute: "resolute",
         targetMandatory: true,
         checkMaintain: true,
         targetData: targetData,
         tradition: ["witchcraft"],
+        introText: fsDefault.tokenName + game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_INTRO'),
+        introTextMaintain: fsDefault.tokenName + game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_INTRO_M'),
+        resultTextSuccess: fsDefault.tokenName + game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_SUCCESS') + targetData.name,
+        resultTextFail: fsDefault.tokenName + game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_FAILURE'),
+        activelyMaintaninedTargetEffect: ["systems/symbaroum/asset/image/ghost.svg"],
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
+
+    if(functionStuff.powerLvl.level >1){
+        functionStuff.hasDamage= true;
+        functionStuff.damageDice= "1d"+(2*functionStuff.powerLvl.level).toString();
+        functionStuff.dmgData.ignoreArm=true;
+    }
     await modifierDialog(functionStuff)
-}
-
-async function tormentingspiritsResult(rollData, functionStuff){
-    let flagDataArray = [];
-    let haveCorruption = false;
-    let corruptionText = "";
-    let corruption;
-    let introText = "";
-    let resultText;
-    let finalText = "";
-    let hasRoll = true;
-    let finalDamage = 0;
-
-    if(functionStuff.isMaintained){
-        introText = functionStuff.actor.data.name + game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_INTRO_M');
-    }
-    else{
-        introText = functionStuff.actor.data.name + game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_INTRO');
-        if(functionStuff.corruption){
-            haveCorruption = true;
-            corruption = await getCorruption(functionStuff);
-            corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
-            checkCorruptionThreshold(functionStuff.actor, corruption.value);
-            flagDataArray.push({
-                tokenId: functionStuff.token.id,
-                corruptionChange: corruption.value
-            });
-        }
-    }
-    if(rollData[0].trueActorSucceeded){
-        if(functionStuff.powerLvl.level > 1){
-            //PC roll damage, NPCs do fixed damage = maximumdice/2
-            let effectDamage;
-            if(functionStuff.powerLvl.level == 2){
-                effectDamage = "1d4";
-            }
-            else {
-                effectDamage = "1d6";
-            }
-            if(functionStuff.attackFromPC || functionStuff.targetData.actor.type === "monster"){
-                let damageRoll = new Roll(effectDamage).evaluate();
-                finalDamage = damageRoll.total;
-            }
-            else{
-                let damageRoll= new Roll(effectDamage).evaluate({maximize: true});
-                finalDamage = Math.ceil(damageRoll.total/2);
-            }
-            finalText =  game.i18n.localize('COMBAT.DAMAGE') +" "+effectDamage+" = " + finalDamage.toString()+" ("+game.i18n.localize('ATTRIBUTE.RESOLUTE')+")" ;
-        }
-        resultText = functionStuff.targetData.name + game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_SUCCESS') + functionStuff.targetData.name;
-    }
-    else{
-        resultText = functionStuff.targetData.name + game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_FAILURE');
-    }
-
-    let templateData = {
-        targetData : functionStuff.targetData,
-        hasTarget : functionStuff.targetData.hasTarget,
-        introText: introText,
-        introImg: functionStuff.actor.data.img,
-        targetText: functionStuff.targetData.targetText,
-        subText: functionStuff.ability.name + " (" + functionStuff.powerLvl.lvlName + ")",
-        subImg: functionStuff.ability.img,
-        hasRoll: hasRoll,
-        resistRoll: functionStuff.resistRoll,
-        resistRollText: functionStuff.resistRollText,
-        rollString: `${rollData[0].actingAttributeLabel} : (${rollData[0].actingAttributeValue})`,
-        rollResult : formatRollResult(rollData),
-        resultText: resultText,
-        finalText: finalText,
-        haveCorruption: haveCorruption,
-        corruptionText: corruptionText
-    }
-    if(functionStuff.autoParams != ""){templateData.subText += ", " + functionStuff.autoParams};
-    if(functionStuff.targetData.autoParams != ""){templateData.targetText += ", " + functionStuff.targetData.autoParams};
-
-
-    const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
-    const chatData = {
-        user: game.user.id,
-        content: html,
-    }
-    ChatMessage.create(chatData);
-    if(rollData[0].trueActorSucceeded){
-        if(functionStuff.powerLvl.level>1){
-            flagDataArray.push({
-                tokenId: functionStuff.targetData.tokenId,
-                attributeChange: finalDamage*-1,
-                attributeName: "resolute"
-            });
-        }
-        if(!functionStuff.isMaintained){
-            flagDataArray.push({
-                tokenId: functionStuff.targetData.tokenId,
-                addEffect: "systems/symbaroum/asset/image/ghost.svg",
-                effectDuration: 1
-            })
-        }
-    }
-    else{
-        if(!functionStuff.isMaintained){
-            flagDataArray.push({
-                tokenId: functionStuff.targetData.tokenId,
-                removeEffect: "systems/symbaroum/asset/image/ghost.svg",
-            })
-        }
-    }
-    await createModifyTokenChatButton(flagDataArray);
 }
 
 async function unnoticeablePrepare(ability, actor) {
