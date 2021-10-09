@@ -1803,12 +1803,6 @@ async function poisonCalc(functionStuff, poisonRoll){
 }
 
 async function standardPowerResult(rollData, functionStuff){
-    switch (functionStuff.ability.data.reference){
-        case "strangler":
-            stranglerResult(rollData, functionStuff);
-            return;
-    }
-
     let flagDataArray = functionStuff.flagDataArray ?? [];
     let haveCorruption = false;
     let corruptionText = "";
@@ -1954,6 +1948,10 @@ async function standardPowerResult(rollData, functionStuff){
         introText = poisonRes.poisonChatIntro;
         resultText = poisonRes.poisonChatResult;
         if(poisonRes.flagData) flagDataArray.push(poisonRes.flagData);
+    }
+
+    if(functionStuff.ability.data.reference === "strangler" && trueActorSucceeded){
+        functionStuff.dmgData.hasAdvantage = false; //to prevent +1d4 damage
     }
 
     if(functionStuff.ability.data.reference === "witchsight" && functionStuff.targetData.hasTarget && trueActorSucceeded){
@@ -2986,22 +2984,12 @@ async function stranglerPrepare(ability, actor) {
 }
 
 async function stranglerPrepared(ability, actor, maintained) {
-    // get target
     let targetData;
-    let specificStuff = {
-        askCastingAttribute: true,
-        checkMaintain: false,
-        contextualDamage: false,
-        castingAttributeName: null,
-        isMaintained: maintained
-    }
     if(maintained){
         try{targetData = getTarget("cunning")} catch(error){      
             ui.notifications.error(error);
             return;
         }
-        specificStuff.askCastingAttribute = false;
-        specificStuff.castingAttributeName = "cunning";
     }
     else{
         try{targetData = getTarget("defense")} catch(error){      
@@ -3009,134 +2997,29 @@ async function stranglerPrepared(ability, actor, maintained) {
             return;
         }
     }
-    specificStuff.targetData = targetData;
     let fsDefault;
     try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
         ui.notifications.error(error);
         return;
     }
+    let specificStuff = {
+        checkMaintain: false,
+        contextualDamage: false,
+        isMaintained: maintained,
+        introText: fsDefault.tokenName + game.i18n.localize('ABILITY_STRANGLER.CHAT_INTRO'),
+        introTextMaintain: fsDefault.tokenName + game.i18n.localize('ABILITY_STRANGLER.CHAT_INTRO_M'),
+        resultTextSuccess: fsDefault.tokenName + game.i18n.localize('ABILITY_STRANGLER.CHAT_SUCCESS'),
+        resultTextFail: targetData.name + game.i18n.localize('ABILITY_STRANGLER.CHAT_FAILURE'),
+        targetData: targetData,
+        activelyMaintaninedTargetEffect: ["systems/symbaroum/asset/image/lasso.png"],
+        hasDamage: true,
+        damageDice: "1d6"
+    }
+    specificStuff.askCastingAttribute = maintained ? false : true;
+    specificStuff.castingAttributeName = maintained ? "cunning" : null;
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
+    functionStuff.dmgData.ignoreArm=true;
     await modifierDialog(functionStuff)
-}
-
-async function stranglerResult(rollData, functionStuff){
-    let resultText = "";
-    let damage;
-    let damageTot = 0;
-    let damageText = "";
-    let damageFinalText = "";
-    let damageRollResult= "";
-    let damageTooltip = "";
-    let flagDataArray = [];
-    let dmgFormula="";
-    let pain = false;
-    let hasDamage = true;
-    
-    let introText = "";
-    if(!functionStuff.isMaintained){
-        introText = functionStuff.actor.data.name + game.i18n.localize('ABILITY_STRANGLER.CHAT_INTRO');
-    }
-    else{
-        introText = functionStuff.actor.data.name + game.i18n.localize('ABILITY_STRANGLER.CHAT_INTRO_M');
-    }
-
-    if(rollData[0].trueActorSucceeded){
-        resultText = functionStuff.actor.data.name + game.i18n.localize('ABILITY_STRANGLER.CHAT_SUCCESS');
-        functionStuff.dmgData.hasAdvantage = false; //to prevent +1d4 damage
-        functionStuff.dmgData.ignoreArm=true;
-        damage = await simpleDamageRoll(functionStuff, "1d6");
-        damageTot = damage.roll.total;
-        pain = checkPainEffect(functionStuff, damage);
-        damageRollResult += await formatRollResult([damage]);
-        dmgFormula = game.i18n.localize('WEAPON.DAMAGE') + ": " + damage.roll._formula;
-        damageTooltip = new Handlebars.SafeString(await damage.roll.getTooltip());
-    
-        if(damageTot <= 0){
-            damageTot = 0;
-            damageText = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_NUL');
-        }
-        else if(damageTot > functionStuff.targetData.actor.data.data.health.toughness.value){
-            damageText = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
-            damageFinalText = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_DYING');
-            flagDataArray.push({
-                tokenId: functionStuff.targetData.tokenId,
-                toughnessChange: damageTot*-1
-            }, {
-                tokenId: functionStuff.targetData.tokenId,
-                addEffect: "icons/svg/skull.svg",
-                overlay:true,
-                effectDuration: 1
-            })
-        }
-        else{
-            damageText = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
-            flagDataArray.push({
-                tokenId: functionStuff.targetData.tokenId,
-                toughnessChange: damageTot*-1
-            })
-            if(pain){
-                damageFinalText = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_PAIN');
-                flagDataArray.push({
-                    tokenId: functionStuff.targetData.tokenId,
-                    addEffect: "icons/svg/falling.svg",
-                    effectDuration: 1
-                })
-            }
-    
-        }
-        if(!functionStuff.isMaintained){
-            flagDataArray.push({
-                tokenId: functionStuff.targetData.tokenId,
-                addEffect: "systems/symbaroum/asset/image/lasso.png",
-                effectDuration: 1
-            })
-        }
-    }
-    else{
-        resultText = functionStuff.targetData.name + game.i18n.localize('ABILITY_STRANGLER.CHAT_FAILURE');
-        hasDamage = false;
-        if(functionStuff.isMaintained){
-            flagDataArray.push({
-                tokenId: functionStuff.targetData.tokenId,
-                removeEffect: "systems/symbaroum/asset/image/lasso.png"
-            })
-        }
-    }
-    if (functionStuff.targetData.autoParams != ""){functionStuff.targetData.targetText += ": " + functionStuff.targetData.autoParams}
-    let templateData = {
-        targetData : functionStuff.targetData,
-        hasTarget : functionStuff.targetData.hasTarget,
-        introText: introText,
-        introImg: functionStuff.actor.data.img,
-        targetText: functionStuff.targetData.targetText,
-        subText: functionStuff.ability.name + " (" + functionStuff.powerLvl.lvlName + ")",
-        subImg: functionStuff.ability.img,
-        hasRoll: true,
-        resistRoll: functionStuff.resistRoll,
-        resistRollText: functionStuff.resistRollText,
-        rollString: await formatRollString(rollData[0], functionStuff.targetData.hasTarget, rollData[0].modifier),
-        rollResult : await formatRollResult(rollData),
-        resultText: resultText,
-        finalText: "",
-        hasDamage: hasDamage,
-        damageText: damageText,
-        damageRollResult: damageRollResult,
-        dmgFormula: dmgFormula,
-        damageRollMod: "",
-        damageTooltip: damageTooltip,
-        damageFinalText: damageFinalText,
-        haveCorruption: false
-    }
-
-    const chathtml = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
-    const chatData = {
-        user: game.user.id,
-        content: chathtml,
-    }
-    let NewMessage = await ChatMessage.create(chatData);
-    if(flagDataArray.length > 0){
-        await createModifyTokenChatButton(flagDataArray);
-    }
 }
 
 async function witchsightPrepare(ability, actor) {
