@@ -2448,6 +2448,7 @@ async function entanglingvinesPrepare(ability, actor) {
         targetData: targetData,
         notResistWhenFirstCast: true,
         hasDamage: fsDefault.powerLvl.level === 3,
+        contextualDamage: fsDefault.powerLvl.level === 3,
         damageDice: "1d6",
         introTextMaintain: targetData.name + game.i18n.localize('POWER_ENTANGLINGVINES.CHAT_INTRO_M'),
         resultTextSuccess: targetData.name + game.i18n.localize('POWER_ENTANGLINGVINES.CHAT_SUCCESS'),
@@ -2753,6 +2754,7 @@ async function tormentingspiritsPrepare(ability, actor) {
 
     if(functionStuff.powerLvl.level >1){
         functionStuff.hasDamage= true;
+        functionStuff.contextualDamage= true;
         functionStuff.damageDice= "1d"+(2*functionStuff.powerLvl.level).toString();
         functionStuff.dmgData.ignoreArm=true;
     }
@@ -3004,7 +3006,7 @@ async function stranglerPrepared(ability, actor, maintained) {
     }
     let specificStuff = {
         checkMaintain: false,
-        contextualDamage: false,
+        contextualDamage: true,
         isMaintained: maintained,
         introText: fsDefault.tokenName + game.i18n.localize('ABILITY_STRANGLER.CHAT_INTRO'),
         introTextMaintain: fsDefault.tokenName + game.i18n.localize('ABILITY_STRANGLER.CHAT_INTRO_M'),
