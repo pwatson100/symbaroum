@@ -155,6 +155,7 @@
     "ARMOR.QUALITY": "Qualité",
     "ARMOR.DESCRIPTION": "Description",
     "ARMOR.BONUS_ONLY": "Protection additionnelle",
+    "ARMOR.DEFENCE_ATTRIBUTE" : "Defend using",
     "ARMOR.ADDBUTTON": "Ajouter une armure",
     "ARMOR.DELETEBUTTON": "Supprimer l'armure",  
 

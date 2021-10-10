@@ -156,7 +156,7 @@
   "ARMOR.QUALITY": "Quality",
   "ARMOR.DESCRIPTION": "Description",
   "ARMOR.BONUS_ONLY": "Stackable protection",
-  "ARMOR.DEFENSE_ATTRIBUTE" : "Defend using",
+  "ARMOR.DEFENCE_ATTRIBUTE" : "Defend using",
   "ARMOR.ADDBUTTON": "Add Armor",
   "ARMOR.DELETEBUTTON": "Delete Armor",
 
