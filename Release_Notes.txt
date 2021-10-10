@@ -195,4 +195,6 @@ Version 3.1.1
 - When quick is used as the resisting attribute (Brimstone cascade...), impeding armor is now correctly included
 - Precise weapon in EC combat: modifier now appear more clearly in dialog window
 - Resist chat button option
-- Code Simplification and debuging
+- corrected bug when using Firefox
+- sorting order of items on sheets
+- Code simplification and debuging
