@@ -178,5 +178,23 @@ Version 3.0.9
 Version 3.0.10
 - corrected issues with the sheet configuration dialogue for new worlds and users. 
 
-Version 3.0.1
+Version 3.1.0
 - Bumped version number to solve an issue with the modules import version checking.
+
+Version 3.1.1
+- Chat result text of resisted rolls are now written from player's perspective.
+- Added message for jointed weapons secondary attack in EC.
+- corrected bug when a power or attack was used from the character sheet, while a different token was selected on the screen.
+- Steadfast now correctly works against poison
+- Black bolt now add the "paralysis" status icon to the target
+- Larvaeboils chat now correctly prints the roll
+- Corrected issue #250: bug when some abilities were affected to a character without novice level checked but still had effect
+- Corrected issue #254 : Backstab (master) now implemented
+- Corrected issue #251 : Man-at-Arms (Adept) now modify only impeding for defense and abilities based on quick (and not for using mystic powers)
+- Implemented "Armored Mystic" ability, "Poisoner" ability, "Poisonous" Trait.
+- When quick is used as the resisting attribute (Brimstone cascade...), impeding armor is now correctly included
+- Precise weapon in EC combat: modifier now appear more clearly in dialog window
+- Resist chat button option
+- corrected bug when using Firefox
+- sorting order of items on sheets
+- Code simplification and debuging

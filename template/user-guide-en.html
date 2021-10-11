@@ -214,9 +214,9 @@
     <p>
         Damage value of the weapon will be increased, and/or defense value. Please note that the extra bonus of Staff fighting when using a wooden staff or a mystic staff isn't included (please add +1 defense in the bonus tab of the relevant weapons).
     </p>
-    <h3><strong>Man-at-arms, Armored, Robust, Survival instinct</strong></h3>
+    <h3><strong>Man-at-arms, Armored, Armored Mystic, Robust, Survival instinct</strong></h3>
     <p>
-        Protection value of the armor will be increased.
+        Protection value of the armor and/or impeding will be modified.
     </p>
     <h3><strong>Colossal, Undead, Spirit form, Swarm</strong></h3>
     <p>
@@ -237,15 +237,15 @@
         <br>
         Power activation is a WIP. <br>
         For now, only those active powers are supported: <br>
-        Anathema,&nbsp;blessed shield, brimstone cascade,&nbsp;bend will,&nbsp;black bolt,&nbsp;confusion,&nbsp;curse,&nbsp;entangling vines,&nbsp;holy aura,&nbsp;inherit wound,&nbsp;larvae boils,&nbsp;lay on hands,&nbsp;levitate,&nbsp;maltransformation,&nbsp;Prios burning glass,&nbsp;tormenting spirits,&nbsp;unnoticeable
+        Anathema,&nbsp;blessed shield, brimstone cascade,&nbsp;bend will,&nbsp;black bolt,&nbsp;confusion,&nbsp;curse,&nbsp;dancing weapon,&nbsp;entangling vines,&nbsp;holy aura,&nbsp;inherit wound,&nbsp;larvae boils,&nbsp;lay on hands,&nbsp;levitate,&nbsp;maltransformation,&nbsp;Prios burning glass,&nbsp;tormenting spirits,&nbsp;unnoticeable
         <br>
         the abilities:
         <br>
-        Alchemy, acrobatics, berserker,&nbsp;dominate,&nbsp;leader,&nbsp;loremaster,&nbsp;medicus,&nbsp;quickdraw,&nbsp;recovery,&nbsp;witchsight.
+        Alchemy,&nbsp;acrobatics,&nbsp;berserker,&nbsp;dominate,&nbsp;leader,&nbsp;loremaster,&nbsp;medicus,&nbsp;poisoner,&nbsp;quickdraw,&nbsp;recovery,&nbsp;witchsight.
         <br>
         the traits:
         <br>
-        Regeneration,&nbsp;Shapeshifter,&nbsp;Wisdom of the ages.
+        Poisonous,&nbsp;Regeneration,&nbsp;Shapeshifter,&nbsp;Wisdom of the ages.
         <br><br>
         When you activate a power, it will take in account the relevant abilities of the character and its target (leader ability, rapid reflexes, steadfast, traditions, impeding armour...).
         It will open a dialog window for the acting player asking a few questions:
@@ -339,7 +339,7 @@
 
     <h2>Enhanced Combat:</h2>
     <p>
-        Enhance combat can be activated by selecting the option in the system settings. The purpose of EC is to accelerate combat, limit Players and GM fidgeting with character sheets, and vastly simplify NPC management.
+        Enhanced combat can be activated by selecting the option in the system settings. The purpose of EC is to accelerate combat, limit Players and GM fidgeting with character sheets, and vastly simplify NPC management.
     <p>
         <a href="https://youtu.be/P615_E_GpLQ">This quick video</a> explains how to use the enhanced combat
     </p>
@@ -356,7 +356,7 @@
     <br>
     &nbsp;<span class="img21">&nbsp;</span>&nbsp;
     <br>
-    Then the attack roll is made, and if it's a hit, damage is roll. Result is printed in the chat. If it's an NPC attack against a PC, then the damage is fixed and the armor is rolled, as per the rules - please note the Player don't have to initiate the defense and armor roll.
+    Then the attack roll is made, and if it's a hit, damage is roll. Result is printed in the chat. If it's an NPC attack against a PC, then the damage is fixed and the armor is rolled, as per the rules - please note the Player don't have to initiate the defense and armor roll (but see the "resist roll button" option).
     <br>
     &nbsp;<span class="img22">&nbsp;</span>&nbsp;
     <br>
@@ -411,35 +411,37 @@
         <b>Configure Symbaroum Settings</b><br>
         This is a user setting which allows some modification of sheet backgrounds and colorations (see below). <br>
         <b>World Template Version</b><br>
-        This is a developer function - do not change unless you really intend it. </br>
+        This is a developer function - do not change unless you really intend it. <br>
         <b>World System Version</b><br>
-        This is a developer function - do not change unless you really intend it. </br>
+        This is a developer function - do not change unless you really intend it. <br>
         <b>Combat Enhancement</b><br>
-        Turns the automated combat enhancement on or off. Please note that if you turn it on, the game will work a bit differently and players no longer rolls defense </br>
+        Turns the automated combat enhancement on or off. Please note that if you turn it on, the game will work a bit differently and players no longer rolls defense <br>
+        <b>Resist roll button</b><br>
+        When NPCs use powers that can be resisted, or attack with Combat Enhancement options, instead of rolling directly this option creates a button in the relevant player Chat that the Player will have to click on for the resist roll to be done. <br>
         <b>Always able to succeed or fail</b><br>
-        If you want the system to always succeed on a roll of 1 or fail on a roll of 20</br>
+        If you want the system to always succeed on a roll of 1 or fail on a roll of 20<br>
         <b>Optional Critical Rolls</b><br>
-        Enables the normal critical rolls as detailed in the optional rule in the core book. </br>
+        Enables the normal critical rolls as detailed in the optional rule in the core book. <br>
         <b>Optional Rare Critical Rolls</b><br>
-        Enables the more rarer criticals as detailed in the optional rule in the core book. </br>
+        Enables the more rarer criticals as detailed in the optional rule in the core book. <br>
         <b>Allow crits for non-combat</b><br>
-        This enables the system to print a message when there is a critical success or failure with normal attribute rolls. Crit ratio is the same as for combat</br>
+        This enables the system to print a message when there is a critical success or failure with normal attribute rolls. Crit ratio is the same as for combat<br>
         <b>Combat settings for rolls</b><br>
-        Enables QoL enhancements for keeping modifiers between strikes</br>
+        Enables QoL enhancements for keeping modifiers between strikes<br>
         <b>Attribute settings for rolls</b><br>
-        Enables QoL enhancements for keeping modifiers between specific attribute rolls</br>
+        Enables QoL enhancements for keeping modifiers between specific attribute rolls<br>
         <b>Show modifiers in targetted</b><br>
-        In attribute rolls, or combat rolls, shows the modifier the versus attribute gives</br>
+        In attribute rolls, or combat rolls, shows the modifier the versus attribute gives<br>
         <b>Show NPC modifiers</b><br>
-        Shows the character sheet for NPC/monster sheets as in the core book (i.e. from +5 to -5)</br>
+        Shows the character sheet for NPC/monster sheets as in the core book (i.e. from +5 to -5)<br>
         <b>Allow reference modifications</b><br>
         Only shows for GM and shows a reference field on abilities, traits, etc. This reference is used for the automation of abilities. <br>
         <b>Supress Iniatiative Rolls</b><br>
-        While Symbaroum do not roll for iniatiative, the system has to do so for the tie breaker. This just turns of the visibility of this roll from chat. </br>
+        While Symbaroum do not roll for iniatiative, the system has to do so for the tie breaker. This just turns of the visibility of this roll from chat. <br>
         <b>Manually select iniatiative</b><br>
         Allows manual selection of the iniatiative attribute.<br>
         <b>Add Symbaroum Settings button</b><br>
-        This adds a Symbaroum setting button under the Foundry Configuration sidebar</br>
+        This adds a Symbaroum setting button under the Foundry Configuration sidebar<br>
 
     </p>
     <br>

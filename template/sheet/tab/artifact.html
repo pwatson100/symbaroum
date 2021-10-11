@@ -12,12 +12,12 @@
                 {{/if}}
             </div>
             <div class="name">
-                <label for="{{../item._id}}-data.power.{{key}}.name">{{localize "ARTIFACT.NAME"}}</label>
-                <input name="data.power.{{key}}.name" id="{{../item._id}}-data.power.{{key}}.name" type="text" value="{{power.name}}" />
+                <label for="{{../id}}-data.power.{{key}}.name">{{localize "ARTIFACT.NAME"}}</label>
+                <input name="data.power.{{key}}.name" id="{{../id}}-data.power.{{key}}.name" type="text" value="{{power.name}}" />
             </div>
             <div class="action">
-                <label for="{{../item._id}}-data.power.{{key}}.action">{{localize "ARTIFACT.ACTION"}}</label>
-                <select id="{{../item._id}}-data.power.{{key}}.action" name="data.power.{{key}}.action">
+                <label for="{{../id}}-data.power.{{key}}.action">{{localize "ARTIFACT.ACTION"}}</label>
+                <select id="{{../id}}-data.power.{{key}}.action" name="data.power.{{key}}.action">
                     {{#select power.action}}
                         <option value="-">-</option>
                         <option value="A">{{localize "ACTION.ACTIVE"}}</option>
@@ -31,8 +31,8 @@
                 </select>
             </div>
             <div class="corruption">
-                <label for="{{../item._id}}-data.power.{{key}}.corruption">{{localize "ARTIFACT.CORRUPTION"}}</label>
-                <input name="data.power.{{key}}.corruption" type="text" id="{{../item._id}}-data.power.{{key}}.corruption" value="{{power.corruption}}" />
+                <label for="{{../id}}-data.power.{{key}}.corruption">{{localize "ARTIFACT.CORRUPTION"}}</label>
+                <input name="data.power.{{key}}.corruption" type="text" id="{{../id}}-data.power.{{key}}.corruption" value="{{power.corruption}}" />
             </div>
             {{editor content=this.description target=(keyIndex key) button=true owner=owner editable=true}}
         </div>

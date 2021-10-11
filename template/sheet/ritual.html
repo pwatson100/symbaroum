@@ -6,8 +6,8 @@
             </div>
             <div class="wrapper-column">
                 <div class="name">
-                    <label>{{localize "ABILITY.NAME"}}</label>
-                    <input name="name" type="text" value="{{item.name}}"/>
+                    <label for="{{id}}-name">{{localize "ABILITY.NAME"}}</label>
+                    <input id="{{id}}-name" name="name" type="text" value="{{item.name}}"/>
                 </div>
             </div>
         </div>
@@ -22,8 +22,8 @@
                 <div class="description foreground border">
                     <h1>{{localize "TITLE.DESCRIPTION"}}</h1>
                     <div class="tradition">
-                        <label>{{localize "RITUAL.TRADITION"}}</label>
-                        <input name="data.tradition" type="text" value="{{data.tradition}}"/>
+                        <label for="{{id}}-data.tradition">{{localize "RITUAL.TRADITION"}}</label>
+                        <input id="{{id}}-data.tradition" name="data.tradition" type="text" value="{{data.tradition}}"/>
                     </div>
                     {{editor content=data.description target="data.description" button=true owner=owner editable=true}}
                 </div>
