@@ -14,7 +14,7 @@ export class SymbaroumActor extends Actor {
         // console.log("Init data - complete");
         this.data.numRituals = 0;
         // console.log("Compute items");
-        console.log("original items",this.data.items);
+        game.symbaroum.log("original items",this.data.items);
         let items = this.data.items.contents.sort( (a, b) => {
             if(a.data.type == b.data.type) {
                 return a.data.name == b.data.name ? 0 : a.data.name < b.data.name ? -1:1;
