@@ -198,3 +198,6 @@ Version 3.1.1
 - corrected bug when using Firefox
 - sorting order of items on sheets
 - Code simplification and debuging
+
+Version 3.1.2
+- updated readmen compendium as the user guide had vanished. 
