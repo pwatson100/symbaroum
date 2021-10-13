@@ -101,7 +101,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon) 
             }            
             attri_defaults.impeding = html.find("#impeding")[0].checked ? "checked":"";
           }
-          // console.log("Damage bonus",damModifier);
+          // game.symbaroum.log("Damage bonus",damModifier);
           await rollAttribute(actor, attributeName, getTarget(), targetAttributeName, favour, modifier, armor, weapon, advantage, damModifier);
           },
       },

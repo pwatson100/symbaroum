@@ -26,7 +26,7 @@ export function sendDevMessage()
                 }
                 latestVersion = Math.max(latestVersion, msgenvelope.version);
             }
-            console.info("latestVersion after "+latestVersion);
+            game.symbaroum.info("latestVersion after "+latestVersion);
             game.settings.set('symbaroum', 'symbaroumDevMessageVersionNumber', latestVersion);
         })
         .fail(function(data) {
