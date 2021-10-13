@@ -179,7 +179,7 @@ export async function getOwnerPlayer(actor){
         return idValue
     },[])
     let owningPlayers = game.users.filter(user => user.active && !user.isGM && ownerIds.includes(user.data._id));
-    console.log(owningPlayers);
+    // game.symbaroum.log(owningPlayers);
     return(owningPlayers)
 }
 
@@ -334,7 +334,7 @@ export async function createResistRollChatButton(functionStuff){
   };
   ChatMessage.create(chatData);
   //send data message to the player session
-  console.log("toto");
+  
   const emitData = Object.assign({}, functionStuff);
   emitData.mainText= functionStuff.targetData.name + game.i18n.localize("CHAT.RESIST_TEXT_BUTTON") + getAttributeLabel(functionStuff.targetData.actor, functionStuff.targetData.resistAttributeName);
   emitData.actor = null;
@@ -499,7 +499,7 @@ export async function damageRollWithDiceParams(functionStuff, critSuccess, attac
       else newRollDmgString += " - 0";
     }
     // final damage
-    // console.log(newRollDmgString);
+    // game.symbaroum.log(newRollDmgString);
     let dmgRoll= new Roll(newRollDmgString).evaluate();
 
     return{
