@@ -142,6 +142,7 @@
   "ARMOR.COST": "Kosten",
   "ARMOR.QUALITY": "Qualität",
   "ARMOR.DESCRIPTION": "Beschreibung",
+  "ARMOR.DEFENCE_ATTRIBUTE" : "Defend using",
   "ARMOR.ADDBUTTON": "Add Armor",
   "ARMOR.DELETEBUTTON": "Delete Armor",
 

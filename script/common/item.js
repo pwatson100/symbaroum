@@ -157,7 +157,7 @@ export class SymbaroumItem extends Item {
                 data.data.isDistance = false;
             }
             let baseDamage = data.data.baseDamage;
-            // console.log("baseDamage["+baseDamage+"]");
+            // game.symbaroum.log("baseDamage["+baseDamage+"]");
             if( baseDamage === null || baseDamage === undefined || baseDamage === "" ) {
                 baseDamage = "1d8";
             }
@@ -2051,7 +2051,7 @@ async function standardPowerResult(rollData, functionStuff){
         }
         
         if(healResult){
-            // console.log(healResult)
+            // game.symbaroum.log(healResult)
             templateData.hasDamage = healResult.hasDamage;
             templateData.damageText = healResult.damageText;
             templateData.dmgFormula = healResult.dmgFormula;

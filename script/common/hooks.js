@@ -45,6 +45,18 @@ Hooks.once('init', () => {
     config: SYMBAROUM,
     SymbaroumConfig,
   };
+  game.symbaroum.debug = (...args) => { 
+    console.debug("Symbaroum |", ...args);
+  };  
+  game.symbaroum.error = (...args) => { 
+    console.error("Symbaroum |", ...args);
+  };
+  game.symbaroum.info = (...args) => { 
+    console.info("Symbaroum |", ...args);
+  };
+  game.symbaroum.log = (...args) => { 
+    console.log("Symbaroum |", ...args);
+  };
 
   game.settings.register('symbaroum', 'worldTemplateVersion', {
     // worldTemplateVersion is deprecated - not to use anymore
@@ -417,7 +429,7 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
       functionStuff.actor = tok.actor;
       functionStuff.targetData.token = targetToken;
       functionStuff.targetData.actor = targetToken.actor;
-      console.log("from hook: ", functionStuff);
+      // game.symbaroum.log("from hook: ", functionStuff);
       buildRolls(functionStuff);
       await chatItem.unsetFlag(game.system.id, 'resistRoll');
       return;
@@ -470,17 +482,25 @@ async function showReleaseNotes() {
 
       let newReleasePack = game.packs.find((p) => p.metadata.label === releasePackLabel);
       if (newReleasePack === null || newReleasePack === undefined) {
-        console.error('No pack found');
+        let err = "No pack found for the system guide in this release";
+        game.symbaroum.error(err);
+        ui.notifications.error(err);
         // This is bad - the symbaroum pack does not exist in the system packages
         return;
       }
       await newReleasePack.getIndex();
 
       let newReleaseNotes = newReleasePack.index.find((j) => j.name === releaseNoteName);
-      // console.log("Found new release notes in the compendium pack");
+      // game.symbaroum.log("Found new release notes in the compendium pack");
+      if( newReleaseNotes === undefined || newReleaseNotes === null ) {
+        let err = "No system guide found in this release";
+        game.symbaroum.error(err);
+        ui.notifications.error(err);
+        return;
+      }
 
       // Don't delete until we have new release Pack
-      if (newReleaseNotes !== undefined && newReleaseNotes !== null && oldReleaseNotes !== null && oldReleaseNotes !== undefined) {
+      if (oldReleaseNotes !== null && oldReleaseNotes !== undefined) {
         await oldReleaseNotes.delete();
       }
 
@@ -489,28 +509,16 @@ async function showReleaseNotes() {
 
       await newReleaseJournal.setFlag('symbaroum', 'ver', newVer);
 
-      // Before we show final - tidy up release prior to this
-      tidyReleaseNotes11();
-
       // Show journal
       await newReleaseJournal.sheet.render(true, { sheetMode: 'text' });
     } catch (error) {
-      console.error(error);
+      game.symbaroum.error(error);
     } // end of try
   } // end of if(isgm)
 } // end of function
 
-async function tidyReleaseNotes11() {
-  const releaseNoteName = 'Symbaroum System guide EN (1.1)';
-  let old11ReleaseNotes = game.journal.getName(releaseNoteName);
-  // Delete Delete Delete
-  if (old11ReleaseNotes !== undefined && old11ReleaseNotes !== null) {
-    await old11ReleaseNotes.delete();
-  }
-}
-
 async function setupEmit() {
-  console.info('Setting up Symbaroum emit system');
+  game.symbaroum.info('Setting up Symbaroum emit system');
   SymbaroumCommsListener.ready();
 }
 

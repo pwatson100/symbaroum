@@ -156,6 +156,7 @@
   "ARMOR.QUALITY": "Kvalitet",
   "ARMOR.DESCRIPTION": "Beskrivning",
   "ARMOR.BONUS_ONLY": "Extra bepansring",
+  "ARMOR.DEFENCE_ATTRIBUTE" : "Försvara med",
   "ARMOR.ADDBUTTON": "Lägg till Rustning",
   "ARMOR.DELETEBUTTON": "Ta bort Rustning",
 
