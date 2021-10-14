@@ -26,11 +26,11 @@ export function sendDevMessage()
                 }
                 latestVersion = Math.max(latestVersion, msgenvelope.version);
             }
-            game.symbaroum.info("latestVersion after "+latestVersion);
+            game.symbaroum.info("Message system - latestVersion message after "+latestVersion);
             game.settings.set('symbaroum', 'symbaroumDevMessageVersionNumber', latestVersion);
         })
         .fail(function(data) {
-            console.error("Could not retreive Symbaroum news Message:"+JSON.stringify(data));
+            game.symbaroum.error("Could not retreive Symbaroum news Message:"+JSON.stringify(data));
         });
     }    
 }
