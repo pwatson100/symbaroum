@@ -41,7 +41,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
       
       armorResults.name = armor.armor;
       armorResults.value = armorRoll.total;
-      armorResults.diceBreakdown = formatDice(armorRoll.terms,"+");
+      armorResults.diceBreakdown = await armorRoll.getTooltip();
     }
   }
 
