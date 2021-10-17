@@ -46,16 +46,16 @@ Hooks.once('init', () => {
     SymbaroumConfig,
   };
   game.symbaroum.debug = (...args) => { 
-    console.debug("Symbaroum |", ...args);
+    console.debug("%cSymbaroum |",game.symbaroum.config.CONSOLESTYLE, ...args);
   };  
   game.symbaroum.error = (...args) => { 
-    console.error("Symbaroum |", ...args);
+    console.error("%cSymbaroum |",game.symbaroum.config.CONSOLESTYLE, ...args);
   };
   game.symbaroum.info = (...args) => { 
-    console.info("Symbaroum |", ...args);
+    console.info("%cSymbaroum |",game.symbaroum.config.CONSOLESTYLE, ...args);
   };
   game.symbaroum.log = (...args) => { 
-    console.log("Symbaroum |", ...args);
+    console.log("%cSymbaroum |",game.symbaroum.config.CONSOLESTYLE, ...args);
   };
 
   game.settings.register('symbaroum', 'worldTemplateVersion', {
