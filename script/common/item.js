@@ -473,6 +473,20 @@ export class SymbaroumItem extends Item {
             }
             combatMods.weapons[weapons[i].id].weaponmodifiers.specialEffects.push(game.symbaroum.config.SPECIAL_MASSIVE);
         }
+    }
+
+    getCombatModifierDancingweapon(combatMods, armor, weapons) {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if(!weapons[i].data.data.isMelee || !this.actor.getFlag(game.system.id, "dancingweapon")) {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.attribute = "resolute";            
+            combatMods.weapons[weapons[i].id].weaponmodifiers.attributes.push(base);
+        }        
     }    
 
     getCombatModifierDominate(combatMods, armor, weapons) {
