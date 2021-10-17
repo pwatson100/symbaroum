@@ -808,6 +808,70 @@ export class SymbaroumItem extends Item {
             }        
         }
     }
+    getCombatModifierTwinattack(combatMods, armor, weapons) {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if(!weapons[i].data.data.isMelee || !["1handed", "short"].includes(weapons[i].data.data.reference) ) {
+                continue;
+            }
+            let twoWeapon = this.actor.items.filter(element => ["1handed", "short"].includes(element.data.data?.reference) && element.data.isActive)
+            if(twoWeapon.length < 2) {
+                return;
+            }
+            
+            let base = this._getBaseFormat();
+            base.modifier = 1;
+            combatMods.weapons[weapons[i].id].weaponmodifiers.attackIncrease.push(base);
+
+            if(lvl.level < 3) {
+                // Continue - do not want to indent further
+                continue;
+            }
+            // Master ability
+            // Look at all active weapons of 1handed or short
+            // If the current weapon is the first 1d6 or 1d8 base damage one - upgrade
+            // If the current weapon is the first (or potentially second) 1d6 base damage one - upgrade
+            let foundd8 = 0;
+            let foundd6 = 0;
+            let spared6weap = null;
+            for(let j = 0; j < twoWeapon.length; j++) {
+                if( twoWeapon[j].data.data.reference === "short")
+                {
+                    foundd6++;                    
+                    if(foundd6 === 1 && twoWeapon[j].id == weapons[i].id) 
+                    {
+                        base = this._getBaseFormat();
+                        base.type = game.symbaroum.config.DAM_DICEUPGRADE;
+                        base.diceUpgrade = 2;
+                        combatMods.weapons[weapons[i].id].weaponmodifiers.damageChoices.push(base);        
+                        // First short, upgrade
+                    } else if(foundd6 === 2 && spared6weap === null && twoWeapon[j].id === weapons[i].id) {
+                        // Store away this and if there is no d8 found once we are done, upgrade d8
+                        spared6weap = twoWeapon[j];
+                    }
+                }
+                else if( twoWeapon[j].data.data.reference === "1handed") 
+                {
+                    foundd8++;
+                    if(foundd8 === 1 && twoWeapon[j].id == weapons[i].id)
+                    {
+                        base = this._getBaseFormat();
+                        base.type = game.symbaroum.config.DAM_DICEUPGRADE;
+                        base.diceUpgrade = 2;
+                        combatMods.weapons[weapons[i].id].weaponmodifiers.damageChoices.push(base);        
+                    }
+                }
+            }
+            if(foundd8 === 0 && spared6weap != null) {                
+                // Only wielding d6 weapons and this is the last d6 weapon, so upgrade it too
+                base.type = game.symbaroum.config.DAM_DICEUPGRADE;
+                base.diceUpgrade = 2;
+                combatMods.weapons[weapons[i].id].weaponmodifiers.damageChoices.push(base);
+            }
+        }        
+    }
 
     getCombatModifierTwohandedforce(combatMods, armor, weapons) 
     {
