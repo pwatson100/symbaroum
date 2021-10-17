@@ -23,10 +23,6 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
 	if(hasWeapon && advantage ) { modifier +=2 }
   else if (hasArmor && advantage) { modifier -=2; }
   
-	if(hasWeapon && weapon.qualities.precise) {		
-		modifier++;
-  }
-  
   let rollResults = await baseRoll(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier, false);
   
   if (hasArmor && !rollResults.hasSucceed) {
@@ -46,7 +42,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   }
 
   if (hasWeapon && rollResults.hasSucceed) {
-    dam = weapon.damage.pc;
+    dam = weapon.damage.base;
     if (dam !== '') {
       if ( advantage ) { dam += "+1d4["+game.i18n.localize('ROLL.ADVANTAGESHORT')+"]"; }
       if ( rollResults.critSuccess ) { dam += "+1d6["+game.i18n.localize('ROLL.CRITSHORT')+"]"; }
