@@ -113,6 +113,7 @@
   "ABILITY.NOVICE":"Novize",
   "ABILITY.ADEPT":"Adept",
   "ABILITY.MASTER":"Meister",
+  "ABILITY.NOT_LEARNED":"Not Learned",
   "ABILITY.ROLL_RESULT": "Würfelergebnis: ",
 
   "ACTION.ACTIVE": "Aktiv",

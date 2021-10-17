@@ -1,4 +1,4 @@
-import { getPowerLevel } from './item.js';
+import { getPowerLevel, formatRollResult } from './item.js';
 
 export async function rollAttribute(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier, armor, weapon, advantage, damModifier) {
   let dam = "";	
@@ -37,7 +37,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
       
       armorResults.name = armor.armor;
       armorResults.value = armorRoll.total;
-      armorResults.diceBreakdown = formatDice(armorRoll.terms,"+");
+      armorResults.diceBreakdown = await armorRoll.getTooltip();
     }
   }
 
@@ -283,6 +283,8 @@ async function doBaseRoll(actor, actingAttributeName, targetActor, targetAttribu
     favour: favour,
     modifier: modifier,
     dicesResult: dicesResult,
+    rollResult: await formatRollResult({favour: favour, diceResult: attributeRoll.total, dicesResult: dicesResult}),
+    toolTip: new Handlebars.SafeString(await attributeRoll.getTooltip()),
     diceBreakdown: diceBreakdown,    
     critSuccess: critGood,
     critFail: critBad

@@ -125,6 +125,7 @@
     "ABILITY.NOVICE":"Novice",
     "ABILITY.ADEPT":"Adepte",
     "ABILITY.MASTER":"Maître",
+    "ABILITY.NOT_LEARNED":"Pas apprise",
     "ABILITY.ROLL_RESULT": "Résultat du jet : ",
 
     "ACTION.ACTIVE": "Active",

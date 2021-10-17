@@ -306,7 +306,7 @@ export class SymbaroumItem extends Item {
             return {level:0, lvlName : null};
         }
         let powerLvl = 0;
-        let lvlName = game.i18n.localize("Not learned"); // TODO: Proper entry in language file
+        let lvlName = game.i18n.localize("ABILITY.NOT_LEARNED");
         if(this.data.data.master.isActive)
         {
             powerLvl = 3;
@@ -324,8 +324,6 @@ export class SymbaroumItem extends Item {
         }
         return {level : powerLvl, lvlName : lvlName};
     }
-
-
 
     getCombatModifiers(combatMods, armor, weapons) 
     {
@@ -348,7 +346,6 @@ export class SymbaroumItem extends Item {
     // Reference combat modifiers
     _getOwnWeaponBonuses(combatMods, weapons) 
     {
-
         for(let i = 0; i < weapons.length; i++)
         {
             if(weapons[i].id != this.id) {
@@ -628,7 +625,7 @@ export class SymbaroumItem extends Item {
         if(lvl.level == 0) return;
         for(let i = 0; i < weapons.length; i++)
         {
-            if( weapons[i].data.data.alternativeDamage !== "none" || !weapons[i].data.data.isDistance) {
+            if( weapons[i].data.data.alternativeDamage !== "none" || weapons[i].data.data.reference != "ranged") {
                 continue;
             }
             let base = this._getBaseFormat();
@@ -771,7 +768,23 @@ export class SymbaroumItem extends Item {
             base.attribute = "vigilant";
             combatMods.weapons[weapons[i].id].weaponmodifiers.attributes.push(base);
         }
-    }    
+    }
+    
+    getCombatModifierSteelthrow(combatMods, armor, weapons)
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if( weapons[i].data.data.alternativeDamage !== "none" || weapons[i].data.data.reference != "thrown") {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.type = base.type = game.symbaroum.config.DAM_DICEUPGRADE;
+            base.diceUpgrade = 2;
+            combatMods.weapons[weapons[i].id].weaponmodifiers.damageChoices.push(base);
+        }
+    }
 
     getCombatModifierTactician(combatMods, armor, weapons) 
     {
@@ -993,19 +1006,10 @@ async function getTokenId(actor){
 /* format the string to print the roll result, including the 2 dice if favour was involved, up to 3 rolls for multi-attacks
 @Params: {object}  rollData is the array of objects baseRoll function returns 
 @returns:  {string} the formated and localized string*/
-function formatRollResult(rollData){
-    let rollResult = game.i18n.localize('ABILITY.ROLL_RESULT');
-    let position = 0;
-    for(let rollDataElement of rollData){
-        position += 1;
-        rollResult += rollDataElement.diceResult.toString();
-
-        if(rollDataElement.favour != 0){
-            rollResult += "  (" + rollDataElement.dicesResult[0].toString() + " , " + rollDataElement.dicesResult[1].toString() + ")";
-        }
-        if(position != rollData.length){
-            rollResult += " / "
-        }
+export function formatRollResult(rollDataElement){
+    let rollResult = game.i18n.localize('ABILITY.ROLL_RESULT') + rollDataElement.diceResult.toString();
+    if(rollDataElement.favour != 0){
+        rollResult += "  (" + rollDataElement.dicesResult[0].toString() + " , " + rollDataElement.dicesResult[1].toString() + ")";
     }
     return(rollResult);
 }
@@ -2084,7 +2088,6 @@ async function attackResult(rollData, functionStuff){
         resistRollText: functionStuff.resistRollText,
         hasCorruption: false,
         rollString: await formatRollString(rollData[0], functionStuff.targetData.hasTarget, rollData[0].modifier),
-        rollResult : await formatRollResult(rollData),
         hasDamage: hasDamage,
         hasDmgMod: hasDmgMod,
         damageRollMod: damageRollMod,
@@ -2095,6 +2098,7 @@ async function attackResult(rollData, functionStuff){
         poisonRollResultString: "",
         poisonChatIntro: "",
         poisonChatResult: "",
+        poisonToolTip: "",
         printBleed: false,
         bleedChat: "",
         printFlaming: false,
@@ -2272,7 +2276,8 @@ async function poisonCalc(functionStuff, poisonRoll){
     }
     poisonRes.printPoison = true;
     poisonRes.poisonRollString = await formatRollString(poisonRoll, functionStuff.targetData.hasTarget, 0);
-    poisonRes.poisonRollResultString = await formatRollResult([poisonRoll]);
+    poisonRes.poisonRollResultString = await formatRollResult(poisonRoll);
+    poisonRes.poisonToolTip = poisonRoll.toolTip;
     return(poisonRes);
 }
 
@@ -2284,6 +2289,8 @@ async function standardPowerResult(rollData, functionStuff){
     let finalText = functionStuff.finalText ?? "";
     let subText = functionStuff.subText ?? functionStuff.ability.name + " (" + functionStuff.powerLvl.lvlName + ")";
     let introText = functionStuff.isMaintained ? functionStuff.introTextMaintain : functionStuff.introText;
+    let rollResult="";
+    let rollToolTip="";
     if((!functionStuff.isMaintained) && functionStuff.corruption){
         haveCorruption = true;
         corruption = await getCorruption(functionStuff);
@@ -2298,12 +2305,12 @@ async function standardPowerResult(rollData, functionStuff){
     let hasRoll = false;
     let trueActorSucceeded = true; //true by default for powers without rolls
     let rollString = "";
-    let rollResult = "";
     if(rollData!=null){
         hasRoll = true;
         trueActorSucceeded = rollData[0].trueActorSucceeded;
         rollString = await formatRollString(rollData[0], functionStuff.targetData.hasTarget, rollData[0].modifier);
-        rollResult = formatRollResult(rollData)
+        rollResult=rollData[0].rollResult;
+        rollToolTip=rollData[0].toolTip;
     }
     let resultText = trueActorSucceeded ? functionStuff.resultTextSuccess : functionStuff.resultTextFail;
     if(functionStuff.targetData.hasTarget && functionStuff.targetData.autoParams != ""){
@@ -2440,7 +2447,7 @@ async function standardPowerResult(rollData, functionStuff){
         let damage = await simpleDamageRoll(functionStuff, damageDice);
         damageTot = damage.roll.total;
         let pain = checkPainEffect(functionStuff, damage);
-        damageRollResult += await formatRollResult([damage]);
+        damageRollResult += await formatRollResult(damage);
         dmgFormula = game.i18n.localize('WEAPON.DAMAGE') + ": " + damage.roll._formula;
         damageText = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
         damageTooltip = new Handlebars.SafeString(await damage.roll.getTooltip());
@@ -2500,6 +2507,7 @@ async function standardPowerResult(rollData, functionStuff){
         resistRollText: functionStuff.resistRollText,
         rollString: rollString,
         rollResult: rollResult,
+        rollToolTip: rollToolTip,
         resultText: resultText,
         finalText: finalText,
         hasDamage: doDamage,
