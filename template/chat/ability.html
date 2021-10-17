@@ -15,7 +15,12 @@
             <h4>{{resistRollText}}</h4>
             {{/if}}
         <h4>{{rollString}}</h4>
-        <h4>{{rollResult}}</h4>
+        <div class="finalTxt">
+            <div class="tooltip">
+                <h4>{{removeMarkup rollResult}}</h4>
+                <span class="tooltiptext">{{rollToolTip}}</span>
+            </div>
+        </div>
         {{/if}}
         <div class="finalTxt">
             <p>{{resultText}}</p>

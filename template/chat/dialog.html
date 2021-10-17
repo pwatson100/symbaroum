@@ -24,8 +24,8 @@
     <input id="modifier" type="number" value="{{roll_defaults.modifier}}" data-dtype="Number"/>
   </div>
 
-  {{#ifgt weaponModifier.attributeModifiers.length 0}}
-    {{#each weaponModifier.attributeModifiers as |aMod|}}
+  {{#ifgt weaponModifier.attackModifiers.length 0}}
+    {{#each weaponModifier.attackModifiers as |aMod|}}
       <div class="bonus">
         <label>{{aMod.label}}</label>
         <input type="text" value="{{aMod.modifier}}" data-dtype="Text" disabled/>
@@ -53,10 +53,10 @@
       {{#ifgt weaponModifier.damageChoices.length 0}}
         {{#each weaponModifier.damageChoices as |choicebonus|}}
           {{#ife choicebonus.type "fixed"}}
-            <div class="damagemodifier"><label>{{choicebonus.label}}</label><input id="{{choicebonus.id}}-modifier" disabled type="text" value="{{choicebonus.alternatives.damMod}}" data-dtype="Text"/></div>
+            <div class="damagemodifier"><label>{{choicebonus.label}}</label><input id="{{choicebonus.id}}-modifier" disabled type="text" value="{{choicebonus.alternatives.0.displayMod}}" data-dtype="Text"/></div>
           {{/ife}}
           {{#ife choicebonus.type "radio"}}          
-            <div class="favour"><label class="lblfavour">{{radioBoxes choicebonus.id choicebonus.alternatives checked=choicebonus.defaultSelect localize=false}}</label></div>
+            <div class="favour"><label class="lblfavour">{{radioBoxes choicebonus.id choicebonus.radioAlternatives checked=choicebonus.defaultSelect localize=false}}</label></div>
           {{/ife}}
           {{#ife choicebonus.type "check"}}          
             <div class="advantage"><label for="{{choicebonus.id}}">{{choicebonus.label}} {{choicebonus.alternatives.label}}</label> <span class="lblfavour"><input type="checkbox" id="{{choicebonus.id}}" value="{{choicebonus.alternatives.damMod}}" data-dtype="Text" ></span></div>

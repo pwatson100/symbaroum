@@ -176,8 +176,7 @@
                                                     <div style="width:100%;">{{item.name}}</div>
                                                     <div>{{localizeabbr "WEAPON.DAMAGE"}}</div>
                                                     <span class="input">
-                                                        {{#if ../symbaroumOptions.isNPC}}<input class="weaponDam ellipsis" type="text" title="{{item.damage.npcExtended}} {{item.tooltip}}" value="{{item.damage.npcExtended}}" disabled />
-                                                        {{else}}<input class="weaponDam ellipsis" type="text" title="{{item.damage.pcExtShort}} {{item.tooltip}}" value="{{item.damage.pcExtShort}}" disabled />{{/if}}
+                                                        <input class="weaponDam ellipsis" type="text" title="{{item.damage.displayText}} {{item.tooltip}}" value="{{item.damage.displayTextShort}}" disabled />
                                                     </span>
                                                     <div class="attribute" title="{{localize "WEAPON.ATTACK_ATTRIBUTE"}} {{localize item.attributeLabel}}" style="white-space: nowrap">{{localizeabbr item.attributeLabel}}</div>                                
                                                     <div class="input weaponAttribute">
