@@ -275,7 +275,8 @@ export class SymbaroumActor extends Actor {
 
             let diceSides = parseInt(baseDamage.match(/[0-9]d([0-9]+)/)[1]); // NEEDS CHANGING - assumes base damage is always a dice (might be true)
 
-            for(let i = 0; i < weaponModifiers.damageChoices.length; i++) {
+            for(let i = 0; i < weaponModifiers.damageChoices.length; i++) 
+            {
                 let damChoice = weaponModifiers.damageChoices[i];
                 let ecDamage = game.symbaroum.config.ecBuiltinDamage.includes(damChoice.reference);
                 let ecOptional = game.symbaroum.config.ecOptionalDamage.includes(damChoice.reference);

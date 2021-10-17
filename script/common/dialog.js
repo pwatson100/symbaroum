@@ -13,9 +13,6 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon) 
     weaponModifiers = foundry.utils.deepClone(actor.data.data.combat.combatMods.weapons[weapon.id].weaponmodifiers); // All modifiers needed
     // Create any radio box alternatives from weaponModifiers
     createRadioboxAlternatives(weaponModifiers);
-        
-    console.log("weaponModifiers",weaponModifiers);
-
   }
 
   const html = await renderTemplate('systems/symbaroum/template/chat/dialog.html', {
@@ -60,25 +57,25 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon) 
             damModifier = html.find("#dammodifier")[0].value;
           }
           attri_defaults.additionalModifier = damModifier;
-
-          for(let optionalBonus of weaponModifiers.damageChoices) {
-            if(optionalBonus.type == game.symbaroum.config.DAM_FIXED) {
-              damModifier += `${optionalBonus.alternatives[0].damageMod}[${optionalBonus.label}]`;
-            } else if(optionalBonus.type === game.symbaroum.config.DAM_CHECK) {
-              // Find if the box is checked
-              let ticked = html.find(`#${optionalBonus.id}`);              
-              if( ticked.length > 0 && ticked[0].checked )
+          if( weapon !== null) {
+            for(let optionalBonus of weaponModifiers.damageChoices) {
+              if(optionalBonus.type == game.symbaroum.config.DAM_FIXED) {
                 damModifier += `${optionalBonus.alternatives[0].damageMod}[${optionalBonus.label}]`;
-            } else if( optionalBonus.type === game.symbaroum.config.DAM_RADIO) {
-              // Find the selected radio button
-              let radioSelection = html.find(`input[name='${optionalBonus.id}']`);
-              for( let f of radioSelection) {
-                if( f.checked ) 
-                  damModifier += `${f.value}[${optionalBonus.label}]`;
+              } else if(optionalBonus.type === game.symbaroum.config.DAM_CHECK) {
+                // Find if the box is checked
+                let ticked = html.find(`#${optionalBonus.id}`);              
+                if( ticked.length > 0 && ticked[0].checked )
+                  damModifier += `${optionalBonus.alternatives[0].damageMod}[${optionalBonus.label}]`;
+              } else if( optionalBonus.type === game.symbaroum.config.DAM_RADIO) {
+                // Find the selected radio button
+                let radioSelection = html.find(`input[name='${optionalBonus.id}']`);
+                for( let f of radioSelection) {
+                  if( f.checked ) 
+                    damModifier += `${f.value}[${optionalBonus.label}]`;
+                }
               }
             }
           }
-
                     
           let favours = html.find("input[name='favour']");
           let fvalue = 0;
@@ -100,10 +97,12 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon) 
             }            
             attri_defaults.impeding = html.find("#impeding")[0].checked ? "checked":"";
           }
-
-          for(let i = 0; i < weaponModifiers.attackModifiers.length; i++) 
+          if( weapon !== null ) 
           {
-            modifier += weaponModifiers.attackModifiers[i].modifier;
+            for(let i = 0; i < weaponModifiers.attackModifiers.length; i++) 
+            {
+              modifier += weaponModifiers.attackModifiers[i].modifier;
+            }
           }
           console.log("modifier", modifier);
           await rollAttribute(actor, attributeName, getTarget(), targetAttributeName, favour, modifier, armor, weapon, advantage, damModifier);
