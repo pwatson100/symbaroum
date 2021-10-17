@@ -442,6 +442,26 @@ export class SymbaroumItem extends Item {
         }
     }
 
+    getCombatModifierBerserker(combatMods, armor, weapons) {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if(weapons[i].data.data.alternativeDamage !== "none" || !weapons[i].data.data.isMelee) {
+                continue;
+            }
+            if(this.actor.getFlag(game.system.id, 'berserker')) {
+                let base = this._getBaseFormat();
+                base.type = game.symbaroum.config.DAM_FIXED;
+                base.alternatives = [{
+                    damageMod: "+1d6",
+                    damageModNPC: 3,
+                }];
+                combatMods.weapons[weapons[i].id].weaponmodifiers.damageChoices.push(base);
+            }
+        }        
+    }    
+
     getCombatModifierColossal(combatMods, armor, weapons) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
