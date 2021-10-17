@@ -306,7 +306,7 @@ export class SymbaroumItem extends Item {
             return {level:0, lvlName : null};
         }
         let powerLvl = 0;
-        let lvlName = game.i18n.localize("Not learned"); // TODO: Proper entry in language file
+        let lvlName = game.i18n.localize("ABILITY.NOT_LEARNED");
         if(this.data.data.master.isActive)
         {
             powerLvl = 3;
@@ -324,8 +324,6 @@ export class SymbaroumItem extends Item {
         }
         return {level : powerLvl, lvlName : lvlName};
     }
-
-
 
     getCombatModifiers(combatMods, armor, weapons) 
     {
@@ -348,7 +346,6 @@ export class SymbaroumItem extends Item {
     // Reference combat modifiers
     _getOwnWeaponBonuses(combatMods, weapons) 
     {
-
         for(let i = 0; i < weapons.length; i++)
         {
             if(weapons[i].id != this.id) {
@@ -628,7 +625,7 @@ export class SymbaroumItem extends Item {
         if(lvl.level == 0) return;
         for(let i = 0; i < weapons.length; i++)
         {
-            if( weapons[i].data.data.alternativeDamage !== "none" || !weapons[i].data.data.isDistance) {
+            if( weapons[i].data.data.alternativeDamage !== "none" || weapons[i].data.data.reference != "ranged") {
                 continue;
             }
             let base = this._getBaseFormat();
@@ -771,7 +768,23 @@ export class SymbaroumItem extends Item {
             base.attribute = "vigilant";
             combatMods.weapons[weapons[i].id].weaponmodifiers.attributes.push(base);
         }
-    }    
+    }
+    
+    getCombatModifierSteelthrow(combatMods, armor, weapons)
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if( weapons[i].data.data.alternativeDamage !== "none" || weapons[i].data.data.reference != "thrown") {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.type = base.type = game.symbaroum.config.DAM_DICEUPGRADE;
+            base.diceUpgrade = 2;
+            combatMods.weapons[weapons[i].id].weaponmodifiers.damageChoices.push(base);
+        }
+    }
 
     getCombatModifierTactician(combatMods, armor, weapons) 
     {
