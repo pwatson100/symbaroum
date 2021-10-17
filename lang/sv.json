@@ -126,6 +126,7 @@
   "ABILITY.NOVICE":"Novis",
   "ABILITY.ADEPT":"Gesäll",
   "ABILITY.MASTER":"Mästare",
+  "ABILITY.NOT_LEARNED":"Not Learned",
   "ABILITY.ROLL_RESULT": "Tärningsslag resultat : ",
   
   "ACTION.ACTIVE": "Aktiv",

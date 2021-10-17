@@ -126,6 +126,7 @@
   "ABILITY.NOVICE":"Novato",
   "ABILITY.ADEPT":"Adepto",
   "ABILITY.MASTER":"Maestro",
+  "ABILITY.NOT_LEARNED":"Not Learned",
   "ABILITY.ROLL_RESULT": "Resultado de la tirada de dados: ",
   
   "ACTION.ACTIVE": "Activa",
