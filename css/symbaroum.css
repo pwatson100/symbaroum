@@ -1416,6 +1416,12 @@
   margin-top: 10px;
 }
 
+.symbaroum.sheet.actor .player .gear .wrapper-left .armors .item-list .item-header,
+.symbaroum.sheet.actor .player .gear .wrapper-left .weapons .item-list .item-header,
+.symbaroum.sheet.actor .player .gear .wrapper-right .equipments .item-list .item-header {
+  display: table-row;
+}
+
 .symbaroum.sheet.actor .player .gear .wrapper-left .armors .scrollable,
 .symbaroum.sheet.actor .player .gear .wrapper-left .weapons .scrollable,
 .symbaroum.sheet.actor .player .gear .wrapper-left .artifacts .scrollable,

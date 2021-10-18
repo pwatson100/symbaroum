@@ -2,7 +2,7 @@
     <div class="wrapper-left">
         <div class="armors foreground">
             <h1>{{localize "TITLE.ARMORS"}}</h1>
-            <div class="scrollable">
+            <div class="scrollable item-list">
                 <table>
                     <thead>
                         <tr class="item-header">
@@ -65,7 +65,7 @@
         </div>
         <div class="weapons foreground">
         <h1>{{localize "TITLE.WEAPONS"}}</h1>
-        <div class="scrollable">
+        <div class="scrollable item-list">
             <table>
                 <thead>
                     <tr class="item-header">
@@ -92,9 +92,8 @@
                             </div>
                         </td>
                         <td class="damage">
-                            <div style="padding-left: 3px;" {{#ife ../actor.type "player"}}title="{{item.damage.pc}}"{{/ife}} class="playergear damage ellipsis">
-                            {{#ife ../actor.type "player"}}{{item.damage.pcShort}}{{/ife}}
-                            {{#ife ../actor.type "monster"}}{{item.damage.npc}}{{/ife}}
+                            <div style="padding-left: 3px;" {{#ife ../actor.type "player"}}title="{{item.damage.displayText}}"{{/ife}} class="playergear damage ellipsis">
+                            {{item.damage.displayTextShort}}
                             </div>
                         </td>
                         <td class="attribute" title="{{localize "WEAPON.ATTRIBUTE"}} {{localize item.attributeLabel}}"><div class="attribute">{{localizeabbr item.attributeLabel}}</div>
@@ -177,7 +176,7 @@
     <div class="wrapper-right">
         <div class="equipments foreground">
             <h1>{{localize "TITLE.EQUIPMENTS"}}</h1>
-            <div class="scrollable">
+            <div class="scrollable item-list">
                 <table>
                     <thead>
                         <tr class="item-header">
