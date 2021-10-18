@@ -825,10 +825,12 @@ export class SymbaroumItem extends Item {
             base.modifier = 1;
             combatMods.weapons[weapons[i].id].weaponmodifiers.attackIncrease.push(base);
 
-            if(lvl.level < 3) {
+            if(lvl.level < 3 || this.actor.type === "player" || !game.settings.get('symbaroum', 'showNpcAttacks')) {
                 // Continue - do not want to indent further
                 continue;
             }
+
+            /* Calculations only for NPCs - can't easily be judged otherwise */
             // Master ability
             // Look at all active weapons of 1handed or short
             // If the current weapon is the first 1d6 or 1d8 base damage one - upgrade
