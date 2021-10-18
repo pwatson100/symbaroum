@@ -842,5 +842,8 @@
   "SYMBAROUM.OPTIONAL_RESET_NON_EDITABLE_BUTTON" :"Reset Non-Editable Field",
   "SYMBAROUM.OPTIONAL_RESET_ALL_BUTTON": "Reset all settings to defaults",
   "SYMBAROUM.OPTIONAL_PLAYER_RESIST" :"Resist roll button",
-  "SYMBAROUM.OPTIONAL_PLAYER_RESIST_HINT" :"When NPCs use powers that can be resisted, or attack with Combat Enhancement options, instead of rolling directly this option creates a button in the relevant player Chat that the Player will have to click on for the resist roll to be done."
+  "SYMBAROUM.OPTIONAL_PLAYER_RESIST_HINT" :"When NPCs use powers that can be resisted, or attack with Combat Enhancement options, instead of rolling directly this option creates a button in the relevant player Chat that the Player will have to click on for the resist roll to be done.",
+  "SYMBAROUM.OPTIONAL_NPC_ATTACKS": "Show multiple attacks in the weapon box for NPCs",
+  "SYMBAROUM.OPTIONAL_NPC_ATTACKS_HINT": "Warning: the system tries it best to show this, but due to technical limitations, it can only make a best guess"
+
 }

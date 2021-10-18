@@ -335,21 +335,26 @@ export class SymbaroumActor extends Actor {
             for(let i = 0; i < numAttacks; i++) {
                 let dam = (diceSides / 2 + (i == 0 ? firstAttackNPC:0) + plusAttacksNPC + allAttacksNPC);
                 displayText += dam;
+                if(!game.settings.get('symbaroum', 'showNpcAttacks')) {
+                    break;
+                }
                 if( i+1 < numAttacks) { // not last element
                     displayText += "/";
                 }
             }
             // Prefix with all single attacks, if any
             let singleText = "";
-            for(let i = 0; i < singleAttackNPC.length; i++) {
-                let dam = (diceSides / 2 + firstAttackNPC + allAttacksNPC + singleAttackNPC[i]);
-                singleText += dam+" ";
-                if( i+1 < singleAttackNPC.length) { // not last element
-                    singleText += "| ";
-                }                
-            }
-            if(singleText !== "") {
-                singleText += ", ";
+            if(game.settings.get('symbaroum', 'showNpcAttacks')) {
+                for(let i = 0; i < singleAttackNPC.length; i++) {
+                    let dam = (diceSides / 2 + firstAttackNPC + allAttacksNPC + singleAttackNPC[i]);
+                    singleText += dam+" ";
+                    if( i+1 < singleAttackNPC.length) { // not last element
+                        singleText += "| ";
+                    }                
+                }
+                if(singleText !== "") {
+                    singleText += ", ";
+                }
             }
             baseDamage = `1d${diceSides}`;
             if( weaponModifiers.specialEffects.includes(game.symbaroum.config.SPECIAL_MASSIVE) ) {
@@ -750,39 +755,39 @@ export class SymbaroumActor extends Actor {
     }
 
     _addBonusData(currentb, item, itemb, bonusType) {
-      if(itemb[bonusType] != 0 ) {
-        currentb[bonusType] += itemb[bonusType];
-        currentb[bonusType+"_msg"] += "<br />"+item.name+"("+itemb[bonusType]+")";
-      }
+        if(itemb[bonusType] != 0 ) {
+            currentb[bonusType] += itemb[bonusType];
+            currentb[bonusType+"_msg"] += "<br />"+item.name+"("+itemb[bonusType]+")";
+        }
     }
 
     _addBonus(data, item) {
 
-      let currentBonus = data.data.bonus;
-      let currentBonusToughness = currentBonus.toughness;
-      let currentBonusCorruption = currentBonus.corruption;
-      let currentBonusExperience = currentBonus.experience;
-      let itemBonus = item.data.bonus;
-      let itemBonusToughness = itemBonus.toughness;
-      let itemtBonusCorruption = itemBonus.corruption;
-      let itemBonusExperience = itemBonus.experience;
-      
-      this._addBonusData(currentBonus, item, itemBonus, "defense");
-      this._addBonusData(currentBonus, item, itemBonus, "accurate");
-      this._addBonusData(currentBonus, item, itemBonus, "cunning");
-      this._addBonusData(currentBonus, item, itemBonus, "discreet");
-      this._addBonusData(currentBonus, item, itemBonus, "persuasive");
-      this._addBonusData(currentBonus, item, itemBonus, "quick");
-      this._addBonusData(currentBonus, item, itemBonus, "resolute");
-      this._addBonusData(currentBonus, item, itemBonus, "strong");
-      this._addBonusData(currentBonus, item, itemBonus, "vigilant");
-      
-      this._addBonusData(currentBonusToughness, item, itemBonusToughness, "max");
-      this._addBonusData(currentBonusToughness, item, itemBonusToughness, "threshold");
-      this._addBonusData(currentBonusCorruption, item, itemtBonusCorruption, "max");
-      this._addBonusData(currentBonusCorruption, item, itemtBonusCorruption, "threshold");
-      this._addBonusData(currentBonusExperience, item, itemBonusExperience, "cost");
-      this._addBonusData(currentBonusExperience, item, itemBonusExperience, "value");
+        let currentBonus = data.data.bonus;
+        let currentBonusToughness = currentBonus.toughness;
+        let currentBonusCorruption = currentBonus.corruption;
+        let currentBonusExperience = currentBonus.experience;
+        let itemBonus = item.data.bonus;
+        let itemBonusToughness = itemBonus.toughness;
+        let itemtBonusCorruption = itemBonus.corruption;
+        let itemBonusExperience = itemBonus.experience;
+        
+        this._addBonusData(currentBonus, item, itemBonus, "defense");
+        this._addBonusData(currentBonus, item, itemBonus, "accurate");
+        this._addBonusData(currentBonus, item, itemBonus, "cunning");
+        this._addBonusData(currentBonus, item, itemBonus, "discreet");
+        this._addBonusData(currentBonus, item, itemBonus, "persuasive");
+        this._addBonusData(currentBonus, item, itemBonus, "quick");
+        this._addBonusData(currentBonus, item, itemBonus, "resolute");
+        this._addBonusData(currentBonus, item, itemBonus, "strong");
+        this._addBonusData(currentBonus, item, itemBonus, "vigilant");
+        
+        this._addBonusData(currentBonusToughness, item, itemBonusToughness, "max");
+        this._addBonusData(currentBonusToughness, item, itemBonusToughness, "threshold");
+        this._addBonusData(currentBonusCorruption, item, itemtBonusCorruption, "max");
+        this._addBonusData(currentBonusCorruption, item, itemtBonusCorruption, "threshold");
+        this._addBonusData(currentBonusExperience, item, itemBonusExperience, "cost");
+        this._addBonusData(currentBonusExperience, item, itemBonusExperience, "value");
 
     }
 
