@@ -156,9 +156,14 @@ export class SymbaroumItem extends Item {
             if(data.data.qualities?.deepImpact){
                 data.data.pcDamage +=  "+1";
             }
-            let weaponRoll= new Roll(baseDamage).evaluate({maximize: true});
-            data.data.npcDamage = Math.ceil(weaponRoll.total/2);
-            if(data.data.qualities?.deepImpact){
+            try {
+                let weaponRoll= new Roll(baseDamage).evaluate({maximize: true, async: false});
+                data.data.npcDamage = Math.ceil(weaponRoll.total/2);
+            } catch(err) {
+                data.data.npcDamage = 0;
+                ui.notifications?.error("Could not evaulate weapon - check bonus damage fields - "+err);
+            }
+            if(data.data.qualities?.deepImpact) {
                 data.data.npcDamage +=  1;
             }
         }
@@ -358,7 +363,12 @@ export class SymbaroumItem extends Item {
                     plus = "";
                 }
                 // NPC - cant get away from this
-                let npcDam = Math.ceil(new Roll(this.data.data.bonusDamage).evaluate({async:false, maximize: true}).total / 2);
+                let npcDam = 0;
+                try {
+                    npcDam = Math.ceil(new Roll(this.data.data.bonusDamage).evaluate({async:false, maximize: true}).total / 2);
+                } catch(err) {
+                    ui.notifications?.error("Could not evaulate weapon - check bonus damage fields - "+err);
+                }                    
 
                 base.type = game.symbaroum.config.DAM_FIXED;
                 base.alternatives = [{
