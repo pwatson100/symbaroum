@@ -141,6 +141,7 @@
   "ACTOR.TypeMonster": "Icke-spelare/monster karaktär",
 
   "ARMOR.NAME": "Namn",
+  "ARMOR.NOARMOR_NAME":"Utan bepansring",
   "ARMOR.PROTECTION": "Bepansring",
   "ARMOR.PROTECTIONABBR": "Skydd",  
   "ARMOR.PROTECTION_SHORT": "Skydd",

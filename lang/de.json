@@ -128,6 +128,7 @@
   "ACTOR.TypeMonster": "Non-player/monster character",
 
   "ARMOR.NAME": "Name",
+  "ARMOR.NOARMOR_NAME":"No Armor",
   "ARMOR.PROTECTION": "Schutz",
   "ARMOR.PROTECTIONABBR": "Schu.",
   "ARMOR.PROTECTION_SHORT": "Schu.",
