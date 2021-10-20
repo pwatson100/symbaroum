@@ -499,6 +499,10 @@ export async function damageRollWithDiceParams(functionStuff, critSuccess, attac
     // final damage
     // game.symbaroum.log(newRollDmgString);
     let dmgRoll= new Roll(newRollDmgString).evaluate();
+    
+    if (game.dice3d != null) {
+      await game.dice3d.showForRoll(dmgRoll, game.user, true);
+    }
 
     return{
     roll : dmgRoll,
@@ -545,6 +549,11 @@ export async function simpleDamageRoll(functionStuff, damageFormula){
   }
   // final damage
   let dmgRoll= new Roll(newRollDmgString).evaluate();
+
+  if (game.dice3d != null) {
+    await game.dice3d.showForRoll(dmgRoll, game.user, true);
+  }
+
   return{
     roll : dmgRoll,
     diceResult: dmgRoll.total,

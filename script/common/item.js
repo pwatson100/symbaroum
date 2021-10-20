@@ -2551,6 +2551,9 @@ async function attackResult(rollData, functionStuff){
 
     if(printCorruption){
         let corruptionRoll= new Roll(corruptionDmgFormula).evaluate();
+        if (game.dice3d != null) {
+            await game.dice3d.showForRoll(corruptionRoll, game.user, true);
+        }
         corruptionChatResult = game.i18n.localize('COMBAT.CHAT_CORRUPTED_ATTACK') + corruptionRoll.total.toString();
         corruptionTooltip = new Handlebars.SafeString(await corruptionRoll.getTooltip());
         checkCorruptionThreshold(functionStuff.targetData.actor, corruptionRoll.total);
@@ -2619,6 +2622,9 @@ async function attackResult(rollData, functionStuff){
         let flamingDamage = " 2";
         if(functionStuff.attackFromPC || functionStuff.targetData.actor.type === "monster"){
             flamingRoundsRoll= new Roll("1d4").evaluate();
+            if (game.dice3d != null) {
+                await game.dice3d.showForRoll(flamingRoundsRoll, game.user, true);
+            }
             flamingRounds = flamingRoundsRoll.total;
             flamingDamage = " 1d4"
         }
@@ -2697,6 +2703,9 @@ async function standardAbilityActivation(functionStuff) {
 
 async function healing(healFormula, targetToken){
     let healRoll = new Roll(healFormula).evaluate();
+    if (game.dice3d != null) {
+        await game.dice3d.showForRoll(healRoll, game.user, true);
+    }
     let healed = Math.min(healRoll.total, targetToken.actor.data.data.health.toughness.max - targetToken.actor.data.data.health.toughness.value);
     return({
         hasDamage : true,
@@ -2730,6 +2739,9 @@ async function poisonCalc(functionStuff, poisonRoll){
             poisonDamage = (functionStuff.poison +1).toString();
         }
         let PoisonRoundsRoll= new Roll(poisonDamage).evaluate();
+        if (game.dice3d != null) {
+            await game.dice3d.showForRoll(poisonDamage, game.user, true);
+        }
         let NewPoisonRounds = PoisonRoundsRoll.total;
         let poisonedEffectCounter = getEffect(functionStuff.targetData.token, effect);
         if(poisonedEffectCounter){
@@ -2864,6 +2876,9 @@ async function standardPowerResult(rollData, functionStuff){
 
     if(functionStuff.ability.data.reference === "confusion" && trueActorSucceeded){
         let confusionRoll= new Roll("1d6").evaluate();
+        if (game.dice3d != null) {
+            await game.dice3d.showForRoll(confusionRoll, game.user, true);
+        }
         finalText=confusionRoll.total.toString() + ": " + functionStuff.targetData.name;
         if(confusionRoll.total < 3){
             finalText += game.i18n.localize('POWER_CONFUSION.EFFECT12');
@@ -4074,6 +4089,9 @@ async function regeneration(ability, actor){
         let regenDice = 2+ 2*functionStuff.powerLvl.level;
         let regenFormula = "1d" + regenDice.toString();
         let dmgRoll= new Roll(regenFormula).evaluate();
+        if (game.dice3d != null) {
+            await game.dice3d.showForRoll(regenFormula, game.user, true);
+        }
         functionStuff.introText += "("+regenFormula+" " + game.i18n.localize('HEALTH.TOUGHNESS') +").";
         regenTotal = dmgRoll.total;
     }
