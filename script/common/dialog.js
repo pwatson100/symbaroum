@@ -10,7 +10,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon) 
   let weaponModifiers = null;
   /* */
   if(weapon !== null) {
-    weaponModifiers = foundry.utils.deepClone(actor.data.data.combat.combatMods.weapons[weapon.id].weaponmodifiers); // All modifiers needed
+    weaponModifiers = foundry.utils.deepClone(actor.data.data.combat.combatMods.weapons[weapon.id]); // All modifiers needed
     // Create any radio box alternatives from weaponModifiers
     createRadioboxAlternatives(weaponModifiers);
   }
