@@ -140,6 +140,7 @@
     "ACTOR.TypeMonster": "Personnage Non-Joueur",
 
     "ARMOR.NAME": "Nom",
+    "ARMOR.NOARMOR_NAME":"No Armor",
     "ARMOR.PROTECTION": "Protection",
     "ARMOR.PROTECTIONABBR": "Prot.",
     "ARMOR.PROTECTION_SHORT": "Prot.",
@@ -834,7 +835,8 @@
     "SYMBAROUM.OPTIONAL_RESET_NON_EDITABLE_BUTTON" :"Réinitialiser la couleur de fond des champs fixes",
     "SYMBAROUM.OPTIONAL_RESET_ALL_BUTTON": "Reinitialiser les paramètres",
     "SYMBAROUM.OPTIONAL_PLAYER_RESIST" :"Bouton jet de résistance",
-    "SYMBAROUM.OPTIONAL_PLAYER_RESIST_HINT" :"Quand un PNJ attaque avec un pouvoir ou avec l'option Combats accélérés, cette option crée un bouton dans le chat du joueur visé, qu'il devra cliquer pour lancer le jet de résistance ou de défense."
-  
+    "SYMBAROUM.OPTIONAL_PLAYER_RESIST_HINT" :"Quand un PNJ attaque avec un pouvoir ou avec l'option Combats accélérés, cette option crée un bouton dans le chat du joueur visé, qu'il devra cliquer pour lancer le jet de résistance ou de défense.",
+    "SYMBAROUM.OPTIONAL_NPC_ATTACKS": "Show multiple attacks in the weapon box for NPCs",
+    "SYMBAROUM.OPTIONAL_NPC_ATTACKS_HINT": "Warning: the system tries it best to show this, but due to technical limitations, it can only make a best guess"
 }
 

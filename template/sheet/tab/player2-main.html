@@ -142,11 +142,10 @@
                                     <div class="image" style="background-image: url('{{data.combat.img}}')"></div>
                                 </div>
                                 <button style="width:100%" class="roll-armor">
-                                    <div style="width:100%;">{{data.combat.armor}}</div>
+                                    <div style="width:100%;">{{data.combat.name}}</div>
                                     <div>{{localizeabbr "ARMOR.PROTECTION"}}</div>
                                     <span class="tooltip input">
-                                        {{#if symbaroumOptions.isNPC}}<input class="combatProt ellipsis" type="text" title="{{data.combat.protectionNpc}}" value="{{data.combat.protectionNpc}}" disabled />
-                                        {{else}}<input class="combatProt ellipsis" type="text" title="{{data.combat.protectionPc}}" value="{{data.combat.protectionPc}}" disabled />{{/if}}
+                                        <input class="combatProt ellipsis" type="text" title="{{data.combat.displayText}}" value="{{data.combat.displayTextShort}}" disabled />                                        
                                         <span class="tooltiptext downleft">{{{data.combat.tooltipProt}}}</span>
                                     </span>
                                     <div class="attribute" title="{{localize "ARMOR.DEFENCE_ATTRIBUTE"}} {{localize data.combat.defenseAttribute.label}}" style="white-space: nowrap">{{localizeabbr data.combat.defenseAttribute.label}}</div>                                

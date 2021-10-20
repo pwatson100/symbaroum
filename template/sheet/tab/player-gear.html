@@ -32,9 +32,8 @@
                                 </div>
                             </td>
                             <td class="protection">
-                                <div style="padding-left: 3px;" {{#ife ../actor.type "player"}}title="{{item.pc}}"{{/ife}} class="playergear protection ellipsis">
-                                {{#ife ../actor.type "player"}}{{item.pc}}{{/ife}}
-                                {{#ife ../actor.type "monster"}}{{item.npc}}{{/ife}}
+                                <div style="padding-left: 3px;" {{#ife ../actor.type "player"}}title="{{item.displayText}}"{{/ife}} class="playergear protection ellipsis">
+                                {{item.displayTextShort}}
                                 </div>
                             </td>
                             <td class="impeding" title="{{localize "ARMOR.IMPEDING"}} {{item.impeding}}"><div class="impeding">{{item.impeding}}</div>

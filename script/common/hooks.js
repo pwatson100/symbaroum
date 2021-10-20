@@ -181,6 +181,14 @@ Hooks.once('init', () => {
     default: false,
     config: true,
   });
+  game.settings.register('symbaroum', 'showNpcAttacks', {
+    name: 'SYMBAROUM.OPTIONAL_NPC_ATTACKS',
+    hint: 'SYMBAROUM.OPTIONAL_NPC_ATTACKS_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });  
   game.settings.register('symbaroum', 'allowShowReference', {
     name: 'SYMBAROUM.OPTIONAL_SHOWREFERENCE',
     hint: 'SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT',

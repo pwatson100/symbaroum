@@ -8,59 +8,120 @@ combat {
             modifier: int // value to modify existing initiative
         }
     ]
+    armors: [
+        armorid : 
+        {
+            specialEffects [
+                stringvalue // currently only SPECIAL_STRONG, SPECIAL_WEAK, SPECIAL_MIN_DEFENSE
+            ]
+            attributes [
+                {
+                    label : "the label of the modifier",
+                    id : "the id",
+                    attribute : "the preferred defense attribute",
+                }
+            ],
+            impedingModifiers [
+                {
+
+                    label : "the label of the modifier",
+                    id : "the id",
+                    modifier : "+mod",  // will result in suitable penalty reduction - min 0 impeding
+                    modifierMagic : "mod", // will result in suitable penalty reduction - min 0 impeding
+                }
+            ],
+            defenseModifiers [
+                {
+                    label : "the label of the modifier",
+                    id : "the id",
+                    modifier : "+mod" // as per roll formula
+                }
+            ],
+            damageReductions [
+                {
+                    label : "the label of the modifier",
+                    id : "the id",                    
+                    normal: 1,
+                    elemental: 1,
+                    mystic: 1,
+                    holy: 1,
+                    mysticalWeapon: 1                                       
+                }
+            ],
+            protectionChoices [
+                {
+                    label : "the label of the modifier",
+                    id : "the id",
+                    type : "check","fixed", "radio","upgrade", "builtin" // builtin is for those that EC assumes are already calculated
+                    // fixed & check assumes only one single alternative. If there is more than one alternative, add multiple damageChoices
+                    diceUpgrade : int, // only when upgrade - num sides upgrade (min 2)
+                    defaultSelect : "alternatives index", // only for radio = select id is the partialDamageFormula
+                    alternatives : [ // radio / check / fixed - only radio expects more than 1 
+                        {
+                            label : "the label of this modifier",
+                            protectionMod : "partialDamageFormula" // check & fixed & builtin - Partial damage formula in PC format as default
+                            protectionModNPC : "", // Partial Damage in NPC format assuming restrictions are fullfilled (for all types)
+                            restrictions = [ // any restrictions
+                            ]
+                        }
+                        { ... next option ...] }
+                    },
+                }
+            ],
+
+        }
+    ],
     weapons: [
         weaponid : {
-            weaponmodifiers {
-                specialEffects [
-                    stringvalue // currently only SPECIAL_MASSIVE
-                ]
-                attributes [
-                    {
-                        label : "the label of the modifier",
-                        id : "the id",
-                        attribute : "the preferred attack attribute",
-                    }
-                ]
-                attackModifiers [
-                    {
-                        label : "the label of the modifier",
-                        id : "the id",
-                        modifier : "+mod" // as per roll formula
-                    }
-                ],
-                attackIncrease [
-                    {
-                        label : "the label of the modifier",
-                        id : "the id",
-                        modifier : "+mod" // the number of additional attacks
-                    }
+            specialEffects [
+                stringvalue // currently only SPECIAL_STRONG
+            ]
+            attributes [
+                {
+                    label : "the label of the modifier",
+                    id : "the id",
+                    attribute : "the preferred attack attribute",
+                }
+            ]
+            attackModifiers [
+                {
+                    label : "the label of the modifier",
+                    id : "the id",
+                    modifier : "+mod" // as per roll formula
+                }
+            ],
+            attackIncrease [
+                {
+                    label : "the label of the modifier",
+                    id : "the id",
+                    modifier : "+mod" // the number of additional attacks
+                }
 
-                ],
-                damageChoices [
-                    {
-                        label : "the label of the modifier",
-                        id : "the id",
-                        type : "check","fixed", "radio","upgrade", "builtin" // builtin is for those that EC assumes are already calculated
-                        // fixed & check assumes only one single alternative. If there is more than one alternative, add multiple damageChoices
-                        diceUpgrade : int, // only when upgrade - num sides upgrade (min 2)
-                        defaultSelect : "alternatives index", // only for radio = select id is the partialDamageFormula
-                        alternatives : [ // radio / check / fixed - most beneficial one last
-                            {
-                                label : "the label of this modifier",
-                                damageMod : "partialDamageFormula" // check & fixed & builtin - Partial damage formula in PC format as default
-                                damageModNPC : "", // Partial Damage in NPC format assuming restrictions are fullfilled (for all types)
-                                restrictions = [ // any restrictions
-                                    "1st-attack", // Only applicable on first attack
-                                    "active", // Can only be used when performing 1 attack
-                                    "advantage", // Can only be used when at advantage
-                                    ("[attack-attribute]", // Only applies when attack is made with this attribute) // Not sure I can support - might require double loop
-                                ]
-                            }
-                            { ... next option ...] }
-                        },
-                    }
-                ]
-            }
+            ],
+            damageChoices [
+                {
+                    label : "the label of the modifier",
+                    id : "the id",
+                    type : "check","fixed", "radio","upgrade", "builtin" // builtin is for those that EC assumes are already calculated
+                    // fixed & check assumes only one single alternative. If there is more than one alternative, add multiple damageChoices
+                    diceUpgrade : int, // only when upgrade - num sides upgrade (min 2)
+                    defaultSelect : "alternatives index", // only for radio = select id is the partialDamageFormula
+                    alternatives : [ // radio / check / fixed - only radio expects more than 1 and most beneficial one last
+                        {
+                            label : "the label of this modifier",
+                            damageMod : "partialDamageFormula" // check & fixed & builtin - Partial damage formula in PC format as default
+                            damageModNPC : "", // Partial Damage in NPC format assuming restrictions are fullfilled (for all types)
+                            restrictions = [ // any restrictions
+                                "1st-attack", // Only applicable on first attack
+                                "active", // Can only be used when performing 1 attack
+                                "advantage", // Can only be used when at advantage
+                                ("[attack-attribute]", // Only applies when attack is made with this attribute) // Not sure I can support - might require double loop
+                            ]
+                        }
+                        { ... next option ...] }
+                    },
+                }
+            ]
         }
     ]
 }

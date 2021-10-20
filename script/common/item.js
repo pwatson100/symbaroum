@@ -79,7 +79,24 @@ export class SymbaroumItem extends Item {
             data.data.pcDamage = "";
             data.data.npcDamage = 0;
         }
-        else if(data.type === "armor"){
+        else if(data.type === "armor")
+        {
+            data.isStackableArmor = data.data.baseProtection === "0";
+            data.isLightArmor = data.data.baseProtection === "1d4";
+            data.isMediumArmor = data.data.baseProtection === "1d6";
+            data.isHeavyArmor = data.data.baseProtection == "1d8";
+            data.isSuperArmor = data.data.baseProtection == "1d10" || data.data.baseProtection == "1d12";
+            if(data.isStackableArmor ) {
+                data.data.reference = "stackable";                
+            } else if(data.isLightArmor) {
+                data.data.reference = "lightarmor";
+            } else if(data.isMediumArmor) {
+                data.data.reference = "mediumarmor";
+            } else if(data.isHeavyArmor) { 
+                data.data.reference = "heavyarmor";
+            } else {
+                data.data.reference = "superarmor";
+            }
             data.data.pcProtection = "";
             data.data.npcProtection = 0;
         } else if(data.type == "artifact") {
@@ -156,9 +173,14 @@ export class SymbaroumItem extends Item {
             if(data.data.qualities?.deepImpact){
                 data.data.pcDamage +=  "+1";
             }
-            let weaponRoll= new Roll(baseDamage).evaluate({maximize: true});
-            data.data.npcDamage = Math.ceil(weaponRoll.total/2);
-            if(data.data.qualities?.deepImpact){
+            try {
+                let weaponRoll= new Roll(baseDamage).evaluate({maximize: true, async: false});
+                data.data.npcDamage = Math.ceil(weaponRoll.total/2);
+            } catch(err) {
+                data.data.npcDamage = 0;
+                ui.notifications?.error("Could not evaulate weapon - check bonus damage fields - "+err);
+            }
+            if(data.data.qualities?.deepImpact) {
                 data.data.npcDamage +=  1;
             }
         }
@@ -173,7 +195,11 @@ export class SymbaroumItem extends Item {
             } 
 
             if(data.data.bonusProtection && data.data.bonusProtection != ""){
-                protection += "+" + data.data.bonusProtection;
+                let plus = "+";
+                if(data.data.bonusProtection.charAt(0) === '+' ) {
+                    plus = "";
+                }
+                protection += plus + data.data.bonusProtection;
             }
             data.data.pcProtection = protection;
             if(data.data.qualities?.reinforced){
@@ -325,13 +351,14 @@ export class SymbaroumItem extends Item {
         return {level : powerLvl, lvlName : lvlName};
     }
 
-    getCombatModifiers(combatMods, armor, weapons) 
+    getCombatModifiers(combatMods, armors, weapons) 
     {
         if( !this.isOwned || this.data.data.reference === undefined || this.data.data.reference === null) {
             return;               
         }
-        if( typeof this["getCombatModifier"+this.data.data.reference.capitalize()] == "function" ) {
-            this["getCombatModifier"+this.data.data.reference.capitalize()](combatMods, armor, weapons)
+        let ref = this.data.data.reference.capitalize();
+        if( typeof this["getCombatModifier"+ref] == "function" ) {
+            this["getCombatModifier"+ref](combatMods, armors, weapons)
         }
     }
 
@@ -344,8 +371,111 @@ export class SymbaroumItem extends Item {
     }
 
     // Reference combat modifiers
-    _getOwnWeaponBonuses(combatMods, weapons) 
+    // Armors
+    _getOwnArmorBonuses(combatMods, armors)
     {
+        for(let i = 0; i < armors.length; i++)
+        {
+            if(this.id == armors[i].id) {
+                if(this.data.data.bonusProtection != "") {
+                    let base = this._getBaseFormat();
+                    let plus = "+";
+                    if(this.data.data.bonusProtection.charAt(0) === '+') {
+                        plus = "";
+                    }                
+                    // NPC - cant get away from this
+                    let npcProt = 0;
+                    try {
+                        npcProt = Math.ceil(new Roll(this.data.data.bonusProtection).evaluate({async:false, maximize: true}).total / 2);
+                    } catch(err) {
+                        ui.notifications?.error(`Could not evaulate armor bonus protection for ${this.data.name} - check bonus damage fields -`+err);
+                    }                    
+
+                    base.type = game.symbaroum.config.DAM_FIXED;
+                    base.alternatives = [{
+                        protectionMod: plus+this.data.data.bonusProtection,
+                        protectionModNPC: npcProt,
+                        displayMod: plus+this.data.data.bonusProtection
+                    }];
+                    combatMods.armors[armors[i].id].protectionChoices.push(base);
+                }
+                if(!this.data.isStackableArmor && this.data.data.qualities.reinforced) {
+                    let base = this._getBaseFormat();
+                    base.label = game.i18n.localize("QUALITY.REINFORCED");
+                    base.type = game.symbaroum.config.DAM_FIXED;
+                    base.alternatives = [{
+                        protectionMod: "+1d1",
+                        protectionModNPC: 1,
+                    }];
+                    combatMods.armors[armors[i].id].protectionChoices.push(base);
+                }
+                if(!this.data.isStackableArmor && this.data.data.qualities.flexible) {
+                    let base = this._getBaseFormat();
+                    base.label = game.i18n.localize("QUALITY.FLEXIBLE");                    
+                    base.modifier = 2;
+                    combatMods.armors[armors[i].id].impedingModifiers.push(base);
+    
+                }                
+            }
+            else if( this.data.isStackableArmor && !armors[i].data.isStackableArmor && this.data.isActive ) 
+            {
+                if(this.data.data.bonusProtection != "") 
+                {
+                    let base = this._getBaseFormat();
+                    let plus = "+";
+                    let npcProt = 0;
+                    try {
+                        npcProt = Math.ceil(new Roll(this.data.data.bonusProtection).evaluate({async:false, maximize: true}).total / 2);
+                    } catch(err) {
+                        ui.notifications?.error(`Could not evaulate armor bonus protection for ${this.data.name} - check bonus damage fields -`+err);
+                    }                    
+                    base.type = game.symbaroum.config.DAM_FIXED;
+                    base.alternatives = [{
+                        protectionMod: plus+this.data.data.bonusProtection,
+                        protectionModNPC: npcProt,
+                        displayMod: plus+this.data.data.bonusProtection
+                    }];
+                    combatMods.armors[armors[i].id].protectionChoices.push(base);
+                }
+            }
+        }
+    }
+
+    // All armor types
+    getCombatModifierStackable(combatMods, armors, weapons) {
+        this._getOwnArmorBonuses(combatMods,armors);
+    }
+    
+    getCombatModifierLightarmor(combatMods, armors, weapons) {
+        this._getOwnArmorBonuses(combatMods,armors);
+    }
+
+    getCombatModifierMediumarmor(combatMods, armors, weapons) {
+        this._getOwnArmorBonuses(combatMods,armors);
+    }
+
+    getCombatModifierHeavyarmor(combatMods, armors, weapons) {
+        this._getOwnArmorBonuses(combatMods,armors);
+    }
+    // Higher than d8
+    getCombatModifierSuperarmor(combatMods, armors, weapons) {
+        this._getOwnArmorBonuses(combatMods,armors);
+    }
+
+    // Weapons    
+    _getOwnWeaponBonuses(combatMods, armors, weapons) 
+    {
+        for(let i = 0; i < armors.length; i++)
+        {
+            if(!this.data.isActive || !armors[i].data.isActive || armors[i].data.isStackableArmor ||  !this.data.data.qualities.balanced) {
+                continue;
+            }
+            // Add 1
+            let base = this._getBaseFormat();
+            base.label = game.i18n.localize("QUALITY.BALANCED");
+            base.modifier = 1;
+            combatMods.armors[armors[i].id].defenseModifiers.push(base);            
+        }        
         for(let i = 0; i < weapons.length; i++)
         {
             if(weapons[i].id != this.id) {
@@ -358,7 +488,12 @@ export class SymbaroumItem extends Item {
                     plus = "";
                 }
                 // NPC - cant get away from this
-                let npcDam = Math.ceil(new Roll(this.data.data.bonusDamage).evaluate({async:false, maximize: true}).total / 2);
+                let npcDam = 0;
+                try {
+                    npcDam = Math.ceil(new Roll(this.data.data.bonusDamage).evaluate({async:false, maximize: true}).total / 2);
+                } catch(err) {
+                    ui.notifications?.error(`Could not evaulate weapon bonus for ${this.data.name} - check bonus damage fields - `+err);
+                }                    
 
                 base.type = game.symbaroum.config.DAM_FIXED;
                 base.alternatives = [{
@@ -366,7 +501,7 @@ export class SymbaroumItem extends Item {
                     damageModNPC: npcDam,
                     displayMod: plus+this.data.data.bonusDamage
                 }];
-                combatMods.weapons[weapons[i].id].weaponmodifiers.damageChoices.push(base);            
+                combatMods.weapons[weapons[i].id].damageChoices.push(base);            
             }
             if(this.data.data.qualities.deepImpact) {
                 // Add 1
@@ -377,53 +512,54 @@ export class SymbaroumItem extends Item {
                     damageMod: "+1d1",
                     damageModNPC: 1,
                 }];
-                combatMods.weapons[weapons[i].id].weaponmodifiers.damageChoices.push(base);            
+                combatMods.weapons[weapons[i].id].damageChoices.push(base);            
             }
             if(this.data.data.qualities.precise) {
                 // Add 1
                 let base = this._getBaseFormat();
                 base.label = game.i18n.localize("QUALITY.PRECISE");
                 base.modifier = 1;
-                combatMods.weapons[weapons[i].id].weaponmodifiers.attackModifiers.push(base);            
+                combatMods.weapons[weapons[i].id].attackModifiers.push(base);            
             }
             if(this.data.data.qualities.massive) {
                 // Add 1                                
-                combatMods.weapons[weapons[i].id].weaponmodifiers.specialEffects.push(game.symbaroum.config.SPECIAL_MASSIVE);
+                combatMods.weapons[weapons[i].id].specialEffects.push(game.symbaroum.config.SPECIAL_STRONG);
             }
-        // TODO - balanced
+            // TODO - balanced - gives 1 defense to normal armors
+            // i.e. !stackable
         }
     }
 
     // All melee weapons
-    getCombatModifierUnarmed(combatMods, armor, weapons) {
-        this._getOwnWeaponBonuses(combatMods,weapons);
+    getCombatModifierUnarmed(combatMods, armors, weapons) {
+        this._getOwnWeaponBonuses(combatMods, armors, weapons);
     }
-    getCombatModifier1handed(combatMods, armor, weapons) {
-        this._getOwnWeaponBonuses(combatMods,weapons);
+    getCombatModifier1handed(combatMods, armors, weapons) {
+        this._getOwnWeaponBonuses(combatMods, armors, weapons);
     }
-    getCombatModifierShort(combatMods, armor, weapons) {
-        this._getOwnWeaponBonuses(combatMods,weapons);
+    getCombatModifierShort(combatMods, armors, weapons) {
+        this._getOwnWeaponBonuses(combatMods, armors, weapons);
     }
-    getCombatModifierLong(combatMods, armor, weapons) {
-        this._getOwnWeaponBonuses(combatMods,weapons);
+    getCombatModifierLong(combatMods, armors, weapons) {
+        this._getOwnWeaponBonuses(combatMods, armors, weapons);
     }
-    getCombatModifierShield(combatMods, armor, weapons) {
-        this._getOwnWeaponBonuses(combatMods,weapons);
+    getCombatModifierShield(combatMods, armors, weapons) {
+        this._getOwnWeaponBonuses(combatMods, armors, weapons);
     }
-    getCombatModifierHeavy(combatMods, armor, weapons) {
-        this._getOwnWeaponBonuses(combatMods,weapons);
+    getCombatModifierHeavy(combatMods, armors, weapons) {
+        this._getOwnWeaponBonuses(combatMods, armors, weapons);
     }
     // All ranged
-    getCombatModifierRanged(combatMods, armor, weapons) {
-        this._getOwnWeaponBonuses(combatMods,weapons);
+    getCombatModifierRanged(combatMods, armors, weapons) {
+        this._getOwnWeaponBonuses(combatMods, armors, weapons);
     }
-    getCombatModifierThrown(combatMods, armor, weapons) {
-        this._getOwnWeaponBonuses(combatMods,weapons);
+    getCombatModifierThrown(combatMods, armors, weapons) {
+        this._getOwnWeaponBonuses(combatMods,armors, weapons);
     }
     // End weapons
 
     // Start abilities & traits
-    getCombatModifierAlternativedamage(combatMods, armor, weapons) {
+    getCombatModifierAlternativedamage(combatMods, armors, weapons) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         
@@ -435,46 +571,134 @@ export class SymbaroumItem extends Item {
             let base = this._getBaseFormat();
             base.type = base.type = game.symbaroum.config.DAM_DICEUPGRADE;
             base.diceUpgrade = 2 * lvl.level;
-            combatMods.weapons[weapons[i].id].weaponmodifiers.damageChoices.push(base);
+            combatMods.weapons[weapons[i].id].damageChoices.push(base);
+        }
+    }
+    getCombatModifierArmored(combatMods, armors, weapons)
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        for(let i = 0; i < armors.length; i++)
+        {
+            if(armors[i].data.isStackableArmor) {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.type = base.type = game.symbaroum.config.DAM_DICEUPGRADE;
+            base.diceUpgrade = 2 * lvl.level;
+            combatMods.armors[armors[i].id].protectionChoices.push(base);
+        }
+    }        
+
+    getCombatModifierArmoredmystic(combatMods, armors, weapons) 
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+
+        for(let i = 0; i < armors.length; i++)
+        {
+            if(armors[i].data.isStackableArmor) {
+                continue;
+            }
+            if(armors[i].data.isLightArmor || armors[i].data.isMediumArmor || (armors[i].data.isHeavyArmor && lvl.level > 1) )
+            {
+                let base = this._getBaseFormat();
+                base.modifierMagic = armors[i].data.data.impeding; // Reduce with up to current impeding
+                combatMods.armors[armors[i].id].impedingModifiers.push(base);
+            }
+            if(lvl.level > 2) {
+                let base = this._getBaseFormat();
+                base.type = game.symbaroum.config.DAM_FIXED;
+                base.alternatives = [{
+                    protectionMod: "+1d4",
+                    protectionModNPC: 2,
+                    displayMod: "+1d4"
+                }];
+                combatMods.armors[armors[i].id].protectionChoices.push(base);
+            }
         }
     }
 
-    getCombatModifierBerserker(combatMods, armor, weapons) {
+    getCombatModifierBerserker(combatMods, armors, weapons) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
+        if(!this.actor.getFlag(game.system.id, 'berserker')) {
+            return;
+        }
+
+        for(let i = 0; i < armors.length; i++)
+        {
+            if(armors[i].isStackableArmor)
+            {
+                continue;
+            }
+            if(lvl.level > 1) {
+                let base = this._getBaseFormat();
+                base.type = game.symbaroum.config.DAM_FIXED;
+                base.alternatives = [{
+                    protectionMod: "+1d4",
+                    protectionModNPC: 2,
+                    displayMod: "+1d4"
+                }];
+                combatMods.armors[armors[i].id].protectionChoices.push(base);
+            }
+            if(lvl.level < 3) {
+                combatMods.armors[armors[i].id].specialEffects.push(game.symbaroum.config.SPECIAL_MIN_DEFENSE);
+            }
+        }
         for(let i = 0; i < weapons.length; i++)
         {
             if(weapons[i].data.data.alternativeDamage !== "none" || !weapons[i].data.data.isMelee) {
                 continue;
             }
-            if(this.actor.getFlag(game.system.id, 'berserker')) {
-                let base = this._getBaseFormat();
-                base.type = game.symbaroum.config.DAM_FIXED;
-                base.alternatives = [{
-                    damageMod: "+1d6",
-                    damageModNPC: 3,
-                }];
-                combatMods.weapons[weapons[i].id].weaponmodifiers.damageChoices.push(base);
-            }
-        }        
+            let base = this._getBaseFormat();
+            base.type = game.symbaroum.config.DAM_FIXED;
+            base.alternatives = [{
+                damageMod: "+1d6",
+                damageModNPC: 3,
+            }];
+            combatMods.weapons[weapons[i].id].damageChoices.push(base);
+        }
     }    
 
-    getCombatModifierColossal(combatMods, armor, weapons) {
+    getCombatModifierColossal(combatMods, armors, weapons) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
-        
+        if(lvl.level > 2) {
+            for(let i = 0; i < armors.length; i++)
+            {
+                if(armors[i].isStackableArmor)
+                {
+                    continue;
+                }
+                let base = this._getBaseFormat();
+                base.normal = 0;
+                combatMods.armors[armors[i].id].damageReductions.push(base);            
+    
+            }
+        }
         for(let i = 0; i < weapons.length; i++)
         {
             if( weapons[i].data.data.alternativeDamage !== "none") {
                 continue;
             }
-            combatMods.weapons[weapons[i].id].weaponmodifiers.specialEffects.push(game.symbaroum.config.SPECIAL_MASSIVE);
+            combatMods.weapons[weapons[i].id].specialEffects.push(game.symbaroum.config.SPECIAL_STRONG);
         }
     }
 
-    getCombatModifierDancingweapon(combatMods, armor, weapons) {
+    getCombatModifierDancingweapon(combatMods, armors, weapons) {
         let lvl = this.getLevel();
-        if(lvl.level == 0) return;
+        if(lvl.level == 0 || !this.actor.getFlag(game.system.id, 'dancingweapon') ) return;
+        for(let i = 0; i < armors.length; i++)
+        {
+            if(armors[i].isStackableArmor)
+            {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.attribute = "resolute";  
+            combatMods.armors[armors[i].id].attributes.push(base);            
+        }        
         for(let i = 0; i < weapons.length; i++)
         {
             if(!weapons[i].data.data.isMelee || !this.actor.getFlag(game.system.id, "dancingweapon")) {
@@ -482,11 +706,11 @@ export class SymbaroumItem extends Item {
             }
             let base = this._getBaseFormat();
             base.attribute = "resolute";            
-            combatMods.weapons[weapons[i].id].weaponmodifiers.attributes.push(base);
+            combatMods.weapons[weapons[i].id].attributes.push(base);
         }        
     }    
 
-    getCombatModifierDominate(combatMods, armor, weapons) {
+    getCombatModifierDominate(combatMods, armors, weapons) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         for(let i = 0; i < weapons.length; i++)
@@ -496,11 +720,11 @@ export class SymbaroumItem extends Item {
             }
             let base = this._getBaseFormat();
             base.attribute = "persuasive";            
-            combatMods.weapons[weapons[i].id].weaponmodifiers.attributes.push(base);
+            combatMods.weapons[weapons[i].id].attributes.push(base);
         }        
     }
 
-    getCombatModifierFeatofstrength(combatMods, armor, weapons) {
+    getCombatModifierFeatofstrength(combatMods, armors, weapons) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         for(let i = 0; i < weapons.length; i++)
@@ -516,14 +740,26 @@ export class SymbaroumItem extends Item {
                     damageMod: "+1d4",
                     damageModNPC: 2,
                 }];
-                combatMods.weapons[weapons[i].id].weaponmodifiers.damageChoices.push(base);
+                combatMods.weapons[weapons[i].id].damageChoices.push(base);
             }
         }        
     }
 
-    getCombatModifierFeint(combatMods, armor, weapons) {
+    getCombatModifierFeint(combatMods, armors, weapons) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
+        if(lvl.level > 1) {
+            for(let i = 0; i < armors.length; i++)
+            {
+                if(armors[i].isStackableArmor)
+                {
+                    continue;
+                }
+                let base = this._getBaseFormat();
+                base.attribute = "discreet";  
+                combatMods.armors[armors[i].id].attributes.push(base);
+            }
+        }
         for(let i = 0; i < weapons.length; i++)
         {
             if(!weapons[i].data.data.isMelee || !(weapons[i].data.data.qualities.precise || weapons[i].data.data.qualities.short) ) {
@@ -531,11 +767,11 @@ export class SymbaroumItem extends Item {
             }
             let base = this._getBaseFormat();
             base.attribute = "discreet";            
-            combatMods.weapons[weapons[i].id].weaponmodifiers.attributes.push(base);
+            combatMods.weapons[weapons[i].id].attributes.push(base);
         }        
     }
 
-    getCombatModifierHuntersinstinct(combatMods, armor, weapons) {
+    getCombatModifierHuntersinstinct(combatMods, armors, weapons) {
         let lvl = this.getLevel();
         if(lvl.level < 2) return;
         for(let i = 0; i < weapons.length; i++)
@@ -550,11 +786,11 @@ export class SymbaroumItem extends Item {
                 damageModNPC: 2,
                 restrictions: [game.symbaroum.config.DAM_NOTACTIVE]
             }];
-            combatMods.weapons[weapons[i].id].weaponmodifiers.damageChoices.push(base);        
+            combatMods.weapons[weapons[i].id].damageChoices.push(base);        
         }        
     }
 
-    getCombatModifierIronfist(combatMods, armor, weapons) {
+    getCombatModifierIronfist(combatMods, armors, weapons) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         
@@ -566,7 +802,7 @@ export class SymbaroumItem extends Item {
             if( lvl.level > 0) {
                 let base = this._getBaseFormat();
                 base.attribute = "strong";
-                combatMods.weapons[weapons[i].id].weaponmodifiers.attributes.push(base);
+                combatMods.weapons[weapons[i].id].attributes.push(base);
             }
             if( lvl.level == 2) {
                 let base = this._getBaseFormat();
@@ -575,7 +811,7 @@ export class SymbaroumItem extends Item {
                     damageMod: "+1d4",
                     damageModNPC: 2,
                 }];
-                combatMods.weapons[weapons[i].id].weaponmodifiers.damageChoices.push(base);
+                combatMods.weapons[weapons[i].id].damageChoices.push(base);
             }
             if( lvl.level == 3) {
                 let base = this._getBaseFormat();
@@ -595,12 +831,12 @@ export class SymbaroumItem extends Item {
                         restrictions: [game.symbaroum.config.DAM_NOTACTIVE]
                     }
                 ];
-                combatMods.weapons[weapons[i].id].weaponmodifiers.damageChoices.push(base);
+                combatMods.weapons[weapons[i].id].damageChoices.push(base);
             }
         }
     }
 
-    getCombatModifierKnifeplay(combatMods, armor, weapons) {
+    getCombatModifierKnifeplay(combatMods, armors, weapons) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         for(let i = 0; i < weapons.length; i++)
@@ -610,16 +846,37 @@ export class SymbaroumItem extends Item {
             }
             let base = this._getBaseFormat();
             base.attribute = "quick";            
-            combatMods.weapons[weapons[i].id].weaponmodifiers.attributes.push(base);
+            combatMods.weapons[weapons[i].id].attributes.push(base);
             if(lvl.level > 1) {
                 base = this._getBaseFormat();
                 base.modifier = 1;
-                combatMods.weapons[weapons[i].id].weaponmodifiers.attackIncrease.push(base);
+                combatMods.weapons[weapons[i].id].attackIncrease.push(base);
             }
         }        
     }
 
-    getCombatModifierMarksman(combatMods, armor, weapons)
+    getCombatModifierManatarms(combatMods, armors, weapons)
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        for(let i = 0; i < armors.length; i++)
+        {
+            if( armors[i].isNoArmor || armors[i].data.isStackableArmor) {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.type = base.type = game.symbaroum.config.DAM_DICEUPGRADE;
+            base.diceUpgrade = 2;
+            combatMods.armors[armors[i].id].protectionChoices.push(base);
+            if(lvl.level > 1) {
+                base = this._getBaseFormat();
+                base.modifier = armors[i].data.data.impeding; // Reduce with up to current impeding
+                combatMods.armors[armors[i].id].impedingModifiers.push(base);
+            }
+        }
+    }    
+
+    getCombatModifierMarksman(combatMods, armors, weapons)
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -631,11 +888,11 @@ export class SymbaroumItem extends Item {
             let base = this._getBaseFormat();
             base.type = base.type = game.symbaroum.config.DAM_DICEUPGRADE;
             base.diceUpgrade = 2;
-            combatMods.weapons[weapons[i].id].weaponmodifiers.damageChoices.push(base);
+            combatMods.weapons[weapons[i].id].damageChoices.push(base);
         }
     }
 
-    getCombatModifierNaturalwarrior(combatMods, armor, weapons) {
+    getCombatModifierNaturalwarrior(combatMods, armors, weapons) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         
@@ -648,12 +905,12 @@ export class SymbaroumItem extends Item {
                 let base = this._getBaseFormat();
                 base.type = base.type = game.symbaroum.config.DAM_DICEUPGRADE;
                 base.diceUpgrade = 2;
-                combatMods.weapons[weapons[i].id].weaponmodifiers.damageChoices.push(base);
+                combatMods.weapons[weapons[i].id].damageChoices.push(base);
             }
             if( lvl.level > 1) {
                 let base = this._getBaseFormat();
                 base.modifier = 1;
-                combatMods.weapons[weapons[i].id].weaponmodifiers.attackIncrease.push(base);
+                combatMods.weapons[weapons[i].id].attackIncrease.push(base);
             }
             if( lvl.level > 2) {
                 let base = this._getBaseFormat();
@@ -662,12 +919,12 @@ export class SymbaroumItem extends Item {
                     damageMod: "+1d6",
                     damageModNPC: 3
                 }];
-                combatMods.weapons[weapons[i].id].weaponmodifiers.damageChoices.push(base);
+                combatMods.weapons[weapons[i].id].damageChoices.push(base);
             }
         }
     }
 
-    getCombatModifierNaturalweapon(combatMods, armor, weapons) {
+    getCombatModifierNaturalweapon(combatMods, armors, weapons) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         
@@ -679,11 +936,11 @@ export class SymbaroumItem extends Item {
             let base = this._getBaseFormat();
             base.type = base.type = game.symbaroum.config.DAM_DICEUPGRADE;
             base.diceUpgrade = 2 * lvl.level;
-            combatMods.weapons[weapons[i].id].weaponmodifiers.damageChoices.push(base);
+            combatMods.weapons[weapons[i].id].damageChoices.push(base);
         }
     }
 
-    getCombatModifierPolearmmastery(combatMods, armor, weapons)
+    getCombatModifierPolearmmastery(combatMods, armors, weapons)
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -696,13 +953,28 @@ export class SymbaroumItem extends Item {
             let base = this._getBaseFormat();
             base.type = game.symbaroum.config.DAM_DICEUPGRADE;
             base.diceUpgrade = 2;
-            combatMods.weapons[weapons[i].id].weaponmodifiers.damageChoices.push(base);
+            combatMods.weapons[weapons[i].id].damageChoices.push(base);
         }
     }
 
-    getCombatModifierRobust(combatMods, armor, weapons) {
+    getCombatModifierRobust(combatMods, armors, weapons) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
+        for(let i = 0; i < armors.length; i++) {
+            if(armors[i].data.isStackableArmor) {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.type = game.symbaroum.config.DAM_FIXED;
+            base.alternatives = [{
+                protectionMod: "+1d"+(2+lvl.level*2),
+                protectionModNPC: (1+lvl.level)
+            }];
+            combatMods.armors[armors[i].id].protectionChoices.push(base);
+            base = this._getBaseFormat();
+            base.modifier = -1 * lvl.level - 1; // Reduce with up to current impeding
+            combatMods.armors[armors[i].id].defenseModifiers.push(base);
+        }
         for(let i = 0; i < weapons.length; i++)
         {
             if( weapons[i].data.data.alternativeDamage !== "none" || !weapons[i].data.data.isMelee) {
@@ -715,15 +987,29 @@ export class SymbaroumItem extends Item {
                 damageModNPC: (1+lvl.level),
                 restrictions: [game.symbaroum.config.DAM_1STATTACK]
             }];
-            combatMods.weapons[weapons[i].id].weaponmodifiers.damageChoices.push(base);
+            combatMods.weapons[weapons[i].id].damageChoices.push(base);
         }
     }
 
-    getCombatModifierShieldfighter(combatMods, armor, weapons)
+    getCombatModifierShieldfighter(combatMods, armors, weapons)
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
 
+        for(let i = 0; i < armors.length; i++)
+        {
+            if(armors[i].isStackableArmor)
+            {
+                continue;
+            }
+            let haveShieldEquipped = this.actor.items.filter(element => element.data.data?.reference === "shield" && element.data.isActive)
+            if(!haveShieldEquipped) {
+                continue;
+            }                
+            let base = this._getBaseFormat();
+            base.modifier = 1;
+            combatMods.armors[armors[i].id].defenseModifiers.push(base); 
+        }
         for(let i = 0; i < weapons.length; i++)
         {
             if( weapons[i].data.data.isMelee &&
@@ -737,18 +1023,18 @@ export class SymbaroumItem extends Item {
                 let base = this._getBaseFormat();
                 base.type = game.symbaroum.config.DAM_DICEUPGRADE;
                 base.diceUpgrade = 2;
-                combatMods.weapons[weapons[i].id].weaponmodifiers.damageChoices.push(base);
+                combatMods.weapons[weapons[i].id].damageChoices.push(base);
 
             } else if( weapons[i].data.data.reference === "shield" && lvl.level > 2) {
                 let base = this._getBaseFormat();
                 base.type = game.symbaroum.config.DAM_DICEUPGRADE;
                 base.diceUpgrade = 4;
-                combatMods.weapons[weapons[i].id].weaponmodifiers.damageChoices.push(base);
+                combatMods.weapons[weapons[i].id].damageChoices.push(base);
             }
         }
     }
 
-    getCombatModifierSixthsense(combatMods, armor, weapons) 
+    getCombatModifierSixthsense(combatMods, armors, weapons) 
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -758,6 +1044,18 @@ export class SymbaroumItem extends Item {
             base.attribute = "vigilant";
             combatMods.initiative.push(base);
         }
+        if(lvl.level > 1) {
+            for(let i = 0; i < armors.length; i++)
+            {
+                if(armors[i].isStackableArmor)
+                {
+                    continue;
+                }
+                let base = this._getBaseFormat();
+                base.attribute = "vigilant";  
+                combatMods.armors[armors[i].id].attributes.push(base);
+            }
+        }
         // Level 1
         for(let i = 0; i < weapons.length; i++)
         {
@@ -766,11 +1064,55 @@ export class SymbaroumItem extends Item {
             }
             let base = this._getBaseFormat();
             base.attribute = "vigilant";
-            combatMods.weapons[weapons[i].id].weaponmodifiers.attributes.push(base);
+            combatMods.weapons[weapons[i].id].attributes.push(base);
         }
     }
-    
-    getCombatModifierSteelthrow(combatMods, armor, weapons)
+
+    getCombatModifierSpiritform(combatMods, armors, weapons) 
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        for(let i = 0; i < armors.length; i++)
+        {            
+            if(armors[i].data.isStackableArmor) {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.normal = 0.5;
+            if(lvl.level > 1) {
+                base.mystic = 0.5;
+                base.elemental = 0.5;
+                base.holy = 0.5;
+                base.mysticalWeapon = 0.5;
+            }
+            if(lvl.level > 2) {
+                base.normal = 0;
+            }
+            combatMods.armors[armors[i].id].damageReductions.push(base);            
+        }
+    }    
+
+
+    getCombatModifierStafffighting(combatMods, armors, weapons)
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        let haveStaffEquipped = this.actor.items.filter(element => element.data.data.isWeapon && element.data.data.qualities.long && element.data.isActive)
+        if(haveStaffEquipped) {
+            for(let i = 0; i < armors.length; i++)
+            {
+                if(armors[i].isStackableArmor)
+                {
+                    continue;
+                }
+                let base = this._getBaseFormat();
+                base.modifier = 1;
+                combatMods.armors[armors[i].id].defenseModifiers.push(base); 
+            }
+        }
+    }
+
+    getCombatModifierSteelthrow(combatMods, armors, weapons)
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -782,18 +1124,77 @@ export class SymbaroumItem extends Item {
             let base = this._getBaseFormat();
             base.type = base.type = game.symbaroum.config.DAM_DICEUPGRADE;
             base.diceUpgrade = 2;
-            combatMods.weapons[weapons[i].id].weaponmodifiers.damageChoices.push(base);
+            combatMods.weapons[weapons[i].id].damageChoices.push(base);
         }
     }
 
-    getCombatModifierTactician(combatMods, armor, weapons) 
+    getCombatModifierSurvivalinstinct(combatMods, armors, weapons)
+    {
+        let lvl = this.getLevel();
+        if(lvl.level < 2) return;
+        for(let i = 0; i < armors.length; i++)
+        {
+            if(armors[i].isStackableArmor)
+            {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.type = game.symbaroum.config.DAM_FIXED;
+            base.alternatives = [{
+                protectionMod: "+1d4",
+                protectionModNPC: 2,
+                displayMod: "+1d4"
+            }];
+            combatMods.armors[armors[i].id].protectionChoices.push(base);
+        }
+    }
+
+    getCombatModifierSwarm(combatMods, armors, weapons) 
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        for(let i = 0; i < armors.length; i++)
+        {            
+            if(armors[i].data.isStackableArmor) {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.normal = 0.5;
+            base.mystic = 0.5;
+            base.elemental = 0.5;
+            base.holy = 0.5;
+            base.mysticalWeapon = 0.5
+            if(lvl.level > 2) {
+                base.normal = 0.25;
+                base.mystic = 0.25;
+                base.elemental = 0.25;
+                base.holy = 0.25;
+                base.mysticalWeapon = 0.25
+            }
+            combatMods.armors[armors[i].id].damageReductions.push(base);            
+        }
+    } 
+
+    getCombatModifierTactician(combatMods, armors, weapons) 
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         let base = this._getBaseFormat();
         base.attribute = "cunning";
         combatMods.initiative.push(base);
-
+        if( lvl.level > 1)
+        {
+            for(let i = 0; i < armors.length; i++)
+            {
+                // Do we apply it if they just wear stackable armor?
+                if(armors[i].data.isStackableArmor) {
+                    continue;
+                }
+                base = this._getBaseFormat();        
+                base.attribute = "cunning";  
+                combatMods.armors[armors[i].id].attributes.push(base);
+            }
+        }
         if( lvl.level > 2) 
         {
             for(let i = 0; i < weapons.length; i++)
@@ -804,12 +1205,78 @@ export class SymbaroumItem extends Item {
                 }
                 base = this._getBaseFormat();
                 base.attribute = "cunning";
-                combatMods.weapons[weapons[i].id].weaponmodifiers.attributes.push(base);
+                combatMods.weapons[weapons[i].id].attributes.push(base);
             }        
         }
     }
+    getCombatModifierTwinattack(combatMods, armors, weapons) {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if(!weapons[i].data.data.isMelee || !["1handed", "short"].includes(weapons[i].data.data.reference) ) {
+                continue;
+            }
+            let twoWeapon = this.actor.items.filter(element => ["1handed", "short"].includes(element.data.data?.reference) && element.data.isActive)
+            if(twoWeapon.length < 2) {
+                return;
+            }
+            
+            let base = this._getBaseFormat();
+            base.modifier = 1;
+            combatMods.weapons[weapons[i].id].attackIncrease.push(base);
 
-    getCombatModifierTwohandedforce(combatMods, armor, weapons) 
+            if(lvl.level < 3 || this.actor.type === "player" || !game.settings.get('symbaroum', 'showNpcAttacks')) {
+                // Continue - do not want to indent further
+                continue;
+            }
+
+            /* Calculations only for NPCs - can't easily be judged otherwise */
+            // Master ability
+            // Look at all active weapons of 1handed or short
+            // If the current weapon is the first 1d6 or 1d8 base damage one - upgrade
+            // If the current weapon is the first (or potentially second) 1d6 base damage one - upgrade
+            let foundd8 = 0;
+            let foundd6 = 0;
+            let spared6weap = null;
+            for(let j = 0; j < twoWeapon.length; j++) {
+                if( twoWeapon[j].data.data.reference === "short")
+                {
+                    foundd6++;                    
+                    if(foundd6 === 1 && twoWeapon[j].id == weapons[i].id) 
+                    {
+                        base = this._getBaseFormat();
+                        base.type = game.symbaroum.config.DAM_DICEUPGRADE;
+                        base.diceUpgrade = 2;
+                        combatMods.weapons[weapons[i].id].damageChoices.push(base);        
+                        // First short, upgrade
+                    } else if(foundd6 === 2 && spared6weap === null && twoWeapon[j].id === weapons[i].id) {
+                        // Store away this and if there is no d8 found once we are done, upgrade d8
+                        spared6weap = twoWeapon[j];
+                    }
+                }
+                else if( twoWeapon[j].data.data.reference === "1handed") 
+                {
+                    foundd8++;
+                    if(foundd8 === 1 && twoWeapon[j].id == weapons[i].id)
+                    {
+                        base = this._getBaseFormat();
+                        base.type = game.symbaroum.config.DAM_DICEUPGRADE;
+                        base.diceUpgrade = 2;
+                        combatMods.weapons[weapons[i].id].damageChoices.push(base);        
+                    }
+                }
+            }
+            if(foundd8 === 0 && spared6weap != null) {                
+                // Only wielding d6 weapons and this is the last d6 weapon, so upgrade it too
+                base.type = game.symbaroum.config.DAM_DICEUPGRADE;
+                base.diceUpgrade = 2;
+                combatMods.weapons[weapons[i].id].damageChoices.push(base);
+            }
+        }        
+    }
+
+    getCombatModifierTwohandedforce(combatMods, armors, weapons) 
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -822,9 +1289,29 @@ export class SymbaroumItem extends Item {
             let base = this._getBaseFormat();
             base.type = game.symbaroum.config.DAM_DICEUPGRADE;
             base.diceUpgrade = 2;
-            combatMods.weapons[weapons[i].id].weaponmodifiers.damageChoices.push(base);
+            combatMods.weapons[weapons[i].id].damageChoices.push(base);
         }        
     }    
+
+    getCombatModifierUndead(combatMods, armors, weapons) 
+    {
+        let lvl = this.getLevel();
+        if(lvl.level < 2) return;
+        for(let i = 0; i < armors.length; i++)
+        {
+            // Do we apply it if they just wear stackable armor?
+            if(armors[i].data.isStackableArmor) {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.normal = 0.5;
+            base.elemental = 0.5;
+            if(lvl.level > 2) {
+                base.mystic = 0.5;
+            }
+            combatMods.armors[armors[i].id].damageReductions.push(base);            
+        }
+    }
 
 }
 
@@ -1738,9 +2225,9 @@ async function mathDamageProt(targetActor, damage, damageType){
         finalDamage = Math.round(finalDamage*targetActor.data.data.combat.damageProt.holy);
         infoText = await damageReductionText(targetActor.data.data.combat.damageProt.holy)
     }
-    else if(damageType.elementary){
-        finalDamage = Math.round(finalDamage*targetActor.data.data.combat.damageProt.elementary);
-        infoText = await damageReductionText(targetActor.data.data.combat.damageProt.elementary)
+    else if(damageType.elemental){
+        finalDamage = Math.round(finalDamage*targetActor.data.data.combat.damageProt.elemental);
+        infoText = await damageReductionText(targetActor.data.data.combat.damageProt.elemental)
     }
     else if(damageType.mystical){
         finalDamage = Math.round(finalDamage*targetActor.data.data.combat.damageProt.mystical);
