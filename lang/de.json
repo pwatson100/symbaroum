@@ -287,6 +287,7 @@
   "CHAT.CRITICAL_PLUS3DAMAGE": "+3 Schaden",
   "CHAT.CRITICAL_FAILURE_FREEATTACK": "Freier Angriff des Gegners",
   "CHAT.MARGIN": "Erfolgsgrade : ",
+  "CHAT.ATTRIBUTE_TARGET": "Attribute target",
   "CHAT.RECOVER": "Erholung",
   "CHAT.TOUGHNESS": "Zähigkeit",
   "CHAT.STAY_ALIVE": "Du bleibst vorerst am Leben!",

@@ -301,6 +301,7 @@
   "CHAT.SUCCEED": "Éxito",
   "CHAT.FAILED": "Fallo",
   "CHAT.MARGIN": "Margen de resultados: ",
+  "CHAT.ATTRIBUTE_TARGET": "Attribute target",
   "CHAT.CRITICAL_SUCCESS": "Éxito Crítico",
   "CHAT.CRITICAL_FAILURE": "Fallo Crítico",
   "CHAT.CRITICAL_FREEATTACK": "Ataque libre",
