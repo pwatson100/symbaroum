@@ -1,6 +1,6 @@
 <div class="symbaroum chat roll">
   <div class="foreground border">
-  <img style="height:64px;" src="{{subImg}}" />
+  <img src="{{subImg}}" />
   <h3>{{removeMarkup name}}</h3>
   {{#if hasSucceed}}
 
@@ -19,7 +19,7 @@
   
     {{#if hasWeapon}} 
 
-    <img style="height:64px;" src="{{weapon.img}}" />
+    <img src="{{weapon.img}}" />
     <p style="margin-top: 5px;text-align:center">{{weapon.name}}</p>
     <div class="dice-roll dice-total">
         <div class="dice-tooltip" style="display: none;">{{{weapon.diceBreakdown}}}</div>
@@ -43,7 +43,7 @@
 
     
     {{#if hasArmor}}
-    <img style="height:64px;" src="{{armor.img}}" />
+    <img src="{{armor.img}}" />
     <p style="margin-top: 5px;text-align:center">{{armor.name}}</p>
     <div class="dice-roll dice-total">
       <div><p style="margin-top: 5px"><strong>{{localize "ARMOR.PROTECTION"}}:</strong> {{armor.value}}</p></div>
