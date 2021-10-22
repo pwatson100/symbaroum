@@ -17,7 +17,8 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
     value: 0,
     name: "",
     message: "",
-    diceBreakdown: ""
+    diceBreakdown: "",
+    img: ""
   };
 
 	if(hasWeapon && advantage ) { modifier +=2 }
@@ -35,9 +36,10 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
         await game.dice3d.showForRoll(armorRoll, game.user, true);
       }
       
-      armorResults.name = armor.armor;
+      armorResults.name = armor.name;
       armorResults.value = armorRoll.total;
       armorResults.diceBreakdown = await armorRoll.getTooltip();
+      armorResults.img = armor.img;
     }
   }
 
@@ -253,22 +255,28 @@ async function doBaseRoll(actor, actingAttributeName, targetActor, targetAttribu
     hasSucceed = true;
     trueActorSucceeded = !resistRoll;
   }
-   
+
+  diceBreakdown = formatDice(attributeRoll.terms,"+", hasSucceed ? "normal":"failure");
+
   // Check option - always succeed on 1, always fail on 20
 	if(game.settings.get('symbaroum', 'optionalCrit') || game.settings.get('symbaroum', 'optionalRareCrit') ) {     
     if( attributeRoll.total === 1 || attributeRoll.total === 20 ) {
       if( game.settings.get('symbaroum', 'optionalCrit') ) {
           critBad = attributeRoll.total === 20 && !resistRoll;
           critGood = !critBad;
+          let css = `${critGood?"critical":critBad?"fumble":"normal"}`;
+          diceBreakdown = formatDice(attributeRoll.terms,"+", css);
       }    
       if( game.settings.get('symbaroum', 'optionalRareCrit') ) {
         let secondRoll = new Roll("1d20").evaluate();        
         critGood = (critGood && secondRoll.total <= diceTarget && !resistRoll) || (critGood && secondRoll.total > diceTarget && resistRoll);
         critBad = (critBad && secondRoll.total > diceTarget && !resistRoll) || (critGood && secondRoll.total <= diceTarget && resistRoll);
-        diceBreakdown = `${diceBreakdown} &amp; <span class="${critGood?"critical":critBad?"fumble":"normal"}">${secondRoll.results}</span>`;
+        let css = `${critGood?"critical":critBad?"fumble":"normal"}`;
+        diceBreakdown = formatDice(attributeRoll.terms,"+", css);
+        diceBreakdown = `${diceBreakdown} &amp; <span class="symba-rolls roll d20 ${css}">${secondRoll.total}</span>`;
       }
     }
-	}
+  }
 
   return({
     actingAttributeValue: actingAttributeValue,
@@ -350,7 +358,7 @@ export async function createResistRollChatButton(functionStuff){
 @param separator the chosen separator to use between dice
 
 */
-function formatDice(diceResult, separator) {
+function formatDice(diceResult, separator, css = "normal") {
 	let rolls = "";
   
 	for( let dd of diceResult ) {
@@ -375,9 +383,9 @@ function formatDice(diceResult, separator) {
 					rolls += tmpSep;
 				}
 				if(diceDetails.active ) {
-          rolls += diceDetails["result"];	
+          rolls += `<span class="symba-rolls roll d20 ${css}">${diceDetails["result"]}</span>`;	
 				} else {
-					rolls += "<span class='strike'>"+diceDetails["result"]+"</span>";
+					rolls += `<span class='symba-rolls roll d20 strike'>${diceDetails["result"]}</span>`;
 				}
 				j++;
 			}
