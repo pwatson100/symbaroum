@@ -1,6 +1,17 @@
 // Namespace Configuration Values
 export const SYMBAROUM = {};
 
+SYMBAROUM.attributes = [
+    "accurate",
+    "cunning",
+    "discreet",
+    "persuasive",
+    "quick",
+    "resolute",
+    "strong",
+    "vigilant"
+];
+
 SYMBAROUM.itemSortOrder = [
     "ability",
     "trait",
