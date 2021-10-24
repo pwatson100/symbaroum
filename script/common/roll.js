@@ -269,6 +269,9 @@ async function doBaseRoll(actor, actingAttributeName, targetActor, targetAttribu
       }    
       if( game.settings.get('symbaroum', 'optionalRareCrit') ) {
         let secondRoll = new Roll("1d20").evaluate({async:false});        
+        if (game.dice3d != null) {
+          await game.dice3d.showForRoll(secondRoll, game.user, true);
+        }        
         critGood = (critGood && secondRoll.total <= diceTarget && !resistRoll) || (critGood && secondRoll.total > diceTarget && resistRoll);
         critBad = (critBad && secondRoll.total > diceTarget && !resistRoll) || (critGood && secondRoll.total <= diceTarget && resistRoll);
         let css = `${critGood?"critical":critBad?"fumble":"normal"}`;
