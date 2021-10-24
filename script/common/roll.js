@@ -220,7 +220,7 @@ async function doBaseRoll(actor, actingAttributeName, targetActor, targetAttribu
 	if(favour > 0) d20str="2d20kl";
 	else if(favour < 0) d20str="2d20kh";
   
-  let attributeRoll = new Roll(d20str).evaluate();  
+  let attributeRoll = new Roll(d20str).evaluate({async:false});  
   
   let dicesResult;
   if(favour != 0){ 
@@ -268,7 +268,7 @@ async function doBaseRoll(actor, actingAttributeName, targetActor, targetAttribu
           diceBreakdown = formatDice(attributeRoll.terms,"+", css);
       }    
       if( game.settings.get('symbaroum', 'optionalRareCrit') ) {
-        let secondRoll = new Roll("1d20").evaluate();
+        let secondRoll = new Roll("1d20").evaluate({async:false});        
         if (game.dice3d != null) {
           await game.dice3d.showForRoll(secondRoll, game.user, true);
         }        
@@ -495,7 +495,7 @@ export async function damageRollWithDiceParams(functionStuff, critSuccess, attac
       newRollDmgString = functionStuff.weapon.damage.npc.toString();
       if(modFixedDmg) {newRollDmgString += "+"+ modFixedDmg.toString()};
       if(damageModFormula != ""){
-        let weaponModRoll= new Roll(damageModFormula).evaluate({maximize: true});
+        let weaponModRoll= new Roll(damageModFormula).evaluate({maximize: true, async:false});
         let weaponModDmgValue = Math.ceil(weaponModRoll.total/2);
         newRollDmgString += "+"+ weaponModDmgValue.toString(); 
       }
@@ -509,7 +509,7 @@ export async function damageRollWithDiceParams(functionStuff, critSuccess, attac
     }
     // final damage
     // game.symbaroum.log(newRollDmgString);
-    let dmgRoll= new Roll(newRollDmgString).evaluate();
+    let dmgRoll= new Roll(newRollDmgString).evaluate({async:false});
 
     return{
     roll : dmgRoll,
@@ -555,7 +555,7 @@ export async function simpleDamageRoll(functionStuff, damageFormula){
     }
   }
   // final damage
-  let dmgRoll= new Roll(newRollDmgString).evaluate();
+  let dmgRoll= new Roll(newRollDmgString).evaluate({async:false});
   return{
     roll : dmgRoll,
     diceResult: dmgRoll.total,
