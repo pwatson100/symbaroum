@@ -207,7 +207,7 @@ export class SymbaroumItem extends Item {
             }
 
             if(protection === "") {
-                armorRoll = new Roll("0").evaluate({maximize: true});
+                armorRoll = new Roll("0").evaluate({maximize: true, async:false});
             } else {
                 armorRoll = new Roll(protection).evaluate({maximize: true, async:false});
             }

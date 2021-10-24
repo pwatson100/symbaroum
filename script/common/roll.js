@@ -545,7 +545,7 @@ export async function simpleDamageRoll(functionStuff, damageFormula){
   }
   else{
     // If the attack is made by a NPC, evaluate static value for damage (=max damage/2) then roll armor and substract
-    let weaponRoll= new Roll(damageFormula).evaluate({maximize: true});
+    let weaponRoll= new Roll(damageFormula).evaluate({maximize: true, async:false});
     let weaponDmgValue = Math.ceil(weaponRoll.total/2);
 
    //build roll string
