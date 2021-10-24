@@ -31,7 +31,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
       let prot = armor.protectionPc;
       let armorRoll = new Roll(prot, {});
       
-      armorRoll.roll();
+      armorRoll.evaluate({async:false});
       if (game.dice3d != null) {
         await game.dice3d.showForRoll(armorRoll, game.user, true);
       }
@@ -52,7 +52,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
       
 
       let weaponRoll = new Roll(dam, {});
-      weaponRoll.roll();
+      weaponRoll.evaluate({async:false});
       let tooltip = await weaponRoll.getTooltip();
       
       if (game.dice3d != null) {
@@ -109,23 +109,26 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
 
 export async function deathRoll(sheet) {
   let death = new Roll('1d20', {});
-  death.roll();
+  death.evaluate({async:false});
   if (game.dice3d != null) {
     await game.dice3d.showForRoll(death, game.user, true);
   }
-  let hasSucceed = death._total >= 2 && death._total <= 10;
-  let isCriticalSuccess = death._total === 1;
+  let hasSucceed = death.total >= 2 && death.total <= 10;
+  let isCriticalSuccess = death.total === 1;
+  let heal = null;
   if (!hasSucceed) sheet.nbrOfFailedDeathRoll++;
-  if (isCriticalSuccess) sheet.nbrOfFailedDeathRoll = 0;
-  let heal = new Roll('1d4', {});
-  heal.roll();
-  if (game.dice3d != null) {
-    await game.dice3d.showForRoll(heal, game.user, true);
+  if (isCriticalSuccess) {
+    sheet.nbrOfFailedDeathRoll = 0;
+    heal = new Roll('1d4', {});
+    heal.evaluate({async:false});
+    if (game.dice3d != null) {
+      await game.dice3d.showForRoll(heal, game.user, true);
+    }
   }
   let rollData = {
     isCriticalSuccess: isCriticalSuccess,
-    healing: heal._total,
-    isCriticalFailure: death._total === 20 || sheet.nbrOfFailedDeathRoll >= 3,
+    healing: heal?.total,
+    isCriticalFailure: death.total === 20 || sheet.nbrOfFailedDeathRoll >= 3,
     hasSucceed: hasSucceed,
     nbrOfFailure: sheet.nbrOfFailedDeathRoll,
   };
