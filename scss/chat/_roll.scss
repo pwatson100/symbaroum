@@ -17,6 +17,10 @@
   border-image: var(--chat-roll-border) 20/10px;
 }
 
+.symbaroum.chat.roll .baseinfo {
+  margin-top:5px;
+}
+
 .symbaroum.chat.roll strong {
   text-transform: uppercase;
   font-weight: bold;
@@ -98,12 +102,21 @@
   text-decoration: line-through;
 }
 
-.symbaroum.chat.roll img {
+.symbaroum.chat.roll img,
+.symbaroum.chat.roll .portrait {
   border: 0;
   display: block;
   margin: 0 auto 8px;
   height: 64px;
   width: auto;
+}
+
+.symbaroum.chat.roll .moreinfo {
+  border: 0;
+  float:right;
+  height: 18px;
+  width: auto;
+  filter: sepia(0.5) contrast(0.75) opacity(0.4);
 }
 
 .symba-rolls.roll {
