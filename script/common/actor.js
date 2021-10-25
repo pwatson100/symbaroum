@@ -1,4 +1,4 @@
-import { attackRoll, checkResoluteModifiers, getPowerLevel, markScripted } from './item.js';
+import { attackRoll, checkResoluteModifiers, getPowerLevel, getTarget, markScripted } from './item.js';
 import { prepareRollAttribute } from "../common/dialog.js";
 import { upgradeDice } from './roll.js';
 
@@ -727,7 +727,18 @@ export class SymbaroumActor extends Actor {
 
     async rollWeapon(weapon){
         if(game.settings.get('symbaroum', 'combatAutomation')){
+            //await enhancedAttackRoll(weapon);
             await attackRoll(weapon, this);
+            let ecData = {
+                targetAttributeName: "custom",
+                additionalModifier: "",
+                selectedFavour: "0",
+                modifier: "0",
+                advantage: "",
+                impeding: "",
+                askIgnoreArmor = true,
+                ignoreArmor: false
+            };
         }
         else{
             await prepareRollAttribute(this, weapon.attribute, null, weapon)
@@ -737,5 +748,20 @@ export class SymbaroumActor extends Actor {
     async rollAttribute(attributeName) {
         await prepareRollAttribute(this, attributeName, null, null);
     }
+
+    async enhancedAttackRoll(weapon){
+        // get selected token
+    let token;
+    try{token = await getTokenId(this)} catch(error){
+        ui.notifications.error(error);
+        return;
+    }
+    // get target token, actor and defense value
+    let targetData;
+    try{targetData = getTarget("defense")} catch(error){
+        ui.notifications.error(error);
+        return;
+    }
+
 
 }

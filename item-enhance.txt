@@ -73,43 +73,54 @@ combat {
     ],
     weapons: [
         weaponid : {
-            specialEffects [
-                stringvalue // currently only SPECIAL_STRONG
-            ]
-            attributes [
-                {
-                    label : "the label of the modifier",
+            package [
+                packageName: {  // default package contains all permanent modifiers for combat
+                    label: label of the package,
+                    type: default, checked or radio,
                     id : "the id",
-                    attribute : "the preferred attack attribute",
-                }
-            ]
-            attackModifiers [
-                {
-                    label : "the label of the modifier",
-                    id : "the id",
-                    modifier : "+mod" // as per roll formula
-                }
-            ],
-            attackIncrease [
-                {
-                    label : "the label of the modifier",
-                    id : "the id",
-                    modifier : "+mod" // the number of additional attacks
-                }
-
-            ],
-            damageChoices [
-                {
-                    label : "the label of the modifier",
-                    id : "the id",
-                    type : "check","fixed", "radio","upgrade", "builtin" // builtin is for those that EC assumes are already calculated
-                    // fixed & check assumes only one single alternative. If there is more than one alternative, add multiple damageChoices
-                    diceUpgrade : int, // only when upgrade - num sides upgrade (min 2)
-                    defaultSelect : "alternatives index", // only for radio = select id is the partialDamageFormula
-                    alternatives : [ // radio / check / fixed - only radio expects more than 1 and most beneficial one last
+                    display : display label for dialog window
+                    member: [  // each individual modifier to be applied when package is selected
                         {
+                            type: attribute  // change attack attribute
+                            label : "the label of the modifier",
+                            id : "the id",
+                            attribute : "the preferred attack attribute",
+                        }
+                        {
+                            type: attackIncrease  // increase number of attacks
+                            label : "the label of the modifier",
+                            id : "the id",
+                            modifier : "+mod" // the number of additional attacks
+                        }
+                        {
+                            type: attackrollmod  // attack roll modifier
+                            label : "the label of the modifier",
+                            id : "the id",
+                            modifier : "+mod" // as per roll formula
+                        }
+                        {
+                            type: favour  // change attack favour
+                            label : "the label of the modifier",
+                            id : "the id",
+                            modifier : "1", "-1" // favour modification
+                        }
+                        {
+                            type: damagefavour  // favour on damage roll
+                            label : "the label of the modifier",
+                            id : "the id",
+                            modifier : "1", "-1" // favour modification
+                        }
+                        {
+                            type: diceupgrade  // ugrade damage dice
+                            label : "the label of the modifier",
+                            id : "the id",
+                            diceUpgrade : int, // only when upgrade - num sides upgrade (min 2)
+                        }
+                        {
+                            type: damagemodifier  // add damage
                             label : "the label of this modifier",
-                            damageMod : "partialDamageFormula" // check & fixed & builtin - Partial damage formula in PC format as default
+                            defaultSelect : "alternatives index", // only for radio = select id is the partialDamageFormula
+                            damageMod : "partialDamageFormula" // Partial damage formula in PC format as default
                             damageModNPC : "", // Partial Damage in NPC format assuming restrictions are fullfilled (for all types)
                             restrictions = [ // any restrictions
                                 "1st-attack", // Only applicable on first attack
@@ -118,8 +129,7 @@ combat {
                                 ("[attack-attribute]", // Only applies when attack is made with this attribute) // Not sure I can support - might require double loop
                             ]
                         }
-                        { ... next option ...] }
-                    },
+                    ]
                 }
             ]
         }
