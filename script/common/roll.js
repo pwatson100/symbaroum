@@ -107,7 +107,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   return(rollData);
 }
 
-export async function deathRoll(sheet) {
+export async function deathRoll(actor) {
   let death = new Roll('1d20', {});
   death.evaluate({async:false});
   if (game.dice3d != null) {
@@ -116,9 +116,10 @@ export async function deathRoll(sheet) {
   let hasSucceed = death.total >= 2 && death.total <= 10;
   let isCriticalSuccess = death.total === 1;
   let heal = null;
-  if (!hasSucceed) sheet.nbrOfFailedDeathRoll++;
+  let nbrOfFailedDeathRoll = actor.data.data.nbrOfFailedDeathRoll;
+  if (!hasSucceed) nbrOfFailedDeathRoll = Math.min(3, nbrOfFailedDeathRoll+1);
   if (isCriticalSuccess) {
-    sheet.nbrOfFailedDeathRoll = 0;
+    nbrOfFailedDeathRoll = 0;
     heal = new Roll('1d4', {});
     heal.evaluate({async:false});
     if (game.dice3d != null) {
@@ -128,9 +129,9 @@ export async function deathRoll(sheet) {
   let rollData = {
     isCriticalSuccess: isCriticalSuccess,
     healing: heal?.total,
-    isCriticalFailure: death.total === 20 || sheet.nbrOfFailedDeathRoll >= 3,
+    isCriticalFailure: death.total === 20 || nbrOfFailedDeathRoll >= 3,
     hasSucceed: hasSucceed,
-    nbrOfFailure: sheet.nbrOfFailedDeathRoll,
+    nbrOfFailure: nbrOfFailedDeathRoll
   };
   const html = await renderTemplate('systems/symbaroum/template/chat/death.html', rollData);
   let chatData = {
@@ -144,6 +145,7 @@ export async function deathRoll(sheet) {
     chatData.whisper = [game.user];
   }
   ChatMessage.create(chatData);
+  await actor.update({"data.nbrOfFailedDeathRoll":nbrOfFailedDeathRoll });
 }
 
 //this function returns the localized name, and also accept defense.

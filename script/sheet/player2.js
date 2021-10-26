@@ -49,6 +49,7 @@ export class PlayerSheet2 extends PlayerSheet {
         return data;
     }
 
+    /*
     render(args)
     {
         if(this.actor.type === "monster") {
@@ -59,4 +60,5 @@ export class PlayerSheet2 extends PlayerSheet {
 
         super.render(args);
     }
+    */
 }

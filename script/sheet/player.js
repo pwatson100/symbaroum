@@ -43,13 +43,13 @@ export class PlayerSheet extends SymbaroumActorSheet {
                     label: game.i18n.localize("BUTTON.DEATH"),
                     class: "death-roll",
                     icon: "fas fa-skull",
-                    onclick: async (ev) => await deathRoll(this)
+                    onclick: async (ev) => await deathRoll(this.actor)
                 },
                 {
                     label: game.i18n.localize("BUTTON.RECOVER"),
                     class: "recover-death-roll",
                     icon: "fas fa-heart",
-                    onclick: (ev) => this.nbrOfFailedDeathRoll = 0
+                    onclick: async (ev) => await this.actor.update( {"data.nbrOfFailedDeathRoll":0 })
                 }
             ].concat(buttons);
         }
