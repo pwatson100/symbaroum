@@ -1,6 +1,55 @@
-import { rollAttribute, getAttributeLabel } from './roll.js';
+import { rollAttribute, getAttributeLabel, rollDeathTest } from './roll.js';
 
 let roll_defaults = {};
+
+export async function prepareRollDeathTest(actor, showDialogue) {
+  if( !showDialogue )
+  {
+    await rollDeathTest(actor, "0", 0);
+    return;
+  }
+  let attri_defaults = getRollDefaults("deathtest",false, false);
+  const html = await renderTemplate('systems/symbaroum/template/chat/dialog-deathtest.html', {  
+    "choices": { "0": "DIALOG.FAVOUR_NORMAL", "-1":"DIALOG.FAVOUR_DISFAVOUR", "1":"DIALOG.FAVOUR_FAVOUR"},
+    "roll_defaults":attri_defaults,
+    "groupName" : "favour",
+  });
+  let dialog = new Dialog({
+    title: "Death Test",
+    content: html,
+    buttons: {
+      roll: {
+        icon: '<i class="fas fa-check"></i>',
+        label: game.i18n.localize('BUTTON.ROLL'),
+        callback: async (html) => {
+          let favours = html.find("input[name='favour']");
+          let fvalue = 0;
+          for ( let f of favours) {						
+            if( f.checked ) fvalue = f.value;
+          }
+          attri_defaults.selectedFavour = ""+fvalue;
+          const favour = fvalue;
+          
+          let modifier = parseInt(html.find("#modifier")[0].value);   
+          if(isNaN(modifier)) {
+            modifier = 0;
+          }
+          attri_defaults.modifier = modifier;
+
+          await rollDeathTest(actor, favour, modifier);
+        },
+      },
+      cancel: {
+          icon: '<i class="fas fa-times"></i>',
+          label: game.i18n.localize('BUTTON.CANCEL'),
+          callback: () => {},
+      },
+    },
+    default: 'roll',
+    close: () => {},
+  });
+  dialog.render(true);
+}
 
 export async function prepareRollAttribute(actor, attributeName, armor, weapon) {
   let targetTokens = Array.from(game.user.targets);
