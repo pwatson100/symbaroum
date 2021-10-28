@@ -1,6 +1,5 @@
 import { SymbaroumActorSheet } from "./actor.js";
-import { prepareRollAttribute } from "../common/dialog.js";
-import { deathRoll } from "../common/roll.js";
+import { prepareRollAttribute, prepareRollDeathTest } from "../common/dialog.js";
 
 export class PlayerSheet extends SymbaroumActorSheet {
 
@@ -29,10 +28,13 @@ export class PlayerSheet extends SymbaroumActorSheet {
 
     activateListeners(html) {
         super.activateListeners(html);
+        // console.log(this.actor);
+
         html.find(".roll-attribute").click(async ev => await this._prepareRollAttribute(ev));
         html.find(".roll-armor").click(async ev => await this._prepareRollArmor(ev));
         html.find(".roll-weapon").click(async ev => await this._prepareRollWeapon(ev));
         html.find(".modify-attributes").click(async ev => await this._modifyAttributes(ev));
+
     }
 
     _getHeaderButtons() {
@@ -43,7 +45,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
                     label: game.i18n.localize("BUTTON.DEATH"),
                     class: "death-roll",
                     icon: "fas fa-skull",
-                    onclick: async (ev) => await deathRoll(this.actor)
+                    onclick: async ev => await this._prepareRollDeathTest(ev),
                 },
                 {
                     label: game.i18n.localize("BUTTON.RECOVER"),
@@ -56,6 +58,12 @@ export class PlayerSheet extends SymbaroumActorSheet {
         return buttons;
     }
 
+
+    async _prepareRollDeathTest(event) {
+        event.preventDefault();
+        await prepareRollDeathTest(this.actor, event.shiftKey);
+    }
+
     async _prepareRollAttribute(event) {
         event.preventDefault();
         const attributeName = $(event.currentTarget).data("attribute");        
@@ -64,14 +72,14 @@ export class PlayerSheet extends SymbaroumActorSheet {
 
     async _prepareRollArmor(event) {
         event.preventDefault();
-        await this.actor.rollArmor()
+        await this.actor.rollArmor();
     }
 
     async _prepareRollWeapon(event) {
         event.preventDefault();
         const div = $(event.currentTarget).parents(".item");
         const weapon = this.actor.data.data.weapons.filter(item => item.id == div.data("itemId"))[0];
-        await this.actor.rollWeapon(weapon)
+        await this.actor.rollWeapon(weapon);
     }
 
     async _modifyAttributes(event) {
