@@ -5,8 +5,8 @@ export class AbilitySheet extends SymbaroumItemSheet {
         return mergeObject(super.defaultOptions, {
             classes: ["symbaroum", "sheet", "item"],
             template: "systems/symbaroum/template/sheet/ability.html",
-            width: 500,
-            height: 472,
+            width: 700,
+            height: 600,
             resizable: false,
             tabs: [
                 {

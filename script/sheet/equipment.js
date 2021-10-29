@@ -5,8 +5,8 @@ export class EquipmentSheet extends SymbaroumItemSheet {
         return mergeObject(super.defaultOptions, {
             classes: ["symbaroum", "sheet", "item"],
             template: "systems/symbaroum/template/sheet/equipment.html",
-            width: 500,
-            height: 508,
+            width: 700,
+            height: 600,
             resizable: false,
             tabs: [
                 {

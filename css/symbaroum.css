@@ -788,7 +788,7 @@
   border: 0 none;
   width: 100px;
   height: 100px;
-  margin: auto;
+  margin: 5px;
 }
 
 .symbaroum.sheet.item button:hover {
@@ -937,7 +937,7 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  margin: auto;
+  margin: 0px 0px 5px 0px;
 }
 
 .symbaroum.sheet.item .sheet-header .computedvalues {
@@ -976,7 +976,7 @@
 .symbaroum.sheet.item .editor {
   margin: 5px;
   border: 1px solid var(--color-border);
-  height: 130px;
+  height: 250px;
 }
 
 .symbaroum.sheet.item .editor-content {
@@ -2645,7 +2645,7 @@
 }
 
 .symbaroum.sheet.item .ability .description .editor {
-  height: 166px;
+  height: 270px;
 }
 
 .symbaroum.sheet.item .ability .tab .active,
@@ -2736,7 +2736,7 @@
 }
 
 .symbaroum.sheet.item .armor .description .editor {
-  height: 134px;
+  height: 270px;
 }
 
 .symbaroum.sheet.item .armor .tab .protection,
@@ -3027,7 +3027,7 @@
 }
 
 .symbaroum.sheet.item .boon .description .editor {
-  height: 166px;
+  height: 290px;
 }
 
 .symbaroum.sheet.item .boon .tab .bonus .scroll {
@@ -3094,7 +3094,7 @@
 }
 
 .symbaroum.sheet.item .burden .description .editor {
-  height: 166px;
+  height: 290px;
 }
 
 .symbaroum.sheet.item .burden .tab .bonus .scroll {
@@ -3159,6 +3159,10 @@
   -ms-flex-preferred-size: 100%;
       flex-basis: 100%;
   border-top: none;
+}
+
+.symbaroum.sheet.item .equipment .description .editor {
+  height: 200px;
 }
 
 .symbaroum.sheet.item .equipment .tab .cost,
@@ -3664,10 +3668,11 @@
   border-top: none;
 }
 
+/*
 .symbaroum.sheet.item .trait .description .editor {
-  height: 166px;
+    height: 250px;
 }
-
+*/
 .symbaroum.sheet.item .trait .tab .marker {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -3769,7 +3774,7 @@
 }
 
 .symbaroum.sheet.item .weapon .description .editor {
-  height: 166px;
+  height: 250px;
 }
 
 .symbaroum.sheet.item .weapon .tab .stats .quality,
