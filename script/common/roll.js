@@ -120,9 +120,9 @@ export async function rollDeathTest(actor, withFavour, modifier) {
   if (game.dice3d != null) {
     await game.dice3d.showForRoll(death, game.user, true);
   }
-  let hasSucceed = death.total >= (2+modifier) && death.total <= (10+modifier);
+  let hasSucceed = death.total <= 10+modifier;
 
-  let isCriticalSuccess = death.total <= (1+modifier);
+  let isCriticalSuccess = death.total <= (1+( game.settings.get('symbaroum', 'enhancedDeathSaveBonus') ? modifier:0));
   let heal = null;
   let nbrOfFailedDeathRoll = actor.data.data.nbrOfFailedDeathRoll;
 

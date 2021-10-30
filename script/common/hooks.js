@@ -207,6 +207,15 @@ Hooks.once('init', () => {
     config: true,
   });
 
+  game.settings.register('symbaroum', 'enhancedDeathSaveBonus', {
+    name: 'SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS',
+    hint: 'SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });
+
   game.settings.register('symbaroum', 'manualInitValue', {
     name: 'SYMBAROUM.OPTIONAL_INIT_MANUAL',
     hint: 'SYMBAROUM.OPTIONAL_INIT_MANUAL_HINT',
