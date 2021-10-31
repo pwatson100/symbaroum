@@ -322,7 +322,7 @@ SYMBAROUM.ecOptionalDamage = [
 ];
 
 //combat mod types
-SYMBAROUM.SPECIAL_ALTERNATIVE_DAMAGE = "alternative_damage";
+SYMBAROUM.TYPE_ALTERNATIVE_DAMAGE = "alternative_damage";
 SYMBAROUM.TYPE_FAVOUR = "favour";
 SYMBAROUM.DAM_FAVOUR = "damagefavour";
 SYMBAROUM.STATUS_DOT = "statusDoT";
@@ -332,12 +332,12 @@ SYMBAROUM.TYPE_ATTACKINCREASE = "attackincrease";
 SYMBAROUM.DAM_DICEUPGRADE = "diceupgrade";
 SYMBAROUM.DAM_MOD = "damagemodifier";
 SYMBAROUM.TYPE_ROLL_MOD = "attackrollmod";
+SYMBAROUM.CORRUPTION_DAMAGE = "corruptingattack";
 
 //package types
 SYMBAROUM.PACK_DEFAULT = "default";
 SYMBAROUM.PACK_CHECK = "checkbox";
 SYMBAROUM.PACK_RADIO = "radio";
-
 
 SYMBAROUM.DAM_CHECK = "checkdamage";
 SYMBAROUM.DAM_RADIO = "radio";

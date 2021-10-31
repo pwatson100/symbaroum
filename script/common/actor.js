@@ -1,4 +1,4 @@
-import { attackRoll, checkResoluteModifiers, getPowerLevel, getTarget, markScripted } from './item.js';
+import { attackRoll, checkResoluteModifiers, getPowerLevel, getTarget, getTokenId, markScripted } from './item.js';
 import { prepareRollAttribute } from "../common/dialog.js";
 import { upgradeDice } from './roll.js';
 
@@ -165,12 +165,12 @@ export class SymbaroumActor extends Actor {
 
         for(let i = 0; i < allWeapons.length; i++) {
             // build it
+            let defaultPack = allWeapons[i]._getPackageFormat("default");
+            defaultPack.type= game.symbaroum.config.PACK_DEFAULT;
             combatMods.weapons[allWeapons[i].id] = {
-                specialEffects: [],
-                attributes: [],
-                attackModifiers: [],
-                attackIncrease: [],
-                damageChoices: []
+                package: [defaultPack],
+                maxAttackNb:1,
+                specialEffects: []
             }
         }
         for(let i = 0; i< allArmors.length; i++) {
@@ -183,7 +183,6 @@ export class SymbaroumActor extends Actor {
                 protectionChoices: []
             }
         }
-
         for( const [key, item] of this.data.items.entries() ) {
             item.getCombatModifiers(combatMods, allArmors, allWeapons);
         }
@@ -218,8 +217,6 @@ export class SymbaroumActor extends Actor {
         if(!game.settings.get('symbaroum', 'manualInitValue')){
             this._getInitiativeAttribute(combatMods.initiative);
         }
-
-        
 
         let attributeInit = data.data.initiative.attribute.toLowerCase();
         data.data.initiative.value = ((data.data.attributes[attributeInit].total) + (data.data.attributes.vigilant.total /100)) ;
@@ -338,7 +335,6 @@ export class SymbaroumActor extends Actor {
                         allDefenseProt += alternatives[j].protectionMod+"["+protChoice.label+"]";
                         allDefenseProtNPC += alternatives[j].protectionModNPC;
                         tooltip += `${protChoice.label}</br>`;
-
                     } 
                 }           
             }
@@ -374,7 +370,11 @@ export class SymbaroumActor extends Actor {
                     damageProtection.mysticalWeapon = damageProtection.mysticalWeapon *armorModifiers.damageReductions[i].mysticalWeapon;
                 }
             }
+            if(this.data.data.bonus.defense){
+                totDefense = totDefense + this.data.data.bonus.defense;
+                defense.defMsg += game.i18n.localize("ATTRIBUTE.BONUS")+"("+this.data.data.bonus.defense.toString()+")"+`<br/>`;
             
+            }
             // game.symbaroum.log(armorModifiers);
             let diceRoller = "";
             if(item.isNoArmor) {
@@ -450,20 +450,19 @@ export class SymbaroumActor extends Actor {
             let weaponModifiers = combatMods.weapons[item.id];
             // game.symbaroum.log("weaponModifiers",weaponModifiers)
             // Loop through attribute selection - pick highest
-            for(let i = 0; i < weaponModifiers.attributes.length; i++) {
-                // weaponModifers.attribute[i].label
-                let replacementAttribute = weaponModifiers.attributes[i].attribute;
-                if(this.data.data.attributes[attribute].total < this.data.data.attributes[replacementAttribute].total)
-                {
-                    attribute = replacementAttribute;
+            weaponModifiers.package[0].member.forEach((member) => {
+                if(member.type == game.symbaroum.config.TYPE_ATTRIBUTE){
+                    // weaponModifers.attribute[i].label
+                    let replacementAttribute = member.attribute;
+                    if(this.data.data.attributes[attribute].total < this.data.data.attributes[replacementAttribute].total)
+                    {
+                        attribute = replacementAttribute;
+                    }
                 }
-            }
-
+            });
             
-            // Loop to establish total number of attacks with this weapon (caveat, abilities that uses two different weapons still apply as we can't figure out order)
-            for(let i = 0; i < weaponModifiers.attackIncrease?.length; i++) {
-                numAttacks += weaponModifiers.attackIncrease[i].modifier;
-            }
+            // Max number of attacks with this weapon (caveat, abilities that uses two different weapons still apply as we can't figure out order)
+            numAttacks = weaponModifiers.maxAttackNb;
 
             for(let i = 0; i < weaponModifiers.attackModifiers?.length; i++) {
                 // weaponModifers.attribute[i].label
@@ -484,59 +483,60 @@ export class SymbaroumActor extends Actor {
             let singleAttackNPC = [];
 
             let diceSides = parseInt(baseDamage.match(/[0-9]d([0-9]+)/)[1]); // NEEDS CHANGING - assumes base damage is always a dice (might be true)
+            weaponModifiers.package.forEach((pack) => {
+                let isDefaultPackage = pack.type === game.symbaroum.config.PACK_DEFAULT;
+                for(let i = 0; i < pack.member.length; i++) 
+                {
+                    let damChoice = pack.member[i];
+                    let ecDamage = game.symbaroum.config.ecBuiltinDamage.includes(damChoice.reference);
+                    let ecOptional = game.symbaroum.config.ecOptionalDamage.includes(damChoice.reference);
+                    
+                    if(damChoice.type == game.symbaroum.config.DAM_DICEUPGRADE ) {
+                        diceSides += damChoice.diceUpgrade;
+                    } else if (damChoice.type == game.symbaroum.config.DAM_MOD || damChoice.type == game.symbaroum.config.DAM_RADIO){
+                        let restricted = false;
+                        let alternatives = damChoice.alternatives;
 
-            for(let i = 0; i < weaponModifiers.damageChoices.length; i++) 
-            {
-                let damChoice = weaponModifiers.damageChoices[i];
-                let ecDamage = game.symbaroum.config.ecBuiltinDamage.includes(damChoice.reference);
-                let ecOptional = game.symbaroum.config.ecOptionalDamage.includes(damChoice.reference);
-                
-                if(damChoice.type == game.symbaroum.config.DAM_DICEUPGRADE ) {
-                    diceSides += damChoice.diceUpgrade;
-                } else {
-                    // if(damChoice.type == game.symbaroum.config.DAM_FIXED ||                                    
-                    let restricted = false;
-                    let alternatives = damChoice.alternatives;
+                        // game.symbaroum.log("Weapon alts", alternatives);
 
-                    // game.symbaroum.log("Weapon alts", alternatives);
-
-                    for(let j = 0; j < alternatives.length; j++) 
-                    {
-                        if(ecDamage) {
-                            if(!ecOptional) {
-                                pcDamage += alternatives[j].damageMod+"["+damChoice.label+"]";
-                                npcDamage += parseInt(alternatives[j].damageModNPC);
-                                tooltip += damChoice.label +", ";
-                            } else {
-                                tooltip += damChoice.label +", ";
-                            }
-                            ecDamage = false;
-                        }
-                        if(alternatives[j].restrictions)
+                        for(let j = 0; j < alternatives.length; j++) 
                         {
-                            if(alternatives[j].restrictions.includes(game.symbaroum.config.DAM_ACTIVE)) {
-                                singleAttack.push(alternatives[j].damageMod+"["+damChoice.label+"]");
-                                singleAttackNPC.push(alternatives[j].damageModNPC);
-                            } else if(alternatives[j].restrictions.includes(game.symbaroum.config.DAM_1STATTACK)) {
-                                firstAttack += alternatives[j].damageMod+"["+damChoice.label+"]";
-                                firstAttackNPC += alternatives[j].damageModNPC;
-                            } else if(alternatives[j].restrictions.includes(game.symbaroum.config.DAM_NOTACTIVE)) {
-                                plusAttacks += alternatives[j].damageMod+"["+damChoice.label+"]";
-                                plusAttacksNPC += alternatives[j].damageModNPC;
+                            /*if(ecDamage) {
+                                if(!ecOptional) {
+                                    pcDamage += alternatives[j].damageMod+"["+damChoice.label+"]";
+                                    npcDamage += parseInt(alternatives[j].damageModNPC);
+                                    tooltip += damChoice.label +", ";
+                                } else {
+                                    tooltip += damChoice.label +", ";
+                                }
+                                ecDamage = false;
+                            }*/
+                            if(alternatives[j].restrictions)
+                            {
+                                if(alternatives[j].restrictions.includes(game.symbaroum.config.DAM_ACTIVE)) {
+                                    singleAttack.push(alternatives[j].damageMod+"["+damChoice.label+"]");
+                                    singleAttackNPC.push(alternatives[j].damageModNPC);
+                                } else if(alternatives[j].restrictions.includes(game.symbaroum.config.DAM_1STATTACK)) {
+                                    firstAttack += alternatives[j].damageMod+"["+damChoice.label+"]";
+                                    firstAttackNPC += alternatives[j].damageModNPC;
+                                } else if(alternatives[j].restrictions.includes(game.symbaroum.config.DAM_NOTACTIVE)) {
+                                    plusAttacks += alternatives[j].damageMod+"["+damChoice.label+"]";
+                                    plusAttacksNPC += alternatives[j].damageModNPC;
+                                } else {
+                                    // terminate
+                                    allAttacks += alternatives[j].damageMod+"["+damChoice.label+"]";
+                                    allAttacksNPC += alternatives[j].damageModNPC;
+                                }
                             } else {
                                 // terminate
                                 allAttacks += alternatives[j].damageMod+"["+damChoice.label+"]";
                                 allAttacksNPC += alternatives[j].damageModNPC;
                             }
-                        } else {
-                            // terminate
-                            allAttacks += alternatives[j].damageMod+"["+damChoice.label+"]";
-                            allAttacksNPC += alternatives[j].damageModNPC;
                         }
+                        
                     }
-                    
                 }
-            }
+            });
             // game.symbaroum.log("Weapon stats", item.name,"attacks", numAttacks, "1d"+diceSides,"plus ",plusAttacksNPC, "single", singleAttackNPC, "first", firstAttackNPC, "Allattacks", allAttacksNPC, "npcDamage", npcDamage);
             // game.symbaroum.log("Weapon stats", item.name,"attacks", numAttacks, "1d"+diceSides,"plus ",plusAttacks, "single", singleAttack, "first", firstAttack, "Allattacks", allAttacks);
             npcDamage = diceSides / 2 + npcDamage; // TODO max dice sides == 12
@@ -567,7 +567,8 @@ export class SymbaroumActor extends Actor {
                 }
             }
             baseDamage = `1d${diceSides}`;
-            if( weaponModifiers.specialEffects.includes(game.symbaroum.config.SPECIAL_STRONG) ) {
+            let baseDamageNPC = diceSides/2;
+            if( weaponModifiers.specialEffects.includes(game.symbaroum.config.DAM_FAVOUR) ) {
                 baseDamage = `2d${diceSides}kh`;
                 damageFavour = 1;
             }
@@ -599,10 +600,11 @@ export class SymbaroumActor extends Actor {
                 qualities: item.data.data.qualities,
                 damage: {                    
                     base: baseDamage, 
+                    npcBase: baseDamageNPC,
                     bonus: bonusDamage,
                     displayText : displayText,
                     displayTextShort : displayText.replace(/(d1\[[^\]]+\])/g,'').replace(/\[[^\]]+\]/g, ''),
-                    pc: pcDamage, 
+                    pc: pcDamage,
                     npc: npcDamage,
                     damageFavour: damageFavour,
                     alternativeDamageAttribute: item.data.data.alternativeDamage
@@ -727,18 +729,7 @@ export class SymbaroumActor extends Actor {
 
     async rollWeapon(weapon){
         if(game.settings.get('symbaroum', 'combatAutomation')){
-            //await enhancedAttackRoll(weapon);
-            await attackRoll(weapon, this);
-            let ecData = {
-                targetAttributeName: "custom",
-                additionalModifier: "",
-                selectedFavour: "0",
-                modifier: "0",
-                advantage: "",
-                impeding: "",
-                askIgnoreArmor = true,
-                ignoreArmor: false
-            };
+            await this.enhancedAttackRoll(weapon);
         }
         else{
             await prepareRollAttribute(this, weapon.attribute, null, weapon)
@@ -751,17 +742,49 @@ export class SymbaroumActor extends Actor {
 
     async enhancedAttackRoll(weapon){
         // get selected token
-    let token;
-    try{token = await getTokenId(this)} catch(error){
-        ui.notifications.error(error);
-        return;
+        let token;
+        try{token = await getTokenId(this)} catch(error){
+            ui.notifications.error(error);
+            return;
+        }
+        // get target token, actor and defense value
+        let targetData;
+        try{targetData = getTarget("defense")} catch(error){
+            ui.notifications.error(error);
+            return;
+        }
+        
+        let functionStuff = {
+            actor: this,
+            token: token,
+            tokenId : token.id,
+            askIgnoreArmor: true,
+            askTargetAttribute: false,
+            askCastingAttribute: false,
+            numberofAttacks: 1,
+            attackFromPC: this.type !== "monster",
+            autoParams: "",
+            checkMaintain: false,
+            combat: true,
+            corruption: false,
+            dmgModifier: "",
+            dmgModifierNPC: 0,
+            dmgModifierAttackSupp: "",
+            dmgModifierAttackSuppNPC: 0,
+            favour: 0,
+            modifier: 0,
+            poison: 0,
+            isMystical: weapon.qualities.mystical,
+            isAlternativeDamage: false,
+            alternativeDamageAttribute: "none",
+            introText: token.data.name + game.i18n.localize('COMBAT.CHAT_INTRO') + weapon.name,
+            targetData: targetData,
+            corruptingattack: "",
+            ignoreArm: false,
+            castingAttributeName: weapon.attribute,
+            weapon: weapon,
+            damageOverTime: []
+        }
+        prepareRollAttribute(this, weapon.attribute, null, weapon, functionStuff); 
     }
-    // get target token, actor and defense value
-    let targetData;
-    try{targetData = getTarget("defense")} catch(error){
-        ui.notifications.error(error);
-        return;
-    }
-
-
 }

@@ -313,6 +313,7 @@
   "CHAT.DEAD": "You die !",
 
   "COMBAT.DAMAGE": "Inflicted damage: ",
+  "COMBAT.BLEED": "Bleed",
   "COMBAT.CHAT_INTRO": " attacks with ",
   "COMBAT.CHAT_SUCCESS": " hits ",
   "COMBAT.CHAT_FAILURE": " miss.",
@@ -362,6 +363,7 @@
   "DIALOG.STRONG_POISON": "Strong poison",
   "DIALOG.IGNORE_ARMOR": "Ignore armour?",
   "DIALOG.DAMAGE_IF_MODIFIER": "Iron fist damage bonus",
+  "DIALOG.ATTACK": "Attack",
   "DIALOG.2ATTACKS": "Attack twice?",
   "DIALOG.3ATTACKS": "Attack three times?",
   "DIALOG.FEAT_STRENGTH_DAMAGE": "Bonus damage from Feat of Strength",
@@ -845,6 +847,6 @@
   "SYMBAROUM.OPTIONAL_PLAYER_RESIST" :"Resist roll button",
   "SYMBAROUM.OPTIONAL_PLAYER_RESIST_HINT" :"When NPCs use powers that can be resisted, or attack with Combat Enhancement options, instead of rolling directly this option creates a button in the relevant player Chat that the Player will have to click on for the resist roll to be done.",
   "SYMBAROUM.OPTIONAL_NPC_ATTACKS": "Show multiple attacks in the weapon box for NPCs",
-  "SYMBAROUM.OPTIONAL_NPC_ATTACKS_HINT": "Warning: the system tries it best to show this, but due to technical limitations, it can only make a best guess"
+  "SYMBAROUM.OPTIONAL_NPC_ATTACKS_HINT": "Warning: the system tries it best to process this, but can't integrate some traits / abilities that are situationnal or complex."
 
 }

@@ -73,12 +73,14 @@ combat {
     ],
     weapons: [
         weaponid : {
+            maxAttackNb: number of multi-attack that can be done when using abilities and traits attack (default 1)
             package [
-                packageName: {  // default package contains all permanent modifiers for combat
+                packageName: {
                     label: label of the package,
                     type: default, checked or radio,
+                    // default package contains all permanent modifiers for combat, checked means choose active or not, radio means several options 
                     id : "the id",
-                    display : display label for dialog window
+                    value : display value for dialog window
                     member: [  // each individual modifier to be applied when package is selected
                         {
                             type: attribute  // change attack attribute
@@ -91,6 +93,7 @@ combat {
                             label : "the label of the modifier",
                             id : "the id",
                             modifier : "+mod" // the number of additional attacks
+                            //this will also increase the maxAttackNb value
                         }
                         {
                             type: attackrollmod  // attack roll modifier
@@ -129,8 +132,28 @@ combat {
                                 ("[attack-attribute]", // Only applies when attack is made with this attribute) // Not sure I can support - might require double loop
                             ]
                         }
+                        {
+                            type: statusDoT  // Damage over time
+                            label : "DoT name",
+                            damagePerRound: dice formula;
+                            damagePerRoundNPC: number;
+                            duration= dice formula, or "" for permanent;
+                            durationNPC: number or 0 for permanent;
+                            effectIcon: the status icon;
+                            restrictions = [ // any restrictions
+                                "1st-attack", // Only applicable on first attack
+                                "active", // Can only be used when performing 1 attack
+                                "advantage", // Can only be used when at advantage
+                                ("[attack-attribute]", // Only applies when attack is made with this attribute) // Not sure I can support - might require double loop
+                            ]
+                        }
+                    ]
                     ]
                 }
+            ],
+            
+            specialEffects [
+                stringvalue // currently only DAM_FAVOUR
             ]
         }
     ]
