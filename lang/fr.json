@@ -125,6 +125,7 @@
     "ABILITY.NOVICE":"Novice",
     "ABILITY.ADEPT":"Adepte",
     "ABILITY.MASTER":"Maître",
+    "ABILITY.NOT_LEARNED":"Pas apprise",
     "ABILITY.ROLL_RESULT": "Résultat du jet : ",
 
     "ACTION.ACTIVE": "Active",
@@ -139,6 +140,7 @@
     "ACTOR.TypeMonster": "Personnage Non-Joueur",
 
     "ARMOR.NAME": "Nom",
+    "ARMOR.NOARMOR_NAME":"No Armor",
     "ARMOR.PROTECTION": "Protection",
     "ARMOR.PROTECTIONABBR": "Prot.",
     "ARMOR.PROTECTION_SHORT": "Prot.",
@@ -155,6 +157,7 @@
     "ARMOR.QUALITY": "Qualité",
     "ARMOR.DESCRIPTION": "Description",
     "ARMOR.BONUS_ONLY": "Protection additionnelle",
+    "ARMOR.DEFENCE_ATTRIBUTE" : "Defend using",
     "ARMOR.ADDBUTTON": "Ajouter une armure",
     "ARMOR.DELETEBUTTON": "Supprimer l'armure",  
 
@@ -339,6 +342,7 @@
     "COMBAT.DEFENSE_ROLL": " essaie de se défendre contre l'attaque.",
     "COMBAT.PARAMS_PRECISE": "arme précise, ",
     "COMBAT.DAMAGE": "Dégâts infligés: ",
+    "COMBAT.BLEED": "Hémorragie",
 
     "CORRUPTION.CHAT_INTRO": " dépasse un seuil de souillure.",
     "CORRUPTION.CHAT_THRESHOLD": " est marqué par la corruption (seuil atteint).",
@@ -371,8 +375,9 @@
     "DIALOG.STRONG_POISON": "Poison fort",
     "DIALOG.IGNORE_ARMOR": "Ignorer l'armure?",
     "DIALOG.DAMAGE_IF_MODIFIER": "Bonus dégâts Poigne de fer",
-    "DIALOG.2ATTACKS": "Deux attaques?",
-    "DIALOG.3ATTACKS": "Trois attaques?",
+    "DIALOG.ATTACK": "Attaque",
+    "DIALOG.2ATTACKS": "att.x2",
+    "DIALOG.3ATTACKS": "att.x3",
     "DIALOG.FEAT_STRENGTH_DAMAGE": "Dégats Epreuve de Force",
     "DIALOG.IMPEDING": "Inclure malus d'armure?",
     "DIALOG.CASTING_ATTRIBUTE": "Attribut utilisé",
@@ -832,7 +837,8 @@
     "SYMBAROUM.OPTIONAL_RESET_NON_EDITABLE_BUTTON" :"Réinitialiser la couleur de fond des champs fixes",
     "SYMBAROUM.OPTIONAL_RESET_ALL_BUTTON": "Reinitialiser les paramètres",
     "SYMBAROUM.OPTIONAL_PLAYER_RESIST" :"Bouton jet de résistance",
-    "SYMBAROUM.OPTIONAL_PLAYER_RESIST_HINT" :"Quand un PNJ attaque avec un pouvoir ou avec l'option Combats accélérés, cette option crée un bouton dans le chat du joueur visé, qu'il devra cliquer pour lancer le jet de résistance ou de défense."
-  
+    "SYMBAROUM.OPTIONAL_PLAYER_RESIST_HINT" :"Quand un PNJ attaque avec un pouvoir ou avec l'option Combats accélérés, cette option crée un bouton dans le chat du joueur visé, qu'il devra cliquer pour lancer le jet de résistance ou de défense.",
+    "SYMBAROUM.OPTIONAL_NPC_ATTACKS": "Afficher les attaques multiples dans la case de dégâts des armes de la feuille de personnage",
+    "SYMBAROUM.OPTIONAL_NPC_ATTACKS_HINT": "Avertissement: Ces calculs sont indicatifs et ne prennent pas en compte certains talents / traits au mécanismes complexes ou situationnels."
 }
 

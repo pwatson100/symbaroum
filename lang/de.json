@@ -113,6 +113,7 @@
   "ABILITY.NOVICE":"Novize",
   "ABILITY.ADEPT":"Adept",
   "ABILITY.MASTER":"Meister",
+  "ABILITY.NOT_LEARNED":"Not Learned",
   "ABILITY.ROLL_RESULT": "Würfelergebnis: ",
 
   "ACTION.ACTIVE": "Aktiv",
@@ -127,6 +128,7 @@
   "ACTOR.TypeMonster": "Non-player/monster character",
 
   "ARMOR.NAME": "Name",
+  "ARMOR.NOARMOR_NAME":"No Armor",
   "ARMOR.PROTECTION": "Schutz",
   "ARMOR.PROTECTIONABBR": "Schu.",
   "ARMOR.PROTECTION_SHORT": "Schu.",
@@ -142,6 +144,7 @@
   "ARMOR.COST": "Kosten",
   "ARMOR.QUALITY": "Qualität",
   "ARMOR.DESCRIPTION": "Beschreibung",
+  "ARMOR.DEFENCE_ATTRIBUTE" : "Defend using",
   "ARMOR.ADDBUTTON": "Add Armor",
   "ARMOR.DELETEBUTTON": "Delete Armor",
 
@@ -290,7 +293,6 @@
   "CHAT.NEAR_DEATH": "Der Tod ist nahe :",
   "CHAT.DEAD": "Du stirbst!",
 
-  "COMBAT.DAMAGE": " Verursachter Schaden: ",
   "COMBAT.CHAT_INTRO": " greift an mit ",
   "COMBAT.CHAT_SUCCESS": " trifft",
   "COMBAT.CHAT_FAILURE": " verfehlt.",
@@ -321,6 +323,8 @@
   "COMBAT.CHAT_JOINTED_SECONDARY": "Defence succeeds, but the jointed weapon hits anyway (see jointed quality for evaluating damage).",
   "COMBAT.DEFENSE_ROLL": " tries to defend against the attack.",
   "COMBAT.PARAMS_PRECISE": "Präzise Waffe, ",
+  "COMBAT.DAMAGE": " Verursachter Schaden: ",
+  "COMBAT.BLEED": "Bleed",
 
   "CORRUPTION.CHAT_INTRO": " increases his degree of taint.",
   "CORRUPTION.CHAT_THRESHOLD": " becomes Blight-marked (theshold reached).",
@@ -791,5 +795,7 @@
   "SYMBAROUM.OPTIONAL_RESET_NON_EDITABLE_BUTTON" :"Reset Non-Editable Field",
   "SYMBAROUM.OPTIONAL_RESET_ALL_BUTTON": "Reset all settings to defaults",
   "SYMBAROUM.OPTIONAL_PLAYER_RESIST" :"Resist roll button",
-  "SYMBAROUM.OPTIONAL_PLAYER_RESIST_HINT" :"When NPCs use powers that can be resisted, or attack with Combat Enhancement options, instead of rolling directly this option creates a button in the relevant player Chat that the Player will have to click on for the resist roll to be done."
+  "SYMBAROUM.OPTIONAL_PLAYER_RESIST_HINT" :"When NPCs use powers that can be resisted, or attack with Combat Enhancement options, instead of rolling directly this option creates a button in the relevant player Chat that the Player will have to click on for the resist roll to be done.",
+  "SYMBAROUM.OPTIONAL_NPC_ATTACKS": "Show multiple attacks in the weapon box for NPCs",
+  "SYMBAROUM.OPTIONAL_NPC_ATTACKS_HINT": "Warning: the system tries it best to process this, but can't integrate some traits / abilities that are situationnal or complex."
 }
