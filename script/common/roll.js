@@ -17,15 +17,12 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
     value: 0,
     name: "",
     message: "",
-    diceBreakdown: ""
+    diceBreakdown: "",
+    img: ""
   };
 
 	if(hasWeapon && advantage ) { modifier +=2 }
   else if (hasArmor && advantage) { modifier -=2; }
-  
-	if(hasWeapon && weapon.qualities.precise) {		
-		modifier++;
-  }
   
   let rollResults = await baseRoll(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier, false);
   
@@ -34,19 +31,20 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
       let prot = armor.protectionPc;
       let armorRoll = new Roll(prot, {});
       
-      armorRoll.roll();
+      armorRoll.evaluate({async:false});
       if (game.dice3d != null) {
         await game.dice3d.showForRoll(armorRoll, game.user, true);
       }
       
-      armorResults.name = armor.armor;
+      armorResults.name = armor.name;
       armorResults.value = armorRoll.total;
       armorResults.diceBreakdown = await armorRoll.getTooltip();
+      armorResults.img = armor.img;
     }
   }
 
   if (hasWeapon && rollResults.hasSucceed) {
-    dam = weapon.damage.pc;
+    dam = weapon.damage.base;
     if (dam !== '') {
       if ( advantage ) { dam += "+1d4["+game.i18n.localize('ROLL.ADVANTAGESHORT')+"]"; }
       if ( rollResults.critSuccess ) { dam += "+1d6["+game.i18n.localize('ROLL.CRITSHORT')+"]"; }
@@ -54,7 +52,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
       
 
       let weaponRoll = new Roll(dam, {});
-      weaponRoll.roll();
+      weaponRoll.evaluate({async:false});
       let tooltip = await weaponRoll.getTooltip();
       
       if (game.dice3d != null) {
@@ -70,7 +68,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   }
   
 
- if( !hasWeapon && !hasArmor && !game.settings.get('symbaroum', 'critsApplyToAllTests') ) {
+  if( !hasWeapon && !hasArmor && !game.settings.get('symbaroum', 'critsApplyToAllTests') ) {
     rollResults.critSuccess = rollResults.critFail = false;
   } 
   
@@ -109,27 +107,42 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   return(rollData);
 }
 
-export async function deathRoll(sheet) {
+export async function rollDeathTest(actor, withFavour, modifier) {
   let death = new Roll('1d20', {});
-  death.roll();
+  if( withFavour === "1") {
+    death = new Roll('2d20kl', {});
+  } else if( withFavour === "-1") {
+    death = new Roll('2d20kh', {});
+  }
+
+  death.evaluate({async:false});
+
   if (game.dice3d != null) {
     await game.dice3d.showForRoll(death, game.user, true);
   }
-  let hasSucceed = death._total >= 2 && death._total <= 10;
-  let isCriticalSuccess = death._total === 1;
-  if (!hasSucceed) sheet.nbrOfFailedDeathRoll++;
-  if (isCriticalSuccess) sheet.nbrOfFailedDeathRoll = 0;
-  let heal = new Roll('1d4', {});
-  heal.roll();
-  if (game.dice3d != null) {
-    await game.dice3d.showForRoll(heal, game.user, true);
+  let hasSucceed = death.total <= 10+modifier;
+
+  let isCriticalSuccess = death.total <= (1+( game.settings.get('symbaroum', 'enhancedDeathSaveBonus') ? modifier:0));
+  let heal = null;
+  let nbrOfFailedDeathRoll = actor.data.data.nbrOfFailedDeathRoll;
+
+  if (!hasSucceed) nbrOfFailedDeathRoll = Math.min(3, nbrOfFailedDeathRoll+1);
+  if (isCriticalSuccess) {
+    nbrOfFailedDeathRoll = 0;
+    heal = new Roll('1d4', {});
+    heal.evaluate({async:false});
+    if (game.dice3d != null) {
+      await game.dice3d.showForRoll(heal, game.user, true);
+    }
   }
+  let diceBreakdown = formatDice(death.terms,"+");
   let rollData = {
     isCriticalSuccess: isCriticalSuccess,
-    healing: heal._total,
-    isCriticalFailure: death._total === 20 || sheet.nbrOfFailedDeathRoll >= 3,
+    healing: heal?.total,
+    isCriticalFailure: death.total === 20 || nbrOfFailedDeathRoll >= 3,
     hasSucceed: hasSucceed,
-    nbrOfFailure: sheet.nbrOfFailedDeathRoll,
+    nbrOfFailure: nbrOfFailedDeathRoll,
+    diceBreakdown: diceBreakdown
   };
   const html = await renderTemplate('systems/symbaroum/template/chat/death.html', rollData);
   let chatData = {
@@ -143,6 +156,9 @@ export async function deathRoll(sheet) {
     chatData.whisper = [game.user];
   }
   ChatMessage.create(chatData);
+  if(actor.data.data.nbrOfFailedDeathRoll != nbrOfFailedDeathRoll) {
+    await actor.update({"data.nbrOfFailedDeathRoll":nbrOfFailedDeathRoll });
+  }
 }
 
 //this function returns the localized name, and also accept defense.
@@ -222,7 +238,7 @@ async function doBaseRoll(actor, actingAttributeName, targetActor, targetAttribu
 	if(favour > 0) d20str="2d20kl";
 	else if(favour < 0) d20str="2d20kh";
   
-  let attributeRoll = new Roll(d20str).evaluate();  
+  let attributeRoll = new Roll(d20str).evaluate({async:false});  
   
   let dicesResult;
   if(favour != 0){ 
@@ -257,22 +273,31 @@ async function doBaseRoll(actor, actingAttributeName, targetActor, targetAttribu
     hasSucceed = true;
     trueActorSucceeded = !resistRoll;
   }
-   
+
+  diceBreakdown = formatDice(attributeRoll.terms,"+", hasSucceed ? "normal":"failure");
+
   // Check option - always succeed on 1, always fail on 20
 	if(game.settings.get('symbaroum', 'optionalCrit') || game.settings.get('symbaroum', 'optionalRareCrit') ) {     
     if( attributeRoll.total === 1 || attributeRoll.total === 20 ) {
       if( game.settings.get('symbaroum', 'optionalCrit') ) {
           critBad = attributeRoll.total === 20 && !resistRoll;
           critGood = !critBad;
+          let css = `${critGood?"critical":critBad?"fumble":"normal"}`;
+          diceBreakdown = formatDice(attributeRoll.terms,"+", css);
       }    
       if( game.settings.get('symbaroum', 'optionalRareCrit') ) {
-        let secondRoll = new Roll("1d20").evaluate();        
+        let secondRoll = new Roll("1d20").evaluate({async:false});        
+        if (game.dice3d != null) {
+          await game.dice3d.showForRoll(secondRoll, game.user, true);
+        }        
         critGood = (critGood && secondRoll.total <= diceTarget && !resistRoll) || (critGood && secondRoll.total > diceTarget && resistRoll);
         critBad = (critBad && secondRoll.total > diceTarget && !resistRoll) || (critGood && secondRoll.total <= diceTarget && resistRoll);
-        diceBreakdown = `${diceBreakdown} &amp; <span class="${critGood?"critical":critBad?"fumble":"normal"}">${secondRoll.results}</span>`;
+        let css = `${critGood?"critical":critBad?"fumble":"normal"}`;
+        diceBreakdown = formatDice(attributeRoll.terms,"+", css);
+        diceBreakdown = `${diceBreakdown} &amp; <span class="symba-rolls roll d20 ${css}">${secondRoll.total}</span>`;
       }
     }
-	}
+  }
 
   return({
     actingAttributeValue: actingAttributeValue,
@@ -354,7 +379,7 @@ export async function createResistRollChatButton(functionStuff){
 @param separator the chosen separator to use between dice
 
 */
-function formatDice(diceResult, separator) {
+function formatDice(diceResult, separator, css = "normal") {
 	let rolls = "";
   
 	for( let dd of diceResult ) {
@@ -379,9 +404,9 @@ function formatDice(diceResult, separator) {
 					rolls += tmpSep;
 				}
 				if(diceDetails.active ) {
-          rolls += diceDetails["result"];	
+          rolls += `<span class="symba-rolls roll d20 ${css}">${diceDetails["result"]}</span>`;	
 				} else {
-					rolls += "<span class='strike'>"+diceDetails["result"]+"</span>";
+					rolls += `<span class='symba-rolls roll d20 strike'>${diceDetails["result"]}</span>`;
 				}
 				j++;
 			}
@@ -488,7 +513,7 @@ export async function damageRollWithDiceParams(functionStuff, critSuccess, attac
       newRollDmgString = functionStuff.weapon.damage.npc.toString();
       if(modFixedDmg) {newRollDmgString += "+"+ modFixedDmg.toString()};
       if(damageModFormula != ""){
-        let weaponModRoll= new Roll(damageModFormula).evaluate({maximize: true});
+        let weaponModRoll= new Roll(damageModFormula).evaluate({maximize: true, async:false});
         let weaponModDmgValue = Math.ceil(weaponModRoll.total/2);
         newRollDmgString += "+"+ weaponModDmgValue.toString(); 
       }
@@ -502,7 +527,7 @@ export async function damageRollWithDiceParams(functionStuff, critSuccess, attac
     }
     // final damage
     // game.symbaroum.log(newRollDmgString);
-    let dmgRoll= new Roll(newRollDmgString).evaluate();
+    let dmgRoll= new Roll(newRollDmgString).evaluate({async:false});
 
     return{
     roll : dmgRoll,
@@ -538,7 +563,7 @@ export async function simpleDamageRoll(functionStuff, damageFormula){
   }
   else{
     // If the attack is made by a NPC, evaluate static value for damage (=max damage/2) then roll armor and substract
-    let weaponRoll= new Roll(damageFormula).evaluate({maximize: true});
+    let weaponRoll= new Roll(damageFormula).evaluate({maximize: true, async:false});
     let weaponDmgValue = Math.ceil(weaponRoll.total/2);
 
    //build roll string
@@ -548,7 +573,7 @@ export async function simpleDamageRoll(functionStuff, damageFormula){
     }
   }
   // final damage
-  let dmgRoll= new Roll(newRollDmgString).evaluate();
+  let dmgRoll= new Roll(newRollDmgString).evaluate({async:false});
   return{
     roll : dmgRoll,
     diceResult: dmgRoll.total,

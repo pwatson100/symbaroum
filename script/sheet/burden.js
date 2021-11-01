@@ -5,8 +5,8 @@ export class BurdenSheet extends SymbaroumItemSheet {
         return mergeObject(super.defaultOptions, {
             classes: ["symbaroum", "sheet", "item"],
             template: "systems/symbaroum/template/sheet/burden.html",
-            width: 500,
-            height: 472,
+            width: 700,
+            height: 600,
             resizable: false,
             tabs: [
                 {

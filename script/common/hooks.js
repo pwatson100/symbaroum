@@ -46,16 +46,16 @@ Hooks.once('init', () => {
     SymbaroumConfig,
   };
   game.symbaroum.debug = (...args) => { 
-    console.debug("Symbaroum |", ...args);
+    console.debug("%cSymbaroum |",game.symbaroum.config.CONSOLESTYLE, ...args);
   };  
   game.symbaroum.error = (...args) => { 
-    console.error("Symbaroum |", ...args);
+    console.error("%cSymbaroum |",game.symbaroum.config.CONSOLESTYLE, ...args);
   };
   game.symbaroum.info = (...args) => { 
-    console.info("Symbaroum |", ...args);
+    console.info("%cSymbaroum |",game.symbaroum.config.CONSOLESTYLE, ...args);
   };
   game.symbaroum.log = (...args) => { 
-    console.log("Symbaroum |", ...args);
+    console.log("%cSymbaroum |",game.symbaroum.config.CONSOLESTYLE, ...args);
   };
 
   game.settings.register('symbaroum', 'worldTemplateVersion', {
@@ -181,6 +181,14 @@ Hooks.once('init', () => {
     default: false,
     config: true,
   });
+  game.settings.register('symbaroum', 'showNpcAttacks', {
+    name: 'SYMBAROUM.OPTIONAL_NPC_ATTACKS',
+    hint: 'SYMBAROUM.OPTIONAL_NPC_ATTACKS_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });  
   game.settings.register('symbaroum', 'allowShowReference', {
     name: 'SYMBAROUM.OPTIONAL_SHOWREFERENCE',
     hint: 'SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT',
@@ -193,6 +201,15 @@ Hooks.once('init', () => {
   game.settings.register('symbaroum', 'hideIniativeRolls', {
     name: 'SYMBAROUM.OPTIONAL_INIATITIVEROLLS',
     hint: 'SYMBAROUM.OPTIONAL_INIATITIVEROLLS_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });
+
+  game.settings.register('symbaroum', 'enhancedDeathSaveBonus', {
+    name: 'SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS',
+    hint: 'SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS_HINT',
     scope: 'world',
     type: Boolean,
     default: false,

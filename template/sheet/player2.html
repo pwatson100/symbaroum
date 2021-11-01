@@ -1,8 +1,11 @@
 <form class="{{cssClass}}" autocomplete="off">
     <div class="player">
         <div class="sheet-header foreground border">
-            <div class="avatar">
+            <div class="avatar" style="position:relative">
                 <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
+                {{#ifgt data.nbrOfFailedDeathRoll 0}}
+                <div title="Death is reached at 3 skulls" style="position: absolute; top: 70%;left: 15px;">{{#times data.nbrOfFailedDeathRoll}}<i class="fas fa-skull" style="margin: 5px; color:rgb(255, 255, 255); vertical-align: bottom; -webkit-text-stroke-width: 1px; -webkit-text-stroke-color: rgb(0, 0, 0);"></i>{{/times}}</div>
+                {{/ifgt}}
             </div>
             <div class="wrapper-column">
                 <div class="wrapper-row">

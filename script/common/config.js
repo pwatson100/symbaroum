@@ -1,6 +1,17 @@
 // Namespace Configuration Values
 export const SYMBAROUM = {};
 
+SYMBAROUM.attributes = [
+    "accurate",
+    "cunning",
+    "discreet",
+    "persuasive",
+    "quick",
+    "resolute",
+    "strong",
+    "vigilant"
+];
+
 SYMBAROUM.itemSortOrder = [
     "ability",
     "trait",
@@ -277,3 +288,67 @@ SYMBAROUM.burdensList = {
     "slow": 'BURDEN_LABEL.SLOW',
     "wanted": 'BURDEN_LABEL.WANTED'
 };
+
+SYMBAROUM.meleeWeapons = [
+    "1handed",
+    "short",
+    "long",
+    "shield",
+    "unarmed",
+    "heavy"
+];
+
+
+SYMBAROUM.rangeWeapons = [
+    "ranged",
+    "thrown"
+];
+
+SYMBAROUM.ecBuiltinDamage = [
+    "marksman",
+    "polearmmastery",
+    "shieldfighter",
+    "twohandedforce",
+    "naturalweapon",
+    "naturalwarrior",
+    "colossal",
+    "dominate",
+    "feint",
+    "knifeplay",
+    "sixthsense",
+    "tactician",
+    "ironfist",
+    "robust",
+    "1handed",
+    "short",
+    "long",
+    "shield",
+    "unarmed",
+    "heavy"
+];
+
+SYMBAROUM.ecOptionalDamage = [
+    "ironfist",
+    "robust"
+];
+
+SYMBAROUM.DAM_DICEUPGRADE = "upgrade";
+SYMBAROUM.DAM_CHECK = "check";
+SYMBAROUM.DAM_RADIO = "radio";
+SYMBAROUM.DAM_FIXED = "fixed";
+SYMBAROUM.DAM_BUILTIN = "builtin"; // builtin is for those that EC assumes are already calculated
+SYMBAROUM.DAM_BUILTIN_REFERENCES = [
+
+];
+
+SYMBAROUM.DAM_1STATTACK = "1stattack";
+SYMBAROUM.DAM_NOTACTIVE = "not1stattack";
+SYMBAROUM.DAM_ACTIVE = "active";
+SYMBAROUM.DAM_ADVANTAGE = "advantage";
+
+SYMBAROUM.SPECIAL_STRONG = "strong";
+SYMBAROUM.SPECIAL_WEAK = "weak";
+SYMBAROUM.SPECIAL_MIN_DEFENSE = "min_defense";
+SYMBAROUM.SPECIAL_ALTERNATIVE_DAMAGE = "alternative_damage";
+
+SYMBAROUM.CONSOLESTYLE = 'font-weight: bold;';

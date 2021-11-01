@@ -327,6 +327,10 @@
      border-image: var(--chat-roll-border) 20/10px;
 }
 
+.symbaroum.chat.roll .baseinfo {
+  margin-top: 5px;
+}
+
 .symbaroum.chat.roll strong {
   text-transform: uppercase;
   font-weight: bold;
@@ -403,26 +407,101 @@
 }
 
 .symbaroum.chat.roll .strike {
-  color: grey;
+  color: black;
   text-decoration: line-through;
 }
 
-.symbaroum.chat.roll .fumble {
-  color: red;
-  font-weight: bold;
-}
-
-.symbaroum.chat.roll .critical {
-  color: yellow;
-  font-weight: bold;
-}
-
-.symbaroum.chat.roll img {
+.symbaroum.chat.roll img,
+.symbaroum.chat.roll .portrait {
   border: 0;
   display: block;
   margin: 0 auto 8px;
-  max-height: 64px;
+  height: 64px;
   width: auto;
+}
+
+.symbaroum.chat.roll .moreinfo {
+  border: 0;
+  float: right;
+  height: 18px;
+  width: auto;
+  -webkit-filter: sepia(0.5) contrast(0.75) opacity(0.4);
+          filter: sepia(0.5) contrast(0.75) opacity(0.4);
+}
+
+.symba-rolls.roll {
+  display: inline-block;
+  width: 24px;
+  line-height: 24px;
+  margin-right: 1px;
+  background-image: url("../../../icons/svg/d6-grey.svg");
+  background-repeat: no-repeat;
+  background-size: 24px 24px;
+  font-size: 16px;
+  color: #000;
+  font-weight: bold;
+  text-align: center;
+}
+
+.symba-rolls.roll.d4 {
+  background-image: url("../../../icons/svg/d4-grey.svg");
+}
+
+.symba-rolls.roll.d6 {
+  background-image: url("../../../icons/svg/d6-grey.svg");
+}
+
+.symba-rolls.roll.d8 {
+  background-image: url("../../../icons/svg/d8-grey.svg");
+}
+
+.symba-rolls.roll.d10 {
+  background-image: url("../../../icons/svg/d10-grey.svg");
+}
+
+.symba-rolls.roll.d12 {
+  background-image: url("../../../icons/svg/d12-grey.svg");
+}
+
+.symba-rolls.roll.d20 {
+  background-image: url("../../../icons/svg/d20-grey.svg");
+}
+
+.symba-rolls.roll.discarded,
+.symba-rolls.roll.rerolled,
+.symba-rolls.roll.strike {
+  -webkit-filter: sepia(0.5) contrast(0.75) opacity(0.4);
+          filter: sepia(0.5) contrast(0.75) opacity(0.4);
+}
+
+.symba-rolls.roll.normal {
+  color: #18520b;
+  -webkit-filter: sepia(0.5) hue-rotate(60deg);
+          filter: sepia(0.5) hue-rotate(60deg);
+}
+
+.symba-rolls.roll.success {
+  color: #18520b;
+  -webkit-filter: sepia(0.5) hue-rotate(60deg);
+          filter: sepia(0.5) hue-rotate(60deg);
+}
+
+.symba-rolls.roll.failure {
+  color: #aa0200;
+  -webkit-filter: sepia(0.5) hue-rotate(-60deg);
+          filter: sepia(0.5) hue-rotate(-60deg);
+}
+
+.symba-rolls.roll.critical {
+  color: #18520b;
+  -webkit-filter: sepia(0.5) hue-rotate(60deg);
+          filter: sepia(0.5) hue-rotate(60deg);
+}
+
+.symba-rolls.roll.fumble {
+  color: #aa0200;
+  -webkit-filter: sepia(0.5) hue-rotate(-60deg);
+          filter: sepia(0.5) hue-rotate(-60deg);
 }
 
 /* Common styles */
@@ -709,7 +788,7 @@
   border: 0 none;
   width: 100px;
   height: 100px;
-  margin: auto;
+  margin: 0px;
 }
 
 .symbaroum.sheet.item button:hover {
@@ -813,7 +892,7 @@
       -ms-flex: 0 0 auto;
           flex: 0 0 auto;
   height: 100px;
-  margin: 5px 0 5px 5px;
+  margin: 5px 5px 5px 5px;
   width: 100px;
 }
 
@@ -858,7 +937,7 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  margin: auto;
+  margin: 0px 0px 5px 0px;
 }
 
 .symbaroum.sheet.item .sheet-header .computedvalues {
@@ -897,7 +976,7 @@
 .symbaroum.sheet.item .editor {
   margin: 5px;
   border: 1px solid var(--color-border);
-  height: 130px;
+  height: 250px;
 }
 
 .symbaroum.sheet.item .editor-content {
@@ -1288,6 +1367,12 @@
   border: 0;
 }
 
+.symbaroum-mod .imagecontainer {
+  position: relative;
+  text-align: center;
+  color: white;
+}
+
 #pause {
   background: none;
 }
@@ -1604,6 +1689,12 @@
 .symbaroum.sheet.actor .player .gear .wrapper-left .weapons {
   height: 300px;
   margin-top: 10px;
+}
+
+.symbaroum.sheet.actor .player .gear .wrapper-left .armors .item-list .item-header,
+.symbaroum.sheet.actor .player .gear .wrapper-left .weapons .item-list .item-header,
+.symbaroum.sheet.actor .player .gear .wrapper-right .equipments .item-list .item-header {
+  display: table-row;
 }
 
 .symbaroum.sheet.actor .player .gear .wrapper-left .armors .scrollable,
@@ -2554,7 +2645,7 @@
 }
 
 .symbaroum.sheet.item .ability .description .editor {
-  height: 166px;
+  height: 270px;
 }
 
 .symbaroum.sheet.item .ability .tab .active,
@@ -2645,7 +2736,7 @@
 }
 
 .symbaroum.sheet.item .armor .description .editor {
-  height: 134px;
+  height: 270px;
 }
 
 .symbaroum.sheet.item .armor .tab .protection,
@@ -2936,7 +3027,7 @@
 }
 
 .symbaroum.sheet.item .boon .description .editor {
-  height: 166px;
+  height: 290px;
 }
 
 .symbaroum.sheet.item .boon .tab .bonus .scroll {
@@ -3003,7 +3094,7 @@
 }
 
 .symbaroum.sheet.item .burden .description .editor {
-  height: 166px;
+  height: 290px;
 }
 
 .symbaroum.sheet.item .burden .tab .bonus .scroll {
@@ -3068,6 +3159,10 @@
   -ms-flex-preferred-size: 100%;
       flex-basis: 100%;
   border-top: none;
+}
+
+.symbaroum.sheet.item .equipment .description .editor {
+  height: 200px;
 }
 
 .symbaroum.sheet.item .equipment .tab .cost,
@@ -3573,10 +3668,11 @@
   border-top: none;
 }
 
+/*
 .symbaroum.sheet.item .trait .description .editor {
-  height: 166px;
+    height: 250px;
 }
-
+*/
 .symbaroum.sheet.item .trait .tab .marker {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -3678,7 +3774,7 @@
 }
 
 .symbaroum.sheet.item .weapon .description .editor {
-  height: 166px;
+  height: 250px;
 }
 
 .symbaroum.sheet.item .weapon .tab .stats .quality,
