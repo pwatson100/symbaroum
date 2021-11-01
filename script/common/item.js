@@ -625,7 +625,7 @@ export class SymbaroumItem extends Item {
                 modifier = 4; // 1d4 armor
             }
             base.type = base.type = game.symbaroum.config.DAM_DICEUPGRADE;
-            base.diceUpgrade = 2 * (lvl.level - 1); // Exclude novice - it is accounted for either in the noArmor check, or by the armor itself
+            base.diceUpgrade = modifier + 2 * (lvl.level - 1); // Exclude novice - it is accounted for either in the noArmor check, or by the armor itself
             combatMods.armors[armors[i].id].protectionChoices.push(base);
         }
     }        

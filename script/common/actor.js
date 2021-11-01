@@ -377,7 +377,7 @@ export class SymbaroumActor extends Actor {
             }
             // game.symbaroum.log(armorModifiers);
             let diceRoller = "";
-            if(item.isNoArmor) {
+            if(item.isNoArmor && diceSides === 0) {
                 // allDefenseProtNPC contains a 0 if npc
                 diceRoller = (this.type == "player" ? "0":"");
             }
