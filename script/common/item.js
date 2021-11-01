@@ -991,7 +991,11 @@ export class SymbaroumItem extends Item {
                 pack.type = game.symbaroum.config.PACK_RADIO;
                 let base = this._getBaseFormat();
                 base.type = game.symbaroum.config.DAM_RADIO;
-                base.defaultSelect = "+1d4";
+                if(this.actor.type === "player") {
+                    pack.defaultSelect = "+1d4";
+                } else {
+                    pack.defaultSelect = 2;
+                }
                 base.alternatives = [
                     {
                         label: game.i18n.localize('ABILITY_LABEL.IRON_FIST'),

@@ -443,18 +443,23 @@ function createLineDisplay(weaponModifiers, attackFromPC)
         let member= pack.member[0];
         if(member.type === game.symbaroum.config.DAM_RADIO){
           let radioAlternatives = {};
-          pack.defaultSelect = "";
+          
           for(let j = 0; j < member.alternatives.length; j++) 
           {
             if(attackFromPC){
               radioAlternatives[`${member.alternatives[j].damageMod}`] = `${member.alternatives[j].label} ${member.alternatives[j].damageMod}`;
-            }
-            else{
+            } else {
               radioAlternatives[`${member.alternatives[j].damageModNPC}`] = `${member.alternatives[j].label} ${member.alternatives[j].damageModNPC}`;
-              }
+            }
           }
           pack.radioAlternatives = radioAlternatives;
-          pack.defaultSelect = `${member.alternatives[0].damageModNPC}`
+          if(pack.defaultSelect === undefined || pack.defaultSelect === null) {
+            if(attackFromPC) {
+              pack.defaultSelect = `${member.alternatives[0].damageMod}`;
+            } else {
+              pack.defaultSelect = `${member.alternatives[0].damageModNPC}`;
+            }
+          }
         }
       }
     }
