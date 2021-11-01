@@ -680,6 +680,9 @@ export class SymbaroumActor extends Actor {
     }
 
     _addBonusData(currentb, item, itemb, bonusType) {
+        if(currentb[bonusType+"_msg"] === undefined ) {
+            currentb[bonusType+"_msg"] = "";
+        }
         if(itemb[bonusType] != 0 ) {
             currentb[bonusType] += itemb[bonusType];
             currentb[bonusType+"_msg"] += "<br />"+item.name+"("+itemb[bonusType]+")";

@@ -57,7 +57,7 @@
   border: 0 none;
   width: 100px;
   height: 100px;
-  margin: auto;
+  margin: 0px;
 }
 
 .symbaroum.sheet.item button:hover {
@@ -146,7 +146,7 @@
   box-shadow: inset 0 0 6px black;
   flex: 0 0 auto;
   height: 100px;
-  margin: 5px 0 5px 5px;
+  margin: 5px 5px 5px 5px;
   width: 100px;
 }
 
@@ -175,7 +175,7 @@
   flex-direction: column;
   flex-basis: 100%;
   align-items: center;
-  margin: auto;
+  margin: 0px 0px 5px 0px;
 }
 
 .symbaroum.sheet.item .sheet-header .computedvalues {
@@ -205,7 +205,7 @@
 .symbaroum.sheet.item .editor {
   margin: 5px;
   border: 1px solid var(--color-border);
-  height: 130px;
+  height: 250px;
 }
 
 .symbaroum.sheet.item .editor-content {

@@ -207,9 +207,9 @@ export class SymbaroumItem extends Item {
             }
 
             if(protection === "") {
-                armorRoll = new Roll("0").evaluate({maximize: true});
+                armorRoll = new Roll("0").evaluate({maximize: true, async:false});
             } else {
-                armorRoll = new Roll(protection).evaluate({maximize: true});
+                armorRoll = new Roll(protection).evaluate({maximize: true, async:false});
             }
             data.data.npcProtection = Math.ceil(armorRoll.total/2);
             if(data.data.qualities?.reinforced){
@@ -1963,11 +1963,11 @@ async function getCorruption(functionStuff){
     }
      
     if(functionStuff.attackFromPC){
-        let corRoll= new Roll(corruptionFormula).evaluate();
+        let corRoll= new Roll(corruptionFormula).evaluate({async:false});
         return({value: corRoll.total, sorceryRoll: sorceryRoll, corruptionRoll: corRoll})
     }
      
-    let corRoll= new Roll(corruptionFormula).evaluate({maximize: true});
+    let corRoll= new Roll(corruptionFormula).evaluate({maximize: true, async:false});
     let value = Math.ceil(corRoll.total/2);
     return({value: value, sorceryRoll: sorceryRoll, corruptionRoll: corRoll})
 }
@@ -2636,7 +2636,7 @@ async function attackResult(rollData, functionStuff){
     }
 
     if(printCorruption){
-        let corruptionRoll= new Roll(corruptionDmgFormula).evaluate();
+        let corruptionRoll= new Roll(corruptionDmgFormula).evaluate({async:false});
         if (game.dice3d != null) {
             await game.dice3d.showForRoll(corruptionRoll, game.user, true);
         }
@@ -2710,7 +2710,7 @@ async function attackResult(rollData, functionStuff){
             let flamingRounds = 2;
             let flamingDamage = " 2";
             if(functionStuff.attackFromPC || functionStuff.targetData.actor.type === "monster"){
-                flamingRoundsRoll= new Roll("1d4").evaluate();
+                flamingRoundsRoll= new Roll("1d4").evaluate({async:false});
                 if (game.dice3d != null) {
                     await game.dice3d.showForRoll(flamingRoundsRoll, game.user, true);
                 }
@@ -2792,7 +2792,7 @@ async function standardAbilityActivation(functionStuff) {
 }
 
 async function healing(healFormula, targetToken){
-    let healRoll = new Roll(healFormula).evaluate();
+    let healRoll = new Roll(healFormula).evaluate({async:false});
     if (game.dice3d != null) {
         await game.dice3d.showForRoll(healRoll, game.user, true);
     }
@@ -2828,7 +2828,7 @@ async function poisonCalc(functionStuff, poisonRoll){
         else{
             poisonDamage = (functionStuff.poison +1).toString();
         }
-        let PoisonRoundsRoll= new Roll(poisonDamage).evaluate();
+        let PoisonRoundsRoll= new Roll(poisonDamage).evaluate({async:false});
         if (game.dice3d != null) {
             await game.dice3d.showForRoll(poisonDamage, game.user, true);
         }
@@ -2965,7 +2965,7 @@ async function standardPowerResult(rollData, functionStuff){
     }
 
     if(functionStuff.ability.data.reference === "confusion" && trueActorSucceeded){
-        let confusionRoll= new Roll("1d6").evaluate();
+        let confusionRoll= new Roll("1d6").evaluate({async:false});
         if (game.dice3d != null) {
             await game.dice3d.showForRoll(confusionRoll, game.user, true);
         }
@@ -4178,7 +4178,7 @@ async function regeneration(ability, actor){
     else{
         let regenDice = 2+ 2*functionStuff.powerLvl.level;
         let regenFormula = "1d" + regenDice.toString();
-        let dmgRoll= new Roll(regenFormula).evaluate();
+        let dmgRoll= new Roll(regenFormula).evaluate({async:false});
         if (game.dice3d != null) {
             await game.dice3d.showForRoll(regenFormula, game.user, true);
         }

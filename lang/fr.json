@@ -300,6 +300,7 @@
     "CHAT.SUCCEED": "Réussite",
     "CHAT.FAILED": "Echec",
     "CHAT.MARGIN": "Marge du résultat : ",
+    "CHAT.ATTRIBUTE_TARGET": "Attribute target",
     "CHAT.CRITICAL_SUCCESS": "Réussite Critique",
     "CHAT.CRITICAL_FAILURE": "Echec Critique",
     "CHAT.CRITICAL_FREEATTACK": "Attaque gratuite",
@@ -839,6 +840,8 @@
     "SYMBAROUM.OPTIONAL_PLAYER_RESIST" :"Bouton jet de résistance",
     "SYMBAROUM.OPTIONAL_PLAYER_RESIST_HINT" :"Quand un PNJ attaque avec un pouvoir ou avec l'option Combats accélérés, cette option crée un bouton dans le chat du joueur visé, qu'il devra cliquer pour lancer le jet de résistance ou de défense.",
     "SYMBAROUM.OPTIONAL_NPC_ATTACKS": "Afficher les attaques multiples dans la case de dégâts des armes de la feuille de personnage",
-    "SYMBAROUM.OPTIONAL_NPC_ATTACKS_HINT": "Avertissement: Ces calculs sont indicatifs et ne prennent pas en compte certains talents / traits au mécanismes complexes ou situationnels."
+    "SYMBAROUM.OPTIONAL_NPC_ATTACKS_HINT": "Avertissement: Ces calculs sont indicatifs et ne prennent pas en compte certains talents / traits au mécanismes complexes ou situationnels.",
+    "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS": "Death save bonus applies for crit",
+    "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS_HINT": "Any death save bonus applies to the odds of critical success, i.e. either improve or remove chance of critical success of death saves"
 }
 
