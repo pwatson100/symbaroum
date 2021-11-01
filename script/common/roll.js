@@ -137,6 +137,7 @@ export async function rollDeathTest(actor, withFavour, modifier) {
   }
   let diceBreakdown = formatDice(death.terms,"+");
   let rollData = {
+    actor: actor,
     isCriticalSuccess: isCriticalSuccess,
     healing: heal?.total,
     isCriticalFailure: death.total === 20 || nbrOfFailedDeathRoll >= 3,
@@ -147,6 +148,9 @@ export async function rollDeathTest(actor, withFavour, modifier) {
   const html = await renderTemplate('systems/symbaroum/template/chat/death.html', rollData);
   let chatData = {
     user: game.user.id,
+    speaker: {
+			actor: actor.id
+	  },
     rollMode: game.settings.get('core', 'rollMode'),
     content: html,
   };
