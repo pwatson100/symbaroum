@@ -476,7 +476,7 @@ export class SymbaroumItem extends Item {
     {
         for(let i = 0; i < armors.length; i++)
         {
-            if(!this.data.isActive || !armors[i].data.isActive || armors[i].data.isStackableArmor ||  !this.data.data.qualities.balanced) {
+            if(armors[i].id != this.id || !this.data.isActive || !armors[i].data.isActive || armors[i].data.isStackableArmor ||  !this.data.data.qualities.balanced) {
                 continue;
             }
             // Add 1
@@ -562,8 +562,6 @@ export class SymbaroumItem extends Item {
                 base.value = this.data.data.alternativeDamage;
                 combatMods.weapons[weapons[i].id].package[0].member.push(base);
             }
-            // TODO - balanced - gives 1 defense to normal armors
-            // i.e. !stackable
         }
     }
 
@@ -621,8 +619,13 @@ export class SymbaroumItem extends Item {
                 continue;
             }
             let base = this._getBaseFormat();
+            let modifier = 0;
+            game.symbaroum.log("getCombatModifierArmored", armors[i]);
+            if(armors[i].isNoArmor) {
+                modifier = 4; // 1d4 armor
+            }
             base.type = base.type = game.symbaroum.config.DAM_DICEUPGRADE;
-            base.diceUpgrade = 2 * lvl.level;
+            base.diceUpgrade = 2 * (lvl.level - 1); // Exclude novice - it is accounted for either in the noArmor check, or by the armor itself
             combatMods.armors[armors[i].id].protectionChoices.push(base);
         }
     }        
