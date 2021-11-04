@@ -256,7 +256,7 @@ export class SymbaroumItem extends Item {
         const itemData = duplicate(this.data);
         if (itemData.img.includes("/unknown")) {
             itemData.img = null;
-        }
+        }        
         itemData.isTrait = itemData.type === "trait";
         itemData.isAbility = itemData.type === "ability";
         itemData.isMysticalPower = itemData.type === "mysticalPower";
@@ -421,7 +421,7 @@ export class SymbaroumItem extends Item {
                 if(!this.data.isStackableArmor && this.data.data.qualities.flexible) {
                     let base = this._getBaseFormat();
                     base.label = game.i18n.localize("QUALITY.FLEXIBLE");                    
-                    base.modifier = 2;
+                    base.modifier = Math.min(armors[i].data.data.impeding, 2);
                     combatMods.armors[armors[i].id].impedingModifiers.push(base);
     
                 }                
@@ -1209,7 +1209,7 @@ export class SymbaroumItem extends Item {
                 continue;
             }
             let haveShieldEquipped = this.actor.items.filter(element => element.data.data?.reference === "shield" && element.data.isActive)
-            if(!haveShieldEquipped) {
+            if(haveShieldEquipped.length === 0) {
                 continue;
             }                
             let base = this._getBaseFormat();
@@ -1222,7 +1222,7 @@ export class SymbaroumItem extends Item {
                 ["1handed", "short", "unarmed"].includes(weapons[i].data.data.reference) ) 
             {
                 let haveShieldEquipped = this.actor.items.filter(element => element.data.data?.reference === "shield" && element.data.isActive)
-                if(!haveShieldEquipped) {
+                if(haveShieldEquipped.length === 0) {
                     continue;
                 }
                 // Upgrade weapon
@@ -1259,7 +1259,8 @@ export class SymbaroumItem extends Item {
                     continue;
                 }
                 let base = this._getBaseFormat();
-                base.attribute = "vigilant";  
+                base.attribute = "vigilant"; 
+                base.type = game.symbaroum.config.TYPE_ATTRIBUTE; 
                 combatMods.armors[armors[i].id].attributes.push(base);
             }
         }
@@ -1411,7 +1412,7 @@ export class SymbaroumItem extends Item {
                 base = this._getBaseFormat();
                 base.attribute = "cunning";
                 base.type = game.symbaroum.config.TYPE_ATTRIBUTE;
-                combatMods.weapons[weapons[i].id].package[0].member.push(base);
+                combatMods.armors[armors[i].id].attributes.push(base);
             }
         }
         if( lvl.level > 2) 

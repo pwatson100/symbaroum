@@ -37,6 +37,11 @@ function registerHandlebarsHelpers() {
     const markup = /<(.*?)>/gi;
     return new Handlebars.SafeString(text.replace(markup, ''));
   });
+    
+  Handlebars.registerHelper('removeStyling', function (text) {
+    const styling = /style="[^"]+"/gi;
+    return new Handlebars.SafeString(text.replace(styling, ''));
+  });
 
   Handlebars.registerHelper('keepMarkup', function (text) {  
     return new Handlebars.SafeString(text);
