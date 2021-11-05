@@ -946,7 +946,7 @@ export class SymbaroumItem extends Item {
             baseFav.value= "favour",
             baseFav.favourMod= 1;
             pack.member.push(baseFav);
-            if(lvl>1){
+            if(lvl.level>1){
                 let baseDmg = this._getBaseFormat();
                 baseDmg.type= game.symbaroum.config.DAM_MOD;
                 baseDmg.value= "+1d4",
