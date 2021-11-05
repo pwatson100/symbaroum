@@ -1,57 +1,52 @@
 .symbaroum.chat.item {
   color: var(--color-text);
   font-family: var(--font-text);
-  font-size: 12px;
-  line-height: 16px;
+  font-size: 1em;
+  line-height: 1.2em;
   padding: 5px;
 }
 
-.symbaroum.chat.item .foreground {
-  background: var(--box-editable) repeat;
-  padding: 10px;
-}
-
-.symbaroum.chat.item .border {
-  border: 1px solid transparent;
-  border-color: var(--title-color);
-  // border-image: var(--title-image) 20/10px;
-}
-
-.symbaroum.chat.item strong {
-  text-transform: uppercase;
+.symbaroum.chat.item strong {  
   font-weight: bold;
-  font-size: 14px;
+  font-size: 1.2em;
 }
 
 .symbaroum.chat.item h3 {
   font-family: var(--font-text);
-  font-size: 18px;
+  font-size: 1.5em;
+  margin-bottom: 0.75em;
   font-weight: bold;
-  margin: 0 0 8px;
   text-align: center;
 }
 
 .symbaroum.chat.item h4 {
   font-family: var(--font-text);
-  font-size: 16px;
+  font-size: 1.2em;
   font-weight: bold;
-  margin: 0 0 8px;
   text-align: center;
+  margin-bottom: 0.6em;
   border-bottom: 1px solid var(--color-border);
 }
 
 .symbaroum.chat.item h3 + h4 {
-  margin-top: -8px;
+  margin-top: -0.4em;
 }
 
 .symbaroum.chat.item img {
   border: 0;
   display: block;
-  margin: 0 auto 8px;
+  margin: 0 auto 0.5em;
   max-height: 64px;
   width: auto;
 }
 
 .symbaroum.chat.item p {
-  margin: 0 0 4px;
+  margin: 0.4em 0 0.4em;
+  user-select: text;
+}
+
+.symbaroum.chat.item p.name {
+  margin: 0 0 0.4em;
+  font-weight: bold;
+  text-align: center;
 }
