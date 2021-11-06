@@ -90,11 +90,12 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
     critFail: rollResults.critFail
   };
   const html = await renderTemplate('systems/symbaroum/template/chat/roll.html', rollData);
+  // Once we go to non-API version of DsN, then set this in chatData: type: CONST.CHAT_MESSAGE_TYPES.ROLL,
   let chatData = {
     user: game.user.id,
     speaker: {
 			actor: actor.id
-	},
+    },
     rollMode: game.settings.get('core', 'rollMode'),
     content: html,
   };
@@ -150,7 +151,7 @@ export async function rollDeathTest(actor, withFavour, modifier) {
     user: game.user.id,
     speaker: {
 			actor: actor.id
-	  },
+    },
     rollMode: game.settings.get('core', 'rollMode'),
     content: html,
   };
@@ -317,6 +318,7 @@ async function doBaseRoll(actor, actingAttributeName, targetActor, targetAttribu
     modifier: modifier,
     dicesResult: dicesResult,
     rollResult: await formatRollResult({favour: favour, diceResult: attributeRoll.total, dicesResult: dicesResult}),
+    roll: attributeRoll,
     toolTip: new Handlebars.SafeString(await attributeRoll.getTooltip()),
     diceBreakdown: diceBreakdown,    
     critSuccess: critGood,

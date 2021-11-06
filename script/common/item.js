@@ -268,6 +268,10 @@ export class SymbaroumItem extends Item {
         const html = await renderTemplate("systems/symbaroum/template/chat/item.html", itemData);
         const chatData = {
             user: game.user.id,
+            speaker: { 
+                name: this.actor?.name ?? game.user.name,
+                actor: this.actor?.id
+            },            
             rollMode: game.settings.get("core", "rollMode"),
             content: html,
         };
