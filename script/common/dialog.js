@@ -52,7 +52,7 @@ export async function prepareRollDeathTest(actor, showDialogue) {
   dialog.render(true);
 }
 
-export async function prepareRollAttribute(actor, attributeName, armor, weapon, ecData = {}) {
+export async function prepareRollAttribute(actor, attributeName, armor, weapon, ecData = {targetData: {hasTarget: false, leaderTarget: false, actor: {}}}) {
   let targetTokens = Array.from(game.user.targets);
   let attri_mods = getVersusModifiers(targetTokens);
 	let attri_defaults = getRollDefaults(attributeName,armor !== null, weapon !== null, ecData);
@@ -67,7 +67,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
   let hasTarget = false;
   let askPoison = false;
   let askAttackNb = false;
-  if(game.settings.get('symbaroum', 'combatAutomation')){
+  if(game.settings.get('symbaroum', 'combatAutomation') && weapon !== null){
     attackFromPC = actor.type !== "monster" || ecData.targetData.actor.type === "monster";
     askImpeding = ecData.askImpeding;
     attri_defaults.impeding = ecData.impeding;
@@ -124,7 +124,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
             if( html.find("#targetAttribute").length > 0) {
               dummyMod = html.find("#targetAttribute")[0].value;											
             }
-            if(game.settings.get('symbaroum', 'combatAutomation')){
+            if(game.settings.get('symbaroum', 'combatAutomation') && weapon !== null){
               ecData.targetData.resistAttributeName = dummyMod;
               ecData.targetData.resistAttributeValue = getAttributeValue(ecData.targetData.actor, dummyMod);
             }
@@ -270,7 +270,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
           }
           attri_defaults.selectedFavour = ""+fvalue;			
           const favour = fvalue;
-          ecData.favour += fvalue;
+          ecData.favour += parseInt(fvalue);
 
           if(askImpeding){
             if(html.find("#impeding")[0].checked){
@@ -299,7 +299,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
           if(askCorruptedTarget){
             ecData.targetFullyCorrupted = html.find("#targetCorrupt")[0].checked;
           }
-          if(game.settings.get('symbaroum', 'combatAutomation')){
+          if(weapon && game.settings.get('symbaroum', 'combatAutomation')){
             attackFromPC = actor.type !== "monster" || ecData.targetData.actor.type === "monster";
             if(damModifier.length > 0) {
                 ecData.dmgModifier = damModifier;

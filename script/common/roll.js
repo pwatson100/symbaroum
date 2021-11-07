@@ -242,8 +242,7 @@ async function doBaseRoll(actor, actingAttributeName, targetActor, targetAttribu
 	if(favour > 0) d20str="2d20kl";
 	else if(favour < 0) d20str="2d20kh";
   
-  let attributeRoll = new Roll(d20str).evaluate({async:false});  
-  
+  let attributeRoll = new Roll(d20str).evaluate({async:false});
   let dicesResult;
   if(favour != 0){ 
     dicesResult = [attributeRoll.terms[0].results[0].result, attributeRoll.terms[0].results[1].result]
