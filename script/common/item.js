@@ -1,4 +1,4 @@
-import { upgradeDice, baseRoll, damageRollWithDiceParams, simpleDamageRoll, getAttributeValue, getAttributeLabel, getOwnerPlayer, createModifyTokenChatButton, createResistRollChatButton } from './roll.js';
+import { upgradeDice, baseRoll, createRollData, damageRollWithDiceParams, simpleDamageRoll, getAttributeValue, getAttributeLabel, getOwnerPlayer, createModifyTokenChatButton, createResistRollChatButton } from './roll.js';
 import { modifyEffectOnToken } from './hooks.js';
 
 export class SymbaroumItem extends Item {
@@ -268,6 +268,10 @@ export class SymbaroumItem extends Item {
         const html = await renderTemplate("systems/symbaroum/template/chat/item.html", itemData);
         const chatData = {
             user: game.user.id,
+            speaker: { 
+                name: this.actor?.name ?? game.user.name,
+                actor: this.actor?.id
+            },            
             rollMode: game.settings.get("core", "rollMode"),
             content: html,
         };
@@ -620,7 +624,7 @@ export class SymbaroumItem extends Item {
             }
             let base = this._getBaseFormat();
             let modifier = 0;
-            game.symbaroum.log("getCombatModifierArmored", armors[i]);
+            // game.symbaroum.log("getCombatModifierArmored", armors[i]); // TODO Remove
             if(armors[i].isNoArmor) {
                 modifier = 4; // 1d4 armor
             }
@@ -895,7 +899,7 @@ export class SymbaroumItem extends Item {
                 base.type= game.symbaroum.config.TYPE_FAVOUR,
                 base.condition = "conditionFeatofStrength",
                 base.value= "favour",
-                base.favourMod= 1;
+                base.favourMod = 1;
                 combatMods.weapons[weapons[i].id].package[0].member.push(base);
             }
         }
@@ -2549,7 +2553,7 @@ export async function attackRoll(weapon, actor){
     };
     await modifierDialog(functionStuff)
 }
-  
+
 async function attackResult(rollData, functionStuff){
     
     let damage;
@@ -2572,8 +2576,11 @@ async function attackResult(rollData, functionStuff){
     if(functionStuff.isAlternativeDamage){
         targetValue = getAttributeValue(functionStuff.targetData.actor, functionStuff.alternativeDamageAttribute);
     }
+    let rolls = [];
 
     for(let rollDataElement of rollData){
+        rolls = rolls.concat(rollDataElement.rolls);
+
         rollDataElement.finalText="";
         rollDataElement.resultText = functionStuff.token.data.name + game.i18n.localize('COMBAT.CHAT_SUCCESS') + functionStuff.targetData.name;
         if(functionStuff.weapon.qualities.jointed && !rollDataElement.trueActorSucceeded && rollDataElement.diceResult%2!=0){
@@ -2582,7 +2589,9 @@ async function attackResult(rollData, functionStuff){
         else if(rollDataElement.trueActorSucceeded){
             hasDamage = true;
             rollDataElement.hasDamage = true;
-            damage = await damageRollWithDiceParams(functionStuff, rollDataElement.critSuccess, attackNumber);
+            damage = await damageRollWithDiceParams(functionStuff, rollDataElement.critSuccess, attackNumber);            
+            rolls.push(damage.roll);
+
             attackNumber += 1;
             pain = pain || checkPainEffect(functionStuff, damage);
             rollDataElement.dmgFormula = game.i18n.localize('WEAPON.DAMAGE') + ": " + damage.roll._formula;
@@ -2645,9 +2654,7 @@ async function attackResult(rollData, functionStuff){
 
     if(printCorruption){
         let corruptionRoll= new Roll(corruptionDmgFormula).evaluate({async:false});
-        if (game.dice3d != null) {
-            await game.dice3d.showForRoll(corruptionRoll, game.user, true);
-        }
+        rolls.push(corruptionRoll);
         corruptionChatResult = game.i18n.localize('COMBAT.CHAT_CORRUPTED_ATTACK') + corruptionRoll.total.toString();
         corruptionTooltip = new Handlebars.SafeString(await corruptionRoll.getTooltip());
         checkCorruptionThreshold(functionStuff.targetData.actor, corruptionRoll.total);
@@ -2699,6 +2706,7 @@ async function attackResult(rollData, functionStuff){
         functionStuff.targetData.autoParams += targetResMod.autoParams;
         let poisonRoll = await baseRoll(functionStuff.actor, "cunning", functionStuff.targetData.actor, "strong", poisonFavour, 0, functionStuff.resistRoll);
         let poisonRes= await poisonCalc(functionStuff, poisonRoll);
+        rolls.push(poisonRes.roll);
         if(poisonRes.flagData) flagDataArray.push(poisonRes.flagData);
         templateData = Object.assign(templateData, poisonRes);
     }
@@ -2719,9 +2727,7 @@ async function attackResult(rollData, functionStuff){
             let flamingDamage = " 2";
             if(functionStuff.attackFromPC || functionStuff.targetData.actor.type === "monster"){
                 flamingRoundsRoll= new Roll("1d4").evaluate({async:false});
-                if (game.dice3d != null) {
-                    await game.dice3d.showForRoll(flamingRoundsRoll, game.user, true);
-                }
+                rolls.push(flamingRoundsRoll);
                 flamingRounds = flamingRoundsRoll.total;
                 flamingDamage = " 1d4"
             }
@@ -2734,10 +2740,15 @@ async function attackResult(rollData, functionStuff){
             templateData.flamingChat = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_FLAMING_SUCCESS1') + flamingDamage  + game.i18n.localize('COMBAT.CHAT_POISON_SUCCESS2')  + flamingRounds.toString();
         }
     }
+    // Here
+
     const html = await renderTemplate("systems/symbaroum/template/chat/combat.html", templateData);
     const chatData = {
         user: game.user.id,
         content: html,
+        type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+        roll: JSON.stringify(createRollData(rolls)),
+        rollMode: game.settings.get('core', 'rollMode')        
     }
     let NewMessage = await ChatMessage.create(chatData);
     if(flagDataArray.length > 0){
@@ -2801,12 +2812,11 @@ async function standardAbilityActivation(functionStuff) {
 
 async function healing(healFormula, targetToken){
     let healRoll = new Roll(healFormula).evaluate({async:false});
-    if (game.dice3d != null) {
-        await game.dice3d.showForRoll(healRoll, game.user, true);
-    }
+
     let healed = Math.min(healRoll.total, targetToken.actor.data.data.health.toughness.max - targetToken.actor.data.data.health.toughness.value);
     return({
         hasDamage : true,
+        roll: healRoll,
         healed: healed,
         dmgFormula : game.i18n.localize('POWER_LAYONHANDS.CHAT_FINAL') + healFormula,
         damageText : game.i18n.localize('POWER_LAYONHANDS.CHAT_FINAL') + healed.toString(),
@@ -2837,9 +2847,8 @@ async function poisonCalc(functionStuff, poisonRoll){
             poisonDamage = (functionStuff.poison +1).toString();
         }
         let PoisonRoundsRoll= new Roll(poisonDamage).evaluate({async:false});
-        if (game.dice3d != null) {
-            await game.dice3d.showForRoll(poisonDamage, game.user, true);
-        }
+        poisonRes.roll = PoisonRoundsRoll;
+
         let NewPoisonRounds = PoisonRoundsRoll.total;
         let poisonedEffectCounter = getEffect(functionStuff.targetData.token, effect);
         if(poisonedEffectCounter){
@@ -2879,6 +2888,7 @@ async function poisonCalc(functionStuff, poisonRoll){
 }
 
 async function standardPowerResult(rollData, functionStuff){
+    let rolls = [];
     let flagDataArray = functionStuff.flagDataArray ?? [];
     let haveCorruption = false;
     let corruptionText = "";
@@ -2903,11 +2913,19 @@ async function standardPowerResult(rollData, functionStuff){
     let trueActorSucceeded = true; //true by default for powers without rolls
     let rollString = "";
     if(rollData!=null){
+        game.symbaroum.log("rolls 0", rollData);
         hasRoll = true;
         trueActorSucceeded = rollData[0].trueActorSucceeded;
         rollString = await formatRollString(rollData[0], functionStuff.targetData.hasTarget, rollData[0].modifier);
         rollResult=rollData[0].rollResult;
         rollToolTip=rollData[0].toolTip;
+        for(let i = 0; i < rollData.length; i++) {            
+            rolls = rolls.concat(rollData[i].rolls);
+        }
+        game.symbaroum.log("rolls 1", rolls);
+    }
+    if( functionStuff.resultRolls !== undefined && functionStuff.resultRolls !== null) {
+        rolls = rolls.concat(functionStuff.resultRolls);
     }
     let resultText = trueActorSucceeded ? functionStuff.resultTextSuccess : functionStuff.resultTextFail;
     if(functionStuff.targetData.hasTarget && functionStuff.targetData.autoParams != ""){
@@ -2974,9 +2992,8 @@ async function standardPowerResult(rollData, functionStuff){
 
     if(functionStuff.ability.data.reference === "confusion" && trueActorSucceeded){
         let confusionRoll= new Roll("1d6").evaluate({async:false});
-        if (game.dice3d != null) {
-            await game.dice3d.showForRoll(confusionRoll, game.user, true);
-        }
+        rolls.push(confusionRoll);
+
         finalText=confusionRoll.total.toString() + ": " + functionStuff.targetData.name;
         if(confusionRoll.total < 3){
             finalText += game.i18n.localize('POWER_CONFUSION.EFFECT12');
@@ -3026,6 +3043,8 @@ async function standardPowerResult(rollData, functionStuff){
 
     if(["poisoner", "poisonous"].includes(functionStuff.ability.data.reference) && trueActorSucceeded){
         let poisonRes = await poisonCalc(functionStuff, rollData[0]);
+        rolls.push(poisonRes.roll);
+
         introText = poisonRes.poisonChatIntro;
         resultText = poisonRes.poisonChatResult;
         if(poisonRes.flagData) flagDataArray.push(poisonRes.flagData);
@@ -3046,6 +3065,8 @@ async function standardPowerResult(rollData, functionStuff){
         }
         let damage = await simpleDamageRoll(functionStuff, damageDice);
         damageTot = damage.roll.total;
+        rolls.push(damage.roll);
+
         let pain = checkPainEffect(functionStuff, damage);
         damageRollResult += await formatRollResult(damage);
         dmgFormula = game.i18n.localize('WEAPON.DAMAGE') + ": " + damage.roll._formula;
@@ -3126,10 +3147,12 @@ async function standardPowerResult(rollData, functionStuff){
     if(functionStuff.healFormulaSucceed && !functionStuff.medicusExam){
         let healResult;
         if(trueActorSucceeded){
-            healResult = await healing(functionStuff.healFormulaSucceed, functionStuff.healedToken); 
+            healResult = await healing(functionStuff.healFormulaSucceed, functionStuff.healedToken);
+            rolls.push(healResult.roll);
         }
         else if(!trueActorSucceeded && functionStuff.healFormulaFailed){
             healResult = await healing(functionStuff.healFormulaFailed, functionStuff.healedToken); 
+            rolls.push(healResult.roll);
         }
         
         if(healResult){
@@ -3192,9 +3215,11 @@ async function standardPowerResult(rollData, functionStuff){
         }
     }
 
+    // Pick up roll data
     const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
     const chatData = {
         user: game.user.id,
+        rollMode: game.settings.get('core', 'rollMode'),    
         content: html,
     }
     if(functionStuff?.gmOnlyChatResult){
@@ -3202,6 +3227,11 @@ async function standardPowerResult(rollData, functionStuff){
         if(gmList.length > 0){
             chatData.whisper = gmList
         }
+    } else {
+        game.symbaroum.log("Rolls",rolls);
+        // Only shows rolls if they are displayed to everyone
+        chatData.type= CONST.CHAT_MESSAGE_TYPES.ROLL;
+        chatData.roll= JSON.stringify(createRollData(rolls));
     }
     let NewMessage = await ChatMessage.create(chatData);
 
@@ -4182,14 +4212,11 @@ async function regeneration(ability, actor){
         functionStuff.gmOnlyChatResult = true;
         regenTotal = 1+functionStuff.powerLvl.level;
         functionStuff.introText += "("+regenTotal.toString()+" " + game.i18n.localize('HEALTH.TOUGHNESS') +").";
-    }
-    else{
+    } else {
         let regenDice = 2+ 2*functionStuff.powerLvl.level;
         let regenFormula = "1d" + regenDice.toString();
         let dmgRoll= new Roll(regenFormula).evaluate({async:false});
-        if (game.dice3d != null) {
-            await game.dice3d.showForRoll(regenFormula, game.user, true);
-        }
+        functionStuff.resultRolls = [dmgRoll];
         functionStuff.introText += "("+regenFormula+" " + game.i18n.localize('HEALTH.TOUGHNESS') +").";
         regenTotal = dmgRoll.total;
     }
