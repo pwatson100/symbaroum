@@ -331,6 +331,7 @@ Hooks.once('ready', () => {
   showReleaseNotes();
   setupConfigOptions();
   setupEmit();
+  setup3PartySettings();
 });
 
 // create/remove the quick access config button
@@ -454,6 +455,12 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
   }
 });
 
+function setup3PartySettings()
+{
+  if(game.settings.settings.has("dice-so-nice.enabledSimultaneousRollForMessage") ) {
+    game.settings.set("dice-so-nice","enabledSimultaneousRollForMessage",false);
+  }
+}
 // This sets the css DOM objects we will change with the registered settings
 async function setupConfigOptions() {
   let r = document.querySelector(':root');

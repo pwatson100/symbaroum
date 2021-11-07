@@ -197,9 +197,8 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
                     ecData.damageOverTime.push(dotime)
                   }
                   else if(member.type == game.symbaroum.config.TYPE_FAVOUR) {
-                    if(member.condition){
-                      if(this[member.condition]) ecData.favour += member.favourMod;
-                    }else ecData.favour += member.favourMod;
+                    game.symbaroum.log("member", member);
+                    ecData.favour += member.favourMod;
                   }
                   else if(member.type == game.symbaroum.config.CORRUPTION_DAMAGE) {
                     ecData.corruptingattack = member.value;

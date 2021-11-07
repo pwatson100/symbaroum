@@ -30,7 +30,7 @@
         {{#if img}}
         <img src="{{img}}" title="{{name}}"/>
         {{/if}}
-        <p class="name">@Item[{{name}}]</p>
+        <p class="name" data-item-id="{{_id}}">@Item[{{name}}]</p>
 
         {{#if isTrait}}
         <p><strong>{{localize "TRAIT.DESCRIPTION"}}:</strong> {{removeStyling data.description}}</p>
