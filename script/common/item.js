@@ -1546,18 +1546,15 @@ export const scriptedAbilities =
 [{reference: "alchemy", level: [1, 2, 3], function: simpleRollAbility},
 {reference: "acrobatics", level: [1, 2, 3], function: simpleRollAbility},
 {reference: "artifactcrafting", level: [1, 2, 3], function: simpleRollAbility},
-//{reference: "backstab", level: [1, 2, 3], function: attackRoll},
 {reference: "beastlore", level: [1, 2, 3], function: simpleRollAbility},
 {reference: "berserker", level: [1, 2, 3], function: berserker},
 {reference: "blacksmith", level: [1, 2, 3], function: simpleRollAbility},
 {reference: "dominate", level: [1, 2, 3], function: dominatePrepare},
-//{reference: "huntersinstinct", level: [1, 2, 3], function: attackRoll},
 {reference: "leader", level: [1, 2, 3], function: leaderPrepare},
 {reference: "loremaster", level: [1, 2, 3], function: simpleRollAbility},
 {reference: "medicus", level: [1, 2, 3], function: medicusPrepare},
 {reference: "poisoner", level: [1, 2, 3], function: poisonerPrepare},
 {reference: "quickdraw", level: [1, 2, 3], function: simpleRollAbility},
-//{reference: "shieldfighter", level: [1, 2, 3], function: attackRoll},
 {reference: "recovery", level: [1, 2, 3], function: recoveryPrepare},
 {reference: "strangler", level: [1, 2, 3], function: stranglerPrepare},
 {reference: "witchsight", level: [1, 2, 3], function: witchsightPrepare}];
@@ -2415,143 +2412,6 @@ async function mathDamageProt(targetActor, damage, damageType){
         infoText = await damageReductionText(targetActor.data.data.combat.damageProt.normal)
     }
     return({damage: finalDamage, text : infoText})
-}
-
-/*function for main combat
-
-****************this function needs damage and armor parameters as dice (ie: weapon.data.data.damage = "1d8")
-for the NPC side, it will transform those parameters as NPC fixed values using the formula (dice maximum value)/2
-It won't work with NPC fixed values as input
-
-* @param {boolean} attackFromPC true: the actor that does damage is a PC; false : the damage is done by a NPC
-* @param {actor object} actor  is the actor that does damage
-* @param {item object} weapon is the weapon that is used
-* @param {object} rollParams is an object of parameters.
-* @param {object} targetData is information on the target that will receive the damage (as returned by the getTarget function)*/
-
-export async function attackRoll(weapon, actor){
-    // get selected token
-    let token;
-    try{token = await getTokenId(actor)} catch(error){
-        ui.notifications.error(error);
-        return;
-    }
-    // get target token, actor and defense value
-    let targetData;
-    try{targetData = getTarget("defense")} catch(error){
-        ui.notifications.error(error);
-        return;
-    }
-    let fsDefault = {
-        actor: actor,
-        token: token,
-        tokenId : token.id,
-        askTargetAttribute: false,
-        askCastingAttribute: false,
-        askTwoAttacks: false,
-        askThreeAttacks: false,
-        featStFavour: false,
-        attackFromPC: actor.type !== "monster",
-        autoParams: "",
-        checkMaintain: false,
-        combat: true,
-        contextualDamage: true,
-        corruption: false,
-        favour: 0,
-        modifier: 0,
-        poison: 0,
-        isMystical: false,
-        isAlternativeDamage: false,
-        alternativeDamageAttribute: "none",
-        introText: token.data.name + game.i18n.localize('COMBAT.CHAT_INTRO') + weapon.name,
-        targetData: targetData,
-        beastLoreData: getBeastLoreData(actor),
-        corruptingattack: "",
-        ignoreArm: false
-    }
-    let specificStuff;
-    if(weapon){
-        specificStuff = {
-            askWeapon: false,
-            castingAttributeName: weapon.attribute,
-            weapon: weapon,
-            isMystical: weapon.qualities.mystical,
-        }
-    }
-    let functionStuff = Object.assign({}, fsDefault , specificStuff)
-    //search for special attacks (if the attacker has abilities that can affect the roll or not, ask the player in the dialog)
-    //ranged attacks
-    if(weapon && weapon.isDistance){
-        let rapidfire = actor.items.filter(item => (item.data.data?.reference === "rapidfire" || item.data.data?.reference === "rapidfire "));
-        if(rapidfire.length != 0){
-            if(rapidfire[0].data.data.master.isActive){
-                functionStuff.askThreeAttacks = true;
-            }
-            else if(rapidfire[0].data.data.novice.isActive){
-                functionStuff.askTwoAttacks = true;
-            }
-        }
-        if(weapon.reference == "thrown"){
-            let steelthrow = actor.items.filter(item => item.data.data?.reference === "steelthrow");
-            if(steelthrow.length != 0){
-                if(steelthrow[0].data.data.adept.isActive){
-                    functionStuff.askTwoAttacks = true;
-                }
-                if(steelthrow[0].data.data.master.isActive){
-                    functionStuff.askThreeAttacks = true;
-                }
-            }
-        }
-    }
-    //melee weapons
-    if(weapon && weapon.isMelee){
-        if(weapon.reference == "unarmed"){
-            let naturalwarrior = actor.items.filter(item => item.data.data?.reference === "naturalwarrior");
-            if(naturalwarrior.length != 0){
-                if(naturalwarrior[0].data.data.adept.isActive){
-                    functionStuff.askTwoAttacks = true;
-                }
-            }
-            let corruptingattack = actor.items.filter(item => item.data.data?.reference === "corruptingattack");
-            if(corruptingattack.length != 0){
-                if(corruptingattack[0].data.data.master.isActive){
-                    functionStuff.corruptingattack = "1d8";
-                } else if(corruptingattack[0].data.data.adept.isActive){
-                    functionStuff.corruptingattack = "1d6";
-                } else if(corruptingattack[0].data.data.novice.isActive){
-                    functionStuff.corruptingattack = "1d4";
-                }
-            }
-        }
-        if(weapon.qualities.short){
-            let knifeplay = actor.items.filter(item => item.data.data?.reference === "knifeplay");
-            if(knifeplay.length != 0){
-                if(knifeplay[0].data.data.adept.isActive){
-                    functionStuff.askTwoAttacks = true;
-                }
-            }
-        }
-        let featSt = actor.items.filter(item => item.data.data.reference === "featofstrength");
-        if((featSt.length != 0) && (actor.data.data.health.toughness.value <= (actor.data.data.health.toughness.max/2)) && (weapon.attribute == "strong")){
-            if(featSt[0].data.data.adept.isActive){
-                functionStuff.featStFavour = true;
-                functionStuff.favour += 1;
-            }
-        }
-        let colossal = actor.items.filter(element => element.data.data?.reference === "colossal");
-        if(colossal.length > 0 && colossal[0].data.data.adept.isActive && !functionStuff.isAlternativeDamage){
-            functionStuff.favour += 1;
-            functionStuff.autoParams += game.i18n.localize('TRAIT_LABEL.COLOSSAL') + ", ";
-        }
-    }
-    //all weapons
-    if(!functionStuff.askWeapon){
-        if(functionStuff.weapon.qualities.precise){
-            functionStuff.precise = 1;
-            functionStuff.autoParams += game.i18n.localize('COMBAT.PARAMS_PRECISE')
-        }
-    };
-    await modifierDialog(functionStuff)
 }
 
 async function attackResult(rollData, functionStuff){
