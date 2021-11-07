@@ -1,4 +1,4 @@
-import { attackRoll, checkResoluteModifiers, getPowerLevel, getTarget, getTokenId, markScripted } from './item.js';
+import { checkResoluteModifiers, getPowerLevel, getTarget, getTokenId, markScripted } from './item.js';
 import { prepareRollAttribute } from "../common/dialog.js";
 import { upgradeDice } from './roll.js';
 
@@ -764,6 +764,7 @@ export class SymbaroumActor extends Actor {
             askIgnoreArmor: true,
             askTargetAttribute: false,
             askCastingAttribute: false,
+            askPoison: false,
             numberofAttacks: 1,
             attackFromPC: this.type !== "monster",
             autoParams: "",
@@ -788,6 +789,8 @@ export class SymbaroumActor extends Actor {
             weapon: weapon,
             damageOverTime: []
         }
+        let poisoner = actor.items.filter(item => (item.data.data?.reference === "poisoner" || item.data.data?.reference === "poisonous"));
+        functionStuff.askPoison = poisoner.length != 0;
         prepareRollAttribute(this, weapon.attribute, null, weapon, functionStuff); 
     }
 }

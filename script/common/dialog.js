@@ -72,7 +72,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
     askImpeding = ecData.askImpeding;
     attri_defaults.impeding = ecData.impeding;
     hasTarget = ecData.targetData.hasTarget;
-    askPoison =true;
+    askPoison = ecData.askPoison;
   }
   else{
     askTargetAttribute = targetTokens.length > 0;
