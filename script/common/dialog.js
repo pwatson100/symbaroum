@@ -1,4 +1,4 @@
-import { getOwnerPlayer, rollAttribute, getAttributeLabel, rollDeathTest } from './roll.js';
+import { getOwnerPlayer, rollAttribute, getAttributeLabel, createResistRollChatButton, rollDeathTest } from './roll.js';
 import { buildRolls } from './item.js';
 
 let roll_defaults = {};
