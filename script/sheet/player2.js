@@ -8,7 +8,7 @@ export class PlayerSheet2 extends PlayerSheet {
             template: "systems/symbaroum/template/sheet/player2.html",
             width: 800,
             height: 1000,
-            resizable: false,
+            resizable: true,
             tabs: [
                 {
                     navSelector: ".sheet-tabs",
