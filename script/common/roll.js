@@ -263,7 +263,6 @@ async function doBaseRoll(actor, actingAttributeName, targetActor, targetAttribu
   
   let attributeRoll = new Roll(d20str).evaluate({async:false});
   rolls.push(attributeRoll); // add the first attribute roll
-  
   let dicesResult;
   if(favour != 0){ 
     dicesResult = [attributeRoll.terms[0].results[0].result, attributeRoll.terms[0].results[1].result]
