@@ -789,7 +789,7 @@ export class SymbaroumActor extends Actor {
             weapon: weapon,
             damageOverTime: []
         }
-        let poisoner = actor.items.filter(item => (item.data.data?.reference === "poisoner" || item.data.data?.reference === "poisonous"));
+        let poisoner = this.items.filter(item => (item.data.data?.reference === "poisoner" || item.data.data?.reference === "poisonous"));
         functionStuff.askPoison = poisoner.length != 0;
         prepareRollAttribute(this, weapon.attribute, null, weapon, functionStuff); 
     }
