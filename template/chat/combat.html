@@ -11,22 +11,24 @@
         <div class="subText">{{removeMarkup subText}}</div>            
         <img src="{{subImg}}"/>
         {{#if hasRoll}}
+        <div class="finalTxt">
             {{#if resistRoll}}
-            <h4>{{resistRollText}}</h4>
+                <p>{{resistRollText}}</p>
             {{/if}}
-        <h4>{{removeMarkup rollString}}</h4>
-        {{/if}}
+            <p>{{removeMarkup rollString}}</p>
+        </div>
+            {{/if}}
         {{#each rollData as |rollDataElement|}}
         <div class="finalTxt">
             <div class="tooltip">
-                <h4>{{removeMarkup rollDataElement.rollResult}}</h4>
+                <p>{{removeMarkup rollDataElement.rollResult}}</p>
                 <span class="tooltiptext">{{rollDataElement.toolTip}}</span>
             </div>
         </div>
         <h4>{{rollDataElement.resultText}}</h4>
         {{#if rollDataElement.hasDamage}}
         {{#if hasDmgMod}}
-        <h4>{{damageRollMod}}</h4>
+        <p>{{damageRollMod}}</p>
         {{/if}}
         <div class="finalTxt">{{rollDataElement.dmgFormula}}
         </div>
