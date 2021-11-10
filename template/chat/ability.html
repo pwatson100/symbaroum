@@ -11,13 +11,15 @@
         <div class="subText">{{removeMarkup subText}}</div>            
         <img src="{{subImg}}"/>
         {{#if hasRoll}}
+        <div class="finalTxt">
             {{#if resistRoll}}
-            <h4>{{resistRollText}}</h4>
+            <p>{{resistRollText}}</p>
             {{/if}}
-        <h4>{{rollString}}</h4>
+        <p>{{rollString}}</p>
+    </div>
         <div class="finalTxt">
             <div class="tooltip">
-                <h4>{{removeMarkup rollResult}}</h4>
+                <p>{{removeMarkup rollResult}}</p>
                 <span class="tooltiptext">{{rollToolTip}}</span>
             </div>
         </div>
