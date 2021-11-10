@@ -85,7 +85,6 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
     critSuccess: rollResults.critSuccess,
     critFail: rollResults.critFail
   };
-  game.symbaroum.log(rollData);
   const html = await renderTemplate('systems/symbaroum/template/chat/roll.html', rollData);
 
   // Once we go to non-API version of DsN, then set this in chatData: type: CONST.CHAT_MESSAGE_TYPES.ROLL,
