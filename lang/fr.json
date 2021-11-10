@@ -839,9 +839,11 @@
     "SYMBAROUM.OPTIONAL_RESET_ALL_BUTTON": "Reinitialiser les paramètres",
     "SYMBAROUM.OPTIONAL_PLAYER_RESIST" :"Bouton jet de résistance",
     "SYMBAROUM.OPTIONAL_PLAYER_RESIST_HINT" :"Quand un PNJ attaque avec un pouvoir ou avec l'option Combats accélérés, cette option crée un bouton dans le chat du joueur visé, qu'il devra cliquer pour lancer le jet de résistance ou de défense.",
-    "SYMBAROUM.OPTIONAL_NPC_ATTACKS": "Afficher les attaques multiples dans la case de dégâts des armes de la feuille de personnage",
-    "SYMBAROUM.OPTIONAL_NPC_ATTACKS_HINT": "Avertissement: Ces calculs sont indicatifs et ne prennent pas en compte certains talents / traits au mécanismes complexes ou situationnels.",
-    "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS": "Death save bonus applies for crit",
-    "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS_HINT": "Any death save bonus applies to the odds of critical success, i.e. either improve or remove chance of critical success of death saves"
+    "SYMBAROUM.OPTIONAL_NPC_ATTACKS": "Afficher les attaques multiples (PNJ)",
+    "SYMBAROUM.OPTIONAL_NPC_ATTACKS_HINT": "Cochez pour afficher les attaques multiples dans la case de dégâts des armes de la feuille de personnage des PNJs. Avertissement: Ces calculs sont indicatifs et ne prennent pas en compte certains talents / traits au mécanismes complexes ou situationnels.",
+    "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS": "Critiques du test de Mort incluent bonus",
+    "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS_HINT": "Appliquer le bonus / malus du test de Mort pour déterminer s'il s'agit d'un critique.",
+    "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE": "Tous les jets avec le module DsN",
+    "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE_HINT": "Lorsque le module Dice so Nice est installé et que l'option Combats accélérés est activée, il arrive que beaucoup de dés soient affichés en même temps sur l'écran. Pour plus de lisibilité, activer cette option n'affichera que le dé d'action (d20) et pas les autres (dégâts, poison, etc)."
 }
 

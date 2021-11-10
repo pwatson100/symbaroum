@@ -104,6 +104,16 @@ Hooks.once('init', () => {
     config: true,
   });
 
+  /*TODO
+  /*game.settings.register('symbaroum', 'allRollsDsN', {
+    name: 'SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE',
+    hint: 'SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });*/
+
   game.settings.register('symbaroum', 'alwaysSucceedOnOne', {
     name: 'SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE',
     hint: 'SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE_HINT',

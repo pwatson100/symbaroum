@@ -846,5 +846,7 @@
   "SYMBAROUM.OPTIONAL_NPC_ATTACKS": "Show multiple attacks in the weapon box for NPCs",
   "SYMBAROUM.OPTIONAL_NPC_ATTACKS_HINT": "Warning: the system tries it best to process this, but can't integrate some traits / abilities that are situationnal or complex.",
   "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS": "Death save bonus applies for crit",
-  "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS_HINT": "Any death save bonus applies to the odds of critical success, i.e. either improve or remove chance of critical success of death saves"
+  "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS_HINT": "Any death save bonus applies to the odds of critical success, i.e. either improve or remove chance of critical success of death saves",
+  "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE": "Dice so Nice module on all rolls",
+  "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE_HINT": "When the Dice so Nice module is added and Enhanced Combat option is enabled, a lot of dice can be thrown at the same time on the screen. By default, only the base d20 action roll will be displayed. Check this option if you prefer to have all dice displayed (damage, poison, etc)."
 }
