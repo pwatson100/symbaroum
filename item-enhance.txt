@@ -7,7 +7,26 @@ combat {
             attribute : "initiative attribute",
             modifier: int // value to modify existing initiative
         }
-    ]
+    ],
+    toughness : [
+        {
+            label : "the label",
+            id : "the id",
+            type : "type of modifier" : SEC_ATT_BONUS, SEC_ATT_MULTIPLIER, THRESHOLD_MULTIPLIER, NO_TRESHOLD;
+            value: int // value for modification
+        }
+    ],
+    corruption : [
+        {
+            label : "the label",
+            id : "the id",
+            type : "type of modifier" : SEC_ATT_BONUS, SEC_ATT_MULTIPLIER, THRESHOLD_MULTIPLIER, NO_TRESHOLD;
+            value: int // value for modification
+        }
+    ],
+    abilities : {},
+    traits : {},
+    powers : {},
     armors: [
         armorid : 
         {

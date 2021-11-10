@@ -84,54 +84,31 @@ export class SymbaroumActor extends Actor {
             }
             if(data.data.attributes[aKey].temporaryMod != 0 ){data.data.attributes[aKey].msg += "<br />"+game.i18n.localize("ATTRIBUTE.MODIFIER")+"("+data.data.attributes[aKey].temporaryMod.toString()+")"};
         }
-        
-        // Toughness max
-        let strong = data.data.attributes.strong.total;
-        let sturdy = this.data.items.filter(item => item.data.data.reference === "sturdy");
-        if(sturdy.length != 0){
-            let sturdyLvl = getPowerLevel(sturdy[0]).level;
-            if(sturdyLvl == 1) data.data.health.toughness.max = Math.ceil(strong*(1.5)) + data.data.bonus.toughness.max;
-            else if(sturdyLvl > 1) data.data.health.toughness.max = strong*(sturdyLvl) + data.data.bonus.toughness.max;
-        }
-        else data.data.health.toughness.max = (strong > 10 ? strong : 10) + data.data.bonus.toughness.max;
-        let featSt = this.data.items.filter(item => item.data.data.reference === "featofstrength");
-        if(featSt.length != 0 && featSt[0].data.data.novice.isActive) data.data.health.toughness.max += 5;
-
-        let noPain = this.data.items.filter(element => element.data.data.reference === "nopainthreshold");
-        data.hasNoPainThreshold = noPain.length > 0;
-        if(noPain.length > 0){            
-            data.data.health.toughness.threshold = 0;
-        } else {
-            data.data.health.toughness.threshold = Math.ceil(strong / 2) + data.data.bonus.toughness.threshold;
-        }
-        
-        // Corruption Max
-        let fullCorrupt = (this.data.items.filter(element => element.data.data.reference === "thoroughlycorrupt"));
-        data.isThoroughlyCorrupt = fullCorrupt.length > 0;
-        if(fullCorrupt.length > 0){
-            data.data.health.corruption.threshold = 0;
-            data.data.health.corruption.max = 0;
-        } else {
-            let resolute = data.data.attributes.resolute.total;
-            
-            let strongGift = this.data.items.filter(item => item.data.data.reference === "stronggift");
-            if(strongGift.length != 0){
-                if(strongGift[0].data.data.adept.isActive) resolute = resolute*2;
-            }
-            data.data.health.corruption.threshold = Math.ceil(resolute / 2) + data.data.bonus.corruption.threshold;
-            data.data.health.corruption.max = resolute + data.data.bonus.corruption.max;
-        }
-        let corr = data.data.health.corruption;
-        corr.value = corr.temporary + corr.longterm + corr.permanent;
 
         data.data.experience.spent = data.data.bonus.experience.cost - data.data.bonus.experience.value;
         data.data.experience.available = data.data.experience.total - data.data.experience.artifactrr - data.data.experience.spent;
         
         const combatMods = {
             initiative : [],
-            weapons : { },
+            toughness : [],
+            corruption : [],
+            abilities : {},
+            traits : {},
+            powers : {},
+            weapons : {},
             armors : {}
         };
+        let abilitiesArray = this.data.items.filter(element => element.data.isAbility);
+        for(let i = 0; i < abilitiesArray.length; i++) {
+            // build it
+            let defaultPack = abilitiesArray[i]._getPackageFormat("default");
+            defaultPack.type= game.symbaroum.config.PACK_DEFAULT;
+            combatMods.abilities[abilitiesArray[i].id] = {
+                package: [defaultPack],
+                maxAttackNb:1,
+                specialEffects: []
+            }
+        }
 
         /*
         let extraArmorBonus = this._getExtraArmorBonuses();
@@ -158,8 +135,6 @@ export class SymbaroumActor extends Actor {
             primaryArmor = this._getNoArmor();
             allArmors.push(primaryArmor);
         }
-        
-
 
         const allWeapons = this._getWeapons();
 
@@ -184,8 +159,11 @@ export class SymbaroumActor extends Actor {
             }
         }
         for( const [key, item] of this.data.items.entries() ) {
-            item.getCombatModifiers(combatMods, allArmors, allWeapons);
+            item.getItemModifiers(combatMods, allArmors, allWeapons);
         }
+        
+        this._getToughnessValues(combatMods.toughness);
+        this._getCorruptionValues(combatMods.corruption);
 
         // activeArmor is the last active armor in the list of non-stackable armors
 
@@ -210,10 +188,10 @@ export class SymbaroumActor extends Actor {
         data.data.weapons = this._evaluateWeapons(allWeapons, combatMods);
 
         // game.symbaroum.log("all the active armors",activeArmor);
-        data.data.combat = activeArmor;       
-        // suppleant our comat details for weaponModifiers
+        data.data.combat = activeArmor;
+        // suppleant our combat details for weaponModifiers
         data.data.combat.combatMods = combatMods;
-
+        
         if(!game.settings.get('symbaroum', 'manualInitValue')){
             this._getInitiativeAttribute(combatMods.initiative);
         }
@@ -629,12 +607,72 @@ export class SymbaroumActor extends Actor {
     _getInitiativeAttribute(initiativeSelection) {
         let attributeInit = "quick";
         for(let i = 0; i < initiativeSelection.length; i++) {
-            // game.symbaroum.log("Iniatitive - compare",initiativeSelection[i].attribute, this.data.data.attributes[attributeInit].total, this.data.data.attributes[initiativeSelection[i].attribute].total)
+            // game.symbaroum.log("Initiative - compare",initiativeSelection[i].attribute, this.data.data.attributes[attributeInit].total, this.data.data.attributes[initiativeSelection[i].attribute].total)
             if(this.data.data.attributes[attributeInit].total < this.data.data.attributes[initiativeSelection[i].attribute].total) {
                 attributeInit = initiativeSelection[i].attribute;
             }
         }
         this.data.data.initiative.attribute = attributeInit;
+    }
+
+    _getToughnessValues(toughnessMods) {
+        let strong = this.data.data.attributes.strong.total;
+        let toughBonus = this.data.data.bonus.toughness.max;
+        let noPain = false;
+        let toughMax = (strong > 10 ? strong : 10);
+        for(let i = 0; i < toughnessMods.length; i++) {
+            if(toughnessMods[i].type == game.symbaroum.config.SEC_ATT_MULTIPLIER){
+                toughMax = Math.ceil(strong*(toughnessMods[i].value))
+            }
+            if(toughnessMods[i].type == game.symbaroum.config.SEC_ATT_BONUS){
+                toughBonus += toughnessMods[i].value;
+            }
+            if(toughnessMods[i].type == game.symbaroum.config.NO_TRESHOLD){
+                noPain = true;
+            }
+        }
+        this.data.data.health.toughness.max = toughMax + toughBonus;
+
+        this.data.hasNoPainThreshold = noPain;
+        if(noPain){            
+            this.data.data.health.toughness.threshold = 0;
+        } else {
+            this.data.data.health.toughness.threshold = Math.ceil(strong / 2) + this.data.data.bonus.toughness.threshold;
+        }
+    }
+     
+    _getCorruptionValues(corruptionMods) {
+        let resolute = this.data.data.attributes.resolute.total;
+        let corruptionBonus = this.data.data.bonus.corruption.max;
+        let corruptionThreshold = Math.ceil(resolute / 2);
+        let isThoroughlyCorrupt = false;
+        let corruptionMax = resolute;
+        for(let i = 0; i < corruptionMods.length; i++) {
+            if(corruptionMods[i].type == game.symbaroum.config.SEC_ATT_MULTIPLIER){
+                corruptionMax = Math.ceil(resolute*(corruptionMods[i].value));
+            }
+            if(corruptionMods[i].type == game.symbaroum.config.THRESHOLD_MULTIPLIER){
+                corruptionThreshold = Math.ceil(resolute*(corruptionMods[i].value));
+            }
+            if(corruptionMods[i].type == game.symbaroum.config.SEC_ATT_BONUS){
+                corruptionBonus += corruptionMods[i].value;
+            }
+            if(corruptionMods[i].type == game.symbaroum.config.NO_TRESHOLD){
+                isThoroughlyCorrupt = true;
+            }
+        }
+        
+        
+        this.data.isThoroughlyCorrupt = isThoroughlyCorrupt;
+        if(isThoroughlyCorrupt){            
+            this.data.data.health.corruption.threshold = 0;
+            this.data.data.health.corruption.max = 0;
+        } else {
+            this.data.data.health.corruption.threshold = corruptionThreshold + this.data.data.bonus.toughness.threshold;
+            this.data.data.health.corruption.max = corruptionMax + corruptionBonus;
+        }
+        let corr = this.data.data.health.corruption;
+        corr.value = corr.temporary + corr.longterm + corr.permanent;
     }
 
     _getNoArmor() {
