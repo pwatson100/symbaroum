@@ -67,7 +67,8 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
   let hasTarget = false;
   let askPoison = false;
   let askAttackNb = false;
-  if(game.settings.get('symbaroum', 'combatAutomation') && weapon !== null){
+  let ecOn = game.settings.get('symbaroum', 'combatAutomation');
+  if(ecOn && weapon !== null) {
     attackFromPC = actor.type !== "monster" || ecData.targetData.actor.type === "monster";
     askImpeding = ecData.askImpeding;
     attri_defaults.impeding = ecData.impeding;
@@ -222,11 +223,11 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
                         damModifierAttSupNPC+=member.alternatives[0].damageModNPC;
                       }
                     }
-                    else if(member.type == game.symbaroum.config.STATUS_DOT) {
+                    else if(ecOn && member.type == game.symbaroum.config.STATUS_DOT) {
                       let dotime = Object.assign({}, member);
                       ecData.damageOverTime.push(dotime);
                     }
-                    else if(member.type == game.symbaroum.config.TYPE_FAVOUR) {
+                    else if(ecOn && member.type == game.symbaroum.config.TYPE_FAVOUR) {
                       ecData.favour += member.favourMod;
                     }
                     else if(member.type == game.symbaroum.config.TYPE_ROLL_MOD) {
