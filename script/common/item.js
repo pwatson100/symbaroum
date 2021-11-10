@@ -355,17 +355,17 @@ export class SymbaroumItem extends Item {
         return {level : powerLvl, lvlName : lvlName};
     }
 
-    getCombatModifiers(combatMods, armors, weapons) 
+    getItemModifiers(combatMods, armors, weapons) 
     {
         if( !this.isOwned || this.data.data.reference === undefined || this.data.data.reference === null) {
             return;               
         }
         let ref = this.data.data.reference.capitalize();
-        if( typeof this["getCombatModifier"+ref] == "function" ) {
-            this["getCombatModifier"+ref](combatMods, armors, weapons)
+        if( typeof this["getItemModifier"+ref] == "function" ) {
+            this["getItemModifier"+ref](combatMods, armors, weapons)
         }
     }
-    
+        
     _getPackageFormat(label) {
         return {
             id: this.id,
@@ -455,23 +455,23 @@ export class SymbaroumItem extends Item {
     }
 
     // All armor types
-    getCombatModifierStackable(combatMods, armors, weapons) {
+    getItemModifierStackable(combatMods, armors, weapons) {
         this._getOwnArmorBonuses(combatMods,armors);
     }
     
-    getCombatModifierLightarmor(combatMods, armors, weapons) {
+    getItemModifierLightarmor(combatMods, armors, weapons) {
         this._getOwnArmorBonuses(combatMods,armors);
     }
 
-    getCombatModifierMediumarmor(combatMods, armors, weapons) {
+    getItemModifierMediumarmor(combatMods, armors, weapons) {
         this._getOwnArmorBonuses(combatMods,armors);
     }
 
-    getCombatModifierHeavyarmor(combatMods, armors, weapons) {
+    getItemModifierHeavyarmor(combatMods, armors, weapons) {
         this._getOwnArmorBonuses(combatMods,armors);
     }
     // Higher than d8
-    getCombatModifierSuperarmor(combatMods, armors, weapons) {
+    getItemModifierSuperarmor(combatMods, armors, weapons) {
         this._getOwnArmorBonuses(combatMods,armors);
     }
 
@@ -570,35 +570,35 @@ export class SymbaroumItem extends Item {
     }
 
     // All melee weapons
-    getCombatModifierUnarmed(combatMods, armors, weapons) {
+    getItemModifierUnarmed(combatMods, armors, weapons) {
         this._getOwnWeaponBonuses(combatMods, armors, weapons);
     }
-    getCombatModifier1handed(combatMods, armors, weapons) {
+    getItemModifier1handed(combatMods, armors, weapons) {
         this._getOwnWeaponBonuses(combatMods, armors, weapons);
     }
-    getCombatModifierShort(combatMods, armors, weapons) {
+    getItemModifierShort(combatMods, armors, weapons) {
         this._getOwnWeaponBonuses(combatMods, armors, weapons);
     }
-    getCombatModifierLong(combatMods, armors, weapons) {
+    getItemModifierLong(combatMods, armors, weapons) {
         this._getOwnWeaponBonuses(combatMods, armors, weapons);
     }
-    getCombatModifierShield(combatMods, armors, weapons) {
+    getItemModifierShield(combatMods, armors, weapons) {
         this._getOwnWeaponBonuses(combatMods, armors, weapons);
     }
-    getCombatModifierHeavy(combatMods, armors, weapons) {
+    getItemModifierHeavy(combatMods, armors, weapons) {
         this._getOwnWeaponBonuses(combatMods, armors, weapons);
     }
     // All ranged
-    getCombatModifierRanged(combatMods, armors, weapons) {
+    getItemModifierRanged(combatMods, armors, weapons) {
         this._getOwnWeaponBonuses(combatMods, armors, weapons);
     }
-    getCombatModifierThrown(combatMods, armors, weapons) {
+    getItemModifierThrown(combatMods, armors, weapons) {
         this._getOwnWeaponBonuses(combatMods,armors, weapons);
     }
     // End weapons
 
     // Start abilities & traits
-    getCombatModifierAlternativedamage(combatMods, armors, weapons) {
+    getItemModifierAlternativedamage(combatMods, armors, weapons) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         
@@ -613,7 +613,7 @@ export class SymbaroumItem extends Item {
             combatMods.weapons[weapons[i].id].package[0].member.push(base);
         }
     }
-    getCombatModifierArmored(combatMods, armors, weapons)
+    getItemModifierArmored(combatMods, armors, weapons)
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -624,7 +624,7 @@ export class SymbaroumItem extends Item {
             }
             let base = this._getBaseFormat();
             let modifier = 0;
-            // game.symbaroum.log("getCombatModifierArmored", armors[i]); // TODO Remove
+            // game.symbaroum.log("getItemModifierArmored", armors[i]); // TODO Remove
             if(armors[i].isNoArmor) {
                 modifier = 4; // 1d4 armor
             }
@@ -634,7 +634,7 @@ export class SymbaroumItem extends Item {
         }
     }        
 
-    getCombatModifierArmoredmystic(combatMods, armors, weapons) 
+    getItemModifierArmoredmystic(combatMods, armors, weapons) 
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -663,7 +663,7 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getCombatModifierBackstab(combatMods, armors, weapons) {
+    getItemModifierBackstab(combatMods, armors, weapons) {
         let lvl = this.getLevel();
         if(lvl.level < 1) return;
         for(let i = 0; i < weapons.length; i++)
@@ -714,7 +714,7 @@ export class SymbaroumItem extends Item {
         }
     }
     
-    getCombatModifierBeastlore(combatMods, armors, weapons) {
+    getItemModifierBeastlore(combatMods, armors, weapons) {
         let lvl = this.getLevel();
         if(lvl.level < 2) return;
         
@@ -737,7 +737,7 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getCombatModifierBerserker(combatMods, armors, weapons) {
+    getItemModifierBerserker(combatMods, armors, weapons) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         if(!this.actor.getFlag(game.system.id, 'berserker')) {
@@ -780,7 +780,7 @@ export class SymbaroumItem extends Item {
         }
     }    
 
-    getCombatModifierColossal(combatMods, armors, weapons) {
+    getItemModifierColossal(combatMods, armors, weapons) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         if(lvl.level > 2) {
@@ -815,7 +815,7 @@ export class SymbaroumItem extends Item {
             }
         }
     }
-    getCombatModifierCorruptingattack(combatMods, armors, weapons) {
+    getItemModifierCorruptingattack(combatMods, armors, weapons) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         
@@ -834,7 +834,7 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getCombatModifierDancingweapon(combatMods, armors, weapons) {
+    getItemModifierDancingweapon(combatMods, armors, weapons) {
         let lvl = this.getLevel();
         if(lvl.level == 0 || !this.actor.getFlag(game.system.id, 'dancingweapon') ) return;
         for(let i = 0; i < armors.length; i++)
@@ -860,7 +860,7 @@ export class SymbaroumItem extends Item {
         }        
     }    
 
-    getCombatModifierDominate(combatMods, armors, weapons) {
+    getItemModifierDominate(combatMods, armors, weapons) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         for(let i = 0; i < weapons.length; i++)
@@ -875,7 +875,7 @@ export class SymbaroumItem extends Item {
         }        
     }
 
-    getCombatModifierFeatofstrength(combatMods, armors, weapons) {
+    getItemModifierFeatofstrength(combatMods, armors, weapons) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         for(let i = 0; i < weapons.length; i++)
@@ -895,21 +895,25 @@ export class SymbaroumItem extends Item {
                 combatMods.weapons[weapons[i].id].package[0].member.push(base);
             }
             if(lvl.level > 1 && this.actor.data.data.health.toughness.value <= (this.actor.data.data.health.toughness.max/2)){
-                let base = this._getBaseFormat();
-                base.type= game.symbaroum.config.TYPE_FAVOUR,
-                base.condition = "conditionFeatofStrength",
-                base.value= "favour",
-                base.favourMod = 1;
-                combatMods.weapons[weapons[i].id].package[0].member.push(base);
+                let base2 = this._getBaseFormat();
+                base2.type= game.symbaroum.config.TYPE_FAVOUR,
+                base2.condition = "conditionFeatofStrength",
+                base2.value= "favour",
+                base2.favourMod = 1;
+                combatMods.weapons[weapons[i].id].package[0].member.push(base2);
             }
-        }
+        };
+        let base3 = this._getBaseFormat();
+        base3.type = game.symbaroum.config.SEC_ATT_BONUS;
+        base3.value=5;
+        combatMods.toughness.push(base3);
     }
 
     conditionFeatofStrength(){
         return(weapon.attribute === "strong")
     }
 
-    getCombatModifierFeint(combatMods, armors, weapons) {
+    getItemModifierFeint(combatMods, armors, weapons) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         if(lvl.level > 1) {
@@ -936,7 +940,7 @@ export class SymbaroumItem extends Item {
         }        
     }
 
-    getCombatModifierHuntersinstinct(combatMods, armors, weapons) {
+    getItemModifierHuntersinstinct(combatMods, armors, weapons) {
         let lvl = this.getLevel();
         if(lvl.level < 1) return;
         for(let i = 0; i < weapons.length; i++)
@@ -964,7 +968,7 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getCombatModifierIronfist(combatMods, armors, weapons) {
+    getItemModifierIronfist(combatMods, armors, weapons) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         
@@ -1020,7 +1024,7 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getCombatModifierKnifeplay(combatMods, armors, weapons) {
+    getItemModifierKnifeplay(combatMods, armors, weapons) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         for(let i = 0; i < weapons.length; i++)
@@ -1042,7 +1046,7 @@ export class SymbaroumItem extends Item {
         }        
     }
 
-    getCombatModifierManatarms(combatMods, armors, weapons)
+    getItemModifierManatarms(combatMods, armors, weapons)
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -1063,7 +1067,7 @@ export class SymbaroumItem extends Item {
         }
     }    
 
-    getCombatModifierMarksman(combatMods, armors, weapons)
+    getItemModifierMarksman(combatMods, armors, weapons)
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -1079,7 +1083,7 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getCombatModifierNaturalwarrior(combatMods, armors, weapons) {
+    getItemModifierNaturalwarrior(combatMods, armors, weapons) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         
@@ -1114,7 +1118,7 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getCombatModifierNaturalweapon(combatMods, armors, weapons) {
+    getItemModifierNaturalweapon(combatMods, armors, weapons) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         
@@ -1130,7 +1134,19 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getCombatModifierPolearmmastery(combatMods, armors, weapons)
+    getItemModifierNopainthreshold(combatMods, armors, weapons) {
+        let base = this._getBaseFormat();
+        base.type = game.symbaroum.config.NO_TRESHOLD;
+        combatMods.toughness.push(base);
+    }
+
+    getItemModifierThoroughlycorrupt(combatMods, armors, weapons) {
+        let base = this._getBaseFormat();
+        base.type = game.symbaroum.config.NO_TRESHOLD;
+        combatMods.corruption.push(base);
+    }
+
+    getItemModifierPolearmmastery(combatMods, armors, weapons)
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -1147,7 +1163,7 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getCombatModifierRapidfire(combatMods, armors, weapons){
+    getItemModifierRapidfire(combatMods, armors, weapons){
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         for(let i = 0; i < weapons.length; i++){
@@ -1164,7 +1180,7 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getCombatModifierRobust(combatMods, armors, weapons) {
+    getItemModifierRobust(combatMods, armors, weapons) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         for(let i = 0; i < armors.length; i++) {
@@ -1201,7 +1217,7 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getCombatModifierShieldfighter(combatMods, armors, weapons)
+    getItemModifierShieldfighter(combatMods, armors, weapons)
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -1244,7 +1260,7 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getCombatModifierSixthsense(combatMods, armors, weapons) 
+    getItemModifierSixthsense(combatMods, armors, weapons) 
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -1281,7 +1297,7 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getCombatModifierSpiritform(combatMods, armors, weapons) 
+    getItemModifierSpiritform(combatMods, armors, weapons) 
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -1305,8 +1321,7 @@ export class SymbaroumItem extends Item {
         }
     }    
 
-
-    getCombatModifierStafffighting(combatMods, armors, weapons)
+    getItemModifierStafffighting(combatMods, armors, weapons)
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -1325,7 +1340,7 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getCombatModifierSteelthrow(combatMods, armors, weapons)
+    getItemModifierSteelthrow(combatMods, armors, weapons)
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -1350,7 +1365,30 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getCombatModifierSurvivalinstinct(combatMods, armors, weapons)
+    getItemModifierStronggift(combatMods, armors, weapons) {
+        let lvl = this.getLevel();
+        if(lvl.level < 2) return;
+        let base = this._getBaseFormat();
+        base.type = game.symbaroum.config.SEC_ATT_MULTIPLIER;
+        base.value = 2;
+        combatMods.corruption.push(base);
+        let base2 = this._getBaseFormat();
+        base2.type = game.symbaroum.config.THRESHOLD_MULTIPLIER;
+        base2.value = 1;
+        combatMods.corruption.push(base2);
+    }
+
+    getItemModifierSturdy(combatMods, armors, weapons) {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        let base = this._getBaseFormat();
+        base.type = game.symbaroum.config.SEC_ATT_MULTIPLIER;
+        if(lvl.level == 1)  base.value = 1.5;
+        else base.value = lvl.level;
+        combatMods.toughness.push(base);
+    }
+
+    getItemModifierSurvivalinstinct(combatMods, armors, weapons)
     {
         let lvl = this.getLevel();
         if(lvl.level < 2) return;
@@ -1371,7 +1409,7 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getCombatModifierSwarm(combatMods, armors, weapons) 
+    getItemModifierSwarm(combatMods, armors, weapons) 
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -1397,7 +1435,7 @@ export class SymbaroumItem extends Item {
         }
     } 
 
-    getCombatModifierTactician(combatMods, armors, weapons) 
+    getItemModifierTactician(combatMods, armors, weapons) 
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -1434,7 +1472,7 @@ export class SymbaroumItem extends Item {
             }        
         }
     }
-    getCombatModifierTwinattack(combatMods, armors, weapons) {
+    getItemModifierTwinattack(combatMods, armors, weapons) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         for(let i = 0; i < weapons.length; i++)
@@ -1503,7 +1541,7 @@ export class SymbaroumItem extends Item {
         }        
     }
 
-    getCombatModifierTwohandedforce(combatMods, armors, weapons) 
+    getItemModifierTwohandedforce(combatMods, armors, weapons) 
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -1520,7 +1558,7 @@ export class SymbaroumItem extends Item {
         }        
     }    
 
-    getCombatModifierUndead(combatMods, armors, weapons) 
+    getItemModifierUndead(combatMods, armors, weapons) 
     {
         let lvl = this.getLevel();
         if(lvl.level < 2) return;

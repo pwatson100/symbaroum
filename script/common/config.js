@@ -335,6 +335,8 @@ SYMBAROUM.ecOptionalDamage = [
 //combat mod types
 SYMBAROUM.TYPE_ALTERNATIVE_DAMAGE = "alternative_damage";
 SYMBAROUM.TYPE_FAVOUR = "favour";
+
+
 SYMBAROUM.DAM_FAVOUR = "damagefavour";
 SYMBAROUM.STATUS_DOT = "statusDoT";
 SYMBAROUM.TYPE_ATTRIBUTE = "attribute";
@@ -344,21 +346,13 @@ SYMBAROUM.DAM_DICEUPGRADE = "diceupgrade";
 SYMBAROUM.DAM_MOD = "damagemodifier";
 SYMBAROUM.TYPE_ROLL_MOD = "attackrollmod";
 SYMBAROUM.CORRUPTION_DAMAGE = "corruptingattack";
-
-//package types
-SYMBAROUM.PACK_DEFAULT = "default";
-SYMBAROUM.PACK_CHECK = "checkbox";
-SYMBAROUM.PACK_RADIO = "radio";
-
 SYMBAROUM.DAM_CHECK = "checkdamage";
 SYMBAROUM.DAM_RADIO = "radio";
 SYMBAROUM.DAM_FIXED = "fixed";
 SYMBAROUM.PACK_CHECKED = "checkpackage";
 SYMBAROUM.DAM_BUILTIN = "builtin"; // builtin is for those that EC assumes are already calculated
 SYMBAROUM.DAM_BUILTIN_REFERENCES = [
-
 ];
-
 SYMBAROUM.DAM_1STATTACK = "1stattack";
 SYMBAROUM.DAM_NOTACTIVE = "not1stattack";
 SYMBAROUM.DAM_ACTIVE = "active";
@@ -367,5 +361,17 @@ SYMBAROUM.DAM_ADVANTAGE = "advantage";
 SYMBAROUM.SPECIAL_STRONG = "strong";
 SYMBAROUM.SPECIAL_WEAK = "weak";
 SYMBAROUM.SPECIAL_MIN_DEFENSE = "min_defense";
+
+
+//combat mod package types
+SYMBAROUM.PACK_DEFAULT = "default";
+SYMBAROUM.PACK_CHECK = "checkbox";
+SYMBAROUM.PACK_RADIO = "radio";
+
+
+SYMBAROUM.SEC_ATT_BONUS = "secattributebonus";
+SYMBAROUM.SEC_ATT_MULTIPLIER = "secattributemultiplier";
+SYMBAROUM.THRESHOLD_MULTIPLIER = "tresholdmultiplier";
+SYMBAROUM.NO_TRESHOLD = "nothreshold";
 
 SYMBAROUM.CONSOLESTYLE = 'font-weight: bold;';
