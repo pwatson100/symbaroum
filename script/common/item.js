@@ -2601,10 +2601,23 @@ async function attackResult(rollData, functionStuff){
         }
     }
     // Here
+    // Maestro support
+    let actorid = functionStuff.actor.id;
+    if(functionStuff.actor.type === "player") {
+        templateData.id = functionStuff.weapon?.id ?? functionStuff.ability?.id;
+    } else {
+        templateData.id = functionStuff.targetData?.actor?.data.data.combat.id;
+        actorid = functionStuff.targetData?.actor.id;
+    }
+    // end Maesrto support
+    game.symbaroum.log("Testing functionstuff",templateData.id);
 
     const html = await renderTemplate("systems/symbaroum/template/chat/combat.html", templateData);
     const chatData = {
         user: game.user.id,
+        speaker: {
+			actor: actorid
+        },
         content: html,
         type: CONST.CHAT_MESSAGE_TYPES.ROLL,
         roll: JSON.stringify(createRollData(rolls)),

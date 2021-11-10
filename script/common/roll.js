@@ -33,6 +33,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
       let armorRoll = new Roll(prot, {}).evaluate({async:false});
       rolls.push(armorRoll);
     
+      armorResults.id = armor.id;
       armorResults.name = armor.name;
       armorResults.value = armorRoll.total;
       armorResults.diceBreakdown = await armorRoll.getTooltip();
@@ -53,7 +54,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
       
       let tooltip = await weaponRoll.getTooltip();
       
-      
+      weaponResults.id = weapon.id;
       weaponResults.value = weaponRoll.total;
       weaponResults.name = weapon.name; 
       weaponResults.diceBreakdown = tooltip;
@@ -84,6 +85,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
     critSuccess: rollResults.critSuccess,
     critFail: rollResults.critFail
   };
+  game.symbaroum.log(rollData);
   const html = await renderTemplate('systems/symbaroum/template/chat/roll.html', rollData);
 
   // Once we go to non-API version of DsN, then set this in chatData: type: CONST.CHAT_MESSAGE_TYPES.ROLL,

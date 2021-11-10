@@ -5,9 +5,8 @@
             {{#if hasTarget}}
             <div class="introImg" style="background-image: url('{{targetData.actor.data.img}}')"></div>
         </div>
-        <div class="targetText">{{removeMarkup targetText}}
+        <div class="targetText">{{removeMarkup targetText}}</div>
         {{/if}}
-        </div>
         <div class="subText">{{removeMarkup subText}}</div>            
         <img src="{{subImg}}"/>
         {{#if hasRoll}}
@@ -15,7 +14,7 @@
             {{#if resistRoll}}
                 <p>{{resistRollText}}</p>
             {{/if}}
-            <p>{{removeMarkup rollString}}</p>
+            <p  data-item-id="{{id}}">{{removeMarkup rollString}}</p>
         </div>
             {{/if}}
         {{#each rollData as |rollDataElement|}}
