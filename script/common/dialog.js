@@ -197,7 +197,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
                     ecData.damageOverTime.push(dotime)
                   }
                   else if(member.type == game.symbaroum.config.TYPE_FAVOUR) {
-                    game.symbaroum.log("member", member);
+                    // game.symbaroum.log("member", member);
                     ecData.favour += member.favourMod;
                   }
                   else if(member.type == game.symbaroum.config.CORRUPTION_DAMAGE) {
@@ -400,7 +400,7 @@ function getVersusModifiers(targetTokens) {
 
 function createLineDisplay(weaponModifiers, attackFromPC) 
 {
-  game.symbaroum.log("packages", weaponModifiers)
+  // game.symbaroum.log("packages", weaponModifiers)
   if(weaponModifiers.maxAttackNb > 1){
     let radioAttacks = {};
     for(let j = 1; j <= weaponModifiers.maxAttackNb; j++){

@@ -2603,14 +2603,13 @@ async function attackResult(rollData, functionStuff){
     // Here
     // Maestro support
     let actorid = functionStuff.actor.id;
-    if(functionStuff.actor.type === "player") {
-        templateData.id = functionStuff.weapon?.id ?? functionStuff.ability?.id;
+    if(functionStuff.attackFromPC) {
+        templateData.id = functionStuff.weapon.id;
     } else {
         templateData.id = functionStuff.targetData?.actor?.data.data.combat.id;
         actorid = functionStuff.targetData?.actor.id;
     }
     // end Maesrto support
-    game.symbaroum.log("Testing functionstuff",templateData.id);
 
     const html = await renderTemplate("systems/symbaroum/template/chat/combat.html", templateData);
     const chatData = {
@@ -2786,7 +2785,6 @@ async function standardPowerResult(rollData, functionStuff){
     let trueActorSucceeded = true; //true by default for powers without rolls
     let rollString = "";
     if(rollData!=null){
-        game.symbaroum.log("rolls 0", rollData);
         hasRoll = true;
         trueActorSucceeded = rollData[0].trueActorSucceeded;
         rollString = await formatRollString(rollData[0], functionStuff.targetData.hasTarget, rollData[0].modifier);
@@ -2795,7 +2793,6 @@ async function standardPowerResult(rollData, functionStuff){
         for(let i = 0; i < rollData.length; i++) {            
             rolls = rolls.concat(rollData[i].rolls);
         }
-        game.symbaroum.log("rolls 1", rolls);
     }
     if( functionStuff.resultRolls !== undefined && functionStuff.resultRolls !== null) {
         rolls = rolls.concat(functionStuff.resultRolls);
@@ -3087,11 +3084,18 @@ async function standardPowerResult(rollData, functionStuff){
             }
         }
     }
+    // Maestro
+    let actorid = functionStuff.actor.id;
+    templateData.id = functionStuff.ability._id;        
+    // End Maestro
 
     // Pick up roll data
     const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
     const chatData = {
         user: game.user.id,
+        speaker: {
+			actor: actorid
+        },
         rollMode: game.settings.get('core', 'rollMode'),    
         content: html,
     }
@@ -3100,8 +3104,7 @@ async function standardPowerResult(rollData, functionStuff){
         if(gmList.length > 0){
             chatData.whisper = gmList
         }
-    } else {
-        game.symbaroum.log("Rolls",rolls);
+    } else if(rolls.length > 0 ) {
         // Only shows rolls if they are displayed to everyone
         chatData.type= CONST.CHAT_MESSAGE_TYPES.ROLL;
         chatData.roll= JSON.stringify(createRollData(rolls));
