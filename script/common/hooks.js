@@ -45,17 +45,17 @@ Hooks.once('init', () => {
     config: SYMBAROUM,
     SymbaroumConfig,
   };
-  game.symbaroum.debug = (...args) => { 
-    console.debug("%cSymbaroum |",game.symbaroum.config.CONSOLESTYLE, ...args);
-  };  
-  game.symbaroum.error = (...args) => { 
-    console.error("%cSymbaroum |",game.symbaroum.config.CONSOLESTYLE, ...args);
+  game.symbaroum.debug = (...args) => {
+    console.debug('%cSymbaroum |', game.symbaroum.config.CONSOLESTYLE, ...args);
   };
-  game.symbaroum.info = (...args) => { 
-    console.info("%cSymbaroum |",game.symbaroum.config.CONSOLESTYLE, ...args);
+  game.symbaroum.error = (...args) => {
+    console.error('%cSymbaroum |', game.symbaroum.config.CONSOLESTYLE, ...args);
   };
-  game.symbaroum.log = (...args) => { 
-    console.log("%cSymbaroum |",game.symbaroum.config.CONSOLESTYLE, ...args);
+  game.symbaroum.info = (...args) => {
+    console.info('%cSymbaroum |', game.symbaroum.config.CONSOLESTYLE, ...args);
+  };
+  game.symbaroum.log = (...args) => {
+    console.log('%cSymbaroum |', game.symbaroum.config.CONSOLESTYLE, ...args);
   };
 
   game.settings.register('symbaroum', 'worldTemplateVersion', {
@@ -198,7 +198,7 @@ Hooks.once('init', () => {
     type: Boolean,
     default: false,
     config: true,
-  });  
+  });
   game.settings.register('symbaroum', 'allowShowReference', {
     name: 'SYMBAROUM.OPTIONAL_SHOWREFERENCE',
     hint: 'SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT',
@@ -374,7 +374,7 @@ Hooks.on('preCreateActor', (doc, createData, options, userid) => {
 Hooks.on('createOwnedItem', (actor, item) => {});
 
 Hooks.once('diceSoNiceReady', (dice3d) => {
-  dice3d.addSystem({ id: 'symbaroum', name: 'Symbaroum' }, true);
+  dice3d.addSystem({ id: 'symbaroum', name: 'Symbaroum' }, 'preferred');
   dice3d.addColorset(
     {
       name: 'Symbaroum',
@@ -386,7 +386,7 @@ Hooks.once('diceSoNiceReady', (dice3d) => {
       texture: 'stars',
       edge: '#211f19',
     },
-    'default'
+    'preferred'
   );
 });
 
@@ -449,7 +449,7 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
     await html.find('#applyEffect').click(async () => {
       let tok = canvas.tokens.objects.children.find((token) => token.id === functionStuff.tokenId);
       let targetToken = canvas.tokens.objects.children.find((token) => token.id === functionStuff.targetData.tokenId);
-      if(tok === undefined || targetToken === undefined){
+      if (tok === undefined || targetToken === undefined) {
         ui.notifications.error("Can't find token.");
         return;
       }
@@ -465,10 +465,9 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
   }
 });
 
-function setup3PartySettings()
-{
-  if(game.settings.settings.has("dice-so-nice.enabledSimultaneousRollForMessage") ) {
-    game.settings.set("dice-so-nice","enabledSimultaneousRollForMessage",false);
+function setup3PartySettings() {
+  if (game.settings.settings.has('dice-so-nice.enabledSimultaneousRollForMessage')) {
+    game.settings.set('dice-so-nice', 'enabledSimultaneousRollForMessage', false);
   }
 }
 // This sets the css DOM objects we will change with the registered settings
@@ -516,7 +515,7 @@ async function showReleaseNotes() {
 
       let newReleasePack = game.packs.find((p) => p.metadata.label === releasePackLabel);
       if (newReleasePack === null || newReleasePack === undefined) {
-        let err = "No pack found for the system guide in this release";
+        let err = 'No pack found for the system guide in this release';
         game.symbaroum.error(err);
         ui.notifications.error(err);
         // This is bad - the symbaroum pack does not exist in the system packages
@@ -526,8 +525,8 @@ async function showReleaseNotes() {
 
       let newReleaseNotes = newReleasePack.index.find((j) => j.name === releaseNoteName);
       // game.symbaroum.log("Found new release notes in the compendium pack");
-      if( newReleaseNotes === undefined || newReleaseNotes === null ) {
-        let err = "No system guide found in this release";
+      if (newReleaseNotes === undefined || newReleaseNotes === null) {
+        let err = 'No system guide found in this release';
         game.symbaroum.error(err);
         ui.notifications.error(err);
         return;
@@ -580,15 +579,15 @@ export async function modifyEffectOnToken(token, effect, action, options) {
         if (options.effectStuff) {
           let statusEffect = new EffectCounter(options.effectStuff, effect, token, false);
           await statusEffect.update();
-        } else if(options.overlay){
-          token.toggleEffect(effect, {overlay:options.overlay});
+        } else if (options.overlay) {
+          token.toggleEffect(effect, { overlay: options.overlay });
         } else {
           let statusEffect = new EffectCounter(duration, effect, token, false);
           await statusEffect.update();
         }
       }
     } else {
-      token.toggleEffect(effect, {overlay:options.overlay});
+      token.toggleEffect(effect, { overlay: options.overlay });
     }
   } else if (action == 0) {
     //remove effect
