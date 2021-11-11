@@ -412,22 +412,25 @@ function createLineDisplay(weaponModifiers, attackFromPC)
   for(let i = 0; i < weaponModifiers.package.length; i++) 
   {
     let pack = weaponModifiers.package[i];
-    if(pack.member.length !=0){
+    if(pack.member.length !=0) {
+
       pack.member.forEach(member => {
-        if(member.type == game.symbaroum.config.DAM_MOD){
+        if(member.type == game.symbaroum.config.DAM_MOD) {
           for(let j = 0; j < member.alternatives.length; j++) 
           { // dispay NPC values for EC, and also reformat the "+1d1[something]" to just "+1"
             member.value = attackFromPC ? member.alternatives[j].damageMod.replace(/d1$/,'') : member.alternatives[j].damageModNPC;
           }
         }
-        if(member.type == game.symbaroum.config.STATUS_DOT){
+        else if(member.type == game.symbaroum.config.STATUS_DOT) {
           let damageV= attackFromPC ? member.damagePerRound.replace(/d1$/,'') : member.damagePerRoundNPC.toString();
           member.value += " ("+ damageV + ")";
         }
-        if(member.type == game.symbaroum.config.CORRUPTION_DAMAGE){
-          if(!attackFromPC){
+        else if(member.type == game.symbaroum.config.CORRUPTION_DAMAGE) {
+          if(!attackFromPC) {
             member.value = member.damageNPC.tostring();
           }
+        } else if(member.type == game.symbaroum.config.TYPE_ATTRIBUTE) {
+          member.value = " "+game.i18n.localize(game.symbaroum.config.attributeLabels[member.attribute]);
         }
       });
       if(pack.type === game.symbaroum.config.PACK_CHECK)
