@@ -12,6 +12,17 @@ SYMBAROUM.attributes = [
     "vigilant"
 ];
 
+SYMBAROUM.attributeLabels = {
+    "accurate":"ATTRIBUTE.ACCURATE",
+    "cunning":"ATTRIBUTE.CUNNING",
+    "discreet":"ATTRIBUTE.DISCREET",
+    "persuasive":"ATTRIBUTE.PERSUASIVE",
+    "quick":"ATTRIBUTE.QUICK",
+    "resolute":"ATTRIBUTE.RESOLUTE",
+    "strong":"ATTRIBUTE.STRONG",
+    "vigilant":"ATTRIBUTE.VIGILANT"
+};
+
 SYMBAROUM.itemSortOrder = [
     "ability",
     "trait",
