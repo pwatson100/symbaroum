@@ -94,7 +94,8 @@ export class SymbaroumActor extends Actor {
             corruption : [],
             abilities : {},
             traits : {},
-            powers : {},
+            mysticpowers : {},
+            traditions : [],
             weapons : {},
             armors : {}
         };
@@ -158,8 +159,17 @@ export class SymbaroumActor extends Actor {
                 protectionChoices: []
             }
         }
+
+        const allMysticPowers = this.data.items.filter(element => element.data.isMysticalPower);
+
+        for(let i = 0; i < allMysticPowers.length; i++) {
+            // build it
+            let base = allMysticPowers[i].getMysticPowersConfig();
+            combatMods.mysticpowers[allMysticPowers[i].id] = base;
+        }
+
         for( const [key, item] of this.data.items.entries() ) {
-            item.getItemModifiers(combatMods, allArmors, allWeapons);
+            item.getItemModifiers(combatMods, allArmors, allWeapons, allMysticPowers);
         }
         
         this._getToughnessValues(combatMods.toughness);

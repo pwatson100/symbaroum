@@ -362,7 +362,6 @@ SYMBAROUM.SPECIAL_STRONG = "strong";
 SYMBAROUM.SPECIAL_WEAK = "weak";
 SYMBAROUM.SPECIAL_MIN_DEFENSE = "min_defense";
 
-
 //combat mod package types
 SYMBAROUM.PACK_DEFAULT = "default";
 SYMBAROUM.PACK_CHECK = "checkbox";
@@ -375,3 +374,36 @@ SYMBAROUM.THRESHOLD_MULTIPLIER = "tresholdmultiplier";
 SYMBAROUM.NO_TRESHOLD = "nothreshold";
 
 SYMBAROUM.CONSOLESTYLE = 'font-weight: bold;';
+
+
+//Mystic powers
+SYMBAROUM.TRADITION = "tradition";
+SYMBAROUM.TRAD_BLESSINGS = "blessings";
+SYMBAROUM.TRAD_SORCERY = "sorcery";
+SYMBAROUM.TRAD_STAFFM = "staffmagic";
+SYMBAROUM.TRAD_SYMBOLISM = "symbolism";
+SYMBAROUM.TRAD_THEURGY = "theurgy";
+SYMBAROUM.TRAD_TROLLS = "trollsinging";
+SYMBAROUM.TRAD_WITCHCRAFT = "witchcraft";
+SYMBAROUM.TRAD_WIZARDRY = "wizardry";
+
+//temporary corruption gain for mystic powers
+SYMBAROUM.TEMPCORRUPTION_NORMAL = "corrnormal"; // 1d4 (default)
+SYMBAROUM.TEMPCORRUPTION_ONE = "corr1"; // 1
+SYMBAROUM.TEMPCORRUPTION_TESTFORONE = "corrtestfor1"; // 1 if test against resolute
+SYMBAROUM.TEMPCORRUPTION_FAVOUR = "corrfavour"; // 2d4kl
+SYMBAROUM.TEMPCORRUPTION_NONE = "corrnone"; // 0
+
+//casting
+SYMBAROUM.CASTING = "casting";  // (default) the power is cast with castingAttribute
+SYMBAROUM.CASTING_NOT = "castingnot";  // the power success is automatic
+SYMBAROUM.CASTING_RES = "castingresisted";  // the power is cast with castingAttribute and resisted with resistAttribute
+
+//Maintain
+SYMBAROUM.MAINTAIN_NOT = "notmaintain";  // (default) the power can't be maintained
+SYMBAROUM.MAINTAIN_ROLL = "maintainroll";  //the power can be maintained by roll
+SYMBAROUM.MAINTAIN_ROLL_DIFF = "maintainrolldiff";  //the power can be maintained by roll on different attributes
+
+
+SYMBAROUM.CHAIN = "chain";  //the power can do chain effect
+SYMBAROUM.CHAIN_NOT = "chainnot";  //the power can't do chain effect
