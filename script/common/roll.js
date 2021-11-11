@@ -33,6 +33,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
       let armorRoll = new Roll(prot, {}).evaluate({async:false});
       rolls.push(armorRoll);
     
+      armorResults.id = armor.id;
       armorResults.name = armor.name;
       armorResults.value = armorRoll.total;
       armorResults.diceBreakdown = await armorRoll.getTooltip();
@@ -53,7 +54,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
       
       let tooltip = await weaponRoll.getTooltip();
       
-      
+      weaponResults.id = weapon.id;
       weaponResults.value = weaponRoll.total;
       weaponResults.name = weapon.name; 
       weaponResults.diceBreakdown = tooltip;

@@ -21,6 +21,32 @@
   white-space: nowrap;
 }
 
+.symbaroum.dialog .packageInfo {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--color-label);
+  font-family: var(--font-text);
+  background: var(--title-color) repeat;
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+  display: flex;
+  flex-basis: 100%;
+}
+
+.symbaroum.dialog .packageInfo .checkbox {
+  white-space: nowrap;
+  width: min-content;
+  align-self: center;
+}
+
+.symbaroum.dialog .packageInfo .packageDetail {
+  height: auto;
+  text-align: center;
+  padding: 5px;
+}
+
+
 .symbaroum.dialog .weapondamage {
   padding-left: 5px;
 }

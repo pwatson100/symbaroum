@@ -97,7 +97,7 @@
         <div class="favour"><label class="lblfavour">{{radioBoxes package.id package.radioAlternatives checked=package.defaultSelect localize=false}}</label></div>
       {{/ife}}
       {{#ife package.type "checkbox"}}          
-        <div class="advantage"><label for="{{package.id}}">{{package.label}}</label> <span class="lblfavour"><input type="checkbox" id="{{package.id}}" value="{{package.value}}" data-dtype="Text" ></span></div>
+        <div class="advantage"><label for="{{package.id}}">{{package.label}}</label><div class="packageInfo"><input class="checkbox" type="checkbox" id="{{package.id}}" value="{{package.value}}" data-dtype="Text" ><input for="{{package.id}}" class="packageDetail" type="text" value="{{package.value}}" data-dtype="Text" disabled/></div></div>
       {{/ife}}
     {{/each}}
       <div class="damagemodifier">

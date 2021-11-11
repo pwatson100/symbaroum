@@ -268,10 +268,10 @@ export class SymbaroumItem extends Item {
         const html = await renderTemplate("systems/symbaroum/template/chat/item.html", itemData);
         const chatData = {
             user: game.user.id,
-            speaker: { 
-                name: this.actor?.name ?? game.user.name,
+            speaker: ChatMessage.getSpeaker({ 
+                alias: this.actor?.name ?? game.user.name,
                 actor: this.actor?.id
-            },            
+            }),            
             rollMode: game.settings.get("core", "rollMode"),
             content: html,
         };
@@ -700,15 +700,16 @@ export class SymbaroumItem extends Item {
             let pack = this._getPackageFormat();
             let basedmg = this._getBaseFormat();
             basedmg.type = game.symbaroum.config.DAM_MOD;
-            if(lvl.level==1){
+            if(lvl.level < 3)
+            {
                 basedmg.value= "+1d4";
                 basedmg.alternatives = [{
                     damageMod: "+1d4",
                     damageModNPC: 2,
                     restrictions: [game.symbaroum.config.DAM_1STATTACK]
                 }]
-            }
-            else{
+            } else {
+                // Only master gives +1d8
                 basedmg.value= "+1d8";
                 basedmg.alternatives = [{
                     damageMod: "+1d8",
@@ -722,7 +723,8 @@ export class SymbaroumItem extends Item {
             baseAtt.attribute = "discreet";
             pack.member.push(baseAtt);
 
-            if(lvl.level>1){
+            if(lvl.level>1)
+            {
                 let baseBleed=this._getBaseFormat();
                 baseBleed.value= game.i18n.localize("COMBAT.BLEED");
                 baseBleed.type = game.symbaroum.config.STATUS_DOT;
@@ -731,7 +733,8 @@ export class SymbaroumItem extends Item {
                 baseBleed.duration= "";
                 baseBleed.durationNPC= 0;
                 baseBleed.effectIcon= "icons/svg/blood.svg";
-                if(lvl.level==2){
+                if(lvl.level==2)
+                {
                     baseBleed.restrictions= [game.symbaroum.config.DAM_1STATTACK];
                 }
                 pack.member.push(baseBleed);
@@ -2963,10 +2966,23 @@ async function attackResult(rollData, functionStuff){
         }
     }
     // Here
+    // Maestro support
+    let actorid = functionStuff.actor.id;
+    if(functionStuff.attackFromPC) {
+        templateData.id = functionStuff.weapon.id;
+    } else {
+        templateData.id = functionStuff.targetData?.actor?.data.data.combat.id;
+        actorid = functionStuff.targetData?.actor.id;
+    }
+    // end Maesrto support
 
     const html = await renderTemplate("systems/symbaroum/template/chat/combat.html", templateData);
     const chatData = {
         user: game.user.id,
+        speaker: ChatMessage.getSpeaker({ 
+            alias: game.user.name,
+			actor: actorid
+        }),
         content: html,
         type: CONST.CHAT_MESSAGE_TYPES.ROLL,
         roll: JSON.stringify(createRollData(rolls)),
@@ -3135,7 +3151,6 @@ async function standardPowerResult(rollData, functionStuff){
     let trueActorSucceeded = true; //true by default for powers without rolls
     let rollString = "";
     if(rollData!=null){
-        game.symbaroum.log("rolls 0", rollData);
         hasRoll = true;
         trueActorSucceeded = rollData[0].trueActorSucceeded;
         rollString = await formatRollString(rollData[0], functionStuff.targetData.hasTarget, rollData[0].modifier);
@@ -3144,7 +3159,6 @@ async function standardPowerResult(rollData, functionStuff){
         for(let i = 0; i < rollData.length; i++) {            
             rolls = rolls.concat(rollData[i].rolls);
         }
-        game.symbaroum.log("rolls 1", rolls);
     }
     if( functionStuff.resultRolls !== undefined && functionStuff.resultRolls !== null) {
         rolls = rolls.concat(functionStuff.resultRolls);
@@ -3436,11 +3450,19 @@ async function standardPowerResult(rollData, functionStuff){
             }
         }
     }
+    // Maestro
+    let actorid = functionStuff.actor.id;
+    templateData.id = functionStuff.ability._id;        
+    // End Maestro
 
     // Pick up roll data
     const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
     const chatData = {
         user: game.user.id,
+        speaker: ChatMessage.getSpeaker({ 
+            alias: game.user.name,
+			actor: actorid
+        }),
         rollMode: game.settings.get('core', 'rollMode'),    
         content: html,
     }
@@ -3449,8 +3471,7 @@ async function standardPowerResult(rollData, functionStuff){
         if(gmList.length > 0){
             chatData.whisper = gmList
         }
-    } else {
-        game.symbaroum.log("Rolls",rolls);
+    } else if(rolls.length > 0 ) {
         // Only shows rolls if they are displayed to everyone
         chatData.type= CONST.CHAT_MESSAGE_TYPES.ROLL;
         chatData.roll= JSON.stringify(createRollData(rolls));
