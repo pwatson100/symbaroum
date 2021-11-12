@@ -92,9 +92,11 @@ export class SymbaroumActor extends Actor {
             initiative : [],
             toughness : [],
             corruption : [],
+            mystic :  [],
+            traditions : [],
             abilities : {},
             traits : {},
-            powers : {},
+            mysticpowers : {},
             weapons : {},
             armors : {}
         };
@@ -155,11 +157,21 @@ export class SymbaroumActor extends Actor {
                 defenseModifiers: [],
                 impedingModifiers: [],
                 damageReductions: [],
-                protectionChoices: []
+                protectionChoices: [],
+                PowerResistances: []
             }
         }
+
+        const allMysticPowers = this.data.items.filter(element => element.data.isMysticalPower);
+
+        for(let i = 0; i < allMysticPowers.length; i++) {
+            // build it
+            let base = allMysticPowers[i].getMysticPowersConfig();
+            combatMods.mysticpowers[allMysticPowers[i].id] = base;
+        }
+
         for( const [key, item] of this.data.items.entries() ) {
-            item.getItemModifiers(combatMods, allArmors, allWeapons);
+            item.getItemModifiers(combatMods, allArmors, allWeapons, allMysticPowers);
         }
         
         this._getToughnessValues(combatMods.toughness);
@@ -299,9 +311,6 @@ export class SymbaroumActor extends Actor {
             for(let i = 0; i < armorModifiers.protectionChoices.length; i++)
             {
                 let protChoice = armorModifiers.protectionChoices[i];
-                let ecProtection = game.symbaroum.config.ecBuiltinDamage.includes(protChoice.reference);
-                let ecOptional = game.symbaroum.config.ecOptionalDamage.includes(protChoice.reference);
-
                 if(protChoice.type == game.symbaroum.config.DAM_DICEUPGRADE ) {
                     diceSides += protChoice.diceUpgrade;
                     tooltip += `${protChoice.label}</br>`;
@@ -402,7 +411,8 @@ export class SymbaroumActor extends Actor {
                 },
                 defmod: (10 - totDefense),
                 msg: defense.defMsg,
-                damageProt: damageProtection,                
+                damageProt: damageProtection,
+                damageReductions: armorModifiers.damageReductions
             });
         }
         return armorArray;
@@ -466,8 +476,6 @@ export class SymbaroumActor extends Actor {
                 for(let i = 0; i < pack.member.length; i++) 
                 {
                     let damChoice = pack.member[i];
-                    let ecDamage = game.symbaroum.config.ecBuiltinDamage.includes(damChoice.reference);
-                    let ecOptional = game.symbaroum.config.ecOptionalDamage.includes(damChoice.reference);
                     
                     if(damChoice.type == game.symbaroum.config.DAM_DICEUPGRADE ) {
                         diceSides += damChoice.diceUpgrade;

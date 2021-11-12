@@ -315,33 +315,97 @@ SYMBAROUM.rangeWeapons = [
     "thrown"
 ];
 
-SYMBAROUM.ecBuiltinDamage = [
-    "marksman",
-    "polearmmastery",
-    "shieldfighter",
-    "twohandedforce",
-    "naturalweapon",
-    "naturalwarrior",
-    "colossal",
-    "dominate",
-    "feint",
-    "knifeplay",
-    "sixthsense",
-    "tactician",
-    "ironfist",
-    "robust",
-    "1handed",
-    "short",
-    "long",
-    "shield",
-    "unarmed",
-    "heavy"
+SYMBAROUM.powersList = {
+    "none": 'ABILITY_LABEL.DEFAULT', 
+    "anathema": 'POWER_LABEL.ANATHEMA', 
+    "banishingseal": 'POWER_LABEL.BANISHING_SEAL', 
+    "bendwill": 'POWER_LABEL.BEND_WILL', 
+    "blackbolt": 'POWER_LABEL.BLACK_BOLT', 
+    "blackbreath": 'POWER_LABEL.BLACK_BREATH', 
+    "blessedshield": 'POWER_LABEL.BLESSED_SHIELD', 
+    "blindingsymbol": 'POWER_LABEL.BLINDING_SYMBOL', 
+    "brimstonecascade": 'POWER_LABEL.BRIMSTONE_CASCADE', 
+    "combathymn": 'POWER_LABEL.COMBAT_HYMN', 
+    "confusion": 'POWER_LABEL.CONFUSION', 
+    "curse": 'POWER_LABEL.CURSE', 
+    "dancingweapon": 'POWER_LABEL.DANCING_WEAPON', 
+    "drainingglyph": 'POWER_LABEL.DRAINING_GLYPH', 
+    "entanglingvines": 'POWER_LABEL.ENTANGLING_VINES', 
+    "exorcize": 'POWER_LABEL.EXORCIZE', 
+    "firesoul": 'POWER_LABEL.FIRE_SOUL', 
+    "flamewall": 'POWER_LABEL.FLAME_WALL', 
+    "heroichymn": 'POWER_LABEL.HEROIC_HYMN', 
+    "holyaura": 'POWER_LABEL.HOLY_AURA', 
+    "illusorycorrection": 'POWER_LABEL.ILLUSORY_CORRECTION', 
+    "inheritwound": 'POWER_LABEL.INHERIT_WOUND', 
+    "larvaeboils": 'POWER_LABEL.LARVAE_BOILS', 
+    "layonhands": 'POWER_LABEL.LAY_ON_HANDS', 
+    "levitate": 'POWER_LABEL.LEVITATE', 
+    "lifegiver": 'POWER_LABEL.LIFEGIVER', 
+    "maltransformation": 'POWER_LABEL.MALTRANSFORMATION', 
+    "mindthrow": 'POWER_LABEL.MIND-THROW', 
+    "mirroring": 'POWER_LABEL.MIRRORING', 
+    "naturesembrace": 'POWER_LABEL.NATURES_EMBRACE', 
+    "priosburningglass": 'POWER_LABEL.PRIOS_BURNING_GLASS', 
+    "protectiverunes": 'POWER_LABEL.PROTECTIVE_RUNES', 
+    "psychicthrust": 'POWER_LABEL.PSYCHIC_THRUST', 
+    "purgatory": 'POWER_LABEL.PURGATORY', 
+    "retribution": 'POWER_LABEL.RETRIBUTION', 
+    "revenantstrike": 'POWER_LABEL.REVENANT_STRIKE', 
+    "shapeshift": 'POWER_LABEL.SHAPESHIFT', 
+    "sphere": 'POWER_LABEL.SPHERE', 
+    "spiritwalk": 'POWER_LABEL.SPIRIT_WALK', 
+    "staffprojectile": 'POWER_LABEL.STAFF_PROJECTILE', 
+    "stormarrow": 'POWER_LABEL.STORM_ARROW', 
+    "teleport": 'POWER_LABEL.TELEPORT', 
+    "thorncloak": 'POWER_LABEL.THORN_CLOAK', 
+    "tormentingspirits": 'POWER_LABEL.TORMENTING_SPIRITS', 
+    "trueform": 'POWER_LABEL.TRUE_FORM', 
+    "unholyaura": 'POWER_LABEL.UNHOLY_AURA', 
+    "unnoticeable": 'POWER_LABEL.UNNOTICEABLE', 
+    "weakeninghymn": 'POWER_LABEL.WEAKENING_HYMN', 
+    "wildhunt": 'POWER_LABEL.WILD_HUNT', 
+    "battlesymbol": 'POWER_LABEL.BATTLE_SYMBOL', 
+    "earthbinding": 'POWER_LABEL.EARTH_BINDING', 
+    "markoftorment": 'POWER_LABEL.MARK_OF_TORMENT', 
+    "serenity": 'POWER_LABEL.SERENITY', 
+    "earthshot": 'POWER_LABEL.EARTH_SHOT', 
+    "witchhammer": 'POWER_LABEL.WITCH_HAMMER'
+};
+
+SYMBAROUM.steadFastNovResistList = [
+    "drainingglyph",
+    "entanglingvines",
+    "larvaeboils",
+    "mindthrow",
+    "earthbinding",
+    "poisoner",
+    "poisonous"
 ];
 
-SYMBAROUM.ecOptionalDamage = [
-    "ironfist",
-    "robust"
+SYMBAROUM.steadFastAdeptResistList = [
+    "anathema",
+    "banishingseal",
+    "bendwill",
+    "blindingsymbol",
+    "confusion",
+    "exorcize",
+    "maltransformation",
+    "priosburningglass",
+    "retribution",
+    "trueform",
+    "unnoticeable",
+    "weakeninghymn",
+    "battlesymbol",
+    "markoftorment",
+    "serenity"
 ];
+
+SYMBAROUM.rapidReflexesResistList = [
+    "brimstonecascade",
+    "deadlybreath"
+];
+
 
 //combat mod types
 SYMBAROUM.TYPE_ALTERNATIVE_DAMAGE = "alternative_damage";
@@ -373,7 +437,6 @@ SYMBAROUM.SPECIAL_STRONG = "strong";
 SYMBAROUM.SPECIAL_WEAK = "weak";
 SYMBAROUM.SPECIAL_MIN_DEFENSE = "min_defense";
 
-
 //combat mod package types
 SYMBAROUM.PACK_DEFAULT = "default";
 SYMBAROUM.PACK_CHECK = "checkbox";
@@ -386,3 +449,37 @@ SYMBAROUM.THRESHOLD_MULTIPLIER = "tresholdmultiplier";
 SYMBAROUM.NO_TRESHOLD = "nothreshold";
 
 SYMBAROUM.CONSOLESTYLE = 'font-weight: bold;';
+
+
+//Mystic powers
+SYMBAROUM.TRADITION = "tradition";
+SYMBAROUM.TRAD_BLESSINGS = "blessings";
+SYMBAROUM.TRAD_SORCERY = "sorcery";
+SYMBAROUM.TRAD_STAFFM = "staffmagic";
+SYMBAROUM.TRAD_SYMBOLISM = "symbolism";
+SYMBAROUM.TRAD_THEURGY = "theurgy";
+SYMBAROUM.TRAD_TROLLS = "trollsinging";
+SYMBAROUM.TRAD_WITCHCRAFT = "witchcraft";
+SYMBAROUM.TRAD_WIZARDRY = "wizardry";
+
+//temporary corruption gain for mystic powers
+SYMBAROUM.TEMPCORRUPTION_NORMAL = "corrnormal"; // 1d4 (default)
+SYMBAROUM.TEMPCORRUPTION_ONE = "corr1"; // 1
+SYMBAROUM.TEMPCORRUPTION_TESTFORONE = "corrtestfor1"; // 1 if test against resolute
+SYMBAROUM.TEMPCORRUPTION_FAVOUR = "corrfavour"; // 2d4kl
+SYMBAROUM.TEMPCORRUPTION_NONE = "corrnone"; // 0
+
+//casting
+SYMBAROUM.CASTING = "casting";  // (default) the power is cast with castingAttribute
+SYMBAROUM.CASTING_NOT = "castingnot";  // the power success is automatic
+SYMBAROUM.CASTING_RES = "castingresisted";  // the power is cast with castingAttribute and resisted with resistAttribute
+
+//Maintain
+SYMBAROUM.MAINTAIN_NOT = "notmaintain";  // (default) the power can't be maintained
+SYMBAROUM.MAINTAIN_ROLL = "maintainroll";  //the power can be maintained by roll
+SYMBAROUM.MAINTAIN_ROLL_DIFF = "maintainrolldiff";  //the power can be maintained by roll on different attributes
+
+SYMBAROUM.CHAIN = "chain";  //the power can do chain effect
+SYMBAROUM.CHAIN_NOT = "chainnot";  //the power can't do chain effect
+
+//Resisting

@@ -439,7 +439,7 @@ function createLineDisplay(weaponModifiers, attackFromPC)
         }
         else if(member.type == game.symbaroum.config.CORRUPTION_DAMAGE) {
           if(!attackFromPC) {
-            member.value = member.damageNPC.tostring();
+            member.value = member.damageNPC.toString();
           }
         } else if(member.type == game.symbaroum.config.TYPE_ATTRIBUTE) {
           member.value = " "+game.i18n.localize(game.symbaroum.config.attributeLabels[member.attribute]);
