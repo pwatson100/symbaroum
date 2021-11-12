@@ -2476,6 +2476,7 @@ will send to screen a windows asking for modifiers for the roll, then roll, then
    * @param {boolean} checkMaintain: if true, ask the player whether the roll is for casting the ability or maintaining it 
    * @param {any}   functionStuff  an object of parameters not used in the dialog function, but useful for resultFunction */
 async function modifierDialog(functionStuff){
+    let hasTarget = functionStuff.targetData.hasTarget;
     let isWeaponRoll = false;
     let askTwoAttacks = functionStuff.askTwoAttacks ?? false;
     let askThreeAttacks = functionStuff.askThreeAttacks ?? false;
@@ -2521,7 +2522,7 @@ async function modifierDialog(functionStuff){
         }
     }
 
-    if(!functionStuff.combat && !functionStuff.notResisted){
+    if(hasTarget && !functionStuff.combat && !functionStuff.notResisted){
         let targetResMod = checkSpecialResistanceMod(functionStuff.targetData.actor.data.data.combat.damageReductions, functionStuff.targetData.autoParams, functionStuff.ability.data.reference);
         functionStuff.favour += targetResMod.favour;
         functionStuff.modifier += -1*targetResMod.modifier;
@@ -2530,7 +2531,6 @@ async function modifierDialog(functionStuff){
     let beastLoreDmg=d4;
     if(functionStuff.beastLoreData?.beastLoreMaster) beastLoreDmg=d6;
     let targetAttributeName = null;
-    let hasTarget = functionStuff.targetData.hasTarget;
     if(functionStuff.targetData.resistAttributeName){
         targetAttributeName = functionStuff.targetData.resistAttributeName
     }
