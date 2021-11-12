@@ -42,7 +42,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   }
 
   if (hasWeapon && rollResults.hasSucceed) {
-    dam = weapon.damage.base;
+    dam = `${weapon.damage.base}[${weapon.name}]`;
     if (dam !== '') {
       if ( advantage ) { dam += "+1d4["+game.i18n.localize('ROLL.ADVANTAGESHORT')+"]"; }
       if ( rollResults.critSuccess ) { dam += "+1d6["+game.i18n.localize('ROLL.CRITSHORT')+"]"; }
