@@ -345,6 +345,14 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
     default: 'roll',
     close: () => {},
   });
+  Hooks.once('renderDialog', (dia,diahtml,data) => {
+    diahtml.find(".packageInfo").click(function(ev) {
+      if(ev.target.className === 'packageDetail') {
+        let checkbox = $(ev.currentTarget).find('input[type="checkbox"]');
+        checkbox.prop('checked', !checkbox.prop('checked'));
+      }
+    });
+  });
   dialog.render(true);
 }
 
