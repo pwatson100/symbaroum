@@ -378,7 +378,7 @@ export class SymbaroumItem extends Item {
             powerLvl: this.getLevel(),
             corruption: true,
             healingBonus: "",
-            castingAttributeName: "resolute",
+            attributes:[],
             package: [],
             autoParams: ""
         };
@@ -869,8 +869,8 @@ export class SymbaroumItem extends Item {
             combatMods.weapons[weapons[i].id].specialEffects.push(game.symbaroum.config.DAM_FAVOUR);
             if(lvl.level>1){
                 let base2 = this._getBaseFormat();
-                base2.type= game.symbaroum.config.TYPE_FAVOUR,
-                base2.value= "favour",
+                base2.type= game.symbaroum.config.TYPE_FAVOUR;
+                base2.value= game.i18n.localize("DIALOG.FAVOUR_FAVOUR");
                 base2.favourMod= 1;
                 combatMods.weapons[weapons[i].id].package[0].member.push(base2);
             }
@@ -958,9 +958,9 @@ export class SymbaroumItem extends Item {
             }
             if(lvl.level > 1 && this.actor.data.data.health.toughness.value <= (this.actor.data.data.health.toughness.max/2)){
                 let base2 = this._getBaseFormat();
-                base2.type= game.symbaroum.config.TYPE_FAVOUR,
-                base2.condition = "conditionFeatofStrength",
-                base2.value= "favour",
+                base2.type= game.symbaroum.config.TYPE_FAVOUR;
+                base2.condition = "conditionFeatofStrength";
+                base2.value= game.i18n.localize("DIALOG.FAVOUR_FAVOUR");
                 base2.favourMod = 1;
                 combatMods.weapons[weapons[i].id].package[0].member.push(base2);
             }
@@ -1012,8 +1012,8 @@ export class SymbaroumItem extends Item {
             }
             let pack = this._getPackageFormat();
             let baseFav = this._getBaseFormat();
-            baseFav.type= game.symbaroum.config.TYPE_FAVOUR,
-            baseFav.value= "favour",
+            baseFav.type= game.symbaroum.config.TYPE_FAVOUR;
+            baseFav.value= game.i18n.localize("DIALOG.FAVOUR_FAVOUR");
             baseFav.favourMod= 1;
             pack.member.push(baseFav);
             if(lvl.level>1){
@@ -1106,6 +1106,18 @@ export class SymbaroumItem extends Item {
                 combatMods.weapons[weapons[i].id].maxAttackNb += 1;
             }
         }        
+    }
+
+    getItemModifierLeader(combatMods, armors, weapons, mysticPowers) 
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        for(let i = 0; i < mysticPowers.length; i++){
+            let base = this._getBaseFormat();
+            base.attribute = "persuasive"; 
+            base.type = game.symbaroum.config.TYPE_ATTRIBUTE; 
+            combatMods.mysticpowers[mysticPowers[i].id].attributes.push(base);
+        }
     }
 
     getItemModifierManatarms(combatMods, armors, weapons, mysticPowers)
@@ -1208,6 +1220,25 @@ export class SymbaroumItem extends Item {
         combatMods.corruption.push(base);
     }
 
+    getItemModifierPoisonresilient(combatMods, armors, weapons, mysticPowers) 
+    {
+        let boonLevel = this.data.data.level;
+        if(boonLevel < 1) return;
+        for(let i = 0; i < armors.length; i++)
+        {
+            if(armors[i].data.isStackableArmor) {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.lvl = boonLevel;
+            base.type= game.symbaroum.config.TYPE_ROLL_MOD;
+            base.modifier = boonLevel;
+            base.value = boonLevel.toString();
+            base.powers = ["poisoner", "poisonous"];
+            combatMods.armors[armors[i].id].damageReductions.push(base);            
+        }
+    }
+
     getItemModifierPolearmmastery(combatMods, armors, weapons, mysticPowers)
     {
         let lvl = this.getLevel();
@@ -1239,6 +1270,25 @@ export class SymbaroumItem extends Item {
             base.modifier = attackNb;
             combatMods.weapons[weapons[i].id].package[0].member.push(base);
             combatMods.weapons[weapons[i].id].maxAttackNb += attackNb;
+        }
+    }
+
+    getItemModifierRapidreflexes(combatMods, armors, weapons, mysticPowers) 
+    {
+        let lvl = this.getLevel();
+        if(lvl.level < 1) return;
+        for(let i = 0; i < armors.length; i++)
+        {
+            if(armors[i].data.isStackableArmor) {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.lvl = lvl;
+            base.type= game.symbaroum.config.TYPE_FAVOUR;
+            base.value= game.i18n.localize("DIALOG.FAVOUR_FAVOUR");
+            base.favourMod= 1;
+            base.powers = game.symbaroum.config.rapidReflexesResistList;
+            combatMods.armors[armors[i].id].damageReductions.push(base);            
         }
     }
 
@@ -1452,6 +1502,29 @@ export class SymbaroumItem extends Item {
         base.value = game.symbaroum.config.TRAD_STAFFM;
         base.level = lvl.level
         combatMods.traditions.push(base);
+    }
+
+    getItemModifierSteadfast(combatMods, armors, weapons, mysticPowers) 
+    {
+        let lvl = this.getLevel();
+        if(lvl.level < 1) return;
+        for(let i = 0; i < armors.length; i++)
+        {
+            // Do we apply it if they just wear stackable armor?
+            if(armors[i].data.isStackableArmor) {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.lvl = lvl;
+            base.type= game.symbaroum.config.TYPE_FAVOUR;
+            base.value= game.i18n.localize("DIALOG.FAVOUR_FAVOUR");
+            base.favourMod= 1;
+            base.powers = game.symbaroum.config.steadFastNovResistList;
+            if(lvl.level > 1){
+                base.powers = base.powers.concat(game.symbaroum.config.steadFastAdeptResistList);
+            }
+            combatMods.armors[armors[i].id].damageReductions.push(base);            
+        }
     }
 
     getItemModifierSteelthrow(combatMods, armors, weapons, mysticPowers)
@@ -1703,7 +1776,7 @@ export class SymbaroumItem extends Item {
             base.diceUpgrade = 2;
             combatMods.weapons[weapons[i].id].package[0].member.push(base);
         }        
-    }    
+    }
 
     getItemModifierUndead(combatMods, armors, weapons, mysticPowers) 
     {
@@ -1757,8 +1830,8 @@ export class SymbaroumItem extends Item {
                     if(lvl.level > 2){
                         let pack = this._getPackageFormat();
                         let base = this._getBaseFormat();
-                        base.type= game.symbaroum.config.TYPE_FAVOUR,
-                        base.value= "favour",
+                        base.type= game.symbaroum.config.TYPE_FAVOUR;
+                        base.value= game.i18n.localize("DIALOG.FAVOUR_FAVOUR");
                         base.favourMod= 1;
                         pack.member.push(base);
                         combatMods.mysticpowers[mysticPowers[i].id].package.push(pack);
@@ -1778,7 +1851,6 @@ export class SymbaroumItem extends Item {
         base.script = standardPowerActivation;
         base.traditions = [game.symbaroum.config.TRAD_WIZARDRY, game.symbaroum.config.TRAD_THEURGY, game.symbaroum.config.TRAD_STAFFM];
         base.targetResistAttribute= "resolute";
-        base.targetSteadfastLevel= 2;
         base.introText= game.i18n.localize('POWER_ANATHEMA.CHAT_INTRO');
         base.resultTextSuccess= game.i18n.localize('POWER_ANATHEMA.CHAT_SUCCESS');
         base.resultTextFail= game.i18n.localize('POWER_ANATHEMA.CHAT_FAILURE');
@@ -1811,7 +1883,6 @@ export class SymbaroumItem extends Item {
         base.script = standardPowerActivation;
         base.traditions = [game.symbaroum.config.TRAD_WIZARDRY, game.symbaroum.config.TRAD_WITCHCRAFT];
         base.targetResistAttribute= "resolute";
-        base.targetSteadfastLevel= 2;
         base.targetMandatory= true;
         base.activelyMaintaninedTargetEffect= ["systems/symbaroum/asset/image/puppet.png"];
         base.introText = game.i18n.localize('POWER_BENDWILL.CHAT_INTRO');
@@ -2449,6 +2520,13 @@ async function modifierDialog(functionStuff){
             }
         }
     }
+
+    if(!functionStuff.combat && !functionStuff.notResisted){
+        let targetResMod = checkSpecialResistanceMod(functionStuff.targetData.actor.data.data.combat.damageReductions, functionStuff.targetData.autoParams, functionStuff.ability.data.reference);
+        functionStuff.favour += targetResMod.favour;
+        functionStuff.modifier += -1*targetResMod.modifier;
+        functionStuff.autoParams += targetResMod.autoParams;
+    }
     let beastLoreDmg=d4;
     if(functionStuff.beastLoreData?.beastLoreMaster) beastLoreDmg=d6;
     let targetAttributeName = null;
@@ -2681,29 +2759,27 @@ export async function buildRolls(functionStuff){
     }
 }
 
-export function checkSteadfastMod(actor, autoParams = "", neededLevel = 1){
-    let hasSteadfast = false;
-    let useSteadfastAdept = false;
-    let useSteadfastMaster = false;
+export function checkSpecialResistanceMod(damageReductions, autoParams = "", abilityRef){
+
     let favour = 0;
-    let steadfastAb = actor.items.filter(item => item.data.data?.reference === "steadfast");
-    if(steadfastAb.length > 0){
-        hasSteadfast = true;
-        let powerLvl = getPowerLevel(steadfastAb[0]);
-        if(powerLvl.level >= neededLevel){
-            useSteadfastAdept = true;
-            favour = 1;
-            autoParams += game.i18n.localize('ABILITY_LABEL.STEADFAST') + " (" + powerLvl.lvlName + "), ";
-        }
-        if(powerLvl.level > 2){
-            useSteadfastMaster = true;
+    let modifier = 0;
+    for(let i = 0; i < damageReductions.length; i++) {
+        if(damageReductions[i].powers){
+            if(damageReductions[i].powers.includes(abilityRef)){
+                if(damageReductions[i].type === game.symbaroum.config.TYPE_FAVOUR){
+                    favour = damageReductions[i].favourMod;
+                    autoParams+=damageReductions[i].label + ", ";
+                }
+                else if(damageReductions[i].type === game.symbaroum.config.TYPE_ROLL_MOD){
+                    autoParams+=damageReductions[i].label + "("+damageReductions[i].value+"), ";
+                    modifier += damageReductions[i].modifier;
+                }
+            }
         }
     }
     return{
         favour: favour,
-        hasSteadfast: hasSteadfast,
-        useSteadfastAdept: useSteadfastAdept,
-        useSteadfastMaster: useSteadfastMaster,
+        modifier: modifier,
         autoParams: autoParams
     }
 }
@@ -2711,18 +2787,13 @@ export function checkSteadfastMod(actor, autoParams = "", neededLevel = 1){
 /*a character that uses resolute, or a target that defend with resolute, mays have ability modifiers
 This function checks : 
 - leader novice (may use persuasive in place of resolute).
-- steadfast
 * @param {actor} actor       The actor
 * @param {string} autoParams    the list of abilities and parameters automaticaly taken care for this actor
 * @checkLeader {boolean}  true to check if actor has leader
-* @checkSteadfast {boolean}  true to check if actor has staedfast
 returns:{
     bestAttributeName {string} , //final attribute 
     favour {-1, 0, 1}, 
     useLeader {boolean},  (the novice level, if persuasive > resolute)
-    hasSteadfast {boolean},
-    useSteadfastAdept {boolean},
-    useSteadfastMaster {boolean}
     autoParams {string} detected and used abilities have been appended to autoParams}*/
 export function checkResoluteModifiers(actor, autoParams = ""){
     let useLeader = false;
@@ -2926,11 +2997,12 @@ async function attackResult(rollData, functionStuff){
     if(functionStuff.autoParams != ""){templateData.subText += ", " + functionStuff.autoParams};
 
     if(functionStuff.poison > 0 && !targetDies && damageTot > 0){
-        let targetResMod = checkSteadfastMod(functionStuff.targetData.actor, functionStuff.targetData.autoParams, 1);
+        let targetResMod = checkSpecialResistanceMod(functionStuff.targetData.actor.data.data.combat.damageReductions, functionStuff.targetData.autoParams, "poisoner");
         let poisonFavour = -1*targetResMod.favour;
         functionStuff.targetData.autoParams += targetResMod.autoParams;
-        let poisonRoll = await baseRoll(functionStuff.actor, "cunning", functionStuff.targetData.actor, "strong", poisonFavour, 0, functionStuff.resistRoll);
-        let poisonRes= await poisonCalc(functionStuff, poisonRoll);
+        let poisonRoll = await baseRoll(functionStuff.actor, "cunning", functionStuff.targetData.actor, "strong", poisonFavour, -1*targetResMod.modifier, functionStuff.resistRoll);
+        let poisonFunctionStuff = Object.assign(functionStuff, {modifier:-1*targetResMod.modifier, favour: poisonFavour});
+        let poisonRes= await poisonCalc(poisonFunctionStuff, poisonRoll);
         rolls.push(poisonRes.roll);
         if(poisonRes.flagData) flagDataArray.push(poisonRes.flagData);
         templateData = Object.assign(templateData, poisonRes);
@@ -3024,11 +3096,6 @@ async function standardPowerActivation(functionStuff) {
             functionStuff.targetData.resistAttributeValue = targetResMod.bestAttributeValue;
             functionStuff.targetData.autoParams += targetResMod.autoParams;
         }
-        if (functionStuff.targetSteadfastLevel){
-            let targetResMod = checkSteadfastMod(functionStuff.targetData.actor, functionStuff.targetData.autoParams, functionStuff.targetSteadfastLevel);
-            functionStuff.favour += -1*targetResMod.favour;
-            functionStuff.targetData.autoParams += targetResMod.autoParams;
-        }
     }
     await modifierDialog(functionStuff)
 }
@@ -3119,7 +3186,7 @@ async function poisonCalc(functionStuff, poisonRoll){
         }
     }
     poisonRes.printPoison = true;
-    poisonRes.poisonRollString = await formatRollString(poisonRoll, functionStuff.targetData.hasTarget, 0);
+    poisonRes.poisonRollString = await formatRollString(poisonRoll, functionStuff.targetData.hasTarget, functionStuff.modifier);
     poisonRes.poisonRollResultString = await formatRollResult(poisonRoll);
     poisonRes.poisonToolTip = poisonRoll.toolTip;
     return(poisonRes);
@@ -3569,7 +3636,6 @@ async function anathemaPrepare(ability, actor) {
         targetResistAttribute: "resolute",
         tradition: ["wizardry", "staffmagic", "theurgy"],
         checkMaintain: true,
-        targetSteadfastLevel: 2,
         introText: actor.data.name + game.i18n.localize('POWER_ANATHEMA.CHAT_INTRO'),
         resultTextSuccess: actor.data.name + game.i18n.localize('POWER_ANATHEMA.CHAT_SUCCESS'),
         resultTextFail: actor.data.name + game.i18n.localize('POWER_ANATHEMA.CHAT_FAILURE')
@@ -3629,7 +3695,6 @@ async function bendWillPrepare(ability, actor) {
     }
     let specificStuff = {
         checkMaintain: true,
-        targetSteadfastLevel: 2,
         targetMandatory : true,
         targetData: targetData,
         targetResistAttribute: "resolute",
@@ -3702,11 +3767,9 @@ async function confusionPrepare(ability, actor) {
         return;
     }
     let targetResMod = checkResoluteModifiers(targetData.actor, targetData.autoParams);
-    let targetStdMod = checkSteadfastMod(targetData.actor, targetData.autoParams, 2);
-    let favour = -1*targetStdMod.favour;
     targetData.resistAttributeName = targetResMod.bestAttributeName;
     targetData.resistAttributeValue = targetResMod.bestAttributeValue;
-    targetData.autoParams = targetResMod.autoParams+ targetStdMod.autoParams;
+    targetData.autoParams = targetResMod.autoParams;
     let fsDefault;
     try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
         ui.notifications.error(error);
@@ -3714,7 +3777,6 @@ async function confusionPrepare(ability, actor) {
     }
     let specificStuff = {
         checkMaintain: true,
-        favour: favour,
         targetMandatory : true,
         targetData: targetData,
         activelyMaintaninedTargetEffect: ["systems/symbaroum/asset/image/unknown-item.png"],
@@ -3812,9 +3874,6 @@ async function entanglingvinesPrepare(ability, actor) {
         tradition: ["witchcraft"]
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    let targetResMod = checkSteadfastMod(functionStuff.targetData.actor, functionStuff.targetData.autoParams, 1);
-    functionStuff.favour += -1*targetResMod.favour;  
-    functionStuff.targetData.autoParams += targetResMod.autoParams;
     functionStuff.ignoreArm=true;
     await modifierDialog(functionStuff)
 }
@@ -3875,16 +3934,13 @@ async function larvaeBoilsPrepare(ability, actor) {
     try{targetData = getTarget("strong")} catch(error){      
         ui.notifications.error(error);
         return;
-    } 
-    let targetResMod = checkSteadfastMod(targetData.actor, targetData.autoParams, 1);
-    targetData.autoParams += targetResMod.autoParams;
+    }
     let fsDefault;
     try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
         ui.notifications.error(error);
         return;
     }
     let specificStuff = {
-        favour: -1*targetResMod.favour,
         checkMaintain: true,
         hasDamage: true,
         damageDice: "1d" + (2*fsDefault.powerLvl.level+2).toString(),
@@ -4006,11 +4062,8 @@ async function maltransformationPrepare(ability, actor) {
         return;
     }
     let targetResMod = checkResoluteModifiers(targetData.actor, targetData.autoParams);
-    let targetStdMod = checkSteadfastMod(targetData.actor, targetData.autoParams, 2);
-    let favour = -1*targetStdMod.favour;
     targetData.resistAttributeName = targetResMod.bestAttributeName;
     targetData.resistAttributeValue = targetResMod.bestAttributeValue;
-    targetData.autoParams = targetResMod.autoParams + targetStdMod.autoParams;
     let fsDefault;
     try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
         ui.notifications.error(error);
@@ -4214,7 +4267,6 @@ async function dominatePrepare(ability, actor) {
         castingAttributeName: "persuasive",
         targetMandatory: true,
         targetResistAttribute: "resolute",
-        targetSteadfastLevel: 2,
         addTargetEffect: ["icons/svg/terror.svg"],
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
@@ -4429,9 +4481,6 @@ async function poisonerPrepare(ability, actor) {
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
     if(ability.data.data.reference === "poisoner") {functionStuff.poisoner = true}
     else functionStuff.poison = functionStuff.powerLvl.level;
-    let targetResMod = checkSteadfastMod(functionStuff.targetData.actor, functionStuff.targetData.autoParams, 1);
-    functionStuff.favour += -1*targetResMod.favour;
-    functionStuff.targetData.autoParams = targetResMod.autoParams;
     await modifierDialog(functionStuff)
 }
 

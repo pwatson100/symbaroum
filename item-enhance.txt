@@ -65,7 +65,14 @@ combat {
                     mystic: 1,
                     holy: 1,
                     mysticalWeapon: 1                                       
+                },
+
+                {
+                    label : "the label of the modifier", (usually the name of the ability)
+                    type : TYPE_FAVOUR, TYPE_MOD,
+                    powers = array of the acting powers against which the reduction applies
                 }
+
             ],
             protectionChoices [
                 {
