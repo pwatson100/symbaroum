@@ -483,3 +483,4 @@ SYMBAROUM.CHAIN = "chain";  //the power can do chain effect
 SYMBAROUM.CHAIN_NOT = "chainnot";  //the power can't do chain effect
 
 //Resisting
+SYMBAROUM.TYPE_DMG_AVOIDING = "dmgavoiding"; // damage reduction like in rapid reflexes
