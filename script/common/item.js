@@ -1284,9 +1284,7 @@ export class SymbaroumItem extends Item {
             }
             let base = this._getBaseFormat();
             base.lvl = lvl;
-            base.type= game.symbaroum.config.TYPE_FAVOUR;
-            base.value= game.i18n.localize("DIALOG.FAVOUR_FAVOUR");
-            base.favourMod= 1;
+            base.type= game.symbaroum.config.TYPE_DMG_AVOIDING;
             base.powers = game.symbaroum.config.rapidReflexesResistList;
             combatMods.armors[armors[i].id].damageReductions.push(base);            
         }
@@ -2526,6 +2524,7 @@ async function modifierDialog(functionStuff){
         let targetResMod = checkSpecialResistanceMod(functionStuff.targetData.actor.data.data.combat.damageReductions, functionStuff.targetData.autoParams, functionStuff.ability.data.reference);
         functionStuff.favour += targetResMod.favour;
         functionStuff.modifier += -1*targetResMod.modifier;
+        functionStuff.dmgavoiding = targetResMod.dmgavoiding;
         functionStuff.autoParams += targetResMod.autoParams;
     }
     let beastLoreDmg=d4;
@@ -2763,16 +2762,19 @@ export function checkSpecialResistanceMod(damageReductions, autoParams = "", abi
 
     let favour = 0;
     let modifier = 0;
+    let dmgavoiding = false;
     for(let i = 0; i < damageReductions.length; i++) {
         if(damageReductions[i].powers){
             if(damageReductions[i].powers.includes(abilityRef)){
                 if(damageReductions[i].type === game.symbaroum.config.TYPE_FAVOUR){
                     favour = damageReductions[i].favourMod;
                     autoParams+=damageReductions[i].label + ", ";
-                }
-                else if(damageReductions[i].type === game.symbaroum.config.TYPE_ROLL_MOD){
+                } else if(damageReductions[i].type === game.symbaroum.config.TYPE_ROLL_MOD){
                     autoParams+=damageReductions[i].label + "("+damageReductions[i].value+"), ";
                     modifier += damageReductions[i].modifier;
+                } else if(damageReductions[i].type === game.symbaroum.config.TYPE_DMG_AVOIDING){
+                    autoParams+=damageReductions[i].label+", ";
+                    dmgavoiding += true;
                 }
             }
         }
@@ -2780,6 +2782,7 @@ export function checkSpecialResistanceMod(damageReductions, autoParams = "", abi
     return{
         favour: favour,
         modifier: modifier,
+        dmgavoiding: dmgavoiding,
         autoParams: autoParams
     }
 }
@@ -3279,11 +3282,11 @@ async function standardPowerResult(rollData, functionStuff){
     
     if(functionStuff.ability.data.reference === "brimstonecascade"){
         if(rollData[0].trueActorSucceeded){
-            if(functionStuff.targetHasRapidReflexes){damageDice = "1d6"}
+            if(functionStuff.dmgavoiding){damageDice = "1d6"}
             else{damageDice = "1d12"}
         }
         else{
-            if(functionStuff.targetHasRapidReflexes){
+            if(functionStuff.dmgavoiding){
                 resultText= functionStuff.targetData.name + game.i18n.localize('POWER_BRIMSTONECASC.CHAT_FAILURE_RR');
             }
             else{
@@ -3652,14 +3655,6 @@ async function brimstoneCascadePrepare(ability, actor) {
         ui.notifications.error(error);
         return;
     }
-    //check wether acting token is player controlled
-    //check rapid reflexes
-    let targetHasRapidReflexes = false;
-    let rrAbility = targetData.actor.items.filter(item => item.data.data.reference === "rapidreflexes");
-    if(rrAbility.length != 0){
-        targetHasRapidReflexes = true;
-        targetData.autoParams += game.i18n.localize('ABILITY_LABEL.RAPID_REFLEXES');
-    }
     let fsDefault;
     try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
         ui.notifications.error(error);
@@ -3670,7 +3665,6 @@ async function brimstoneCascadePrepare(ability, actor) {
         contextualDamage: true,
         hasDamage: true,
         tradition: ["wizardry"],
-        targetHasRapidReflexes: targetHasRapidReflexes,
         targetImpeding: targetData.actor.data.data.combat.impedingMov,
         targetData: targetData,
         introText: fsDefault.token.name + game.i18n.localize('POWER_BRIMSTONECASC.CHAT_INTRO'),
