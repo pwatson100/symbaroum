@@ -53,6 +53,17 @@ export async function prepareRollDeathTest(actor, showDialogue) {
 }
 
 export async function prepareRollAttribute(actor, attributeName, armor, weapon, ecData = {targetData: {hasTarget: false, leaderTarget: false, actor: {}}}) {
+  const CombatDialog = class extends Dialog {
+    activateListeners (html) {
+      super.activateListeners(html);
+      html.find(".packageInfo").click(function(ev) {
+        if(ev.target.className === 'packageDetail') {
+          let checkbox = $(ev.currentTarget).find('input[type="checkbox"]');
+          checkbox.prop('checked', !checkbox.prop('checked'));
+        }
+      });
+    }
+  }
   let targetTokens = Array.from(game.user.targets);
   let attri_mods = getVersusModifiers(targetTokens);
 	let attri_defaults = getRollDefaults(attributeName,armor !== null, weapon !== null, ecData);
@@ -112,7 +123,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
     "attNbRadio": "attNbRadio"
   });
 
-  let dialog = new Dialog({
+  let dialog = new CombatDialog({
     title: getAttributeLabel(actor, attributeName),
     content: html,
     buttons: {
@@ -345,6 +356,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
     default: 'roll',
     close: () => {},
   });
+
   dialog.render(true);
 }
 

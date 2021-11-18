@@ -466,8 +466,18 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
 });
 
 function setup3PartySettings() {
+  game.symbaroum.info("In setup3PartySettings");
+  if( !game.user.isGM ) {
+    // Only make changes to system and 3rd party if it is a GM
+    return;
+  }
   if (game.settings.settings.has('dice-so-nice.enabledSimultaneousRollForMessage')) {
     game.settings.set('dice-so-nice', 'enabledSimultaneousRollForMessage', false);
+  }
+  
+  if( game.modules.get("dice-so-nice")?.active && foundry.utils.isNewerVersion("4.2.2", game.modules.get("dice-so-nice").data.version) ) {
+    // If dice so nice is older than 4.2.2 - lets notify
+    ui.notifications.warn("Dice So Nice needs to be at minimum 4.2.2 to work with Symbaroum", {permanent: true });
   }
 }
 // This sets the css DOM objects we will change with the registered settings
