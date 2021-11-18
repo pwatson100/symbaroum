@@ -4312,6 +4312,7 @@ async function medicusPrepare(ability, actor) {
     let specificStuff = {
         castingAttributeName: "cunning",
         checkMaintain: false,
+        notResisted: true,
         medicus: true
     }
     specificStuff.healFormulaSucceed = "1d4";
