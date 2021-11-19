@@ -1,4 +1,4 @@
-import { getPowerLevel } from './item.js';
+import { getPowerLevel, formatRollResult } from './item.js';
 
 export async function rollAttribute(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier, armor, weapon, advantage, damModifier) {
   let dam = "";	
@@ -17,50 +17,44 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
     value: 0,
     name: "",
     message: "",
-    diceBreakdown: ""
+    diceBreakdown: "",
+    img: ""
   };
 
 	if(hasWeapon && advantage ) { modifier +=2 }
   else if (hasArmor && advantage) { modifier -=2; }
   
-	if(hasWeapon && weapon.qualities.precise) {		
-		modifier++;
-  }
-  
   let rollResults = await baseRoll(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier, false);
-  
+  let rolls = rollResults.rolls;
+
   if (hasArmor && !rollResults.hasSucceed) {
     if (armor.protectionPc !== '') {
       let prot = armor.protectionPc;
-      let armorRoll = new Roll(prot, {});
-      
-      armorRoll.roll();
-      if (game.dice3d != null) {
-        await game.dice3d.showForRoll(armorRoll, game.user, true);
-      }
-      
-      armorResults.name = armor.armor;
+      let armorRoll = new Roll(prot, {}).evaluate({async:false});
+      rolls.push(armorRoll);
+    
+      armorResults.id = armor.id;
+      armorResults.name = armor.name;
       armorResults.value = armorRoll.total;
-      armorResults.diceBreakdown = formatDice(armorRoll.terms,"+");
+      armorResults.diceBreakdown = await armorRoll.getTooltip();
+      armorResults.img = armor.img;
     }
   }
 
   if (hasWeapon && rollResults.hasSucceed) {
-    dam = weapon.damage.pc;
+    dam = `${weapon.damage.base}[${weapon.name}]`;
     if (dam !== '') {
       if ( advantage ) { dam += "+1d4["+game.i18n.localize('ROLL.ADVANTAGESHORT')+"]"; }
       if ( rollResults.critSuccess ) { dam += "+1d6["+game.i18n.localize('ROLL.CRITSHORT')+"]"; }
       if( damModifier !== '') { dam = dam+"+"+damModifier; }
       
 
-      let weaponRoll = new Roll(dam, {});
-      weaponRoll.roll();
+      let weaponRoll = new Roll(dam, {}).evaluate({async:false});
+      rolls.push(weaponRoll);
+      
       let tooltip = await weaponRoll.getTooltip();
       
-      if (game.dice3d != null) {
-        await game.dice3d.showForRoll(weaponRoll, game.user, true);
-      }
-      
+      weaponResults.id = weapon.id;
       weaponResults.value = weaponRoll.total;
       weaponResults.name = weapon.name; 
       weaponResults.diceBreakdown = tooltip;
@@ -70,7 +64,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   }
   
 
- if( !hasWeapon && !hasArmor && !game.settings.get('symbaroum', 'critsApplyToAllTests') ) {
+  if( !hasWeapon && !hasArmor && !game.settings.get('symbaroum', 'critsApplyToAllTests') ) {
     rollResults.critSuccess = rollResults.critFail = false;
   } 
   
@@ -92,11 +86,15 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
     critFail: rollResults.critFail
   };
   const html = await renderTemplate('systems/symbaroum/template/chat/roll.html', rollData);
+
+  // Once we go to non-API version of DsN, then set this in chatData: type: CONST.CHAT_MESSAGE_TYPES.ROLL,
   let chatData = {
     user: game.user.id,
     speaker: {
 			actor: actor.id
-	},
+    },
+    type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+    roll: JSON.stringify(createRollData(rolls)),
     rollMode: game.settings.get('core', 'rollMode'),
     content: html,
   };
@@ -109,31 +107,68 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   return(rollData);
 }
 
-export async function deathRoll(sheet) {
+export function createRollData(rolls) 
+{
+  // game.symbaroum.log(rolls); // TODO
+  let finalRolls = [];
+  let rollCount = 1;
+  for(let i = 0; i < rolls.length; i++) {
+    if( rolls[i] === undefined || rolls[i] === null)
+    {
+      continue;
+    }
+    for(let j = 0; j < rolls[i].dice.length; j++) {
+      rolls[i].dice[j].options.rollOrder = rollCount;
+    }
+    finalRolls.push(rolls[i]);  
+    rollCount++;
+  }
+  let pool = PoolTerm.fromRolls(finalRolls);
+  // game.symbaroum.log(pool); // TODO
+  return Roll.fromTerms([pool]);
+}
+
+export async function rollDeathTest(actor, withFavour, modifier) {
+  let rolls = [];
   let death = new Roll('1d20', {});
-  death.roll();
-  if (game.dice3d != null) {
-    await game.dice3d.showForRoll(death, game.user, true);
+  if( withFavour === "1") {
+    death = new Roll('2d20kl', {});
+  } else if( withFavour === "-1") {
+    death = new Roll('2d20kh', {});
   }
-  let hasSucceed = death._total >= 2 && death._total <= 10;
-  let isCriticalSuccess = death._total === 1;
-  if (!hasSucceed) sheet.nbrOfFailedDeathRoll++;
-  if (isCriticalSuccess) sheet.nbrOfFailedDeathRoll = 0;
-  let heal = new Roll('1d4', {});
-  heal.roll();
-  if (game.dice3d != null) {
-    await game.dice3d.showForRoll(heal, game.user, true);
+
+  death.evaluate({async:false});
+  rolls.push(death);
+  let hasSucceed = death.total <= 10+modifier;
+
+  let isCriticalSuccess = death.total <= (1+( game.settings.get('symbaroum', 'enhancedDeathSaveBonus') ? modifier:0));
+  let heal = null;
+  let nbrOfFailedDeathRoll = actor.data.data.nbrOfFailedDeathRoll;
+
+  if (!hasSucceed) nbrOfFailedDeathRoll = Math.min(3, nbrOfFailedDeathRoll+1);
+  if (isCriticalSuccess) {
+    nbrOfFailedDeathRoll = 0;
+    heal = new Roll('1d4', {}).evaluate({async:false});
+    rolls.push(heal);
   }
+  let diceBreakdown = formatDice(death.terms,"+");
   let rollData = {
+    actor: actor,
     isCriticalSuccess: isCriticalSuccess,
-    healing: heal._total,
-    isCriticalFailure: death._total === 20 || sheet.nbrOfFailedDeathRoll >= 3,
+    healing: heal?.total,
+    isCriticalFailure: death.total === 20 || nbrOfFailedDeathRoll >= 3,
     hasSucceed: hasSucceed,
-    nbrOfFailure: sheet.nbrOfFailedDeathRoll,
+    nbrOfFailure: nbrOfFailedDeathRoll,
+    diceBreakdown: diceBreakdown
   };
   const html = await renderTemplate('systems/symbaroum/template/chat/death.html', rollData);
   let chatData = {
     user: game.user.id,
+    speaker: {
+			actor: actor.id
+    },
+    type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+    roll: JSON.stringify(createRollData(rolls)),
     rollMode: game.settings.get('core', 'rollMode'),
     content: html,
   };
@@ -143,6 +178,9 @@ export async function deathRoll(sheet) {
     chatData.whisper = [game.user];
   }
   ChatMessage.create(chatData);
+  if(actor.data.data.nbrOfFailedDeathRoll != nbrOfFailedDeathRoll) {
+    await actor.update({"data.nbrOfFailedDeathRoll":nbrOfFailedDeathRoll });
+  }
 }
 
 //this function returns the localized name, and also accept defense.
@@ -214,6 +252,8 @@ export async function baseRoll(actor, actingAttributeName, targetActor, targetAt
 
 async function doBaseRoll(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier, resistRoll){
   let d20str = "1d20";
+  let rolls = [];
+
   let hasSucceed = false;
   let trueActorSucceeded = resistRoll;
   let critGood = false;
@@ -222,16 +262,12 @@ async function doBaseRoll(actor, actingAttributeName, targetActor, targetAttribu
 	if(favour > 0) d20str="2d20kl";
 	else if(favour < 0) d20str="2d20kh";
   
-  let attributeRoll = new Roll(d20str).evaluate();  
-  
+  let attributeRoll = new Roll(d20str).evaluate({async:false});
+  rolls.push(attributeRoll); // add the first attribute roll
   let dicesResult;
   if(favour != 0){ 
     dicesResult = [attributeRoll.terms[0].results[0].result, attributeRoll.terms[0].results[1].result]
   };
-  
-  if (game.dice3d != null) {
-    await game.dice3d.showForRoll(attributeRoll, game.user, true);
-  }
   
   diceBreakdown = formatDice(attributeRoll.terms,"+");
 
@@ -257,22 +293,30 @@ async function doBaseRoll(actor, actingAttributeName, targetActor, targetAttribu
     hasSucceed = true;
     trueActorSucceeded = !resistRoll;
   }
-   
+
+  diceBreakdown = formatDice(attributeRoll.terms,"+", hasSucceed ? "normal":"failure");
+
   // Check option - always succeed on 1, always fail on 20
 	if(game.settings.get('symbaroum', 'optionalCrit') || game.settings.get('symbaroum', 'optionalRareCrit') ) {     
     if( attributeRoll.total === 1 || attributeRoll.total === 20 ) {
       if( game.settings.get('symbaroum', 'optionalCrit') ) {
           critBad = attributeRoll.total === 20 && !resistRoll;
           critGood = !critBad;
+          let css = `${critGood?"critical":critBad?"fumble":"normal"}`;
+          diceBreakdown = formatDice(attributeRoll.terms,"+", css);
       }    
       if( game.settings.get('symbaroum', 'optionalRareCrit') ) {
-        let secondRoll = new Roll("1d20").evaluate();        
+        let secondRoll = new Roll("1d20").evaluate({async:false});
+        rolls.push(secondRoll);
+
         critGood = (critGood && secondRoll.total <= diceTarget && !resistRoll) || (critGood && secondRoll.total > diceTarget && resistRoll);
         critBad = (critBad && secondRoll.total > diceTarget && !resistRoll) || (critGood && secondRoll.total <= diceTarget && resistRoll);
-        diceBreakdown = `${diceBreakdown} &amp; <span class="${critGood?"critical":critBad?"fumble":"normal"}">${secondRoll.results}</span>`;
+        let css = `${critGood?"critical":critBad?"fumble":"normal"}`;
+        diceBreakdown = formatDice(attributeRoll.terms,"+", css);
+        diceBreakdown = `${diceBreakdown} &amp; <span class="symba-rolls roll d20 ${css}">${secondRoll.total}</span>`;
       }
     }
-	}
+  }
 
   return({
     actingAttributeValue: actingAttributeValue,
@@ -287,6 +331,9 @@ async function doBaseRoll(actor, actingAttributeName, targetActor, targetAttribu
     favour: favour,
     modifier: modifier,
     dicesResult: dicesResult,
+    rollResult: await formatRollResult({favour: favour, diceResult: attributeRoll.total, dicesResult: dicesResult}),
+    rolls: rolls,
+    toolTip: new Handlebars.SafeString(await attributeRoll.getTooltip()),
     diceBreakdown: diceBreakdown,    
     critSuccess: critGood,
     critFail: critBad
@@ -352,7 +399,7 @@ export async function createResistRollChatButton(functionStuff){
 @param separator the chosen separator to use between dice
 
 */
-function formatDice(diceResult, separator) {
+function formatDice(diceResult, separator, css = "normal") {
 	let rolls = "";
   
 	for( let dd of diceResult ) {
@@ -377,9 +424,9 @@ function formatDice(diceResult, separator) {
 					rolls += tmpSep;
 				}
 				if(diceDetails.active ) {
-          rolls += diceDetails["result"];	
+          rolls += `<span class="symba-rolls roll d20 ${css}">${diceDetails["result"]}</span>`;	
 				} else {
-					rolls += "<span class='strike'>"+diceDetails["result"]+"</span>";
+					rolls += `<span class='symba-rolls roll d20 strike'>${diceDetails["result"]}</span>`;
 				}
 				j++;
 			}
@@ -404,93 +451,45 @@ It won't work with NPC fixed values as input
 * @param {integer} attack number - if > 0 some bonuses won't apply*/
 
 export async function damageRollWithDiceParams(functionStuff, critSuccess, attackNumber){
-  let newRollDmgString = "";  // for dice modificators like +1d4
-  let modFixedDmg = 0;  // for fixed modificators like +1
-  let damageAutoParams = "";
-  let dmgData = functionStuff.dmgData;
-  let damageModFormula = dmgData.modifier;
-  if(damageModFormula != ""){
-    damageModFormula += "[" + game.i18n.localize('DIALOG.DAMAGE_MODIFIER') + "]";
-    damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_CUSTOM');
+  let newRollDmgString = "";
+  let damageAutoParams = functionStuff.autoParams;
+  let damageModFormula = functionStuff.dmgModifier;
+  let damageModNPC = functionStuff.dmgModifierNPC ?? 0;
+  if(attackNumber>1){
+    damageModFormula = functionStuff.dmgModifierAttackSupp;
+    damageModNPC = functionStuff.dmgModifierAttackSuppNPC ?? 0;
   }
-
-  //if(dmgData.isRanged){
-    if(dmgData.hunterIDmg){
-      damageModFormula += " + 1d4" + game.i18n.localize("COMBAT.CHAT_DMG_PARAMS_HUNTER");
-      damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_HUNTER');
-    }
-  
-  if(dmgData.hasAdvantage){
-    damageModFormula += " + 1d4"+game.i18n.localize("COMBAT.CHAT_DMG_PARAMS_ADVANTAGE");
-    damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_ADVANTAGE');
-    if(dmgData.useBackstab && !attackNumber){
-      damageModFormula += functionStuff.backstabDmg;
-      damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_BACKSTAB');
-    }
-  }
-  if(functionStuff.beastLoreData.useBeastlore){
-    if(functionStuff.beastLoreData.beastLoreMaster) damageModFormula += " + 1d6[" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "]";
-    else damageModFormula += " + 1d4[" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "]";
-    damageAutoParams += " [" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "] ";
-  }
-  if(dmgData.useRobustDmg && !attackNumber){
-    let robustLvl = 0;
-    let robust = functionStuff.actor.items.filter(element => element.data.data.reference === "robust");
-    if(robust.length > 0){
-        let powerLvl = getPowerLevel(robust[0]);
-        robustLvl = powerLvl.level;
-        if(robustLvl == 1){
-          damageModFormula += "+1d4["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
-        }
-        else if(robustLvl == 2){
-          damageModFormula += "+1d6["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
-        }
-        else if(robustLvl > 2){
-          damageModFormula += "+1d8["+game.i18n.localize("TRAIT_LABEL.ROBUST")+"]";
-        }
-        damageAutoParams += " [" + game.i18n.localize('TRAIT_LABEL.ROBUST') + "] ";
-    }
-  }
-  if(functionStuff.ironFistDmg){
-    if(functionStuff.ironFistDmgMaster && !attackNumber){
-      damageModFormula += "+1d8["+game.i18n.localize("ABILITY_LABEL.IRON_FIST")+"]";
-    }
-    else{
-      damageModFormula += "+1d4["+game.i18n.localize("ABILITY_LABEL.IRON_FIST")+"]";
-    }
+  if(functionStuff.hasAdvantage){
+    damageModFormula += " +1d4"+game.i18n.localize("COMBAT.CHAT_DMG_PARAMS_ADVANTAGE");
+    damageAutoParams += ", " +game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_ADVANTAGE');
+    damageModNPC += 2;
   }
   if(functionStuff.targetData.leaderTarget){
-    damageModFormula += " + 1d4" + game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
-    damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
+    damageModFormula += " +1d4" + game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
+    damageAutoParams += ", " + game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
+    damageModNPC += 2;
   }
-  if(critSuccess) { damageModFormula += "+ 1d6[crit.]"}
+  if(critSuccess) { damageModFormula += " +1d6[crit.]"}
 
-  if(dmgData.ignoreArm){
-    damageAutoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_IGN_ARMOR');
+  if(functionStuff.ignoreArm){
+    damageAutoParams += ", " + game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_IGN_ARMOR');
   }
     // If the attack is made by a PC, roll damage and substract static value for armor (=max armor/2)
     if(functionStuff.attackFromPC || functionStuff.targetData.actor.type === "monster"){  
       //build roll string
-      newRollDmgString = functionStuff.weapon.damage.pc;
+      newRollDmgString = functionStuff.weapon.damage.base;
       if(damageModFormula != ""){
         newRollDmgString += damageModFormula
       }
-      if(modFixedDmg) {newRollDmgString += "+"+ modFixedDmg.toString()};
-      if(!dmgData.ignoreArm){
+      if(!functionStuff.ignoreArm){
         newRollDmgString += " - " + functionStuff.targetData.actor.data.data.combat.protectionNpc.toString();
       }
     }
     else{
       // If the attack is made by a NPC, evaluate static value for damage (=max damage/2) then roll armor and substract
      //build roll string
-      newRollDmgString = functionStuff.weapon.damage.npc.toString();
-      if(modFixedDmg) {newRollDmgString += "+"+ modFixedDmg.toString()};
-      if(damageModFormula != ""){
-        let weaponModRoll= new Roll(damageModFormula).evaluate({maximize: true});
-        let weaponModDmgValue = Math.ceil(weaponModRoll.total/2);
-        newRollDmgString += "+"+ weaponModDmgValue.toString(); 
-      }
-      if(!dmgData.ignoreArm && functionStuff.targetData.actor.data.data.combat.protectionPc != 0){
+      newRollDmgString = (functionStuff.weapon.damage.npcBase + damageModNPC).toString();
+      if(!functionStuff.ignoreArm && functionStuff.targetData.actor.data.data.combat.protectionPc != 0){
         if(functionStuff.weapon.damage.damageFavour){
           newRollDmgString += " - (" + functionStuff.targetData.actor.data.data.combat.unfavourPcProt + ")";
         }
@@ -499,8 +498,8 @@ export async function damageRollWithDiceParams(functionStuff, critSuccess, attac
       else newRollDmgString += " - 0";
     }
     // final damage
-    // game.symbaroum.log(newRollDmgString);
-    let dmgRoll= new Roll(newRollDmgString).evaluate();
+    //console.log(newRollDmgString);
+    let dmgRoll= new Roll(newRollDmgString).evaluate({async:false});
 
     return{
     roll : dmgRoll,
@@ -512,14 +511,14 @@ export async function damageRollWithDiceParams(functionStuff, critSuccess, attac
 
 /* like damageRollWithDiceParams, but for spell damage and such */
 export async function simpleDamageRoll(functionStuff, damageFormula){
-  if(functionStuff.dmgData.modifier != ""){
-    damageFormula += functionStuff.dmgData.modifier + "[" + game.i18n.localize('DIALOG.DAMAGE_MODIFIER') + "]";
+  if(functionStuff.dmgModifier != ""){
+    damageFormula += functionStuff.dmgModifier + "[" + game.i18n.localize('DIALOG.DAMAGE_MODIFIER') + "]";
   }
   if(functionStuff.beastLoreData.useBeastlore){
     if(functionStuff.beastLoreData.beastLoreMaster) damageFormula += " + 1d6[" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "]";
     else damageFormula += " + 1d4[" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "]";
   }
-  if(functionStuff.dmgData.hasAdvantage){
+  if(functionStuff.hasAdvantage){
     damageFormula += " + 1d4"+game.i18n.localize("COMBAT.CHAT_DMG_PARAMS_ADVANTAGE");
   }
   if(functionStuff.targetData.leaderTarget){
@@ -530,23 +529,24 @@ export async function simpleDamageRoll(functionStuff, damageFormula){
   if(functionStuff.attackFromPC || functionStuff.targetData.actor.type === "monster"){
     newRollDmgString = damageFormula;
     //build roll string
-    if(!functionStuff.dmgData.ignoreArm){
+    if(!functionStuff.ignoreArm){
       newRollDmgString += " - " + functionStuff.targetData.actor.data.data.combat.protectionNpc.toString();
     }
   }
   else{
     // If the attack is made by a NPC, evaluate static value for damage (=max damage/2) then roll armor and substract
-    let weaponRoll= new Roll(damageFormula).evaluate({maximize: true});
+    let weaponRoll= new Roll(damageFormula).evaluate({maximize: true, async:false});
     let weaponDmgValue = Math.ceil(weaponRoll.total/2);
 
    //build roll string
     newRollDmgString = weaponDmgValue.toString();
-    if(!functionStuff.dmgData.ignoreArm){
+    if(!functionStuff.ignoreArm){
       newRollDmgString += " - (" + functionStuff.targetData.actor.data.data.combat.protectionPc + ")";
     }
   }
   // final damage
-  let dmgRoll= new Roll(newRollDmgString).evaluate();
+  let dmgRoll= new Roll(newRollDmgString).evaluate({async:false});
+
   return{
     roll : dmgRoll,
     diceResult: dmgRoll.total,

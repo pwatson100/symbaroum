@@ -1,91 +1,34 @@
-import { rollAttribute, getAttributeLabel } from './roll.js';
+import { getOwnerPlayer, rollAttribute, getAttributeLabel, createResistRollChatButton, rollDeathTest } from './roll.js';
+import { buildRolls } from './item.js';
 
 let roll_defaults = {};
 
-export async function prepareRollAttribute(actor, attributeName, armor, weapon) {
-  let targetTokens = Array.from(game.user.targets);
-	let attri_defaults = getRollDefaults(attributeName,armor !== null, weapon !== null);
-  let attri_mods = getVersusModifiers(targetTokens);
-  let askImpeding = actor.data.data.combat.impeding !== 0 && weapon === null && armor === null;
-  let weaponModifier = {};
-  weaponModifier.attribute = [];
-  weaponModifier.attributeModifiers = [];
-  weaponModifier.damageChoices = [];
-  
-  if(weapon !== null)
+export async function prepareRollDeathTest(actor, showDialogue) {
+  if( !showDialogue )
   {
-    calculateWeaponModifiers(actor, weapon, weaponModifier);
+    await rollDeathTest(actor, "0", 0);
+    return;
   }
-
-  const html = await renderTemplate('systems/symbaroum/template/chat/dialog.html', {
-    "hasTarget": targetTokens.length > 0,
-    "isWeaponRoll" : weapon !== null,
-    "weaponDamage" : weapon !== null ? weapon.damage.pc:"",
-    "weaponModifier" : weaponModifier,
-    "isArmorRoll" : armor !== null,
-    "askImpeding" : askImpeding,
-    "choices": { "0": game.i18n.localize("DIALOG.FAVOUR_NORMAL"), "-1":game.i18n.localize("DIALOG.FAVOUR_DISFAVOUR"), "1":game.i18n.localize("DIALOG.FAVOUR_FAVOUR")},
-    "groupName":"favour",
-    "attri_mods" : attri_mods,
-    "roll_defaults": attri_defaults
+  let attri_defaults = getRollDefaults("deathtest",false, false);
+  const html = await renderTemplate('systems/symbaroum/template/chat/dialog-deathtest.html', {  
+    "choices": { "0": "DIALOG.FAVOUR_NORMAL", "-1":"DIALOG.FAVOUR_DISFAVOUR", "1":"DIALOG.FAVOUR_FAVOUR"},
+    "roll_defaults":attri_defaults,
+    "groupName" : "favour",
   });
-
   let dialog = new Dialog({
-    title: getAttributeLabel(actor, attributeName),
+    title: "Death Test",
     content: html,
     buttons: {
       roll: {
         icon: '<i class="fas fa-check"></i>',
         label: game.i18n.localize('BUTTON.ROLL'),
         callback: async (html) => {
-          let dummyMod = "custom";			
-          if( html.find("#targetAttribute").length > 0) {
-            dummyMod = html.find("#targetAttribute")[0].value;											
-          }
-          attri_defaults.targetAttributeName = dummyMod;
-          const targetAttributeName = dummyMod;
-
-          let hasAdvantage = html.find("#advantage").length > 0;
-          if( hasAdvantage ) {
-            // Note that this turns into disadvantage for Defense rolls
-            hasAdvantage = html.find("#advantage")[0].checked;
-          }					
-          attri_defaults.advantage = hasAdvantage ? "checked":"";
-          const advantage = hasAdvantage; 
-
-          let hasDamModifier = html.find("#dammodifier").length > 0;
-          let damModifier = "";
-          if(hasDamModifier) {
-            damModifier = html.find("#dammodifier")[0].value;
-          }
-          attri_defaults.additionalModifier = damModifier;
-
-          for(let optionalBonus of weaponModifier.damageChoices) {
-            if(optionalBonus.type === "fixed") {
-              damModifier += `${optionalBonus.alternatives.damMod}[${optionalBonus.label}]`
-            } else if(optionalBonus.type === "check") {
-              // Find if the box is checked
-              let ticked = html.find(`#${optionalBonus.id}`);
-              console.log("Hfm", ticked, optionalBonus);
-              if( ticked.length > 0 && ticked[0].checked )
-                damModifier += `${optionalBonus.alternatives.damMod}[${optionalBonus.label}]`;
-            } else if( optionalBonus.type === "radio") {
-              // Find the selected radio button
-              let radioSelection = html.find(`input[name='${optionalBonus.id}']`);
-              for( let f of radioSelection) {
-                if( f.checked ) 
-                  damModifier += `${f.value}[${optionalBonus.label}]`;
-              }
-            }
-          }
-
-                    
           let favours = html.find("input[name='favour']");
           let fvalue = 0;
           for ( let f of favours) {						
             if( f.checked ) fvalue = f.value;
           }
-          attri_defaults.selectedFavour = ""+fvalue;			
+          attri_defaults.selectedFavour = ""+fvalue;
           const favour = fvalue;
           
           let modifier = parseInt(html.find("#modifier")[0].value);   
@@ -94,15 +37,8 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon) 
           }
           attri_defaults.modifier = modifier;
 
-          if(askImpeding){
-            if(html.find("#impeding")[0].checked){
-              modifier = modifier - actor.data.data.combat.impeding;
-            }            
-            attri_defaults.impeding = html.find("#impeding")[0].checked ? "checked":"";
-          }
-          console.log("Damage bonus",damModifier);
-          await rollAttribute(actor, attributeName, getTarget(), targetAttributeName, favour, modifier, armor, weapon, advantage, damModifier);
-          },
+          await rollDeathTest(actor, favour, modifier);
+        },
       },
       cancel: {
           icon: '<i class="fas fa-times"></i>',
@@ -116,33 +52,344 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon) 
   dialog.render(true);
 }
 
-function getRollDefaults(attributeName, isArmor, isWeapon) {
+export async function prepareRollAttribute(actor, attributeName, armor, weapon, ecData = {targetData: {hasTarget: false, leaderTarget: false, actor: {}}}) {
+  const CombatDialog = class extends Dialog {
+    activateListeners (html) {
+      super.activateListeners(html);
+      html.find(".packageInfo").click(function(ev) {
+        if(ev.target.className === 'packageDetail') {
+          let checkbox = $(ev.currentTarget).find('input[type="checkbox"]');
+          checkbox.prop('checked', !checkbox.prop('checked'));
+        }
+      });
+    }
+  }
+  let targetTokens = Array.from(game.user.targets);
+  let attri_mods = getVersusModifiers(targetTokens);
+	let attri_defaults = getRollDefaults(attributeName,armor !== null, weapon !== null, ecData);
+  let askImpeding = actor.data.data.combat.impeding !== 0 && weapon === null && armor === null;
+  let weaponModifiers = null;
+  let askTargetAttribute = ecData.askTargetAttribute ?? false;
+  let askIgnoreArmor = ecData.askIgnoreArmor ?? false;
+  let ignoreArm = ecData.ignoreArm ?? false;
+  let attackFromPC = true;
+  let askCorruptedTarget = ecData.askCorruptedTarget ?? false;
+  let weaponDamage = "";
+  let hasTarget = false;
+  let askPoison = false;
+  let askAttackNb = false;
+  let ecOn = game.settings.get('symbaroum', 'combatAutomation');
+  if(ecOn && weapon !== null) {
+    attackFromPC = actor.type !== "monster" || ecData.targetData.actor.type === "monster";
+    askImpeding = ecData.askImpeding;
+    attri_defaults.impeding = ecData.impeding;
+    hasTarget = ecData.targetData.hasTarget;
+    askPoison = ecData.askPoison;
+  }
+  else{
+    askTargetAttribute = targetTokens.length > 0;
+  }
+  if(weapon !== null) {
+    weaponModifiers = foundry.utils.deepClone(actor.data.data.combat.combatMods.weapons[weapon.id]); // All modifiers needed
+    // Create any radio box alternatives from weaponModifiers
+    createLineDisplay(weaponModifiers, attackFromPC);
+    weaponDamage = attackFromPC ? weapon.damage.base : weapon.damage.npcBase;
+    if(weapon.doAlternativeDamage){
+      ecData.isAlternativeDamage = true;
+      ecData.alternativeDamageAttribute = weapon.damage.alternativeDamageAttribute;
+      ecData.ignoreArm = true;
+      ecData.isMystical = true;
+      weaponDamage += " ("+getAttributeLabel(actor, ecData.alternativeDamageAttribute)+")";
+    }
+    if(game.settings.get('symbaroum', 'combatAutomation')){
+      askAttackNb = weaponModifiers.maxAttackNb > 1;
+    }
+  }
+  const html = await renderTemplate('systems/symbaroum/template/chat/dialog.html', {
+    "askTargetAttribute": askTargetAttribute,
+    "askPoison": askPoison,
+    "isWeaponRoll" : weapon !== null,
+    "weaponDamage" : weaponDamage,
+    "askIgnoreArmor" : askIgnoreArmor,
+    "ignoreArm": ignoreArm,
+    "weaponModifiers" : weaponModifiers,
+    "isArmorRoll" : armor !== null,
+    "askImpeding" : askImpeding,
+    "choices": { "0": game.i18n.localize("DIALOG.FAVOUR_NORMAL"), "-1":game.i18n.localize("DIALOG.FAVOUR_DISFAVOUR"), "1":game.i18n.localize("DIALOG.FAVOUR_FAVOUR")},
+    "groupName":"favour",
+    "attri_mods" : attri_mods,
+    "roll_defaults": attri_defaults,
+    "askAttackNb": askAttackNb,
+    "attNbRadio": "attNbRadio"
+  });
+
+  let dialog = new CombatDialog({
+    title: getAttributeLabel(actor, attributeName),
+    content: html,
+    buttons: {
+      roll: {
+        icon: '<i class="fas fa-check"></i>',
+        label: game.i18n.localize('BUTTON.ROLL'),
+        callback: async (html) => {
+          let dummyMod = "custom";
+          if(askTargetAttribute){	
+            if( html.find("#targetAttribute").length > 0) {
+              dummyMod = html.find("#targetAttribute")[0].value;											
+            }
+            if(game.settings.get('symbaroum', 'combatAutomation') && weapon !== null){
+              ecData.targetData.resistAttributeName = dummyMod;
+              ecData.targetData.resistAttributeValue = getAttributeValue(ecData.targetData.actor, dummyMod);
+            }
+          }
+          attri_defaults.targetAttributeName = dummyMod;
+          const targetAttributeName = dummyMod;
+          let modifier = parseInt(html.find("#modifier")[0].value);   
+          if(isNaN(modifier)) {
+            modifier = 0;
+          }
+          attri_defaults.modifier = modifier;
+          ecData.modifier = modifier;
+          let hasAdvantage = html.find("#advantage").length > 0;
+          if( hasAdvantage ) {
+            // Note that this turns into disadvantage for Defense rolls
+            hasAdvantage = html.find("#advantage")[0].checked;
+          }
+          attri_defaults.advantage = hasAdvantage ? "checked":"";
+          const advantage = hasAdvantage; 
+          ecData.hasAdvantage = advantage;
+          if(advantage){
+              ecData.modifier += 2;
+              ecData.autoParams += game.i18n.localize('DIALOG.ADVANTAGE') + ", ";
+              if(ecData.askBackstab && ecData.actor.data.data.attributes.discreet.total > ecData.actor.data.data.attributes[ecData.castingAttributeName].total){
+                  ecData.castingAttributeName = "discreet";
+              }
+          }
+          let hasDamModifier = html.find("#dammodifier").length > 0;
+          let damModifier = "";
+          let damModifierNPC = 0;
+          let damModifierAttSup ="";
+          let damModifierAttSupNPC=0;
+          if(hasDamModifier) {
+            let damString = html.find("#dammodifier")[0].value;
+            if(damString.length) {
+              if(damString.charAt(0)!== "+") {
+                damModifier = "+"+damString+"["+game.i18n.localize("DIALOG.DAMAGE_MODIFIER")+"] ";
+              } else damModifier = damString+"["+game.i18n.localize("DIALOG.DAMAGE_MODIFIER")+"] ";
+              damModifierAttSup = damModifier;
+              if(!attackFromPC){
+                let parsedMod = parseInt(damString);
+                if (!isNaN(parsedMod)) { 
+                  damModifierNPC = parsedMod;
+                  damModifierAttSupNPC = parsedMod;
+                }
+              }
+            }
+          }
+          attri_defaults.additionalModifier = damModifier;
+          if( weapon !== null) {
+            for(let pack of weaponModifiers.package) {
+              //add all modifiers from the default package
+              if(pack.type == game.symbaroum.config.PACK_DEFAULT) {
+                for(let member of pack.member) {
+                  if(member.type == game.symbaroum.config.DAM_MOD) {
+                    damModifier += `${member.alternatives[0].damageMod}[${member.label}]`;
+                    damModifierNPC += member.alternatives[0].damageModNPC;
+                    if(!member.alternatives[0].restrictions || !alternatives[0].restrictions.includes(game.symbaroum.config.DAM_1STATTACK)){
+                      damModifierAttSup +=`${member.alternatives[0].damageMod}[${pack.label}]`;
+                      damModifierAttSupNPC+=member.alternatives[0].damageModNPC;
+                    }
+                  }
+                  else if(member.type == game.symbaroum.config.TYPE_ROLL_MOD) {
+                    modifier += member.modifier;
+                    ecData.modifier += member.modifier;
+                    ecData.autoParams += ", "+member.label;
+                  }
+                  else if(member.type == game.symbaroum.config.STATUS_DOT) {
+                    let dotime = Object.assign({}, member);
+                    ecData.damageOverTime.push(dotime)
+                  }
+                  else if(member.type == game.symbaroum.config.TYPE_FAVOUR) {
+                    // game.symbaroum.log("member", member);
+                    ecData.favour += member.favourMod;
+                  }
+                  else if(member.type == game.symbaroum.config.CORRUPTION_DAMAGE) {
+                    ecData.corruptingattack = member.value;
+                  }
+                  else if(member.type == game.symbaroum.config.TYPE_ALTERNATIVE_DAMAGE) {
+                    ecData.isAlternativeDamage = true;
+                    ecData.alternativeDamageAttribute = member.AltDmgAttribute;
+                  }
+                }
+              } else if(pack.type === game.symbaroum.config.PACK_CHECK) {
+                // Find if the box is checked
+                let ticked = html.find(`#${pack.id}`);              
+                if( ticked.length > 0 && ticked[0].checked ){
+                  ecData.autoParams += ", "+pack.label;
+                  for(let member of pack.member) {
+                    if(member.type == game.symbaroum.config.DAM_MOD) {
+                      damModifier += `${member.alternatives[0].damageMod}[${pack.label}]`;
+                      damModifierNPC += member.alternatives[0].damageModNPC;
+                      if(!member.alternatives[0].restrictions || !member.alternatives[0].restrictions.includes(game.symbaroum.config.DAM_1STATTACK)){
+                        damModifierAttSup +=`${member.alternatives[0].damageMod}[${pack.label}]`;
+                        damModifierAttSupNPC+=member.alternatives[0].damageModNPC;
+                      }
+                    }
+                    else if(ecOn && member.type == game.symbaroum.config.STATUS_DOT) {
+                      let dotime = Object.assign({}, member);
+                      ecData.damageOverTime.push(dotime);
+                    }
+                    else if(ecOn && member.type == game.symbaroum.config.TYPE_FAVOUR) {
+                      ecData.favour += member.favourMod;
+                    }
+                    else if(member.type == game.symbaroum.config.TYPE_ROLL_MOD) {
+                      modifier += member.modifier;
+                    }
+                    else if(member.type == game.symbaroum.config.TYPE_ATTRIBUTE) {
+                      let replacementAttribute = member.attribute;
+                      if(actor.data.data.attributes[attributeName].total < actor.data.data.attributes[replacementAttribute].total)
+                      {
+                        attributeName = replacementAttribute;
+                        ecData.castingAttributeName = replacementAttribute;
+                      }
+                    }
+                  }
+                }
+              } else if( pack.type === game.symbaroum.config.PACK_RADIO) {
+                if(pack.member[0].type === game.symbaroum.config.DAM_RADIO){
+                  let radioSelection = html.find(`input[name='${pack.id}']`);
+                  for( let f of radioSelection) {
+                    if( f.checked ){
+                      damModifier += `${f.value}[${pack.label}]`;
+                      damModifierNPC += parseInt(f.value);
+                    }
+                  }
+                  for(let altern of pack.member[0].alternatives){
+                    if(altern.restrictions && altern.restrictions.includes(game.symbaroum.config.DAM_NOTACTIVE)){
+                      damModifierAttSup +=`${altern.damageMod}[${pack.label}]`;
+                      damModifierAttSupNPC+=altern.damageModNPC;
+                    }
+                  }
+                }
+              }
+            }
+          }
+                    
+          let favours = html.find("input[name='favour']");
+          let fvalue = 0;
+          for ( let f of favours) {						
+            if( f.checked ) fvalue = f.value;
+          }
+          attri_defaults.selectedFavour = ""+fvalue;			
+          const favour = fvalue;
+          ecData.favour += parseInt(fvalue);
+
+          if(askImpeding){
+            if(html.find("#impeding")[0].checked){
+              modifier = modifier - actor.data.data.combat.impeding;
+              ecData.modifier += -ecData.impeding;
+              ecData.autoParams += game.i18n.localize("ARMOR.IMPEDINGLONG") + ", ";
+            }            
+            attri_defaults.impeding = html.find("#impeding")[0].checked ? "checked":"";
+          }
+          if(askIgnoreArmor){
+            ignoreArm = html.find("#ignarm")[0].checked;
+            ecData.ignoreArm = ignoreArm;
+            if(ignoreArm) ecData.autoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_IGN_ARMOR') + ", ";
+          }
+          if(askAttackNb){
+            let radioSelection = html.find(`input[name='attNbRadio']`);
+            for( let f of radioSelection) {
+              if( f.checked ){
+                ecData.numberofAttacks = parseInt(f.value);
+              }
+            }
+          }
+          if(askPoison){
+            ecData.poison = Number(html.find("#poison")[0].value);
+          }
+          if(askCorruptedTarget){
+            ecData.targetFullyCorrupted = html.find("#targetCorrupt")[0].checked;
+          }
+          if(weapon && game.settings.get('symbaroum', 'combatAutomation')){
+            attackFromPC = actor.type !== "monster" || ecData.targetData.actor.type === "monster";
+            if(damModifier.length > 0) {
+                ecData.dmgModifier = damModifier;
+                ecData.dmgModifierNPC = damModifierNPC;
+                ecData.dmgModifierAttackSupp= damModifierAttSup;
+                ecData.dmgModifierAttackSuppNPC= damModifierAttSupNPC;
+            }
+            ecData.notResisted = ecData.notResisted ?? (ecData.notResistWhenFirstCast && !ecData.isMaintained);
+            if(hasTarget && !ecData.notResisted){
+              if(ecData.attackFromPC || ecData.targetData.actor.type === "monster"){
+                  ecData.resistRoll = false;
+                  buildRolls(ecData);
+              }
+              else{
+                ecData.resistRoll = true;
+                ecData.resistRollText = (weapon !== null) ? ecData.targetData.name+game.i18n.localize('COMBAT.DEFENSE_ROLL') : ecData.targetData.name+game.i18n.localize('ABILITY.RESIST_ROLL');
+                let userArray = await getOwnerPlayer(ecData.targetData.actor);
+                if(userArray.length>0 && game.settings.get('symbaroum', 'playerResistButton')){
+                    ecData.targetUserId=userArray[0].data._id;
+                    ecData.targetUserName=userArray[0].data.name;
+                    createResistRollChatButton(ecData);
+                }
+                else{
+                    buildRolls(ecData);
+                }
+              }
+            }
+            else{
+                buildRolls(ecData)
+            }
+          }
+          else{
+            await rollAttribute(actor, attributeName, getTarget(), targetAttributeName, favour, modifier, armor, weapon, advantage, damModifier);
+          }
+        },
+      },
+      cancel: {
+          icon: '<i class="fas fa-times"></i>',
+          label: game.i18n.localize('BUTTON.CANCEL'),
+          callback: () => {},
+      },
+    },
+    default: 'roll',
+    close: () => {},
+  });
+
+  dialog.render(true);
+}
+
+function getRollDefaults(attributeName, isArmor, isWeapon, ecData) {
   if( !game.settings.get('symbaroum', 'saveCombatRoll')) {
     if(isArmor || isWeapon) {
-      return createDefaults();
+      return createDefaults(ecData);
     }
   }
   if( !game.settings.get('symbaroum', 'saveAttributeRoll')) {
     if(!isArmor && !isWeapon) {
-      return createDefaults();
+      return createDefaults(ecData);
     }
   }
   if( roll_defaults[attributeName+":"+isArmor+":"+isWeapon] === undefined )
 	{
-		roll_defaults[attributeName+":"+isArmor+":"+isWeapon] = createDefaults();
+		roll_defaults[attributeName+":"+isArmor+":"+isWeapon] = createDefaults(ecData);
 	}
 	return roll_defaults[attributeName+":"+isArmor+":"+isWeapon];
 }
 
-function createDefaults() {
-	return {
+function createDefaults(ecData={}) {
+  let defaultValues = {
 		targetAttributeName: "custom",
 		additionalModifier: "",
 		selectedFavour: "0",
 		modifier: "0",
     advantage: "",
-    impeding: ""
+    impeding: "",
+    ignoreArmor: false,
+    ecData: ecData
 	};
+  return(defaultValues)
 }
 
 function getVersusModifiers(targetTokens) {
@@ -164,96 +411,72 @@ function getVersusModifiers(targetTokens) {
   };
 }
 
-function calculateWeaponModifiers(actor, weapon, weaponModifier)
+function createLineDisplay(weaponModifiers, attackFromPC) 
 {
-  let robust = actor.data.items.filter(element => element.data.data?.reference === "robust");
-  // If actor has Robust (and weapon is melee)
-  if(robust.length > 0 && weapon.isMelee) {
-    let dice = robust[0].getLevel().level;
-    let choice = {};
-    choice["label"] = robust[0].name;
-    choice["type"] = "check";
-    choice["id"] = robust[0].id;
-    let damMod = `+1d${(dice+1)*2}`;
-    let damlabel =  `(${damMod})`;
-    choice["alternatives"] = {
-      "damMod":damMod,
-    };
-    choice["restrition"] = "1st-attack"; // Only apply damage bonus to first attack
-    weaponModifier.damageChoices.push(choice);
-  }
-
-  let ironFist = actor.data.items.filter(element => element.data.data?.reference === "ironfist");
-  if( ironFist.length > 0 && weapon.isMelee) {
-    // If actor has Iron Fist Master (and weapon is melee)
-    let power = ironFist[0].getLevel();
-    if( power.level > 0) {
-      weaponModifier.attribute.push( {
-          attribute:"strong",
-          label: ironFist[0].name,
-          id: ironFist[0].id
-        });
+  // game.symbaroum.log("packages", weaponModifiers)
+  if(weaponModifiers.maxAttackNb > 1){
+    let radioAttacks = {};
+    for(let j = 1; j <= weaponModifiers.maxAttackNb; j++){
+      radioAttacks[j] = j.toString()+"x"+game.i18n.localize("DIALOG.ATTACK");
     }
-    if( power.level === 2) {
-      let choice = {};
-      choice.label = ironFist[0].name;
-      choice["type"] = "fixed";
-      choice["alternatives"] = {
-        "damMod":"+1d4"
-      };
-         // No choice
-      weaponModifier.damageChoices.push(choice);
-    } else if( power.level === 3) {
-      let choice = {};
-      choice["type"] = "radio";
-      choice["label"] = ironFist[0].name;
-      choice["id"] = ironFist[0].id;
-      choice["defaultSelect"] = `+1d4`;
-      choice["alternatives"] = {};
-      // Change this to fixed values
-      // Add in alternatives.damageModifier
-      choice["alternatives"][`+1d4`] = `${ironFist[0].name} - ${power.lvlName} (1d4)`;
-      choice["alternatives"][`+1d8`] = `${ironFist[0].name} - ${power.lvlName} (1d8)`;
-      weaponModifier.damageChoices.push(choice);
-    }
+    weaponModifiers.radioAttacks = radioAttacks;
   }
+  for(let i = 0; i < weaponModifiers.package.length; i++) 
+  {
+    let pack = weaponModifiers.package[i];
+    if(pack.member.length !=0) {
 
-  /*
-  let featOfStr = actor.data.items.filter(element => element.data.data?.reference === "featofstrength");
-  if( featOfStr.length > 0 && featOfStr[0].getLevel().level === 3 && weapon.isMelee) {
-    if(actor.data.data.health.toughness.value <= (actor.data.data.health.toughness.max/2) )
-    {        
-      let bonus = {};
-      bonus.label = featOfStr[0].name;
-      bonus.damageModifier = "+1d4";
-      weaponModifier.damageBonus.push(bonus);
-    }
-  }
-  */
-
-  let hunterInstinct = actor.items.filter(item => item.data.data?.reference === "huntersinstinct");
-  
-  if( weapon.isDistance && hunterInstinct.length > 0 && hunterInstinct[0].getLevel().level > 1) {
-    let choice = {};
-    choice["label"] = hunterInstinct[0].name;
-    choice["id"] = hunterInstinct[0].id;
-    choice["type"] = "check";
-    let damMod = `+1d4`;
-    let damlabel =  `(${damMod})`;    
-    choice["alternatives"] = {
-      "damMod":damMod,
-    };
-    weaponModifier.damageChoices.push(choice);
-  }
-
-  if(true) {
-    if(weapon.qualities.precise) {
-      let attributeModifier = {
-        label: game.i18n.localize("QUALITY.PRECISE"),
-        id: weapon.id,
-        modifier: "+1"
+      pack.member.forEach(member => {
+        if(member.type == game.symbaroum.config.DAM_MOD) {
+          for(let j = 0; j < member.alternatives.length; j++) 
+          { // dispay NPC values for EC, and also reformat the "+1d1[something]" to just "+1"
+            member.value = attackFromPC ? member.alternatives[j].damageMod.replace(/d1$/,'') : member.alternatives[j].damageModNPC;
+          }
+        }
+        else if(member.type == game.symbaroum.config.STATUS_DOT) {
+          let damageV= attackFromPC ? member.damagePerRound.replace(/d1$/,'') : member.damagePerRoundNPC.toString();
+          member.value += " ("+ damageV + ")";
+        }
+        else if(member.type == game.symbaroum.config.CORRUPTION_DAMAGE) {
+          if(!attackFromPC) {
+            member.value = member.damageNPC.toString();
+          }
+        } else if(member.type == game.symbaroum.config.TYPE_ATTRIBUTE) {
+          member.value = " "+game.i18n.localize(game.symbaroum.config.attributeLabels[member.attribute]);
+        }
+      });
+      if(pack.type === game.symbaroum.config.PACK_CHECK)
+      {
+        if(pack.value === undefined) pack.value = "";
+        pack.member.forEach((member, index) => {
+          if(index!=0) pack.value += ", ";
+          pack.value += member.value;
+        })
       }
-      weaponModifier.attributeModifiers.push(attributeModifier);
+      if(pack.type === game.symbaroum.config.PACK_RADIO) 
+      {
+        let member= pack.member[0];
+        if(member.type === game.symbaroum.config.DAM_RADIO){
+          let radioAlternatives = {};
+          
+          for(let j = 0; j < member.alternatives.length; j++) 
+          {
+            if(attackFromPC){
+              radioAlternatives[`${member.alternatives[j].damageMod}`] = `${member.alternatives[j].label} ${member.alternatives[j].damageMod}`;
+            } else {
+              radioAlternatives[`${member.alternatives[j].damageModNPC}`] = `${member.alternatives[j].label} ${member.alternatives[j].damageModNPC}`;
+            }
+          }
+          pack.radioAlternatives = radioAlternatives;
+          if(pack.defaultSelect === undefined || pack.defaultSelect === null) {
+            if(attackFromPC) {
+              pack.defaultSelect = `${member.alternatives[0].damageMod}`;
+            } else {
+              pack.defaultSelect = `${member.alternatives[0].damageModNPC}`;
+            }
+          }
+        }
+      }
     }
   }
 }

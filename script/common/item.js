@@ -1,4 +1,4 @@
-import { upgradeDice, baseRoll, damageRollWithDiceParams, simpleDamageRoll, getAttributeValue, getAttributeLabel, getOwnerPlayer, createModifyTokenChatButton, createResistRollChatButton } from './roll.js';
+import { upgradeDice, baseRoll, createRollData, damageRollWithDiceParams, simpleDamageRoll, getAttributeValue, getAttributeLabel, getOwnerPlayer, createModifyTokenChatButton, createResistRollChatButton } from './roll.js';
 import { modifyEffectOnToken } from './hooks.js';
 
 export class SymbaroumItem extends Item {
@@ -52,6 +52,7 @@ export class SymbaroumItem extends Item {
         data["is"+data.type.capitalize()] = true;
         
         data.isPower = data.isTrait || data.isAbility || data.isMysticalPower || data.isRitual || data.isBurden || data.isBoon;
+        data.hasLevels = data.isTrait || data.isAbility || data.isMysticalPower;
         data.isArtifact = data.type === "artifact" || data.data?.isArtifact;
         data.isGear = data.isWeapon || data.isArmor || data.isEquipment || data.isArtifact;
 
@@ -78,7 +79,24 @@ export class SymbaroumItem extends Item {
             data.data.pcDamage = "";
             data.data.npcDamage = 0;
         }
-        else if(data.type === "armor"){
+        else if(data.type === "armor")
+        {
+            data.isStackableArmor = data.data.baseProtection === "0";
+            data.isLightArmor = data.data.baseProtection === "1d4";
+            data.isMediumArmor = data.data.baseProtection === "1d6";
+            data.isHeavyArmor = data.data.baseProtection == "1d8";
+            data.isSuperArmor = data.data.baseProtection == "1d10" || data.data.baseProtection == "1d12";
+            if(data.isStackableArmor ) {
+                data.data.reference = "stackable";                
+            } else if(data.isLightArmor) {
+                data.data.reference = "lightarmor";
+            } else if(data.isMediumArmor) {
+                data.data.reference = "mediumarmor";
+            } else if(data.isHeavyArmor) { 
+                data.data.reference = "heavyarmor";
+            } else {
+                data.data.reference = "superarmor";
+            }
             data.data.pcProtection = "";
             data.data.npcProtection = 0;
         } else if(data.type == "artifact") {
@@ -132,52 +150,37 @@ export class SymbaroumItem extends Item {
 
     _computeCombatData(data) {
         if(data.type === "weapon"){
-            const meleeClass = [
-                "1handed",
-                "short",
-                "long",
-                "shield",
-                "unarmed",
-                "heavy"
-            ];
-            const distanceClass = [
-                "ranged",
-                "thrown"
-            ];
-            if(meleeClass.includes(data.data.reference)){
-                data.data.isMelee = true;
-                data.data.isDistance = false;
-            }
-            else if(distanceClass.includes(data.data.reference)){
-                data.data.isMelee = false;
-                data.data.isDistance = true;
-            }
-            else{
-                data.data.isMelee = false;
-                data.data.isDistance = false;
-            }
+
+            data.data.isMelee = game.symbaroum.config.meleeWeapons.includes(data.data.reference);
+            data.data.isDistance = game.symbaroum.config.rangeWeapons.includes(data.data.reference);            
             let baseDamage = data.data.baseDamage;
             // game.symbaroum.log("baseDamage["+baseDamage+"]");
             if( baseDamage === null || baseDamage === undefined || baseDamage === "" ) {
                 baseDamage = "1d8";
             }
-            if(data.data.qualities?.massive) {
-                let diceSides = new Roll(baseDamage).evaluate({maximize: true});                
-                baseDamage = "2d"+Math.ceil(diceSides.total)+"kh";
-            } 
+            let diceSides = baseDamage.match(/[0-9]d([1-9]+)/)[1];
+            // game.symbaroum.log("diceSides["+diceSides+"]");
+            if(data.data.qualities?.massive) {               
+                baseDamage = "2d"+Math.ceil(diceSides)+"kh";
+            }
             if(data.data.bonusDamage != "") {
                 if(data.data.bonusDamage.charAt(0) !== '+' ) {
                     data.data.bonusDamage = "+"+data.data.bonusDamage;
                 }
-                baseDamage += data.data.bonusDamage;
+                baseDamage += data.data.check;
             }
             data.data.pcDamage += baseDamage;
             if(data.data.qualities?.deepImpact){
                 data.data.pcDamage +=  "+1";
             }
-            let weaponRoll= new Roll(baseDamage).evaluate({maximize: true});
-            data.data.npcDamage = Math.ceil(weaponRoll.total/2);
-            if(data.data.qualities?.deepImpact){
+            try {
+                let weaponRoll= new Roll(baseDamage).evaluate({maximize: true, async: false});
+                data.data.npcDamage = Math.ceil(weaponRoll.total/2);
+            } catch(err) {
+                data.data.npcDamage = 0;
+                ui.notifications?.error("Could not evaulate weapon - check bonus damage fields - "+err);
+            }
+            if(data.data.qualities?.deepImpact) {
                 data.data.npcDamage +=  1;
             }
         }
@@ -192,7 +195,11 @@ export class SymbaroumItem extends Item {
             } 
 
             if(data.data.bonusProtection && data.data.bonusProtection != ""){
-                protection += "+" + data.data.bonusProtection;
+                let plus = "+";
+                if(data.data.bonusProtection.charAt(0) === '+' ) {
+                    plus = "";
+                }
+                protection += plus + data.data.bonusProtection;
             }
             data.data.pcProtection = protection;
             if(data.data.qualities?.reinforced){
@@ -200,9 +207,9 @@ export class SymbaroumItem extends Item {
             }
 
             if(protection === "") {
-                armorRoll = new Roll("0").evaluate({maximize: true});
+                armorRoll = new Roll("0").evaluate({maximize: true, async:false});
             } else {
-                armorRoll = new Roll(protection).evaluate({maximize: true});
+                armorRoll = new Roll(protection).evaluate({maximize: true, async:false});
             }
             data.data.npcProtection = Math.ceil(armorRoll.total/2);
             if(data.data.qualities?.reinforced){
@@ -249,7 +256,7 @@ export class SymbaroumItem extends Item {
         const itemData = duplicate(this.data);
         if (itemData.img.includes("/unknown")) {
             itemData.img = null;
-        }
+        }        
         itemData.isTrait = itemData.type === "trait";
         itemData.isAbility = itemData.type === "ability";
         itemData.isMysticalPower = itemData.type === "mysticalPower";
@@ -261,6 +268,10 @@ export class SymbaroumItem extends Item {
         const html = await renderTemplate("systems/symbaroum/template/chat/item.html", itemData);
         const chatData = {
             user: game.user.id,
+            speaker: ChatMessage.getSpeaker({ 
+                alias: this.actor?.name ?? game.user.name,
+                actor: this.actor?.id
+            }),            
             rollMode: game.settings.get("core", "rollMode"),
             content: html,
         };
@@ -320,25 +331,1648 @@ export class SymbaroumItem extends Item {
     
     getLevel() 
     {
-        if(!this.data.isPower) {
+        if(!this.data.hasLevels) 
+        {
             return {level:0, lvlName : null};
         }
-
         let powerLvl = 0;
-        let lvlName = game.i18n.localize("Not learned"); // TODO: Proper entry in language file
-        if(this.data.data.master.isActive){
+        let lvlName = game.i18n.localize("ABILITY.NOT_LEARNED");
+        if(this.data.data.master.isActive)
+        {
             powerLvl = 3;
             lvlName = game.i18n.localize('ABILITY.MASTER');
         }
-        else if(this.data.data.adept.isActive){
+        else if(this.data.data.adept.isActive)
+        {            
             powerLvl = 2;
             lvlName = game.i18n.localize('ABILITY.ADEPT');
         }
-        else if(this.data.data.novice.isActive){
+        else if(this.data.data.novice.isActive)
+        {
             powerLvl = 1;
             lvlName = game.i18n.localize('ABILITY.NOVICE');
         }
         return {level : powerLvl, lvlName : lvlName};
+    }
+
+    getItemModifiers(combatMods, armors, weapons, mysticPowers) 
+    {
+        if( !this.isOwned || this.data.data.reference === undefined || this.data.data.reference === null) {
+            return;               
+        }
+        let ref = this.data.data.reference.capitalize();
+        if( typeof this["getItemModifier"+ref] == "function" ) {
+            this["getItemModifier"+ref](combatMods, armors, weapons, mysticPowers)
+        }
+    }
+    
+    getMysticPowersConfig() 
+    {
+        let base= {
+            id: this.id,
+            label: this.data.name,
+            reference: this.data.data.reference,
+            corruption: game.symbaroum.config.TEMPCORRUPTION_NORMAL,
+            isScripted: false,
+            traditions: [],
+            powerLvl: this.getLevel(),
+            corruption: true,
+            healingBonus: "",
+            attributes:[],
+            package: [],
+            autoParams: ""
+        };
+        if( !this.isOwned || this.data.data.reference === undefined || this.data.data.reference === null) {
+            return(base);               
+        }
+        let ref = this.data.data.reference.capitalize();
+        if( typeof this["mysticPowerSetup"+ref] == "function" ) {
+            return(this["mysticPowerSetup"+ref](base));
+        }
+        else return(base)
+    }
+        
+    _getPackageFormat(label) {
+        return {
+            id: this.id,
+            label : label ?? this.data.name,
+            type: game.symbaroum.config.PACK_CHECK,
+            member: []
+        }
+    }
+
+    _getBaseFormat() {
+        return {
+            id: this.id,
+            label: this.data.name,
+            reference: this.data.data.reference
+        };
+    }
+
+    // Reference combat modifiers
+    // Armors
+    _getOwnArmorBonuses(combatMods, armors)
+    {
+        for(let i = 0; i < armors.length; i++)
+        {
+            if(this.id == armors[i].id) {
+                if(this.data.data.bonusProtection != "") {
+                    let base = this._getBaseFormat();
+                    let plus = "+";
+                    if(this.data.data.bonusProtection.charAt(0) === '+') {
+                        plus = "";
+                    }                
+                    // NPC - cant get away from this
+                    let npcProt = 0;
+                    try {
+                        npcProt = Math.ceil(new Roll(this.data.data.bonusProtection).evaluate({async:false, maximize: true}).total / 2);
+                    } catch(err) {
+                        ui.notifications?.error(`Could not evaulate armor bonus protection for ${this.data.name} - check bonus damage fields -`+err);
+                    }                    
+
+                    base.type = game.symbaroum.config.DAM_FIXED;
+                    base.alternatives = [{
+                        protectionMod: plus+this.data.data.bonusProtection,
+                        protectionModNPC: npcProt,
+                        displayMod: plus+this.data.data.bonusProtection
+                    }];
+                    combatMods.armors[armors[i].id].protectionChoices.push(base);
+                }
+                if(!this.data.isStackableArmor && this.data.data.qualities.reinforced) {
+                    let base = this._getBaseFormat();
+                    base.label = game.i18n.localize("QUALITY.REINFORCED");
+                    base.type = game.symbaroum.config.DAM_FIXED;
+                    base.alternatives = [{
+                        protectionMod: "+1d1",
+                        protectionModNPC: 1,
+                    }];
+                    combatMods.armors[armors[i].id].protectionChoices.push(base);
+                }
+                if(!this.data.isStackableArmor && this.data.data.qualities.flexible) {
+                    let base = this._getBaseFormat();
+                    base.label = game.i18n.localize("QUALITY.FLEXIBLE");                    
+                    base.modifier = Math.min(armors[i].data.data.impeding, 2);
+                    combatMods.armors[armors[i].id].impedingModifiers.push(base);
+    
+                }                
+            }
+            else if( this.data.isStackableArmor && !armors[i].data.isStackableArmor && this.data.isActive ) 
+            {
+                if(this.data.data.bonusProtection != "") 
+                {
+                    let base = this._getBaseFormat();
+                    let plus = "+";
+                    let npcProt = 0;
+                    try {
+                        npcProt = Math.ceil(new Roll(this.data.data.bonusProtection).evaluate({async:false, maximize: true}).total / 2);
+                    } catch(err) {
+                        ui.notifications?.error(`Could not evaluate armor bonus protection for ${this.data.name} - check bonus damage fields -`+err);
+                    }                    
+                    base.type = game.symbaroum.config.DAM_FIXED;
+                    base.alternatives = [{
+                        protectionMod: plus+this.data.data.bonusProtection,
+                        protectionModNPC: npcProt,
+                        displayMod: plus+this.data.data.bonusProtection
+                    }];
+                    combatMods.armors[armors[i].id].protectionChoices.push(base);
+                }
+            }
+        }
+    }
+
+    // All armor types
+    getItemModifierStackable(combatMods, armors, weapons, mysticPowers) {
+        this._getOwnArmorBonuses(combatMods,armors);
+    }
+    
+    getItemModifierLightarmor(combatMods, armors, weapons, mysticPowers) {
+        this._getOwnArmorBonuses(combatMods,armors);
+    }
+
+    getItemModifierMediumarmor(combatMods, armors, weapons, mysticPowers) {
+        this._getOwnArmorBonuses(combatMods,armors);
+    }
+
+    getItemModifierHeavyarmor(combatMods, armors, weapons, mysticPowers) {
+        this._getOwnArmorBonuses(combatMods,armors);
+    }
+    // Higher than d8
+    getItemModifierSuperarmor(combatMods, armors, weapons, mysticPowers) {
+        this._getOwnArmorBonuses(combatMods,armors);
+    }
+
+    // Weapons    
+    _getOwnWeaponBonuses(combatMods, armors, weapons, mysticPowers) 
+    {
+        for(let i = 0; i < armors.length; i++)
+        {
+            if(armors[i].id != this.id || !this.data.isActive || !armors[i].data.isActive || armors[i].data.isStackableArmor ||  !this.data.data.qualities.balanced) {
+                continue;
+            }
+            // Add 1
+            let base = this._getBaseFormat();
+            base.display = game.i18n.localize("QUALITY.BALANCED");
+            base.modifier = 1;
+            combatMods.armors[armors[i].id].defenseModifiers.push(base);            
+        }        
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if(weapons[i].id != this.id) {
+                continue;
+            }
+            if(this.data.data.bonusDamage && this.data.data.bonusDamage !== "") {            
+                let base = this._getBaseFormat();
+                base.display = game.i18n.localize("WEAPON.BONUS_DAMAGE") + ": ";
+                let plus = "+";
+                if(this.data.data.bonusDamage.charAt(0) === '+') {
+                    plus = "";
+                }
+                // NPC - cant get away from this
+                let npcDam = 0;
+                try {
+                    npcDam = Math.ceil(new Roll(this.data.data.bonusDamage).evaluate({async:false, maximize: true}).total / 2);
+                } catch(err) {
+                    ui.notifications?.error(`Could not evaluate weapon bonus for ${this.data.name} - check bonus damage fields - `+err);
+                }                    
+
+                base.type = game.symbaroum.config.DAM_MOD;
+                base.alternatives = [{
+                    damageMod: plus+this.data.data.bonusDamage,
+                    damageModNPC: npcDam,
+                    displayMod: plus+this.data.data.bonusDamage
+                }];
+                combatMods.weapons[weapons[i].id].package[0].member.push(base);
+            }
+            if(this.data.data.qualities.deepImpact) {
+                // Add 1
+                let base = this._getBaseFormat();
+                base.label = game.i18n.localize("QUALITY.DEEPIMPACT");
+                base.type = game.symbaroum.config.DAM_MOD;
+                base.value = "+1";
+                base.alternatives = [{
+                    damageMod: "+1d1",
+                    damageModNPC: 1,
+                }];
+                combatMods.weapons[weapons[i].id].package[0].member.push(base);           
+            }
+            if(this.data.data.qualities.precise) {
+                // Add 1
+                let base = this._getBaseFormat();
+                base.label = game.i18n.localize("QUALITY.PRECISE");
+                base.type = game.symbaroum.config.TYPE_ROLL_MOD;
+                base.modifier = 1;
+                base.value = "1";
+                combatMods.weapons[weapons[i].id].package[0].member.push(base);
+            }
+            if(this.data.data.qualities.flaming){
+                let base = this._getBaseFormat();
+                base.label = game.i18n.localize("QUALITY.FLAMING");
+                base.value = game.i18n.localize("QUALITY.FLAMING");
+                base.type = game.symbaroum.config.STATUS_DOT;
+                base.damagePerRound= "1d4";
+                base.damagePerRoundNPC= 2;
+                base.duration= "1d4";
+                base.durationNPC= 2;
+                base.effectIcon = "icons/svg/fire.svg";
+                combatMods.weapons[weapons[i].id].package[0].member.push(base);
+            }
+            if(this.data.data.qualities.massive) {
+                let base = this._getBaseFormat();
+                base.label = game.i18n.localize("QUALITY.MASSIVE");
+                base.value = game.i18n.localize("DIALOG.FAVOUR_FAVOUR");
+                base.type = game.symbaroum.config.DAM_FAVOUR;
+                combatMods.weapons[weapons[i].id].package[0].member.push(base);
+                combatMods.weapons[weapons[i].id].specialEffects.push(game.symbaroum.config.DAM_FAVOUR);
+            }
+            if(this.data.data.alternativeDamage !== "none") {
+                let base = this._getBaseFormat();
+                base.label = game.i18n.localize("ATTRIBUTE.MODIFIER") + " ("+game.i18n.localize("QUALITY.PRECISE")+ "): ";
+                base.type = game.symbaroum.config.TYPE_ALTERNATIVE_DAMAGE;
+                base.AltDmgAttribute = this.data.data.alternativeDamage;
+                base.value = this.data.data.alternativeDamage;
+                combatMods.weapons[weapons[i].id].package[0].member.push(base);
+            }
+        }
+    }
+
+    // All melee weapons
+    getItemModifierUnarmed(combatMods, armors, weapons, mysticPowers) {
+        this._getOwnWeaponBonuses(combatMods, armors, weapons, mysticPowers);
+    }
+    getItemModifier1handed(combatMods, armors, weapons, mysticPowers) {
+        this._getOwnWeaponBonuses(combatMods, armors, weapons, mysticPowers);
+    }
+    getItemModifierShort(combatMods, armors, weapons, mysticPowers) {
+        this._getOwnWeaponBonuses(combatMods, armors, weapons, mysticPowers);
+    }
+    getItemModifierLong(combatMods, armors, weapons, mysticPowers) {
+        this._getOwnWeaponBonuses(combatMods, armors, weapons, mysticPowers);
+    }
+    getItemModifierShield(combatMods, armors, weapons, mysticPowers) {
+        this._getOwnWeaponBonuses(combatMods, armors, weapons, mysticPowers);
+    }
+    getItemModifierHeavy(combatMods, armors, weapons, mysticPowers) {
+        this._getOwnWeaponBonuses(combatMods, armors, weapons, mysticPowers);
+    }
+    // All ranged
+    getItemModifierRanged(combatMods, armors, weapons, mysticPowers) {
+        this._getOwnWeaponBonuses(combatMods, armors, weapons, mysticPowers);
+    }
+    getItemModifierThrown(combatMods, armors, weapons, mysticPowers) {
+        this._getOwnWeaponBonuses(combatMods,armors, weapons);
+    }
+    // End weapons
+
+    // Start abilities & traits
+    getItemModifierAlternativedamage(combatMods, armors, weapons, mysticPowers) {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if( weapons[i].data.data.alternativeDamage === "none") {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.type = base.type = game.symbaroum.config.DAM_DICEUPGRADE;
+            base.diceUpgrade = 2 * lvl.level;
+            combatMods.weapons[weapons[i].id].package[0].member.push(base);
+        }
+    }
+    getItemModifierArmored(combatMods, armors, weapons, mysticPowers)
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        for(let i = 0; i < armors.length; i++)
+        {
+            if(armors[i].data.isStackableArmor) {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            let modifier = 0;
+            // game.symbaroum.log("getItemModifierArmored", armors[i]); // TODO Remove
+            if(armors[i].isNoArmor) {
+                modifier = 4; // 1d4 armor
+            }
+            base.type = base.type = game.symbaroum.config.DAM_DICEUPGRADE;
+            base.diceUpgrade = modifier + 2 * (lvl.level - 1); // Exclude novice - it is accounted for either in the noArmor check, or by the armor itself
+            combatMods.armors[armors[i].id].protectionChoices.push(base);
+        }
+    }        
+
+    getItemModifierArmoredmystic(combatMods, armors, weapons, mysticPowers) 
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+
+        for(let i = 0; i < armors.length; i++)
+        {
+            if(armors[i].data.isStackableArmor) {
+                continue;
+            }
+            if(armors[i].data.isLightArmor || armors[i].data.isMediumArmor || (armors[i].data.isHeavyArmor && lvl.level > 1) )
+            {
+                let base = this._getBaseFormat();
+                base.modifierMagic = armors[i].data.data.impeding; // Reduce with up to current impeding
+                combatMods.armors[armors[i].id].impedingModifiers.push(base);
+            }
+            if(lvl.level > 2) {
+                let base = this._getBaseFormat();
+                base.type = game.symbaroum.config.DAM_FIXED;
+                base.alternatives = [{
+                    protectionMod: "+1d4",
+                    protectionModNPC: 2,
+                    displayMod: "+1d4"
+                }];
+                combatMods.armors[armors[i].id].protectionChoices.push(base);
+            }
+        }
+    }
+
+    getItemModifierBackstab(combatMods, armors, weapons, mysticPowers) {
+        let lvl = this.getLevel();
+        if(lvl.level < 1) return;
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if(weapons[i].data.data.alternativeDamage !== "none") {
+                continue;
+            }
+            let pack = this._getPackageFormat();
+            let basedmg = this._getBaseFormat();
+            basedmg.type = game.symbaroum.config.DAM_MOD;
+            if(lvl.level < 3)
+            {
+                basedmg.value= "+1d4";
+                basedmg.alternatives = [{
+                    damageMod: "+1d4",
+                    damageModNPC: 2,
+                    restrictions: [game.symbaroum.config.DAM_1STATTACK]
+                }]
+            } else {
+                // Only master gives +1d8
+                basedmg.value= "+1d8";
+                basedmg.alternatives = [{
+                    damageMod: "+1d8",
+                    damageModNPC: 4
+                }]
+            }
+            pack.member.push(basedmg);
+
+            let baseAtt = this._getBaseFormat();
+            baseAtt.type = game.symbaroum.config.TYPE_ATTRIBUTE;
+            baseAtt.attribute = "discreet";
+            pack.member.push(baseAtt);
+
+            if(lvl.level>1)
+            {
+                let baseBleed=this._getBaseFormat();
+                baseBleed.value= game.i18n.localize("COMBAT.BLEED");
+                baseBleed.type = game.symbaroum.config.STATUS_DOT;
+                baseBleed.damagePerRound= "1d4";
+                baseBleed.damagePerRoundNPC= 2;
+                baseBleed.duration= "";
+                baseBleed.durationNPC= 0;
+                baseBleed.effectIcon= "icons/svg/blood.svg";
+                if(lvl.level==2)
+                {
+                    baseBleed.restrictions= [game.symbaroum.config.DAM_1STATTACK];
+                }
+                pack.member.push(baseBleed);
+            }
+            combatMods.weapons[weapons[i].id].package.push(pack);
+        }
+    }
+    
+    getItemModifierBeastlore(combatMods, armors, weapons, mysticPowers) {
+        let lvl = this.getLevel();
+        if(lvl.level < 2) return;
+        
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if(weapons[i].data.data.alternativeDamage !== "none") {
+                continue;
+            }
+            let pack = this._getPackageFormat();
+            let damageMod = "+1d"+(lvl.level*2).toString();
+            let base = this._getBaseFormat();
+            base.type = game.symbaroum.config.DAM_MOD;
+            base.value=damageMod;
+            base.alternatives = [{
+                damageMod: damageMod,
+                damageModNPC: (lvl.level)
+            }];
+            pack.member.push(base);
+            combatMods.weapons[weapons[i].id].package.push(pack);
+        }
+    }
+
+    getItemModifierBerserker(combatMods, armors, weapons, mysticPowers) {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        if(!this.actor.getFlag(game.system.id, 'berserker')) {
+            return;
+        }
+
+        for(let i = 0; i < armors.length; i++)
+        {
+            if(armors[i].isStackableArmor)
+            {
+                continue;
+            }
+            if(lvl.level > 1) {
+                let base = this._getBaseFormat();
+                base.type = game.symbaroum.config.DAM_FIXED;
+                base.alternatives = [{
+                    protectionMod: "+1d4",
+                    protectionModNPC: 2,
+                    displayMod: "+1d4"
+                }];
+                combatMods.armors[armors[i].id].protectionChoices.push(base);
+            }
+            if(lvl.level < 3) {
+                combatMods.armors[armors[i].id].specialEffects.push(game.symbaroum.config.SPECIAL_MIN_DEFENSE);
+            }
+        }
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if(weapons[i].data.data.alternativeDamage !== "none" || !weapons[i].data.data.isMelee) {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.type = game.symbaroum.config.DAM_MOD;
+            base.value = "+1d6";
+            base.alternatives = [{
+                damageMod: "+1d6",
+                damageModNPC: 3,
+            }];
+            combatMods.weapons[weapons[i].id].package[0].member.push(base);
+        }
+    }
+    
+    getItemModifierBlessings(combatMods, armors, weapons, mysticPowers)
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        if(lvl.level > 1){
+            for(let i = 0; i < mysticPowers.length; i++)
+            {
+                if(combatMods.mysticpowers[mysticPowers[i].id].traditions.includes(game.symbaroum.config.TRAD_BLESSINGS)) 
+                {
+                    combatMods.mysticpowers[mysticPowers[i].id].corruption = game.symbaroum.config.TEMPCORRUPTION_ONE;
+                    if(lvl.level > 2){
+                        combatMods.mysticpowers[mysticPowers[i].id].healingBonus +="+1d4["+this.name+"]";
+                        let pack = this._getPackageFormat();
+                        let base = this._getBaseFormat();
+                        base.type = game.symbaroum.config.DAM_MOD;
+                        base.value="+1d4";
+                        base.alternatives = [{
+                            damageMod: "+1d4",
+                            damageModNPC: 2
+                        }];
+                        pack.member.push(base);
+                        combatMods.mysticpowers[mysticPowers[i].id].package.push(pack);
+                    }
+                }
+            };
+        };
+        let base = this._getBaseFormat();
+        base.value = game.symbaroum.config.TRAD_BLESSINGS;
+        base.level = lvl.level
+        combatMods.traditions.push(base);
+    }
+
+    getItemModifierColossal(combatMods, armors, weapons, mysticPowers) {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        if(lvl.level > 2) {
+            for(let i = 0; i < armors.length; i++)
+            {
+                if(armors[i].isStackableArmor)
+                {
+                    continue;
+                }
+                let base = this._getBaseFormat();
+                base.normal = 0;
+                combatMods.armors[armors[i].id].damageReductions.push(base);            
+    
+            }
+        }
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if( weapons[i].data.data.alternativeDamage !== "none") {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.label = game.i18n.localize("QUALITY.MASSIVE");
+            base.type = game.symbaroum.config.DAM_FAVOUR;
+            combatMods.weapons[weapons[i].id].package[0].member.push(base);
+            combatMods.weapons[weapons[i].id].specialEffects.push(game.symbaroum.config.DAM_FAVOUR);
+            if(lvl.level>1){
+                let base2 = this._getBaseFormat();
+                base2.type= game.symbaroum.config.TYPE_FAVOUR;
+                base2.value= game.i18n.localize("DIALOG.FAVOUR_FAVOUR");
+                base2.favourMod= 1;
+                combatMods.weapons[weapons[i].id].package[0].member.push(base2);
+            }
+        }
+    }
+
+    getItemModifierCorruptingattack(combatMods, armors, weapons, mysticPowers) {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if(weapons[i].data.data.reference !== "unarmed") {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.label = game.i18n.localize("TRAIT_LABEL.CORRUPTINGATTACK");
+            base.type = game.symbaroum.config.CORRUPTION_DAMAGE;
+            base.damage = "1d" + ((1+lvl.level)*2).toString();
+            base.damageNPC = 1+lvl.level;
+            base.value = base.damage;
+            combatMods.weapons[weapons[i].id].package[0].member.push(base);
+        }
+    }
+
+    getItemModifierDancingweapon(combatMods, armors, weapons, mysticPowers) {
+        let lvl = this.getLevel();
+        if(lvl.level == 0 || !this.actor.getFlag(game.system.id, 'dancingweapon') ) return;
+        for(let i = 0; i < armors.length; i++)
+        {
+            if(armors[i].isStackableArmor)
+            {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.attribute = "resolute";  
+            combatMods.armors[armors[i].id].attributes.push(base);            
+        }        
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if(!weapons[i].data.data.isMelee || !this.actor.getFlag(game.system.id, "dancingweapon")) {
+                continue;
+            }
+            let pack = this._getPackageFormat();
+            let base = this._getBaseFormat();
+            base.attribute = "resolute";
+            pack.member.push(base);
+            combatMods.weapons[weapons[i].id].package.push(pack);
+        }        
+    }    
+
+    getItemModifierDominate(combatMods, armors, weapons, mysticPowers) {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if(!weapons[i].data.data.isMelee) {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.type = game.symbaroum.config.TYPE_ATTRIBUTE;
+            base.attribute = "persuasive";
+            combatMods.weapons[weapons[i].id].package[0].member.push(base);
+        }        
+    }
+
+    getItemModifierFeatofstrength(combatMods, armors, weapons, mysticPowers) {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if(!weapons[i].data.data.isMelee) {
+                continue;
+            }
+            if(lvl.level == 3 && this.actor.data.data.health.toughness.value <= (this.actor.data.data.health.toughness.max/2)) 
+            {
+                let base = this._getBaseFormat();
+                base.type = game.symbaroum.config.DAM_MOD;
+                base.value="+1d4";
+                base.alternatives = [{
+                    damageMod: "+1d4",
+                    damageModNPC: 2,
+                }];
+                combatMods.weapons[weapons[i].id].package[0].member.push(base);
+            }
+            if(lvl.level > 1 && this.actor.data.data.health.toughness.value <= (this.actor.data.data.health.toughness.max/2)){
+                let base2 = this._getBaseFormat();
+                base2.type= game.symbaroum.config.TYPE_FAVOUR;
+                base2.condition = "conditionFeatofStrength";
+                base2.value= game.i18n.localize("DIALOG.FAVOUR_FAVOUR");
+                base2.favourMod = 1;
+                combatMods.weapons[weapons[i].id].package[0].member.push(base2);
+            }
+        };
+        let base3 = this._getBaseFormat();
+        base3.type = game.symbaroum.config.SEC_ATT_BONUS;
+        base3.value=5;
+        combatMods.toughness.push(base3);
+    }
+
+    conditionFeatofStrength(){
+        return(weapon.attribute === "strong")
+    }
+
+    getItemModifierFeint(combatMods, armors, weapons, mysticPowers) {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        if(lvl.level > 1) {
+            for(let i = 0; i < armors.length; i++)
+            {
+                if(armors[i].isStackableArmor)
+                {
+                    continue;
+                }
+                let base = this._getBaseFormat();
+                base.attribute = "discreet";
+                combatMods.armors[armors[i].id].attributes.push(base);
+            }
+        }
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if(!weapons[i].data.data.isMelee || !(weapons[i].data.data.qualities.precise || weapons[i].data.data.qualities.short) ) {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.attribute = "discreet";
+            base.type = game.symbaroum.config.TYPE_ATTRIBUTE;
+            combatMods.weapons[weapons[i].id].package[0].member.push(base);
+        }        
+    }
+
+    getItemModifierHuntersinstinct(combatMods, armors, weapons, mysticPowers) {
+        let lvl = this.getLevel();
+        if(lvl.level < 1) return;
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if(!weapons[i].data.data.isDistance) {
+                continue;
+            }
+            let pack = this._getPackageFormat();
+            let baseFav = this._getBaseFormat();
+            baseFav.type= game.symbaroum.config.TYPE_FAVOUR;
+            baseFav.value= game.i18n.localize("DIALOG.FAVOUR_FAVOUR");
+            baseFav.favourMod= 1;
+            pack.member.push(baseFav);
+            if(lvl.level>1){
+                let baseDmg = this._getBaseFormat();
+                baseDmg.type= game.symbaroum.config.DAM_MOD;
+                baseDmg.value= "+1d4",
+                baseDmg.alternatives= [{
+                    damageMod: "+1d4",
+                    damageModNPC: 2,
+                }];
+                pack.member.push(baseDmg);
+            }
+            combatMods.weapons[weapons[i].id].package.push(pack);       
+        }
+    }
+
+    getItemModifierIronfist(combatMods, armors, weapons, mysticPowers) {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if(weapons[i].data.data.alternativeDamage !== "none" || !weapons[i].data.data.isMelee) {
+                continue;
+            }
+            if( lvl.level > 0) {
+                let base = this._getBaseFormat();
+                base.type = game.symbaroum.config.TYPE_ATTRIBUTE;
+                base.attribute = "strong";
+                combatMods.weapons[weapons[i].id].package[0].member.push(base);
+            }
+            if( lvl.level == 2) {
+                let base = this._getBaseFormat();
+                base.type = game.symbaroum.config.DAM_MOD;
+                base.value = "+1d4";
+                base.alternatives = [{
+                    damageMod: "+1d4",
+                    damageModNPC: 2,
+                }];
+                combatMods.weapons[weapons[i].id].package[0].member.push(base);
+            }
+            if( lvl.level == 3) {
+                let pack = this._getPackageFormat();
+                pack.label =game.i18n.localize('ABILITY_LABEL.IRON_FIST');
+                pack.type = game.symbaroum.config.PACK_RADIO;
+                let base = this._getBaseFormat();
+                base.type = game.symbaroum.config.DAM_RADIO;
+                if(this.actor.type === "player") {
+                    pack.defaultSelect = "+1d4";
+                } else {
+                    pack.defaultSelect = 2;
+                }
+                base.alternatives = [
+                    {
+                        label: game.i18n.localize('ABILITY_LABEL.IRON_FIST'),
+                        damageMod: "+1d8",
+                        damageModNPC: 4,
+                        restrictions: [game.symbaroum.config.DAM_ACTIVE]    
+                    },
+                    {
+                        label: game.i18n.localize('ABILITY_LABEL.IRON_FIST'),
+                        damageMod: "+1d4",
+                        damageModNPC: 2,
+                        restrictions: [game.symbaroum.config.DAM_NOTACTIVE]
+                    }
+                ];
+                pack.member.push(base);
+                combatMods.weapons[weapons[i].id].package.push(pack);  
+            }
+        }
+    }
+
+    getItemModifierKnifeplay(combatMods, armors, weapons, mysticPowers) {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if(!weapons[i].data.data.isMelee || !weapons[i].data.data.qualities.short) {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.attribute = "quick";
+            base.type = game.symbaroum.config.TYPE_ATTRIBUTE;
+            combatMods.weapons[weapons[i].id].package[0].member.push(base);
+            if(lvl.level > 1) {
+                let base2 = this._getBaseFormat();
+                base2.type = game.symbaroum.config.TYPE_ATTACKINCREASE;
+                base2.modifier = 1;
+                combatMods.weapons[weapons[i].id].package[0].member.push(base2);
+                combatMods.weapons[weapons[i].id].maxAttackNb += 1;
+            }
+        }        
+    }
+
+    getItemModifierLeader(combatMods, armors, weapons, mysticPowers) 
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        for(let i = 0; i < mysticPowers.length; i++){
+            let base = this._getBaseFormat();
+            base.attribute = "persuasive"; 
+            base.type = game.symbaroum.config.TYPE_ATTRIBUTE; 
+            combatMods.mysticpowers[mysticPowers[i].id].attributes.push(base);
+        }
+    }
+
+    getItemModifierManatarms(combatMods, armors, weapons, mysticPowers)
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        for(let i = 0; i < armors.length; i++)
+        {
+            if( armors[i].isNoArmor || armors[i].data.isStackableArmor) {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.type = base.type = game.symbaroum.config.DAM_DICEUPGRADE;
+            base.diceUpgrade = 2;
+            combatMods.armors[armors[i].id].protectionChoices.push(base);
+            if(lvl.level > 1) {
+                base = this._getBaseFormat();
+                base.modifier = armors[i].data.data.impeding; // Reduce with up to current impeding
+                combatMods.armors[armors[i].id].impedingModifiers.push(base);
+            }
+        }
+    }    
+
+    getItemModifierMarksman(combatMods, armors, weapons, mysticPowers)
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if( weapons[i].data.data.alternativeDamage !== "none" || weapons[i].data.data.reference != "ranged") {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.type = base.type = game.symbaroum.config.DAM_DICEUPGRADE;
+            base.diceUpgrade = 2;
+            combatMods.weapons[weapons[i].id].package[0].member.push(base);
+        }
+    }
+
+    getItemModifierNaturalwarrior(combatMods, armors, weapons, mysticPowers) {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if(weapons[i].data.data.alternativeDamage !== "none" || weapons[i].data.data.reference !== "unarmed") {
+                continue;
+            }
+            if( lvl.level > 0) {
+                let base = this._getBaseFormat();
+                base.type = base.type = game.symbaroum.config.DAM_DICEUPGRADE;
+                base.diceUpgrade = 2;
+                combatMods.weapons[weapons[i].id].package[0].member.push(base);
+            }
+            if( lvl.level > 1) {
+                let base = this._getBaseFormat();
+                base.type = game.symbaroum.config.TYPE_ATTACKINCREASE;
+                base.modifier = 1;
+                combatMods.weapons[weapons[i].id].package[0].member.push(base);
+                combatMods.weapons[weapons[i].id].maxAttackNb += 1;
+            }
+            if( lvl.level > 2) {
+                let base = this._getBaseFormat();
+                base.type = game.symbaroum.config.DAM_MOD;
+                base.value = "+1d6";
+                base.alternatives = [{
+                    damageMod: "+1d6",
+                    damageModNPC: 3
+                }];
+                combatMods.weapons[weapons[i].id].package[0].member.push(base);
+            }
+        }
+    }
+
+    getItemModifierNaturalweapon(combatMods, armors, weapons, mysticPowers) {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if( weapons[i].data.data.alternativeDamage !== "none" ||  weapons[i].data.data.reference !== "unarmed") {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.type = base.type = game.symbaroum.config.DAM_DICEUPGRADE;
+            base.diceUpgrade = 2 * lvl.level;
+            combatMods.weapons[weapons[i].id].package[0].member.push(base);
+        }
+    }
+
+    getItemModifierNopainthreshold(combatMods, armors, weapons, mysticPowers) {
+        let base = this._getBaseFormat();
+        base.type = game.symbaroum.config.NO_TRESHOLD;
+        combatMods.toughness.push(base);
+    }
+
+    getItemModifierThoroughlycorrupt(combatMods, armors, weapons, mysticPowers) {
+        let base = this._getBaseFormat();
+        base.type = game.symbaroum.config.NO_TRESHOLD;
+        combatMods.corruption.push(base);
+    }
+
+    getItemModifierPoisonresilient(combatMods, armors, weapons, mysticPowers) 
+    {
+        let boonLevel = this.data.data.level;
+        if(boonLevel < 1) return;
+        for(let i = 0; i < armors.length; i++)
+        {
+            if(armors[i].data.isStackableArmor) {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.lvl = boonLevel;
+            base.type= game.symbaroum.config.TYPE_ROLL_MOD;
+            base.modifier = boonLevel;
+            base.value = boonLevel.toString();
+            base.powers = ["poisoner", "poisonous"];
+            combatMods.armors[armors[i].id].damageReductions.push(base);            
+        }
+    }
+
+    getItemModifierPolearmmastery(combatMods, armors, weapons, mysticPowers)
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if( weapons[i].data.data.alternativeDamage !== "none" ||
+                !weapons[i].data.data.isMelee || !weapons[i].data.data.qualities.long) {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.type = game.symbaroum.config.DAM_DICEUPGRADE;
+            base.diceUpgrade = 2;
+            combatMods.weapons[weapons[i].id].package[0].member.push(base);
+        }
+    }
+
+    getItemModifierRapidfire(combatMods, armors, weapons, mysticPowers){
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        for(let i = 0; i < weapons.length; i++){
+            if(weapons[i].data.data.reference !== "ranged") {
+                continue;
+            }
+            let attackNb = 1;
+            if(lvl.level > 2) attackNb=2;
+            let base = this._getBaseFormat();
+            base.type = game.symbaroum.config.TYPE_ATTACKINCREASE;
+            base.modifier = attackNb;
+            combatMods.weapons[weapons[i].id].package[0].member.push(base);
+            combatMods.weapons[weapons[i].id].maxAttackNb += attackNb;
+        }
+    }
+
+    getItemModifierRapidreflexes(combatMods, armors, weapons, mysticPowers) 
+    {
+        let lvl = this.getLevel();
+        if(lvl.level < 1) return;
+        for(let i = 0; i < armors.length; i++)
+        {
+            if(armors[i].data.isStackableArmor) {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.lvl = lvl;
+            base.type= game.symbaroum.config.TYPE_DMG_AVOIDING;
+            base.powers = game.symbaroum.config.rapidReflexesResistList;
+            combatMods.armors[armors[i].id].damageReductions.push(base);            
+        }
+    }
+
+    getItemModifierRobust(combatMods, armors, weapons, mysticPowers) {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        for(let i = 0; i < armors.length; i++) {
+            if(armors[i].data.isStackableArmor) {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.type = game.symbaroum.config.DAM_MOD;
+            base.alternatives = [{
+                protectionMod: "+1d"+(2+lvl.level*2),
+                protectionModNPC: (1+lvl.level)
+            }];
+            combatMods.armors[armors[i].id].protectionChoices.push(base);
+            base = this._getBaseFormat();
+            base.modifier = -1 * lvl.level - 1; // Reduce with up to current impeding
+            combatMods.armors[armors[i].id].defenseModifiers.push(base);
+        }
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if( weapons[i].data.data.alternativeDamage !== "none" || !weapons[i].data.data.isMelee) {
+                continue;
+            }
+            let pack = this._getPackageFormat();
+            let base = this._getBaseFormat();
+            base.type = game.symbaroum.config.DAM_MOD;
+            base.value="+1d"+(2+lvl.level*2);
+            base.alternatives = [{
+                damageMod: "+1d"+(2+lvl.level*2),
+                damageModNPC: (1+lvl.level),
+                restrictions: [game.symbaroum.config.DAM_1STATTACK]
+            }];
+            pack.member.push(base);
+            combatMods.weapons[weapons[i].id].package.push(pack);
+        }
+    }
+
+    getItemModifierShieldfighter(combatMods, armors, weapons, mysticPowers)
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+
+        for(let i = 0; i < armors.length; i++)
+        {
+            if(armors[i].isStackableArmor)
+            {
+                continue;
+            }
+            let haveShieldEquipped = this.actor.items.filter(element => element.data.data?.reference === "shield" && element.data.isActive)
+            if(haveShieldEquipped.length === 0) {
+                continue;
+            }                
+            let base = this._getBaseFormat();
+            base.modifier = 1;
+            combatMods.armors[armors[i].id].defenseModifiers.push(base); 
+        }
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if( weapons[i].data.data.isMelee &&
+                ["1handed", "short", "unarmed"].includes(weapons[i].data.data.reference) ) 
+            {
+                let haveShieldEquipped = this.actor.items.filter(element => element.data.data?.reference === "shield" && element.data.isActive)
+                if(haveShieldEquipped.length === 0) {
+                    continue;
+                }
+                // Upgrade weapon
+                let base = this._getBaseFormat();
+                base.type = game.symbaroum.config.DAM_DICEUPGRADE;
+                base.diceUpgrade = 2;
+                combatMods.weapons[weapons[i].id].package[0].member.push(base);
+
+            } else if( weapons[i].data.data.reference === "shield" && lvl.level > 2) {
+                let base = this._getBaseFormat();
+                base.type = game.symbaroum.config.DAM_DICEUPGRADE;
+                base.diceUpgrade = 4;
+                combatMods.weapons[weapons[i].id].package[0].member.push(base);
+            }
+        }
+    }
+
+    getItemModifierSixthsense(combatMods, armors, weapons, mysticPowers) 
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        // Level 2
+        if(lvl.level > 1) {
+            let base = this._getBaseFormat();
+            base.type = game.symbaroum.config.TYPE_INITIATIVE;
+            base.attribute = "vigilant";
+            combatMods.initiative.push(base);
+        }
+        if(lvl.level > 1) {
+            for(let i = 0; i < armors.length; i++)
+            {
+                if(armors[i].isStackableArmor)
+                {
+                    continue;
+                }
+                let base = this._getBaseFormat();
+                base.attribute = "vigilant"; 
+                base.type = game.symbaroum.config.TYPE_ATTRIBUTE; 
+                combatMods.armors[armors[i].id].attributes.push(base);
+            }
+        }
+        // Level 1
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if( weapons[i].data.data.alternativeDamage !== "none" || !weapons[i].data.data.isDistance) {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.attribute = "vigilant";
+            base.type = game.symbaroum.config.TYPE_ATTRIBUTE;
+            combatMods.weapons[weapons[i].id].package[0].member.push(base);
+        }
+    }
+    //TODO sorcery level>1
+    getItemModifierSorcery(combatMods, armors, weapons, mysticPowers)
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        if(lvl.level > 1){
+            for(let i = 0; i < mysticPowers.length; i++)
+            {
+                if(combatMods.mysticpowers[mysticPowers[i].id].corruption == game.symbaroum.config.TEMPCORRUPTION_NORMAL) 
+                {
+                    combatMods.mysticpowers[mysticPowers[i].id].corruption = game.symbaroum.config.TEMPCORRUPTION_TESTFORONE;
+                }
+            };
+        };
+        let base = this._getBaseFormat();
+        base.value = game.symbaroum.config.TRAD_SORCERY;
+        base.level = lvl.level
+        combatMods.traditions.push(base);
+    }
+
+    getItemModifierSpiritform(combatMods, armors, weapons, mysticPowers) 
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        for(let i = 0; i < armors.length; i++)
+        {            
+            if(armors[i].data.isStackableArmor) {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.normal = 0.5;
+            if(lvl.level > 1) {
+                base.mystic = 0.5;
+                base.elemental = 0.5;
+                base.holy = 0.5;
+                base.mysticalWeapon = 0.5;
+            }
+            if(lvl.level > 2) {
+                base.normal = 0;
+            }
+            combatMods.armors[armors[i].id].damageReductions.push(base);            
+        }
+    }    
+
+    getItemModifierStafffighting(combatMods, armors, weapons, mysticPowers)
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        let haveStaffEquipped = this.actor.items.filter(element => element.data.data.isWeapon && element.data.data.qualities.long && element.data.isActive)
+        if(haveStaffEquipped) {
+            for(let i = 0; i < armors.length; i++)
+            {
+                if(armors[i].isStackableArmor)
+                {
+                    continue;
+                }
+                let base = this._getBaseFormat();
+                base.modifier = 1;
+                combatMods.armors[armors[i].id].defenseModifiers.push(base); 
+            }
+        }
+    }
+
+    getItemModifierStaffmagic(combatMods, armors, weapons, mysticPowers)
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if(weapons[i].data.data.isMelee && ["long"].includes(weapons[i].data.data.reference)) 
+            {
+            let base = this._getBaseFormat();
+            base.type = game.symbaroum.config.DAM_MOD;
+            base.value = "+1d4";
+            base.alternatives = [{
+                damageMod: "+1d4",
+                damageModNPC: 2,
+            }];
+            combatMods.weapons[weapons[i].id].package[0].member.push(base);
+            }
+        };
+        if(lvl.level > 1){
+            for(let i = 0; i < mysticPowers.length; i++)
+            {
+                if(combatMods.mysticpowers[mysticPowers[i].id].traditions.includes(game.symbaroum.config.TRAD_STAFFM)) 
+                {
+                    combatMods.mysticpowers[mysticPowers[i].id].corruption = lvl.level == 2 ? game.symbaroum.config.TEMPCORRUPTION_FAVOUR : game.symbaroum.config.TEMPCORRUPTION_NONE;
+                }
+            };
+        };
+        let base = this._getBaseFormat();
+        base.value = game.symbaroum.config.TRAD_STAFFM;
+        base.level = lvl.level
+        combatMods.traditions.push(base);
+    }
+
+    getItemModifierSteadfast(combatMods, armors, weapons, mysticPowers) 
+    {
+        let lvl = this.getLevel();
+        if(lvl.level < 1) return;
+        for(let i = 0; i < armors.length; i++)
+        {
+            // Do we apply it if they just wear stackable armor?
+            if(armors[i].data.isStackableArmor) {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.lvl = lvl;
+            base.type= game.symbaroum.config.TYPE_FAVOUR;
+            base.value= game.i18n.localize("DIALOG.FAVOUR_FAVOUR");
+            base.favourMod= 1;
+            base.powers = game.symbaroum.config.steadFastNovResistList;
+            if(lvl.level > 1){
+                base.powers = base.powers.concat(game.symbaroum.config.steadFastAdeptResistList);
+            }
+            combatMods.armors[armors[i].id].damageReductions.push(base);            
+        }
+    }
+
+    getItemModifierSteelthrow(combatMods, armors, weapons, mysticPowers)
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if( weapons[i].data.data.alternativeDamage !== "none" || weapons[i].data.data.reference != "thrown") {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.type = base.type = game.symbaroum.config.DAM_DICEUPGRADE;
+            base.diceUpgrade = 2;
+            combatMods.weapons[weapons[i].id].package[0].member.push(base);
+            if(lvl.level > 1){
+                let attackNb = 1;
+                if(lvl.level > 2) attackNb=2;
+                let base2 = this._getBaseFormat();
+                base2.type = game.symbaroum.config.TYPE_ATTACKINCREASE;
+                base2.modifier = attackNb;
+                combatMods.weapons[weapons[i].id].package[0].member.push(base2);
+                combatMods.weapons[weapons[i].id].maxAttackNb += attackNb;
+            }
+        }
+    }
+
+    getItemModifierStronggift(combatMods, armors, weapons, mysticPowers) {
+        let lvl = this.getLevel();
+        if(lvl.level < 2) return;
+        let base = this._getBaseFormat();
+        base.type = game.symbaroum.config.SEC_ATT_MULTIPLIER;
+        base.value = 2;
+        combatMods.corruption.push(base);
+        let base2 = this._getBaseFormat();
+        base2.type = game.symbaroum.config.THRESHOLD_MULTIPLIER;
+        base2.value = 1;
+        combatMods.corruption.push(base2);
+    }
+
+    getItemModifierSturdy(combatMods, armors, weapons, mysticPowers) {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        let base = this._getBaseFormat();
+        base.type = game.symbaroum.config.SEC_ATT_MULTIPLIER;
+        if(lvl.level == 1)  base.value = 1.5;
+        else base.value = lvl.level;
+        combatMods.toughness.push(base);
+    }
+
+    getItemModifierSurvivalinstinct(combatMods, armors, weapons, mysticPowers)
+    {
+        let lvl = this.getLevel();
+        if(lvl.level < 2) return;
+        for(let i = 0; i < armors.length; i++)
+        {
+            if(armors[i].isStackableArmor)
+            {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.type = game.symbaroum.config.DAM_FIXED;
+            base.alternatives = [{
+                protectionMod: "+1d4",
+                protectionModNPC: 2,
+                displayMod: "+1d4"
+            }];
+            combatMods.armors[armors[i].id].protectionChoices.push(base);
+        }
+    }
+
+    getItemModifierSwarm(combatMods, armors, weapons, mysticPowers) 
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        for(let i = 0; i < armors.length; i++)
+        {            
+            if(armors[i].data.isStackableArmor) {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.normal = 0.5;
+            base.mystic = 0.5;
+            base.elemental = 0.5;
+            base.holy = 0.5;
+            base.mysticalWeapon = 0.5
+            if(lvl.level > 2) {
+                base.normal = 0.25;
+                base.mystic = 0.25;
+                base.elemental = 0.25;
+                base.holy = 0.25;
+                base.mysticalWeapon = 0.25
+            }
+            combatMods.armors[armors[i].id].damageReductions.push(base);            
+        }
+    } 
+
+    getItemModifierTactician(combatMods, armors, weapons, mysticPowers) 
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        let base = this._getBaseFormat();
+        base.attribute = "cunning";
+        base.type = game.symbaroum.config.TYPE_INITIATIVE;
+        combatMods.initiative.push(base);
+        if( lvl.level > 1)
+        {
+            for(let i = 0; i < armors.length; i++)
+            {
+                // Do we apply it if they just wear stackable armor?
+                if(armors[i].data.isStackableArmor) {
+                    continue;
+                }
+                base = this._getBaseFormat();
+                base.attribute = "cunning";
+                base.type = game.symbaroum.config.TYPE_ATTRIBUTE;
+                combatMods.armors[armors[i].id].attributes.push(base);
+            }
+        }
+        if( lvl.level > 2) 
+        {
+            for(let i = 0; i < weapons.length; i++)
+            {
+                // Can use cunning for attacks for any attack, except heavy - as example an undead, this includes alternate damage
+                if(weapons[i].data.data.reference == "heavy") {
+                    continue;
+                }
+                base = this._getBaseFormat();
+                base.attribute = "cunning";
+                base.type = game.symbaroum.config.TYPE_ATTRIBUTE;
+                combatMods.weapons[weapons[i].id].package[0].member.push(base);
+            }        
+        }
+    }
+    
+    getItemModifierTheurgy(combatMods, armors, weapons, mysticPowers)
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        if(lvl.level > 1){
+            for(let i = 0; i < mysticPowers.length; i++)
+            {
+                if(combatMods.mysticpowers[mysticPowers[i].id].traditions.includes(game.symbaroum.config.TRAD_THEURGY)) 
+                {
+                    combatMods.mysticpowers[mysticPowers[i].id].corruption = game.symbaroum.config.TEMPCORRUPTION_ONE;
+                    if(lvl.level > 2){
+                        combatMods.mysticpowers[mysticPowers[i].id].healingBonus +="+1d4["+this.name+"]";
+                        let pack = this._getPackageFormat();
+                        let base = this._getBaseFormat();
+                        base.type = game.symbaroum.config.DAM_MOD;
+                        base.value="+1d4";
+                        base.alternatives = [{
+                            damageMod: "+1d4",
+                            damageModNPC: 2
+                        }];
+                        pack.member.push(base);
+                        combatMods.mysticpowers[mysticPowers[i].id].package.push(pack);
+                    }
+                }
+            };
+        };
+        let base = this._getBaseFormat();
+        base.value = game.symbaroum.config.TRAD_THEURGY;
+        base.level = lvl.level
+        combatMods.traditions.push(base);
+    }
+
+    getItemModifierTwinattack(combatMods, armors, weapons, mysticPowers) {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if(!weapons[i].data.data.isMelee || !["1handed", "short"].includes(weapons[i].data.data.reference) ) {
+                continue;
+            }
+            let twoWeapon = this.actor.items.filter(element => ["1handed", "short"].includes(element.data.data?.reference) && element.data.isActive)
+            if(twoWeapon.length < 2) {
+                return;
+            }
+            
+            let base = this._getBaseFormat();
+            base.modifier = 1;
+            base.type = game.symbaroum.config.TYPE_ATTACKINCREASE;
+            combatMods.weapons[weapons[i].id].package[0].member.push(base);
+            if(this.actor.type === "monster") combatMods.weapons[weapons[i].id].maxAttackNb += 1;
+
+            if(lvl.level < 3 || this.actor.type === "player" || !game.settings.get('symbaroum', 'showNpcAttacks')) {
+                // Continue - do not want to indent further
+                continue;
+            }
+
+            /* Calculations only for NPCs - can't easily be judged otherwise */
+            // Master ability
+            // Look at all active weapons of 1handed or short
+            // If the current weapon is the first 1d6 or 1d8 base damage one - upgrade
+            // If the current weapon is the first (or potentially second) 1d6 base damage one - upgrade
+            let foundd8 = 0;
+            let foundd6 = 0;
+            let spared6weap = null;
+            for(let j = 0; j < twoWeapon.length; j++) {
+                if( twoWeapon[j].data.data.reference === "short")
+                {
+                    foundd6++;                    
+                    if(foundd6 === 1 && twoWeapon[j].id == weapons[i].id) 
+                    {
+                        base = this._getBaseFormat();
+                        base.type = game.symbaroum.config.DAM_DICEUPGRADE;
+                        base.diceUpgrade = 2;
+                        combatMods.weapons[weapons[i].id].package[0].member.push(base);        
+                        // First short, upgrade
+                    } else if(foundd6 === 2 && spared6weap === null && twoWeapon[j].id === weapons[i].id) {
+                        // Store away this and if there is no d8 found once we are done, upgrade d8
+                        spared6weap = twoWeapon[j];
+                    }
+                }
+                else if( twoWeapon[j].data.data.reference === "1handed") 
+                {
+                    foundd8++;
+                    if(foundd8 === 1 && twoWeapon[j].id == weapons[i].id)
+                    {
+                        base = this._getBaseFormat();
+                        base.type = game.symbaroum.config.DAM_DICEUPGRADE;
+                        base.diceUpgrade = 2;
+                        combatMods.weapons[weapons[i].id].package[0].member.push(base);       
+                    }
+                }
+            }
+            if(foundd8 === 0 && spared6weap != null) {                
+                // Only wielding d6 weapons and this is the last d6 weapon, so upgrade it too
+                base.type = game.symbaroum.config.DAM_DICEUPGRADE;
+                base.diceUpgrade = 2;
+                combatMods.weapons[weapons[i].id].package[0].member.push(base);
+            }
+        }        
+    }
+
+    getItemModifierTwohandedforce(combatMods, armors, weapons, mysticPowers) 
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if(weapons[i].data.data.reference != "heavy") {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.type = game.symbaroum.config.DAM_DICEUPGRADE;
+            base.diceUpgrade = 2;
+            combatMods.weapons[weapons[i].id].package[0].member.push(base);
+        }        
+    }
+
+    getItemModifierUndead(combatMods, armors, weapons, mysticPowers) 
+    {
+        let lvl = this.getLevel();
+        if(lvl.level < 2) return;
+        for(let i = 0; i < armors.length; i++)
+        {
+            // Do we apply it if they just wear stackable armor?
+            if(armors[i].data.isStackableArmor) {
+                continue;
+            }
+            let base = this._getBaseFormat();
+            base.normal = 0.5;
+            base.elemental = 0.5;
+            if(lvl.level > 2) {
+                base.mystic = 0.5;
+            }
+            combatMods.armors[armors[i].id].damageReductions.push(base);            
+        }
+    }
+    
+    getItemModifierWitchcraft(combatMods, armors, weapons, mysticPowers)
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        if(lvl.level > 1){
+            for(let i = 0; i < mysticPowers.length; i++)
+            {
+                if(combatMods.mysticpowers[mysticPowers[i].id].traditions.includes(game.symbaroum.config.TRAD_WITCHCRAFT)) 
+                {
+                    combatMods.mysticpowers[mysticPowers[i].id].corruption = game.symbaroum.config.TEMPCORRUPTION_ONE;
+                }
+            };
+        };
+        let base = this._getBaseFormat();
+        base.value = game.symbaroum.config.TRAD_WITCHCRAFT;
+        base.level = lvl.level
+        combatMods.traditions.push(base);
+    }
+    
+    getItemModifierWizardry(combatMods, armors, weapons, mysticPowers)
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        if(lvl.level > 1){
+            for(let i = 0; i < mysticPowers.length; i++)
+            {
+                if(combatMods.mysticpowers[mysticPowers[i].id].traditions.includes(game.symbaroum.config.TRAD_WIZARDRY)) 
+                {
+                    combatMods.mysticpowers[mysticPowers[i].id].corruption = game.symbaroum.config.TEMPCORRUPTION_ONE;
+                    if(lvl.level > 2){
+                        let pack = this._getPackageFormat();
+                        let base = this._getBaseFormat();
+                        base.type= game.symbaroum.config.TYPE_FAVOUR;
+                        base.value= game.i18n.localize("DIALOG.FAVOUR_FAVOUR");
+                        base.favourMod= 1;
+                        pack.member.push(base);
+                        combatMods.mysticpowers[mysticPowers[i].id].package.push(pack);
+                    }
+                }
+            };
+        };
+        let base = this._getBaseFormat();
+        base.value = game.symbaroum.config.TRAD_WIZARDRY;
+        base.level = lvl.level
+        combatMods.traditions.push(base);
+    }
+
+    //MysticPowers
+    mysticPowerSetupAnathema(base) {
+        base.isScripted = true;
+        base.script = standardPowerActivation;
+        base.traditions = [game.symbaroum.config.TRAD_WIZARDRY, game.symbaroum.config.TRAD_THEURGY, game.symbaroum.config.TRAD_STAFFM];
+        base.targetResistAttribute= "resolute";
+        base.introText= game.i18n.localize('POWER_ANATHEMA.CHAT_INTRO');
+        base.resultTextSuccess= game.i18n.localize('POWER_ANATHEMA.CHAT_SUCCESS');
+        base.resultTextFail= game.i18n.localize('POWER_ANATHEMA.CHAT_FAILURE');
+        base.maintain = game.symbaroum.config.MAINTAIN_NOT;
+        base.casting = game.symbaroum.config.CASTING_RES;
+        
+        if(base.powerLvl.level > 1) base.chain = game.symbaroum.config.CHAIN;
+        return(base);
+    }
+
+    mysticPowerSetupBrimstonecascade(base) {
+        base.isScripted = true;
+        base.script = standardPowerActivation;
+        base.traditions = [game.symbaroum.config.TRAD_WIZARDRY];
+        base.checkMaintain= true;
+        base.contextualDamage= true;
+        base.hasDamage= true;
+        base.targetMandatory= true;
+        base.introText= game.i18n.localize('POWER_BRIMSTONECASC.CHAT_INTRO');
+        base.introTextMaintain= game.i18n.localize('POWER_BRIMSTONECASC.CHAT_INTRO');
+        base.resultTextSuccess= game.i18n.localize('POWER_BRIMSTONECASC.CHAT_SUCCESS');
+        base.resultTextFail= game.i18n.localize('POWER_BRIMSTONECASC.CHAT_FAILURE');
+        base.casting = game.symbaroum.config.CASTING_RES;
+        if(base.powerLvl.level > 1) base.chain = game.symbaroum.config.CHAIN;
+        return(base);
+    }
+
+    mysticPowerSetupBendwill(base) {
+        base.isScripted = true;
+        base.script = standardPowerActivation;
+        base.traditions = [game.symbaroum.config.TRAD_WIZARDRY, game.symbaroum.config.TRAD_WITCHCRAFT];
+        base.targetResistAttribute= "resolute";
+        base.targetMandatory= true;
+        base.activelyMaintaninedTargetEffect= ["systems/symbaroum/asset/image/puppet.png"];
+        base.introText = game.i18n.localize('POWER_BENDWILL.CHAT_INTRO');
+        base.introTextMaintain = game.i18n.localize('POWER_BENDWILL.CHAT_INTRO_M');
+        base.resultTextSuccess = game.i18n.localize('POWER_BENDWILL.CHAT_SUCCESS');
+        base.resultTextFail = game.i18n.localize('POWER_BENDWILL.CHAT_FAILURE');
+        base.finalText = "";
+        base.maintain = game.symbaroum.config.MAINTAIN;
+        base.casting = game.symbaroum.config.CASTING_RES;
+        return(base);
+    }
+    
+    mysticPowerSetupBlackbolt(base) {
+        base.isScripted = true;
+        base.script = standardPowerActivation;
+        base.traditions = [game.symbaroum.config.TRAD_SORCERY];
+        base.targetResistAttribute= "quick";
+        base.contextualDamage= true;
+        base.hasDamage= true;
+        base.targetMandatory= true;
+        base.targetImpeding = "impedingMov";
+        base.introText=  game.i18n.localize('POWER_BLACKBOLT.CHAT_INTRO');
+        base.introTextMaintain= game.i18n.localize('POWER_BLACKBOLT.CHAT_INTRO');
+        base.resultTextSuccessT= game.i18n.localize('POWER_BLACKBOLT.CHAT_SUCCESS');
+        base.resultTextFailT= game.i18n.localize('POWER_BLACKBOLT.CHAT_FAILURE');
+        base.damageDice= "1d6";
+        base.addTargetEffect= ["icons/svg/paralysis.svg"];
+        base.ignoreArm=true;
+        base.maintain = game.symbaroum.config.MAINTAIN;
+        base.casting = game.symbaroum.config.CASTING_RES;
+        
+        if(base.powerLvl.level > 1) base.chain = game.symbaroum.config.CHAIN;
+        return(base);
+    }
+
+    mysticPowerSetupUnnoticeable(base) {
+        base.isScripted = true;
+        base.script = standardPowerActivation;
+        base.traditions = [game.symbaroum.config.TRAD_WIZARDRY, game.symbaroum.config.TRAD_THEURGY];
+        base.addCasterEffect = ["systems/symbaroum/asset/image/invisible.png"];
+        return(base);
+    }
+
+    async getFunctionStuffDefault(actor) {
+        let selectedToken= await getTokenId(actor);
+        let functionStuff = {
+            casting: game.symbaroum.config.CASTING,
+            maintain: game.symbaroum.config.MAINTAIN_NOT,
+            chain: game.symbaroum.config.CHAIN_NOT,
+            ability: this.data,
+            actor: actor,
+            askTargetAttribute: false,
+            askCastingAttribute: false,
+            attackFromPC: actor.type !== "monster",
+            autoParams: "",
+            checkMaintain: false,
+            targetSteadfastLevel: 0,  //0 means ignore steadfast
+            combat: false,
+            contextualDamage: false,
+            corruption: false,
+            favour: 0,
+            gmOnlyChatResult: false,
+            isMaintained: false,
+            modifier: 0,
+            noRollWhenFirstCast : false,
+            notResistWhenFirstCast : false,
+            targetMandatory : false,
+            targetData: {hasTarget: false, leaderTarget: false},
+            token :selectedToken,
+            tokenId :selectedToken.id,
+            tokenName :selectedToken.data.name,
+            addCasterEffect: [],
+            addTargetEffect: [],
+            activelyMaintaninedTargetEffect: [],
+            activelyMaintaninedCasterEffect: [],
+            removeTargetEffect: [],
+            removeCasterEffect: [],
+            introText: selectedToken.data.name + game.i18n.localize('POWER.CHAT_INTRO') + this.name + " \".",
+            introTextMaintain: selectedToken.data.name + game.i18n.localize('POWER.CHAT_INTRO_M') + this.name + " \".",
+            resultTextSuccess: selectedToken.data.name + game.i18n.localize('POWER.CHAT_SUCCESS'),
+            resultTextFail: selectedToken.data.name + game.i18n.localize('POWER.CHAT_FAILURE'),
+            resistRollText: "",
+            hasDamage: false, // for damage dealing powers
+            isAlternativeDamage: false,
+            dmgModifier: "",
+            hasAdvantage: false,
+            ignoreArm: false
+        };
+        if(this.data.type === "mysticalPower"){
+            functionStuff.impeding = actor.data.data.combat.impedingMagic;
+        }
+        return(functionStuff);
     }
 }
 
@@ -346,18 +1980,15 @@ export const scriptedAbilities =
 [{reference: "alchemy", level: [1, 2, 3], function: simpleRollAbility},
 {reference: "acrobatics", level: [1, 2, 3], function: simpleRollAbility},
 {reference: "artifactcrafting", level: [1, 2, 3], function: simpleRollAbility},
-//{reference: "backstab", level: [1, 2, 3], function: attackRoll},
 {reference: "beastlore", level: [1, 2, 3], function: simpleRollAbility},
 {reference: "berserker", level: [1, 2, 3], function: berserker},
 {reference: "blacksmith", level: [1, 2, 3], function: simpleRollAbility},
 {reference: "dominate", level: [1, 2, 3], function: dominatePrepare},
-//{reference: "huntersinstinct", level: [1, 2, 3], function: attackRoll},
 {reference: "leader", level: [1, 2, 3], function: leaderPrepare},
 {reference: "loremaster", level: [1, 2, 3], function: simpleRollAbility},
 {reference: "medicus", level: [1, 2, 3], function: medicusPrepare},
 {reference: "poisoner", level: [1, 2, 3], function: poisonerPrepare},
 {reference: "quickdraw", level: [1, 2, 3], function: simpleRollAbility},
-//{reference: "shieldfighter", level: [1, 2, 3], function: attackRoll},
 {reference: "recovery", level: [1, 2, 3], function: recoveryPrepare},
 {reference: "strangler", level: [1, 2, 3], function: stranglerPrepare},
 {reference: "witchsight", level: [1, 2, 3], function: witchsightPrepare}];
@@ -452,7 +2083,7 @@ export function markScripted(item){
 /*get the target token, its actor, and evaluate which attribute this actor will use for opposition
 @Params: {string}   targetAttributeName : the name of the resist attribute. Can be defense, and can be null.
 @returns:  {targetData object}*/
-function getTarget(targetAttributeName) {
+export function getTarget(targetAttributeName) {
     let targetsData;
     try{targetsData = getTargets(targetAttributeName, 1)} catch(error){      
         throw error;
@@ -462,8 +2093,9 @@ function getTarget(targetAttributeName) {
 
 function getTargets(targetAttributeName, maxTargets = 1) {
     let targets = Array.from(game.user.targets)
-    if(targets.length == 0 || targets.length > maxTargets){
-      throw game.i18n.localize('ABILITY_ERROR.TARGET');
+    if(targets.length == 0 || targets.length > maxTargets)
+    {
+        throw game.i18n.localize('ABILITY_ERROR.TARGET');
     }
     let targetsData = [];
     for(let target of targets){
@@ -503,7 +2135,7 @@ function getTargets(targetAttributeName, maxTargets = 1) {
 }
 
 /* get the selected token ID */
-async function getTokenId(actor){
+export async function getTokenId(actor){
     let selected = canvas.tokens.controlled;
     if(selected.length > 1 || selected.length == 0){
         throw game.i18n.localize('ERROR.NO_TOKEN_SELECTED');
@@ -519,19 +2151,10 @@ async function getTokenId(actor){
 /* format the string to print the roll result, including the 2 dice if favour was involved, up to 3 rolls for multi-attacks
 @Params: {object}  rollData is the array of objects baseRoll function returns 
 @returns:  {string} the formated and localized string*/
-function formatRollResult(rollData){
-    let rollResult = game.i18n.localize('ABILITY.ROLL_RESULT');
-    let position = 0;
-    for(let rollDataElement of rollData){
-        position += 1;
-        rollResult += rollDataElement.diceResult.toString();
-
-        if(rollDataElement.favour != 0){
-            rollResult += "  (" + rollDataElement.dicesResult[0].toString() + " , " + rollDataElement.dicesResult[1].toString() + ")";
-        }
-        if(position != rollData.length){
-            rollResult += " / "
-        }
+export function formatRollResult(rollDataElement){
+    let rollResult = game.i18n.localize('ABILITY.ROLL_RESULT') + rollDataElement.diceResult.toString();
+    if(rollDataElement.favour != 0){
+        rollResult += "  (" + rollDataElement.dicesResult[0].toString() + " , " + rollDataElement.dicesResult[1].toString() + ")";
     }
     return(rollResult);
 }
@@ -586,7 +2209,7 @@ async function checkCorruptionThreshold(actor, corruptionGained){
         let gmList =  ChatMessage.getWhisperRecipients('GM');
         if(gmList.length > 0){
             chatData.whisper = gmList
-          }
+        }
     }
     let NewMessage = await ChatMessage.create(chatData);
 }
@@ -631,11 +2254,9 @@ async function buildFunctionStuffDefault(ability, actor) {
         resistRollText: "",
         hasDamage: false, // for damage dealing powers
         isAlternativeDamage: false,
-        dmgData: {
-            modifier: "",
-            hasAdvantage: false,
-            ignoreArm: false
-        }
+        dmgModifier: "",
+        hasAdvantage: false,
+        ignoreArm: false
     };
     if(ability.data.type === "mysticalPower"){
         let actorResMod = checkResoluteModifiers(actor, functionStuff.autoParams);
@@ -652,7 +2273,7 @@ async function buildFunctionStuffDefault(ability, actor) {
 function  getBeastLoreData (actor){
     let askBeastlore = false;
     let beastLoreMaster = false;
-let beastlore = actor.items.filter(item => item.data.data?.reference === "beastlore");
+    let beastlore = actor.items.filter(item => item.data.data?.reference === "beastlore");
     if(beastlore.length != 0){
         if(beastlore[0].data.data.adept.isActive){
             askBeastlore = true;
@@ -785,11 +2406,11 @@ async function getCorruption(functionStuff){
     }
      
     if(functionStuff.attackFromPC){
-        let corRoll= new Roll(corruptionFormula).evaluate();
+        let corRoll= new Roll(corruptionFormula).evaluate({async:false});
         return({value: corRoll.total, sorceryRoll: sorceryRoll, corruptionRoll: corRoll})
     }
      
-    let corRoll= new Roll(corruptionFormula).evaluate({maximize: true});
+    let corRoll= new Roll(corruptionFormula).evaluate({maximize: true, async:false});
     let value = Math.ceil(corRoll.total/2);
     return({value: value, sorceryRoll: sorceryRoll, corruptionRoll: corRoll})
 }
@@ -853,24 +2474,17 @@ will send to screen a windows asking for modifiers for the roll, then roll, then
    * @param {boolean} checkMaintain: if true, ask the player whether the roll is for casting the ability or maintaining it 
    * @param {any}   functionStuff  an object of parameters not used in the dialog function, but useful for resultFunction */
 async function modifierDialog(functionStuff){
+    let hasTarget = functionStuff.targetData.hasTarget;
     let isWeaponRoll = false;
-    let askBackstab = functionStuff.askBackstab ?? false;
-    let askHuntersInstinct = functionStuff.askHuntersInstinct ?? false;
-    let ironFistDmg = functionStuff.ironFistDmg ?? false;
-    let ironFistDmgMaster = functionStuff.ironFistDmgMaster ?? false;
     let askTwoAttacks = functionStuff.askTwoAttacks ?? false;
     let askThreeAttacks = functionStuff.askThreeAttacks ?? false;
     let askBeastlore = functionStuff.beastLoreData.askBeastlore ?? false;
     let askCorruptedTarget = functionStuff.askCorruptedTarget ?? false;
-    let robustDmgValue = functionStuff.robustDmgValue ?? "";
-    let askRobustDmg = functionStuff.askRobustDmg ?? false;
     let featStFavour = functionStuff.featStFavour ?? false;
-    let hunterBonus = functionStuff.hunterBonus ?? false;
     let contextualDamage = functionStuff.contextualDamage ?? false;
     let leaderTarget = functionStuff.targetData.leaderTarget ?? false;
     let medicus = functionStuff.medicus ?? false;
     let poisoner = functionStuff.poisoner ?? false;
-    let precise = functionStuff.precise ?? false;
     let targetImpeding = functionStuff.targetImpeding ?? false;
     let weaponDamage = "";
     let actorWeapons;
@@ -905,10 +2519,17 @@ async function modifierDialog(functionStuff){
             }
         }
     }
+
+    if(hasTarget && !functionStuff.combat && !functionStuff.notResisted){
+        let targetResMod = checkSpecialResistanceMod(functionStuff.targetData.actor.data.data.combat.damageReductions, functionStuff.targetData.autoParams, functionStuff.ability.data.reference);
+        functionStuff.favour += targetResMod.favour;
+        functionStuff.modifier += -1*targetResMod.modifier;
+        functionStuff.dmgavoiding = targetResMod.dmgavoiding;
+        functionStuff.autoParams += targetResMod.autoParams;
+    }
     let beastLoreDmg=d4;
     if(functionStuff.beastLoreData?.beastLoreMaster) beastLoreDmg=d6;
     let targetAttributeName = null;
-    let hasTarget = functionStuff.targetData.hasTarget;
     if(functionStuff.targetData.resistAttributeName){
         targetAttributeName = functionStuff.targetData.resistAttributeName
     }
@@ -920,24 +2541,15 @@ async function modifierDialog(functionStuff){
         isWeaponRoll : isWeaponRoll,
         autoparamsText: game.i18n.localize("DIALOG.AUTOPARAMS") + functionStuff.autoParams + functionStuff.targetData.autoParams,
         isArmorRoll : null,
-        askBackstab : askBackstab,
-        askRobustDmg : askRobustDmg,
-        ignoreArmor : functionStuff.dmgData.ignoreArm,
-        robustDmgValue: robustDmgValue,
-        ironFistAdept: ironFistDmg && !ironFistDmgMaster,
-        askIronFistMaster: ironFistDmg && ironFistDmgMaster,
+        ignoreArmor : functionStuff.ignoreArm,
         featStFavour: featStFavour,
-        askHuntersInstinct: askHuntersInstinct,
         leaderTarget: leaderTarget,
-        hunterBonus: hunterBonus,
         askThreeAttacks: askThreeAttacks,
         askTwoAttacks: askTwoAttacks,
         askImpeding: askImpeding,
         askCorruptedTarget: askCorruptedTarget,
         weaponDamage : weaponDamage,
         contextualDamage: contextualDamage,
-        askBeastlore: askBeastlore,
-        beastLoreDmg: beastLoreDmg,
         d8: d8,
         d4: d4,
         choicesIF: { "0": game.i18n.localize("ABILITY_LABEL.IRON_FIST")+" 1d4", "1":game.i18n.localize("ABILITY_LABEL.IRON_FIST")+" 1d8"},
@@ -953,7 +2565,6 @@ async function modifierDialog(functionStuff){
         targetImpeding: targetImpeding,
         weapons : actorWeapons,
         medicus : medicus,
-        precise: precise,
         poisoner: poisoner
     });
     let title;
@@ -1025,61 +2636,29 @@ async function modifierDialog(functionStuff){
                 }
                 //combat roll stuff
                 if(contextualDamage){
-                    functionStuff.dmgData.hasAdvantage = html.find("#advantage")[0].checked;
-                    if(functionStuff.dmgData.hasAdvantage){
+                    functionStuff.hasAdvantage = html.find("#advantage")[0].checked;
+                    if(functionStuff.hasAdvantage){
                         functionStuff.modifier += 2;
                         functionStuff.autoParams += game.i18n.localize('DIALOG.ADVANTAGE') + ", ";
-                        if(askBackstab && functionStuff.actor.data.data.attributes.discreet.total > functionStuff.actor.data.data.attributes[functionStuff.castingAttributeName].total){
-                            functionStuff.castingAttributeName = "discreet";
-                        }
                     }
                     if(askBeastlore){
                         functionStuff.beastLoreData.useBeastlore = html.find("#usebeastlore")[0].checked;
                     }
                     let damModifier = html.find("#dammodifier")[0].value;
                     if(damModifier.length > 0) {
-                        functionStuff.dmgData.modifier += " + " + damModifier;
+                        functionStuff.dmgModifier += " + " + damModifier;
                     }
                 }
                 if(isWeaponRoll){
-                    functionStuff.dmgData.ignoreArm = html.find("#ignarm")[0].checked;
-                    if(functionStuff.dmgData.ignoreArm) functionStuff.autoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_IGN_ARMOR') + ", ";
+                    functionStuff.ignoreArm = html.find("#ignarm")[0].checked;
+                    if(functionStuff.ignoreArm) functionStuff.autoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_IGN_ARMOR') + ", ";
                     functionStuff.poison = Number(html.find("#poison")[0].value);
-                    // Damage modifier for iron fist master 
-                    if(ironFistDmgMaster){
-                        let ifResult = html.find("input[name='ironFdamage']");
-                        let ifvalue = 0;
-                        for ( let f of ifResult) {						
-                            if( f.checked ) ifvalue = parseInt(f.value, 10);
-                        }		
-                        functionStuff.ironFistDmgMaster = ifvalue;
-                    }
-                    if(functionStuff.askRobustDmg){
-                        functionStuff.dmgData.useRobustDmg = html.find("#userobust")[0].checked;
-                    }
-                    if(askBackstab){
-                        functionStuff.dmgData.useBackstab = html.find("#usebackstab")[0].checked;
-                        if(functionStuff.dmgData.useBackstab && functionStuff.dmgData.backstabBleed){    
-                            functionStuff.bleed = true;
-                            functionStuff.dmgData.bleed = "1d4"
-                        }
-                    }
                     if(askTwoAttacks){
-                        functionStuff.dmgData.do2attacks = html.find("#do2attacks")[0].checked;
+                        functionStuff.do2attacks = html.find("#do2attacks")[0].checked;
                     }
                     if(askThreeAttacks){
-                        functionStuff.dmgData.do3attacks = html.find("#do3attacks")[0].checked;
+                        functionStuff.do3attacks = html.find("#do3attacks")[0].checked;
                     }
-                    if(askHuntersInstinct){
-                        functionStuff.useHuntersInstinct = html.find("#usehunter")[0].checked;
-                        if(functionStuff.useHuntersInstinct){
-                            finalFavour += 1;
-                        }
-                        else{
-                            functionStuff.dmgData.hunterIDmg = false;
-                        }
-                    }
-                    if(precise) functionStuff.modifier += 1;
                 }
                 if(medicus){
                     if(hasTarget){
@@ -1160,15 +2739,13 @@ export async function buildRolls(functionStuff){
     }
     let isWeaponRoll = functionStuff.combat;
     let rollData = [];
-    if(functionStuff.targetData.hasTarget && !functionStuff.notResisted){
+    if(isWeaponRoll){
+        for(let j = 1; j <= functionStuff.numberofAttacks; j++){
+            rollData.push(await baseRoll(functionStuff.actor, functionStuff.castingAttributeName, functionStuff.targetData.actor, functionStuff.targetData.resistAttributeName, functionStuff.favour, functionStuff.modifier, functionStuff.resistRoll));
+        }
+    }
+    else if(functionStuff.targetData.hasTarget && !functionStuff.notResisted){
         rollData.push(await baseRoll(functionStuff.actor, functionStuff.castingAttributeName, functionStuff.targetData.actor, functionStuff.targetData.resistAttributeName, functionStuff.favour, functionStuff.modifier, functionStuff.resistRoll));
-        if(isWeaponRoll && functionStuff.dmgData.do3attacks){
-            rollData.push(await baseRoll(functionStuff.actor, functionStuff.castingAttributeName, functionStuff.targetData.actor, functionStuff.targetData.resistAttributeName, functionStuff.favour, functionStuff.modifier, functionStuff.resistRoll));
-            rollData.push(await baseRoll(functionStuff.actor, functionStuff.castingAttributeName, functionStuff.targetData.actor, functionStuff.targetData.resistAttributeName, functionStuff.favour, functionStuff.modifier, functionStuff.resistRoll));
-        }
-        else if(isWeaponRoll && functionStuff.dmgData.do2attacks){
-            rollData.push(await baseRoll(functionStuff.actor, functionStuff.castingAttributeName, functionStuff.targetData.actor, functionStuff.targetData.resistAttributeName, functionStuff.favour, functionStuff.modifier, functionStuff.resistRoll));
-        }
     }
     else{
         rollData.push(await baseRoll(functionStuff.actor, functionStuff.castingAttributeName, null, null, functionStuff.favour, functionStuff.modifier, functionStuff.resistRoll));
@@ -1181,29 +2758,31 @@ export async function buildRolls(functionStuff){
     }
 }
 
-export function checkSteadfastMod(actor, autoParams = "", neededLevel = 1){
-    let hasSteadfast = false;
-    let useSteadfastAdept = false;
-    let useSteadfastMaster = false;
+export function checkSpecialResistanceMod(damageReductions, autoParams = "", abilityRef){
+
     let favour = 0;
-    let steadfastAb = actor.items.filter(item => item.data.data?.reference === "steadfast");
-    if(steadfastAb.length > 0){
-        hasSteadfast = true;
-        let powerLvl = getPowerLevel(steadfastAb[0]);
-        if(powerLvl.level >= neededLevel){
-            useSteadfastAdept = true;
-            favour = 1;
-            autoParams += game.i18n.localize('ABILITY_LABEL.STEADFAST') + " (" + powerLvl.lvlName + "), ";
-        }
-        if(powerLvl.level > 2){
-            useSteadfastMaster = true;
+    let modifier = 0;
+    let dmgavoiding = false;
+    for(let i = 0; i < damageReductions.length; i++) {
+        if(damageReductions[i].powers){
+            if(damageReductions[i].powers.includes(abilityRef)){
+                if(damageReductions[i].type === game.symbaroum.config.TYPE_FAVOUR){
+                    favour = damageReductions[i].favourMod;
+                    autoParams+=damageReductions[i].label + ", ";
+                } else if(damageReductions[i].type === game.symbaroum.config.TYPE_ROLL_MOD){
+                    autoParams+=damageReductions[i].label + "("+damageReductions[i].value+"), ";
+                    modifier += damageReductions[i].modifier;
+                } else if(damageReductions[i].type === game.symbaroum.config.TYPE_DMG_AVOIDING){
+                    autoParams+=damageReductions[i].label+", ";
+                    dmgavoiding += true;
+                }
+            }
         }
     }
     return{
         favour: favour,
-        hasSteadfast: hasSteadfast,
-        useSteadfastAdept: useSteadfastAdept,
-        useSteadfastMaster: useSteadfastMaster,
+        modifier: modifier,
+        dmgavoiding: dmgavoiding,
         autoParams: autoParams
     }
 }
@@ -1211,18 +2790,13 @@ export function checkSteadfastMod(actor, autoParams = "", neededLevel = 1){
 /*a character that uses resolute, or a target that defend with resolute, mays have ability modifiers
 This function checks : 
 - leader novice (may use persuasive in place of resolute).
-- steadfast
 * @param {actor} actor       The actor
 * @param {string} autoParams    the list of abilities and parameters automaticaly taken care for this actor
 * @checkLeader {boolean}  true to check if actor has leader
-* @checkSteadfast {boolean}  true to check if actor has staedfast
 returns:{
     bestAttributeName {string} , //final attribute 
     favour {-1, 0, 1}, 
     useLeader {boolean},  (the novice level, if persuasive > resolute)
-    hasSteadfast {boolean},
-    useSteadfastAdept {boolean},
-    useSteadfastMaster {boolean}
     autoParams {string} detected and used abilities have been appended to autoParams}*/
 export function checkResoluteModifiers(actor, autoParams = ""){
     let useLeader = false;
@@ -1260,9 +2834,9 @@ async function mathDamageProt(targetActor, damage, damageType){
         finalDamage = Math.round(finalDamage*targetActor.data.data.combat.damageProt.holy);
         infoText = await damageReductionText(targetActor.data.data.combat.damageProt.holy)
     }
-    else if(damageType.elementary){
-        finalDamage = Math.round(finalDamage*targetActor.data.data.combat.damageProt.elementary);
-        infoText = await damageReductionText(targetActor.data.data.combat.damageProt.elementary)
+    else if(damageType.elemental){
+        finalDamage = Math.round(finalDamage*targetActor.data.data.combat.damageProt.elemental);
+        infoText = await damageReductionText(targetActor.data.data.combat.damageProt.elemental)
     }
     else if(damageType.mystical){
         finalDamage = Math.round(finalDamage*targetActor.data.data.combat.damageProt.mystical);
@@ -1279,218 +2853,6 @@ async function mathDamageProt(targetActor, damage, damageType){
     return({damage: finalDamage, text : infoText})
 }
 
-/*function for main combat
-
-****************this function needs damage and armor parameters as dice (ie: weapon.data.data.damage = "1d8")
-for the NPC side, it will transform those parameters as NPC fixed values using the formula (dice maximum value)/2
-It won't work with NPC fixed values as input
-
-* @param {boolean} attackFromPC true: the actor that does damage is a PC; false : the damage is done by a NPC
-* @param {actor object} actor  is the actor that does damage
-* @param {item object} weapon is the weapon that is used
-* @param {object} rollParams is an object of parameters.
-* @param {object} targetData is information on the target that will receive the damage (as returned by the getTarget function)*/
-
-export async function attackRoll(weapon, actor){
-    // get selected token
-    let token;
-    try{token = await getTokenId(actor)} catch(error){
-        ui.notifications.error(error);
-        return;
-    }
-    // get target token, actor and defense value
-    let targetData;
-    try{targetData = getTarget("defense")} catch(error){
-        ui.notifications.error(error);
-        return;
-    }
-    let fsDefault = {
-        actor: actor,
-        token: token,
-        tokenId : token.id,
-        askTargetAttribute: false,
-        askCastingAttribute: false,
-        askBackstab: false,
-        askHuntersInstinct: false,
-        askTwoAttacks: false,
-        askThreeAttacks: false,
-        askRobustDmg: false,
-        robustDmgValue:"",
-        featStFavour: false,
-        ironFistDmg: false,
-        ironFistDmgMaster: false,
-        attackFromPC: actor.type !== "monster",
-        flagBerserk: false,
-        autoParams: "",
-        bleed: false,
-        checkMaintain: false,
-        combat: true,
-        contextualDamage: true,
-        corruption: false,
-        favour: 0,
-        modifier: 0,
-        poison: 0,
-        isMystical: false,
-        isAlternativeDamage: false,
-        alternativeDamageAttribute: "none",
-        introText: token.data.name + game.i18n.localize('COMBAT.CHAT_INTRO') + weapon.name,
-        targetData: targetData,
-        useHuntersInstinct: false,
-        hunterBonus: "",
-        beastLoreData: getBeastLoreData(actor),
-        corruptingattack: "",
-        dmgData: {
-            isRanged: false,
-            hunterIDmg: false,
-            modifier: "",
-            hasAdvantage: false,
-            useBackstab: false,
-            useRobustDmg: false,
-            ignoreArm: false
-        }
-
-    }
-    let specificStuff;
-    if(weapon){
-        specificStuff = {
-            askWeapon: false,
-            castingAttributeName: weapon.attribute,
-            weapon: weapon,
-            isMystical: weapon.qualities.mystical,
-        }
-    }
-    let functionStuff = Object.assign({}, fsDefault , specificStuff)
-    //search for special attacks (if the attacker has abilities that can affect the roll or not, ask the player in the dialog)
-    //ranged attacks
-    if(weapon&&weapon.doAlternativeDamage){
-        functionStuff.isAlternativeDamage = weapon.doAlternativeDamage;
-        functionStuff.alternativeDamageAttribute = weapon.damage.alternativeDamageAttribute;
-        functionStuff.dmgData.ignoreArm = true;
-        functionStuff.isMystical = true;
-    }
-    if(weapon && weapon.isDistance){
-        if(!functionStuff.useHuntersInstinct){
-            let hunterInstinct = actor.items.filter(item => item.data.data?.reference === "huntersinstinct");
-            if(hunterInstinct.length != 0 && hunterInstinct[0].data.data.novice.isActive){
-                functionStuff.askHuntersInstinct = true;
-                functionStuff.hunterBonus = " (" + game.i18n.localize('DIALOG.FAVOUR_FAVOUR')
-                if(hunterInstinct[0].data.data.adept.isActive){
-                    functionStuff.dmgData.hunterIDmg = true;
-                    functionStuff.hunterBonus += ", "+ game.i18n.localize('WEAPON.DAMAGE');
-                    if(functionStuff.attackFromPC || functionStuff.targetData.actor.type === "monster") functionStuff.hunterBonus += " +1d4)";
-                    else functionStuff.hunterBonus += " +2)";
-                }
-            }
-        }
-        let rapidfire = actor.items.filter(item => (item.data.data?.reference === "rapidfire" || item.data.data?.reference === "rapidfire "));
-        if(rapidfire.length != 0){
-            if(rapidfire[0].data.data.master.isActive){
-                functionStuff.askThreeAttacks = true;
-            }
-            else if(rapidfire[0].data.data.novice.isActive){
-                functionStuff.askTwoAttacks = true;
-            }
-        }
-        if(weapon.reference == "thrown"){
-            let steelthrow = actor.items.filter(item => item.data.data?.reference === "steelthrow");
-            if(steelthrow.length != 0){
-                if(steelthrow[0].data.data.adept.isActive){
-                    functionStuff.askTwoAttacks = true;
-                }
-                if(steelthrow[0].data.data.master.isActive){
-                    functionStuff.askThreeAttacks = true;
-                }
-            }
-        }
-    }
-    //melee weapons
-    if(weapon && weapon.isMelee){
-        if(weapon.reference == "unarmed"){
-            let naturalwarrior = actor.items.filter(item => item.data.data?.reference === "naturalwarrior");
-            if(naturalwarrior.length != 0){
-                if(naturalwarrior[0].data.data.adept.isActive){
-                    functionStuff.askTwoAttacks = true;
-                }
-            }
-            let corruptingattack = actor.items.filter(item => item.data.data?.reference === "corruptingattack");
-            if(corruptingattack.length != 0){
-                if(corruptingattack[0].data.data.master.isActive){
-                    functionStuff.corruptingattack = "1d8";
-                } else if(corruptingattack[0].data.data.adept.isActive){
-                    functionStuff.corruptingattack = "1d6";
-                } else if(corruptingattack[0].data.data.novice.isActive){
-                    functionStuff.corruptingattack = "1d4";
-                }
-            }
-        }
-        if(weapon.qualities.short){
-            let knifeplay = actor.items.filter(item => item.data.data?.reference === "knifeplay");
-            if(knifeplay.length != 0){
-                if(knifeplay[0].data.data.adept.isActive){
-                    functionStuff.askTwoAttacks = true;
-                }
-            }
-        }
-        if(!functionStuff.dmgData.useBackstab){
-            let backstabAbil = actor.items.filter(item => item.data.data?.reference === "backstab");
-            if(backstabAbil.length != 0){
-                functionStuff.askBackstab = true;
-                functionStuff.backstabDmg = " + 1d4["+game.i18n.localize("ABILITY_LABEL.BACKSTAB")+"]";
-                if(backstabAbil[0].data.data.adept.isActive){
-                    functionStuff.dmgData.backstabBleed = true
-                }
-                if(backstabAbil[0].data.data.master.isActive){
-                    functionStuff.backstabDmg =  " + 1d8["+game.i18n.localize("ABILITY_LABEL.BACKSTAB")+"]";
-                }
-            }
-        }
-        let ironFist = actor.items.filter(item => item.data.data?.reference === "ironfist");
-        if(ironFist.length > 0){
-            if(ironFist[0].data.data.adept.isActive){
-                functionStuff.ironFistDmg = true;
-                functionStuff.autoParams += game.i18n.localize('ABILITY_LABEL.IRON_FIST') + ", ";
-                if(ironFist[0].data.data.master.isActive){
-                    functionStuff.ironFistDmgMaster = true;
-                }
-            }
-        }
-        let robust = actor.items.filter(element => element.data.data.reference === "robust");
-        if(robust.length > 0){
-            functionStuff.askRobustDmg = true;
-            let powerLvl = getPowerLevel(robust[0]);
-            if(functionStuff.attackFromPC || functionStuff.targetData.actor.type === "monster"){
-                let calc = powerLvl.level*2+2;
-                functionStuff.robustDmgValue = " (+1d" + calc.toString()+")";
-            }
-            else{
-                let calc = powerLvl.level+1;
-                functionStuff.robustDmgValue = " (+"+calc.toString()+")";
-            }
-        }
-        let featSt = actor.items.filter(item => item.data.data.reference === "featofstrength");
-        if((featSt.length != 0) && (actor.data.data.health.toughness.value <= (actor.data.data.health.toughness.max/2)) && (weapon.attribute == "strong")){
-            if(featSt[0].data.data.adept.isActive){
-                functionStuff.featStFavour = true;
-                functionStuff.favour += 1;
-            }
-        }
-        let colossal = actor.items.filter(element => element.data.data?.reference === "colossal");
-        if(colossal.length > 0 && colossal[0].data.data.adept.isActive && !functionStuff.isAlternativeDamage){
-            functionStuff.favour += 1;
-            functionStuff.autoParams += game.i18n.localize('TRAIT_LABEL.COLOSSAL') + ", ";
-        }
-        functionStuff.flagBerserk = actor.getFlag(game.system.id, 'berserker');
-    }
-    //all weapons
-    if(!functionStuff.askWeapon){
-        if(functionStuff.weapon.qualities.precise){
-            functionStuff.precise = 1;
-            functionStuff.autoParams += game.i18n.localize('COMBAT.PARAMS_PRECISE')
-        }
-    };
-    await modifierDialog(functionStuff)
-}
-  
 async function attackResult(rollData, functionStuff){
     
     let damage;
@@ -1503,7 +2865,7 @@ async function attackResult(rollData, functionStuff){
     let damageFinalText = "";
     let damageRollMod = "";
     let hasDmgMod = "false";
-    let attackNumber = 0;
+    let attackNumber = 1;
     let mysticalWeapon = functionStuff.weapon.qualities.mystical;
     let corruptionDmgFormula = ""
     let printCorruption = false;
@@ -1513,8 +2875,11 @@ async function attackResult(rollData, functionStuff){
     if(functionStuff.isAlternativeDamage){
         targetValue = getAttributeValue(functionStuff.targetData.actor, functionStuff.alternativeDamageAttribute);
     }
+    let rolls = [];
 
     for(let rollDataElement of rollData){
+        rolls = rolls.concat(rollDataElement.rolls);
+
         rollDataElement.finalText="";
         rollDataElement.resultText = functionStuff.token.data.name + game.i18n.localize('COMBAT.CHAT_SUCCESS') + functionStuff.targetData.name;
         if(functionStuff.weapon.qualities.jointed && !rollDataElement.trueActorSucceeded && rollDataElement.diceResult%2!=0){
@@ -1523,7 +2888,10 @@ async function attackResult(rollData, functionStuff){
         else if(rollDataElement.trueActorSucceeded){
             hasDamage = true;
             rollDataElement.hasDamage = true;
-            damage = await damageRollWithDiceParams(functionStuff, rollDataElement.critSuccess, attackNumber);
+            damage = await damageRollWithDiceParams(functionStuff, rollDataElement.critSuccess, attackNumber);            
+            rolls.push(damage.roll);
+
+            attackNumber += 1;
             pain = pain || checkPainEffect(functionStuff, damage);
             rollDataElement.dmgFormula = game.i18n.localize('WEAPON.DAMAGE') + ": " + damage.roll._formula;
             rollDataElement.damageTooltip = new Handlebars.SafeString(await damage.roll.getTooltip());
@@ -1546,7 +2914,6 @@ async function attackResult(rollData, functionStuff){
         else{
             rollDataElement.resultText = functionStuff.token.data.name + game.i18n.localize('COMBAT.CHAT_FAILURE');
         }
-        attackNumber =+ 1;
     }
     if(damageTot <= 0){
         damageTot = 0;
@@ -1585,7 +2952,8 @@ async function attackResult(rollData, functionStuff){
     }
 
     if(printCorruption){
-        let corruptionRoll= new Roll(corruptionDmgFormula).evaluate();
+        let corruptionRoll= new Roll(corruptionDmgFormula).evaluate({async:false});
+        rolls.push(corruptionRoll);
         corruptionChatResult = game.i18n.localize('COMBAT.CHAT_CORRUPTED_ATTACK') + corruptionRoll.total.toString();
         corruptionTooltip = new Handlebars.SafeString(await corruptionRoll.getTooltip());
         checkCorruptionThreshold(functionStuff.targetData.actor, corruptionRoll.total);
@@ -1610,7 +2978,6 @@ async function attackResult(rollData, functionStuff){
         resistRollText: functionStuff.resistRollText,
         hasCorruption: false,
         rollString: await formatRollString(rollData[0], functionStuff.targetData.hasTarget, rollData[0].modifier),
-        rollResult : await formatRollResult(rollData),
         hasDamage: hasDamage,
         hasDmgMod: hasDmgMod,
         damageRollMod: damageRollMod,
@@ -1621,6 +2988,7 @@ async function attackResult(rollData, functionStuff){
         poisonRollResultString: "",
         poisonChatIntro: "",
         poisonChatResult: "",
+        poisonToolTip: "",
         printBleed: false,
         bleedChat: "",
         printFlaming: false,
@@ -1632,43 +3000,68 @@ async function attackResult(rollData, functionStuff){
     if(functionStuff.autoParams != ""){templateData.subText += ", " + functionStuff.autoParams};
 
     if(functionStuff.poison > 0 && !targetDies && damageTot > 0){
-        let targetResMod = checkSteadfastMod(functionStuff.targetData.actor, functionStuff.targetData.autoParams, 1);
+        let targetResMod = checkSpecialResistanceMod(functionStuff.targetData.actor.data.data.combat.damageReductions, functionStuff.targetData.autoParams, "poisoner");
         let poisonFavour = -1*targetResMod.favour;
         functionStuff.targetData.autoParams += targetResMod.autoParams;
-        let poisonRoll = await baseRoll(functionStuff.actor, "cunning", functionStuff.targetData.actor, "strong", poisonFavour, 0, functionStuff.resistRoll);
-        let poisonRes= await poisonCalc(functionStuff, poisonRoll);
+        let poisonRoll = await baseRoll(functionStuff.actor, "cunning", functionStuff.targetData.actor, "strong", poisonFavour, -1*targetResMod.modifier, functionStuff.resistRoll);
+        let poisonFunctionStuff = Object.assign(functionStuff, {modifier:-1*targetResMod.modifier, favour: poisonFavour});
+        let poisonRes= await poisonCalc(poisonFunctionStuff, poisonRoll);
+        rolls.push(poisonRes.roll);
         if(poisonRes.flagData) flagDataArray.push(poisonRes.flagData);
         templateData = Object.assign(templateData, poisonRes);
     }
-    if(functionStuff.bleed > 0 && !targetDies && damageTot > 0){
-        templateData.printBleed = true;
-        templateData.bleedChat = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_BLEED') + "1d4";
-        flagDataArray.push({
-            tokenId: functionStuff.targetData.tokenId,
-            addEffect: "icons/svg/blood.svg"
-        });
-    }
-    if(functionStuff.weapon.qualities.flaming && hasDamage){
-        let flamingRoundsRoll= 2;
-        let flamingRounds = 2;
-        let flamingDamage = " 2";
-        if(functionStuff.attackFromPC || functionStuff.targetData.actor.type === "monster"){
-            flamingRoundsRoll= new Roll("1d4").evaluate();
-            flamingRounds = flamingRoundsRoll.total;
-            flamingDamage = " 1d4"
+    for(let doTime of functionStuff.damageOverTime){
+        if(doTime.effectIcon=== "icons/svg/blood.svg" && !targetDies && damageTot > 0){
+            templateData.printBleed = true;
+            let bleedDamage = doTime.damagePerRound;
+            if(!functionStuff.attackFromPC) bleedDamage = doTime.damagePerRoundNPC.toString();
+            templateData.bleedChat = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_BLEED') + bleedDamage;
+            flagDataArray.push({
+                tokenId: functionStuff.targetData.tokenId,
+                addEffect: doTime.effectIcon
+            });
         }
-        flagDataArray.push({
-            tokenId: functionStuff.targetData.tokenId,
-            addEffect: "icons/svg/fire.svg",
-            effectDuration: flamingRounds
-        });
-        templateData.printFlaming = true;
-        templateData.flamingChat = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_FLAMING_SUCCESS1') + flamingDamage  + game.i18n.localize('COMBAT.CHAT_POISON_SUCCESS2')  + flamingRounds.toString();
+        else if(doTime.label === game.i18n.localize("QUALITY.FLAMING") && hasDamage){
+            let flamingRoundsRoll= 2;
+            let flamingRounds = 2;
+            let flamingDamage = " 2";
+            if(functionStuff.attackFromPC || functionStuff.targetData.actor.type === "monster"){
+                flamingRoundsRoll= new Roll("1d4").evaluate({async:false});
+                rolls.push(flamingRoundsRoll);
+                flamingRounds = flamingRoundsRoll.total;
+                flamingDamage = " 1d4"
+            }
+            flagDataArray.push({
+                tokenId: functionStuff.targetData.tokenId,
+                addEffect: "icons/svg/fire.svg",
+                effectDuration: flamingRounds
+            });
+            templateData.printFlaming = true;
+            templateData.flamingChat = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_FLAMING_SUCCESS1') + flamingDamage  + game.i18n.localize('COMBAT.CHAT_POISON_SUCCESS2')  + flamingRounds.toString();
+        }
     }
+    // Here
+    // Maestro support
+    let actorid = functionStuff.actor.id;
+    if(functionStuff.attackFromPC) {
+        templateData.id = functionStuff.weapon.id;
+    } else {
+        templateData.id = functionStuff.targetData?.actor?.data.data.combat.id;
+        actorid = functionStuff.targetData?.actor.id;
+    }
+    // end Maesrto support
+
     const html = await renderTemplate("systems/symbaroum/template/chat/combat.html", templateData);
     const chatData = {
         user: game.user.id,
+        speaker: ChatMessage.getSpeaker({ 
+            alias: game.user.name,
+			actor: actorid
+        }),
         content: html,
+        type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+        roll: JSON.stringify(createRollData(rolls)),
+        rollMode: game.settings.get('core', 'rollMode')        
     }
     let NewMessage = await ChatMessage.create(chatData);
     if(flagDataArray.length > 0){
@@ -1690,7 +3083,7 @@ async function formatRollString(rollDataElement, hasTarget, modifier){
 
 async function standardPowerActivation(functionStuff) {
     if(functionStuff.targetData.hasTarget){
-        try{functionStuff.targetData = getTarget(functionStuff.targetResitAttribute)} catch(error){
+        try{functionStuff.targetData = getTarget(functionStuff.targetResistAttribute)} catch(error){
             if(functionStuff.targetMandatory){
                 ui.notifications.error(error);
                 return;
@@ -1706,18 +3099,13 @@ async function standardPowerActivation(functionStuff) {
             functionStuff.targetData.resistAttributeValue = targetResMod.bestAttributeValue;
             functionStuff.targetData.autoParams += targetResMod.autoParams;
         }
-        if (functionStuff.targetSteadfastLevel){
-            let targetResMod = checkSteadfastMod(functionStuff.targetData.actor, functionStuff.targetData.autoParams, functionStuff.targetSteadfastLevel);
-            functionStuff.favour += -1*targetResMod.favour;
-            functionStuff.targetData.autoParams += targetResMod.autoParams;
-        }
     }
     await modifierDialog(functionStuff)
 }
 
 async function standardAbilityActivation(functionStuff) {
     if(functionStuff.targetData.hasTarget){
-        try{functionStuff.targetData = getTarget(functionStuff.targetResitAttribute)} catch(error){
+        try{functionStuff.targetData = getTarget(functionStuff.targetResistAttribute)} catch(error){
             if(functionStuff.targetMandatory){
                 ui.notifications.error(error);
                 return;
@@ -1731,10 +3119,12 @@ async function standardAbilityActivation(functionStuff) {
 }
 
 async function healing(healFormula, targetToken){
-    let healRoll = new Roll(healFormula).evaluate();
+    let healRoll = new Roll(healFormula).evaluate({async:false});
+
     let healed = Math.min(healRoll.total, targetToken.actor.data.data.health.toughness.max - targetToken.actor.data.data.health.toughness.value);
     return({
         hasDamage : true,
+        roll: healRoll,
         healed: healed,
         dmgFormula : game.i18n.localize('POWER_LAYONHANDS.CHAT_FINAL') + healFormula,
         damageText : game.i18n.localize('POWER_LAYONHANDS.CHAT_FINAL') + healed.toString(),
@@ -1764,7 +3154,9 @@ async function poisonCalc(functionStuff, poisonRoll){
         else{
             poisonDamage = (functionStuff.poison +1).toString();
         }
-        let PoisonRoundsRoll= new Roll(poisonDamage).evaluate();
+        let PoisonRoundsRoll= new Roll(poisonDamage).evaluate({async:false});
+        poisonRes.roll = PoisonRoundsRoll;
+
         let NewPoisonRounds = PoisonRoundsRoll.total;
         let poisonedEffectCounter = getEffect(functionStuff.targetData.token, effect);
         if(poisonedEffectCounter){
@@ -1797,12 +3189,14 @@ async function poisonCalc(functionStuff, poisonRoll){
         }
     }
     poisonRes.printPoison = true;
-    poisonRes.poisonRollString = await formatRollString(poisonRoll, functionStuff.targetData.hasTarget, 0);
-    poisonRes.poisonRollResultString = await formatRollResult([poisonRoll]);
+    poisonRes.poisonRollString = await formatRollString(poisonRoll, functionStuff.targetData.hasTarget, functionStuff.modifier);
+    poisonRes.poisonRollResultString = await formatRollResult(poisonRoll);
+    poisonRes.poisonToolTip = poisonRoll.toolTip;
     return(poisonRes);
 }
 
 async function standardPowerResult(rollData, functionStuff){
+    let rolls = [];
     let flagDataArray = functionStuff.flagDataArray ?? [];
     let haveCorruption = false;
     let corruptionText = "";
@@ -1810,6 +3204,8 @@ async function standardPowerResult(rollData, functionStuff){
     let finalText = functionStuff.finalText ?? "";
     let subText = functionStuff.subText ?? functionStuff.ability.name + " (" + functionStuff.powerLvl.lvlName + ")";
     let introText = functionStuff.isMaintained ? functionStuff.introTextMaintain : functionStuff.introText;
+    let rollResult="";
+    let rollToolTip="";
     if((!functionStuff.isMaintained) && functionStuff.corruption){
         haveCorruption = true;
         corruption = await getCorruption(functionStuff);
@@ -1824,12 +3220,18 @@ async function standardPowerResult(rollData, functionStuff){
     let hasRoll = false;
     let trueActorSucceeded = true; //true by default for powers without rolls
     let rollString = "";
-    let rollResult = "";
     if(rollData!=null){
         hasRoll = true;
         trueActorSucceeded = rollData[0].trueActorSucceeded;
         rollString = await formatRollString(rollData[0], functionStuff.targetData.hasTarget, rollData[0].modifier);
-        rollResult = formatRollResult(rollData)
+        rollResult=rollData[0].rollResult;
+        rollToolTip=rollData[0].toolTip;
+        for(let i = 0; i < rollData.length; i++) {            
+            rolls = rolls.concat(rollData[i].rolls);
+        }
+    }
+    if( functionStuff.resultRolls !== undefined && functionStuff.resultRolls !== null) {
+        rolls = rolls.concat(functionStuff.resultRolls);
     }
     let resultText = trueActorSucceeded ? functionStuff.resultTextSuccess : functionStuff.resultTextFail;
     if(functionStuff.targetData.hasTarget && functionStuff.targetData.autoParams != ""){
@@ -1880,11 +3282,11 @@ async function standardPowerResult(rollData, functionStuff){
     
     if(functionStuff.ability.data.reference === "brimstonecascade"){
         if(rollData[0].trueActorSucceeded){
-            if(functionStuff.targetHasRapidReflexes){damageDice = "1d6"}
+            if(functionStuff.dmgavoiding){damageDice = "1d6"}
             else{damageDice = "1d12"}
         }
         else{
-            if(functionStuff.targetHasRapidReflexes){
+            if(functionStuff.dmgavoiding){
                 resultText= functionStuff.targetData.name + game.i18n.localize('POWER_BRIMSTONECASC.CHAT_FAILURE_RR');
             }
             else{
@@ -1895,7 +3297,9 @@ async function standardPowerResult(rollData, functionStuff){
     }
 
     if(functionStuff.ability.data.reference === "confusion" && trueActorSucceeded){
-        let confusionRoll= new Roll("1d6").evaluate();
+        let confusionRoll= new Roll("1d6").evaluate({async:false});
+        rolls.push(confusionRoll);
+
         finalText=confusionRoll.total.toString() + ": " + functionStuff.targetData.name;
         if(confusionRoll.total < 3){
             finalText += game.i18n.localize('POWER_CONFUSION.EFFECT12');
@@ -1945,13 +3349,15 @@ async function standardPowerResult(rollData, functionStuff){
 
     if(["poisoner", "poisonous"].includes(functionStuff.ability.data.reference) && trueActorSucceeded){
         let poisonRes = await poisonCalc(functionStuff, rollData[0]);
+        rolls.push(poisonRes.roll);
+
         introText = poisonRes.poisonChatIntro;
         resultText = poisonRes.poisonChatResult;
         if(poisonRes.flagData) flagDataArray.push(poisonRes.flagData);
     }
 
     if(functionStuff.ability.data.reference === "strangler" && trueActorSucceeded){
-        functionStuff.dmgData.hasAdvantage = false; //to prevent +1d4 damage
+        functionStuff.hasAdvantage = false; //to prevent +1d4 damage
     }
 
     if(functionStuff.ability.data.reference === "witchsight" && functionStuff.targetData.hasTarget && trueActorSucceeded){
@@ -1965,8 +3371,10 @@ async function standardPowerResult(rollData, functionStuff){
         }
         let damage = await simpleDamageRoll(functionStuff, damageDice);
         damageTot = damage.roll.total;
+        rolls.push(damage.roll);
+
         let pain = checkPainEffect(functionStuff, damage);
-        damageRollResult += await formatRollResult([damage]);
+        damageRollResult += await formatRollResult(damage);
         dmgFormula = game.i18n.localize('WEAPON.DAMAGE') + ": " + damage.roll._formula;
         damageText = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + damageTot.toString();
         damageTooltip = new Handlebars.SafeString(await damage.roll.getTooltip());
@@ -2026,6 +3434,7 @@ async function standardPowerResult(rollData, functionStuff){
         resistRollText: functionStuff.resistRollText,
         rollString: rollString,
         rollResult: rollResult,
+        rollToolTip: rollToolTip,
         resultText: resultText,
         finalText: finalText,
         hasDamage: doDamage,
@@ -2044,10 +3453,12 @@ async function standardPowerResult(rollData, functionStuff){
     if(functionStuff.healFormulaSucceed && !functionStuff.medicusExam){
         let healResult;
         if(trueActorSucceeded){
-            healResult = await healing(functionStuff.healFormulaSucceed, functionStuff.healedToken); 
+            healResult = await healing(functionStuff.healFormulaSucceed, functionStuff.healedToken);
+            rolls.push(healResult.roll);
         }
         else if(!trueActorSucceeded && functionStuff.healFormulaFailed){
             healResult = await healing(functionStuff.healFormulaFailed, functionStuff.healedToken); 
+            rolls.push(healResult.roll);
         }
         
         if(healResult){
@@ -2109,17 +3520,31 @@ async function standardPowerResult(rollData, functionStuff){
             }
         }
     }
+    // Maestro
+    let actorid = functionStuff.actor.id;
+    templateData.id = functionStuff.ability._id;        
+    // End Maestro
 
+    // Pick up roll data
     const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
     const chatData = {
         user: game.user.id,
+        speaker: ChatMessage.getSpeaker({ 
+            alias: game.user.name,
+			actor: actorid
+        }),
+        rollMode: game.settings.get('core', 'rollMode'),    
         content: html,
     }
     if(functionStuff?.gmOnlyChatResult){
         let gmList =  ChatMessage.getWhisperRecipients('GM');
         if(gmList.length > 0){
             chatData.whisper = gmList
-          }
+        }
+    } else if(rolls.length > 0 ) {
+        // Only shows rolls if they are displayed to everyone
+        chatData.type= CONST.CHAT_MESSAGE_TYPES.ROLL;
+        chatData.roll= JSON.stringify(createRollData(rolls));
     }
     let NewMessage = await ChatMessage.create(chatData);
 
@@ -2211,10 +3636,9 @@ async function anathemaPrepare(ability, actor) {
         return;
     }
     let specificStuff = {
-        targetResitAttribute: "resolute",
+        targetResistAttribute: "resolute",
         tradition: ["wizardry", "staffmagic", "theurgy"],
         checkMaintain: true,
-        targetSteadfastLevel: 2,
         introText: actor.data.name + game.i18n.localize('POWER_ANATHEMA.CHAT_INTRO'),
         resultTextSuccess: actor.data.name + game.i18n.localize('POWER_ANATHEMA.CHAT_SUCCESS'),
         resultTextFail: actor.data.name + game.i18n.localize('POWER_ANATHEMA.CHAT_FAILURE')
@@ -2231,14 +3655,6 @@ async function brimstoneCascadePrepare(ability, actor) {
         ui.notifications.error(error);
         return;
     }
-    //check wether acting token is player controlled
-    //check rapid reflexes
-    let targetHasRapidReflexes = false;
-    let rrAbility = targetData.actor.items.filter(item => item.data.data.reference === "rapidreflexes");
-    if(rrAbility.length != 0){
-        targetHasRapidReflexes = true;
-        targetData.autoParams += game.i18n.localize('ABILITY_LABEL.RAPID_REFLEXES');
-    }
     let fsDefault;
     try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
         ui.notifications.error(error);
@@ -2249,7 +3665,6 @@ async function brimstoneCascadePrepare(ability, actor) {
         contextualDamage: true,
         hasDamage: true,
         tradition: ["wizardry"],
-        targetHasRapidReflexes: targetHasRapidReflexes,
         targetImpeding: targetData.actor.data.data.combat.impedingMov,
         targetData: targetData,
         introText: fsDefault.token.name + game.i18n.localize('POWER_BRIMSTONECASC.CHAT_INTRO'),
@@ -2274,10 +3689,9 @@ async function bendWillPrepare(ability, actor) {
     }
     let specificStuff = {
         checkMaintain: true,
-        targetSteadfastLevel: 2,
         targetMandatory : true,
         targetData: targetData,
-        targetResitAttribute: "resolute",
+        targetResistAttribute: "resolute",
         activelyMaintaninedTargetEffect: ["systems/symbaroum/asset/image/puppet.png"],
         tradition: ["witchcraft", "wizardry"],
     }
@@ -2316,7 +3730,7 @@ async function blackBoltPrepare(ability, actor) {
         addTargetEffect: ["icons/svg/paralysis.svg"]
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    functionStuff.dmgData.ignoreArm=true;
+    functionStuff.ignoreArm=true;
     await modifierDialog(functionStuff)
 }
 
@@ -2347,11 +3761,9 @@ async function confusionPrepare(ability, actor) {
         return;
     }
     let targetResMod = checkResoluteModifiers(targetData.actor, targetData.autoParams);
-    let targetStdMod = checkSteadfastMod(targetData.actor, targetData.autoParams, 2);
-    let favour = -1*targetStdMod.favour;
     targetData.resistAttributeName = targetResMod.bestAttributeName;
     targetData.resistAttributeValue = targetResMod.bestAttributeValue;
-    targetData.autoParams = targetResMod.autoParams+ targetStdMod.autoParams;
+    targetData.autoParams = targetResMod.autoParams;
     let fsDefault;
     try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
         ui.notifications.error(error);
@@ -2359,7 +3771,6 @@ async function confusionPrepare(ability, actor) {
     }
     let specificStuff = {
         checkMaintain: true,
-        favour: favour,
         targetMandatory : true,
         targetData: targetData,
         activelyMaintaninedTargetEffect: ["systems/symbaroum/asset/image/unknown-item.png"],
@@ -2457,10 +3868,7 @@ async function entanglingvinesPrepare(ability, actor) {
         tradition: ["witchcraft"]
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    let targetResMod = checkSteadfastMod(functionStuff.targetData.actor, functionStuff.targetData.autoParams, 1);
-    functionStuff.favour += -1*targetResMod.favour;  
-    functionStuff.targetData.autoParams += targetResMod.autoParams;
-    functionStuff.dmgData.ignoreArm=true;
+    functionStuff.ignoreArm=true;
     await modifierDialog(functionStuff)
 }
 
@@ -2520,16 +3928,13 @@ async function larvaeBoilsPrepare(ability, actor) {
     try{targetData = getTarget("strong")} catch(error){      
         ui.notifications.error(error);
         return;
-    } 
-    let targetResMod = checkSteadfastMod(targetData.actor, targetData.autoParams, 1);
-    targetData.autoParams += targetResMod.autoParams;
+    }
     let fsDefault;
     try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
         ui.notifications.error(error);
         return;
     }
     let specificStuff = {
-        favour: -1*targetResMod.favour,
         checkMaintain: true,
         hasDamage: true,
         damageDice: "1d" + (2*fsDefault.powerLvl.level+2).toString(),
@@ -2544,7 +3949,7 @@ async function larvaeBoilsPrepare(ability, actor) {
         tradition: ["witchcraft"]
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    functionStuff.dmgData.ignoreArm=true;
+    functionStuff.ignoreArm=true;
     await modifierDialog(functionStuff)
 }
 
@@ -2651,11 +4056,8 @@ async function maltransformationPrepare(ability, actor) {
         return;
     }
     let targetResMod = checkResoluteModifiers(targetData.actor, targetData.autoParams);
-    let targetStdMod = checkSteadfastMod(targetData.actor, targetData.autoParams, 2);
-    let favour = -1*targetStdMod.favour;
     targetData.resistAttributeName = targetResMod.bestAttributeName;
     targetData.resistAttributeValue = targetResMod.bestAttributeValue;
-    targetData.autoParams = targetResMod.autoParams + targetStdMod.autoParams;
     let fsDefault;
     try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
         ui.notifications.error(error);
@@ -2756,7 +4158,7 @@ async function tormentingspiritsPrepare(ability, actor) {
         functionStuff.hasDamage= true;
         functionStuff.contextualDamage= true;
         functionStuff.damageDice= "1d"+(2*functionStuff.powerLvl.level).toString();
-        functionStuff.dmgData.ignoreArm=true;
+        functionStuff.ignoreArm=true;
     }
     await modifierDialog(functionStuff)
 }
@@ -2858,8 +4260,7 @@ async function dominatePrepare(ability, actor) {
     let specificStuff = {
         castingAttributeName: "persuasive",
         targetMandatory: true,
-        targetResitAttribute: "resolute",
-        targetSteadfastLevel: 2,
+        targetResistAttribute: "resolute",
         addTargetEffect: ["icons/svg/terror.svg"],
     }
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
@@ -2911,6 +4312,7 @@ async function medicusPrepare(ability, actor) {
     let specificStuff = {
         castingAttributeName: "cunning",
         checkMaintain: false,
+        notResisted: true,
         medicus: true
     }
     specificStuff.healFormulaSucceed = "1d4";
@@ -3020,7 +4422,7 @@ async function stranglerPrepared(ability, actor, maintained) {
     specificStuff.askCastingAttribute = maintained ? false : true;
     specificStuff.castingAttributeName = maintained ? "cunning" : null;
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    functionStuff.dmgData.ignoreArm=true;
+    functionStuff.ignoreArm=true;
     await modifierDialog(functionStuff)
 }
 
@@ -3074,9 +4476,6 @@ async function poisonerPrepare(ability, actor) {
     let functionStuff = Object.assign({}, fsDefault , specificStuff);
     if(ability.data.data.reference === "poisoner") {functionStuff.poisoner = true}
     else functionStuff.poison = functionStuff.powerLvl.level;
-    let targetResMod = checkSteadfastMod(functionStuff.targetData.actor, functionStuff.targetData.autoParams, 1);
-    functionStuff.favour += -1*targetResMod.favour;
-    functionStuff.targetData.autoParams = targetResMod.autoParams;
     await modifierDialog(functionStuff)
 }
 
@@ -3100,11 +4499,11 @@ async function regeneration(ability, actor){
         functionStuff.gmOnlyChatResult = true;
         regenTotal = 1+functionStuff.powerLvl.level;
         functionStuff.introText += "("+regenTotal.toString()+" " + game.i18n.localize('HEALTH.TOUGHNESS') +").";
-    }
-    else{
+    } else {
         let regenDice = 2+ 2*functionStuff.powerLvl.level;
         let regenFormula = "1d" + regenDice.toString();
-        let dmgRoll= new Roll(regenFormula).evaluate();
+        let dmgRoll= new Roll(regenFormula).evaluate({async:false});
+        functionStuff.resultRolls = [dmgRoll];
         functionStuff.introText += "("+regenFormula+" " + game.i18n.localize('HEALTH.TOUGHNESS') +").";
         regenTotal = dmgRoll.total;
     }

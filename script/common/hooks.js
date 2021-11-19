@@ -45,17 +45,17 @@ Hooks.once('init', () => {
     config: SYMBAROUM,
     SymbaroumConfig,
   };
-  game.symbaroum.debug = (...args) => { 
-    console.debug("Symbaroum |", ...args);
-  };  
-  game.symbaroum.error = (...args) => { 
-    console.error("Symbaroum |", ...args);
+  game.symbaroum.debug = (...args) => {
+    console.debug('%cSymbaroum |', game.symbaroum.config.CONSOLESTYLE, ...args);
   };
-  game.symbaroum.info = (...args) => { 
-    console.info("Symbaroum |", ...args);
+  game.symbaroum.error = (...args) => {
+    console.error('%cSymbaroum |', game.symbaroum.config.CONSOLESTYLE, ...args);
   };
-  game.symbaroum.log = (...args) => { 
-    console.log("Symbaroum |", ...args);
+  game.symbaroum.info = (...args) => {
+    console.info('%cSymbaroum |', game.symbaroum.config.CONSOLESTYLE, ...args);
+  };
+  game.symbaroum.log = (...args) => {
+    console.log('%cSymbaroum |', game.symbaroum.config.CONSOLESTYLE, ...args);
   };
 
   game.settings.register('symbaroum', 'worldTemplateVersion', {
@@ -103,6 +103,16 @@ Hooks.once('init', () => {
     default: false,
     config: true,
   });
+
+  /*TODO
+  /*game.settings.register('symbaroum', 'allRollsDsN', {
+    name: 'SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE',
+    hint: 'SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });*/
 
   game.settings.register('symbaroum', 'alwaysSucceedOnOne', {
     name: 'SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE',
@@ -181,6 +191,14 @@ Hooks.once('init', () => {
     default: false,
     config: true,
   });
+  game.settings.register('symbaroum', 'showNpcAttacks', {
+    name: 'SYMBAROUM.OPTIONAL_NPC_ATTACKS',
+    hint: 'SYMBAROUM.OPTIONAL_NPC_ATTACKS_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });
   game.settings.register('symbaroum', 'allowShowReference', {
     name: 'SYMBAROUM.OPTIONAL_SHOWREFERENCE',
     hint: 'SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT',
@@ -193,6 +211,15 @@ Hooks.once('init', () => {
   game.settings.register('symbaroum', 'hideIniativeRolls', {
     name: 'SYMBAROUM.OPTIONAL_INIATITIVEROLLS',
     hint: 'SYMBAROUM.OPTIONAL_INIATITIVEROLLS_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });
+
+  game.settings.register('symbaroum', 'enhancedDeathSaveBonus', {
+    name: 'SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS',
+    hint: 'SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS_HINT',
     scope: 'world',
     type: Boolean,
     default: false,
@@ -314,6 +341,7 @@ Hooks.once('ready', () => {
   showReleaseNotes();
   setupConfigOptions();
   setupEmit();
+  setup3PartySettings();
 });
 
 // create/remove the quick access config button
@@ -346,7 +374,7 @@ Hooks.on('preCreateActor', (doc, createData, options, userid) => {
 Hooks.on('createOwnedItem', (actor, item) => {});
 
 Hooks.once('diceSoNiceReady', (dice3d) => {
-  dice3d.addSystem({ id: 'symbaroum', name: 'Symbaroum' }, true);
+  dice3d.addSystem({ id: 'symbaroum', name: 'Symbaroum' }, 'preferred');
   dice3d.addColorset(
     {
       name: 'Symbaroum',
@@ -358,7 +386,7 @@ Hooks.once('diceSoNiceReady', (dice3d) => {
       texture: 'stars',
       edge: '#211f19',
     },
-    'default'
+    'preferred'
   );
 });
 
@@ -421,7 +449,7 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
     await html.find('#applyEffect').click(async () => {
       let tok = canvas.tokens.objects.children.find((token) => token.id === functionStuff.tokenId);
       let targetToken = canvas.tokens.objects.children.find((token) => token.id === functionStuff.targetData.tokenId);
-      if(tok === undefined || targetToken === undefined){
+      if (tok === undefined || targetToken === undefined) {
         ui.notifications.error("Can't find token.");
         return;
       }
@@ -437,6 +465,21 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
   }
 });
 
+function setup3PartySettings() {
+  game.symbaroum.info("In setup3PartySettings");
+  if( !game.user.isGM ) {
+    // Only make changes to system and 3rd party if it is a GM
+    return;
+  }
+  if (game.settings.settings.has('dice-so-nice.enabledSimultaneousRollForMessage')) {
+    game.settings.set('dice-so-nice', 'enabledSimultaneousRollForMessage', false);
+  }
+  
+  if( game.modules.get("dice-so-nice")?.active && foundry.utils.isNewerVersion("4.2.2", game.modules.get("dice-so-nice").data.version) ) {
+    // If dice so nice is older than 4.2.2 - lets notify
+    ui.notifications.warn("Dice So Nice needs to be at minimum 4.2.2 to work with Symbaroum", {permanent: true });
+  }
+}
 // This sets the css DOM objects we will change with the registered settings
 async function setupConfigOptions() {
   let r = document.querySelector(':root');
@@ -482,7 +525,7 @@ async function showReleaseNotes() {
 
       let newReleasePack = game.packs.find((p) => p.metadata.label === releasePackLabel);
       if (newReleasePack === null || newReleasePack === undefined) {
-        let err = "No pack found for the system guide in this release";
+        let err = 'No pack found for the system guide in this release';
         game.symbaroum.error(err);
         ui.notifications.error(err);
         // This is bad - the symbaroum pack does not exist in the system packages
@@ -492,8 +535,8 @@ async function showReleaseNotes() {
 
       let newReleaseNotes = newReleasePack.index.find((j) => j.name === releaseNoteName);
       // game.symbaroum.log("Found new release notes in the compendium pack");
-      if( newReleaseNotes === undefined || newReleaseNotes === null ) {
-        let err = "No system guide found in this release";
+      if (newReleaseNotes === undefined || newReleaseNotes === null) {
+        let err = 'No system guide found in this release';
         game.symbaroum.error(err);
         ui.notifications.error(err);
         return;
@@ -546,15 +589,15 @@ export async function modifyEffectOnToken(token, effect, action, options) {
         if (options.effectStuff) {
           let statusEffect = new EffectCounter(options.effectStuff, effect, token, false);
           await statusEffect.update();
-        } else if(options.overlay){
-          token.toggleEffect(effect, {overlay:options.overlay});
+        } else if (options.overlay) {
+          token.toggleEffect(effect, { overlay: options.overlay });
         } else {
           let statusEffect = new EffectCounter(duration, effect, token, false);
           await statusEffect.update();
         }
       }
     } else {
-      token.toggleEffect(effect, {overlay:options.overlay});
+      token.toggleEffect(effect, { overlay: options.overlay });
     }
   } else if (action == 0) {
     //remove effect

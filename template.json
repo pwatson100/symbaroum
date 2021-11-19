@@ -126,6 +126,7 @@
         "personalGoal": "",
         "stigmas": ""
       },
+      "nbrOfFailedDeathRoll": 0,
       "notes": ""
     },
     "monster": {

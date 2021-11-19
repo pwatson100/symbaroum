@@ -1,36 +1,40 @@
 <div class="symbaroum chat roll">
-    <div class="foreground border">
-      <img src="{{subImg}}" />
-        <h3>{{removeMarkup name}}</h3>
-    {{#if hasSucceed}}
+  <div class="foreground border">
+  <img class="portrait" src="{{subImg}}" />
+  <h3>{{removeMarkup name}}</h3>
+  {{#if hasSucceed}}
 
-    <div class="tooltip" style="width: 100%;">
-      <h4>{{localize "CHAT.SUCCEED"}} ({{diceResult}})</h4>
-      <h4>{{localize "CHAT.MARGIN"}} {{margin}}</h4>
-      <div class="tooltiptext">{{{diceBreakdown}}}<br>
-        {{diceTarget}} - {{diceResult}} = {{margin}} </div>
+    <div class="dice-roll dice-total">
+      <div>
+        <h4>{{localize "CHAT.SUCCEED"}} (<span class="symba-rolls roll d20 success">{{diceResult}}</span>)</h4>
+        <h4>{{localize "CHAT.MARGIN"}} {{margin}} <img class="moreinfo" src="systems/symbaroum/asset/image/orb-direction.svg" /></h4>
+      </div>
+      <div class="dice-tooltip" style="display:none; text-align: center;">{{{diceBreakdown}}}<br>
+        {{localize "CHAT.ATTRIBUTE_TARGET"}} {{diceTarget}} - <span class="symba-rolls roll d20 success">{{diceResult}}</span> = {{margin}} </div>
     </div>
 
     {{#if critSuccess}}
     <h4>{{localize "CHAT.CRITICAL_SUCCESS"}}</h4>
     {{/if}}
-    
+  
     {{#if hasWeapon}} 
 
-    <img src="{{weapon.img}}" />
-      <p style="margin-top: 5px;text-align:center">{{weapon.name}}</p>
-    <div class="tooltip"><p style="margin-top: 5px"><strong>{{localize "WEAPON.DAMAGE"}}:</strong> {{weapon.value}}</p>
-      <div class="tooltiptext">{{{weapon.diceBreakdown}}}</div>
+    <img class="portrait" src="{{weapon.img}}" />
+    <p style="margin-top: 5px;text-align:center" data-item-id="{{weapon.id}}"></p>{{weapon.name}}</p>
+    <div class="dice-roll dice-total">
+        <div class="dice-tooltip" style="display: none;">{{{weapon.diceBreakdown}}}</div>
+        <div class="baseinfo"><strong>{{localize "WEAPON.DAMAGE"}}:</strong> {{weapon.value}}<img class="moreinfo" src="systems/symbaroum/asset/image/orb-direction.svg" /></div>
     </div>
     {{/if}} 
-    {{else}} 
+  {{else}} 
 
-    <div class="tooltip" style="width: 100%;">
-      <h4>{{localize "CHAT.FAILED"}} ({{diceResult}})</h4>
-      <h4>{{localize "CHAT.MARGIN"}} {{margin}}</h4>
-      <div class="tooltiptext">{{{diceBreakdown}}} <br/>
-        {{diceTarget}} - {{diceResult}} = {{margin}} </div>
+    <div class="dice-roll dice-total">
+      <div>
+        <h4>{{localize "CHAT.FAILED"}} (<span class="symba-rolls roll d20 failure">{{diceResult}}</span>)</h4>
+        <h4>{{localize "CHAT.MARGIN"}} {{margin}} <img class="moreinfo" src="systems/symbaroum/asset/image/orb-direction.svg" /></h4> 
       </div>
+      <div class="dice-tooltip" style="display:none; text-align: center;">{{{diceBreakdown}}}<br>
+        {{localize "CHAT.ATTRIBUTE_TARGET"}} {{diceTarget}} - <span class="symba-rolls roll d20 failure">{{diceResult}}</span> = {{margin}}</div>
     </div>
 
     {{#if critFail}}
@@ -39,27 +43,29 @@
 
     
     {{#if hasArmor}}
-    <p style="margin-top: 5px;text-align:center">{{armor.name}}</p>
-    <div class="tooltip"><p style="margin-top: 5px"><strong>{{localize "ARMOR.PROTECTION"}}:</strong> {{armor.value}}</p>
-      <div class="tooltiptext">{{{armor.diceBreakdown}}}</div>
+    <img class="portrait" src="{{armor.img}}" />
+    <p style="margin-top: 5px;text-align:center" data-item-id="{{armor.id}}">{{armor.name}}</p>
+    <div class="dice-roll dice-total">
+      <div class="baseinfo"><strong>{{localize "ARMOR.PROTECTION"}}:</strong> {{armor.value}} <img class="moreinfo" src="systems/symbaroum/asset/image/orb-direction.svg" /></div>
+      <div class="dice-tooltip" style="display: none;">{{{armor.diceBreakdown}}}</div>
     </div>
     {{/if}}
-    {{/if}}
+  {{/if}}
     
-   {{#if hasWeapon}}
-   {{#if critFail}}
-   <h4>{{localize "CHAT.CRITICAL_FAILURE_FREEATTACK"}}</h4>
-   {{/if}}
-   {{/if}}
-   
-   {{#if hasArmor}}      
-   {{#if critSuccess}}
+  {{#if hasWeapon}}
+    {{#if critFail}}
+    <h4>{{localize "CHAT.CRITICAL_FAILURE_FREEATTACK"}}</h4>
+    {{/if}}
+  {{/if}}
+  
+  {{#if hasArmor}}      
+    {{#if critSuccess}}
     <h4>{{localize "CHAT.CRITICAL_FREEATTACK"}}</h4>
     {{/if}} 
     {{#if critFail}}
     <h4>{{localize "CHAT.CRITICAL_PLUS3DAMAGE"}}</h4>
     {{/if}}
-    {{/if}}
-    
+  {{/if}}
+      
   </div>
 </div>

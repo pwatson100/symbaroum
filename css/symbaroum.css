@@ -161,6 +161,37 @@
   white-space: nowrap;
 }
 
+.symbaroum.dialog .packageInfo {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--color-label);
+  font-family: var(--font-text);
+  background: var(--title-color) repeat;
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-preferred-size: 100%;
+      flex-basis: 100%;
+}
+
+.symbaroum.dialog .packageInfo .checkbox {
+  white-space: nowrap;
+  width: -webkit-min-content;
+  width: -moz-min-content;
+  width: min-content;
+  -ms-flex-item-align: center;
+      align-self: center;
+}
+
+.symbaroum.dialog .packageInfo .packageDetail {
+  height: auto;
+  text-align: center;
+  padding: 5px;
+}
+
 .symbaroum.dialog .weapondamage {
   padding-left: 5px;
 }
@@ -253,58 +284,57 @@
 .symbaroum.chat.item {
   color: var(--color-text);
   font-family: var(--font-text);
-  font-size: 12px;
-  line-height: 16px;
+  font-size: 1em;
+  line-height: 1.2em;
   padding: 5px;
 }
 
-.symbaroum.chat.item .foreground {
-  background: var(--box-editable) repeat;
-  padding: 10px;
-}
-
-.symbaroum.chat.item .border {
-  border: 1px solid transparent;
-  border-color: var(--title-color);
-}
-
 .symbaroum.chat.item strong {
-  text-transform: uppercase;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 1.2em;
 }
 
 .symbaroum.chat.item h3 {
   font-family: var(--font-text);
-  font-size: 18px;
+  font-size: 1.5em;
+  margin-bottom: 0.75em;
   font-weight: bold;
-  margin: 0 0 8px;
   text-align: center;
 }
 
 .symbaroum.chat.item h4 {
   font-family: var(--font-text);
-  font-size: 16px;
+  font-size: 1.2em;
   font-weight: bold;
-  margin: 0 0 8px;
   text-align: center;
+  margin-bottom: 0.6em;
   border-bottom: 1px solid var(--color-border);
 }
 
 .symbaroum.chat.item h3 + h4 {
-  margin-top: -8px;
+  margin-top: -0.4em;
 }
 
 .symbaroum.chat.item img {
   border: 0;
   display: block;
-  margin: 0 auto 8px;
+  margin: 0 auto 0.5em;
   max-height: 64px;
   width: auto;
 }
 
 .symbaroum.chat.item p {
-  margin: 0 0 4px;
+  margin: 0.4em 0 0.4em;
+  -webkit-user-select: text;
+     -moz-user-select: text;
+      -ms-user-select: text;
+          user-select: text;
+}
+
+.symbaroum.chat.item p.name {
+  margin: 0 0 0.4em;
+  font-weight: bold;
+  text-align: center;
 }
 
 .symbaroum.chat.roll {
@@ -325,6 +355,10 @@
   border-color: var(--color-border);
   -o-border-image: var(--chat-roll-border) 20/10px;
      border-image: var(--chat-roll-border) 20/10px;
+}
+
+.symbaroum.chat.roll .baseinfo {
+  margin-top: 5px;
 }
 
 .symbaroum.chat.roll strong {
@@ -403,26 +437,101 @@
 }
 
 .symbaroum.chat.roll .strike {
-  color: grey;
+  color: black;
   text-decoration: line-through;
 }
 
-.symbaroum.chat.roll .fumble {
-  color: red;
-  font-weight: bold;
-}
-
-.symbaroum.chat.roll .critical {
-  color: yellow;
-  font-weight: bold;
-}
-
-.symbaroum.chat.roll img {
+.symbaroum.chat.roll img,
+.symbaroum.chat.roll .portrait {
   border: 0;
   display: block;
   margin: 0 auto 8px;
-  max-height: 64px;
+  height: 64px;
   width: auto;
+}
+
+.symbaroum.chat.roll .moreinfo {
+  border: 0;
+  float: right;
+  height: 18px;
+  width: auto;
+  -webkit-filter: sepia(0.5) contrast(0.75) opacity(0.4);
+          filter: sepia(0.5) contrast(0.75) opacity(0.4);
+}
+
+.symba-rolls.roll {
+  display: inline-block;
+  width: 24px;
+  line-height: 24px;
+  margin-right: 1px;
+  background-image: url("../../../icons/svg/d6-grey.svg");
+  background-repeat: no-repeat;
+  background-size: 24px 24px;
+  font-size: 16px;
+  color: #000;
+  font-weight: bold;
+  text-align: center;
+}
+
+.symba-rolls.roll.d4 {
+  background-image: url("../../../icons/svg/d4-grey.svg");
+}
+
+.symba-rolls.roll.d6 {
+  background-image: url("../../../icons/svg/d6-grey.svg");
+}
+
+.symba-rolls.roll.d8 {
+  background-image: url("../../../icons/svg/d8-grey.svg");
+}
+
+.symba-rolls.roll.d10 {
+  background-image: url("../../../icons/svg/d10-grey.svg");
+}
+
+.symba-rolls.roll.d12 {
+  background-image: url("../../../icons/svg/d12-grey.svg");
+}
+
+.symba-rolls.roll.d20 {
+  background-image: url("../../../icons/svg/d20-grey.svg");
+}
+
+.symba-rolls.roll.discarded,
+.symba-rolls.roll.rerolled,
+.symba-rolls.roll.strike {
+  -webkit-filter: sepia(0.5) contrast(0.75) opacity(0.4);
+          filter: sepia(0.5) contrast(0.75) opacity(0.4);
+}
+
+.symba-rolls.roll.normal {
+  color: #18520b;
+  -webkit-filter: sepia(0.5) hue-rotate(60deg);
+          filter: sepia(0.5) hue-rotate(60deg);
+}
+
+.symba-rolls.roll.success {
+  color: #18520b;
+  -webkit-filter: sepia(0.5) hue-rotate(60deg);
+          filter: sepia(0.5) hue-rotate(60deg);
+}
+
+.symba-rolls.roll.failure {
+  color: #aa0200;
+  -webkit-filter: sepia(0.5) hue-rotate(-60deg);
+          filter: sepia(0.5) hue-rotate(-60deg);
+}
+
+.symba-rolls.roll.critical {
+  color: #18520b;
+  -webkit-filter: sepia(0.5) hue-rotate(60deg);
+          filter: sepia(0.5) hue-rotate(60deg);
+}
+
+.symba-rolls.roll.fumble {
+  color: #aa0200;
+  -webkit-filter: sepia(0.5) hue-rotate(-60deg);
+          filter: sepia(0.5) hue-rotate(-60deg);
 }
 
 /* Common styles */
@@ -457,6 +566,7 @@
   line-height: 30px;
   border: 0 none;
   font-size: 16px;
+  font-weight: 600;
   margin: 0;
   text-align: center;
   background: var(--title-color) repeat;
@@ -709,7 +819,7 @@
   border: 0 none;
   width: 100px;
   height: 100px;
-  margin: auto;
+  margin: 0px;
 }
 
 .symbaroum.sheet.item button:hover {
@@ -813,7 +923,7 @@
       -ms-flex: 0 0 auto;
           flex: 0 0 auto;
   height: 100px;
-  margin: 5px 0 5px 5px;
+  margin: 5px 5px 5px 5px;
   width: 100px;
 }
 
@@ -858,7 +968,7 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  margin: auto;
+  margin: 0px 0px 5px 0px;
 }
 
 .symbaroum.sheet.item .sheet-header .computedvalues {
@@ -897,7 +1007,7 @@
 .symbaroum.sheet.item .editor {
   margin: 5px;
   border: 1px solid var(--color-border);
-  height: 130px;
+  height: 250px;
 }
 
 .symbaroum.sheet.item .editor-content {
@@ -1255,6 +1365,28 @@
   border: 0;
 }
 
+.img28 {
+  display: block;
+  background-image: url("../asset/image/system-guide/28.webp");
+  width: 340px;
+  height: 238px;
+  margin-left: auto;
+  margin-right: auto;
+  background-size: 100%;
+  border: 0;
+}
+
+.img29 {
+  display: block;
+  background-image: url("../asset/image/system-guide/29.webp");
+  width: 482px;
+  height: 110px;
+  margin-left: auto;
+  margin-right: auto;
+  background-size: 100%;
+  border: 0;
+}
+
 .config-button {
   display: block;
   background-image: url("../asset/image/system-guide/config-button.webp");
@@ -1288,6 +1420,12 @@
   border: 0;
 }
 
+.symbaroum-mod .imagecontainer {
+  position: relative;
+  text-align: center;
+  color: white;
+}
+
 #pause {
   background: none;
 }
@@ -1307,10 +1445,41 @@
   text-shadow: 0px 3px 5px black;
 }
 
+/* cyrillic-ext */
 @font-face {
   font-family: "Philosopher";
-  src: url("../asset/font/philosopher-bold.ttf");
-  font-weight: bold;
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/philosopher/v14/vEFV2_5QCwIS4_Dhez5jcWBjT00k0w.woff2) format("woff2");
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: "Philosopher";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/philosopher/v14/vEFV2_5QCwIS4_Dhez5jcWBqT00k0w.woff2) format("woff2");
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: "Philosopher";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/philosopher/v14/vEFV2_5QCwIS4_Dhez5jcWBhT00k0w.woff2) format("woff2");
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;
+}
+/* latin */
+@font-face {
+  font-family: "Philosopher";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/philosopher/v14/vEFV2_5QCwIS4_Dhez5jcWBuT00.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 :root {
   --color-title: white;
@@ -1319,7 +1488,7 @@
   --color-text: black;
   --color-border: black;
   --color-shadow: #a48b02;
-  --font-text: "Philosopher", serif;
+  --font-text: "Philosopher";
   --color-charBG: "url(../asset/image/background/green_flower_light.webp) repeat";
   --color-npcBG: "url(../asset/image/background/purple_flower_light.webp) repeat";
   --title-image: "url(../asset/image/background/title.webp)";
@@ -1604,6 +1773,12 @@
 .symbaroum.sheet.actor .player .gear .wrapper-left .weapons {
   height: 300px;
   margin-top: 10px;
+}
+
+.symbaroum.sheet.actor .player .gear .wrapper-left .armors .item-list .item-header,
+.symbaroum.sheet.actor .player .gear .wrapper-left .weapons .item-list .item-header,
+.symbaroum.sheet.actor .player .gear .wrapper-right .equipments .item-list .item-header {
+  display: table-row;
 }
 
 .symbaroum.sheet.actor .player .gear .wrapper-left .armors .scrollable,
@@ -2554,7 +2729,7 @@
 }
 
 .symbaroum.sheet.item .ability .description .editor {
-  height: 166px;
+  height: 270px;
 }
 
 .symbaroum.sheet.item .ability .tab .active,
@@ -2645,7 +2820,7 @@
 }
 
 .symbaroum.sheet.item .armor .description .editor {
-  height: 134px;
+  height: 270px;
 }
 
 .symbaroum.sheet.item .armor .tab .protection,
@@ -2936,7 +3111,7 @@
 }
 
 .symbaroum.sheet.item .boon .description .editor {
-  height: 166px;
+  height: 290px;
 }
 
 .symbaroum.sheet.item .boon .tab .bonus .scroll {
@@ -3003,7 +3178,7 @@
 }
 
 .symbaroum.sheet.item .burden .description .editor {
-  height: 166px;
+  height: 290px;
 }
 
 .symbaroum.sheet.item .burden .tab .bonus .scroll {
@@ -3068,6 +3243,10 @@
   -ms-flex-preferred-size: 100%;
       flex-basis: 100%;
   border-top: none;
+}
+
+.symbaroum.sheet.item .equipment .description .editor {
+  height: 200px;
 }
 
 .symbaroum.sheet.item .equipment .tab .cost,
@@ -3573,10 +3752,11 @@
   border-top: none;
 }
 
+/*
 .symbaroum.sheet.item .trait .description .editor {
-  height: 166px;
+    height: 250px;
 }
-
+*/
 .symbaroum.sheet.item .trait .tab .marker {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -3678,7 +3858,7 @@
 }
 
 .symbaroum.sheet.item .weapon .description .editor {
-  height: 166px;
+  height: 250px;
 }
 
 .symbaroum.sheet.item .weapon .tab .stats .quality,

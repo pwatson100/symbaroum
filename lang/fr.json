@@ -125,6 +125,7 @@
     "ABILITY.NOVICE":"Novice",
     "ABILITY.ADEPT":"Adepte",
     "ABILITY.MASTER":"Maître",
+    "ABILITY.NOT_LEARNED":"Pas apprise",
     "ABILITY.ROLL_RESULT": "Résultat du jet : ",
 
     "ACTION.ACTIVE": "Active",
@@ -139,6 +140,7 @@
     "ACTOR.TypeMonster": "Personnage Non-Joueur",
 
     "ARMOR.NAME": "Nom",
+    "ARMOR.NOARMOR_NAME":"No Armor",
     "ARMOR.PROTECTION": "Protection",
     "ARMOR.PROTECTIONABBR": "Prot.",
     "ARMOR.PROTECTION_SHORT": "Prot.",
@@ -298,6 +300,7 @@
     "CHAT.SUCCEED": "Réussite",
     "CHAT.FAILED": "Echec",
     "CHAT.MARGIN": "Marge du résultat : ",
+    "CHAT.ATTRIBUTE_TARGET": "Attribute target",
     "CHAT.CRITICAL_SUCCESS": "Réussite Critique",
     "CHAT.CRITICAL_FAILURE": "Echec Critique",
     "CHAT.CRITICAL_FREEATTACK": "Attaque gratuite",
@@ -340,6 +343,7 @@
     "COMBAT.DEFENSE_ROLL": " essaie de se défendre contre l'attaque.",
     "COMBAT.PARAMS_PRECISE": "arme précise, ",
     "COMBAT.DAMAGE": "Dégâts infligés: ",
+    "COMBAT.BLEED": "Hémorragie",
 
     "CORRUPTION.CHAT_INTRO": " dépasse un seuil de souillure.",
     "CORRUPTION.CHAT_THRESHOLD": " est marqué par la corruption (seuil atteint).",
@@ -372,8 +376,9 @@
     "DIALOG.STRONG_POISON": "Poison fort",
     "DIALOG.IGNORE_ARMOR": "Ignorer l'armure?",
     "DIALOG.DAMAGE_IF_MODIFIER": "Bonus dégâts Poigne de fer",
-    "DIALOG.2ATTACKS": "Deux attaques?",
-    "DIALOG.3ATTACKS": "Trois attaques?",
+    "DIALOG.ATTACK": "Attaque",
+    "DIALOG.2ATTACKS": "att.x2",
+    "DIALOG.3ATTACKS": "att.x3",
     "DIALOG.FEAT_STRENGTH_DAMAGE": "Dégats Epreuve de Force",
     "DIALOG.IMPEDING": "Inclure malus d'armure?",
     "DIALOG.CASTING_ATTRIBUTE": "Attribut utilisé",
@@ -833,7 +838,12 @@
     "SYMBAROUM.OPTIONAL_RESET_NON_EDITABLE_BUTTON" :"Réinitialiser la couleur de fond des champs fixes",
     "SYMBAROUM.OPTIONAL_RESET_ALL_BUTTON": "Reinitialiser les paramètres",
     "SYMBAROUM.OPTIONAL_PLAYER_RESIST" :"Bouton jet de résistance",
-    "SYMBAROUM.OPTIONAL_PLAYER_RESIST_HINT" :"Quand un PNJ attaque avec un pouvoir ou avec l'option Combats accélérés, cette option crée un bouton dans le chat du joueur visé, qu'il devra cliquer pour lancer le jet de résistance ou de défense."
-  
+    "SYMBAROUM.OPTIONAL_PLAYER_RESIST_HINT" :"Quand un PNJ attaque avec un pouvoir ou avec l'option Combats accélérés, cette option crée un bouton dans le chat du joueur visé, qu'il devra cliquer pour lancer le jet de résistance ou de défense.",
+    "SYMBAROUM.OPTIONAL_NPC_ATTACKS": "Afficher les attaques multiples (PNJ)",
+    "SYMBAROUM.OPTIONAL_NPC_ATTACKS_HINT": "Cochez pour afficher les attaques multiples dans la case de dégâts des armes de la feuille de personnage des PNJs. Avertissement: Ces calculs sont indicatifs et ne prennent pas en compte certains talents / traits au mécanismes complexes ou situationnels.",
+    "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS": "Critiques du test de Mort incluent bonus",
+    "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS_HINT": "Appliquer le bonus / malus du test de Mort pour déterminer s'il s'agit d'un critique.",
+    "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE": "Tous les jets avec le module DsN",
+    "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE_HINT": "Lorsque le module Dice so Nice est installé et que l'option Combats accélérés est activée, il arrive que beaucoup de dés soient affichés en même temps sur l'écran. Pour plus de lisibilité, activer cette option n'affichera que le dé d'action (d20) et pas les autres (dégâts, poison, etc)."
 }
 

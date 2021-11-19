@@ -11,11 +11,18 @@
         <div class="subText">{{removeMarkup subText}}</div>            
         <img src="{{subImg}}"/>
         {{#if hasRoll}}
+        <div class="finalTxt">
             {{#if resistRoll}}
-            <h4>{{resistRollText}}</h4>
+            <p>{{resistRollText}}</p>
             {{/if}}
-        <h4>{{rollString}}</h4>
-        <h4>{{rollResult}}</h4>
+        <p data-item-id="{{id}}">{{rollString}}</p>
+    </div>
+        <div class="finalTxt">
+            <div class="tooltip">
+                <p>{{removeMarkup rollResult}}</p>
+                <span class="tooltiptext">{{rollToolTip}}</span>
+            </div>
+        </div>
         {{/if}}
         <div class="finalTxt">
             <p>{{resultText}}</p>

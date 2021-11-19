@@ -17,6 +17,10 @@
   border-image: var(--chat-roll-border) 20/10px;
 }
 
+.symbaroum.chat.roll .baseinfo {
+  margin-top:5px;
+}
+
 .symbaroum.chat.roll strong {
   text-transform: uppercase;
   font-weight: bold;
@@ -94,24 +98,81 @@
 }
 
 .symbaroum.chat.roll .strike {
-  color: grey;
+  color: rgb(0, 0, 0);
   text-decoration: line-through;
 }
 
-.symbaroum.chat.roll .fumble {
-  color: red;
-  font-weight: bold;
-}
-
-.symbaroum.chat.roll .critical {
-  color: yellow;
-  font-weight: bold;
-}
-
-.symbaroum.chat.roll img {
+.symbaroum.chat.roll img,
+.symbaroum.chat.roll .portrait {
   border: 0;
   display: block;
   margin: 0 auto 8px;
-  max-height: 64px;
+  height: 64px;
   width: auto;
+}
+
+.symbaroum.chat.roll .moreinfo {
+  border: 0;
+  float:right;
+  height: 18px;
+  width: auto;
+  filter: sepia(0.5) contrast(0.75) opacity(0.4);
+}
+
+.symba-rolls.roll {
+  display:inline-block;
+  width: 24px;
+  line-height: 24px;
+  margin-right: 1px;
+  background-image: url("../../../icons/svg/d6-grey.svg");
+  background-repeat: no-repeat;
+  background-size: 24px 24px;
+  font-size: 16px;
+  color: #000;
+  font-weight: bold;
+  text-align: center;
+}
+.symba-rolls.roll.d4 {
+  background-image: url("../../../icons/svg/d4-grey.svg");
+}
+.symba-rolls.roll.d6 {
+  background-image: url("../../../icons/svg/d6-grey.svg");
+}
+.symba-rolls.roll.d8 {
+  background-image: url("../../../icons/svg/d8-grey.svg");
+}
+.symba-rolls.roll.d10 {
+  background-image: url("../../../icons/svg/d10-grey.svg");
+}
+.symba-rolls.roll.d12 {
+  background-image: url("../../../icons/svg/d12-grey.svg");
+}
+.symba-rolls.roll.d20 {
+  background-image: url("../../../icons/svg/d20-grey.svg");
+}
+
+.symba-rolls.roll.discarded,
+.symba-rolls.roll.rerolled,
+.symba-rolls.roll.strike {
+  filter: sepia(0.5) contrast(0.75) opacity(0.4);
+}
+.symba-rolls.roll.normal {
+  color: #18520b;
+  filter: sepia(0.5) hue-rotate(60deg);
+}
+.symba-rolls.roll.success {
+  color: #18520b;
+  filter: sepia(0.5) hue-rotate(60deg);
+}
+.symba-rolls.roll.failure {
+  color: #aa0200;
+  filter: sepia(0.5) hue-rotate(-60deg);
+}
+.symba-rolls.roll.critical {
+  color: #18520b;
+  filter: sepia(0.5) hue-rotate(60deg);
+}
+.symba-rolls.roll.fumble {
+  color: #aa0200;
+  filter: sepia(0.5) hue-rotate(-60deg);
 }

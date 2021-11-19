@@ -1,5 +1,5 @@
 export class SymbaroumActorSheet extends ActorSheet {
-  nbrOfFailedDeathRoll = 0;
+  // nbrOfFailedDeathRoll = 0;
 
   activateListeners(html) {
     super.activateListeners(html);

@@ -1,0 +1,207 @@
+The structure for the combatMods rule engine used in symbaroum is as follows:
+combat {
+    initiative: [
+        {
+            label : "the label",
+            id : "the id",
+            attribute : "initiative attribute",
+            modifier: int // value to modify existing initiative
+        }
+    ],
+    toughness : [
+        {
+            label : "the label",
+            id : "the id",
+            type : "type of modifier" : SEC_ATT_BONUS, SEC_ATT_MULTIPLIER, THRESHOLD_MULTIPLIER, NO_TRESHOLD;
+            value: int // value for modification
+        }
+    ],
+    corruption : [
+        {
+            label : "the label",
+            id : "the id",
+            type : "type of modifier" : SEC_ATT_BONUS, SEC_ATT_MULTIPLIER, THRESHOLD_MULTIPLIER, NO_TRESHOLD;
+            value: int // value for modification
+        }
+    ],
+    abilities : {},
+    traits : {},
+    powers : {},
+    armors: [
+        armorid : 
+        {
+            specialEffects [
+                stringvalue // currently only SPECIAL_STRONG, SPECIAL_WEAK, SPECIAL_MIN_DEFENSE
+            ]
+            attributes [
+                {
+                    label : "the label of the modifier",
+                    id : "the id",
+                    attribute : "the preferred defense attribute",
+                }
+            ],
+            impedingModifiers [
+                {
+
+                    label : "the label of the modifier",
+                    id : "the id",
+                    modifier : "+mod",  // will result in suitable penalty reduction - min 0 impeding
+                    modifierMagic : "mod", // will result in suitable penalty reduction - min 0 impeding
+                }
+            ],
+            defenseModifiers [
+                {
+                    label : "the label of the modifier",
+                    id : "the id",
+                    modifier : "+mod" // as per roll formula
+                }
+            ],
+            damageReductions [
+                {
+                    label : "the label of the modifier",
+                    id : "the id",                    
+                    normal: 1,
+                    elemental: 1,
+                    mystic: 1,
+                    holy: 1,
+                    mysticalWeapon: 1                                       
+                },
+
+                {
+                    label : "the label of the modifier", (usually the name of the ability)
+                    type : TYPE_FAVOUR, TYPE_MOD,
+                    powers = array of the acting powers against which the reduction applies
+                }
+
+            ],
+            protectionChoices [
+                {
+                    label : "the label of the modifier",
+                    id : "the id",
+                    type : "check","fixed", "radio","upgrade", "builtin" // builtin is for those that EC assumes are already calculated
+                    // fixed & check assumes only one single alternative. If there is more than one alternative, add multiple damageChoices
+                    diceUpgrade : int, // only when upgrade - num sides upgrade (min 2)
+                    defaultSelect : "alternatives index", // only for radio = select id is the partialDamageFormula
+                    alternatives : [ // radio / check / fixed - only radio expects more than 1 
+                        {
+                            label : "the label of this modifier",
+                            protectionMod : "partialDamageFormula" // check & fixed & builtin - Partial damage formula in PC format as default
+                            protectionModNPC : "", // Partial Damage in NPC format assuming restrictions are fullfilled (for all types)
+                            restrictions = [ // any restrictions
+                            ]
+                        }
+                        { ... next option ...] }
+                    },
+                }
+            ],
+
+        }
+    ],
+    weapons: [
+        weaponid : {
+            maxAttackNb: number of multi-attack that can be done when using abilities and traits attack (default 1)
+            package [
+                packageName: {
+                    label: label of the package,
+                    type: default, checked or radio,
+                    // default package contains all permanent modifiers for combat, checked means choose active or not, radio means several options 
+                    id : "the id",
+                    value : display value for dialog window
+                    member: [  // each individual modifier to be applied when package is selected
+                        {
+                            type: attribute  // change attack attribute
+                            label : "the label of the modifier",
+                            id : "the id",
+                            attribute : "the preferred attack attribute",
+                        }
+                        {
+                            type: attackIncrease  // increase number of attacks
+                            label : "the label of the modifier",
+                            id : "the id",
+                            modifier : "+mod" // the number of additional attacks
+                            //this will also increase the maxAttackNb value
+                        }
+                        {
+                            type: attackrollmod  // attack roll modifier
+                            label : "the label of the modifier",
+                            id : "the id",
+                            modifier : "+mod" // as per roll formula
+                        }
+                        {
+                            type: favour  // change attack favour
+                            label : "the label of the modifier",
+                            id : "the id",
+                            modifier : "1", "-1" // favour modification
+                        }
+                        {
+                            type: damagefavour  // favour on damage roll
+                            label : "the label of the modifier",
+                            id : "the id",
+                            modifier : "1", "-1" // favour modification
+                        }
+                        {
+                            type: diceupgrade  // ugrade damage dice
+                            label : "the label of the modifier",
+                            id : "the id",
+                            diceUpgrade : int, // only when upgrade - num sides upgrade (min 2)
+                        }
+                        {
+                            type: damagemodifier  // add damage
+                            label : "the label of this modifier",
+                            defaultSelect : "alternatives index", // only for radio = select id is the partialDamageFormula
+                            damageMod : "partialDamageFormula" // Partial damage formula in PC format as default
+                            damageModNPC : "", // Partial Damage in NPC format assuming restrictions are fullfilled (for all types)
+                            restrictions = [ // any restrictions
+                                "1st-attack", // Only applicable on first attack
+                                "active", // Can only be used when performing 1 attack
+                                "advantage", // Can only be used when at advantage
+                                ("[attack-attribute]", // Only applies when attack is made with this attribute) // Not sure I can support - might require double loop
+                            ]
+                        }
+                        {
+                            type: statusDoT  // Damage over time
+                            label : "DoT name",
+                            damagePerRound: dice formula;
+                            damagePerRoundNPC: number;
+                            duration= dice formula, or "" for permanent;
+                            durationNPC: number or 0 for permanent;
+                            effectIcon: the status icon;
+                            restrictions = [ // any restrictions
+                                "1st-attack", // Only applicable on first attack
+                                "active", // Can only be used when performing 1 attack
+                                "advantage", // Can only be used when at advantage
+                                ("[attack-attribute]", // Only applies when attack is made with this attribute) // Not sure I can support - might require double loop
+                            ]
+                        }
+                    ]
+                    ]
+                }
+            ],
+            
+            specialEffects [
+                stringvalue // currently only DAM_FAVOUR
+            ]
+        }
+    ]
+}
+
+
+This allows a module to do - where :
+CONFIG.Item.documentClass.prototype["getCombatModifierAcidicattack"] = function(combatMods,armor, weapon) { console.log("THIS IS A SAMPLE ",this.name); }
+
+
+EC specific handling
+ironfist
+robust
+marksman
+polearmmastery
+shieldfighter
+twohandedforce
+naturalweapon
+naturalwarrior
+colossal
+dominate
+feint
+knifeplay
+sixthsense
+tactician

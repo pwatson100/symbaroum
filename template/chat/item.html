@@ -30,51 +30,52 @@
         {{#if img}}
         <img src="{{img}}" title="{{name}}"/>
         {{/if}}
+        <p class="name" data-item-id="{{_id}}">@Item[{{name}}]</p>
 
         {{#if isTrait}}
-        <p><strong>{{localize "TRAIT.DESCRIPTION"}}:</strong> {{removeMarkup data.description}}</p>
-        <p><strong>{{localize "TITLE.NOVICE"}} [{{data.novice.action}}]:</strong> {{removeMarkup data.novice.description}}</p>
-        <p><strong>{{localize "TITLE.ADEPT"}} [{{data.adept.action}}]:</strong> {{removeMarkup data.adept.description}}</p>
-        <p><strong>{{localize "TITLE.MASTER"}} [{{data.master.action}}]:</strong> {{removeMarkup data.master.description}}</p>
+        <p><strong>{{localize "TRAIT.DESCRIPTION"}}:</strong> {{removeStyling data.description}}</p>
+        <p><strong>{{localize "TITLE.NOVICE"}} [{{data.novice.action}}]:</strong> {{removeStyling data.novice.description}}</p>
+        <p><strong>{{localize "TITLE.ADEPT"}} [{{data.adept.action}}]:</strong> {{removeStyling data.adept.description}}</p>
+        <p><strong>{{localize "TITLE.MASTER"}} [{{data.master.action}}]:</strong> {{removeStyling data.master.description}}</p>
         {{/if}}
 
         {{#if isAbility}}
-        <p><strong>{{localize "ABILITY.DESCRIPTION"}}:</strong> {{removeMarkup data.description}}</p>
-        <p><strong>{{localize "TITLE.NOVICE"}} [{{data.novice.action}}]:</strong> {{removeMarkup data.novice.description}}</p>
-        <p><strong>{{localize "TITLE.ADEPT"}} [{{data.adept.action}}]:</strong> {{removeMarkup data.adept.description}}</p>
-        <p><strong>{{localize "TITLE.MASTER"}} [{{data.master.action}}]:</strong> {{removeMarkup data.master.description}}</p>
+        <p><strong>{{localize "ABILITY.DESCRIPTION"}}:</strong> {{removeStyling data.description}}</p>
+        <p><strong>{{localize "TITLE.NOVICE"}} [{{data.novice.action}}]:</strong> {{removeStyling data.novice.description}}</p>
+        <p><strong>{{localize "TITLE.ADEPT"}} [{{data.adept.action}}]:</strong> {{removeStyling data.adept.description}}</p>
+        <p><strong>{{localize "TITLE.MASTER"}} [{{data.master.action}}]:</strong> {{removeStyling data.master.description}}</p>
         {{/if}}
 
         {{#if isMysticalPower}}
         <p><strong>{{localize "MYSTICAL_POWER.MATERIAL"}}:</strong> {{data.material}}</p>
-        <p><strong>{{localize "MYSTICAL_POWER.DESCRIPTION"}}:</strong> {{removeMarkup data.description}}</p>
-        <p><strong>{{localize "TITLE.NOVICE"}} [{{data.novice.action}}]:</strong> {{removeMarkup data.novice.description}}</p>
-        <p><strong>{{localize "TITLE.ADEPT"}} [{{data.adept.action}}]:</strong> {{removeMarkup data.adept.description}}</p>
-        <p><strong>{{localize "TITLE.MASTER"}} [{{data.master.action}}]:</strong> {{removeMarkup data.master.description}}</p>
+        <p><strong>{{localize "MYSTICAL_POWER.DESCRIPTION"}}:</strong> {{removeStyling data.description}}</p>
+        <p><strong>{{localize "TITLE.NOVICE"}} [{{data.novice.action}}]:</strong> {{removeStyling data.novice.description}}</p>
+        <p><strong>{{localize "TITLE.ADEPT"}} [{{data.adept.action}}]:</strong> {{removeStyling data.adept.description}}</p>
+        <p><strong>{{localize "TITLE.MASTER"}} [{{data.master.action}}]:</strong> {{removeStyling data.master.description}}</p>
         {{/if}}
 
         {{#if isRitual}}
         <p><strong>{{localize "RITUAL.TRADITION"}}:</strong> {{data.tradition}}</p>
-        <p><strong>{{localize "RITUAL.DESCRIPTION"}}:</strong> {{removeMarkup data.description}}</p>
+        <p><strong>{{localize "RITUAL.DESCRIPTION"}}:</strong> {{removeStyling data.description}}</p>
         {{/if}}
 
         {{#if isWeapon}}
         <p><strong>{{localize "WEAPON_CLASS.LABEL"}}:</strong> {{data.reference}}</p>
-        <p><strong>{{localize "WEAPON.PC_DAMAGE"}}:</strong> {{data.pcDamage}}</p>
+        <p><strong>{{localize "WEAPON.PC_DAMAGE"}}:</strong> {{data.baseDamage}}</p>
         <p><strong>{{localize "WEAPON.COST"}}:</strong> {{data.cost}}</p>
-        <p><strong>{{localize "WEAPON.DESCRIPTION"}}:</strong> {{removeMarkup data.description}}</p>
+        <p><strong>{{localize "WEAPON.DESCRIPTION"}}:</strong> {{removeStyling data.description}}</p>
         {{/if}}
 
         {{#if isArmor}}
         <p><strong>{{localize "ARMOR.PC_PROTCETION"}}:</strong> {{data.pcProtection}}</p>
         <p><strong>{{localize "ARMOR.IMPEDING"}}:</strong> {{data.impeding}}</p>
         <p><strong>{{localize "ARMOR.COST"}}:</strong> {{data.cost}}</p>
-        <p><strong>{{localize "ARMOR.DESCRIPTION"}}:</strong> {{removeMarkup data.description}}</p>
+        <p><strong>{{localize "ARMOR.DESCRIPTION"}}:</strong> {{removeStyling data.description}}</p>
         {{/if}}
 
         {{#if isEquipment}}
         <p><strong>{{localize "EQUIPMENT.COST"}}:</strong> {{data.cost}}</p>
-        <p><strong>{{localize "EQUIPMENT.DESCRIPTION"}}:</strong> {{removeMarkup data.description}}</p>
+        <p><strong>{{localize "EQUIPMENT.DESCRIPTION"}}:</strong> {{removeStyling data.description}}</p>
         {{/if}}
 
         {{#if isArtifact}}

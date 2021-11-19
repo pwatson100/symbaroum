@@ -202,7 +202,7 @@
     </p>
     <br><br>
 
-    <h1>Abilities</span></h1>
+    <h1>Abilities</h1>
     <p>
         Some abilities and traits, when given to a character (PC and NPC), will have effect on her character sheet and / or on dialog windows.
     </p>
@@ -229,7 +229,7 @@
     </p>
     <br><br>
 
-    <h1>Using Powers</span></h1>
+    <h1>Using Powers</h1>
     <p>
         Powers can be activated by clicking on the icon with a green border on the character sheet (see <i>Adding Abilities, Traits, Boons and Burdens</i>), or opening the power and clicking on the orange dice of the item sheet (shown below).
         <br>
@@ -404,6 +404,16 @@
         &nbsp;<span class="img13">&nbsp;</span>&nbsp;
         <br>
     </p>
+    <h1>Death Saves & recovery</h1>
+    <p>
+        When a player needs to make a death save or recover from one, then there is two buttons at the top of the character sheet that allows to roll that automatically.
+        &nbsp;<span class="img29">&nbsp;</span>&nbsp;
+        <br/>
+        If a modifier is needed for the death save, such in case they are wearing a witch braid (see APG), then holding down shift while clicking the death save will prompt a menu for modifiers.
+        &nbsp;<span class="img28">&nbsp;</span>&nbsp;
+        <br/>
+        In case of one or more failed death rolls, skulls appears on the portrait of the character sheet, 1 skull for 1 failure, 2 skulls for 2 failures and 3 skulls for the final failure.  The skulls are removed as soon as the person <i>recover</i>.
+    </p>
     <h1>System settings</h1>
     <p>
         The following system settings exist - you can turn on and of to your hearts content or as you see fit for running your campaign.
@@ -434,6 +444,13 @@
         In attribute rolls, or combat rolls, shows the modifier the versus attribute gives<br>
         <b>Show NPC modifiers</b><br>
         Shows the character sheet for NPC/monster sheets as in the core book (i.e. from +5 to -5)<br>
+        <b>Show multiple attacks in the weapon box for NPCs</b><br>
+        The system will try to show the number of attacks an NPC can do. As the system do not know primary weapon, you might need to adjust which weapon gets a bonus, like "Twin Attack (Master)" - which is not accounted for without this setting, as you see fit as a GM.  The format are as follows: <ul>
+            <li>Any single attacks that prevents multiple attacks followed by a comma ','</li>
+            <li>Potential damage per attack with the given weapon, separated by a slash '/'</li>
+        </ul>
+        Note that due to these limitations - some judgement has to be done on which attack uses which value.
+        <br>
         <b>Allow reference modifications</b><br>
         Only shows for GM and shows a reference field on abilities, traits, etc. This reference is used for the automation of abilities. <br>
         <b>Supress Iniatiative Rolls</b><br>
@@ -463,8 +480,13 @@
         <br>
         Once you have made your selection(s) click the "Submit" button to enable them.
         In the event you make a choice you are unhappy with there is a selection of reset buttons to take you back to the default.
-
+        <br><br>
+        Background options:
     </p>
+    <div class="imagecontainer">
+        <img src="/systems/symbaroum/asset/image/system-guide/artboard_4.webp" style="width:70%; margin-left: 15%;">
+    </div>
+
     <br>
     <h1>Macros</h1>
     <p>
@@ -501,7 +523,8 @@
 
     <br><br>
     <h1>Supported Modules</h1>
-    <p><a href="https://foundryvtt.com/packages/dice-so-nice/">Dice-so-nice</a></p>
+    <p><a href="https://foundryvtt.com/packages/dice-so-nice/">Dice-so-nice</a>
+    <br/>Please note that Symbaroum requires DsN 4.2.2 or higher. There is also a <a href="https://gitlab.com/riccisi/foundryvtt-dice-so-nice/-/issues/266">known bug</a> that occurs when "Display Chat messages immediatly" is selected</p>
     <p><a href="https://foundryvtt.com/packages/statuscounter/">Status icons counters</a></p>
     <p><a href="https://foundryvtt.com/packages/token-action-hud/">Token action hud</a></p>
 </div>

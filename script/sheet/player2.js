@@ -1,6 +1,4 @@
 import { PlayerSheet } from "./player.js";
-import { prepareRollAttribute } from "../common/dialog.js";
-import { deathRoll } from "../common/roll.js";
 
 export class PlayerSheet2 extends PlayerSheet {
 
@@ -10,7 +8,7 @@ export class PlayerSheet2 extends PlayerSheet {
             template: "systems/symbaroum/template/sheet/player2.html",
             width: 800,
             height: 1000,
-            resizable: false,
+            resizable: true,
             tabs: [
                 {
                     navSelector: ".sheet-tabs",
@@ -49,14 +47,4 @@ export class PlayerSheet2 extends PlayerSheet {
         return data;
     }
 
-    render(args)
-    {
-        if(this.actor.type === "monster") {
-            this.constructor.defaultOptions.classes = ["symbaroum", "sheet", "actor"];
-        } else {
-            this.constructor.defaultOptions.classes = ["symbaroum", "sheet", "actor", "monster"];
-        }
-
-        super.render(args);
-    }
 }

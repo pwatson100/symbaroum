@@ -1,18 +1,19 @@
 <div class="symbaroum chat roll">
     <div class="foreground border">
-        <h3>{{localize "CHAT.DEATH_ROLL"}}</h3>
+        <h3>{{localize "CHAT.DEATH_ROLL" name=actor.name }}</h3>
+        <div class="dice-roll dice-total">
         {{#if isCriticalSuccess}}
-        <h4>{{localize "CHAT.CRITICAL_SUCCESS"}}</h4>
-        <h4>{{localize "CHAT.RECOVER"}} {{healing}} {{localize "CHAT.TOUGHNESS"}}</h4>
-        {{/if}}
-        {{#if hasSucceed}}
-        <h4>{{localize "CHAT.STAY_ALIVE"}}</h4>
+            <div>
+                <h4>{{localize "CHAT.CRITICAL_SUCCESS"}}</h4>
+                <h4>{{localize "CHAT.RECOVER"  name=actor.name}} {{healing}} {{localize "CHAT.TOUGHNESS" }}</h4>
+            </div>                    
+        {{else if hasSucceed}}
+            <div><h4>{{localize "CHAT.STAY_ALIVE"  name=actor.name }}</h4></div>
+        {{else if isCriticalFailure}}
+            <div><h4>{{localize "CHAT.DEAD"  name=actor.name }}</h4></div>
         {{else}}
-        {{#if isCriticalFailure}}
-        <h4>{{localize "CHAT.DEAD"}}</h4>
-        {{else}}
-        <h4>{{localize "CHAT.NEAR_DEATH"}} ({{nbrOfFailure}}/3) !</h4>
+            <div><h4>{{localize "CHAT.NEAR_DEATH"  name=actor.name }} ({{nbrOfFailure}}/3) !</h4></div>
         {{/if}}
-        {{/if}}
+        <div class="dice-tooltip" style="display:none; text-align: center;">{{{diceBreakdown}}}</div>
     </div>
 </div>
