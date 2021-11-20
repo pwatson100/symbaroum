@@ -170,11 +170,29 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
           let damModifierAttSup ="";
           let damModifierAttSupNPC=0;
           if(hasDamModifier) {
-            let damString = html.find("#dammodifier")[0].value;
+            let damString = html.find("#dammodifier")[0].value;            
+            // Save - it is a string
+            damString = damString.trim();
+            
             if(damString.length) {
-              if(damString.charAt(0)!== "+") {
-                damModifier = "+"+damString+"["+game.i18n.localize("DIALOG.DAMAGE_MODIFIER")+"] ";
-              } else damModifier = damString+"["+game.i18n.localize("DIALOG.DAMAGE_MODIFIER")+"] ";
+              attri_defaults.additionalModifier = damString; // Regardless if valid or not, set it as attri_defaults
+              let plus = '+';
+              let damSource = "["+game.i18n.localize("DIALOG.DAMAGE_MODIFIER")+"] ";
+              if(damString.charAt(0)=== "+" ) {
+                plus = ""; // If it already has plus, do not add another
+              }
+              if(/\[[^\]]+\]/.test(damString) ) {
+                damSource = ""; // If it has "[damage source]" already in roll string, do not add another one
+              }
+              damModifier = `${plus}${damString}${damSource}`;
+
+              try {
+                // Validate string as valid roll object              
+                let r = new Roll(damModifier,{}).evaluate({async:false});
+              } catch (err) {
+                  ui.notifications.error(`The ${game.i18n.localize("DIALOG.DAMAGE_MODIFIER")} can't be used for rolling damage ${err}`);
+                  return;
+              }
               damModifierAttSup = damModifier;
               if(!attackFromPC){
                 let parsedMod = parseInt(damString);
@@ -184,8 +202,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
                 }
               }
             }
-          }
-          attri_defaults.additionalModifier = damModifier;
+          }          
           if( weapon !== null) {
             for(let pack of weaponModifiers.package) {
               //add all modifiers from the default package
