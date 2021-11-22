@@ -2,7 +2,7 @@
   "name": "symbaroum",
   "title": "Symbaroum",
   "description": "Twilight falls. Davokar darkens.",
-  "version": "3.1.4",
+  "version": "3.1.5",
   "minimumCoreVersion": "0.8.5",
   "compatibleCoreVersion": "0.8.9",
   "authors": ["Paul Watson", "Bithir", "Khaali"],
@@ -26,6 +26,13 @@
       "label": "FR - Traits spéciaux du Système",
       "system": "symbaroum",
       "path": "./packs/symbaroumsystemitemsfr.db",
+      "entity": "Item"
+    },
+    {
+      "name": "symbaroumsystemitemsit",
+      "label": "IT - Tratti speciali di Symbaroum",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumsystemitemsit.db",
       "entity": "Item"
     },
     {
@@ -71,6 +78,13 @@
       "entity": "Item"
     },
     {
+      "name": "symbaroumabilitiesit",
+      "label": "IT - Abilità",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumabilitiesit.db",
+      "entity": "Item"
+    },
+    {
       "name": "symbaroumpowersen",
       "label": "EN - Powers",
       "system": "symbaroum",
@@ -103,6 +117,13 @@
       "label": "ES - Powers",
       "system": "symbaroum",
       "path": "./packs/symbaroumpowerses.db",
+      "entity": "Item"
+    },
+    {
+      "name": "symbaroumpowersit",
+      "label": "IT - Poteri",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumpowersit.db",
       "entity": "Item"
     },
     {
@@ -141,6 +162,13 @@
       "entity": "Item"
     },
     {
+      "name": "symbaroumtraitsit",
+      "label": "IT - Tratti",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumtraitsit.db",
+      "entity": "Item"
+    },
+    {
       "name": "symbaroumweaponsen",
       "label": "EN - Weapons",
       "system": "symbaroum",
@@ -159,6 +187,13 @@
       "label": "SV - Vapen",
       "system": "symbaroum",
       "path": "./packs/symbaroumweaponssv.db",
+      "entity": "Item"
+    },
+    {
+      "name": "symbaroumweaponsit",
+      "label": "IT - Armi",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumweaponsit.db",
       "entity": "Item"
     },    
     {
@@ -182,6 +217,13 @@
       "path": "./packs/symbaroumarmorssv.db",
       "entity": "Item"
     },    
+    {
+      "name": "symbaroumarmorsit",
+      "label": "IT - Armature",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumarmorsit.db",
+      "entity": "Item"
+    },
     {
       "name": "symbaroummacrosfr",
       "label": "FR - Macros",
@@ -222,6 +264,11 @@
       "lang": "de",
       "name": "Deutsche ",
       "path": "lang/de.json"
+    },
+    {
+      "lang": "it",
+      "name": "Italiano",
+      "path": "lang/it.json"
     }
   ],
   "gridDistance": 1,
@@ -231,7 +278,7 @@
   "initiative": "1d20[tiebreaker]/100000 + @initiative.value",
   "socket": true,
   "url": "https://github.com/pwatson100/symbaroum",
-  "manifest": "https://github.com/pwatson100/symbaroum/releases/download/3.1.4/system.json",
-  "download": "https://github.com/pwatson100/symbaroum/releases/download/3.1.4/master.zip",
+  "manifest": "https://github.com/pwatson100/symbaroum/releases/download/3.1.5/system.json",
+  "download": "https://github.com/pwatson100/symbaroum/releases/download/3.1.5/master.zip",
   "license": "LICENSE.txt"
 }
