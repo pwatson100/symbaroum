@@ -237,6 +237,13 @@
       "system": "symbaroum",
       "path": "./packs/symbaroummacrosen.db",
       "entity": "Macro"
+    },
+    {
+      "name": "symbaroummacrosit",
+      "label": "IT - Macro",
+      "system": "symbaroum",
+      "path": "./packs/symbaroummacrosit.db",
+      "entity": "Macro"
     }
   ],
   "languages": [
