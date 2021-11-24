@@ -466,9 +466,7 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
 });
 
 Hooks.on("renderPause", (_app, html, options) => {
-  game.symbaroum.info("Pause render", _app, html, options);
 	html.find('img[src="icons/svg/clockwork.svg"]').attr("src", "systems/symbaroum/asset/image/head.webp");
-  html.append("<h5>Paused</h5>");
 });
 
 function setup3PartySettings() {
