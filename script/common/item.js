@@ -49,7 +49,6 @@ export class SymbaroumItem extends Item {
         const title = game.i18n.format("ENTITY.Create", {entity: label});
 
         types = types.filter(e => !game.symbaroum.config.itemDeprecated.includes(e));
-        game.symbaroum.log(types);
 
         // Render the entity creation form
         const html = await renderTemplate(`templates/sidebar/entity-create.html`, {
