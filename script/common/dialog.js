@@ -335,7 +335,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
                 ecData.dmgModifierAttackSupp= damModifierAttSup;
                 ecData.dmgModifierAttackSuppNPC= damModifierAttSupNPC;
             }
-            ecData.notResisted = ecData.notResisted ?? (ecData.notResistWhenFirstCast && !ecData.isMaintained);
+            ecData.notResisted = ecData.notResisted ?? (((ecData.casting === game.symbaroum.config.CASTING_RES) && !ecData.isMaintained ) || ((ecData.maintain === game.symbaroum.config.MAINTAIN_RES) && ecData.isMaintained));
             if(hasTarget && !ecData.notResisted){
               if(ecData.attackFromPC || ecData.targetData.actor.type === "monster"){
                   ecData.resistRoll = false;
@@ -428,7 +428,7 @@ function getVersusModifiers(targetTokens) {
   };
 }
 
-function createLineDisplay(weaponModifiers, attackFromPC) 
+export function createLineDisplay(weaponModifiers, attackFromPC) 
 {
   // game.symbaroum.log("packages", weaponModifiers)
   if(weaponModifiers.maxAttackNb > 1){

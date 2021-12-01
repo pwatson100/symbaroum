@@ -1430,7 +1430,6 @@
   background: none;
 }
 #pause > img {
-  content: url("../asset/image/head.webp");
   width: 200px;
   height: 200px;
   top: -50px;
