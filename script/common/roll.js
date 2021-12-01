@@ -1,4 +1,4 @@
-import { getPowerLevel, formatRollResult } from './item.js';
+import { formatRollResult } from './item.js';
 
 export async function rollAttribute(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier, armor, weapon, advantage, damModifier) {
   let dam = "";	

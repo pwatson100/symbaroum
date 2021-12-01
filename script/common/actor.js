@@ -772,15 +772,7 @@ export class SymbaroumActor extends Actor {
 
     }
 
-    /*evaluate the temmporary corruption to be received by the actor
-    @Params: {functionStuff.array}    traditions : an array of the references of the mystic tradition abilities that may decrease this roll
-            {functionStuff.object}    returned by getMysticAbilities()
-            {functionStuff.actor}     the actor
-            {functionStuff.attackFromPC}  wehther the acting character ic PC (rolls dice) or NPC (fixed result)
-            {functionStuff.corruptionFormula}      formula for base corruption roll
-    @returns: array of  {boolean} has(ability)
-                        {number} level
-                        {string} levelname the localized label (novice, adpet or master)}*/
+    //evaluate the temmporary corruption to be received by the actor
     async getCorruption(functionStuff){
         if(this.data.isThoroughlyCorrupt || functionStuff.corruption === game.symbaroum.config.TEMPCORRUPTION_NONE) {return({value: 0})}
         let corruptionFormula = functionStuff.corruptionFormula ?? "1d4";
@@ -844,11 +836,13 @@ export class SymbaroumActor extends Actor {
                 specificStuff.targetData = {hasTarget : false};
             }
             
-            if(specificStuff.targetPresentFSmod){
+            if(specificStuff.targetPresentFSmod && specificStuff.targetData.hasTarget){
                 specificStuff = Object.assign({}, specificStuff , specificStuff.targetPresentFSmod);
-                console.log(specificStuff);
             }
-            if(specificStuff.hasDamageifTarget && specificStuff.targetData.hasTarget) specificStuff.hasDamage=true;
+            if(specificStuff.targetFullyCorruptedFSmod && specificStuff.targetData.hasTarget && specificStuff.targetData.isCorrupted){
+                specificStuff = Object.assign({}, specificStuff , specificStuff.targetFullyCorruptedFSmod);
+                specificStuff.targetData.autoParams += game.i18n.localize('TOOLTIP.HEALTH.CORRUPTION_NA_TEXT');
+            }
             if(specificStuff.targetImpeding && specificStuff.targetData.hasTarget) specificStuff.targetImpeding=specificStuff.targetData.actor.data.data.combat.impedingMov;
             
             if(specificStuff.targetData.hasTarget && specificStuff.targetData.actor.data.data.combat.damageReductions.length && specificStuff.targetResistAttribute === "resolute"){
