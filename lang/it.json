@@ -96,9 +96,9 @@
     "ABILITY_DOMINATE_MASTER.CHAT_SUCCESS": "{actorname} sottomette il suo nemico.",
   
     "ABILITY_LEADER.CHAT_SUCCESS": "Gli alleati ottengono +1d4 danni contro {targetname}",
-    "ABILITY_LOREMASTER.CHAT_INTRO": "{actorname} tenta di ricordare qualcosa che ha sentito a profosito.",
+    "ABILITY_LOREMASTER.CHAT_INTRO": "{actorname} tenta di ricordare qualcosa che ha sentito a proposito.",
     "ABILITY_LOREMASTER.CHAT_SUCCESS": "{actorname} e effettivamente ci riesce.",
-    "ABILITY_LOREMASTER.CHAT_FAILURE": "{actorname} ma non ne ha la minima idea.",
+    "ABILITY_LOREMASTER.CHAT_FAILURE": "{actorname} non ne ha la minima idea.",
   
     "ABILITY_MEDICUS.CHAT_INTRO": "{actorname} cura le ferite",
     "ABILITY_MEDICUS.CHAT_SUCCESS": "{actorname} che sembrano iniziare a rimarginarsi.",
@@ -385,7 +385,7 @@
     "DIALOG.WEAPON_DAMAGE": "Tiro danni",  
     "DIALOG.CASTING": "Casting iniziale",
     "DIALOG.IMPEDING": "Includi il malus di ingombro?",
-    "DIALOG.MAINTAINING": "Abilità per il mantenimento",
+    "DIALOG.MAINTAINING": "Mantieni il cast",
   
     "EQUIPMENT.NAME": "Nome",
     "EQUIPMENT.COST": "Costo",
