@@ -36,6 +36,11 @@ SYMBAROUM.itemSortOrder = [
     "artifact"
 ];
 
+// Deprecated item types
+SYMBAROUM.itemDeprecated = [
+'artifact'
+];
+
 // Ability definitions
 SYMBAROUM.abilitiesList = {
     "none": 'ABILITY_LABEL.DEFAULT', 
