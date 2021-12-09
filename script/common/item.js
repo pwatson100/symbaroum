@@ -2324,6 +2324,10 @@ export class SymbaroumItem extends Item {
         return(base);
     }
     
+    abilitySetupBeastlore(base) {
+        return(base);
+    }
+    
     abilitySetupBerserker(base) {
         base.casting = game.symbaroum.config.CASTING_NOT;
         base.gmOnlyChatResultNPC = true;
