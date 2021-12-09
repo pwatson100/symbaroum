@@ -19,7 +19,7 @@
                         </tr>
                     </thead>
                     </tbody>
-                    {{#each actor.data.armors as |item|}}   
+                    {{#each actor.data.armors as |item|}}
                         <tr class="armor item" data-item-id="{{item.id}}" >
                             <td>
                                 <div class="cell">
@@ -55,66 +55,51 @@
                                 {{#if item.isNoArmor }} {{else}}
                                 <a class="item-control item-delete" title="{{localize "ARMOR.DELETEBUTTON"}}"><i class="fas fa-trash"></i></a>
                                 {{/if}}
-                            </td>                            
+                            </td>
                         </tr>
-                    {{/each}}         
+                    {{/each}}
                     </tbody>
                 </table>
             </div>
         </div>
         <div class="weapons foreground">
-        <h1>{{localize "TITLE.WEAPONS"}}</h1>
-        <div class="scrollable item-list">
-            <table>
-                <thead>
-                    <tr class="item-header">
-                        <th class="name">{{localize "WEAPON.NAME"}}</th>
-                        <th class="damage" title="{{localize "WEAPON.DAMAGE"}}">{{localizeabbr "WEAPON.DAMAGE"}}</th>
-                        <th class="attribute" title="{{localize "WEAPON.ATTRIBUTE"}}">{{localizeabbr "WEAPON.ATTRIBUTE"}}</th>
-                        <th class="state">{{localize "GEAR.STATE"}}</th>
-                        <th class="addbutton">
-                            <a class="item-create" title="{{localize "WEAPON.ADDBUTTON"}}" data-type="weapon"><i class="fas fa-plus"></i></a>
-                        </td>
-                    </tr>
-                </thead>
-                <tbody>
-                {{#each actor.data.weapons as |item|}}
-                    <tr class="weapon item" data-item-id="{{item.id}}" >
-                        <td>
-                            <div class="cell">
-                            <div class="namefield">
-                                    <div class="image-container">
-                                        <div class="image" style="background-image: url('{{item.img}}')"></div>
-                                    </div>
-                                    <button class="item-edit ellipsis weaponname">{{item.name}}</button>
-                            </div>
-                            </div>
-                        </td>
-                        <td class="damage">
-                            <div style="padding-left: 3px;" {{#ife ../actor.type "player"}}title="{{item.damage.displayText}}"{{/ife}} class="playergear damage ellipsis">
-                            {{item.damage.displayTextShort}}
-                            </div>
-                        </td>
-                        <td class="attribute" title="{{localize "WEAPON.ATTRIBUTE"}} {{localize item.attributeLabel}}"><div class="attribute">{{localizeabbr item.attributeLabel}}</div>
-                        </td>
-                        <td class="state">
-                            {{#if item.isActive}}
-                                <a class="item-state" title="{{localize 'GEAR.ACTIVE'}}"><i class="fas fa-tshirt"></i></a>
-                            {{else if item.isEquipped}}
-                                <a class="item-state" title="{{localize 'GEAR.EQUIPPED'}}"><i class="fas fa-suitcase"></i></a>
-                            {{else}}
-                                <a class="item-state" title="{{localize 'GEAR.OTHER'}}"><i class="fas fa-warehouse"></i></a>
-                            {{/if}}
-                        </td>
-                        <td class="button">
-                            <a class="item-control item-delete" title="{{localize "WEAPON.DELETEBUTTON"}}"><i class="fas fa-trash"></i></a>
-                        </td>
-                    </tr>  
-                {{/each}}
-                </tbody>
-            </table>
-            </div>
-        </div>
+			<h1>{{localize "TITLE.WEAPONS"}}</h1>
+			<table class="weapon-list scrollable item-list">
+				<thead>
+					<tr>
+						<th scope="col" class="name">{{localize "WEAPON.NAME"}}</th>
+						<th scope="col" class="damage" title="{{localize "WEAPON.DAMAGE"}}">{{localizeabbr "WEAPON.DAMAGE"}}</th>
+						<th scope="col" class="attribute" title="{{localize "WEAPON.ATTRIBUTE"}}">{{localizeabbr "WEAPON.ATTRIBUTE"}}</th>
+						<th scope="col" class="state">{{localize "GEAR.STATE"}}</th>
+						<th scope="col"><button class="addbutton item-create" title="{{localize "WEAPON.ADDBUTTON"}}" data-type="weapon"><i class="fas fa-plus"></i></button></th>
+					</tr>
+				</thead>
+				<tbody>
+					{{#each actor.data.weapons as |item|}}
+						<tr class="weapon item" data-item-id="{{item.id}}" >
+							<th scope="row">
+								<img src="{{item.img}}"/>
+								<a class="item-name"><strong>{{item.name}}</strong></a>
+							</th>
+							<td {{#ife ../actor.type "player"}} title="{{item.damage.displayText}}"{{/ife}} class="playergear damage ellipsis">
+								{{item.damage.displayTextShort}}
+							</td>
+							<td class="attribute" title="{{localize "WEAPON.ATTRIBUTE"}} {{localize item.attributeLabel}}">{{localizeabbr item.attributeLabel}}</td>
+							<td>
+								{{#if item.isActive}}
+									<button class="state item-state" title="{{localize 'GEAR.ACTIVE'}}"><i class="fas fa-tshirt"></i></button>
+								{{else if item.isEquipped}}
+									<button class="state item-state" title="{{localize 'GEAR.EQUIPPED'}}"><i class="fas fa-suitcase"></i></button>
+								{{else}}
+									<button class="state item-state" title="{{localize 'GEAR.OTHER'}}"><i class="fas fa-warehouse"></i></button>
+								{{/if}}
+							</td>
+							<td><button class="button item-control item-delete" title="{{localize "WEAPON.DELETEBUTTON"}}"><i class="fas fa-trash"></i></button></td>
+						</tr>
+					{{/each}}
+				</tbody>
+			</table>
+		</div>
         <div class="artifacts foreground">
             <h1>{{localize "TITLE.ARTIFACTS"}}</h1>
             <div class="scrollable">
@@ -132,7 +117,7 @@
                     </thead>
                     <tbody>
                         {{#each items as |item|}}
-                        {{#if item.data.isArtifact}}                        
+                        {{#if item.data.isArtifact}}
                         <tr class="artifact item" data-item-id="{{item.id}}">
                             <td class="name">
                                 <div class="cell">
@@ -163,7 +148,7 @@
                                 {{#if item.data.typeArtifact}}
                                 <a class="item-control item-delete" title="{{localize "ARTIFACT.DELETEBUTTON"}}"><i class="fas fa-trash"></i></a>
                                 {{/if}}
-                            </td>                            
+                            </td>
                         </tr>
                         {{/if}}
                         {{/each}}
@@ -189,14 +174,14 @@
                     </thead>
                     <tbody>
                         {{#each items as |item|}}
-                        {{#if item.data.isEquipment}}                       
+                        {{#if item.data.isEquipment}}
                         <tr class="equipment item" data-item-id="{{item.id}}">
                             <td class="name" title="{{item.name}}">
                                 <div class="cell">
                                 <div class="namefield">
                                     <div class="image-container">
                                         <div class="image" style="background-image: url('{{item.img}}')"></div>
-                                    </div>                                
+                                    </div>
                                     <button class="item-edit ellipsis equipmentname">{{item.name}}</button>
                                 </div>
                                 </div>
@@ -215,7 +200,7 @@
                             </td>
                             <td class="button">
                                 <a class="item-control item-delete" title="{{localize "EQUIPMENT.DELETEBUTTON"}}"><i class="fas fa-trash"></i></a>
-                            </td>                            
+                            </td>
                         </tr>
                         {{/if}}
                         {{/each}}
