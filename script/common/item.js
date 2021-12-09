@@ -32,57 +32,6 @@ export class SymbaroumItem extends Item {
         super.create(data, options);
     }
 
-/**
-   * Present a Dialog form to create a new Document of this type.
-   * Choose a name and a type from a select menu of types.
-   * @param {object} data         Initial data with which to populate the creation form
-   * @param {object} [options]    Positioning and sizing options for the resulting dialog
-   * @return {Promise<Document>}  A Promise which resolves to the created Document
-   * @memberof ClientDocumentMixin
-   */
-    static async createDialog(data={}, options={}) {
-
-        // Collect data
-        const documentName = CONFIG.Item.documentClass.metadata.name;
-        let types = game.system.entityTypes[documentName];
-        const folders = game.folders.filter(f => (f.data.type === documentName) && f.displayed);
-        const label = game.i18n.localize(this.metadata.label);
-        const title = game.i18n.format("ENTITY.Create", {entity: label});
-
-        types = types.filter(e => !game.symbaroum.config.itemDeprecated.includes(e));
-
-        // Render the entity creation form
-        const html = await renderTemplate(`templates/sidebar/entity-create.html`, {
-            name: data.name || game.i18n.format("ENTITY.New", {entity: label}),
-            folder: data.folder,
-            folders: folders,
-            hasFolders: folders.length > 1,
-            type: data.type || types[0],
-            types: types.reduce((obj, t) => {
-            const label = CONFIG[documentName]?.typeLabels?.[t] ?? t;
-            obj[t] = game.i18n.has(label) ? game.i18n.localize(label) : t;
-            return obj;
-            }, {}),
-            hasTypes: types.length > 1
-        });
-
-        // Render the confirmation dialog window
-        return Dialog.prompt({
-            title: title,
-            content: html,
-            label: title,
-            callback: html => {
-            const form = html[0].querySelector("form");
-            const fd = new FormDataExtended(form);
-            data = foundry.utils.mergeObject(data, fd.toObject());
-            if ( !data.folder ) delete data["folder"];
-            if ( types.length === 1 ) data.type = types[0];
-            return this.create(data, {renderSheet: true});
-            },
-            rejectClose: false,
-            options: options
-        });
-    }    
 
     prepareData() {
         super.prepareData();
