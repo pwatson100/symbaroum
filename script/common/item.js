@@ -971,6 +971,17 @@ export class SymbaroumItem extends Item {
         combatMods.traditions.push(base);
     }
 
+    getItemModifierChanneling(combatMods, armors, weapons, abilities)
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        if(lvl.level > 1){
+            let base = this._getBaseFormat();
+            base.type = game.symbaroum.config.TEMPCORRUPTION_FAVOUR;
+            combatMods.corruption.push(base);
+        }
+    }
+
     getItemModifierColossal(combatMods, armors, weapons, abilities) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
