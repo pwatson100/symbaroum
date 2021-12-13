@@ -784,16 +784,15 @@ export class SymbaroumActor extends Actor {
             if(sorceryRoll.trueActorSucceeded){
                 return({value: 1, tradition: "sorcery", sorceryRoll: sorceryRoll})
             }
-        } else if (functionStuff.corruption === game.symbaroum.config.TEMPCORRUPTION_FAVOUR){
-            corruptionFormula = "2d4kl";
-        }         
-        if(functionStuff.attackFromPC){
-            let corRoll= new Roll(corruptionFormula).evaluate({async:false});
-            return({value: corRoll.total, sorceryRoll: sorceryRoll, corruptionRoll: corRoll})
+        } else{
+            for(let i = 0; i < this.data.data.combat.combatMods.corruption.length; i++) {
+                if(this.data.data.combat.combatMods.corruption[i].type === game.symbaroum.config.TEMPCORRUPTION_FAVOUR){
+                    corruptionFormula = "2d4kl";
+                }
+            }
         }
-        let corRoll= new Roll(corruptionFormula).evaluate({maximize: true, async:false});
-        let value = Math.ceil(corRoll.total/2);
-        return({value: value, sorceryRoll: sorceryRoll, corruptionRoll: corRoll})
+        let corRoll= new Roll(corruptionFormula).evaluate({async:false});
+        return({value: corRoll.total, sorceryRoll: sorceryRoll, corruptionRoll: corRoll})
     }
 
     async usePower(ability){
