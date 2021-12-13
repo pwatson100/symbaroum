@@ -1,4 +1,4 @@
-import { modifierDialog, getTarget, getTargets, getTokenId, markScripted } from './item.js';
+import { modifierDialog } from './item.js';
 import { prepareRollAttribute } from "../common/dialog.js";
 import { baseRoll } from './roll.js';
 
@@ -944,4 +944,72 @@ export class SymbaroumActor extends Actor {
         functionStuff.askPoison = poisoner.length != 0;
         prepareRollAttribute(this, weapon.attribute, null, weapon, functionStuff); 
     }
+}
+
+/*get the target token, its actor, and evaluate which attribute this actor will use for opposition
+@Params: {string}   targetAttributeName : the name of the resist attribute. Can be defense, and can be null.
+@returns:  {targetData object}*/
+export function getTarget(targetAttributeName) {
+    let targetsData;
+    try{targetsData = getTargets(targetAttributeName, 1)} catch(error){      
+        throw error;
+    }
+    return targetsData[0]
+}
+
+export function getTargets(targetAttributeName, maxTargets = 1) {
+    let targets = Array.from(game.user.targets)
+    if(targets.length == 0 || targets.length > maxTargets)
+    {
+        throw game.i18n.localize('ABILITY_ERROR.TARGET');
+    }
+    let targetsData = [];
+    for(let target of targets){
+        let targetToken = target;
+        let targetActor = target.actor;
+        let autoParams = "";
+        let leaderTarget = false;
+            // check for leader adept ability effect on target
+        const LeaderEffect = "icons/svg/eye.svg";
+        let leaderEffect = getEffect(targetToken, LeaderEffect);
+        if(leaderEffect){
+            leaderTarget = true;
+            autoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
+        };
+        targetsData.push({
+            hasTarget: true,
+            token: targetToken,
+            actor: targetActor,
+            name: targetToken.data.name,
+            tokenId: targetToken.id,
+            resistAttributeName: targetAttributeName,
+            leaderTarget: leaderTarget,
+            autoParams: autoParams,
+            isCorrupted: target.actor.data.isThoroughlyCorrupt
+        })
+    }
+    return(targetsData)
+}
+
+export function markScripted(item){
+    item.data.data.hasScript = false;
+    if(scriptedAbilities.includes(item.data.data.reference)){
+        item.data.data.hasScript = true;
+        item.data.data.script = true;
+    }
+    return;
+}
+
+/* get the selected token ID */
+export async function getTokenId(actor){
+    let selected = canvas.tokens.controlled;
+    if(selected.length > 1 || selected.length == 0){
+        throw game.i18n.localize('ERROR.NO_TOKEN_SELECTED');
+    }
+    if(actor){
+        if(selected[0].actor.data._id !== actor.data._id){
+            throw game.i18n.localize('ERROR.NO_TOKEN_SELECTED');
+        }
+    }
+    return(selected[0])
 }
