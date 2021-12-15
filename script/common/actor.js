@@ -1,4 +1,4 @@
-import { modifierDialog } from './item.js';
+import { getEffect, modifierDialog } from './item.js';
 import { prepareRollAttribute } from "../common/dialog.js";
 import { baseRoll } from './roll.js';
 
@@ -838,10 +838,9 @@ export class SymbaroumActor extends Actor {
             if(specificStuff.targetPresentFSmod && specificStuff.targetData.hasTarget){
                 specificStuff = Object.assign({}, specificStuff , specificStuff.targetPresentFSmod);
             }
-            if(specificStuff.targetFullyCorruptedFSmod && specificStuff.targetData.hasTarget && specificStuff.targetData.isCorrupted){
-                specificStuff = Object.assign({}, specificStuff , specificStuff.targetFullyCorruptedFSmod);
-                specificStuff.targetData.autoParams += game.i18n.localize('TOOLTIP.HEALTH.CORRUPTION_NA_TEXT');
-            }
+
+            specificStuff.targetFullyCorrupted = specificStuff.targetFullyCorruptedFSmod && specificStuff.targetData.hasTarget && specificStuff.targetData.isCorrupted;
+
             if(specificStuff.targetImpeding && specificStuff.targetData.hasTarget) specificStuff.targetImpeding=specificStuff.targetData.actor.data.data.combat.impedingMov;
             
             if(specificStuff.targetData.hasTarget && specificStuff.targetData.actor.data.data.combat.damageReductions.length && specificStuff.targetResistAttribute === "resolute"){
@@ -894,7 +893,7 @@ export class SymbaroumActor extends Actor {
     async enhancedAttackRoll(weapon){
         // get selected token
         let token;
-        try{token = await getTokenId(this)} catch(error){
+        try{token = await this.getTokenId()} catch(error){
             ui.notifications.error(error);
             return;
         }
@@ -942,6 +941,18 @@ export class SymbaroumActor extends Actor {
         let poisoner = this.items.filter(item => (item.data.data?.reference === "poisoner" || item.data.data?.reference === "poisonous"));
         functionStuff.askPoison = poisoner.length != 0;
         prepareRollAttribute(this, weapon.attribute, null, weapon, functionStuff); 
+    }
+
+    /* get the selected token ID of the actor */
+    async getTokenId(){
+        let selected = canvas.tokens.controlled;
+        if(selected.length > 1 || selected.length == 0){
+            throw game.i18n.localize('ERROR.NO_TOKEN_SELECTED');
+        }
+        if(selected[0].actor.data._id !== this.data._id){
+            throw game.i18n.localize('ERROR.NO_TOKEN_SELECTED');
+        }
+        return(selected[0])
     }
 }
 
@@ -992,23 +1003,9 @@ export function getTargets(targetAttributeName, maxTargets = 1) {
 
 export function markScripted(item){
     item.data.data.hasScript = false;
-    if(scriptedAbilities.includes(item.data.data.reference)){
+    if(game.symbaroum.config.scriptedAbilities.includes(item.data.data.reference)){
         item.data.data.hasScript = true;
         item.data.data.script = true;
     }
     return;
-}
-
-/* get the selected token ID */
-export async function getTokenId(actor){
-    let selected = canvas.tokens.controlled;
-    if(selected.length > 1 || selected.length == 0){
-        throw game.i18n.localize('ERROR.NO_TOKEN_SELECTED');
-    }
-    if(actor){
-        if(selected[0].actor.data._id !== actor.data._id){
-            throw game.i18n.localize('ERROR.NO_TOKEN_SELECTED');
-        }
-    }
-    return(selected[0])
 }

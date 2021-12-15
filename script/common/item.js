@@ -2281,6 +2281,7 @@ export class SymbaroumItem extends Item {
         base.traditions = [game.symbaroum.config.TRAD_THEURGY];
         base.introText= game.i18n.localize('POWER_PRIOSBURNINGGLASS.CHAT_INTRO');
         base.hasDamage= true;
+        base.askCorruptedTarget = true;
         if(base.powerLvl.level === 1) {
             base.damageDice = "1d6";
             base.targetFullyCorruptedFSmod = {
@@ -2544,17 +2545,50 @@ export class SymbaroumItem extends Item {
         return(base);
     }
 
+    async getFunctionStuffDefault(actor) {
+        let selectedToken= await actor.getTokenId();
+        let functionStuff = {
+            casting: game.symbaroum.config.CASTING,
+            maintain: game.symbaroum.config.MAINTAIN_NOT,
+            chain: game.symbaroum.config.CHAIN_NOT,
+            ability: this.data,
+            actor: actor,
+            askTargetAttribute: false,
+            askCastingAttribute: false,
+            attackFromPC: actor.type !== "monster",
+            autoParams: "",
+            combat: false,
+            corruption: false,
+            favour: 0,
+            isMaintained: false,
+            modifier: 0,
+            targetMandatory : false,
+            targetData: {hasTarget: false, leaderTarget: false},
+            token :selectedToken,
+            tokenId :selectedToken.id,
+            tokenName :selectedToken.data.name,
+            addCasterEffect: [],
+            addTargetEffect: [],
+            activelyMaintainedTargetEffect: [],
+            activelyMaintaninedCasterEffect: [],
+            removeTargetEffect: [],
+            removeCasterEffect: [],
+            introText: game.i18n.localize('POWER.CHAT_INTRO') + this.name + " \".",
+            introTextMaintain: game.i18n.localize('POWER.CHAT_INTRO_M') + this.name + " \".",
+            resultTextSuccess: game.i18n.localize('POWER.CHAT_SUCCESS'),
+            resultTextFail: game.i18n.localize('POWER.CHAT_FAILURE'),
+            resistRollText: "",
+            hasDamage: false,
+            isAlternativeDamage: false,
+            dmgModifier: "",
+            hasAdvantage: false,
+            ignoreArm: false
+        };
+        return(functionStuff);
+    }
 }
-
-export const scriptedAbilities =
-["alchemy", "acrobatics", "artifactcrafting", "beastlore", "berserker", "blacksmith", "dominate", "leader", "loremaster",
- "medicus", "poisoner", "quickdraw", "recovery", "strangler", "witchsight",
- "anathema", "brimstonecascade", "bendwill", "blackbolt", "blessedshield",
- "confusion", "curse", "dancingweapon", "entanglingvines", "holyaura", "inheritwound", "larvaeboils", "layonhands",
- "levitate", "maltransformation", "mindthrow", "priosburningglass", "tormentingspirits", "unnoticeable",
- "poisonous", "regeneration", "shapeshifter", "wisdomages"];
   
-  async function weaponTypeLabel(weapon){
+async function weaponTypeLabel(weapon){
     switch (weapon.reference){
         case "1handed":
             return(game.i18n.localize('WEAPON_CLASS.1HANDED'));
@@ -2645,7 +2679,7 @@ async function checkCorruptionThreshold(actor, corruptionGained){
 }
 
 //check if there is an icon effect on the token
-function getEffect(token, effect){
+export function getEffect(token, effect){
     if(game.modules.get("statuscounter")?.active){
         if(EffectCounter.findCounter(token, effect)){
             return(true)
@@ -2683,7 +2717,8 @@ will send to screen a windows asking for modifiers for the roll, then roll, then
 export async function modifierDialog(functionStuff){
     let hasTarget = functionStuff.targetData.hasTarget;
     let isWeaponRoll = false;
-    let askCorruptedTarget = functionStuff.askCorruptedTarget ?? false;
+    let askCorruptedTargetDefaultYes = functionStuff.askCorruptedTarget && functionStuff.targetFullyCorrupted;
+    let askCorruptedTargetDefaultNo = functionStuff.askCorruptedTarget && !functionStuff.targetFullyCorrupted;
     let leaderTarget = functionStuff.targetData.leaderTarget ?? false;
     let medicus = functionStuff.medicus ?? false;
     let poisoner = functionStuff.poisoner ?? false;
@@ -2744,7 +2779,8 @@ export async function modifierDialog(functionStuff){
         leaderTarget: leaderTarget,
         packages: functionStuff.package,
         askImpeding: askImpeding,
-        askCorruptedTarget: askCorruptedTarget,
+        askCorruptedTargetDefaultYes: askCorruptedTargetDefaultYes,
+        askCorruptedTargetDefaultNo: askCorruptedTargetDefaultNo,
         weaponDamage : weaponDamage,
         contextualDamage: functionStuff.hasDamage,
         d8: d8,
@@ -2827,8 +2863,12 @@ export async function modifierDialog(functionStuff){
                         functionStuff.autoParams += game.i18n.localize("ARMOR.IMPEDING_TARGET") + ", ";
                     }
                 }
-                if(askCorruptedTarget){
+                if(askCorruptedTargetDefaultYes || askCorruptedTargetDefaultNo){
                     functionStuff.targetFullyCorrupted = html.find("#targetCorrupt")[0].checked;
+                    if(functionStuff.targetFullyCorrupted){
+                        functionStuff = Object.assign({}, functionStuff , functionStuff.targetFullyCorruptedFSmod);
+                        functionStuff.targetData.autoParams += game.i18n.localize('TOOLTIP.HEALTH.CORRUPTION_NA_TEXT');
+                    }
                 }
                 //combat roll stuff
                 if(functionStuff.hasDamage){
@@ -3019,7 +3059,7 @@ export function checkSpecialResistanceMod(damageReductions, autoParams = "", abi
                     modifier += damageReductions[i].modifier;
                 } else if(damageReductions[i].type === game.symbaroum.config.TYPE_DMG_AVOIDING){
                     autoParams+=damageReductions[i].label+", ";
-                    dmgavoiding += true;
+                    dmgavoiding = true;
                 }
             }
         }
@@ -3427,10 +3467,11 @@ async function standardPowerResult(rollData, functionStuff){
             rolls = rolls.concat(rollData[i].rolls);
         }
     }
-            
-    if(specificStuff.rollFailedFSmod && !trueActorSucceeded){
-        functionStuff = Object.assign({}, functionStuff , functionStuff.targetPresentFSmod);
+
+    if(functionStuff.rollFailedFSmod && !trueActorSucceeded){
+        functionStuff = Object.assign({}, functionStuff , functionStuff.rollFailedFSmod);
     }
+
     if( functionStuff.resultRolls !== undefined && functionStuff.resultRolls !== null) {
         rolls = rolls.concat(functionStuff.resultRolls);
     }
@@ -3445,17 +3486,17 @@ async function standardPowerResult(rollData, functionStuff){
     }
 
     let hasDamage = functionStuff.hasDamage;
-    let doDamage = hasDamage&&trueActorSucceeded;
+    let doDamage = hasDamage&&trueActorSucceeded || functionStuff.avoidDamageDice;
     let damageTot = 0;
     let damageText="";
     let damageRollResult="";
     let dmgFormula="";
     let damageTooltip="";
     let damageFinalText="";
-    let damageDice=functionStuff.damageDice;
+    let damageDice = functionStuff.dmgavoiding ? functionStuff.avoidDamageDice : functionStuff.damageDice;
     let targetDies = false;
-
-    if(damageDice = "0d0"){
+console.log(functionStuff);
+    if(damageDice === "0d0"){
         doDamage=false;
         resultText= game.i18n.format(game.i18n.localize('POWER_BRIMSTONECASC.CHAT_FAILURE_RR'), namesForText);
     }

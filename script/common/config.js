@@ -378,6 +378,14 @@ SYMBAROUM.powersList = {
     "witchhammer": 'POWER_LABEL.WITCH_HAMMER'
 };
 
+SYMBAROUM.scriptedAbilities =
+["alchemy", "acrobatics", "artifactcrafting", "beastlore", "berserker", "blacksmith", "dominate", "leader", "loremaster",
+ "medicus", "poisoner", "quickdraw", "recovery", "strangler", "witchsight",
+ "anathema", "brimstonecascade", "bendwill", "blackbolt", "blessedshield",
+ "confusion", "curse", "dancingweapon", "entanglingvines", "holyaura", "inheritwound", "larvaeboils", "layonhands",
+ "levitate", "maltransformation", "mindthrow", "priosburningglass", "tormentingspirits", "unnoticeable",
+ "poisonous", "regeneration", "shapeshifter", "wisdomages"];
+
 SYMBAROUM.steadFastNovResistList = [
     "drainingglyph",
     "entanglingvines",
