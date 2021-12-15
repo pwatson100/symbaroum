@@ -209,7 +209,11 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
               if(pack.type == game.symbaroum.config.PACK_DEFAULT) {
                 for(let member of pack.member) {
                   if(member.type == game.symbaroum.config.DAM_MOD) {
-                    damModifier += `${member.alternatives[0].damageMod}[${member.label}]`;
+                    if(/\[[^\]]+\]/.test(member.alternatives[0].damageMod)) {
+                      damModifier += `${member.alternatives[0].damageMod}`;
+                    } else {
+                      damModifier += `${member.alternatives[0].damageMod}[${member.label}]`;
+                    }
                     damModifierNPC += member.alternatives[0].damageModNPC;
                     if(!member.alternatives[0].restrictions || !alternatives[0].restrictions.includes(game.symbaroum.config.DAM_1STATTACK)){
                       damModifierAttSup +=`${member.alternatives[0].damageMod}[${pack.label}]`;
@@ -244,7 +248,11 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
                   ecData.autoParams += ", "+pack.label;
                   for(let member of pack.member) {
                     if(member.type == game.symbaroum.config.DAM_MOD) {
-                      damModifier += `${member.alternatives[0].damageMod}[${pack.label}]`;
+                      if(/\[[^\]]+\]/.test(member.alternatives[0].damageMod)) {
+                        damModifier += `${member.alternatives[0].damageMod}`;
+                      } else {
+                        damModifier += `${member.alternatives[0].damageMod}[${pack.label}]`;
+                      }
                       damModifierNPC += member.alternatives[0].damageModNPC;
                       if(!member.alternatives[0].restrictions || !member.alternatives[0].restrictions.includes(game.symbaroum.config.DAM_1STATTACK)){
                         damModifierAttSup +=`${member.alternatives[0].damageMod}[${pack.label}]`;
