@@ -378,6 +378,14 @@ SYMBAROUM.powersList = {
     "witchhammer": 'POWER_LABEL.WITCH_HAMMER'
 };
 
+SYMBAROUM.scriptedAbilities =
+["alchemy", "acrobatics", "artifactcrafting", "beastlore", "berserker", "blacksmith", "dominate", "leader", "loremaster",
+ "medicus", "poisoner", "quickdraw", "recovery", "strangler", "witchsight",
+ "anathema", "brimstonecascade", "bendwill", "blackbolt", "blessedshield",
+ "confusion", "curse", "dancingweapon", "entanglingvines", "holyaura", "inheritwound", "larvaeboils", "layonhands",
+ "levitate", "maltransformation", "mindthrow", "priosburningglass", "tormentingspirits", "unnoticeable",
+ "poisonous", "regeneration", "shapeshifter", "wisdomages"];
+
 SYMBAROUM.steadFastNovResistList = [
     "drainingglyph",
     "entanglingvines",
@@ -471,7 +479,7 @@ SYMBAROUM.TRAD_WIZARDRY = "wizardry";
 SYMBAROUM.TEMPCORRUPTION_NORMAL = "corrnormal"; // 1d4 (default)
 SYMBAROUM.TEMPCORRUPTION_ONE = "corr1"; // 1
 SYMBAROUM.TEMPCORRUPTION_TESTFORONE = "corrtestfor1"; // 1 if test against resolute
-SYMBAROUM.TEMPCORRUPTION_FAVOUR = "corrfavour"; // 2d4kl
+SYMBAROUM.TEMPCORRUPTION_FAVOUR = "corrfavour"; // 2dxkl
 SYMBAROUM.TEMPCORRUPTION_NONE = "corrnone"; // 0
 SYMBAROUM.TEMPCORRUPTION_D6 = "corrd6"; // 1d6
 

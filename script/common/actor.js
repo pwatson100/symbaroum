@@ -1,4 +1,4 @@
-import { modifierDialog, getTarget, getTargets, getTokenId, markScripted } from './item.js';
+import { getEffect, modifierDialog } from './item.js';
 import { prepareRollAttribute } from "../common/dialog.js";
 import { baseRoll } from './roll.js';
 
@@ -784,24 +784,23 @@ export class SymbaroumActor extends Actor {
             if(sorceryRoll.trueActorSucceeded){
                 return({value: 1, tradition: "sorcery", sorceryRoll: sorceryRoll})
             }
-        } else if (functionStuff.corruption === game.symbaroum.config.TEMPCORRUPTION_FAVOUR){
-            corruptionFormula = "2d4kl";
-        }         
-        if(functionStuff.attackFromPC){
-            let corRoll= new Roll(corruptionFormula).evaluate({async:false});
-            return({value: corRoll.total, sorceryRoll: sorceryRoll, corruptionRoll: corRoll})
+        } else{
+            for(let i = 0; i < this.data.data.combat.combatMods.corruption.length; i++) {
+                if(this.data.data.combat.combatMods.corruption[i].type === game.symbaroum.config.TEMPCORRUPTION_FAVOUR){
+                    corruptionFormula = "2d4kl";
+                }
+            }
         }
-        let corRoll= new Roll(corruptionFormula).evaluate({maximize: true, async:false});
-        let value = Math.ceil(corRoll.total/2);
-        return({value: value, sorceryRoll: sorceryRoll, corruptionRoll: corRoll})
+        let corRoll= new Roll(corruptionFormula).evaluate({async:false});
+        return({value: corRoll.total, sorceryRoll: sorceryRoll, corruptionRoll: corRoll})
     }
 
     async usePower(ability){
         if( !ability.isOwned || ability.data.data.reference === undefined || ability.data.data.reference === null) {
         return;               
         }
-        if(this.data.data.combat.combatMods.abilities[ability._id]){
-            let specificStuff = foundry.utils.deepClone(this.data.data.combat.combatMods.abilities[ability._id]);
+        if(this.data.data.combat.combatMods.abilities[ability.data._id]){
+            let specificStuff = foundry.utils.deepClone(this.data.data.combat.combatMods.abilities[ability.data._id]);
             if (!specificStuff.isScripted) return;
             //casting attribute
             if(specificStuff.attributes.length > 0){
@@ -839,10 +838,9 @@ export class SymbaroumActor extends Actor {
             if(specificStuff.targetPresentFSmod && specificStuff.targetData.hasTarget){
                 specificStuff = Object.assign({}, specificStuff , specificStuff.targetPresentFSmod);
             }
-            if(specificStuff.targetFullyCorruptedFSmod && specificStuff.targetData.hasTarget && specificStuff.targetData.isCorrupted){
-                specificStuff = Object.assign({}, specificStuff , specificStuff.targetFullyCorruptedFSmod);
-                specificStuff.targetData.autoParams += game.i18n.localize('TOOLTIP.HEALTH.CORRUPTION_NA_TEXT');
-            }
+
+            specificStuff.targetFullyCorrupted = specificStuff.targetFullyCorruptedFSmod && specificStuff.targetData.hasTarget && specificStuff.targetData.isCorrupted;
+
             if(specificStuff.targetImpeding && specificStuff.targetData.hasTarget) specificStuff.targetImpeding=specificStuff.targetData.actor.data.data.combat.impedingMov;
             
             if(specificStuff.targetData.hasTarget && specificStuff.targetData.actor.data.data.combat.damageReductions.length && specificStuff.targetResistAttribute === "resolute"){
@@ -895,7 +893,7 @@ export class SymbaroumActor extends Actor {
     async enhancedAttackRoll(weapon){
         // get selected token
         let token;
-        try{token = await getTokenId(this)} catch(error){
+        try{token = await this.getTokenId()} catch(error){
             ui.notifications.error(error);
             return;
         }
@@ -944,4 +942,70 @@ export class SymbaroumActor extends Actor {
         functionStuff.askPoison = poisoner.length != 0;
         prepareRollAttribute(this, weapon.attribute, null, weapon, functionStuff); 
     }
+
+    /* get the selected token ID of the actor */
+    async getTokenId(){
+        let selected = canvas.tokens.controlled;
+        if(selected.length > 1 || selected.length == 0){
+            throw game.i18n.localize('ERROR.NO_TOKEN_SELECTED');
+        }
+        if(selected[0].actor.data._id !== this.data._id){
+            throw game.i18n.localize('ERROR.NO_TOKEN_SELECTED');
+        }
+        return(selected[0])
+    }
+}
+
+/*get the target token, its actor, and evaluate which attribute this actor will use for opposition
+@Params: {string}   targetAttributeName : the name of the resist attribute. Can be defense, and can be null.
+@returns:  {targetData object}*/
+export function getTarget(targetAttributeName) {
+    let targetsData;
+    try{targetsData = getTargets(targetAttributeName, 1)} catch(error){      
+        throw error;
+    }
+    return targetsData[0]
+}
+
+export function getTargets(targetAttributeName, maxTargets = 1) {
+    let targets = Array.from(game.user.targets)
+    if(targets.length == 0 || targets.length > maxTargets)
+    {
+        throw game.i18n.localize('ABILITY_ERROR.TARGET');
+    }
+    let targetsData = [];
+    for(let target of targets){
+        let targetToken = target;
+        let targetActor = target.actor;
+        let autoParams = "";
+        let leaderTarget = false;
+            // check for leader adept ability effect on target
+        const LeaderEffect = "icons/svg/eye.svg";
+        let leaderEffect = getEffect(targetToken, LeaderEffect);
+        if(leaderEffect){
+            leaderTarget = true;
+            autoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
+        };
+        targetsData.push({
+            hasTarget: true,
+            token: targetToken,
+            actor: targetActor,
+            name: targetToken.data.name,
+            tokenId: targetToken.id,
+            resistAttributeName: targetAttributeName,
+            leaderTarget: leaderTarget,
+            autoParams: autoParams,
+            isCorrupted: target.actor.data.isThoroughlyCorrupt
+        })
+    }
+    return(targetsData)
+}
+
+export function markScripted(item){
+    item.data.data.hasScript = false;
+    if(game.symbaroum.config.scriptedAbilities.includes(item.data.data.reference)){
+        item.data.data.hasScript = true;
+        item.data.data.script = true;
+    }
+    return;
 }
