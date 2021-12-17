@@ -2040,6 +2040,7 @@ export class SymbaroumItem extends Item {
         base.targetMandatory= true;
         base.maintain = game.symbaroum.config.MAINTAIN_RES;
         base.casting = game.symbaroum.config.CASTING_RES;
+        base.confusion =true;
         base.activelyMaintainedTargetEffect= ["systems/symbaroum/asset/image/unknown-item.png"];
         return(base);
     }
@@ -2390,6 +2391,7 @@ export class SymbaroumItem extends Item {
         base.casting = game.symbaroum.config.CASTING_RES;
         base.castingAttributeName= "cunning";
         base.targetResistAttribute= "strong";
+        base.usePoison = true;
         base.poisoner = true;
         return(base);
     }
@@ -2467,6 +2469,7 @@ export class SymbaroumItem extends Item {
         base.casting = game.symbaroum.config.CASTING_RES;
         base.castingAttributeName= "cunning";
         base.targetResistAttribute= "strong";
+        base.usePoison = true;
         base.poison = base.powerLvl.level;
         return(base);
     }
@@ -3444,7 +3447,7 @@ async function standardPowerResult(rollData, functionStuff){
     let damageFinalText="";
     let damageDice = functionStuff.dmgavoiding ? functionStuff.avoidDamageDice : functionStuff.damageDice;
     let targetDies = false;
-console.log(functionStuff);
+    
     if(damageDice === "0d0"){
         doDamage=false;
         resultText= game.i18n.format(game.i18n.localize('POWER_BRIMSTONECASC.CHAT_FAILURE_RR'), namesForText);
@@ -3479,7 +3482,7 @@ console.log(functionStuff);
         }
     }
 
-    if(functionStuff.ability.data.reference === "confusion" && trueActorSucceeded){
+    if(functionStuff.confusion && trueActorSucceeded){
         let confusionRoll= new Roll("1d6").evaluate({async:false});
         rolls.push(confusionRoll);
 
@@ -3495,7 +3498,7 @@ console.log(functionStuff);
         }
     }
 
-    if(["poisoner", "poisonous"].includes(functionStuff.ability.data.reference) && trueActorSucceeded){
+    if(functionStuff.usePoison && trueActorSucceeded){
         let poisonRes = await poisonCalc(functionStuff, rollData[0]);
         rolls.push(poisonRes.roll);
 

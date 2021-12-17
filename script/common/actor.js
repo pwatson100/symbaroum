@@ -799,8 +799,8 @@ export class SymbaroumActor extends Actor {
         if( !ability.isOwned || ability.data.data.reference === undefined || ability.data.data.reference === null) {
         return;               
         }
-        if(this.data.data.combat.combatMods.abilities[ability._id]){
-            let specificStuff = foundry.utils.deepClone(this.data.data.combat.combatMods.abilities[ability._id]);
+        if(this.data.data.combat.combatMods.abilities[ability.data._id]){
+            let specificStuff = foundry.utils.deepClone(this.data.data.combat.combatMods.abilities[ability.data._id]);
             if (!specificStuff.isScripted) return;
             //casting attribute
             if(specificStuff.attributes.length > 0){
