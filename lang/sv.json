@@ -846,6 +846,6 @@
   "SYMBAROUM.OPTIONAL_NPC_ATTACKS_HINT": "Varning: systemet gör sitt bästa för att processa detta, men kan inte integrera vissa särdrag eller förmågor som är situationsspecifika eller komplexa.",
   "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS": "Dödsslagsbonus appliceras för kritisk framgång",
   "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS_HINT": "All bonus för dödsslag appliceras för att kunna uppnå kritisk framgång, dvs förbättrar eller försämrar chansen att få kritisk framgång vid dödsslag.",
-  "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE": "Dice so Nice module on all rolls",
-  "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE_HINT": "When the Dice so Nice module is added and Enhanced Combat option is enabled, a lot of dice can be thrown at the same time on the screen. By default, only the base d20 action roll will be displayed. Check this option if you prefer to have all dice displayed (damage, poison, etc)."
+  "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE": "Dice so Nice modulen för alla tärningskast",
+  "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE_HINT": "Om Dice so Nice-modulen är tillagd och alternativet Enhanced Combat är aktiverat kan det bli många tärningar som kastas samtidigt på skärmen. Som standard kommer endast grundläggande d20 framgångsslag att visas. Markera det här alternativet om du vill att alla tärningar ska visas (skada, gift, etc)."
 }
