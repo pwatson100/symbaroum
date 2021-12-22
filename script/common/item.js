@@ -2275,6 +2275,7 @@ export class SymbaroumItem extends Item {
     mysticPowerSetupUnnoticeable(base) {
         base.casting = game.symbaroum.config.CASTING;
         base.traditions = [game.symbaroum.config.TRAD_WIZARDRY, game.symbaroum.config.TRAD_THEURGY];
+        base.gmOnlyChatResultNPC = true;
         base.addCasterEffect = ["systems/symbaroum/asset/image/invisible.png"];
         return(base);
     }
@@ -2497,8 +2498,7 @@ export class SymbaroumItem extends Item {
         return(base);
     }
 
-    async getFunctionStuffDefault(actor) {
-        let selectedToken= await actor.getTokenId();
+    async getFunctionStuffDefault(actor, actingToken) {
         let functionStuff = {
             casting: game.symbaroum.config.CASTING,
             maintain: game.symbaroum.config.MAINTAIN_NOT,
@@ -2516,9 +2516,10 @@ export class SymbaroumItem extends Item {
             modifier: 0,
             targetMandatory : false,
             targetData: {hasTarget: false, leaderTarget: false},
-            token :selectedToken,
-            tokenId :selectedToken.id,
-            tokenName :selectedToken.data.name,
+            token :actingToken,
+            tokenId :actingToken?.id,
+            actingCharName :actingToken?.data?.name ?? actor.name,
+            actingCharImg: actingToken?.data?.img ?? actor.data.img,
             addCasterEffect: [],
             addTargetEffect: [],
             activelyMaintainedTargetEffect: [],
@@ -3059,7 +3060,7 @@ async function mathDamageProt(targetActor, damage, damageType){
 
 async function attackResult(rollData, functionStuff){
     
-    let namesForText = {actorname: functionStuff.tokenName, targetname: functionStuff.targetData?.name ?? ""};
+    let namesForText = {actorname: functionStuff.actingCharName, targetname: functionStuff.targetData?.name ?? ""};
     let damage;
     let hasDamage;
     let targetDies = false;
@@ -3087,7 +3088,7 @@ async function attackResult(rollData, functionStuff){
         rolls = rolls.concat(rollDataElement.rolls);
 
         rollDataElement.finalText="";
-        rollDataElement.resultText = functionStuff.token.data.name + game.i18n.localize('COMBAT.CHAT_SUCCESS') + functionStuff.targetData.name;
+        rollDataElement.resultText = functionStuff.actingCharName + game.i18n.localize('COMBAT.CHAT_SUCCESS') + functionStuff.targetData.name;
         if(functionStuff.weapon.qualities.jointed && !rollDataElement.trueActorSucceeded && rollDataElement.diceResult%2!=0){
             rollDataElement.resultText = game.i18n.localize('COMBAT.CHAT_JOINTED_SECONDARY');
         }
@@ -3118,7 +3119,7 @@ async function attackResult(rollData, functionStuff){
             }
         }
         else{
-            rollDataElement.resultText = functionStuff.token.data.name + game.i18n.localize('COMBAT.CHAT_FAILURE');
+            rollDataElement.resultText = functionStuff.actingCharName + game.i18n.localize('COMBAT.CHAT_FAILURE');
         }
     }
     if(damageTot <= 0){
@@ -3175,7 +3176,7 @@ async function attackResult(rollData, functionStuff){
         targetData : functionStuff.targetData,
         hasTarget : functionStuff.targetData.hasTarget,
         introText: functionStuff.introText,
-        introImg: functionStuff.actor.data.img,
+        introImg: functionStuff.actingCharImg,
         targetText: targetText,
         subText: functionStuff.weapon.name + " ("+await weaponTypeLabel(functionStuff.weapon)+")",
         subImg: functionStuff.weapon.img,
@@ -3207,7 +3208,7 @@ async function attackResult(rollData, functionStuff){
 
     if(functionStuff.poison > 0 && !targetDies && damageTot > 0){
         let targetResMod = checkSpecialResistanceMod(functionStuff.targetData.actor.data.data.combat.damageReductions, functionStuff.targetData.autoParams, "poisoner");
-        let poisonFavour = -1*targetResMod.favour;
+        let poisonFavour = targetResMod.favour;
         functionStuff.targetData.autoParams += targetResMod.autoParams;
         let poisonRoll = await baseRoll(functionStuff.actor, "cunning", functionStuff.targetData.actor, "strong", poisonFavour, -1*targetResMod.modifier, functionStuff.resistRoll);
         let poisonFunctionStuff = Object.assign(functionStuff, {modifier:-1*targetResMod.modifier, favour: poisonFavour});
@@ -3317,10 +3318,11 @@ async function healing(healFormula, targetToken, attackFromPC){
 async function poisonCalc(functionStuff, poisonRoll){
     let poisonRes ={};
     poisonRes.printPoison = false;
-    poisonRes.poisonChatIntro = functionStuff.token.data.name + game.i18n.localize('COMBAT.CHAT_POISON') + functionStuff.targetData.name;
+    poisonRes.poisonChatIntro = functionStuff.actingCharName + game.i18n.localize('COMBAT.CHAT_POISON') + functionStuff.targetData.name;
     let poisonDamage = "0";
     let poisonedTimeLeft = 0;
     const effect = "icons/svg/poison.svg";
+    poisonRes.poisonResistRollText = functionStuff.targetData.name+game.i18n.localize('ABILITY.RESIST_ROLL');
         
     if(!poisonRoll.trueActorSucceeded){
         poisonRes.poisonChatResult = game.i18n.localize('COMBAT.CHAT_POISON_FAILURE');     
@@ -3374,41 +3376,12 @@ async function poisonCalc(functionStuff, poisonRoll){
 }
 
 async function standardPowerResult(rollData, functionStuff){
-    if(functionStuff.flagTest){
-        let flagData = await functionStuff.actor.getFlag(game.system.id, functionStuff.flagTest);
-        if(flagData){
-            await functionStuff.actor.unsetFlag(game.system.id, functionStuff.flagTest);
-            functionStuff = Object.assign({}, functionStuff , functionStuff.flagPresentFSmod);
-        }
-        else{
-            await functionStuff.actor.setFlag(game.system.id, functionStuff.flagTest, functionStuff.flagNotPresentFSmod.flagData);
-            functionStuff = Object.assign({}, functionStuff , functionStuff.flagNotPresentFSmod);
-        }
-    }
-    let rolls = [];
-    let flagDataArray = functionStuff.flagDataArray ?? [];
-    let haveCorruption = false;
-    let corruptionText = "";
-    let corruption;
-    let namesForText = {actorname: functionStuff.tokenName, targetname: functionStuff.targetData?.name ?? ""};
-    let rollResult="";
-    let rollToolTip="";
-    let targetText = game.i18n.format(functionStuff.targetText ?? "", namesForText);
-    if((!functionStuff.isMaintained) && (functionStuff.corruption !== game.symbaroum.config.TEMPCORRUPTION_NONE)){
-        haveCorruption = true;
-        corruption = await functionStuff.actor.getCorruption(functionStuff);
-        corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
-        if(corruption.sorceryRoll) corruptionText += " (sorcery roll result:" + corruption.sorceryRoll.diceResult + ")";
-        checkCorruptionThreshold(functionStuff.actor, corruption.value);
-        flagDataArray.push({
-            tokenId: functionStuff.tokenId,
-            corruptionChange: corruption.value
-        });
-    }
-
     let hasRoll = false;
     let trueActorSucceeded = true; //true by default for powers without rolls
+    let rolls = [];
     let rollString = "";
+    let rollResult="";
+    let rollToolTip="";
     if(rollData!=null){
         hasRoll = true;
         trueActorSucceeded = rollData[0].trueActorSucceeded;
@@ -3422,6 +3395,36 @@ async function standardPowerResult(rollData, functionStuff){
 
     if(functionStuff.rollFailedFSmod && !trueActorSucceeded){
         functionStuff = Object.assign({}, functionStuff , functionStuff.rollFailedFSmod);
+    }
+
+    if(functionStuff.flagTest && trueActorSucceeded){
+        let flagData = await functionStuff.actor.getFlag(game.system.id, functionStuff.flagTest);
+        if(flagData){
+            await functionStuff.actor.unsetFlag(game.system.id, functionStuff.flagTest);
+            functionStuff = Object.assign({}, functionStuff , functionStuff.flagPresentFSmod);
+        }
+        else{
+            await functionStuff.actor.setFlag(game.system.id, functionStuff.flagTest, functionStuff.flagNotPresentFSmod.flagData);
+            functionStuff = Object.assign({}, functionStuff , functionStuff.flagNotPresentFSmod);
+        }
+    }
+    let flagDataArray = functionStuff.flagDataArray ?? [];
+    let haveCorruption = false;
+    let corruptionText = "";
+    let corruption;
+    let namesForText = {actorname: functionStuff.actingCharName, targetname: functionStuff.targetData?.name ?? ""};
+    let targetText = game.i18n.format(functionStuff.targetText ?? "", namesForText);
+    if((!functionStuff.isMaintained) && (functionStuff.corruption !== game.symbaroum.config.TEMPCORRUPTION_NONE)){
+        haveCorruption = true;
+        corruption = await functionStuff.actor.getCorruption(functionStuff);
+        corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
+        if(corruption.sorceryRoll) corruptionText += " (sorcery roll result:" + corruption.sorceryRoll.diceResult + ")";
+        checkCorruptionThreshold(functionStuff.actor, corruption.value);
+        flagDataArray.push({
+            tokenId: functionStuff.tokenId,
+            actorId: functionStuff.actor.id,
+            corruptionChange: corruption.value
+        });
     }
 
     if( functionStuff.resultRolls !== undefined && functionStuff.resultRolls !== null) {
@@ -3457,10 +3460,12 @@ async function standardPowerResult(rollData, functionStuff){
 
         flagDataArray.push({
             tokenId: functionStuff.tokenId,
+            actorId: functionStuff.actor.id,
             addEffect: "icons/svg/holy-shield.svg",
             effectDuration: 1
         },{
             tokenId: functionStuff.tokenId,
+            actorId: functionStuff.actor.id,
             addObject: "blessedshield",
             protection: protectionFormula
         })
@@ -3498,7 +3503,7 @@ async function standardPowerResult(rollData, functionStuff){
         }
     }
 
-    if(functionStuff.usePoison && trueActorSucceeded){
+    if(functionStuff.usePoison){
         let poisonRes = await poisonCalc(functionStuff, rollData[0]);
         rolls.push(poisonRes.roll);
 
@@ -3576,7 +3581,7 @@ async function standardPowerResult(rollData, functionStuff){
         targetData : functionStuff.targetData,
         hasTarget : functionStuff.targetData.hasTarget,
         introText: introText,
-        introImg: functionStuff.token.actor.data.img,
+        introImg: functionStuff.actingCharImg,
         targetText: targetText,
         subText: subText,
         subImg: functionStuff.ability.img,
@@ -3713,7 +3718,7 @@ async function standardPowerResult(rollData, functionStuff){
             });
         }
     }
-    if(trueActorSucceeded && (functionStuff.addCasterEffect.length >0)){
+    if(trueActorSucceeded && (functionStuff.addCasterEffect.length >0) && functionStuff.tokenId){
         for(let effect of functionStuff.addCasterEffect){
             modifyEffectOnToken(functionStuff.token, effect, 1, 1);
         }
@@ -3729,7 +3734,7 @@ async function standardPowerResult(rollData, functionStuff){
             }
         }
     }
-    if(trueActorSucceeded && (functionStuff.removeCasterEffect.length >0)){ 
+    if(trueActorSucceeded && (functionStuff.removeCasterEffect.length >0) && functionStuff.tokenId){ 
         for(let effect of functionStuff.removeCasterEffect){
             let effectPresent = getEffect(functionStuff.token, effect);
             if(effectPresent){
@@ -3757,7 +3762,7 @@ async function standardPowerResult(rollData, functionStuff){
             }
         }
     }
-    if(trueActorSucceeded && !functionStuff.isMaintained && (functionStuff.activelyMaintaninedCasterEffect.length >0)){ 
+    if(trueActorSucceeded && !functionStuff.isMaintained && (functionStuff.activelyMaintaninedCasterEffect.length >0) && functionStuff.tokenId){ 
         for(let effect of functionStuff.activelyMaintaninedCasterEffect){
         flagDataArray.push({
                 tokenId: functionStuff.tokenId,
@@ -3766,7 +3771,7 @@ async function standardPowerResult(rollData, functionStuff){
             });
         }
     }
-    if(!trueActorSucceeded && functionStuff.isMaintained && (functionStuff.activelyMaintaninedCasterEffect.length >0)){ 
+    if(!trueActorSucceeded && functionStuff.isMaintained && (functionStuff.activelyMaintaninedCasterEffect.length >0) && functionStuff.tokenId){ 
         for(let effect of functionStuff.activelyMaintaninedCasterEffect){
             let effectPresent = getEffect(functionStuff.token, effect);
             if(effectPresent){ 

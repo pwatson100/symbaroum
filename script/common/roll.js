@@ -90,9 +90,10 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   // Once we go to non-API version of DsN, then set this in chatData: type: CONST.CHAT_MESSAGE_TYPES.ROLL,
   let chatData = {
     user: game.user.id,
-    speaker: {
-			actor: actor.id
-    },
+    speaker: ChatMessage.getSpeaker({ 
+      alias: actor.data.name,
+      actor: actor.id
+    }),
     type: CONST.CHAT_MESSAGE_TYPES.ROLL,
     roll: JSON.stringify(createRollData(rolls)),
     rollMode: game.settings.get('core', 'rollMode'),

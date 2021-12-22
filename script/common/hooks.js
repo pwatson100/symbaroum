@@ -404,38 +404,38 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
   if (flagDataArray && game.user.isGM) {
     await html.find('#applyEffect').click(async () => {
       for (let flagData of flagDataArray) {
-        if (flagData.tokenId) {
-          let token = canvas.tokens.objects.children.find((token) => token.id === flagData.tokenId);
-          if (token === undefined) {
-            return;
+        if (flagData.tokenId || flagData.actorId) {
+          let token = flagData.tokenId ? canvas.tokens.objects.children.find((token) => token.id === flagData.tokenId) : null;
+          if (token !== undefined) {
+            if (flagData.addEffect) {
+              modifyEffectOnToken(token, flagData.addEffect, 1, flagData);
+            }
+            if (flagData.removeEffect) {
+              modifyEffectOnToken(token, flagData.removeEffect, 0, flagData);
+            }
+            if (flagData.modifyEffectDuration) {
+              modifyEffectOnToken(token, flagData.modifyEffectDuration, 2, flagData);
+            }
           }
-          if (flagData.addEffect) {
-            modifyEffectOnToken(token, flagData.addEffect, 1, flagData);
-          }
-          if (flagData.removeEffect) {
-            modifyEffectOnToken(token, flagData.removeEffect, 0, flagData);
-          }
-          if (flagData.modifyEffectDuration) {
-            modifyEffectOnToken(token, flagData.modifyEffectDuration, 2, flagData);
-          }
-
-          if (flagData.toughnessChange) {
-            let newToughness = Math.max(0, Math.min(token.actor.data.data.health.toughness.max, token.actor.data.data.health.toughness.value + flagData.toughnessChange));
-            await token.actor.update({ 'data.health.toughness.value': newToughness });
-          }
-          if (flagData.attributeChange) {
-            let newMod = token.actor.data.data.attributes[flagData.attributeName].temporaryMod + flagData.attributeChange;
-            let linkMod = 'data.attributes.' + flagData.attributeName + '.temporaryMod';
-            await token.actor.update({ [linkMod]: newMod });
-          }
-          if (flagData.corruptionChange) {
-            let newCorruption = token.actor.data.data.health.corruption.temporary + flagData.corruptionChange;
-            await token.actor.update({ 'data.health.corruption.temporary': newCorruption });
-          }
-          if (flagData.addObject) {
-            let actor = token.actor;
-            if (flagData.addObject == 'blessedshield') {
-              await createBlessedShield(actor, flagData.protection);
+          let actor = token?.actor ?? game.actors.get(flagData.actorId);
+          if(actor !== undefined){
+            if (flagData.toughnessChange) {
+              let newToughness = Math.max(0, Math.min(actor.data.data.health.toughness.max, actor.data.data.health.toughness.value + flagData.toughnessChange));
+              await actor.update({ 'data.health.toughness.value': newToughness });
+            }
+            if (flagData.attributeChange) {
+              let newMod = actor.data.data.attributes[flagData.attributeName].temporaryMod + flagData.attributeChange;
+              let linkMod = 'data.attributes.' + flagData.attributeName + '.temporaryMod';
+              await actor.update({ [linkMod]: newMod });
+            }
+            if (flagData.corruptionChange) {
+              let newCorruption = actor.data.data.health.corruption.temporary + flagData.corruptionChange;
+              await actor.update({ 'data.health.corruption.temporary': newCorruption });
+            }
+            if (flagData.addObject) {
+              if (flagData.addObject == 'blessedshield') {
+                await createBlessedShield(actor, flagData.protection);
+              }
             }
           }
         }
@@ -573,6 +573,10 @@ Hooks.on('createToken', async (token, options, userID) => {
   let flagBerserk = token.actor.getFlag(game.system.id, 'berserker');
   if (flagBerserk) {
     modifyEffectOnToken(token._object, 'systems/symbaroum/asset/image/berserker.svg', 1, 1);
+  }
+  let flagDancingWeapon = token.actor.getFlag(game.system.id, 'dancingweapon');
+  if (flagDancingWeapon) {
+    modifyEffectOnToken(token._object, 'systems/symbaroum/asset/image/powers/dancingweapon.svg', 1, 1);
   }
 });
 
