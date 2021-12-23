@@ -60,9 +60,14 @@
     <label>{{localize "ARMOR.IMPEDING_TARGET"}}</label> <span class="lblfavour"><input type="checkbox" id="impTarget" checked></span>
   </div>
   {{/if}}
-  {{#if askCorruptedTarget}}
+  {{#if askCorruptedTargetDefaultNo}}
   <div class="simplebox">
     <label>{{localize "DIALOG.ASK_CORRUPTION"}}</label><span class="lblfavour"><input type="checkbox" id="targetCorrupt" unchecked></span>
+  </div>
+  {{/if}}
+  {{#if askCorruptedTargetDefaultYes}}
+  <div class="simplebox">
+    <label>{{localize "DIALOG.ASK_CORRUPTION"}}</label><span class="lblfavour"><input type="checkbox" id="targetCorrupt" checked></span>
   </div>
   {{/if}}
   {{#if isWeaponRoll}}
