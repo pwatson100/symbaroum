@@ -465,6 +465,10 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
   }
 });
 
+Hooks.on("renderPause", (_app, html, options) => {
+	html.find('img[src="icons/svg/clockwork.svg"]').attr("src", "systems/symbaroum/asset/image/head.webp");
+});
+
 function setup3PartySettings() {
   game.symbaroum.info("In setup3PartySettings");
   if( !game.user.isGM ) {

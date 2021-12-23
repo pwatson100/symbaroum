@@ -218,3 +218,12 @@ Version 3.1.5
 - Added Italian localisation
 - Fixed bug #405 as well as additional defensive code around user input
 - Minor spelling error
+
+Version 3.1.6
+- Fixes for working in 0.9
+- New macro for importing characters from Symbaroum.fr
+- Updated macros
+- Spinner for firefox
+- Massive revamp of the use of mystical powers
+- Bug fixes
+
