@@ -162,8 +162,6 @@
 
 .symbaroum.dialog .packageInfo .checkbox {
   white-space: nowrap;
-  width: -webkit-min-content;
-  width: -moz-min-content;
   width: min-content;
   align-self: center;
 }
@@ -299,10 +297,7 @@
 
 .symbaroum.chat.item p {
   margin: 0.4em 0 0.4em;
-  -webkit-user-select: text;
-     -moz-user-select: text;
-      -ms-user-select: text;
-          user-select: text;
+  user-select: text;
 }
 
 .symbaroum.chat.item p.name {
@@ -327,8 +322,7 @@
 .symbaroum.chat.roll .border {
   border: 1px solid transparent;
   border-color: var(--color-border);
-  -o-border-image: var(--chat-roll-border) 20/10px;
-     border-image: var(--chat-roll-border) 20/10px;
+  border-image: var(--chat-roll-border) 20/10px;
 }
 
 .symbaroum.chat.roll .baseinfo {
@@ -521,8 +515,7 @@
 .symbaroum.sheet.actor .border {
   border: 10px solid transparent;
   border-color: var(--title-color);
-  -o-border-image: var(--title-image) 20/10px;
-     border-image: var(--title-image) 20/10px;
+  border-image: var(--title-image) 20/10px;
 }
 
 .symbaroum.sheet.actor h1 {
@@ -602,8 +595,7 @@
   -moz-appearance: textfield;
   text-align: center;
   border-color: var(--title-color);
-  -o-border-image: var(--title-image) 20/10px;
-     border-image: var(--title-image) 20/10px;
+  border-image: var(--title-image) 20/10px;
 }
 
 .symbaroum.sheet.actor input[type=number]::-webkit-outer-spin-button,
@@ -721,8 +713,7 @@
 .symbaroum.sheet.item .border {
   border: 10px solid transparent;
   border-color: var(--title-color);
-  -o-border-image: var(--title-image) 20/10px;
-     border-image: var(--title-image) 20/10px;
+  border-image: var(--title-image) 20/10px;
 }
 
 .symbaroum.sheet.item h1 {
@@ -1785,102 +1776,6 @@
   flex-basis: 30%;
 }
 
-.symbaroum.sheet.actor .player .gear .wrapper-left {
-  --grid-template-columns: minmax(0, 1fr) repeat(2, minmax(auto, 4em)) repeat(2, auto);
-}
-.symbaroum.sheet.actor .player .gear .wrapper-left table.weapon-list.scrollable {
-  overflow-y: hidden;
-  width: 100%;
-  height: 100%;
-  border-collapse: collapse;
-  border-spacing: 0;
-  margin: 0;
-  padding: 2px;
-  display: grid;
-  grid-template-rows: auto 1fr;
-}
-.symbaroum.sheet.actor .player .gear .wrapper-left table.weapon-list.scrollable * {
-  padding: 0;
-  margin: 0;
-}
-.symbaroum.sheet.actor .player .gear .wrapper-left table.weapon-list.scrollable thead {
-  border: unset;
-}
-.symbaroum.sheet.actor .player .gear .wrapper-left table.weapon-list.scrollable thead th {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.symbaroum.sheet.actor .player .gear .wrapper-left table.weapon-list.scrollable thead th.state,
-.symbaroum.sheet.actor .player .gear .wrapper-left table.weapon-list.scrollable thead th > button {
-  min-width: 32px;
-}
-.symbaroum.sheet.actor .player .gear .wrapper-left table.weapon-list.scrollable thead th.state.addbutton.item-create,
-.symbaroum.sheet.actor .player .gear .wrapper-left table.weapon-list.scrollable thead th > button.addbutton.item-create {
-  margin-left: 4px;
-  margin-right: 6px;
-}
-.symbaroum.sheet.actor .player .gear .wrapper-left table.weapon-list.scrollable thead th.state.addbutton.item-create i,
-.symbaroum.sheet.actor .player .gear .wrapper-left table.weapon-list.scrollable thead th > button.addbutton.item-create i {
-  color: var(--color-label);
-}
-.symbaroum.sheet.actor .player .gear .wrapper-left table.weapon-list.scrollable tr {
-  display: grid;
-  grid-template-columns: var(--grid-template-columns);
-  line-height: unset;
-  margin: 2px 0;
-}
-.symbaroum.sheet.actor .player .gear .wrapper-left table.weapon-list.scrollable tbody {
-  padding: 0 2px 2px;
-  overflow-y: scroll;
-}
-.symbaroum.sheet.actor .player .gear .wrapper-left table.weapon-list.scrollable tbody th {
-  overflow: hidden;
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 4px;
-  align-items: center;
-  padding: 0;
-  margin: 0;
-}
-.symbaroum.sheet.actor .player .gear .wrapper-left table.weapon-list.scrollable tbody th img {
-  width: 28px;
-}
-.symbaroum.sheet.actor .player .gear .wrapper-left table.weapon-list.scrollable tbody th .item-name {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding: 0;
-  padding-right: 6px;
-  margin: 0;
-}
-.symbaroum.sheet.actor .player .gear .wrapper-left table.weapon-list.scrollable tbody td {
-  padding: 0 4px;
-  margin: 0;
-  display: grid;
-  place-content: center;
-}
-.symbaroum.sheet.actor .player .gear .wrapper-left table.weapon-list.scrollable tbody td.damage, .symbaroum.sheet.actor .player .gear .wrapper-left table.weapon-list.scrollable tbody td.attribute {
-  text-align: center;
-  background: var(--box-non-editable) repeat;
-  border: 1px solid var(--color-border);
-  box-shadow: inset 0 0 6px black;
-  width: unset;
-  max-width: unset;
-}
-.symbaroum.sheet.actor .player .gear .wrapper-left table.weapon-list.scrollable tbody td > button {
-  background: unset;
-  font-size: 20px;
-  width: 1.2em;
-  display: grid;
-  place-content: center;
-  padding: 0;
-  margin: 0;
-}
-.symbaroum.sheet.actor .player .gear .wrapper-left table.weapon-list.scrollable tbody td > button.state {
-  margin-left: 5px;
-}
-
 .symbaroum.sheet.actor .player .main {
   display: flex;
   flex-direction: row;
@@ -2928,8 +2823,6 @@
   padding: 5px;
   background: var(--title-color) repeat;
   font-family: var(--font-text);
-  height: -webkit-fit-content;
-  height: -moz-fit-content;
   height: fit-content;
 }
 
