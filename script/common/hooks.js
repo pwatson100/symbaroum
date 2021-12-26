@@ -592,7 +592,7 @@ export async function modifyEffectOnToken(token, effect, action, options) {
   if (action == 1) {
     //add effect
     if (statusCounterMod) {
-      let alreadyHereEffect = await EffectCounter.findCounter(token, effect);
+      let alreadyHereEffect = await EffectCounter.findCounter(token, effect).getDisplayValue();
       if (alreadyHereEffect == undefined) {
         if (options.effectStuff) {
           let statusEffect = new EffectCounter(options.effectStuff, effect, token, false);
@@ -610,7 +610,7 @@ export async function modifyEffectOnToken(token, effect, action, options) {
   } else if (action == 0) {
     //remove effect
     if (statusCounterMod) {
-      let statusEffectCounter = await EffectCounter.findCounter(token, effect);
+      let statusEffectCounter = await EffectCounter.findCounter(token, effect).getDisplayValue();
       if (statusEffectCounter != undefined) {
         await statusEffectCounter.remove();
       }
@@ -620,7 +620,7 @@ export async function modifyEffectOnToken(token, effect, action, options) {
   } else {
     //modify duration - only with Status counter mod
     if (statusCounterMod) {
-      let statusEffectCounter = await EffectCounter.findCounter(token, effect);
+      let statusEffectCounter = await EffectCounter.findCounter(token, effect).getDisplayValue();
       if (statusEffectCounter != undefined) {
         await statusEffectCounter.setValue(duration);
         await statusEffectCounter.update();

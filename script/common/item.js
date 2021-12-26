@@ -569,7 +569,7 @@ export class SymbaroumItem extends Item {
     {
         for(let i = 0; i < armors.length; i++)
         {
-            if(armors[i].id != this.id || !this.data.isActive || !armors[i].data.isActive || armors[i].data.isStackableArmor ||  !this.data.data.qualities.balanced) {
+            if(!this.data.isActive || !armors[i].data.isActive || armors[i].data.isStackableArmor ||  !this.data.data.qualities.balanced) {
                 continue;
             }
             // Add 1
@@ -682,7 +682,7 @@ export class SymbaroumItem extends Item {
         this._getOwnWeaponBonuses(combatMods, armors, weapons, abilities);
     }
     getItemModifierThrown(combatMods, armors, weapons, abilities) {
-        this._getOwnWeaponBonuses(combatMods,armors, weapons);
+        this._getOwnWeaponBonuses(combatMods,armors, weapons, abilities);
     }
     // End weapons
 
@@ -2361,6 +2361,13 @@ export class SymbaroumItem extends Item {
         return(base);
     }
     
+    abilitySetupLoremaster(base) {
+        base.introText = game.i18n.localize('ABILITY_LOREMASTER.CHAT_INTRO');
+        base.resultTextSuccess = game.i18n.localize('ABILITY_LOREMASTER.CHAT_SUCCESS');
+        base.resultTextFail =  game.i18n.localize('ABILITY_LOREMASTER.CHAT_FAILURE');
+        return(base);
+    }
+    
     abilitySetupMedicus(base){
         base.castingAttributeName= "cunning",
         base.getTarget= true;
@@ -2405,12 +2412,6 @@ export class SymbaroumItem extends Item {
         if(base.powerLvl.level == 2) {base.healFormulaSucceed = "1d6"}
         else if(base.powerLvl.level == 3) {base.healFormulaSucceed = "1d8"}
         else {base.healFormulaSucceed = "1d4"};
-        return(base);
-    }
-    abilitySetupLoremaster(base) {
-        base.introText = game.i18n.localize('ABILITY_LOREMASTER.CHAT_INTRO');
-        base.resultTextSuccess = game.i18n.localize('ABILITY_LOREMASTER.CHAT_SUCCESS');
-        base.resultTextFail =  game.i18n.localize('ABILITY_LOREMASTER.CHAT_FAILURE');
         return(base);
     }
     
@@ -2634,7 +2635,7 @@ async function checkCorruptionThreshold(actor, corruptionGained){
 //check if there is an icon effect on the token
 export function getEffect(token, effect){
     if(game.modules.get("statuscounter")?.active){
-        if(EffectCounter.findCounter(token, effect)){
+        if(EffectCounter.findCounter(token, effect).getDisplayValue()){
             return(true)
         }
         else return(false)

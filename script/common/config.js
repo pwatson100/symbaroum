@@ -382,7 +382,7 @@ SYMBAROUM.scriptedAbilities =
 ["alchemy", "acrobatics", "artifactcrafting", "beastlore", "berserker", "blacksmith", "dominate", "leader", "loremaster",
  "medicus", "poisoner", "quickdraw", "recovery", "strangler", "witchsight",
  "anathema", "brimstonecascade", "bendwill", "blackbolt", "blessedshield",
- "confusion", "curse", "dancingweapon", "entanglingvines", "holyaura", "inheritwound", "larvaeboils", "layonhands",
+ "confusion", "curse", "dancingweapon", "entanglingvines", "flamewall", "holyaura", "inheritwound", "larvaeboils", "layonhands",
  "levitate", "maltransformation", "mindthrow", "priosburningglass", "tormentingspirits", "unnoticeable",
  "poisonous", "regeneration", "shapeshifter", "wisdomages"];
 
