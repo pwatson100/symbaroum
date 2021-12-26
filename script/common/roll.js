@@ -70,8 +70,12 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   
   let finalMod = modifier - getAttributeValue(targetActor, targetAttributeName) + 10;
 
+  let tokenList = actor.getActiveTokens();
+  let actingToken = tokenList[0];
+  let actingCharName= actingToken?.data?.name ?? actor.name;
+  let actingCharImg= actingToken?.data?.actorLink ? actor.data.img : actingToken?.data?.img ?? actor.data.img;
   let rollData = {
-    subImg: actor.data.img,
+    subImg: actingCharImg,
     name: `${getAttributeLabel(actor, actingAttributeName) } (${ getAttributeValue(actor, actingAttributeName) }) ⬅ ${getAttributeLabel(targetActor, targetAttributeName)} (${finalMod})`,
     margin: (rollResults.diceTarget - rollResults.diceResult),
     hasSucceed: rollResults.hasSucceed,
@@ -90,9 +94,10 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   // Once we go to non-API version of DsN, then set this in chatData: type: CONST.CHAT_MESSAGE_TYPES.ROLL,
   let chatData = {
     user: game.user.id,
-    speaker: {
-			actor: actor.id
-    },
+    speaker: ChatMessage.getSpeaker({ 
+      alias: actingCharName,
+      actor: actor.id
+    }),
     type: CONST.CHAT_MESSAGE_TYPES.ROLL,
     roll: JSON.stringify(createRollData(rolls)),
     rollMode: game.settings.get('core', 'rollMode'),
