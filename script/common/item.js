@@ -1004,11 +1004,10 @@ export class SymbaroumItem extends Item {
             if(!weapons[i].data.data.isMelee || !this.actor.getFlag(game.system.id, "dancingweapon")) {
                 continue;
             }
-            let pack = this._getPackageFormat();
             let base = this._getBaseFormat();
+            base.type = game.symbaroum.config.TYPE_ATTRIBUTE;
             base.attribute = "resolute";
-            pack.member.push(base);
-            combatMods.weapons[weapons[i].id].package.push(pack);
+            combatMods.weapons[weapons[i].id].package[0].member.push(base);
         }        
     }    
 
@@ -1989,7 +1988,7 @@ export class SymbaroumItem extends Item {
         base.targetMandatory= true;
         base.casting = game.symbaroum.config.CASTING_RES;
         base.maintain = game.symbaroum.config.MAINTAIN_RES;
-        base.activelyMaintainedTargetEffect= ["systems/symbaroum/asset/image/puppet.png"];
+        base.activelyMaintainedTargetEffect= [CONFIG.statusEffects.find(e => e.id === "bendwill")];
         base.introText = game.i18n.localize('POWER_BENDWILL.CHAT_INTRO');
         base.introTextMaintain = game.i18n.localize('POWER_BENDWILL.CHAT_INTRO_M');
         base.resultTextSuccess = game.i18n.localize('POWER_BENDWILL.CHAT_SUCCESS');
@@ -2010,7 +2009,7 @@ export class SymbaroumItem extends Item {
         base.resultTextSuccessT= game.i18n.localize('POWER_BLACKBOLT.CHAT_SUCCESS');
         base.resultTextFailT= game.i18n.localize('POWER_BLACKBOLT.CHAT_FAILURE');
         base.damageDice= "1d6";
-        base.addTargetEffect= ["icons/svg/paralysis.svg"];
+        base.addTargetEffect= [CONFIG.statusEffects.find(e => e.id === "paralysis")];
         base.ignoreArm=true;
         base.maintain = game.symbaroum.config.MAINTAIN_RES;
         base.casting = game.symbaroum.config.CASTING_RES;
@@ -2022,7 +2021,7 @@ export class SymbaroumItem extends Item {
     mysticPowerSetupBlessedshield(base) {
         base.casting = game.symbaroum.config.CASTING;
         base.traditions = [game.symbaroum.config.TRAD_THEURGY];
-        base.addCasterEffect = ["systems/symbaroum/asset/image/invisible.png"];
+        base.addCasterEffect = [CONFIG.statusEffects.find(e => e.id === "holyShield")];
         base.introText = game.i18n.localize('POWER_BLESSEDSHIELD.CHAT_INTRO');
         base.resultTextSuccess = game.i18n.localize('POWER_BLESSEDSHIELD.CHAT_SUCCESS');
         base.resultTextFail = game.i18n.localize('POWER_BLESSEDSHIELD.CHAT_FAILURE');
@@ -2041,7 +2040,7 @@ export class SymbaroumItem extends Item {
         base.maintain = game.symbaroum.config.MAINTAIN_RES;
         base.casting = game.symbaroum.config.CASTING_RES;
         base.confusion =true;
-        base.activelyMaintainedTargetEffect= ["systems/symbaroum/asset/image/unknown-item.png"];
+        base.activelyMaintainedTargetEffect = [CONFIG.statusEffects.find(e => e.id === "confusion")];
         return(base);
     }
     
@@ -2058,7 +2057,7 @@ export class SymbaroumItem extends Item {
         base.introTextMaintain= game.i18n.localize('POWER_CURSE.CHAT_INTRO_M');
         base.resultTextSuccess= base.resultText;
         base.resultTextFail= game.i18n.localize('POWER_CURSE.CHAT_FAILURE');
-        base.activelyMaintainedTargetEffect= ["icons/svg/sun.svg"];
+        base.activelyMaintainedTargetEffect= [CONFIG.statusEffects.find(e => e.id === "curse")];
         base.rollFailedFSmod = {
             finalText: game.i18n.localize('POWER_CURSE.CHAT_FAIL_FINAL')
         };
@@ -2074,13 +2073,13 @@ export class SymbaroumItem extends Item {
         base.flagPresentFSmod = {
             introText: game.i18n.localize('POWER_DANCINGWEAPON.CHAT_DESACTIVATE'),
             resultTextSuccess: game.i18n.localize('POWER_DANCINGWEAPON.CHAT_RESULT_DESACTIVATE'),
-            removeCasterEffect: ["systems/symbaroum/asset/image/powers/dancingweapon.svg"]
+            removeCasterEffect: [CONFIG.statusEffects.find(e => e.id === "dancingweapon")]
         };
         base.flagNotPresentFSmod = {
             flagData: base.powerLvl.level,
             introText: game.i18n.localize('POWER_DANCINGWEAPON.CHAT_ACTIVATE'),
             resultTextSuccess: game.i18n.localize('POWER_DANCINGWEAPON.CHAT_RESULT_ACTIVATE'),
-            addCasterEffect: ["systems/symbaroum/asset/image/powers/dancingweapon.svg"]
+            addCasterEffect: [CONFIG.statusEffects.find(e => e.id === "dancingweapon")]
         }
         return(base);
     }
@@ -2097,7 +2096,7 @@ export class SymbaroumItem extends Item {
         base.introTextMaintain= game.i18n.localize('POWER_ENTANGLINGVINES.CHAT_INTRO_M');
         base.resultTextSuccess= game.i18n.localize('POWER_ENTANGLINGVINES.CHAT_SUCCESS');
         base.resultTextFail= game.i18n.localize('POWER_ENTANGLINGVINES.CHAT_FAILURE');
-        base.activelyMaintainedTargetEffect= ["systems/symbaroum/asset/image/vines.png"];
+        base.activelyMaintainedTargetEffect= [CONFIG.statusEffects.find(e => e.id === "entanglingvines")];
         base.ignoreArm=true;
         return(base);
     }
@@ -2117,7 +2116,7 @@ export class SymbaroumItem extends Item {
         base.introTextMaintain= game.i18n.localize('POWER_HOLYAURA.CHAT_INTRO');
         base.resultTextSuccess= game.i18n.localize('POWER_HOLYAURA.CHAT_SUCCESS');
         base.resultTextFail=game.i18n.localize('POWER_HOLYAURA.CHAT_FAILURE');
-        base.activelyMaintaninedCasterEffect= ["icons/svg/aura.svg"];
+        base.activelyMaintaninedCasterEffect= [CONFIG.statusEffects.find(e => e.id === "holyaura")];
         let auraDamage = "1d6";
         let auraHeal = "1d4";
         if(base.powerLvl.level == 2){auraDamage = "1d8"}
@@ -2158,7 +2157,7 @@ export class SymbaroumItem extends Item {
         base.introTextMaintain= game.i18n.localize('POWER_LARVAEBOILS.CHAT_INTRO_M');
         base.resultTextSuccess= game.i18n.localize('POWER_LARVAEBOILS.CHAT_SUCCESS');
         base.resultTextFail= game.i18n.localize('POWER_LARVAEBOILS.CHAT_FAILURE');
-        base.activelyMaintainedTargetEffect= ["systems/symbaroum/asset/image/bug.png"];
+        base.activelyMaintainedTargetEffect= [CONFIG.statusEffects.find(e => e.id === "larvaeboils")];
         base.ignoreArm=true;
         return(base);
     }
@@ -2171,7 +2170,7 @@ export class SymbaroumItem extends Item {
         base.healFormulaSucceed = "1d6";
         if(base.powerLvl.level > 1){
             base.healFormulaSucceed = "1d8";
-            base.removeTargetEffect = ["icons/svg/poison.svg", "icons/svg/blood.svg"]
+            base.removeTargetEffect = [CONFIG.statusEffects.find(e => e.id === "poison"), CONFIG.statusEffects.find(e => e.id === "bleeding")]
         }
         base.healedToken= game.symbaroum.config.TARGET_TOKEN;
         base.targetText = game.i18n.localize('ABILITY_MEDICUS.CHAT_TARGET');
@@ -2186,12 +2185,12 @@ export class SymbaroumItem extends Item {
         base.casting = game.symbaroum.config.CASTING;
         base.traditions = [game.symbaroum.config.TRAD_WIZARDRY, game.symbaroum.config.TRAD_THEURGY];
         base.maintain = game.symbaroum.config.MAINTAIN;
-        base.addCasterEffect= ["icons/svg/wing.svg"];
+        base.addCasterEffect = [CONFIG.statusEffects.find(e => e.id === "fly")];
         if(base.powerLvl.level > 1){
             base.getTarget= true;
             base.targetResistAttribute= "strong";
             base.casting = game.symbaroum.config.CASTING_RES;
-            base.addTargetEffect= ["icons/svg/wing.svg"];
+            base.addTargetEffect= [CONFIG.statusEffects.find(e => e.id === "fly")];
         }
         return(base);
     }
@@ -2203,7 +2202,7 @@ export class SymbaroumItem extends Item {
         base.casting = game.symbaroum.config.CASTING_RES;
         base.maintain = game.symbaroum.config.MAINTAIN_RES;
         base.targetResistAttribute= "resolute";
-        base.activelyMaintainedTargetEffect= ["systems/symbaroum/asset/image/frog.png"];
+        base.activelyMaintainedTargetEffect= [CONFIG.statusEffects.find(e => e.id === "maltransformation")];
         return(base);
     }
     
@@ -2262,7 +2261,7 @@ export class SymbaroumItem extends Item {
         base.introTextMaintain= game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_INTRO_M');
         base.resultTextSuccess= game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_SUCCESS');
         base.resultTextFail= game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_FAILURE');
-        base.activelyMaintainedTargetEffect= ["systems/symbaroum/asset/image/ghost.svg"];
+        base.activelyMaintainedTargetEffect= [CONFIG.statusEffects.find(e => e.id === "tormentingspirits")];
     
         if(base.powerLvl.level >1){
             base.hasDamage= true;
@@ -2276,7 +2275,7 @@ export class SymbaroumItem extends Item {
         base.casting = game.symbaroum.config.CASTING;
         base.traditions = [game.symbaroum.config.TRAD_WIZARDRY, game.symbaroum.config.TRAD_THEURGY];
         base.gmOnlyChatResultNPC = true;
-        base.addCasterEffect = ["systems/symbaroum/asset/image/invisible.png"];
+        base.addCasterEffect = [CONFIG.statusEffects.find(e => e.id === "unnoticeable")];
         return(base);
     }
 
@@ -2307,12 +2306,12 @@ export class SymbaroumItem extends Item {
         base.flagPresentFSmod = {
             introText: game.i18n.localize('ABILITY_BERSERKER.CHAT_DESACTIVATE'),
             resultTextSuccess: game.i18n.localize('ABILITY_BERSERKER.CHAT_RESULT_DESACTIVATE'),
-            removeCasterEffect: ["systems/symbaroum/asset/image/berserker.svg"]
+            removeCasterEffect: [CONFIG.statusEffects.find(e => e.id === "berserker")]
         };
         base.flagNotPresentFSmod = {
             flagData: base.powerLvl.level,
             introText: game.i18n.localize('ABILITY_BERSERKER.CHAT_ACTIVATE'),
-            addCasterEffect: ["systems/symbaroum/asset/image/berserker.svg"],
+            addCasterEffect: [CONFIG.statusEffects.find(e => e.id === "berserker")]
         }
         if(base.powerLvl.level == 2) base.flagNotPresentFSmod.resultTextSuccess = game.i18n.localize('ABILITY_BERSERKER.CHAT_RESULT_LVL2');
         else if(base.powerLvl.level > 2) base.flagNotPresentFSmod.resultTextSuccess = game.i18n.localize('ABILITY_BERSERKER.CHAT_RESULT_LVL3');
@@ -2334,7 +2333,7 @@ export class SymbaroumItem extends Item {
             base.casting = game.symbaroum.config.CASTING_RES;
             base.castingAttributeName= "persuasive";
             base.targetResistAttribute= "resolute";
-            base.addTargetEffect= ["icons/svg/terror.svg"];
+            base.addTargetEffect= [CONFIG.statusEffects.find(e => e.id === "fear")];
         }
         if(base.powerLvl.level == 2){
             base.introText = game.i18n.localize('ABILITY_DOMINATE_ADEPT.CHAT_INTRO');
@@ -2356,7 +2355,7 @@ export class SymbaroumItem extends Item {
             base.targetMandatory= true;
             base.casting = game.symbaroum.config.CASTING_NOT;
             base.resultTextSuccess = game.i18n.localize('ABILITY_LEADER.CHAT_SUCCESS');
-            base.addTargetEffect = ["icons/svg/eye.svg"];
+            base.addTargetEffect = [CONFIG.statusEffects.find(e => e.id === "eye")];
         }
         return(base);
     }
@@ -2434,7 +2433,7 @@ export class SymbaroumItem extends Item {
         base.introTextMaintain = game.i18n.localize('ABILITY_STRANGLER.CHAT_INTRO_M');
         base.resultTextSuccess= game.i18n.localize('ABILITY_STRANGLER.CHAT_SUCCESS');
         base.resultTextFail = game.i18n.localize('ABILITY_STRANGLER.CHAT_FAILURE');
-        base.activelyMaintainedTargetEffect= ["systems/symbaroum/asset/image/lasso.png"];
+        base.activelyMaintainedTargetEffect= [CONFIG.statusEffects.find(e => e.id === "strangler")];
         base.hasDamage= true;
         base.damageDice= "1d6";
         base.newStuffIfMaintain = {
@@ -2634,14 +2633,18 @@ async function checkCorruptionThreshold(actor, corruptionGained){
 
 //check if there is an icon effect on the token
 export function getEffect(token, effect){
+    let statusCounterMod = false;
     if(game.modules.get("statuscounter")?.active){
-        if(EffectCounter.findCounter(token, effect).getDisplayValue()){
+        //statusCounterMod = true;  until corrected
+    };
+    if(statusCounterMod){
+        if(EffectCounter.findCounter(token.document, effect.icon)){
             return(true)
         }
         else return(false)
     }
     else{
-        if(token.data.effects.find(e => e === effect)){
+        if(token.actor.effects.find(e => e.getFlag("core", "statusId") === effect.id)){
             return(true)
         }
         else return(false)
@@ -3130,18 +3133,26 @@ async function attackResult(rollData, functionStuff){
     else{
         if(damageTot >= targetValue){
             targetDies = true;
+            if(ui.combat.viewed && ui.combat.viewed.getCombatantByToken(functionStuff.targetData.tokenId)){
+                flagDataArray.push({
+                    tokenId: functionStuff.targetData.tokenId,
+                    defeated: true
+                });
+            }
+            else{
+                flagDataArray.push({
+                    tokenId: functionStuff.targetData.tokenId,
+                    addEffect: CONFIG.statusEffects.find(e => e.id === "dead"),
+                    overlay:true,
+                    effectDuration: 1
+                });
+            }
             damageFinalText = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_DYING');
-            flagDataArray.push({
-                tokenId: functionStuff.targetData.tokenId,
-                addEffect: "icons/svg/skull.svg",
-                overlay:true,
-                effectDuration: 1
-            });
         }else if(pain){
             damageFinalText = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_PAIN');
             flagDataArray.push({
                 tokenId: functionStuff.targetData.tokenId,
-                addEffect: "icons/svg/falling.svg",
+                addEffect: CONFIG.statusEffects.find(e => e.id === "prone"),
                 effectDuration: 1
             })
         }
@@ -3322,7 +3333,7 @@ async function poisonCalc(functionStuff, poisonRoll){
     poisonRes.poisonChatIntro = functionStuff.actingCharName + game.i18n.localize('COMBAT.CHAT_POISON') + functionStuff.targetData.name;
     let poisonDamage = "0";
     let poisonedTimeLeft = 0;
-    const effect = "icons/svg/poison.svg";
+    const effect = CONFIG.statusEffects.find(e => e.id === "poison");
     poisonRes.poisonResistRollText = functionStuff.targetData.name+game.i18n.localize('ABILITY.RESIST_ROLL');
         
     if(!poisonRoll.trueActorSucceeded){
@@ -3343,12 +3354,16 @@ async function poisonCalc(functionStuff, poisonRoll){
         if(poisonedEffectCounter){
             //target already poisoned
             //get the number of rounds left
+            let statusCounterMod = false;
             if(game.modules.get("statuscounter")?.active){
+                //statusCounterMod = true;  until corrected
+            };
+            if(statusCounterMod){
                 poisonedTimeLeft = await EffectCounter.findCounterValue(functionStuff.targetData.token, effect);  
                 if(NewPoisonRounds > poisonedTimeLeft){
                     poisonRes.flagData = {
                         tokenId: functionStuff.targetData.tokenId,
-                        modifyEffectDuration: "icons/svg/poison.svg",
+                        modifyEffectDuration: effect,
                         effectDuration: NewPoisonRounds
                     };
                     poisonRes.poisonChatResult = game.i18n.localize('COMBAT.CHAT_POISON_EXTEND') + NewPoisonRounds.toString();
@@ -3363,7 +3378,7 @@ async function poisonCalc(functionStuff, poisonRoll){
             //new poisonning  
             poisonRes.flagData ={
                 tokenId: functionStuff.targetData.tokenId,
-                addEffect: "icons/svg/poison.svg",
+                addEffect: effect,
                 effectDuration: NewPoisonRounds
             };
             poisonRes.poisonChatResult = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_POISON_SUCCESS1') + poisonDamage  + game.i18n.localize('COMBAT.CHAT_POISON_SUCCESS2')  + NewPoisonRounds.toString();
@@ -3462,7 +3477,7 @@ async function standardPowerResult(rollData, functionStuff){
         flagDataArray.push({
             tokenId: functionStuff.tokenId,
             actorId: functionStuff.actor.id,
-            addEffect: "icons/svg/holy-shield.svg",
+            addEffect: CONFIG.statusEffects.find(e => e.id === "holyShield"),
             effectDuration: 1
         },{
             tokenId: functionStuff.tokenId,
@@ -3476,7 +3491,7 @@ async function standardPowerResult(rollData, functionStuff){
             for(let target of functionStuff.targets){
                 flagDataArray.push({
                     tokenId: target.tokenId,
-                    addEffect: "icons/svg/holy-shield.svg",
+                    addEffect: CONFIG.statusEffects.find(e => e.id === "holyShield"),
                     effectDuration: 1 
                 },{
                     tokenId: target.tokenId,
@@ -3548,18 +3563,26 @@ async function standardPowerResult(rollData, functionStuff){
             if(damageTot >= targetValue){
                 targetDies = true;
                 damageFinalText = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_DYING');
-                flagDataArray.push({
-                    tokenId: functionStuff.targetData.tokenId,
-                    addEffect: "icons/svg/skull.svg",
-                    overlay:true,
-                    effectDuration: 1
-                });
+                if(ui.combat.viewed && ui.combat.viewed.getCombatantByToken(functionStuff.targetData.tokenId)){
+                    flagDataArray.push({
+                        tokenId: functionStuff.targetData.tokenId,
+                        defeated: true
+                    });
+                }
+                else{
+                    flagDataArray.push({
+                        tokenId: functionStuff.targetData.tokenId,
+                        addEffect: CONFIG.statusEffects.find(e => e.id === "dead"),
+                        overlay:true,
+                        effectDuration: 1
+                    });
+                }
             }
             else if(pain){
                 damageFinalText = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_PAIN');
                 flagDataArray.push({
                     tokenId: functionStuff.targetData.tokenId,
-                    addEffect: "icons/svg/falling.svg",
+                    addEffect: CONFIG.statusEffects.find(e => e.id === "prone"),
                     effectDuration: 1
                 })
             }
@@ -3641,41 +3664,49 @@ async function standardPowerResult(rollData, functionStuff){
                 });
                 if(functionStuff.powerLvl.level > 1){
                     templateData.finalText += game.i18n.localize('POWER_INHERITWOUND.CHAT_REDIRECT');
-                    const pEffect = "icons/svg/poison.svg";
+                    const pEffect = CONFIG.statusEffects.find(e => e.id === "poison");
                     let poisonedEffectCounter = await getEffect(functionStuff.targetData.token, pEffect);
                     if(poisonedEffectCounter){
                         //target  poisoned
                         //get the number of rounds left
                         let timeLeft = 1;
+                        let statusCounterMod = false;
                         if(game.modules.get("statuscounter")?.active){
+                            //statusCounterMod = true;  until corrected
+                        };
+                        if(statusCounterMod){
                             timeLeft = await EffectCounter.findCounterValue(functionStuff.targetData.token, pEffect);
                         }
                         //set status to caster
                         flagDataArray.push({
                             tokenId: functionStuff.tokenId,
-                            addEffect: "icons/svg/poison.svg",
+                            addEffect: pEffect,
                             effectDuration: timeLeft
                         }, {
                             tokenId: functionStuff.targetData.tokenId,
-                            removeEffect: "icons/svg/poison.svg"
+                            removeEffect: pEffect
                         })
                     }
-                    const bEffect = "icons/svg/blood.svg";
+                    const bEffect = CONFIG.statusEffects.find(e => e.id === "bleeding");
                     let bleedEffectCounter = await getEffect(functionStuff.targetData.token, bEffect);
                     if(bleedEffectCounter){
                         //get the number of rounds left
                         let timeleft = 1;
+                        let statusCounterMod = false;
                         if(game.modules.get("statuscounter")?.active){
+                            //statusCounterMod = true;  until corrected
+                        };
+                        if(statusCounterMod){
                             timeLeft = await EffectCounter.findCounterValue(functionStuff.targetData.token, bEffect);
                         }
                         //set status to caster
                         flagDataArray.push({
                             tokenId: functionStuff.tokenId,
-                            addEffect: "icons/svg/blood.svg",
+                            addEffect: bEffect,
                             effectDuration: timeLeft
                         }, {
                             tokenId: functionStuff.targetData.tokenId,
-                            removeEffect: "icons/svg/blood.svg"
+                            removeEffect: bEffect
                         })
                     }
                 }
@@ -3709,19 +3740,24 @@ async function standardPowerResult(rollData, functionStuff){
         chatData.roll= JSON.stringify(createRollData(rolls));
     }
     let NewMessage = await ChatMessage.create(chatData);
-
     if(trueActorSucceeded && (functionStuff.addTargetEffect.length >0)){
         for(let effect of functionStuff.addTargetEffect){
-        flagDataArray.push({
-                tokenId: functionStuff.targetData.tokenId,
-                addEffect: effect,
-                effectDuration: 1
-            });
+            let effectPresent = getEffect(functionStuff.targetData.token, effect);
+            if(!effectPresent){
+                flagDataArray.push({
+                        tokenId: functionStuff.targetData.tokenId,
+                        addEffect: effect,
+                        effectDuration: 1
+                });
+            }
         }
     }
     if(trueActorSucceeded && (functionStuff.addCasterEffect.length >0) && functionStuff.tokenId){
         for(let effect of functionStuff.addCasterEffect){
-            modifyEffectOnToken(functionStuff.token, effect, 1, 1);
+            let effectPresent = getEffect(functionStuff.token, effect);
+            if(!effectPresent){
+                await modifyEffectOnToken(functionStuff.token, effect, 1, 1);
+            }
         }
     }
     if(trueActorSucceeded && (functionStuff.removeTargetEffect.length >0)){
@@ -3745,11 +3781,14 @@ async function standardPowerResult(rollData, functionStuff){
     }
     if(trueActorSucceeded && !functionStuff.isMaintained && (functionStuff.activelyMaintainedTargetEffect.length >0)){ 
         for(let effect of functionStuff.activelyMaintainedTargetEffect){
-        flagDataArray.push({
-                tokenId: functionStuff.targetData.tokenId,
-                addEffect: effect,
-                effectDuration: 1
-            });
+            let effectPresent = getEffect(functionStuff.targetData.token, effect);
+            if(!effectPresent){
+                flagDataArray.push({
+                    tokenId: functionStuff.targetData.tokenId,
+                    addEffect: effect,
+                    effectDuration: 1
+                });
+            }
         }
     }
     if(!trueActorSucceeded && functionStuff.isMaintained && (functionStuff.activelyMaintainedTargetEffect.length >0)){ 
@@ -3765,11 +3804,14 @@ async function standardPowerResult(rollData, functionStuff){
     }
     if(trueActorSucceeded && !functionStuff.isMaintained && (functionStuff.activelyMaintaninedCasterEffect.length >0) && functionStuff.tokenId){ 
         for(let effect of functionStuff.activelyMaintaninedCasterEffect){
-        flagDataArray.push({
-                tokenId: functionStuff.tokenId,
-                addEffect: effect,
-                effectDuration: 1
-            });
+            let effectPresent = getEffect(functionStuff.token, effect);
+            if(!effectPresent){
+                flagDataArray.push({
+                    tokenId: functionStuff.tokenId,
+                    addEffect: effect,
+                    effectDuration: 1
+                });
+            }
         }
     }
     if(!trueActorSucceeded && functionStuff.isMaintained && (functionStuff.activelyMaintaninedCasterEffect.length >0) && functionStuff.tokenId){ 

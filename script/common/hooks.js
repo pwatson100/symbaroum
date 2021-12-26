@@ -1,5 +1,5 @@
 import { SymbaroumActor } from './actor.js';
-import { SymbaroumItem, buildRolls } from './item.js';
+import { SymbaroumItem, buildRolls, getEffect } from './item.js';
 import { PlayerSheet } from '../sheet/player.js';
 import { PlayerSheet2 } from '../sheet/player2.js';
 import { TraitSheet } from '../sheet/trait.js';
@@ -333,6 +333,7 @@ Hooks.once('init', () => {
       SymbaroumConfig.toggleConfigButton(enabled);
     },
   });
+  setupStatusEffects();
 });
 
 Hooks.once('ready', () => {
@@ -416,6 +417,10 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
             if (flagData.modifyEffectDuration) {
               modifyEffectOnToken(token, flagData.modifyEffectDuration, 2, flagData);
             }
+            if (flagData.defeated && ui.combat.viewed) {
+              let c = ui.combat.viewed.getCombatantByToken(flagData.tokenId);
+              ui.combat._onToggleDefeatedStatus(c);
+            }
           }
           let actor = token?.actor ?? game.actors.get(flagData.actorId);
           if(actor !== undefined){
@@ -495,6 +500,66 @@ async function setupConfigOptions() {
   await r.style.setProperty('--box-non-editable', game.settings.get('symbaroum', 'switchNoNEditableColour'));
 }
 
+// this add new status effect to the foundry list
+async function setupStatusEffects(){
+  CONFIG.statusEffects.push(
+    {
+      id: "bendwill",
+      label: "POWER_LABEL.BEND_WILL",
+      icon: "systems/symbaroum/asset/image/puppet.png"
+    },
+    {
+      id: "berserker",
+      label: "ABILITY_LABEL.BERSERKER",
+      icon: "systems/symbaroum/asset/image/berserker.svg"
+    },
+    {
+      id: "confusion",
+      label: "POWER_LABEL.CONFUSION",
+      icon: "systems/symbaroum/asset/image/unknown-item.png"
+    },
+    {
+      id: "dancingweapon",
+      label: "POWER_LABEL.DANCING_WEAPON",
+      icon: "systems/symbaroum/asset/image/powers/dancingweapon.svg"
+    },
+    {
+      id: "entanglingvines",
+      label: "POWER_LABEL.ENTANGLING_VINES",
+      icon: "systems/symbaroum/asset/image/vines.png"
+    },
+    {
+      id: "holyaura",
+      label: "POWER_LABEL.HOLY_AURA",
+      icon: "icons/svg/aura.svg"
+    },
+    {
+      id: "larvaeboils",
+      label: "POWER_LABEL.LARVAE_BOILS",
+      icon: "systems/symbaroum/asset/image/bug.png"
+    },
+    {
+      id: "maltransformation",
+      label: "POWER_LABEL.MALTRANSFORMATION",
+      icon: "systems/symbaroum/asset/image/frog.png"
+    },
+    {
+      id: "strangler",
+      label: "ABILITY_LABEL.STRANGLER",
+      icon: "systems/symbaroum/asset/image/lasso.png"
+    },
+    {
+      id: "tormentingspirits",
+      label: "POWER_LABEL.TORMENTING_SPIRITS",
+      icon: "systems/symbaroum/asset/image/ghost.svg"
+    },
+    {
+      id: "unnoticeable",
+      label: "POWER_LABEL.UNNOTICEABLE",
+      icon: "systems/symbaroum/asset/image/invisible.png"
+    });
+}
+
 async function createBlessedShield(actor, protection = '1d4') {
   let data = {
     name: game.i18n.localize('POWER_LABEL.BLESSED_SHIELD'),
@@ -572,11 +637,11 @@ async function setupEmit() {
 Hooks.on('createToken', async (token, options, userID) => {
   let flagBerserk = token.actor.getFlag(game.system.id, 'berserker');
   if (flagBerserk) {
-    modifyEffectOnToken(token._object, 'systems/symbaroum/asset/image/berserker.svg', 1, 1);
+    modifyEffectOnToken(token._object, CONFIG.statusEffects.find(e => e.id === "berserker"), 1, 1);
   }
   let flagDancingWeapon = token.actor.getFlag(game.system.id, 'dancingweapon');
   if (flagDancingWeapon) {
-    modifyEffectOnToken(token._object, 'systems/symbaroum/asset/image/powers/dancingweapon.svg', 1, 1);
+    modifyEffectOnToken(token._object, CONFIG.statusEffects.find(e => e.id === "dancingweapon"), 1, 1);
   }
 });
 
@@ -586,36 +651,40 @@ Hooks.on('createToken', async (token, options, userID) => {
 export async function modifyEffectOnToken(token, effect, action, options) {
   let statusCounterMod = false;
   if (game.modules.get('statuscounter')?.active) {
-    statusCounterMod = true;
+    //statusCounterMod = true; //  until problem is fixed
   }
   let duration = options.effectDuration ?? 1;
   if (action == 1) {
     //add effect
-    if (statusCounterMod) {
-      let alreadyHereEffect = await EffectCounter.findCounter(token, effect).getDisplayValue();
-      if (alreadyHereEffect == undefined) {
-        if (options.effectStuff) {
-          let statusEffect = new EffectCounter(options.effectStuff, effect, token, false);
-          await statusEffect.update();
-        } else if (options.overlay) {
-          token.toggleEffect(effect, { overlay: options.overlay });
-        } else {
-          let statusEffect = new EffectCounter(duration, effect, token, false);
-          await statusEffect.update();
+    if(!getEffect(token, effect)){
+      if (statusCounterMod) {
+        let alreadyHereEffect = await EffectCounter.findCounter(token.document, effect.icon);
+        if (alreadyHereEffect === undefined) {
+          if (options?.effectStuff) {
+            let statusEffect = new EffectCounter(options.effectStuff, effect.icon, token, false);
+            await statusEffect.update();
+          } else if (options.overlay) {
+            token.toggleEffect(effect, { overlay: options.overlay });
+          } else {
+            let statusEffect = new EffectCounter(duration, effect.icon, token, false);
+            await statusEffect.update();
+          }
         }
+      } else {
+        token.toggleEffect(effect, {overlay: options.overlay });
       }
-    } else {
-      token.toggleEffect(effect, { overlay: options.overlay });
     }
   } else if (action == 0) {
     //remove effect
-    if (statusCounterMod) {
-      let statusEffectCounter = await EffectCounter.findCounter(token, effect).getDisplayValue();
-      if (statusEffectCounter != undefined) {
-        await statusEffectCounter.remove();
+    if(getEffect(token, effect)){
+      if (statusCounterMod) {
+        let statusEffectCounter = await EffectCounter.findCounter(token, effect).getDisplayValue();
+        if (statusEffectCounter != undefined) {
+          await statusEffectCounter.remove();
+        }
+      } else {
+        token.toggleEffect(effect, {overlay: options.overlay });
       }
-    } else {
-      token.toggleEffect(effect);
     }
   } else {
     //modify duration - only with Status counter mod

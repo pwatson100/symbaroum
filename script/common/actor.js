@@ -974,7 +974,7 @@ export function getTargets(targetAttributeName, maxTargets = 1) {
         let autoParams = "";
         let leaderTarget = false;
             // check for leader adept ability effect on target
-        const LeaderEffect = "icons/svg/eye.svg";
+        const LeaderEffect = CONFIG.statusEffects.find(e => e.id === "eye");
         let leaderEffect = getEffect(targetToken, LeaderEffect);
         if(leaderEffect){
             leaderTarget = true;
