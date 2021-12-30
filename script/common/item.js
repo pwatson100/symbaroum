@@ -1,5 +1,6 @@
-import { upgradeDice, baseRoll, createRollData, damageRollWithDiceParams, simpleDamageRoll, getAttributeValue, getAttributeLabel, getOwnerPlayer, createModifyTokenChatButton, createResistRollChatButton } from './roll.js';
+import { baseRoll, createRollData, damageRollWithDiceParams, simpleDamageRoll, getAttributeValue, getAttributeLabel, getOwnerPlayer, createModifyTokenChatButton, createResistRollChatButton } from './roll.js';
 import { modifyEffectOnToken } from './hooks.js';
+import { createLineDisplay } from './dialog.js';
 
 export class SymbaroumItem extends Item {
     static async create(data, options) {
@@ -30,6 +31,7 @@ export class SymbaroumItem extends Item {
         }
         super.create(data, options);
     }
+
 
     prepareData() {
         super.prepareData();
@@ -355,30 +357,61 @@ export class SymbaroumItem extends Item {
         return {level : powerLvl, lvlName : lvlName};
     }
 
-    getItemModifiers(combatMods, armors, weapons, mysticPowers) 
+    getItemModifiers(combatMods, armors, weapons, abilities) 
     {
         if( !this.isOwned || this.data.data.reference === undefined || this.data.data.reference === null) {
             return;               
         }
         let ref = this.data.data.reference.capitalize();
         if( typeof this["getItemModifier"+ref] == "function" ) {
-            this["getItemModifier"+ref](combatMods, armors, weapons, mysticPowers)
+            this["getItemModifier"+ref](combatMods, armors, weapons, abilities)
         }
     }
     
-    getMysticPowersConfig() 
-    {
+    getAbilitiesConfig(){
         let base= {
             id: this.id,
             label: this.data.name,
             reference: this.data.data.reference,
+            type: "ability",
+            corruption: game.symbaroum.config.TEMPCORRUPTION_NONE,
+            impeding: game.symbaroum.config.IMPEDING_NOT,
+            isScripted: false,
+            powerLvl: this.getLevel(),
+            attributes: [],
+            casting: game.symbaroum.config.CASTING,
+            maintain: game.symbaroum.config.MAINTAIN_NOT,
+            castingAttributeName: "cunning",
+            targetText: game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM'),
+            package: [],
+            autoParams: ""
+        };
+        if( !this.isOwned || this.data.data.reference === undefined || this.data.data.reference === null) {
+            return(base);               
+        }
+        let ref = this.data.data.reference.capitalize();
+        if( typeof this["abilitySetup"+ref] == "function" ) {
+            base.isScripted = true;
+            return(this["abilitySetup"+ref](base));
+        }
+        else return(base)
+    }
+    
+    getMysticPowersConfig(){
+        let base= {
+            id: this.id,
+            label: this.data.name,
+            reference: this.data.data.reference,
+            type: "mysticalPower",
             corruption: game.symbaroum.config.TEMPCORRUPTION_NORMAL,
+            impeding: game.symbaroum.config.IMPEDING_MAGIC,
             isScripted: false,
             traditions: [],
             powerLvl: this.getLevel(),
-            corruption: true,
             healingBonus: "",
-            attributes:[],
+            attributes: [],
+            castingAttributeName: "resolute",
+            targetText: game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM'),
             package: [],
             autoParams: ""
         };
@@ -387,7 +420,37 @@ export class SymbaroumItem extends Item {
         }
         let ref = this.data.data.reference.capitalize();
         if( typeof this["mysticPowerSetup"+ref] == "function" ) {
+            base.isScripted = true;
             return(this["mysticPowerSetup"+ref](base));
+        }
+        else return(base)
+    }
+    
+    getTraitsConfig(){
+        let base= {
+            id: this.id,
+            label: this.data.name,
+            reference: this.data.data.reference,
+            type: "trait",
+            corruption: game.symbaroum.config.TEMPCORRUPTION_NONE,
+            impeding: game.symbaroum.config.IMPEDING_NOT,
+            casting: game.symbaroum.config.CASTING,
+            maintain: game.symbaroum.config.MAINTAIN_NOT,
+            isScripted: false,
+            powerLvl: this.getLevel(),
+            attributes: [],
+            castingAttributeName: "quick",
+            targetText: game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM'),
+            package: [],
+            autoParams: ""
+        };
+        if( !this.isOwned || this.data.data.reference === undefined || this.data.data.reference === null) {
+            return(base);               
+        }
+        let ref = this.data.data.reference.capitalize();
+        if( typeof this["traitSetup"+ref] == "function" ) {
+            base.isScripted = true;
+            return(this["traitSetup"+ref](base));
         }
         else return(base)
     }
@@ -481,32 +544,32 @@ export class SymbaroumItem extends Item {
     }
 
     // All armor types
-    getItemModifierStackable(combatMods, armors, weapons, mysticPowers) {
+    getItemModifierStackable(combatMods, armors, weapons, abilities) {
         this._getOwnArmorBonuses(combatMods,armors);
     }
     
-    getItemModifierLightarmor(combatMods, armors, weapons, mysticPowers) {
+    getItemModifierLightarmor(combatMods, armors, weapons, abilities) {
         this._getOwnArmorBonuses(combatMods,armors);
     }
 
-    getItemModifierMediumarmor(combatMods, armors, weapons, mysticPowers) {
+    getItemModifierMediumarmor(combatMods, armors, weapons, abilities) {
         this._getOwnArmorBonuses(combatMods,armors);
     }
 
-    getItemModifierHeavyarmor(combatMods, armors, weapons, mysticPowers) {
+    getItemModifierHeavyarmor(combatMods, armors, weapons, abilities) {
         this._getOwnArmorBonuses(combatMods,armors);
     }
     // Higher than d8
-    getItemModifierSuperarmor(combatMods, armors, weapons, mysticPowers) {
+    getItemModifierSuperarmor(combatMods, armors, weapons, abilities) {
         this._getOwnArmorBonuses(combatMods,armors);
     }
 
     // Weapons    
-    _getOwnWeaponBonuses(combatMods, armors, weapons, mysticPowers) 
+    _getOwnWeaponBonuses(combatMods, armors, weapons, abilities) 
     {
         for(let i = 0; i < armors.length; i++)
         {
-            if(armors[i].id != this.id || !this.data.isActive || !armors[i].data.isActive || armors[i].data.isStackableArmor ||  !this.data.data.qualities.balanced) {
+            if(!this.data.isActive || !armors[i].data.isActive || armors[i].data.isStackableArmor ||  !this.data.data.qualities.balanced) {
                 continue;
             }
             // Add 1
@@ -596,35 +659,35 @@ export class SymbaroumItem extends Item {
     }
 
     // All melee weapons
-    getItemModifierUnarmed(combatMods, armors, weapons, mysticPowers) {
-        this._getOwnWeaponBonuses(combatMods, armors, weapons, mysticPowers);
+    getItemModifierUnarmed(combatMods, armors, weapons, abilities) {
+        this._getOwnWeaponBonuses(combatMods, armors, weapons, abilities);
     }
-    getItemModifier1handed(combatMods, armors, weapons, mysticPowers) {
-        this._getOwnWeaponBonuses(combatMods, armors, weapons, mysticPowers);
+    getItemModifier1handed(combatMods, armors, weapons, abilities) {
+        this._getOwnWeaponBonuses(combatMods, armors, weapons, abilities);
     }
-    getItemModifierShort(combatMods, armors, weapons, mysticPowers) {
-        this._getOwnWeaponBonuses(combatMods, armors, weapons, mysticPowers);
+    getItemModifierShort(combatMods, armors, weapons, abilities) {
+        this._getOwnWeaponBonuses(combatMods, armors, weapons, abilities);
     }
-    getItemModifierLong(combatMods, armors, weapons, mysticPowers) {
-        this._getOwnWeaponBonuses(combatMods, armors, weapons, mysticPowers);
+    getItemModifierLong(combatMods, armors, weapons, abilities) {
+        this._getOwnWeaponBonuses(combatMods, armors, weapons, abilities);
     }
-    getItemModifierShield(combatMods, armors, weapons, mysticPowers) {
-        this._getOwnWeaponBonuses(combatMods, armors, weapons, mysticPowers);
+    getItemModifierShield(combatMods, armors, weapons, abilities) {
+        this._getOwnWeaponBonuses(combatMods, armors, weapons, abilities);
     }
-    getItemModifierHeavy(combatMods, armors, weapons, mysticPowers) {
-        this._getOwnWeaponBonuses(combatMods, armors, weapons, mysticPowers);
+    getItemModifierHeavy(combatMods, armors, weapons, abilities) {
+        this._getOwnWeaponBonuses(combatMods, armors, weapons, abilities);
     }
     // All ranged
-    getItemModifierRanged(combatMods, armors, weapons, mysticPowers) {
-        this._getOwnWeaponBonuses(combatMods, armors, weapons, mysticPowers);
+    getItemModifierRanged(combatMods, armors, weapons, abilities) {
+        this._getOwnWeaponBonuses(combatMods, armors, weapons, abilities);
     }
-    getItemModifierThrown(combatMods, armors, weapons, mysticPowers) {
-        this._getOwnWeaponBonuses(combatMods,armors, weapons);
+    getItemModifierThrown(combatMods, armors, weapons, abilities) {
+        this._getOwnWeaponBonuses(combatMods,armors, weapons, abilities);
     }
     // End weapons
 
     // Start abilities & traits
-    getItemModifierAlternativedamage(combatMods, armors, weapons, mysticPowers) {
+    getItemModifierAlternativedamage(combatMods, armors, weapons, abilities) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         
@@ -639,7 +702,7 @@ export class SymbaroumItem extends Item {
             combatMods.weapons[weapons[i].id].package[0].member.push(base);
         }
     }
-    getItemModifierArmored(combatMods, armors, weapons, mysticPowers)
+    getItemModifierArmored(combatMods, armors, weapons, abilities)
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -660,7 +723,7 @@ export class SymbaroumItem extends Item {
         }
     }        
 
-    getItemModifierArmoredmystic(combatMods, armors, weapons, mysticPowers) 
+    getItemModifierArmoredmystic(combatMods, armors, weapons, abilities) 
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -689,7 +752,7 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getItemModifierBackstab(combatMods, armors, weapons, mysticPowers) {
+    getItemModifierBackstab(combatMods, armors, weapons, abilities) {
         let lvl = this.getLevel();
         if(lvl.level < 1) return;
         for(let i = 0; i < weapons.length; i++)
@@ -743,7 +806,7 @@ export class SymbaroumItem extends Item {
         }
     }
     
-    getItemModifierBeastlore(combatMods, armors, weapons, mysticPowers) {
+    getItemModifierBeastlore(combatMods, armors, weapons, abilities) {
         let lvl = this.getLevel();
         if(lvl.level < 2) return;
         
@@ -764,9 +827,25 @@ export class SymbaroumItem extends Item {
             pack.member.push(base);
             combatMods.weapons[weapons[i].id].package.push(pack);
         }
+        for(let i = 0; i < abilities.length; i++)
+        {
+            if(combatMods.abilities[abilities[i].id].type==="mysticalPower" && combatMods.abilities[abilities[i].id].hasDamage){
+                let pack = this._getPackageFormat();
+                let damageMod = "+1d"+(lvl.level*2).toString();
+                let base = this._getBaseFormat();
+                base.type = game.symbaroum.config.DAM_MOD;
+                base.value=damageMod;
+                base.alternatives = [{
+                    damageMod: damageMod,
+                    damageModNPC: (lvl.level)
+                }];
+                pack.member.push(base);
+                combatMods.abilities[abilities[i].id].package.push(pack);
+            }
+        }
     }
 
-    getItemModifierBerserker(combatMods, armors, weapons, mysticPowers) {
+    getItemModifierBerserker(combatMods, armors, weapons, abilities) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         if(!this.actor.getFlag(game.system.id, 'berserker')) {
@@ -809,18 +888,18 @@ export class SymbaroumItem extends Item {
         }
     }
     
-    getItemModifierBlessings(combatMods, armors, weapons, mysticPowers)
+    getItemModifierBlessings(combatMods, armors, weapons, abilities)
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         if(lvl.level > 1){
-            for(let i = 0; i < mysticPowers.length; i++)
+            for(let i = 0; i < abilities.length; i++)
             {
-                if(combatMods.mysticpowers[mysticPowers[i].id].traditions.includes(game.symbaroum.config.TRAD_BLESSINGS)) 
+                if(combatMods.abilities[abilities[i].id].type==="mysticalPower" && combatMods.abilities[abilities[i].id].traditions.includes(game.symbaroum.config.TRAD_BLESSINGS)) 
                 {
-                    combatMods.mysticpowers[mysticPowers[i].id].corruption = game.symbaroum.config.TEMPCORRUPTION_ONE;
+                    combatMods.abilities[abilities[i].id].corruption = game.symbaroum.config.TEMPCORRUPTION_ONE;
                     if(lvl.level > 2){
-                        combatMods.mysticpowers[mysticPowers[i].id].healingBonus +="+1d4["+this.name+"]";
+                        combatMods.abilities[abilities[i].id].healingBonus +="+1d4["+this.name+"]";
                         let pack = this._getPackageFormat();
                         let base = this._getBaseFormat();
                         base.type = game.symbaroum.config.DAM_MOD;
@@ -830,10 +909,10 @@ export class SymbaroumItem extends Item {
                             damageModNPC: 2
                         }];
                         pack.member.push(base);
-                        combatMods.mysticpowers[mysticPowers[i].id].package.push(pack);
+                        combatMods.abilities[abilities[i].id].package.push(pack);
                     }
                 }
-            };
+            }
         };
         let base = this._getBaseFormat();
         base.value = game.symbaroum.config.TRAD_BLESSINGS;
@@ -841,7 +920,18 @@ export class SymbaroumItem extends Item {
         combatMods.traditions.push(base);
     }
 
-    getItemModifierColossal(combatMods, armors, weapons, mysticPowers) {
+    getItemModifierChanneling(combatMods, armors, weapons, abilities)
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        if(lvl.level > 1){
+            let base = this._getBaseFormat();
+            base.type = game.symbaroum.config.TEMPCORRUPTION_FAVOUR;
+            combatMods.corruption.push(base);
+        }
+    }
+
+    getItemModifierColossal(combatMods, armors, weapons, abilities) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         if(lvl.level > 2) {
@@ -877,7 +967,7 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getItemModifierCorruptingattack(combatMods, armors, weapons, mysticPowers) {
+    getItemModifierCorruptingattack(combatMods, armors, weapons, abilities) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         
@@ -896,7 +986,7 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getItemModifierDancingweapon(combatMods, armors, weapons, mysticPowers) {
+    getItemModifierDancingweapon(combatMods, armors, weapons, abilities) {
         let lvl = this.getLevel();
         if(lvl.level == 0 || !this.actor.getFlag(game.system.id, 'dancingweapon') ) return;
         for(let i = 0; i < armors.length; i++)
@@ -914,15 +1004,14 @@ export class SymbaroumItem extends Item {
             if(!weapons[i].data.data.isMelee || !this.actor.getFlag(game.system.id, "dancingweapon")) {
                 continue;
             }
-            let pack = this._getPackageFormat();
             let base = this._getBaseFormat();
+            base.type = game.symbaroum.config.TYPE_ATTRIBUTE;
             base.attribute = "resolute";
-            pack.member.push(base);
-            combatMods.weapons[weapons[i].id].package.push(pack);
+            combatMods.weapons[weapons[i].id].package[0].member.push(base);
         }        
     }    
 
-    getItemModifierDominate(combatMods, armors, weapons, mysticPowers) {
+    getItemModifierDominate(combatMods, armors, weapons, abilities) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         for(let i = 0; i < weapons.length; i++)
@@ -937,7 +1026,7 @@ export class SymbaroumItem extends Item {
         }        
     }
 
-    getItemModifierFeatofstrength(combatMods, armors, weapons, mysticPowers) {
+    getItemModifierFeatofstrength(combatMods, armors, weapons, abilities) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         for(let i = 0; i < weapons.length; i++)
@@ -975,7 +1064,7 @@ export class SymbaroumItem extends Item {
         return(weapon.attribute === "strong")
     }
 
-    getItemModifierFeint(combatMods, armors, weapons, mysticPowers) {
+    getItemModifierFeint(combatMods, armors, weapons, abilities) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         if(lvl.level > 1) {
@@ -1002,7 +1091,7 @@ export class SymbaroumItem extends Item {
         }        
     }
 
-    getItemModifierHuntersinstinct(combatMods, armors, weapons, mysticPowers) {
+    getItemModifierHuntersinstinct(combatMods, armors, weapons, abilities) {
         let lvl = this.getLevel();
         if(lvl.level < 1) return;
         for(let i = 0; i < weapons.length; i++)
@@ -1030,7 +1119,7 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getItemModifierIronfist(combatMods, armors, weapons, mysticPowers) {
+    getItemModifierIronfist(combatMods, armors, weapons, abilities) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         
@@ -1086,7 +1175,7 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getItemModifierKnifeplay(combatMods, armors, weapons, mysticPowers) {
+    getItemModifierKnifeplay(combatMods, armors, weapons, abilities) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         for(let i = 0; i < weapons.length; i++)
@@ -1108,19 +1197,32 @@ export class SymbaroumItem extends Item {
         }        
     }
 
-    getItemModifierLeader(combatMods, armors, weapons, mysticPowers) 
+    getItemModifierLeader(combatMods, armors, weapons, abilities) 
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
-        for(let i = 0; i < mysticPowers.length; i++){
+        for(let i = 0; i < abilities.length; i++){
+            if(combatMods.abilities[abilities[i].id].type==="mysticalPower"){
+                let base = this._getBaseFormat();
+                base.attribute = "persuasive"; 
+                base.type = game.symbaroum.config.TYPE_ATTRIBUTE; 
+                combatMods.abilities[abilities[i].id].attributes.push(base);
+            }
+        };
+        for(let i = 0; i < armors.length; i++)
+        {
+            if(armors[i].data.isStackableArmor) {
+                continue;
+            }
             let base = this._getBaseFormat();
-            base.attribute = "persuasive"; 
-            base.type = game.symbaroum.config.TYPE_ATTRIBUTE; 
-            combatMods.mysticpowers[mysticPowers[i].id].attributes.push(base);
+            base.lvl = lvl;
+            base.type= game.symbaroum.config.TYPE_ALT_RESIST_ATTR_RESOLUTE;
+            base.attribute = "persuasive";
+            combatMods.armors[armors[i].id].damageReductions.push(base);            
         }
     }
 
-    getItemModifierManatarms(combatMods, armors, weapons, mysticPowers)
+    getItemModifierManatarms(combatMods, armors, weapons, abilities)
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -1141,7 +1243,7 @@ export class SymbaroumItem extends Item {
         }
     }    
 
-    getItemModifierMarksman(combatMods, armors, weapons, mysticPowers)
+    getItemModifierMarksman(combatMods, armors, weapons, abilities)
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -1157,7 +1259,7 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getItemModifierNaturalwarrior(combatMods, armors, weapons, mysticPowers) {
+    getItemModifierNaturalwarrior(combatMods, armors, weapons, abilities) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         
@@ -1192,7 +1294,7 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getItemModifierNaturalweapon(combatMods, armors, weapons, mysticPowers) {
+    getItemModifierNaturalweapon(combatMods, armors, weapons, abilities) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         
@@ -1208,19 +1310,13 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getItemModifierNopainthreshold(combatMods, armors, weapons, mysticPowers) {
+    getItemModifierNopainthreshold(combatMods, armors, weapons, abilities) {
         let base = this._getBaseFormat();
         base.type = game.symbaroum.config.NO_TRESHOLD;
         combatMods.toughness.push(base);
     }
 
-    getItemModifierThoroughlycorrupt(combatMods, armors, weapons, mysticPowers) {
-        let base = this._getBaseFormat();
-        base.type = game.symbaroum.config.NO_TRESHOLD;
-        combatMods.corruption.push(base);
-    }
-
-    getItemModifierPoisonresilient(combatMods, armors, weapons, mysticPowers) 
+    getItemModifierPoisonresilient(combatMods, armors, weapons, abilities) 
     {
         let boonLevel = this.data.data.level;
         if(boonLevel < 1) return;
@@ -1239,7 +1335,7 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getItemModifierPolearmmastery(combatMods, armors, weapons, mysticPowers)
+    getItemModifierPolearmmastery(combatMods, armors, weapons, abilities)
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -1256,7 +1352,7 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getItemModifierRapidfire(combatMods, armors, weapons, mysticPowers){
+    getItemModifierRapidfire(combatMods, armors, weapons, abilities){
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         for(let i = 0; i < weapons.length; i++){
@@ -1273,7 +1369,7 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getItemModifierRapidreflexes(combatMods, armors, weapons, mysticPowers) 
+    getItemModifierRapidreflexes(combatMods, armors, weapons, abilities) 
     {
         let lvl = this.getLevel();
         if(lvl.level < 1) return;
@@ -1290,7 +1386,7 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getItemModifierRobust(combatMods, armors, weapons, mysticPowers) {
+    getItemModifierRobust(combatMods, armors, weapons, abilities) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         for(let i = 0; i < armors.length; i++) {
@@ -1327,7 +1423,7 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getItemModifierShieldfighter(combatMods, armors, weapons, mysticPowers)
+    getItemModifierShieldfighter(combatMods, armors, weapons, abilities)
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -1370,7 +1466,7 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getItemModifierSixthsense(combatMods, armors, weapons, mysticPowers) 
+    getItemModifierSixthsense(combatMods, armors, weapons, abilities) 
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -1407,16 +1503,16 @@ export class SymbaroumItem extends Item {
         }
     }
     //TODO sorcery level>1
-    getItemModifierSorcery(combatMods, armors, weapons, mysticPowers)
+    getItemModifierSorcery(combatMods, armors, weapons, abilities)
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         if(lvl.level > 1){
-            for(let i = 0; i < mysticPowers.length; i++)
+            for(let i = 0; i < abilities.length; i++)
             {
-                if(combatMods.mysticpowers[mysticPowers[i].id].corruption == game.symbaroum.config.TEMPCORRUPTION_NORMAL) 
+                if(combatMods.abilities[abilities[i].id].type==="mysticalPower" && combatMods.abilities[abilities[i].id].corruption == game.symbaroum.config.TEMPCORRUPTION_NORMAL) 
                 {
-                    combatMods.mysticpowers[mysticPowers[i].id].corruption = game.symbaroum.config.TEMPCORRUPTION_TESTFORONE;
+                    combatMods.abilities[abilities[i].id].corruption = game.symbaroum.config.TEMPCORRUPTION_TESTFORONE;
                 }
             };
         };
@@ -1426,7 +1522,7 @@ export class SymbaroumItem extends Item {
         combatMods.traditions.push(base);
     }
 
-    getItemModifierSpiritform(combatMods, armors, weapons, mysticPowers) 
+    getItemModifierSpiritform(combatMods, armors, weapons, abilities) 
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -1450,7 +1546,7 @@ export class SymbaroumItem extends Item {
         }
     }    
 
-    getItemModifierStafffighting(combatMods, armors, weapons, mysticPowers)
+    getItemModifierStafffighting(combatMods, armors, weapons, abilities)
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -1469,7 +1565,7 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getItemModifierStaffmagic(combatMods, armors, weapons, mysticPowers)
+    getItemModifierStaffmagic(combatMods, armors, weapons, abilities)
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -1488,11 +1584,11 @@ export class SymbaroumItem extends Item {
             }
         };
         if(lvl.level > 1){
-            for(let i = 0; i < mysticPowers.length; i++)
+            for(let i = 0; i < abilities.length; i++)
             {
-                if(combatMods.mysticpowers[mysticPowers[i].id].traditions.includes(game.symbaroum.config.TRAD_STAFFM)) 
+                if(combatMods.abilities[abilities[i].id].type==="mysticalPower" && combatMods.abilities[abilities[i].id].traditions.includes(game.symbaroum.config.TRAD_STAFFM)) 
                 {
-                    combatMods.mysticpowers[mysticPowers[i].id].corruption = lvl.level == 2 ? game.symbaroum.config.TEMPCORRUPTION_FAVOUR : game.symbaroum.config.TEMPCORRUPTION_NONE;
+                    combatMods.abilities[abilities[i].id].corruption = lvl.level == 2 ? game.symbaroum.config.TEMPCORRUPTION_FAVOUR : game.symbaroum.config.TEMPCORRUPTION_NONE;
                 }
             };
         };
@@ -1502,7 +1598,7 @@ export class SymbaroumItem extends Item {
         combatMods.traditions.push(base);
     }
 
-    getItemModifierSteadfast(combatMods, armors, weapons, mysticPowers) 
+    getItemModifierSteadfast(combatMods, armors, weapons, abilities) 
     {
         let lvl = this.getLevel();
         if(lvl.level < 1) return;
@@ -1516,7 +1612,7 @@ export class SymbaroumItem extends Item {
             base.lvl = lvl;
             base.type= game.symbaroum.config.TYPE_FAVOUR;
             base.value= game.i18n.localize("DIALOG.FAVOUR_FAVOUR");
-            base.favourMod= 1;
+            base.favourMod= -1;
             base.powers = game.symbaroum.config.steadFastNovResistList;
             if(lvl.level > 1){
                 base.powers = base.powers.concat(game.symbaroum.config.steadFastAdeptResistList);
@@ -1525,7 +1621,7 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getItemModifierSteelthrow(combatMods, armors, weapons, mysticPowers)
+    getItemModifierSteelthrow(combatMods, armors, weapons, abilities)
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -1550,7 +1646,7 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getItemModifierStronggift(combatMods, armors, weapons, mysticPowers) {
+    getItemModifierStronggift(combatMods, armors, weapons, abilities) {
         let lvl = this.getLevel();
         if(lvl.level < 2) return;
         let base = this._getBaseFormat();
@@ -1563,7 +1659,7 @@ export class SymbaroumItem extends Item {
         combatMods.corruption.push(base2);
     }
 
-    getItemModifierSturdy(combatMods, armors, weapons, mysticPowers) {
+    getItemModifierSturdy(combatMods, armors, weapons, abilities) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         let base = this._getBaseFormat();
@@ -1573,7 +1669,7 @@ export class SymbaroumItem extends Item {
         combatMods.toughness.push(base);
     }
 
-    getItemModifierSurvivalinstinct(combatMods, armors, weapons, mysticPowers)
+    getItemModifierSurvivalinstinct(combatMods, armors, weapons, abilities)
     {
         let lvl = this.getLevel();
         if(lvl.level < 2) return;
@@ -1594,7 +1690,7 @@ export class SymbaroumItem extends Item {
         }
     }
 
-    getItemModifierSwarm(combatMods, armors, weapons, mysticPowers) 
+    getItemModifierSwarm(combatMods, armors, weapons, abilities) 
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -1620,7 +1716,7 @@ export class SymbaroumItem extends Item {
         }
     } 
 
-    getItemModifierTactician(combatMods, armors, weapons, mysticPowers) 
+    getItemModifierTactician(combatMods, armors, weapons, abilities) 
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -1658,18 +1754,18 @@ export class SymbaroumItem extends Item {
         }
     }
     
-    getItemModifierTheurgy(combatMods, armors, weapons, mysticPowers)
+    getItemModifierTheurgy(combatMods, armors, weapons, abilities)
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         if(lvl.level > 1){
-            for(let i = 0; i < mysticPowers.length; i++)
+            for(let i = 0; i < abilities.length; i++)
             {
-                if(combatMods.mysticpowers[mysticPowers[i].id].traditions.includes(game.symbaroum.config.TRAD_THEURGY)) 
+                if(combatMods.abilities[abilities[i].id].type==="mysticalPower" && combatMods.abilities[abilities[i].id].traditions.includes(game.symbaroum.config.TRAD_THEURGY)) 
                 {
-                    combatMods.mysticpowers[mysticPowers[i].id].corruption = game.symbaroum.config.TEMPCORRUPTION_ONE;
+                    combatMods.abilities[abilities[i].id].corruption = game.symbaroum.config.TEMPCORRUPTION_ONE;
                     if(lvl.level > 2){
-                        combatMods.mysticpowers[mysticPowers[i].id].healingBonus +="+1d4["+this.name+"]";
+                        combatMods.abilities[abilities[i].id].healingBonus +="+1d4["+this.name+"]";
                         let pack = this._getPackageFormat();
                         let base = this._getBaseFormat();
                         base.type = game.symbaroum.config.DAM_MOD;
@@ -1679,7 +1775,7 @@ export class SymbaroumItem extends Item {
                             damageModNPC: 2
                         }];
                         pack.member.push(base);
-                        combatMods.mysticpowers[mysticPowers[i].id].package.push(pack);
+                        combatMods.abilities[abilities[i].id].package.push(pack);
                     }
                 }
             };
@@ -1690,7 +1786,13 @@ export class SymbaroumItem extends Item {
         combatMods.traditions.push(base);
     }
 
-    getItemModifierTwinattack(combatMods, armors, weapons, mysticPowers) {
+    getItemModifierThoroughlycorrupt(combatMods, armors, weapons, abilities) {
+        let base = this._getBaseFormat();
+        base.type = game.symbaroum.config.NO_TRESHOLD;
+        combatMods.corruption.push(base);
+    }
+
+    getItemModifierTwinattack(combatMods, armors, weapons, abilities) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         for(let i = 0; i < weapons.length; i++)
@@ -1759,7 +1861,7 @@ export class SymbaroumItem extends Item {
         }        
     }
 
-    getItemModifierTwohandedforce(combatMods, armors, weapons, mysticPowers) 
+    getItemModifierTwohandedforce(combatMods, armors, weapons, abilities) 
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
@@ -1776,7 +1878,7 @@ export class SymbaroumItem extends Item {
         }        
     }
 
-    getItemModifierUndead(combatMods, armors, weapons, mysticPowers) 
+    getItemModifierUndead(combatMods, armors, weapons, abilities) 
     {
         let lvl = this.getLevel();
         if(lvl.level < 2) return;
@@ -1796,16 +1898,16 @@ export class SymbaroumItem extends Item {
         }
     }
     
-    getItemModifierWitchcraft(combatMods, armors, weapons, mysticPowers)
+    getItemModifierWitchcraft(combatMods, armors, weapons, abilities)
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         if(lvl.level > 1){
-            for(let i = 0; i < mysticPowers.length; i++)
+            for(let i = 0; i < abilities.length; i++)
             {
-                if(combatMods.mysticpowers[mysticPowers[i].id].traditions.includes(game.symbaroum.config.TRAD_WITCHCRAFT)) 
+                if(combatMods.abilities[abilities[i].id].type==="mysticalPower" && combatMods.abilities[abilities[i].id].traditions.includes(game.symbaroum.config.TRAD_WITCHCRAFT)) 
                 {
-                    combatMods.mysticpowers[mysticPowers[i].id].corruption = game.symbaroum.config.TEMPCORRUPTION_ONE;
+                    combatMods.abilities[abilities[i].id].corruption = game.symbaroum.config.TEMPCORRUPTION_ONE;
                 }
             };
         };
@@ -1815,16 +1917,14 @@ export class SymbaroumItem extends Item {
         combatMods.traditions.push(base);
     }
     
-    getItemModifierWizardry(combatMods, armors, weapons, mysticPowers)
-    {
+    getItemModifierWizardry(combatMods, armors, weapons, abilities){
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         if(lvl.level > 1){
-            for(let i = 0; i < mysticPowers.length; i++)
-            {
-                if(combatMods.mysticpowers[mysticPowers[i].id].traditions.includes(game.symbaroum.config.TRAD_WIZARDRY)) 
+            for(let i = 0; i < abilities.length; i++){
+                if(combatMods.abilities[abilities[i].id].type==="mysticalPower" && combatMods.abilities[abilities[i].id].traditions.includes(game.symbaroum.config.TRAD_WIZARDRY)) 
                 {
-                    combatMods.mysticpowers[mysticPowers[i].id].corruption = game.symbaroum.config.TEMPCORRUPTION_ONE;
+                    combatMods.abilities[abilities[i].id].corruption = game.symbaroum.config.TEMPCORRUPTION_ONE;
                     if(lvl.level > 2){
                         let pack = this._getPackageFormat();
                         let base = this._getBaseFormat();
@@ -1832,7 +1932,7 @@ export class SymbaroumItem extends Item {
                         base.value= game.i18n.localize("DIALOG.FAVOUR_FAVOUR");
                         base.favourMod= 1;
                         pack.member.push(base);
-                        combatMods.mysticpowers[mysticPowers[i].id].package.push(pack);
+                        combatMods.abilities[abilities[i].id].package.push(pack);
                     }
                 }
             };
@@ -1845,9 +1945,9 @@ export class SymbaroumItem extends Item {
 
     //MysticPowers
     mysticPowerSetupAnathema(base) {
-        base.isScripted = true;
-        base.script = standardPowerActivation;
         base.traditions = [game.symbaroum.config.TRAD_WIZARDRY, game.symbaroum.config.TRAD_THEURGY, game.symbaroum.config.TRAD_STAFFM];
+        base.getTarget= true;
+        base.targetMandatory= true;
         base.targetResistAttribute= "resolute";
         base.introText= game.i18n.localize('POWER_ANATHEMA.CHAT_INTRO');
         base.resultTextSuccess= game.i18n.localize('POWER_ANATHEMA.CHAT_SUCCESS');
@@ -1860,72 +1960,545 @@ export class SymbaroumItem extends Item {
     }
 
     mysticPowerSetupBrimstonecascade(base) {
-        base.isScripted = true;
-        base.script = standardPowerActivation;
         base.traditions = [game.symbaroum.config.TRAD_WIZARDRY];
-        base.checkMaintain= true;
-        base.contextualDamage= true;
         base.hasDamage= true;
+        base.damageDice = "1d12";
+        base.avoidDamageDice = "1d6";
+        base.getTarget= true;
         base.targetMandatory= true;
+        base.targetResistAttribute="quick";
+        base.targetImpeding = true;
         base.introText= game.i18n.localize('POWER_BRIMSTONECASC.CHAT_INTRO');
         base.introTextMaintain= game.i18n.localize('POWER_BRIMSTONECASC.CHAT_INTRO');
         base.resultTextSuccess= game.i18n.localize('POWER_BRIMSTONECASC.CHAT_SUCCESS');
         base.resultTextFail= game.i18n.localize('POWER_BRIMSTONECASC.CHAT_FAILURE');
         base.casting = game.symbaroum.config.CASTING_RES;
         if(base.powerLvl.level > 1) base.chain = game.symbaroum.config.CHAIN;
+        base.rollFailedFSmod = {
+            damageDice: "1d6",
+            avoidDamageDice: "0d0",
+        };
         return(base);
     }
 
     mysticPowerSetupBendwill(base) {
-        base.isScripted = true;
-        base.script = standardPowerActivation;
         base.traditions = [game.symbaroum.config.TRAD_WIZARDRY, game.symbaroum.config.TRAD_WITCHCRAFT];
         base.targetResistAttribute= "resolute";
+        base.getTarget= true;
         base.targetMandatory= true;
-        base.activelyMaintaninedTargetEffect= ["systems/symbaroum/asset/image/puppet.png"];
+        base.casting = game.symbaroum.config.CASTING_RES;
+        base.maintain = game.symbaroum.config.MAINTAIN_RES;
+        base.activelyMaintainedTargetEffect= [CONFIG.statusEffects.find(e => e.id === "bendwill")];
         base.introText = game.i18n.localize('POWER_BENDWILL.CHAT_INTRO');
         base.introTextMaintain = game.i18n.localize('POWER_BENDWILL.CHAT_INTRO_M');
         base.resultTextSuccess = game.i18n.localize('POWER_BENDWILL.CHAT_SUCCESS');
         base.resultTextFail = game.i18n.localize('POWER_BENDWILL.CHAT_FAILURE');
         base.finalText = "";
-        base.maintain = game.symbaroum.config.MAINTAIN;
-        base.casting = game.symbaroum.config.CASTING_RES;
         return(base);
     }
     
     mysticPowerSetupBlackbolt(base) {
-        base.isScripted = true;
-        base.script = standardPowerActivation;
         base.traditions = [game.symbaroum.config.TRAD_SORCERY];
         base.targetResistAttribute= "quick";
-        base.contextualDamage= true;
         base.hasDamage= true;
+        base.getTarget= true;
         base.targetMandatory= true;
-        base.targetImpeding = "impedingMov";
+        base.targetImpeding = true;
         base.introText=  game.i18n.localize('POWER_BLACKBOLT.CHAT_INTRO');
         base.introTextMaintain= game.i18n.localize('POWER_BLACKBOLT.CHAT_INTRO');
         base.resultTextSuccessT= game.i18n.localize('POWER_BLACKBOLT.CHAT_SUCCESS');
         base.resultTextFailT= game.i18n.localize('POWER_BLACKBOLT.CHAT_FAILURE');
         base.damageDice= "1d6";
-        base.addTargetEffect= ["icons/svg/paralysis.svg"];
+        base.addTargetEffect= [CONFIG.statusEffects.find(e => e.id === "paralysis")];
         base.ignoreArm=true;
-        base.maintain = game.symbaroum.config.MAINTAIN;
+        base.maintain = game.symbaroum.config.MAINTAIN_RES;
         base.casting = game.symbaroum.config.CASTING_RES;
         
         if(base.powerLvl.level > 1) base.chain = game.symbaroum.config.CHAIN;
         return(base);
     }
 
-    mysticPowerSetupUnnoticeable(base) {
-        base.isScripted = true;
-        base.script = standardPowerActivation;
-        base.traditions = [game.symbaroum.config.TRAD_WIZARDRY, game.symbaroum.config.TRAD_THEURGY];
-        base.addCasterEffect = ["systems/symbaroum/asset/image/invisible.png"];
+    mysticPowerSetupBlessedshield(base) {
+        base.casting = game.symbaroum.config.CASTING;
+        base.traditions = [game.symbaroum.config.TRAD_THEURGY];
+        base.addCasterEffect = [CONFIG.statusEffects.find(e => e.id === "holyShield")];
+        base.introText = game.i18n.localize('POWER_BLESSEDSHIELD.CHAT_INTRO');
+        base.resultTextSuccess = game.i18n.localize('POWER_BLESSEDSHIELD.CHAT_SUCCESS');
+        base.resultTextFail = game.i18n.localize('POWER_BLESSEDSHIELD.CHAT_FAILURE');
+        if(base.powerLvl.level > 1) {
+            base.multipleTargets = true;
+            base.multipleTargetsNb = base.powerLvl.level-1;
+        }
+        return(base);
+    }
+    
+    mysticPowerSetupConfusion(base) {
+        base.traditions = [game.symbaroum.config.TRAD_WIZARDRY, game.symbaroum.config.TRAD_TROLLS];
+        base.targetResistAttribute= "resolute";
+        base.getTarget= true;
+        base.targetMandatory= true;
+        base.maintain = game.symbaroum.config.MAINTAIN_RES;
+        base.casting = game.symbaroum.config.CASTING_RES;
+        base.confusion =true;
+        base.activelyMaintainedTargetEffect = [CONFIG.statusEffects.find(e => e.id === "confusion")];
+        return(base);
+    }
+    
+    mysticPowerSetupCurse(base) {
+        base.casting = game.symbaroum.config.CASTING_NOT;
+        base.getTarget= true;
+        base.targetMandatory= true;
+        base.traditions = [game.symbaroum.config.TRAD_WITCHCRAFT];
+        base.resultText = game.i18n.localize('POWER_CURSE.CHAT_SUCCESS_N');
+        if(base.powerLvl.level == 2){base.resultText = game.i18n.localize('POWER_CURSE.CHAT_SUCCESS_A')}
+        else if(base.powerLvl.level == 3){base.resultText = game.i18n.localize('POWER_CURSE.CHAT_SUCCESS_M')};
+        base.maintain = game.symbaroum.config.MAINTAIN;
+        base.introText= game.i18n.localize('POWER_CURSE.CHAT_INTRO');
+        base.introTextMaintain= game.i18n.localize('POWER_CURSE.CHAT_INTRO_M');
+        base.resultTextSuccess= base.resultText;
+        base.resultTextFail= game.i18n.localize('POWER_CURSE.CHAT_FAILURE');
+        base.activelyMaintainedTargetEffect= [CONFIG.statusEffects.find(e => e.id === "curse")];
+        base.rollFailedFSmod = {
+            finalText: game.i18n.localize('POWER_CURSE.CHAT_FAIL_FINAL')
+        };
         return(base);
     }
 
-    async getFunctionStuffDefault(actor) {
-        let selectedToken= await getTokenId(actor);
+    mysticPowerSetupDancingweapon(base) {
+        base.casting = game.symbaroum.config.CASTING_NOT;
+        base.traditions = [game.symbaroum.config.TRAD_TROLLS, game.symbaroum.config.TRAD_STAFFM];
+        base.corruption = false;
+        base.gmOnlyChatResultNPC = true;
+        base.flagTest = "dancingweapon";
+        base.flagPresentFSmod = {
+            introText: game.i18n.localize('POWER_DANCINGWEAPON.CHAT_DESACTIVATE'),
+            resultTextSuccess: game.i18n.localize('POWER_DANCINGWEAPON.CHAT_RESULT_DESACTIVATE'),
+            removeCasterEffect: [CONFIG.statusEffects.find(e => e.id === "dancingweapon")]
+        };
+        base.flagNotPresentFSmod = {
+            flagData: base.powerLvl.level,
+            introText: game.i18n.localize('POWER_DANCINGWEAPON.CHAT_ACTIVATE'),
+            resultTextSuccess: game.i18n.localize('POWER_DANCINGWEAPON.CHAT_RESULT_ACTIVATE'),
+            addCasterEffect: [CONFIG.statusEffects.find(e => e.id === "dancingweapon")]
+        }
+        return(base);
+    }
+    
+    mysticPowerSetupEntanglingvines(base) {
+        base.getTarget= true;
+        base.targetMandatory= true;
+        base.traditions = [game.symbaroum.config.TRAD_WITCHCRAFT];
+        base.maintain = game.symbaroum.config.MAINTAIN_RES;
+        base.casting = game.symbaroum.config.CASTING;
+        base.targetResistAttribute= "strong";
+        base.hasDamage= base.powerLvl.level === 3;
+        base.damageDice= "1d6";
+        base.introTextMaintain= game.i18n.localize('POWER_ENTANGLINGVINES.CHAT_INTRO_M');
+        base.resultTextSuccess= game.i18n.localize('POWER_ENTANGLINGVINES.CHAT_SUCCESS');
+        base.resultTextFail= game.i18n.localize('POWER_ENTANGLINGVINES.CHAT_FAILURE');
+        base.activelyMaintainedTargetEffect= [CONFIG.statusEffects.find(e => e.id === "entanglingvines")];
+        base.ignoreArm=true;
+        return(base);
+    }
+    
+    mysticPowerSetupFlamewall(base) {
+        base.traditions = [game.symbaroum.config.TRAD_WIZARDRY];
+        base.maintain = game.symbaroum.config.MAINTAIN;
+        base.casting = game.symbaroum.config.CASTING;
+        return(base);
+    }
+    
+    mysticPowerSetupHolyaura(base) {
+        base.casting = game.symbaroum.config.CASTING;
+        base.traditions = [game.symbaroum.config.TRAD_THEURGY];
+        base.maintain = game.symbaroum.config.MAINTAIN;
+        base.introText= game.i18n.localize('POWER_HOLYAURA.CHAT_INTRO');
+        base.introTextMaintain= game.i18n.localize('POWER_HOLYAURA.CHAT_INTRO');
+        base.resultTextSuccess= game.i18n.localize('POWER_HOLYAURA.CHAT_SUCCESS');
+        base.resultTextFail=game.i18n.localize('POWER_HOLYAURA.CHAT_FAILURE');
+        base.activelyMaintaninedCasterEffect= [CONFIG.statusEffects.find(e => e.id === "holyaura")];
+        let auraDamage = "1d6";
+        let auraHeal = "1d4";
+        if(base.powerLvl.level == 2){auraDamage = "1d8"}
+        else if(base.powerLvl.level == 3){auraDamage = "1d10"; auraHeal = "1d6"}
+        base.finalTextSucceed = game.i18n.localize('COMBAT.DAMAGE') + auraDamage;
+        if(base.powerLvl.level > 1){
+            base.finalTextSucceed += game.i18n.localize('POWER_HOLYAURA.HEALING') + auraHeal;
+        }
+        return(base);
+    }
+    
+    mysticPowerSetupInheritwound(base){
+        base.casting = game.symbaroum.config.CASTING;
+        base.maintain = game.symbaroum.config.MAINTAIN_NOT;
+        base.getTarget= true;
+        base.targetMandatory= true;
+        base.traditions = [game.symbaroum.config.TRAD_WITCHCRAFT, game.symbaroum.config.TRAD_THEURGY];
+        base.healedToken= game.symbaroum.config.TARGET_TOKEN;
+        base.introText= game.i18n.localize('POWER_INHERITWOUND.CHAT_INTRO');
+        base.resultTextSuccess= game.i18n.localize('POWER_INHERITWOUND.CHAT_SUCCESS');
+        base.resultTextFail= game.i18n.localize('POWER_INHERITWOUND.CHAT_FAILURE');
+        base.healFormulaSucceed = (base.powerLvl.level > 2) ? "1d8" : "1d6";
+    
+        base.targetText = game.i18n.localize('ABILITY_MEDICUS.CHAT_TARGET');
+        return(base);
+    }
+
+    mysticPowerSetupLarvaeboils(base) {
+        base.getTarget= true;
+        base.targetMandatory= true;
+        base.targetResistAttribute= "strong";
+        base.casting = game.symbaroum.config.CASTING_NOT;
+        base.maintain = game.symbaroum.config.MAINTAIN_RES;
+        base.traditions = [game.symbaroum.config.TRAD_WITCHCRAFT];
+        base.hasDamage= true;
+        base.damageDice= "1d" + (2*base.powerLvl.level+2).toString();
+        base.introText= game.i18n.localize('POWER_LARVAEBOILS.CHAT_INTRO');
+        base.introTextMaintain= game.i18n.localize('POWER_LARVAEBOILS.CHAT_INTRO_M');
+        base.resultTextSuccess= game.i18n.localize('POWER_LARVAEBOILS.CHAT_SUCCESS');
+        base.resultTextFail= game.i18n.localize('POWER_LARVAEBOILS.CHAT_FAILURE');
+        base.activelyMaintainedTargetEffect= [CONFIG.statusEffects.find(e => e.id === "larvaeboils")];
+        base.ignoreArm=true;
+        return(base);
+    }
+    
+    mysticPowerSetupLayonhands(base) {
+        base.casting = game.symbaroum.config.CASTING;
+        base.getTarget= true;
+        base.targetMandatory= true;
+        base.traditions = [game.symbaroum.config.TRAD_WITCHCRAFT, game.symbaroum.config.TRAD_THEURGY];
+        base.healFormulaSucceed = "1d6";
+        if(base.powerLvl.level > 1){
+            base.healFormulaSucceed = "1d8";
+            base.removeTargetEffect = [CONFIG.statusEffects.find(e => e.id === "poison"), CONFIG.statusEffects.find(e => e.id === "bleeding")]
+        }
+        base.healedToken= game.symbaroum.config.TARGET_TOKEN;
+        base.targetText = game.i18n.localize('ABILITY_MEDICUS.CHAT_TARGET');
+        
+        if(base.powerLvl.level > 2){
+            base.preDialogFunction = preDialogLayonHands;
+        }
+        return(base);
+    }
+    
+    mysticPowerSetupLevitate(base) {
+        base.casting = game.symbaroum.config.CASTING;
+        base.traditions = [game.symbaroum.config.TRAD_WIZARDRY, game.symbaroum.config.TRAD_THEURGY];
+        base.maintain = game.symbaroum.config.MAINTAIN;
+        base.addCasterEffect = [CONFIG.statusEffects.find(e => e.id === "fly")];
+        if(base.powerLvl.level > 1){
+            base.getTarget= true;
+            base.targetResistAttribute= "strong";
+            base.casting = game.symbaroum.config.CASTING_RES;
+            base.addTargetEffect= [CONFIG.statusEffects.find(e => e.id === "fly")];
+        }
+        return(base);
+    }
+    
+    mysticPowerSetupMaltransformation(base) {
+        base.getTarget= true;
+        base.targetMandatory= true;
+        base.traditions = [game.symbaroum.config.TRAD_WITCHCRAFT];
+        base.casting = game.symbaroum.config.CASTING_RES;
+        base.maintain = game.symbaroum.config.MAINTAIN_RES;
+        base.targetResistAttribute= "resolute";
+        base.activelyMaintainedTargetEffect= [CONFIG.statusEffects.find(e => e.id === "maltransformation")];
+        return(base);
+    }
+    
+    mysticPowerSetupMindthrow(base) {
+        base.getTarget= true;
+        base.targetResistAttribute= "quick";
+        base.traditions = [game.symbaroum.config.TRAD_WIZARDRY];
+        base.targetPresentFSmod = {
+            hasDamage: true,
+            casting: game.symbaroum.config.CASTING_RES,
+            damageDice: "1d8",
+            targetImpeding: true,
+        };
+        if(base.powerLvl.level>2){
+            base.maintain = game.symbaroum.config.MAINTAIN;
+        }
+        return(base);
+    }
+    
+    mysticPowerSetupPriosburningglass(base) {
+        base.casting = game.symbaroum.config.CASTING;
+        base.getTarget= true;
+        base.targetMandatory= true;
+        base.maintain = game.symbaroum.config.MAINTAIN;
+        base.traditions = [game.symbaroum.config.TRAD_THEURGY];
+        base.introText= game.i18n.localize('POWER_PRIOSBURNINGGLASS.CHAT_INTRO');
+        base.hasDamage= true;
+        base.askCorruptedTarget = true;
+        if(base.powerLvl.level === 1) {
+            base.damageDice = "1d6";
+            base.targetFullyCorruptedFSmod = {
+                damageDice: "1d8"
+            };
+        }
+        else{
+            base.damageDice = "1d8";
+            base.targetFullyCorruptedFSmod = {
+                damageDice: "1d12"
+            };
+        }
+        if(base.powerLvl.level === 3) {
+            base.targetFullyCorruptedFSmod.finalTextSucceed = game.i18n.localize('POWER_PRIOSBURNINGGLASS.CHAT_EXTRA')
+        }
+        return(base);
+    }
+    
+    mysticPowerSetupTormentingspirits(base) {
+        base.casting = game.symbaroum.config.CASTING;
+        base.getTarget= true;
+        base.targetMandatory= true;
+        base.maintain = game.symbaroum.config.MAINTAIN;
+        base.traditions = [game.symbaroum.config.TRAD_WITCHCRAFT];
+        base.isAlternativeDamage= true;
+        base.alternativeDamageAttribute= "resolute";
+        base.introText= game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_INTRO');
+        base.introTextMaintain= game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_INTRO_M');
+        base.resultTextSuccess= game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_SUCCESS');
+        base.resultTextFail= game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_FAILURE');
+        base.activelyMaintainedTargetEffect= [CONFIG.statusEffects.find(e => e.id === "tormentingspirits")];
+    
+        if(base.powerLvl.level >1){
+            base.hasDamage= true;
+            base.damageDice= "1d"+(2*base.powerLvl.level).toString();
+            base.ignoreArm=true;
+        }
+        return(base);
+    }
+
+    mysticPowerSetupUnnoticeable(base) {
+        base.casting = game.symbaroum.config.CASTING;
+        base.traditions = [game.symbaroum.config.TRAD_WIZARDRY, game.symbaroum.config.TRAD_THEURGY];
+        base.gmOnlyChatResultNPC = true;
+        base.addCasterEffect = [CONFIG.statusEffects.find(e => e.id === "unnoticeable")];
+        return(base);
+    }
+
+    // ********************************************* ABILITIES *****************************************************
+    
+    abilitySetupAcrobatics(base) {
+        base.castingAttributeName = "quick";
+        base.impeding = game.symbaroum.config.IMPEDING_MOVE;
+        return(base);
+    }
+    
+    abilitySetupArtifactcrafting(base) {
+        return(base);
+    }
+    
+    abilitySetupAlchemy(base) {
+        return(base);
+    }
+    
+    abilitySetupBeastlore(base) {
+        return(base);
+    }
+    
+    abilitySetupBerserker(base) {
+        base.casting = game.symbaroum.config.CASTING_NOT;
+        base.gmOnlyChatResultNPC = true;
+        base.flagTest = "berserker";
+        base.flagPresentFSmod = {
+            introText: game.i18n.localize('ABILITY_BERSERKER.CHAT_DESACTIVATE'),
+            resultTextSuccess: game.i18n.localize('ABILITY_BERSERKER.CHAT_RESULT_DESACTIVATE'),
+            removeCasterEffect: [CONFIG.statusEffects.find(e => e.id === "berserker")]
+        };
+        base.flagNotPresentFSmod = {
+            flagData: base.powerLvl.level,
+            introText: game.i18n.localize('ABILITY_BERSERKER.CHAT_ACTIVATE'),
+            addCasterEffect: [CONFIG.statusEffects.find(e => e.id === "berserker")]
+        }
+        if(base.powerLvl.level == 2) base.flagNotPresentFSmod.resultTextSuccess = game.i18n.localize('ABILITY_BERSERKER.CHAT_RESULT_LVL2');
+        else if(base.powerLvl.level > 2) base.flagNotPresentFSmod.resultTextSuccess = game.i18n.localize('ABILITY_BERSERKER.CHAT_RESULT_LVL3');
+        else base.flagNotPresentFSmod.resultTextSuccess = game.i18n.localize('ABILITY_BERSERKER.CHAT_RESULT_LVL1');
+        return(base);
+    }
+    
+    abilitySetupBlacksmith(base) {
+        return(base);
+    }
+    
+    abilitySetupDominate(base) {
+        if (base.powerLvl.level<2){
+            base.isScripted = false;
+        }
+        else{
+            base.getTarget= true;
+            base.targetMandatory= true;
+            base.casting = game.symbaroum.config.CASTING_RES;
+            base.castingAttributeName= "persuasive";
+            base.targetResistAttribute= "resolute";
+            base.addTargetEffect= [CONFIG.statusEffects.find(e => e.id === "fear")];
+        }
+        if(base.powerLvl.level == 2){
+            base.introText = game.i18n.localize('ABILITY_DOMINATE_ADEPT.CHAT_INTRO');
+            base.resultTextSuccess = game.i18n.localize('ABILITY_DOMINATE_ADEPT.CHAT_SUCCESS');
+        }
+        else{
+            base.introText = game.i18n.localize('ABILITY_DOMINATE_MASTER.CHAT_INTRO');
+            base.resultTextSuccess = game.i18n.localize('ABILITY_DOMINATE_MASTER.CHAT_SUCCESS');
+        }
+        return(base);
+    }
+    
+    abilitySetupLeader(base) {
+        if (base.powerLvl.level<2){
+            base.isScripted = false;
+        }
+        else{
+            base.getTarget= true;
+            base.targetMandatory= true;
+            base.casting = game.symbaroum.config.CASTING_NOT;
+            base.resultTextSuccess = game.i18n.localize('ABILITY_LEADER.CHAT_SUCCESS');
+            base.addTargetEffect = [CONFIG.statusEffects.find(e => e.id === "eye")];
+        }
+        return(base);
+    }
+    
+    abilitySetupLoremaster(base) {
+        base.introText = game.i18n.localize('ABILITY_LOREMASTER.CHAT_INTRO');
+        base.resultTextSuccess = game.i18n.localize('ABILITY_LOREMASTER.CHAT_SUCCESS');
+        base.resultTextFail =  game.i18n.localize('ABILITY_LOREMASTER.CHAT_FAILURE');
+        return(base);
+    }
+    
+    abilitySetupMedicus(base){
+        base.castingAttributeName= "cunning",
+        base.getTarget= true;
+        base.healFormulaSucceed = "1d4";
+        base.medicusExam = true;
+        base.targetPresentFSmod = {
+            medicusExam: false,
+            healedToken: game.symbaroum.config.TARGET_TOKEN,
+            targetText: game.i18n.localize('ABILITY_MEDICUS.CHAT_TARGET'),
+            subText: base.label + " (" + base.powerLvl.lvlName + ")",
+            medicus: true,
+        };
+        if(base.powerLvl.level == 1){
+            base.targetPresentFSmod.healFormulaSucceed = "1d4"
+        }
+        else if(base.powerLvl.level == 2){
+            base.targetPresentFSmod.healFormulaSucceed = "1d6"
+        }
+        else{
+            base.targetPresentFSmod.healFormulaSucceed = "1d8";
+            base.targetPresentFSmod.healFormulaFailed = "1d4";
+        }
+        return(base);
+    }
+
+    abilitySetupPoisoner(base) {
+        base.getTarget= true;
+        base.targetMandatory= true;
+        base.casting = game.symbaroum.config.CASTING_RES;
+        base.castingAttributeName= "cunning";
+        base.targetResistAttribute= "strong";
+        base.usePoison = true;
+        base.poisoner = true;
+        return(base);
+    }
+    
+    abilitySetupRecovery(base) {
+        base.casting = game.symbaroum.config.CASTING;
+        base.castingAttributeName = "resolute";
+        base.healedToken = game.symbaroum.config.ACTING_TOKEN;
+    
+        if(base.powerLvl.level == 2) {base.healFormulaSucceed = "1d6"}
+        else if(base.powerLvl.level == 3) {base.healFormulaSucceed = "1d8"}
+        else {base.healFormulaSucceed = "1d4"};
+        return(base);
+    }
+    
+    abilitySetupQuickdraw(base) {
+        base.castingAttributeName = "quick";
+        base.impeding = game.symbaroum.config.IMPEDING_MOVE;
+        return(base);
+    }
+
+    abilitySetupStrangler(base) {
+        base.getTarget= true;
+        base.targetMandatory= true;
+        base.casting = game.symbaroum.config.CASTING_RES;
+        base.maintain = game.symbaroum.config.MAINTAIN_RES;
+        base.castingAttributeName= "cunning";
+        base.targetResistAttribute= "cunning";
+        base.askCastingAttribute = true;
+        base.impeding = game.symbaroum.config.IMPEDING_MOVE;
+        base.introText = game.i18n.localize('ABILITY_STRANGLER.CHAT_INTRO');
+        base.introTextMaintain = game.i18n.localize('ABILITY_STRANGLER.CHAT_INTRO_M');
+        base.resultTextSuccess= game.i18n.localize('ABILITY_STRANGLER.CHAT_SUCCESS');
+        base.resultTextFail = game.i18n.localize('ABILITY_STRANGLER.CHAT_FAILURE');
+        base.activelyMaintainedTargetEffect= [CONFIG.statusEffects.find(e => e.id === "strangler")];
+        base.hasDamage= true;
+        base.damageDice= "1d6";
+        base.newStuffIfMaintain = {
+            castingAttributeName: "cunning",
+            targetResistAttribute: "cunning"
+        }
+        return(base);
+    }
+
+    abilitySetupWitchsight(base) {
+        base.castingAttributeName= "vigilant";
+        base.targetResistAttribute= "discreet";
+        base.getTarget= true;
+        base.targetPresentFSmod = {
+            casting: game.symbaroum.config.CASTING_RES,
+        };
+        if(base.powerLvl.level == 2){
+            base.corruption = game.symbaroum.config.TEMPCORRUPTION_NORMAL;
+        }else if(base.powerLvl.level > 2){
+            base.corruption = game.symbaroum.config.TEMPCORRUPTION_D6;
+        }
+        else base.corruption = game.symbaroum.config.TEMPCORRUPTION_ONE;
+        base.introText= game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_INTRO');
+        baseRoll.resultTextSuccess= game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_SUCCESS');
+        base.resultTextFail= game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_FAILURE');
+        return(base);
+    }
+
+    // ********************************************* TRAITS *****************************************************
+    
+    traitSetupPoisonous(base) {
+        base.getTarget= true;
+        base.targetMandatory= true;
+        base.casting = game.symbaroum.config.CASTING_RES;
+        base.castingAttributeName= "cunning";
+        base.targetResistAttribute= "strong";
+        base.usePoison = true;
+        base.poison = base.powerLvl.level;
+        return(base);
+    }
+
+    traitSetupRegeneration(base){
+        base.introText = game.i18n.localize('TRAIT_REGENERATION.CHAT_ACTION');
+        base.casting = game.symbaroum.config.CASTING_NOT;
+        base.healedToken = game.symbaroum.config.ACTING_TOKEN;
+    
+        if(base.powerLvl.level == 2) {base.healFormulaSucceed = "1d6"}
+        else if(base.powerLvl.level == 3) {base.healFormulaSucceed = "1d8"}
+        else {base.healFormulaSucceed = "1d4"};
+        let regenDice = 2+ 2*base.powerLvl.level;
+        base.healFormulaSucceed = "1d" + regenDice.toString();
+        return(base);
+    }
+    
+    traitSetupShapeshifter(base) {
+        base.castingAttributeName = "resolute";
+        return(base);
+    }
+
+    traitSetupWisdomages(base) {
+        base.castingAttributeName = "resolute";
+        return(base);
+    }
+
+    async getFunctionStuffDefault(actor, actingToken) {
         let functionStuff = {
             casting: game.symbaroum.config.CASTING,
             maintain: game.symbaroum.config.MAINTAIN_NOT,
@@ -1936,102 +2509,39 @@ export class SymbaroumItem extends Item {
             askCastingAttribute: false,
             attackFromPC: actor.type !== "monster",
             autoParams: "",
-            checkMaintain: false,
-            targetSteadfastLevel: 0,  //0 means ignore steadfast
             combat: false,
-            contextualDamage: false,
             corruption: false,
             favour: 0,
-            gmOnlyChatResult: false,
             isMaintained: false,
             modifier: 0,
-            noRollWhenFirstCast : false,
-            notResistWhenFirstCast : false,
             targetMandatory : false,
             targetData: {hasTarget: false, leaderTarget: false},
-            token :selectedToken,
-            tokenId :selectedToken.id,
-            tokenName :selectedToken.data.name,
+            token :actingToken,
+            tokenId :actingToken?.id,
+            actingCharName :actingToken?.data?.name ?? actor.name,
+            actingCharImg: actingToken?.data?.img ?? actor.data.img,
             addCasterEffect: [],
             addTargetEffect: [],
-            activelyMaintaninedTargetEffect: [],
+            activelyMaintainedTargetEffect: [],
             activelyMaintaninedCasterEffect: [],
             removeTargetEffect: [],
             removeCasterEffect: [],
-            introText: selectedToken.data.name + game.i18n.localize('POWER.CHAT_INTRO') + this.name + " \".",
-            introTextMaintain: selectedToken.data.name + game.i18n.localize('POWER.CHAT_INTRO_M') + this.name + " \".",
-            resultTextSuccess: selectedToken.data.name + game.i18n.localize('POWER.CHAT_SUCCESS'),
-            resultTextFail: selectedToken.data.name + game.i18n.localize('POWER.CHAT_FAILURE'),
+            introText: game.i18n.localize('POWER.CHAT_INTRO') + this.name + " \".",
+            introTextMaintain: game.i18n.localize('POWER.CHAT_INTRO_M') + this.name + " \".",
+            resultTextSuccess: game.i18n.localize('POWER.CHAT_SUCCESS'),
+            resultTextFail: game.i18n.localize('POWER.CHAT_FAILURE'),
             resistRollText: "",
-            hasDamage: false, // for damage dealing powers
+            hasDamage: false,
             isAlternativeDamage: false,
             dmgModifier: "",
             hasAdvantage: false,
             ignoreArm: false
         };
-        if(this.data.type === "mysticalPower"){
-            functionStuff.impeding = actor.data.data.combat.impedingMagic;
-        }
         return(functionStuff);
     }
 }
-
-export const scriptedAbilities =
-[{reference: "alchemy", level: [1, 2, 3], function: simpleRollAbility},
-{reference: "acrobatics", level: [1, 2, 3], function: simpleRollAbility},
-{reference: "artifactcrafting", level: [1, 2, 3], function: simpleRollAbility},
-{reference: "beastlore", level: [1, 2, 3], function: simpleRollAbility},
-{reference: "berserker", level: [1, 2, 3], function: berserker},
-{reference: "blacksmith", level: [1, 2, 3], function: simpleRollAbility},
-{reference: "dominate", level: [1, 2, 3], function: dominatePrepare},
-{reference: "leader", level: [1, 2, 3], function: leaderPrepare},
-{reference: "loremaster", level: [1, 2, 3], function: simpleRollAbility},
-{reference: "medicus", level: [1, 2, 3], function: medicusPrepare},
-{reference: "poisoner", level: [1, 2, 3], function: poisonerPrepare},
-{reference: "quickdraw", level: [1, 2, 3], function: simpleRollAbility},
-{reference: "recovery", level: [1, 2, 3], function: recoveryPrepare},
-{reference: "strangler", level: [1, 2, 3], function: stranglerPrepare},
-{reference: "witchsight", level: [1, 2, 3], function: witchsightPrepare}];
-
-export const scriptedPowers = 
-[{reference: "anathema", level: [1, 2, 3], function: anathemaPrepare},
-{reference: "brimstonecascade", level: [1, 2, 3], function: brimstoneCascadePrepare},
-{reference: "bendwill", level: [1, 2, 3], function: bendWillPrepare},
-{reference: "blackbolt", level: [1, 2, 3], function: blackBoltPrepare},
-{reference: "blessedshield", level: [1, 2, 3], function: blessedshieldPrepare},
-{reference: "confusion", level: [1, 2, 3], function: confusionPrepare},
-{reference: "curse", level: [1, 2, 3], function: cursePrepare},
-{reference: "dancingweapon", level: [1, 2, 3], function: dancingweapon},
-{reference: "entanglingvines", level: [1, 2, 3], function: entanglingvinesPrepare},
-{reference: "holyaura", level: [1, 2, 3], function: holyAuraPrepare},
-{reference: "inheritwound", level: [1, 2, 3], function: inheritwoundPrepare},
-{reference: "larvaeboils", level: [1, 2, 3], function: larvaeBoilsPrepare},
-{reference: "layonhands", level: [1, 2, 3], function: layonhandsPrepare},
-{reference: "levitate", level: [1, 2, 3], function: levitatePrepare},
-{reference: "maltransformation", level: [1, 2, 3], function: maltransformationPrepare},
-{reference: "mindthrow", level: [1, 2, 3], function: mindthrowPrepare},
-{reference: "priosburningglass", level: [1, 2, 3], function: priosburningglassPrepare},
-{reference: "tormentingspirits", level: [1, 2, 3], function: tormentingspiritsPrepare},
-{reference: "unnoticeable", level: [1, 2, 3], function: unnoticeablePrepare}];
-
-export const scriptedTraits = 
-[{reference: "poisonous", level: [1, 2, 3], function: poisonerPrepare},
-{reference: "regeneration", level: [1, 2, 3], function: regeneration},
-{reference: "shapeshifter", level: [1, 2, 3], function: simpleRollAbility},
-{reference: "wisdomages", level: [1, 2, 3], function: simpleRollAbility}];
-
-const weaponReferences = [
-    "1handed",
-    "short",
-    "long",
-    "unarmed",
-    "heavy",
-    "shield",
-    "thrown",
-    "ranged"
-  ]
   
-  async function weaponTypeLabel(weapon){
+async function weaponTypeLabel(weapon){
     switch (weapon.reference){
         case "1handed":
             return(game.i18n.localize('WEAPON_CLASS.1HANDED'));
@@ -2053,99 +2563,6 @@ const weaponReferences = [
             return(game.i18n.localize('GEAR.OTHER'));
     }
     return(game.i18n.localize('GEAR.OTHER'));
-}
-
-export function markScripted(item){
-    item.data.data.script = undefined;
-    item.data.data.hasScript = false;
-    if(item.data.data.reference){
-        let list;
-        if(item.data.type === "ability"){
-            list = scriptedAbilities;
-        }
-        else if(item.data.type === "mysticalPower"){
-            list = scriptedPowers;
-        }
-        else if(item.data.type === "trait"){
-            list = scriptedTraits;
-        }
-        else{
-            return;
-        }
-        const ability = list.find(element => (element.reference === item.data.data.reference));
-        if(ability){
-            item.data.data.script = ability.function;
-            item.data.data.hasScript = true;
-        }
-    }
-}
-
-/*get the target token, its actor, and evaluate which attribute this actor will use for opposition
-@Params: {string}   targetAttributeName : the name of the resist attribute. Can be defense, and can be null.
-@returns:  {targetData object}*/
-export function getTarget(targetAttributeName) {
-    let targetsData;
-    try{targetsData = getTargets(targetAttributeName, 1)} catch(error){      
-        throw error;
-    }
-    return targetsData[0]
-}
-
-function getTargets(targetAttributeName, maxTargets = 1) {
-    let targets = Array.from(game.user.targets)
-    if(targets.length == 0 || targets.length > maxTargets)
-    {
-        throw game.i18n.localize('ABILITY_ERROR.TARGET');
-    }
-    let targetsData = [];
-    for(let target of targets){
-        let targetToken = target;
-        let targetActor = target.actor;
-        let autoParams = "";
-        let leaderTarget = false;
-
-        // get target opposition attribute
-        let resistAttributeValue = null;
-        if(targetAttributeName != undefined)
-        {
-            resistAttributeValue = getAttributeValue(targetActor, targetAttributeName);
-        }
-        else {targetAttributeName = null};
-            // check for leader adept ability effect on target
-        const LeaderEffect = "icons/svg/eye.svg";
-        let leaderEffect = getEffect(targetToken, LeaderEffect);
-        if(leaderEffect){
-            leaderTarget = true;
-            autoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
-        };
-        targetsData.push({
-            hasTarget: true,
-            token: targetToken,
-            actor: targetActor,
-            name: targetToken.data.name,
-            tokenId: targetToken.id,
-            resistAttributeName: targetAttributeName,
-            resistAttributeValue: resistAttributeValue,
-            leaderTarget: leaderTarget,
-            targetText: game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM') + targetToken.data.name,
-            autoParams: autoParams
-        })
-    }
-    return(targetsData)
-}
-
-/* get the selected token ID */
-export async function getTokenId(actor){
-    let selected = canvas.tokens.controlled;
-    if(selected.length > 1 || selected.length == 0){
-        throw game.i18n.localize('ERROR.NO_TOKEN_SELECTED');
-    }
-    if(actor){
-        if(selected[0].actor.data._id !== actor.data._id){
-            throw game.i18n.localize('ERROR.NO_TOKEN_SELECTED');
-        }
-    }
-    return(selected[0])
 }
 
 /* format the string to print the roll result, including the 2 dice if favour was involved, up to 3 rolls for multi-attacks
@@ -2214,239 +2631,20 @@ async function checkCorruptionThreshold(actor, corruptionGained){
     let NewMessage = await ChatMessage.create(chatData);
 }
 
-async function buildFunctionStuffDefault(ability, actor) {
-    let selectedToken= await getTokenId(actor);
-    let functionStuff = {
-        ability: ability.data,
-        actor: actor,
-        askTargetAttribute: false,
-        askCastingAttribute: false,
-        attackFromPC: actor.type !== "monster",
-        autoParams: "",
-        beastLoreData: getBeastLoreData(actor),
-        checkMaintain: false,
-        targetSteadfastLevel: 0,  //0 means ignore steadfast
-        combat: false,
-        contextualDamage: false,
-        corruption: false,
-        favour: 0,
-        gmOnlyChatResult: false,
-        isMaintained: false,
-        modifier: 0,
-        noRollWhenFirstCast : false,
-        notResistWhenFirstCast : false,
-        powerLvl: getPowerLevel(ability),
-        targetMandatory : false,
-        targetData: {hasTarget: false, leaderTarget: false},
-        token :selectedToken,
-        tokenId :selectedToken.id,
-        tokenName :selectedToken.data.name,
-        addCasterEffect: [],
-        addTargetEffect: [],
-        activelyMaintaninedTargetEffect: [],
-        activelyMaintaninedCasterEffect: [],
-        removeTargetEffect: [],
-        removeCasterEffect: [],
-        introText: selectedToken.data.name + game.i18n.localize('POWER.CHAT_INTRO') + ability.name + " \".",
-        introTextMaintain: selectedToken.data.name + game.i18n.localize('POWER.CHAT_INTRO_M') + ability.name + " \".",
-        resultTextSuccess: selectedToken.data.name + game.i18n.localize('POWER.CHAT_SUCCESS'),
-        resultTextFail: selectedToken.data.name + game.i18n.localize('POWER.CHAT_FAILURE'),
-        resistRollText: "",
-        hasDamage: false, // for damage dealing powers
-        isAlternativeDamage: false,
-        dmgModifier: "",
-        hasAdvantage: false,
-        ignoreArm: false
-    };
-    if(ability.data.type === "mysticalPower"){
-        let actorResMod = checkResoluteModifiers(actor, functionStuff.autoParams);
-        functionStuff.castingAttributeName = actorResMod.bestAttributeName;
-        functionStuff.autoParams = actorResMod.autoParams;
-        functionStuff.corruption = true;
-        functionStuff.impeding = actor.data.data.combat.impedingMagic;
-        functionStuff.casterMysticAbilities = await getMysticAbilities(actor);
-        if(!actor.data.data.health.corruption.max) functionStuff.corruption = false;
-    }
-    return(functionStuff);
-}
-
-function  getBeastLoreData (actor){
-    let askBeastlore = false;
-    let beastLoreMaster = false;
-    let beastlore = actor.items.filter(item => item.data.data?.reference === "beastlore");
-    if(beastlore.length != 0){
-        if(beastlore[0].data.data.adept.isActive){
-            askBeastlore = true;
-        }
-        if(beastlore[0].data.data.master.isActive){
-            beastLoreMaster = true;
-        }
-    }
-    return({askBeastlore: askBeastlore,beastLoreMaster: beastLoreMaster, useBeastLore: false})
-}
-
-/*check the mystic traditions of the actor
-@Params: {array}    referenceList : an array of the references of the mystic tradition abilities that are relevant.
-                    Sorcery is always relevant and therefore checked. 
-@returns: array of  {boolean} has(ability)
-                    {number} level
-                    {string} levelname the localized label (novice, adpet or master)}*/
-async function getMysticAbilities(actor){
-    const mysticTraditions = [
-        "armoredmystic",
-        "blessings",
-        "channeling",
-        "sorcery",
-        "staffmagic",
-        "stronggift",
-        "symbolism",
-        "theurgy",
-        "trollsinging",
-        "witchcraft",
-        "wizardry"
-    ]
-
-    let actorMysticAbilities = {
-        armoredmystic: {
-            hasAbility: false,
-            level: 0,
-            lvlName: ""
-        },
-        blessings: {
-            hasAbility: false,
-            level: 0,
-            lvlName: ""
-        },
-        channeling: {
-            hasAbility: false,
-            level: 0,
-            lvlName: ""
-        },
-        sorcery: {
-            hasAbility: false,
-            level: 0,
-            lvlName: ""
-        },
-        staffmagic: {
-            hasAbility: false,
-            level: 0,
-            lvlName: ""
-        },
-        stronggift: {
-            hasAbility: false,
-            level: 0,
-            lvlName: ""
-        },
-        symbolism: {
-            hasAbility: false,
-            level: 0,
-            lvlName: ""
-        },
-        theurgy: {
-            hasAbility: false,
-            level: 0,
-            lvlName: ""
-        },
-        trollsinging: {
-            hasAbility: false,
-            level: 0,
-            lvlName: ""
-        },
-        witchcraft: {
-            hasAbility: false,
-            level: 0,
-            lvlName: ""
-        },
-        wizardry: {
-            hasAbility: false,
-            level: 0,
-            lvlName: ""
-        }
-    }
-
-    for(let abilityRef of mysticTraditions){
-        let ability = actor.items.filter(item => item.data.data.reference === abilityRef);
-        if(ability.length != 0){
-            actorMysticAbilities[abilityRef].hasAbility = true;
-            let powerLevel = getPowerLevel(ability[0]);
-            actorMysticAbilities[abilityRef].level = powerLevel.level;
-            actorMysticAbilities[abilityRef].lvlName = powerLevel.lvlName;
-        }
-    }
-    return(actorMysticAbilities)
-}
-
-/*evaluate the temmporary corruption to be received by the actor
-@Params: {functionStuff.array}    traditions : an array of the references of the mystic tradition abilities that may decrease this roll
-        {functionStuff.object}    returned by getMysticAbilities()
-        {functionStuff.actor}     the actor
-        {functionStuff.attackFromPC}  wehther the acting character ic PC (rolls dice) or NPC (fixed result)
-        {functionStuff.corruptionFormula}      formula for base corruption roll
-@returns: array of  {boolean} has(ability)
-                    {number} level
-                    {string} levelname the localized label (novice, adpet or master)}*/
-async function getCorruption(functionStuff){
-    let corruptionFormula = functionStuff.corruptionFormula ?? "1d4";
-    let sorceryRoll;
-    if(functionStuff?.tradition){
-        for(let trad of functionStuff.tradition){
-            if(functionStuff.casterMysticAbilities[trad].hasAbility){
-                if(functionStuff.casterMysticAbilities[trad].level > 1){
-                    return({value: 1, tradition: trad})
-                }
-            }
-        } 
-    }
-    if(functionStuff.casterMysticAbilities.sorcery.hasAbility){
-        let castingAttribute = (checkResoluteModifiers(functionStuff.actor)).bestAttributeName;
-        sorceryRoll = await baseRoll(functionStuff.actor, castingAttribute, null, null, 0, 0, false);
-        if(sorceryRoll.trueActorSucceeded){
-            return({value: 1, tradition: "sorcery", sorceryRoll: sorceryRoll})
-        }
-    }
-     
-    if(functionStuff.attackFromPC){
-        let corRoll= new Roll(corruptionFormula).evaluate({async:false});
-        return({value: corRoll.total, sorceryRoll: sorceryRoll, corruptionRoll: corRoll})
-    }
-     
-    let corRoll= new Roll(corruptionFormula).evaluate({maximize: true, async:false});
-    let value = Math.ceil(corRoll.total/2);
-    return({value: value, sorceryRoll: sorceryRoll, corruptionRoll: corRoll})
-}
-
-/*get the max level learned by the actor
-@Params: {item}   ability : the ability or mysticalPower item 
-@returns:  {{number} level
-            {lvlName} the localized label (novice, adpet or master)}*/
-export function getPowerLevel(ability) {
-    let powerLvl = 0;
-    let lvlName = "Not learned";
-    if(ability.data.data.master.isActive){
-        powerLvl = 3;
-        lvlName = game.i18n.localize('ABILITY.MASTER');
-    }
-    else if(ability.data.data.adept.isActive){
-        powerLvl = 2;
-        lvlName = game.i18n.localize('ABILITY.ADEPT');
-    }
-    else if(ability.data.data.novice.isActive){
-        powerLvl = 1;
-        lvlName = game.i18n.localize('ABILITY.NOVICE');
-    }
-    return{level : powerLvl, lvlName : lvlName}
-}
-
 //check if there is an icon effect on the token
-function getEffect(token, effect){
+export function getEffect(token, effect){
+    let statusCounterMod = false;
     if(game.modules.get("statuscounter")?.active){
-        if(EffectCounter.findCounter(token, effect)){
+        //statusCounterMod = true;  until corrected
+    };
+    if(statusCounterMod){
+        if(EffectCounter.findCounter(token.document, effect.icon)){
             return(true)
         }
         else return(false)
     }
     else{
-        if(token.data.effects.find(e => e === effect)){
+        if(token.actor.effects.find(e => e.getFlag("core", "statusId") === effect.id)){
             return(true)
         }
         else return(false)
@@ -2473,15 +2671,11 @@ will send to screen a windows asking for modifiers for the roll, then roll, then
    * @param {string}  favour: "0", "-1", "1"
    * @param {boolean} checkMaintain: if true, ask the player whether the roll is for casting the ability or maintaining it 
    * @param {any}   functionStuff  an object of parameters not used in the dialog function, but useful for resultFunction */
-async function modifierDialog(functionStuff){
+export async function modifierDialog(functionStuff){
     let hasTarget = functionStuff.targetData.hasTarget;
     let isWeaponRoll = false;
-    let askTwoAttacks = functionStuff.askTwoAttacks ?? false;
-    let askThreeAttacks = functionStuff.askThreeAttacks ?? false;
-    let askBeastlore = functionStuff.beastLoreData.askBeastlore ?? false;
-    let askCorruptedTarget = functionStuff.askCorruptedTarget ?? false;
-    let featStFavour = functionStuff.featStFavour ?? false;
-    let contextualDamage = functionStuff.contextualDamage ?? false;
+    let askCorruptedTargetDefaultYes = functionStuff.askCorruptedTarget && functionStuff.targetFullyCorrupted;
+    let askCorruptedTargetDefaultNo = functionStuff.askCorruptedTarget && !functionStuff.targetFullyCorrupted;
     let leaderTarget = functionStuff.targetData.leaderTarget ?? false;
     let medicus = functionStuff.medicus ?? false;
     let poisoner = functionStuff.poisoner ?? false;
@@ -2489,11 +2683,18 @@ async function modifierDialog(functionStuff){
     let weaponDamage = "";
     let actorWeapons;
     let askImpeding = false;
+    let impedingValue = 0;
+    let hasRoll = functionStuff.casting !== game.symbaroum.config.CASTING_NOT;
     let d8="(+1d8)";
     let d6="(+1d6)";
     let d4="(+1d4)";
-    if(functionStuff?.impeding){
-        askImpeding = true;
+    let checkMaintain = functionStuff.maintain !== game.symbaroum.config.MAINTAIN_NOT || functionStuff.chain === game.symbaroum.config.CHAIN;
+    if(functionStuff?.impeding === game.symbaroum.config.IMPEDING_MAGIC){
+        impedingValue = functionStuff.actor.data.data.combat.impedingMagic;
+        if(impedingValue) askImpeding = true;
+    } else if(functionStuff?.impeding === game.symbaroum.config.IMPEDING_MAGIC){
+        impedingValue = functionStuff.actor.data.data.combat.impedingMov;
+        if(impedingValue) askImpeding = true;
     }
     if(functionStuff.askWeapon){
         actorWeapons = functionStuff.actor.items.filter(item => item.data?.type == "weapon")
@@ -2519,21 +2720,11 @@ async function modifierDialog(functionStuff){
             }
         }
     }
-
-    if(hasTarget && !functionStuff.combat && !functionStuff.notResisted){
-        let targetResMod = checkSpecialResistanceMod(functionStuff.targetData.actor.data.data.combat.damageReductions, functionStuff.targetData.autoParams, functionStuff.ability.data.reference);
-        functionStuff.favour += targetResMod.favour;
-        functionStuff.modifier += -1*targetResMod.modifier;
-        functionStuff.dmgavoiding = targetResMod.dmgavoiding;
-        functionStuff.autoParams += targetResMod.autoParams;
-    }
-    let beastLoreDmg=d4;
-    if(functionStuff.beastLoreData?.beastLoreMaster) beastLoreDmg=d6;
     let targetAttributeName = null;
     if(functionStuff.targetData.resistAttributeName){
         targetAttributeName = functionStuff.targetData.resistAttributeName
     }
-
+    createLineDisplay(functionStuff, functionStuff.attackFromPC);
     const html = await renderTemplate('systems/symbaroum/template/chat/dialog2.html', {
         hasTarget: hasTarget,
         askCastingAttribute: functionStuff.askCastingAttribute,
@@ -2542,30 +2733,28 @@ async function modifierDialog(functionStuff){
         autoparamsText: game.i18n.localize("DIALOG.AUTOPARAMS") + functionStuff.autoParams + functionStuff.targetData.autoParams,
         isArmorRoll : null,
         ignoreArmor : functionStuff.ignoreArm,
-        featStFavour: featStFavour,
         leaderTarget: leaderTarget,
-        askThreeAttacks: askThreeAttacks,
-        askTwoAttacks: askTwoAttacks,
+        packages: functionStuff.package,
         askImpeding: askImpeding,
-        askCorruptedTarget: askCorruptedTarget,
+        askCorruptedTargetDefaultYes: askCorruptedTargetDefaultYes,
+        askCorruptedTargetDefaultNo: askCorruptedTargetDefaultNo,
         weaponDamage : weaponDamage,
-        contextualDamage: contextualDamage,
+        contextualDamage: functionStuff.hasDamage,
         d8: d8,
         d4: d4,
-        choicesIF: { "0": game.i18n.localize("ABILITY_LABEL.IRON_FIST")+" 1d4", "1":game.i18n.localize("ABILITY_LABEL.IRON_FIST")+" 1d8"},
-        groupNameIF:"ironFdamage",
         choices: { "0": game.i18n.localize("DIALOG.FAVOUR_NORMAL"), "-1":game.i18n.localize("DIALOG.FAVOUR_DISFAVOUR"), "1":game.i18n.localize("DIALOG.FAVOUR_FAVOUR")},
         groupName:"favour",
         defaultFavour: "0",
         defaultModifier: functionStuff.modifier,
         defaultAdvantage: "",
         defaultDamModifier: "",
-        checkMaintain: functionStuff.checkMaintain,
+        checkMaintain: checkMaintain,
         askWeapon: functionStuff.askWeapon,
         targetImpeding: targetImpeding,
         weapons : actorWeapons,
         medicus : medicus,
-        poisoner: poisoner
+        poisoner: poisoner,
+        hasRoll: hasRoll
     });
     let title;
     if(functionStuff.ability){title = functionStuff.ability.name}
@@ -2600,19 +2789,19 @@ async function modifierDialog(functionStuff){
                         functionStuff.targetData.resistAttributeValue = getAttributeValue(functionStuff.targetData.actor, targetAttributeName);
                     }
                 }
-
-                //custom modifier for d20roll
-                const bonus = html.find("#bonus")[0].value;   
-                let modifierCustom = parseInt(bonus, 10);
-                functionStuff.modifier = modifierCustom;
-                //Favour (2d20 keep best) or disfavour(2d20 keep worst)      
-                let favours = html.find("input[name='favour']");
-                let fvalue = 0;
-                for ( let f of favours) {						
-                    if( f.checked ) fvalue = parseInt(f.value, 10);
-                }			
-                let finalFavour = fvalue + functionStuff.favour;
-
+                if(hasRoll){
+                    //custom modifier for d20roll
+                    const bonus = html.find("#bonus")[0].value;   
+                    let modifierCustom = parseInt(bonus, 10);
+                    functionStuff.modifier = modifierCustom;
+                    //Favour (2d20 keep best) or disfavour(2d20 keep worst)      
+                    let favours = html.find("input[name='favour']");
+                    let fvalue = 0;
+                    for ( let f of favours) {						
+                        if( f.checked ) fvalue = parseInt(f.value, 10);
+                    }
+                    functionStuff.favour += fvalue;
+                }
 
                 //Power/Ability has already been started and is maintained or chained
                 if( html.find("#maintain").length > 0) {
@@ -2621,7 +2810,7 @@ async function modifierDialog(functionStuff){
                 }
                 if(askImpeding){
                     if(html.find("#impeding")[0].checked){
-                        functionStuff.modifier += -functionStuff.impeding;
+                        functionStuff.modifier += -impedingValue;
                         functionStuff.autoParams += game.i18n.localize("ARMOR.IMPEDINGLONG") + ", ";
                     }
                 }
@@ -2631,34 +2820,81 @@ async function modifierDialog(functionStuff){
                         functionStuff.autoParams += game.i18n.localize("ARMOR.IMPEDING_TARGET") + ", ";
                     }
                 }
-                if(askCorruptedTarget){
+                if(askCorruptedTargetDefaultYes || askCorruptedTargetDefaultNo){
                     functionStuff.targetFullyCorrupted = html.find("#targetCorrupt")[0].checked;
+                    if(functionStuff.targetFullyCorrupted){
+                        functionStuff = Object.assign({}, functionStuff , functionStuff.targetFullyCorruptedFSmod);
+                        functionStuff.targetData.autoParams += game.i18n.localize('TOOLTIP.HEALTH.CORRUPTION_NA_TEXT');
+                    }
                 }
                 //combat roll stuff
-                if(contextualDamage){
+                if(functionStuff.hasDamage){
                     functionStuff.hasAdvantage = html.find("#advantage")[0].checked;
                     if(functionStuff.hasAdvantage){
                         functionStuff.modifier += 2;
                         functionStuff.autoParams += game.i18n.localize('DIALOG.ADVANTAGE') + ", ";
                     }
-                    if(askBeastlore){
-                        functionStuff.beastLoreData.useBeastlore = html.find("#usebeastlore")[0].checked;
+                    let hasDamModifier = html.find("#dammodifier").length > 0;
+                    let damModifier = "";
+                    let damModifierNPC = 0;
+                    if(hasDamModifier) {
+                      let damString = html.find("#dammodifier")[0].value;            
+                      // Save - it is a string
+                      damString = damString.trim();
+                      
+                      if(damString.length) {
+                        attri_defaults.additionalModifier = damString; // Regardless if valid or not, set it as attri_defaults
+                        let plus = '+';
+                        let damSource = "["+game.i18n.localize("DIALOG.DAMAGE_MODIFIER")+"] ";
+                        if(damString.charAt(0)=== "+" ) {
+                          plus = ""; // If it already has plus, do not add another
+                        }
+                        if(/\[[^\]]+\]/.test(damString) ) {
+                          damSource = ""; // If it has "[damage source]" already in roll string, do not add another one
+                        }
+                        damModifier = `${plus}${damString}${damSource}`;
+          
+                        try {
+                          // Validate string as valid roll object              
+                          let r = new Roll(damModifier,{}).evaluate({async:false});
+                        } catch (err) {
+                            ui.notifications.error(`The ${game.i18n.localize("DIALOG.DAMAGE_MODIFIER")} can't be used for rolling damage ${err}`);
+                            return;
+                        }
+                        damModifierAttSup = damModifier;
+                        if(!attackFromPC && functionStuff.targetData.hasTarget && functionStuff.targetData.actor.type !== "monster"){
+                          let parsedMod = parseInt(damString);
+                          if (!isNaN(parsedMod)) { 
+                            damModifierNPC = parsedMod;
+                          }
+                        }
+                      }
                     }
-                    let damModifier = html.find("#dammodifier")[0].value;
+                    for(let pack of functionStuff.package) {
+                        if(pack.type === game.symbaroum.config.PACK_CHECK) {
+                        // Find if the box is checked
+                            let ticked = html.find(`#${pack.id}`);              
+                            if( ticked.length > 0 && ticked[0].checked ){
+                                functionStuff.autoParams += ", "+pack.label;
+                                for(let member of pack.member) {
+                                    if(member.type == game.symbaroum.config.DAM_MOD) {
+                                        damModifier += `${member.alternatives[0].damageMod}[${pack.label}]`;
+                                        damModifierNPC += member.alternatives[0].damageModNPC;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
                     if(damModifier.length > 0) {
-                        functionStuff.dmgModifier += " + " + damModifier;
+                        functionStuff.dmgModifier = damModifier;
+                        functionStuff.dmgModifierNPC = damModifierNPC;
                     }
                 }
                 if(isWeaponRoll){
                     functionStuff.ignoreArm = html.find("#ignarm")[0].checked;
                     if(functionStuff.ignoreArm) functionStuff.autoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_IGN_ARMOR') + ", ";
                     functionStuff.poison = Number(html.find("#poison")[0].value);
-                    if(askTwoAttacks){
-                        functionStuff.do2attacks = html.find("#do2attacks")[0].checked;
-                    }
-                    if(askThreeAttacks){
-                        functionStuff.do3attacks = html.find("#do3attacks")[0].checked;
-                    }
                 }
                 if(medicus){
                     if(hasTarget){
@@ -2684,9 +2920,9 @@ async function modifierDialog(functionStuff){
                         else functionStuff.subText += ", " + game.i18n.localize('ABILITY_MEDICUS.NOHERBALCURE');
                         if(!functionStuff.medicusExam) {
                             functionStuff.removeTargetEffect = ["icons/svg/blood.svg"];
-                            functionStuff.introText= functionStuff.actor.data.name + game.i18n.localize('ABILITY_MEDICUS.CHAT_INTRO');
+                            functionStuff.introText= game.i18n.localize('ABILITY_MEDICUS.CHAT_INTRO');
                             functionStuff.resultTextFail = game.i18n.localize('ABILITY_MEDICUS.CHAT_FAILURE');
-                            functionStuff.resultTextSuccess = functionStuff.actor.data.name + game.i18n.localize('ABILITY_MEDICUS.CHAT_SUCCESS');
+                            functionStuff.resultTextSuccess = game.i18n.localize('ABILITY_MEDICUS.CHAT_SUCCESS');
                         }
                     }
                     else functionStuff.medicusExam = true;
@@ -2694,8 +2930,14 @@ async function modifierDialog(functionStuff){
                 if(poisoner){
                     functionStuff.poison = Number(html.find("#poisoner")[0].value);
                 }
-                functionStuff.favour = finalFavour;
-                functionStuff.notResisted = functionStuff.notResisted ?? (functionStuff.notResistWhenFirstCast && !functionStuff.isMaintained);
+                functionStuff.notResisted = functionStuff.notResisted ?? !(((functionStuff.casting === game.symbaroum.config.CASTING_RES) && !functionStuff.isMaintained ) || ((functionStuff.maintain === game.symbaroum.config.MAINTAIN_RES) && functionStuff.isMaintained));
+                if(hasTarget && !functionStuff.combat && !functionStuff.notResisted){
+                    let targetResMod = checkSpecialResistanceMod(functionStuff.targetData.actor.data.data.combat.damageReductions, functionStuff.targetData.autoParams, functionStuff.ability.data.reference);
+                    functionStuff.favour += targetResMod.favour;
+                    functionStuff.modifier += -1*targetResMod.modifier;
+                    functionStuff.dmgavoiding = targetResMod.dmgavoiding;
+                    functionStuff.autoParams += targetResMod.autoParams;
+                }
                 if(hasTarget && !functionStuff.notResisted){
                     if(functionStuff.attackFromPC || functionStuff.targetData.actor.type === "monster"){
                         functionStuff.resistRoll = false;
@@ -2733,7 +2975,7 @@ async function modifierDialog(functionStuff){
 }
 
 export async function buildRolls(functionStuff){
-    if(functionStuff.noRollWhenFirstCast && !functionStuff.isMaintained){
+    if(functionStuff.casting === game.symbaroum.config.CASTING_NOT && !functionStuff.isMaintained){
         standardPowerResult(null, functionStuff);
         return;
     }
@@ -2774,7 +3016,7 @@ export function checkSpecialResistanceMod(damageReductions, autoParams = "", abi
                     modifier += damageReductions[i].modifier;
                 } else if(damageReductions[i].type === game.symbaroum.config.TYPE_DMG_AVOIDING){
                     autoParams+=damageReductions[i].label+", ";
-                    dmgavoiding += true;
+                    dmgavoiding = true;
                 }
             }
         }
@@ -2783,39 +3025,6 @@ export function checkSpecialResistanceMod(damageReductions, autoParams = "", abi
         favour: favour,
         modifier: modifier,
         dmgavoiding: dmgavoiding,
-        autoParams: autoParams
-    }
-}
-
-/*a character that uses resolute, or a target that defend with resolute, mays have ability modifiers
-This function checks : 
-- leader novice (may use persuasive in place of resolute).
-* @param {actor} actor       The actor
-* @param {string} autoParams    the list of abilities and parameters automaticaly taken care for this actor
-* @checkLeader {boolean}  true to check if actor has leader
-returns:{
-    bestAttributeName {string} , //final attribute 
-    favour {-1, 0, 1}, 
-    useLeader {boolean},  (the novice level, if persuasive > resolute)
-    autoParams {string} detected and used abilities have been appended to autoParams}*/
-export function checkResoluteModifiers(actor, autoParams = ""){
-    let useLeader = false;
-    let bestAttributeName = "resolute";
-    let bestAttributeValue = actor.data.data.attributes["resolute"].value + actor.data.data.bonus["resolute"];
-    let hasLeader = actor.items.filter(item => item.data.data?.reference === "leader");
-    if(hasLeader.length > 0 && hasLeader[0].data.data.novice.isActive){
-        let persuasiveV = actor.data.data.attributes["persuasive"].value + actor.data.data.bonus["persuasive"];
-        if(bestAttributeValue < persuasiveV) {
-            bestAttributeName = "persuasive";
-            bestAttributeValue = persuasiveV;
-            useLeader = true;
-            autoParams += game.i18n.localize('ABILITY_LABEL.LEADER') + ", ";
-        }
-    }
-    return{
-        useLeader: useLeader,
-        bestAttributeName: bestAttributeName,
-        bestAttributeValue: bestAttributeValue,
         autoParams: autoParams
     }
 }
@@ -2855,6 +3064,7 @@ async function mathDamageProt(targetActor, damage, damageType){
 
 async function attackResult(rollData, functionStuff){
     
+    let namesForText = {actorname: functionStuff.actingCharName, targetname: functionStuff.targetData?.name ?? ""};
     let damage;
     let hasDamage;
     let targetDies = false;
@@ -2872,6 +3082,7 @@ async function attackResult(rollData, functionStuff){
     let corruptionChatResult ="";
     let corruptionTooltip="";
     let targetValue = functionStuff.targetData.actor.data.data.health.toughness.value;
+    let targetText = game.i18n.format(functionStuff.targetText ?? "", namesForText);
     if(functionStuff.isAlternativeDamage){
         targetValue = getAttributeValue(functionStuff.targetData.actor, functionStuff.alternativeDamageAttribute);
     }
@@ -2881,7 +3092,7 @@ async function attackResult(rollData, functionStuff){
         rolls = rolls.concat(rollDataElement.rolls);
 
         rollDataElement.finalText="";
-        rollDataElement.resultText = functionStuff.token.data.name + game.i18n.localize('COMBAT.CHAT_SUCCESS') + functionStuff.targetData.name;
+        rollDataElement.resultText = functionStuff.actingCharName + game.i18n.localize('COMBAT.CHAT_SUCCESS') + functionStuff.targetData.name;
         if(functionStuff.weapon.qualities.jointed && !rollDataElement.trueActorSucceeded && rollDataElement.diceResult%2!=0){
             rollDataElement.resultText = game.i18n.localize('COMBAT.CHAT_JOINTED_SECONDARY');
         }
@@ -2912,7 +3123,7 @@ async function attackResult(rollData, functionStuff){
             }
         }
         else{
-            rollDataElement.resultText = functionStuff.token.data.name + game.i18n.localize('COMBAT.CHAT_FAILURE');
+            rollDataElement.resultText = functionStuff.actingCharName + game.i18n.localize('COMBAT.CHAT_FAILURE');
         }
     }
     if(damageTot <= 0){
@@ -2922,18 +3133,26 @@ async function attackResult(rollData, functionStuff){
     else{
         if(damageTot >= targetValue){
             targetDies = true;
+            if(ui.combat.viewed && ui.combat.viewed.getCombatantByToken(functionStuff.targetData.tokenId)){
+                flagDataArray.push({
+                    tokenId: functionStuff.targetData.tokenId,
+                    defeated: true
+                });
+            }
+            else{
+                flagDataArray.push({
+                    tokenId: functionStuff.targetData.tokenId,
+                    addEffect: CONFIG.statusEffects.find(e => e.id === "dead"),
+                    overlay:true,
+                    effectDuration: 1
+                });
+            }
             damageFinalText = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_DYING');
-            flagDataArray.push({
-                tokenId: functionStuff.targetData.tokenId,
-                addEffect: "icons/svg/skull.svg",
-                overlay:true,
-                effectDuration: 1
-            });
         }else if(pain){
             damageFinalText = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_PAIN');
             flagDataArray.push({
                 tokenId: functionStuff.targetData.tokenId,
-                addEffect: "icons/svg/falling.svg",
+                addEffect: CONFIG.statusEffects.find(e => e.id === "prone"),
                 effectDuration: 1
             })
         }
@@ -2969,8 +3188,8 @@ async function attackResult(rollData, functionStuff){
         targetData : functionStuff.targetData,
         hasTarget : functionStuff.targetData.hasTarget,
         introText: functionStuff.introText,
-        introImg: functionStuff.actor.data.img,
-        targetText: functionStuff.targetData.targetText,
+        introImg: functionStuff.actingCharImg,
+        targetText: targetText,
         subText: functionStuff.weapon.name + " ("+await weaponTypeLabel(functionStuff.weapon)+")",
         subImg: functionStuff.weapon.img,
         hasRoll: true,
@@ -3001,7 +3220,7 @@ async function attackResult(rollData, functionStuff){
 
     if(functionStuff.poison > 0 && !targetDies && damageTot > 0){
         let targetResMod = checkSpecialResistanceMod(functionStuff.targetData.actor.data.data.combat.damageReductions, functionStuff.targetData.autoParams, "poisoner");
-        let poisonFavour = -1*targetResMod.favour;
+        let poisonFavour = targetResMod.favour;
         functionStuff.targetData.autoParams += targetResMod.autoParams;
         let poisonRoll = await baseRoll(functionStuff.actor, "cunning", functionStuff.targetData.actor, "strong", poisonFavour, -1*targetResMod.modifier, functionStuff.resistRoll);
         let poisonFunctionStuff = Object.assign(functionStuff, {modifier:-1*targetResMod.modifier, favour: poisonFavour});
@@ -3049,8 +3268,7 @@ async function attackResult(rollData, functionStuff){
         templateData.id = functionStuff.targetData?.actor?.data.data.combat.id;
         actorid = functionStuff.targetData?.actor.id;
     }
-    // end Maesrto support
-
+    // end Maestro support
     const html = await renderTemplate("systems/symbaroum/template/chat/combat.html", templateData);
     const chatData = {
         user: game.user.id,
@@ -3081,54 +3299,27 @@ async function formatRollString(rollDataElement, hasTarget, modifier){
     return(rollString)
 }
 
-async function standardPowerActivation(functionStuff) {
-    if(functionStuff.targetData.hasTarget){
-        try{functionStuff.targetData = getTarget(functionStuff.targetResistAttribute)} catch(error){
-            if(functionStuff.targetMandatory){
-                ui.notifications.error(error);
-                return;
-            }
-            else {
-                functionStuff.targetData = {hasTarget : false};
-                await modifierDialog(functionStuff)
-            }
-        }
-        if (functionStuff.targetData.resistAttributeName === "resolute"){
-            let targetResMod = checkResoluteModifiers(functionStuff.targetData.actor, functionStuff.targetData.autoParams);
-            functionStuff.targetData.resistAttributeName = targetResMod.bestAttributeName;
-            functionStuff.targetData.resistAttributeValue = targetResMod.bestAttributeValue;
-            functionStuff.targetData.autoParams += targetResMod.autoParams;
-        }
+async function healing(healFormula, targetToken, attackFromPC){
+    let healRoll;
+    let totalResult = 0;
+    let damageTooltip = "";
+    if(attackFromPC){
+        healRoll = new Roll(healFormula).evaluate({async:false});
+        totalResult = healRoll.total,
+        damageTooltip= new Handlebars.SafeString(await healRoll.getTooltip())
     }
-    await modifierDialog(functionStuff)
-}
-
-async function standardAbilityActivation(functionStuff) {
-    if(functionStuff.targetData.hasTarget){
-        try{functionStuff.targetData = getTarget(functionStuff.targetResistAttribute)} catch(error){
-            if(functionStuff.targetMandatory){
-                ui.notifications.error(error);
-                return;
-            }
-            else {
-                functionStuff.targetData = {hasTarget : false}
-            }
-        }
+    else{
+        healRoll= new Roll(healFormula).evaluate({maximize: true, async:false});
+        totalResult = Math.ceil(healRoll.total/2);
     }
-    await modifierDialog(functionStuff)
-}
-
-async function healing(healFormula, targetToken){
-    let healRoll = new Roll(healFormula).evaluate({async:false});
-
-    let healed = Math.min(healRoll.total, targetToken.actor.data.data.health.toughness.max - targetToken.actor.data.data.health.toughness.value);
+    let healed = Math.min(totalResult, targetToken.actor.data.data.health.toughness.max - targetToken.actor.data.data.health.toughness.value);
     return({
         hasDamage : true,
         roll: healRoll,
         healed: healed,
         dmgFormula : game.i18n.localize('POWER_LAYONHANDS.CHAT_FINAL') + healFormula,
         damageText : game.i18n.localize('POWER_LAYONHANDS.CHAT_FINAL') + healed.toString(),
-        damageTooltip: new Handlebars.SafeString(await healRoll.getTooltip()),
+        damageTooltip: damageTooltip,
         flagData : {
             tokenId: targetToken.data._id,
             toughnessChange: healed
@@ -3139,10 +3330,11 @@ async function healing(healFormula, targetToken){
 async function poisonCalc(functionStuff, poisonRoll){
     let poisonRes ={};
     poisonRes.printPoison = false;
-    poisonRes.poisonChatIntro = functionStuff.token.data.name + game.i18n.localize('COMBAT.CHAT_POISON') + functionStuff.targetData.name;
+    poisonRes.poisonChatIntro = functionStuff.actingCharName + game.i18n.localize('COMBAT.CHAT_POISON') + functionStuff.targetData.name;
     let poisonDamage = "0";
     let poisonedTimeLeft = 0;
-    const effect = "icons/svg/poison.svg";
+    const effect = CONFIG.statusEffects.find(e => e.id === "poison");
+    poisonRes.poisonResistRollText = functionStuff.targetData.name+game.i18n.localize('ABILITY.RESIST_ROLL');
         
     if(!poisonRoll.trueActorSucceeded){
         poisonRes.poisonChatResult = game.i18n.localize('COMBAT.CHAT_POISON_FAILURE');     
@@ -3162,12 +3354,16 @@ async function poisonCalc(functionStuff, poisonRoll){
         if(poisonedEffectCounter){
             //target already poisoned
             //get the number of rounds left
+            let statusCounterMod = false;
             if(game.modules.get("statuscounter")?.active){
+                //statusCounterMod = true;  until corrected
+            };
+            if(statusCounterMod){
                 poisonedTimeLeft = await EffectCounter.findCounterValue(functionStuff.targetData.token, effect);  
                 if(NewPoisonRounds > poisonedTimeLeft){
                     poisonRes.flagData = {
                         tokenId: functionStuff.targetData.tokenId,
-                        modifyEffectDuration: "icons/svg/poison.svg",
+                        modifyEffectDuration: effect,
                         effectDuration: NewPoisonRounds
                     };
                     poisonRes.poisonChatResult = game.i18n.localize('COMBAT.CHAT_POISON_EXTEND') + NewPoisonRounds.toString();
@@ -3182,7 +3378,7 @@ async function poisonCalc(functionStuff, poisonRoll){
             //new poisonning  
             poisonRes.flagData ={
                 tokenId: functionStuff.targetData.tokenId,
-                addEffect: "icons/svg/poison.svg",
+                addEffect: effect,
                 effectDuration: NewPoisonRounds
             };
             poisonRes.poisonChatResult = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_POISON_SUCCESS1') + poisonDamage  + game.i18n.localize('COMBAT.CHAT_POISON_SUCCESS2')  + NewPoisonRounds.toString();
@@ -3196,30 +3392,12 @@ async function poisonCalc(functionStuff, poisonRoll){
 }
 
 async function standardPowerResult(rollData, functionStuff){
-    let rolls = [];
-    let flagDataArray = functionStuff.flagDataArray ?? [];
-    let haveCorruption = false;
-    let corruptionText = "";
-    let corruption;
-    let finalText = functionStuff.finalText ?? "";
-    let subText = functionStuff.subText ?? functionStuff.ability.name + " (" + functionStuff.powerLvl.lvlName + ")";
-    let introText = functionStuff.isMaintained ? functionStuff.introTextMaintain : functionStuff.introText;
-    let rollResult="";
-    let rollToolTip="";
-    if((!functionStuff.isMaintained) && functionStuff.corruption){
-        haveCorruption = true;
-        corruption = await getCorruption(functionStuff);
-        corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
-        checkCorruptionThreshold(functionStuff.actor, corruption.value);
-        flagDataArray.push({
-            tokenId: functionStuff.tokenId,
-            corruptionChange: corruption.value
-        });
-    }
-
     let hasRoll = false;
     let trueActorSucceeded = true; //true by default for powers without rolls
+    let rolls = [];
     let rollString = "";
+    let rollResult="";
+    let rollToolTip="";
     if(rollData!=null){
         hasRoll = true;
         trueActorSucceeded = rollData[0].trueActorSucceeded;
@@ -3230,124 +3408,118 @@ async function standardPowerResult(rollData, functionStuff){
             rolls = rolls.concat(rollData[i].rolls);
         }
     }
+
+    if(functionStuff.rollFailedFSmod && !trueActorSucceeded){
+        functionStuff = Object.assign({}, functionStuff , functionStuff.rollFailedFSmod);
+    }
+
+    if(functionStuff.flagTest && trueActorSucceeded){
+        let flagData = await functionStuff.actor.getFlag(game.system.id, functionStuff.flagTest);
+        if(flagData){
+            await functionStuff.actor.unsetFlag(game.system.id, functionStuff.flagTest);
+            functionStuff = Object.assign({}, functionStuff , functionStuff.flagPresentFSmod);
+        }
+        else{
+            await functionStuff.actor.setFlag(game.system.id, functionStuff.flagTest, functionStuff.flagNotPresentFSmod.flagData);
+            functionStuff = Object.assign({}, functionStuff , functionStuff.flagNotPresentFSmod);
+        }
+    }
+    let flagDataArray = functionStuff.flagDataArray ?? [];
+    let haveCorruption = false;
+    let corruptionText = "";
+    let corruption;
+    let namesForText = {actorname: functionStuff.actingCharName, targetname: functionStuff.targetData?.name ?? ""};
+    let targetText = game.i18n.format(functionStuff.targetText ?? "", namesForText);
+    if((!functionStuff.isMaintained) && (functionStuff.corruption !== game.symbaroum.config.TEMPCORRUPTION_NONE)){
+        haveCorruption = true;
+        corruption = await functionStuff.actor.getCorruption(functionStuff);
+        corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
+        if(corruption.sorceryRoll) corruptionText += " (sorcery roll result:" + corruption.sorceryRoll.diceResult + ")";
+        checkCorruptionThreshold(functionStuff.actor, corruption.value);
+        flagDataArray.push({
+            tokenId: functionStuff.tokenId,
+            actorId: functionStuff.actor.id,
+            corruptionChange: corruption.value
+        });
+    }
+
     if( functionStuff.resultRolls !== undefined && functionStuff.resultRolls !== null) {
         rolls = rolls.concat(functionStuff.resultRolls);
     }
-    let resultText = trueActorSucceeded ? functionStuff.resultTextSuccess : functionStuff.resultTextFail;
+    let resultText = game.i18n.format(trueActorSucceeded ? functionStuff.resultTextSuccess : functionStuff.resultTextFail, namesForText);
+    let finalText = game.i18n.format(functionStuff.finalText ?? "", namesForText);
+    let subText = functionStuff.subText ?? functionStuff.ability.name + " (" + functionStuff.powerLvl.lvlName + ")";
+    let introText = game.i18n.format(functionStuff.isMaintained ? functionStuff.introTextMaintain : functionStuff.introText, namesForText);
+    if(functionStuff.finalTextSucceed && trueActorSucceeded) finalText = game.i18n.format(functionStuff.finalTextSucceed, namesForText);
+    else 
     if(functionStuff.targetData.hasTarget && functionStuff.targetData.autoParams != ""){
-        functionStuff.targetData.targetText += ": " + functionStuff.targetData.autoParams
+        targetText += ": " + functionStuff.targetData.autoParams;
     }
 
     let hasDamage = functionStuff.hasDamage;
-    let doDamage = hasDamage&&trueActorSucceeded;
+    let doDamage = hasDamage&&trueActorSucceeded || functionStuff.avoidDamageDice;
     let damageTot = 0;
     let damageText="";
     let damageRollResult="";
     let dmgFormula="";
-    let damageRollMod="";
     let damageTooltip="";
     let damageFinalText="";
-    let damageDice=functionStuff.damageDice;
+    let damageDice = functionStuff.dmgavoiding ? functionStuff.avoidDamageDice : functionStuff.damageDice;
     let targetDies = false;
-
+    
+    if(damageDice === "0d0"){
+        doDamage=false;
+        resultText= game.i18n.format(game.i18n.localize('POWER_BRIMSTONECASC.CHAT_FAILURE_RR'), namesForText);
+    }
     if(functionStuff.ability.data.reference === "blessedshield" && trueActorSucceeded){
         let protectionFormula = "1d" + (2 + (2*functionStuff.powerLvl.level));
 
         flagDataArray.push({
             tokenId: functionStuff.tokenId,
-            addEffect: "icons/svg/holy-shield.svg",
+            actorId: functionStuff.actor.id,
+            addEffect: CONFIG.statusEffects.find(e => e.id === "holyShield"),
             effectDuration: 1
         },{
             tokenId: functionStuff.tokenId,
+            actorId: functionStuff.actor.id,
             addObject: "blessedshield",
             protection: protectionFormula
         })
-        finalText = functionStuff.tokenName + game.i18n.localize('POWER_BLESSEDSHIELD.PROTECTED') + " (" + protectionFormula + ")";
+        finalText = game.i18n.format(game.i18n.localize('POWER_BLESSEDSHIELD.PROTECTED'), namesForText) + " (" + protectionFormula + ")";
 
         if(functionStuff.targets){
             for(let target of functionStuff.targets){
                 flagDataArray.push({
                     tokenId: target.tokenId,
-                    addEffect: "icons/svg/holy-shield.svg",
+                    addEffect: CONFIG.statusEffects.find(e => e.id === "holyShield"),
                     effectDuration: 1 
                 },{
                     tokenId: target.tokenId,
                     addObject: "blessedshield",
                     protection: protectionFormula
                 })
-                finalText += ", " + target.name + game.i18n.localize('POWER_BLESSEDSHIELD.PROTECTED');
-            }
-        }
-    }
-    
-    if(functionStuff.ability.data.reference === "brimstonecascade"){
-        if(rollData[0].trueActorSucceeded){
-            if(functionStuff.dmgavoiding){damageDice = "1d6"}
-            else{damageDice = "1d12"}
-        }
-        else{
-            if(functionStuff.dmgavoiding){
-                resultText= functionStuff.targetData.name + game.i18n.localize('POWER_BRIMSTONECASC.CHAT_FAILURE_RR');
-            }
-            else{
-                doDamage=true;
-                damageDice="1d6"
+                finalText += ", " + game.i18n.format(game.i18n.localize('POWER_BLESSEDSHIELD.PROTECTED'), {actorname: target.name});
             }
         }
     }
 
-    if(functionStuff.ability.data.reference === "confusion" && trueActorSucceeded){
+    if(functionStuff.confusion && trueActorSucceeded){
         let confusionRoll= new Roll("1d6").evaluate({async:false});
         rolls.push(confusionRoll);
 
-        finalText=confusionRoll.total.toString() + ": " + functionStuff.targetData.name;
+        finalText=confusionRoll.total.toString() + ": ";
         if(confusionRoll.total < 3){
-            finalText += game.i18n.localize('POWER_CONFUSION.EFFECT12');
+            finalText += game.i18n.format(game.i18n.localize('POWER_CONFUSION.EFFECT12'), namesForText);
         }
         else if(confusionRoll.total < 5){
-            finalText += game.i18n.localize('POWER_CONFUSION.EFFECT34');
+            finalText += game.i18n.format(game.i18n.localize('POWER_CONFUSION.EFFECT34'), namesForText);
         }
         else{
-            finalText += game.i18n.localize('POWER_CONFUSION.EFFECT56');
+            finalText += game.i18n.format(game.i18n.localize('POWER_CONFUSION.EFFECT56'), namesForText);
         }
     }
 
-    if(functionStuff.ability.data.reference === "curse" && !trueActorSucceeded) finalText = game.i18n.localize('POWER_CURSE.CHAT_FAIL_FINAL') + functionStuff.targetData.name;
-
-    if(functionStuff.ability.data.reference === "priosburningglass" && trueActorSucceeded){
-        if(functionStuff.powerLvl.level == 1){
-            if(functionStuff.targetFullyCorrupted){damageDice = "1d8"}
-            else{damageDice = "1d6"}
-        }
-        else{
-            if(functionStuff.targetFullyCorrupted){damageDice = "1d12"}
-            else{damageDice = "1d8"}
-        }
-        if((functionStuff.powerLvl.level == 3) && (functionStuff.targetFullyCorrupted)){
-            finalText = functionStuff.targetData.name + game.i18n.localize('POWER_PRIOSBURNINGGLASS.CHAT_EXTRA');
-        }
-    }
-
-    if(functionStuff.ability.data.reference === "holyaura" && trueActorSucceeded){
-        let auraDamage = "1d6";
-        let auraHeal = "1d4";
-        if(functionStuff.powerLvl.level == 2){auraDamage = "1d8"}
-        else if(functionStuff.powerLvl.level == 3){auraDamage = "1d10"; auraHeal = "1d6"}
-        
-        let abTheurgy = functionStuff.actor.items.filter(item => item.data.data?.reference === "theurgy");
-        if(abTheurgy.length > 0){
-            if(abTheurgy[0].data.data.master.isActive){
-                auraDamage += " + 1d4";
-                auraHeal += " + 1d4";
-            }
-        }
-        finalText  += game.i18n.localize('COMBAT.DAMAGE') + auraDamage;
-        if(functionStuff.powerLvl.level > 1){
-            finalText += game.i18n.localize('POWER_HOLYAURA.HEALING') + auraHeal;
-        }
-    }
-
-    if(["poisoner", "poisonous"].includes(functionStuff.ability.data.reference) && trueActorSucceeded){
+    if(functionStuff.usePoison){
         let poisonRes = await poisonCalc(functionStuff, rollData[0]);
         rolls.push(poisonRes.roll);
 
@@ -3391,18 +3563,26 @@ async function standardPowerResult(rollData, functionStuff){
             if(damageTot >= targetValue){
                 targetDies = true;
                 damageFinalText = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_DYING');
-                flagDataArray.push({
-                    tokenId: functionStuff.targetData.tokenId,
-                    addEffect: "icons/svg/skull.svg",
-                    overlay:true,
-                    effectDuration: 1
-                });
+                if(ui.combat.viewed && ui.combat.viewed.getCombatantByToken(functionStuff.targetData.tokenId)){
+                    flagDataArray.push({
+                        tokenId: functionStuff.targetData.tokenId,
+                        defeated: true
+                    });
+                }
+                else{
+                    flagDataArray.push({
+                        tokenId: functionStuff.targetData.tokenId,
+                        addEffect: CONFIG.statusEffects.find(e => e.id === "dead"),
+                        overlay:true,
+                        effectDuration: 1
+                    });
+                }
             }
             else if(pain){
                 damageFinalText = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_PAIN');
                 flagDataArray.push({
                     tokenId: functionStuff.targetData.tokenId,
-                    addEffect: "icons/svg/falling.svg",
+                    addEffect: CONFIG.statusEffects.find(e => e.id === "prone"),
                     effectDuration: 1
                 })
             }
@@ -3425,8 +3605,8 @@ async function standardPowerResult(rollData, functionStuff){
         targetData : functionStuff.targetData,
         hasTarget : functionStuff.targetData.hasTarget,
         introText: introText,
-        introImg: functionStuff.token.actor.data.img,
-        targetText: functionStuff.targetData.targetText,
+        introImg: functionStuff.actingCharImg,
+        targetText: targetText,
         subText: subText,
         subImg: functionStuff.ability.img,
         hasRoll: hasRoll,
@@ -3452,68 +3632,81 @@ async function standardPowerResult(rollData, functionStuff){
 /* if the power / ability have healing effects  */
     if(functionStuff.healFormulaSucceed && !functionStuff.medicusExam){
         let healResult;
+        let healingBonus = functionStuff.healingBonus ?? "";
+        if(functionStuff.healedToken === game.symbaroum.config.TARGET_TOKEN){
+            functionStuff.healedToken = functionStuff.targetData.token;
+        }else functionStuff.healedToken = functionStuff.token;
         if(trueActorSucceeded){
-            healResult = await healing(functionStuff.healFormulaSucceed, functionStuff.healedToken);
-            rolls.push(healResult.roll);
+            healResult = await healing(functionStuff.healFormulaSucceed+healingBonus, functionStuff.healedToken, functionStuff.attackFromPC);
+            if(functionStuff.attackFromPC) rolls.push(healResult.roll);
         }
         else if(!trueActorSucceeded && functionStuff.healFormulaFailed){
-            healResult = await healing(functionStuff.healFormulaFailed, functionStuff.healedToken); 
-            rolls.push(healResult.roll);
+            healResult = await healing(functionStuff.healFormulaFailed+healingBonus, functionStuff.healedToken, functionStuff.attackFromPC);
+            if(functionStuff.attackFromPC) rolls.push(healResult.roll);
         }
-        
         if(healResult){
             // game.symbaroum.log(healResult)
             templateData.hasDamage = healResult.hasDamage;
             templateData.damageText = healResult.damageText;
-            templateData.dmgFormula = healResult.dmgFormula;
-            templateData.damageTooltip = healResult.damageTooltip;
+            if(functionStuff.attackFromPC){
+                templateData.dmgFormula = healResult.dmgFormula;
+                templateData.damageTooltip = healResult.damageTooltip;
+            }
             templateData.damageFinalText = "";
             flagDataArray.push(healResult.flagData);
 
             if(functionStuff.ability.data.reference === "inheritwound"){
                 let inheritDamage = (functionStuff.powerLvl.level > 1) ? Math.ceil(healResult.healed /2) : healResult.healed;
-                templateData.finalText += functionStuff.targetData.name + game.i18n.localize('POWER_INHERITWOUND.CHAT_HEALED') + healResult.healed.toString() + "; " + functionStuff.tokenName + game.i18n.localize('POWER_INHERITWOUND.CHAT_DAMAGE') + inheritDamage.toString();
+                templateData.finalText += game.i18n.format(game.i18n.localize('POWER_INHERITWOUND.CHAT_HEALED'), namesForText) + healResult.healed.toString() + "; " + game.i18n.format(game.i18n.localize('POWER_INHERITWOUND.CHAT_DAMAGE'), namesForText) + inheritDamage.toString();
                 flagDataArray.push({
                     tokenId: functionStuff.tokenId,
                     toughnessChange: inheritDamage*-1
                 });
                 if(functionStuff.powerLvl.level > 1){
                     templateData.finalText += game.i18n.localize('POWER_INHERITWOUND.CHAT_REDIRECT');
-                    const pEffect = "icons/svg/poison.svg";
+                    const pEffect = CONFIG.statusEffects.find(e => e.id === "poison");
                     let poisonedEffectCounter = await getEffect(functionStuff.targetData.token, pEffect);
                     if(poisonedEffectCounter){
                         //target  poisoned
                         //get the number of rounds left
                         let timeLeft = 1;
+                        let statusCounterMod = false;
                         if(game.modules.get("statuscounter")?.active){
+                            //statusCounterMod = true;  until corrected
+                        };
+                        if(statusCounterMod){
                             timeLeft = await EffectCounter.findCounterValue(functionStuff.targetData.token, pEffect);
                         }
                         //set status to caster
                         flagDataArray.push({
                             tokenId: functionStuff.tokenId,
-                            addEffect: "icons/svg/poison.svg",
+                            addEffect: pEffect,
                             effectDuration: timeLeft
                         }, {
                             tokenId: functionStuff.targetData.tokenId,
-                            removeEffect: "icons/svg/poison.svg"
+                            removeEffect: pEffect
                         })
                     }
-                    const bEffect = "icons/svg/blood.svg";
+                    const bEffect = CONFIG.statusEffects.find(e => e.id === "bleeding");
                     let bleedEffectCounter = await getEffect(functionStuff.targetData.token, bEffect);
                     if(bleedEffectCounter){
                         //get the number of rounds left
                         let timeleft = 1;
+                        let statusCounterMod = false;
                         if(game.modules.get("statuscounter")?.active){
+                            //statusCounterMod = true;  until corrected
+                        };
+                        if(statusCounterMod){
                             timeLeft = await EffectCounter.findCounterValue(functionStuff.targetData.token, bEffect);
                         }
                         //set status to caster
                         flagDataArray.push({
                             tokenId: functionStuff.tokenId,
-                            addEffect: "icons/svg/blood.svg",
+                            addEffect: bEffect,
                             effectDuration: timeLeft
                         }, {
                             tokenId: functionStuff.targetData.tokenId,
-                            removeEffect: "icons/svg/blood.svg"
+                            removeEffect: bEffect
                         })
                     }
                 }
@@ -3536,7 +3729,7 @@ async function standardPowerResult(rollData, functionStuff){
         rollMode: game.settings.get('core', 'rollMode'),    
         content: html,
     }
-    if(functionStuff?.gmOnlyChatResult){
+    if(functionStuff.gmOnlyChatResultNPC && !functionStuff.attackFromPC){
         let gmList =  ChatMessage.getWhisperRecipients('GM');
         if(gmList.length > 0){
             chatData.whisper = gmList
@@ -3547,19 +3740,24 @@ async function standardPowerResult(rollData, functionStuff){
         chatData.roll= JSON.stringify(createRollData(rolls));
     }
     let NewMessage = await ChatMessage.create(chatData);
-
     if(trueActorSucceeded && (functionStuff.addTargetEffect.length >0)){
         for(let effect of functionStuff.addTargetEffect){
-        flagDataArray.push({
-                tokenId: functionStuff.targetData.tokenId,
-                addEffect: effect,
-                effectDuration: 1
-            });
+            let effectPresent = getEffect(functionStuff.targetData.token, effect);
+            if(!effectPresent){
+                flagDataArray.push({
+                        tokenId: functionStuff.targetData.tokenId,
+                        addEffect: effect,
+                        effectDuration: 1
+                });
+            }
         }
     }
-    if(trueActorSucceeded && (functionStuff.addCasterEffect.length >0)){
+    if(trueActorSucceeded && (functionStuff.addCasterEffect.length >0) && functionStuff.tokenId){
         for(let effect of functionStuff.addCasterEffect){
-            modifyEffectOnToken(functionStuff.token, effect, 1, 1);
+            let effectPresent = getEffect(functionStuff.token, effect);
+            if(!effectPresent){
+                await modifyEffectOnToken(functionStuff.token, effect, 1, 1);
+            }
         }
     }
     if(trueActorSucceeded && (functionStuff.removeTargetEffect.length >0)){
@@ -3573,7 +3771,7 @@ async function standardPowerResult(rollData, functionStuff){
             }
         }
     }
-    if(trueActorSucceeded && (functionStuff.removeCasterEffect.length >0)){ 
+    if(trueActorSucceeded && (functionStuff.removeCasterEffect.length >0) && functionStuff.tokenId){ 
         for(let effect of functionStuff.removeCasterEffect){
             let effectPresent = getEffect(functionStuff.token, effect);
             if(effectPresent){
@@ -3581,17 +3779,20 @@ async function standardPowerResult(rollData, functionStuff){
             }
         }
     }
-    if(trueActorSucceeded && !functionStuff.isMaintained && (functionStuff.activelyMaintaninedTargetEffect.length >0)){ 
-        for(let effect of functionStuff.activelyMaintaninedTargetEffect){
-        flagDataArray.push({
-                tokenId: functionStuff.targetData.tokenId,
-                addEffect: effect,
-                effectDuration: 1
-            });
+    if(trueActorSucceeded && !functionStuff.isMaintained && (functionStuff.activelyMaintainedTargetEffect.length >0)){ 
+        for(let effect of functionStuff.activelyMaintainedTargetEffect){
+            let effectPresent = getEffect(functionStuff.targetData.token, effect);
+            if(!effectPresent){
+                flagDataArray.push({
+                    tokenId: functionStuff.targetData.tokenId,
+                    addEffect: effect,
+                    effectDuration: 1
+                });
+            }
         }
     }
-    if(!trueActorSucceeded && functionStuff.isMaintained && (functionStuff.activelyMaintaninedTargetEffect.length >0)){ 
-        for(let effect of functionStuff.activelyMaintaninedTargetEffect){
+    if(!trueActorSucceeded && functionStuff.isMaintained && (functionStuff.activelyMaintainedTargetEffect.length >0)){ 
+        for(let effect of functionStuff.activelyMaintainedTargetEffect){
             let effectPresent = getEffect(functionStuff.targetData.token, effect);
             if(effectPresent){ 
                 flagDataArray.push({
@@ -3601,16 +3802,19 @@ async function standardPowerResult(rollData, functionStuff){
             }
         }
     }
-    if(trueActorSucceeded && !functionStuff.isMaintained && (functionStuff.activelyMaintaninedCasterEffect.length >0)){ 
+    if(trueActorSucceeded && !functionStuff.isMaintained && (functionStuff.activelyMaintaninedCasterEffect.length >0) && functionStuff.tokenId){ 
         for(let effect of functionStuff.activelyMaintaninedCasterEffect){
-        flagDataArray.push({
-                tokenId: functionStuff.tokenId,
-                addEffect: effect,
-                effectDuration: 1
-            });
+            let effectPresent = getEffect(functionStuff.token, effect);
+            if(!effectPresent){
+                flagDataArray.push({
+                    tokenId: functionStuff.tokenId,
+                    addEffect: effect,
+                    effectDuration: 1
+                });
+            }
         }
     }
-    if(!trueActorSucceeded && functionStuff.isMaintained && (functionStuff.activelyMaintaninedCasterEffect.length >0)){ 
+    if(!trueActorSucceeded && functionStuff.isMaintained && (functionStuff.activelyMaintaninedCasterEffect.length >0) && functionStuff.tokenId){ 
         for(let effect of functionStuff.activelyMaintaninedCasterEffect){
             let effectPresent = getEffect(functionStuff.token, effect);
             if(effectPresent){ 
@@ -3627,757 +3831,28 @@ async function standardPowerResult(rollData, functionStuff){
     }
 }
 
-// ********************************************* POWERS *****************************************************
-
-async function anathemaPrepare(ability, actor) {
-    let fsDefault;
-    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let specificStuff = {
-        targetResistAttribute: "resolute",
-        tradition: ["wizardry", "staffmagic", "theurgy"],
-        checkMaintain: true,
-        introText: actor.data.name + game.i18n.localize('POWER_ANATHEMA.CHAT_INTRO'),
-        resultTextSuccess: actor.data.name + game.i18n.localize('POWER_ANATHEMA.CHAT_SUCCESS'),
-        resultTextFail: actor.data.name + game.i18n.localize('POWER_ANATHEMA.CHAT_FAILURE')
-    }
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    functionStuff.targetData.hasTarget = true;
-    standardPowerActivation(functionStuff);
-}
-
-async function brimstoneCascadePrepare(ability, actor) {
-    // get target
-    let targetData;
-    try{targetData = getTarget("quick")} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let fsDefault;
-    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let specificStuff = {
-        checkMaintain: true,
-        contextualDamage: true,
-        hasDamage: true,
-        tradition: ["wizardry"],
-        targetImpeding: targetData.actor.data.data.combat.impedingMov,
-        targetData: targetData,
-        introText: fsDefault.token.name + game.i18n.localize('POWER_BRIMSTONECASC.CHAT_INTRO'),
-        introTextMaintain: fsDefault.token.name + game.i18n.localize('POWER_BRIMSTONECASC.CHAT_INTRO'),
-        resultTextSuccess: targetData.name + game.i18n.localize('POWER_BRIMSTONECASC.CHAT_SUCCESS'),
-        resultTextFail: targetData.name + game.i18n.localize('POWER_BRIMSTONECASC.CHAT_FAILURE'),
-    }
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    await modifierDialog(functionStuff)
-}
-
-async function bendWillPrepare(ability, actor) {
-    let targetData;
-    try{targetData = getTarget("resolute")} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let fsDefault;
-    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let specificStuff = {
-        checkMaintain: true,
-        targetMandatory : true,
-        targetData: targetData,
-        targetResistAttribute: "resolute",
-        activelyMaintaninedTargetEffect: ["systems/symbaroum/asset/image/puppet.png"],
-        tradition: ["witchcraft", "wizardry"],
-    }
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    functionStuff.introText = functionStuff.tokenName + game.i18n.localize('POWER_BENDWILL.CHAT_INTRO');
-    functionStuff.introTextMaintain = functionStuff.tokenName + game.i18n.localize('POWER_BENDWILL.CHAT_INTRO_M');
-    functionStuff.resultTextSuccess = functionStuff.tokenName + game.i18n.localize('POWER_BENDWILL.CHAT_SUCCESS') + functionStuff.targetData.name;
-    functionStuff.resultTextFail = functionStuff.targetData.name + game.i18n.localize('POWER_BENDWILL.CHAT_FAILURE');
-    functionStuff.finalText = "";
-    standardPowerActivation(functionStuff);
-}
-
-async function blackBoltPrepare(ability, actor) {
-    // get target
-    let targetData;
-    try{targetData = getTarget("quick")} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let fsDefault;
-    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let specificStuff = {
-        checkMaintain: true,
-        contextualDamage: true,
-        hasDamage: true,
-        targetData: targetData,
-        targetImpeding: targetData.actor.data.data.combat.impedingMov,
-        introText: fsDefault.token.name + game.i18n.localize('POWER_BLACKBOLT.CHAT_INTRO'),
-        introTextMaintain: fsDefault.token.name + game.i18n.localize('POWER_BLACKBOLT.CHAT_INTRO'),
-        resultTextSuccess: targetData.name + game.i18n.localize('POWER_BLACKBOLT.CHAT_SUCCESS'),
-        resultTextFail: targetData.name + game.i18n.localize('POWER_BLACKBOLT.CHAT_FAILURE'),
-        damageDice: "1d6",
-        addTargetEffect: ["icons/svg/paralysis.svg"]
-    }
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    functionStuff.ignoreArm=true;
-    await modifierDialog(functionStuff)
-}
-
-async function blessedshieldPrepare(ability, actor) {
-    let fsDefault;
-    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let specificStuff = {
-        tradition: ["theurgy"]
-    }
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    functionStuff.introText = functionStuff.tokenName + game.i18n.localize('POWER_BLESSEDSHIELD.CHAT_INTRO');
-    functionStuff.resultTextSuccess = functionStuff.tokenName + game.i18n.localize('POWER_BLESSEDSHIELD.CHAT_SUCCESS');
-    functionStuff.resultTextFail = functionStuff.tokenName + game.i18n.localize('POWER_BLESSEDSHIELD.CHAT_FAILURE');
-    if(functionStuff.powerLvl.level > 1){
-        try{functionStuff.targets = getTargets(undefined, functionStuff.powerLvl.level-1)} catch(error){
-        }
-    }
-    await modifierDialog(functionStuff)
-}
-
-async function confusionPrepare(ability, actor) {
-    let targetData;
-    try{targetData = getTarget("resolute")} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let targetResMod = checkResoluteModifiers(targetData.actor, targetData.autoParams);
-    targetData.resistAttributeName = targetResMod.bestAttributeName;
-    targetData.resistAttributeValue = targetResMod.bestAttributeValue;
-    targetData.autoParams = targetResMod.autoParams;
-    let fsDefault;
-    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let specificStuff = {
-        checkMaintain: true,
-        targetMandatory : true,
-        targetData: targetData,
-        activelyMaintaninedTargetEffect: ["systems/symbaroum/asset/image/unknown-item.png"],
-        tradition: ["trollsinging", "wizardry"]
-    }
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    await modifierDialog(functionStuff)
-}
-
-async function cursePrepare(ability, actor) {
-    let targetData;
-    try{targetData = getTarget()} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let fsDefault;
-    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let resultText = targetData.name + game.i18n.localize('POWER_CURSE.CHAT_SUCCESS_N');
-    if(fsDefault.powerLvl.level == 2){resultText = targetData.name + game.i18n.localize('POWER_CURSE.CHAT_SUCCESS_A')}
-    else if(fsDefault.powerLvl.level == 3){resultText = targetData.name + game.i18n.localize('POWER_CURSE.CHAT_SUCCESS_M')}
-    let specificStuff = {
-        checkMaintain: true,
-        noRollWhenFirstCast: true,
-        notResisted: true,
-        targetData: targetData,
-        introText: fsDefault.tokenName + game.i18n.localize('POWER_CURSE.CHAT_INTRO'),
-        introTextMaintain: fsDefault.tokenName + game.i18n.localize('POWER_CURSE.CHAT_INTRO_M'),
-        resultTextSuccess: resultText,
-        resultTextFail: fsDefault.tokenName + game.i18n.localize('POWER_CURSE.CHAT_FAILURE'),
-        activelyMaintaninedTargetEffect: ["icons/svg/sun.svg"],
-        tradition: ["witchcraft"],
-    }
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    await modifierDialog(functionStuff)
-}
-
-async function dancingweapon(ability, actor) {
-    let fsDefault;
-    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let specificStuff = {
-        tradition: ["staffmagic", "trollsinging"],
-        corruption: false
-    };
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);
-
-    if(!functionStuff.attackFromPC){
-        functionStuff.gmOnlyChatResult = true
-    }
-    let flagData = await actor.getFlag(game.system.id, 'dancingweapon');
-    if(flagData){
-        await actor.unsetFlag(game.system.id, 'dancingweapon');
-        functionStuff.introText = actor.name + game.i18n.localize('POWER_DANCINGWEAPON.CHAT_DESACTIVATE');
-        functionStuff.resultTextSuccess = game.i18n.localize('POWER_DANCINGWEAPON.CHAT_RESULT_DESACTIVATE');
-        functionStuff.removeCasterEffect= ["systems/symbaroum/asset/image/powers/dancingweapon.svg"]
-    }
-    else{
-        flagData = functionStuff.powerLvl.level;
-        functionStuff.introText = actor.name + game.i18n.localize('POWER_DANCINGWEAPON.CHAT_ACTIVATE');
-        await actor.setFlag(game.system.id, 'dancingweapon', flagData);
-        functionStuff.addCasterEffect = ["systems/symbaroum/asset/image/powers/dancingweapon.svg"];
-        functionStuff.resultTextSuccess = game.i18n.localize('POWER_DANCINGWEAPON.CHAT_RESULT_ACTIVATE');
-    }
-    await standardPowerResult(null, functionStuff);
-}
-
-async function entanglingvinesPrepare(ability, actor) {
-    let targetData;
-    try{targetData = getTarget("strong")} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let fsDefault;
-    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let specificStuff = {
-        checkMaintain: true,
-        targetMandatory : true,
-        targetData: targetData,
-        notResistWhenFirstCast: true,
-        hasDamage: fsDefault.powerLvl.level === 3,
-        contextualDamage: fsDefault.powerLvl.level === 3,
-        damageDice: "1d6",
-        introTextMaintain: targetData.name + game.i18n.localize('POWER_ENTANGLINGVINES.CHAT_INTRO_M'),
-        resultTextSuccess: targetData.name + game.i18n.localize('POWER_ENTANGLINGVINES.CHAT_SUCCESS'),
-        resultTextFail: targetData.name + game.i18n.localize('POWER_ENTANGLINGVINES.CHAT_FAILURE'),
-        activelyMaintaninedTargetEffect: ["systems/symbaroum/asset/image/vines.png"],
-        tradition: ["witchcraft"]
-    }
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    functionStuff.ignoreArm=true;
-    await modifierDialog(functionStuff)
-}
-
-async function holyAuraPrepare(ability, actor) {
-    let fsDefault;
-    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let specificStuff = {
-        checkMaintain: true,
-        tradition: ["theurgy"],
-        introText: fsDefault.tokenName + game.i18n.localize('POWER_HOLYAURA.CHAT_INTRO'),
-        introTextMaintain: fsDefault.tokenName + game.i18n.localize('POWER_HOLYAURA.CHAT_INTRO'),
-        resultTextSuccess: fsDefault.tokenName + game.i18n.localize('POWER_HOLYAURA.CHAT_SUCCESS'),
-        resultTextFail: fsDefault.tokenName + game.i18n.localize('POWER_HOLYAURA.CHAT_FAILURE'),
-        activelyMaintaninedCasterEffect: ["icons/svg/aura.svg"],
-    }
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    await modifierDialog(functionStuff);
-}
-
-async function inheritwoundPrepare(ability, actor){
-    let targetData;
-    try{targetData = getTarget()} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let fsDefault;
-    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let specificStuff = {
-        targetMandatory : true,
-        targetData: targetData,
-        notResistWhenFirstCast: true,
-        healedToken: targetData.token,
-        introText: fsDefault.tokenName + game.i18n.localize('POWER_INHERITWOUND.CHAT_INTRO'),
-        resultTextSuccess: fsDefault.tokenName + game.i18n.localize('POWER_INHERITWOUND.CHAT_SUCCESS'),
-        resultTextFail: fsDefault.tokenName + game.i18n.localize('POWER_INHERITWOUND.CHAT_FAILURE'),
-        tradition: ["witchcraft", "theurgy"]
-    }
-    specificStuff.healFormulaSucceed = (fsDefault.powerLvl.level > 2) ? "1d8" : "1d6";
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);
-
-    functionStuff.targetData.targetText = game.i18n.localize('ABILITY_MEDICUS.CHAT_TARGET') + targetData.name;
-    if(functionStuff.casterMysticAbilities.theurgy.level == 3 || functionStuff.casterMysticAbilities.blessings.level == 3 ){
-        functionStuff.healFormulaSucceed += " + 1d4";
-    }
-
-    await modifierDialog(functionStuff)
-}
-
-async function larvaeBoilsPrepare(ability, actor) {
-    let targetData;
-    try{targetData = getTarget("strong")} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let fsDefault;
-    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let specificStuff = {
-        checkMaintain: true,
-        hasDamage: true,
-        damageDice: "1d" + (2*fsDefault.powerLvl.level+2).toString(),
-        noRollWhenFirstCast: true,
-        contextualDamage: true,
-        targetData: targetData,
-        introText: fsDefault.tokenName + game.i18n.localize('POWER_LARVAEBOILS.CHAT_INTRO'),
-        introTextMaintain: fsDefault.tokenName + game.i18n.localize('POWER_LARVAEBOILS.CHAT_INTRO_M'),
-        resultTextSuccess: targetData.name + game.i18n.localize('POWER_LARVAEBOILS.CHAT_SUCCESS'),
-        resultTextFail: targetData.name + game.i18n.localize('POWER_LARVAEBOILS.CHAT_FAILURE'),
-        activelyMaintaninedTargetEffect: ["systems/symbaroum/asset/image/bug.png"],
-        tradition: ["witchcraft"]
-    }
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    functionStuff.ignoreArm=true;
-    await modifierDialog(functionStuff)
-}
-
-async function layonhandsPrepare(ability, actor) {
-    let fsDefault;
-    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let specificStuff = {
-        targetMandatory: true,
-        tradition: ["witchcraft", "theurgy"]
-    }
-    
-    specificStuff.healFormulaSucceed = "1d6";
-    if(fsDefault.powerLvl.level > 1){
-        specificStuff.healFormulaSucceed = "1d8";
-        specificStuff.removeTargetEffect = ["icons/svg/poison.svg", "icons/svg/blood.svg"]
-    }
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    if(functionStuff.casterMysticAbilities.theurgy.level == 3 || functionStuff.casterMysticAbilities.blessings.level == 3 ){
-        functionStuff.healFormulaSucceed += " + 1d4";
-    }
-
-    try{functionStuff.targetData = getTarget()} catch(error){
-        ui.notifications.error(error);
-        return;
-    }
-    functionStuff.healedToken = functionStuff.targetData.token;
-    functionStuff.targetData.targetText = game.i18n.localize('ABILITY_MEDICUS.CHAT_TARGET') + functionStuff.targetData.name;
-
-    if(fsDefault.powerLvl.level > 2){
-        let layHandsDialogTemplate = `
-        <h1> ${game.i18n.localize('POWER_LAYONHANDS.DIALOG')} </h1>
-        `;
-        new Dialog({
-            title: game.i18n.localize('POWER_LABEL.LAY_ON_HAND'), 
-            content: layHandsDialogTemplate,
-            buttons: {
-                touch: {
-                    label: game.i18n.localize('POWER_LAYONHANDS.TOUCH'),
-                    callback: (html) => {
-                        functionStuff.healFormulaSucceed = "1d12";
-                        functionStuff.touch=true;
-                        if(functionStuff.casterMysticAbilities.theurgy.level == 3 || functionStuff.casterMysticAbilities.blessings.level == 3 ){
-                            functionStuff.healFormulaSucceed += " + 1d4";
-                        }
-                        modifierDialog(functionStuff);
-                    }
-                }, 
-
-                lineofSight: {
-                    label: game.i18n.localize('POWER_LAYONHANDS.REMOTE'), 
-                    callback: (html) => {
-                        functionStuff.touch=false;
-                        modifierDialog(functionStuff);
-                    }
-                },
-                close: {
-                    label: "Close"
-                }
-            }
-        }).render(true);
-    }
-    else{
-        modifierDialog(functionStuff);
-    }
-}
-
-async function levitatePrepare(ability, actor) {
-    let fsDefault;
-    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let specificStuff = {
-        checkMaintain: true,
-        tradition: ["theurgy", "wizardry"]
-    }
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    let targetData;
-    if(functionStuff.powerLvl.level > 1){
-        try{targetData = getTarget("strong")} catch(error){
-            targetData = {hasTarget : false, leaderTarget: false}
-        }
-    }
-    else{
-        targetData = {hasTarget : false, leaderTarget: false}
-    }
-    if(targetData.hasTarget){
-        functionStuff.addTargetEffect= ["icons/svg/wing.svg"]
-    }
-    else{
-        functionStuff.addCasterEffect= ["icons/svg/wing.svg"]
-    }
-    functionStuff.targetData = targetData;
-    await modifierDialog(functionStuff)
-}
-
-async function maltransformationPrepare(ability, actor) {
-    let targetData;
-    try{targetData = getTarget("resolute")} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let targetResMod = checkResoluteModifiers(targetData.actor, targetData.autoParams);
-    targetData.resistAttributeName = targetResMod.bestAttributeName;
-    targetData.resistAttributeValue = targetResMod.bestAttributeValue;
-    let fsDefault;
-    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let specificStuff = {
-        checkMaintain: true,
-        favour: favour,
-        targetMandatory : true,
-        targetData: targetData,
-        activelyMaintaninedTargetEffect: ["systems/symbaroum/asset/image/frog.png"],
-        tradition: ["witchcraft"]
-    }
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    await modifierDialog(functionStuff)
-}
-
-async function mindthrowPrepare(ability, actor) {
-    // get target
-    let targetData;
-    try{targetData = getTarget("quick")} catch(error){
-        targetData = {hasTarget : false, leaderTarget: false}
-    }
-    let fsDefault;
-    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let specificStuff = {
-        contextualDamage: true,
-        hasDamage: targetData.hasTarget,
-        damageDice: "1d8",
-        tradition: ["wizardry"],
-        targetData: targetData,
-        targetImpeding: targetData.hasTarget ? targetData.actor.data.data.combat.impedingMov : null,
-    }
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    if(functionStuff.powerLvl.level>2){
-        functionStuff.checkMaintain=true
-    }
-    await modifierDialog(functionStuff)
-}
-
-async function priosburningglassPrepare(ability, actor) {
-    // get target
-    let targetData;
-    try{targetData = getTarget()} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let fsDefault;
-    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let specificStuff = {
-        checkMaintain: true,
-        askCorruptedTarget: true,
-        notResisted: true,
-        introText: fsDefault.tokenName + game.i18n.localize('POWER_PRIOSBURNINGGLASS.CHAT_INTRO'),
-        tradition: ["theurgy"],
-        targetData: targetData,
-        contextualDamage: true,
-        hasDamage: true
-    }
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    await modifierDialog(functionStuff)
-}
-
-async function tormentingspiritsPrepare(ability, actor) { 
-    let targetData;
-    try{targetData = getTarget()} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let fsDefault;
-    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let specificStuff = {
-        notResisted: true,
-        isAlternativeDamage: true,
-        alternativeDamageAttribute: "resolute",
-        targetMandatory: true,
-        checkMaintain: true,
-        targetData: targetData,
-        tradition: ["witchcraft"],
-        introText: fsDefault.tokenName + game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_INTRO'),
-        introTextMaintain: fsDefault.tokenName + game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_INTRO_M'),
-        resultTextSuccess: fsDefault.tokenName + game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_SUCCESS') + targetData.name,
-        resultTextFail: fsDefault.tokenName + game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_FAILURE'),
-        activelyMaintaninedTargetEffect: ["systems/symbaroum/asset/image/ghost.svg"],
-    }
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);
-
-    if(functionStuff.powerLvl.level >1){
-        functionStuff.hasDamage= true;
-        functionStuff.contextualDamage= true;
-        functionStuff.damageDice= "1d"+(2*functionStuff.powerLvl.level).toString();
-        functionStuff.ignoreArm=true;
-    }
-    await modifierDialog(functionStuff)
-}
-
-async function unnoticeablePrepare(ability, actor) {
-    let fsDefault;
-    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let specificStuff = {
-        tradition: ["wizardry", "theurgy"],
-        addCasterEffect: ["systems/symbaroum/asset/image/invisible.png"]
-    }
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    await standardPowerActivation(functionStuff);
-}
-
-// ********************************************* ABILITIES *****************************************************
-
-async function simpleRollAbility(ability, actor) {
-    let specificStuff = {
-        castingAttributeName: "cunning"
-    }
-    switch (ability.data.data.reference){
-        case "acrobatics":
-            specificStuff.castingAttributeName = "quick";
-            specificStuff.impeding = actor.data.data.combat.impedingMov;
-        break;
-        case "loremaster":
-            specificStuff.introText = actor.data.name + game.i18n.localize('ABILITY_LOREMASTER.CHAT_INTRO');
-            specificStuff.resultTextSuccess = actor.data.name + game.i18n.localize('ABILITY_LOREMASTER.CHAT_SUCCESS');
-            specificStuff.resultTextFail = actor.data.name + game.i18n.localize('ABILITY_LOREMASTER.CHAT_FAILURE');
-        break;
-        case "quickdraw":
-            specificStuff.castingAttributeName = "quick";
-            specificStuff.impeding = actor.data.data.combat.impedingMov;
-        break;
-        case "shapeshifter":
-            specificStuff.castingAttributeName = "resolute";
-        break;
-        case "wisdomages":
-            specificStuff.castingAttributeName = "resolute";
-        break;
-    }
-    let fsDefault;
-    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    await standardAbilityActivation(functionStuff)
-}
-
-async function berserker(ability, actor) {
-    let fsDefault;
-    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let specificStuff = {
-        isMaintained: false
-    };
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);
-
-    if(!functionStuff.attackFromPC){
-        functionStuff.gmOnlyChatResult = true
-    }
-    let flagData = await actor.getFlag(game.system.id, 'berserker');
-    if(flagData){
-        await actor.unsetFlag(game.system.id, 'berserker');
-        functionStuff.introText = actor.name + game.i18n.localize('ABILITY_BERSERKER.CHAT_DESACTIVATE');
-        functionStuff.resultTextSuccess = game.i18n.localize('ABILITY_BERSERKER.CHAT_RESULT_DESACTIVATE');
-        functionStuff.removeCasterEffect= ["systems/symbaroum/asset/image/berserker.svg"]
-    }
-    else{
-        flagData = functionStuff.powerLvl.level;
-        functionStuff.introText = actor.name + game.i18n.localize('ABILITY_BERSERKER.CHAT_ACTIVATE');
-        await actor.setFlag(game.system.id, 'berserker', flagData);
-        functionStuff.addCasterEffect = ["systems/symbaroum/asset/image/berserker.svg"];
-        if(functionStuff.powerLvl.level == 2) functionStuff.resultTextSuccess = game.i18n.localize('ABILITY_BERSERKER.CHAT_RESULT_LVL2');
-        else if(functionStuff.powerLvl.level > 2) functionStuff.resultTextSuccess = game.i18n.localize('ABILITY_BERSERKER.CHAT_RESULT_LVL3');
-        else functionStuff.resultTextSuccess = game.i18n.localize('ABILITY_BERSERKER.CHAT_RESULT_LVL1');
-    }
-    await standardPowerResult(null, functionStuff);
-}
-
-async function dominatePrepare(ability, actor) {
-    let powerLvl = getPowerLevel(ability);
-    if (powerLvl.level<2){
-        ui.notifications.error("Need dominate Adept level");
-        return;
-    }
-    let fsDefault;
-    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let specificStuff = {
-        castingAttributeName: "persuasive",
-        targetMandatory: true,
-        targetResistAttribute: "resolute",
-        addTargetEffect: ["icons/svg/terror.svg"],
-    }
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    functionStuff.targetData = {hasTarget : true, leaderTarget: false}
-    if(powerLvl.level == 2){
-        functionStuff.introText = functionStuff.actor.data.name + game.i18n.localize('ABILITY_DOMINATE_ADEPT.CHAT_INTRO');
-        functionStuff.resultTextSuccess = functionStuff.actor.data.name + game.i18n.localize('ABILITY_DOMINATE_ADEPT.CHAT_SUCCESS');
-    }
-    else{
-        functionStuff.introText = functionStuff.actor.data.name + game.i18n.localize('ABILITY_DOMINATE_MASTER.CHAT_INTRO');
-        functionStuff.resultTextSuccess = functionStuff.actor.data.name + game.i18n.localize('ABILITY_DOMINATE_MASTER.CHAT_SUCCESS');
-    }
-    await standardPowerActivation(functionStuff)
-}
-
-async function leaderPrepare(ability, actor) {
-
-    let powerLvl = getPowerLevel(ability);
-    if (powerLvl.level<2){
-        ui.notifications.error("Need Leader Adept level");
-        return;
-    }
-    let targetData;
-    try{targetData = getTarget()} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let fsDefault;
-    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let specificStuff = {
-        targetMandatory: true,
-        targetData: targetData,
-        resultTextSuccess: game.i18n.localize('ABILITY_LEADER.CHAT_SUCCESS') + targetData.name,
-        addTargetEffect: ["icons/svg/eye.svg"],
-    }
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    await standardPowerResult(null, functionStuff)
-}
-
-async function medicusPrepare(ability, actor) {
-    let fsDefault;
-    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let specificStuff = {
-        castingAttributeName: "cunning",
-        checkMaintain: false,
-        notResisted: true,
-        medicus: true
-    }
-    specificStuff.healFormulaSucceed = "1d4";
-
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);
-
-    try{functionStuff.targetData = getTarget()} catch(error){
-    }
-    if(functionStuff.targetData.hasTarget){
-        functionStuff.healedToken = functionStuff.targetData.token;
-        functionStuff.targetData.targetText = game.i18n.localize('ABILITY_MEDICUS.CHAT_TARGET') + functionStuff.targetData.name;
-        functionStuff.subText = functionStuff.ability.name + " (" + functionStuff.powerLvl.lvlName + ")";
-        if(functionStuff.powerLvl.level == 1){
-            functionStuff.healFormulaSucceed = "1d4"
-        }
-        else if(functionStuff.powerLvl.level == 2){
-            functionStuff.healFormulaSucceed = "1d6"
-        }
-        else{
-            functionStuff.healFormulaSucceed = "1d8";
-            functionStuff.healFormulaFailed = "1d4";
-        }
-    }
-    else functionStuff.medicusExam = true;
-    modifierDialog(functionStuff);
-}
-
-async function recoveryPrepare(ability, actor) {
-    let fsDefault;
-    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let specificStuff = {
-        castingAttributeName: "resolute"
-    }
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    functionStuff.healedToken = functionStuff.token;
-
-    if(functionStuff.powerLvl.level == 2) {functionStuff.healFormulaSucceed = "1d6"}
-    else if(functionStuff.powerLvl.level == 3) {functionStuff.healFormulaSucceed = "1d8"}
-    else {functionStuff.healFormulaSucceed = "1d4"}
-    await standardAbilityActivation(functionStuff)
-}
-
-async function stranglerPrepare(ability, actor) {
-
-    let stranglerDialogTemplate = `
-    <h1> ${game.i18n.localize('DIALOG.ISMAINTAINED')} </h1>
+async function preDialogLayonHands(functionStuff){
+    let layHandsDialogTemplate = `
+    <h1> ${game.i18n.localize('POWER_LAYONHANDS.DIALOG')} </h1>
     `;
     new Dialog({
-        title: ability.name, 
-        content: stranglerDialogTemplate,
+        title: game.i18n.localize('POWER_LABEL.LAY_ON_HAND'), 
+        content: layHandsDialogTemplate,
         buttons: {
-            firstAttack: {
-                label: game.i18n.localize('DIALOG.CASTING'),
-                callback: (html) => {                 
-                    stranglerPrepared(ability, actor, false);
+            touch: {
+                label: game.i18n.localize('POWER_LAYONHANDS.TOUCH'),
+                callback: (html) => {
+                    functionStuff.healFormulaSucceed = "1d12";
+                    functionStuff.touch=true;
+                    modifierDialog(functionStuff);
                 }
             }, 
 
-            maintained: {
-                label: game.i18n.localize('DIALOG.MAINTAINING'), 
+            lineofSight: {
+                label: game.i18n.localize('POWER_LAYONHANDS.REMOTE'), 
                 callback: (html) => {
-                    stranglerPrepared(ability, actor, true);
+                    functionStuff.touch=false;
+                    modifierDialog(functionStuff);
                 }
             },
             close: {
@@ -4385,133 +3860,4 @@ async function stranglerPrepare(ability, actor) {
             }
         }
     }).render(true);
-}
-
-async function stranglerPrepared(ability, actor, maintained) {
-    let targetData;
-    if(maintained){
-        try{targetData = getTarget("cunning")} catch(error){      
-            ui.notifications.error(error);
-            return;
-        }
-    }
-    else{
-        try{targetData = getTarget("defense")} catch(error){      
-            ui.notifications.error(error);
-            return;
-        }
-    }
-    let fsDefault;
-    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let specificStuff = {
-        checkMaintain: false,
-        contextualDamage: true,
-        isMaintained: maintained,
-        introText: fsDefault.tokenName + game.i18n.localize('ABILITY_STRANGLER.CHAT_INTRO'),
-        introTextMaintain: fsDefault.tokenName + game.i18n.localize('ABILITY_STRANGLER.CHAT_INTRO_M'),
-        resultTextSuccess: fsDefault.tokenName + game.i18n.localize('ABILITY_STRANGLER.CHAT_SUCCESS'),
-        resultTextFail: targetData.name + game.i18n.localize('ABILITY_STRANGLER.CHAT_FAILURE'),
-        targetData: targetData,
-        activelyMaintaninedTargetEffect: ["systems/symbaroum/asset/image/lasso.png"],
-        hasDamage: true,
-        damageDice: "1d6"
-    }
-    specificStuff.askCastingAttribute = maintained ? false : true;
-    specificStuff.castingAttributeName = maintained ? "cunning" : null;
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    functionStuff.ignoreArm=true;
-    await modifierDialog(functionStuff)
-}
-
-async function witchsightPrepare(ability, actor) {
-    let fsDefault;
-    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let specificStuff = {
-        castingAttributeName: "vigilant",
-        corruption: true,
-        casterMysticAbilities: await getMysticAbilities(actor),
-        corruptionFormula: "1d1",
-        introText: fsDefault.tokenName + game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_INTRO'),
-        resultTextSuccess: fsDefault.tokenName + game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_SUCCESS'),
-        resultTextFail: fsDefault.tokenName + game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_FAILURE'),
-    }
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    if(functionStuff.powerLvl.level == 2){
-        functionStuff.corruptionFormula = "1d4";
-    }else if(functionStuff.powerLvl.level > 2) functionStuff.corruptionFormula = "1d6";
-    if(!actor.data.data.health.corruption.max) functionStuff.corruption = false;
-
-    let targetData;
-    try{targetData = getTarget("discreet")} catch(error){
-        targetData = {hasTarget : false, leaderTarget: false}
-    }
-    functionStuff.targetData = targetData;
-    await modifierDialog(functionStuff)
-}
-
-// ********************************************* TRAITS *****************************************************
-
-async function poisonerPrepare(ability, actor) {
-    // get target
-    let targetData;
-    try{targetData = getTarget("strong")} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let fsDefault;
-    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let specificStuff = {
-        castingAttributeName: "cunning",
-        targetData: targetData,
-    }
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);
-    if(ability.data.data.reference === "poisoner") {functionStuff.poisoner = true}
-    else functionStuff.poison = functionStuff.powerLvl.level;
-    await modifierDialog(functionStuff)
-}
-
-async function regeneration(ability, actor){
-    let fsDefault;
-    try{fsDefault = await buildFunctionStuffDefault(ability, actor)} catch(error){      
-        ui.notifications.error(error);
-        return;
-    }
-    let specificStuff = {
-        isMaintained: false
-    };
-    let functionStuff = Object.assign({}, fsDefault , specificStuff);
-
-
-    functionStuff.introText = actor.name + game.i18n.localize('TRAIT_REGENERATION.CHAT_ACTION');
-    
-    let regenTotal = 0;
-
-    if(!functionStuff.attackFromPC){
-        functionStuff.gmOnlyChatResult = true;
-        regenTotal = 1+functionStuff.powerLvl.level;
-        functionStuff.introText += "("+regenTotal.toString()+" " + game.i18n.localize('HEALTH.TOUGHNESS') +").";
-    } else {
-        let regenDice = 2+ 2*functionStuff.powerLvl.level;
-        let regenFormula = "1d" + regenDice.toString();
-        let dmgRoll= new Roll(regenFormula).evaluate({async:false});
-        functionStuff.resultRolls = [dmgRoll];
-        functionStuff.introText += "("+regenFormula+" " + game.i18n.localize('HEALTH.TOUGHNESS') +").";
-        regenTotal = dmgRoll.total;
-    }
-    functionStuff.resultTextSuccess = actor.name + game.i18n.localize('TRAIT_REGENERATION.CHAT_ACTION') + regenTotal.toString() + " " + game.i18n.localize('HEALTH.TOUGHNESS') +".";;
-
-    functionStuff.flagDataArray = [{
-        tokenId: functionStuff.token.data._id,
-        toughnessChange: regenTotal
-    }];
-    await standardPowerResult(null, functionStuff);
 }

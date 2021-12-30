@@ -1,4 +1,4 @@
-import { getPowerLevel, formatRollResult } from './item.js';
+import { formatRollResult } from './item.js';
 
 export async function rollAttribute(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier, armor, weapon, advantage, damModifier) {
   let dam = "";	
@@ -70,8 +70,12 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   
   let finalMod = modifier - getAttributeValue(targetActor, targetAttributeName) + 10;
 
+  let tokenList = actor.getActiveTokens();
+  let actingToken = tokenList[0];
+  let actingCharName= actingToken?.data?.name ?? actor.name;
+  let actingCharImg= actingToken?.data?.actorLink ? actor.data.img : actingToken?.data?.img ?? actor.data.img;
   let rollData = {
-    subImg: actor.data.img,
+    subImg: actingCharImg,
     name: `${getAttributeLabel(actor, actingAttributeName) } (${ getAttributeValue(actor, actingAttributeName) }) ⬅ ${getAttributeLabel(targetActor, targetAttributeName)} (${finalMod})`,
     margin: (rollResults.diceTarget - rollResults.diceResult),
     hasSucceed: rollResults.hasSucceed,
@@ -90,9 +94,10 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   // Once we go to non-API version of DsN, then set this in chatData: type: CONST.CHAT_MESSAGE_TYPES.ROLL,
   let chatData = {
     user: game.user.id,
-    speaker: {
-			actor: actor.id
-    },
+    speaker: ChatMessage.getSpeaker({ 
+      alias: actingCharName,
+      actor: actor.id
+    }),
     type: CONST.CHAT_MESSAGE_TYPES.ROLL,
     roll: JSON.stringify(createRollData(rolls)),
     rollMode: game.settings.get('core', 'rollMode'),
@@ -512,11 +517,7 @@ export async function damageRollWithDiceParams(functionStuff, critSuccess, attac
 /* like damageRollWithDiceParams, but for spell damage and such */
 export async function simpleDamageRoll(functionStuff, damageFormula){
   if(functionStuff.dmgModifier != ""){
-    damageFormula += functionStuff.dmgModifier + "[" + game.i18n.localize('DIALOG.DAMAGE_MODIFIER') + "]";
-  }
-  if(functionStuff.beastLoreData.useBeastlore){
-    if(functionStuff.beastLoreData.beastLoreMaster) damageFormula += " + 1d6[" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "]";
-    else damageFormula += " + 1d4[" + game.i18n.localize('ABILITY_LABEL.BEAST_LORE') + "]";
+    damageFormula += functionStuff.dmgModifier;
   }
   if(functionStuff.hasAdvantage){
     damageFormula += " + 1d4"+game.i18n.localize("COMBAT.CHAT_DMG_PARAMS_ADVANTAGE");

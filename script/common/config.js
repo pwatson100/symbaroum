@@ -36,6 +36,11 @@ SYMBAROUM.itemSortOrder = [
     "artifact"
 ];
 
+// Deprecated item types
+SYMBAROUM.itemDeprecated = [
+'artifact'
+];
+
 // Ability definitions
 SYMBAROUM.abilitiesList = {
     "none": 'ABILITY_LABEL.DEFAULT', 
@@ -373,6 +378,14 @@ SYMBAROUM.powersList = {
     "witchhammer": 'POWER_LABEL.WITCH_HAMMER'
 };
 
+SYMBAROUM.scriptedAbilities =
+["alchemy", "acrobatics", "artifactcrafting", "beastlore", "berserker", "blacksmith", "dominate", "leader", "loremaster",
+ "medicus", "poisoner", "quickdraw", "recovery", "strangler", "witchsight",
+ "anathema", "brimstonecascade", "bendwill", "blackbolt", "blessedshield",
+ "confusion", "curse", "dancingweapon", "entanglingvines", "flamewall", "holyaura", "inheritwound", "larvaeboils", "layonhands",
+ "levitate", "maltransformation", "mindthrow", "priosburningglass", "tormentingspirits", "unnoticeable",
+ "poisonous", "regeneration", "shapeshifter", "wisdomages"];
+
 SYMBAROUM.steadFastNovResistList = [
     "drainingglyph",
     "entanglingvines",
@@ -466,21 +479,31 @@ SYMBAROUM.TRAD_WIZARDRY = "wizardry";
 SYMBAROUM.TEMPCORRUPTION_NORMAL = "corrnormal"; // 1d4 (default)
 SYMBAROUM.TEMPCORRUPTION_ONE = "corr1"; // 1
 SYMBAROUM.TEMPCORRUPTION_TESTFORONE = "corrtestfor1"; // 1 if test against resolute
-SYMBAROUM.TEMPCORRUPTION_FAVOUR = "corrfavour"; // 2d4kl
+SYMBAROUM.TEMPCORRUPTION_FAVOUR = "corrfavour"; // 2dxkl
 SYMBAROUM.TEMPCORRUPTION_NONE = "corrnone"; // 0
+SYMBAROUM.TEMPCORRUPTION_D6 = "corrd6"; // 1d6
 
-//casting
-SYMBAROUM.CASTING = "casting";  // (default) the power is cast with castingAttribute
+//impeding types
+SYMBAROUM.IMPEDING_NOT = "impedingnot"; // no impeding malus (default)
+SYMBAROUM.IMPEDING_MAGIC = "impedingmagic"; // no impeding malus for magic
+SYMBAROUM.IMPEDING_MOVE = "impedingmov"; // impeding malus for movement
+
+//1rst round of casting - for maintaining, see "maintain"
+SYMBAROUM.CASTING = "casting";  // (default) the power is cast with castingAttribute, no resistance
 SYMBAROUM.CASTING_NOT = "castingnot";  // the power success is automatic
 SYMBAROUM.CASTING_RES = "castingresisted";  // the power is cast with castingAttribute and resisted with resistAttribute
 
 //Maintain
 SYMBAROUM.MAINTAIN_NOT = "notmaintain";  // (default) the power can't be maintained
-SYMBAROUM.MAINTAIN_ROLL = "maintainroll";  //the power can be maintained by roll
-SYMBAROUM.MAINTAIN_ROLL_DIFF = "maintainrolldiff";  //the power can be maintained by roll on different attributes
+SYMBAROUM.MAINTAIN = "maintainroll";  //the power can be maintained (simple casting attribute roll)
+SYMBAROUM.MAINTAIN_RES = "maintainrollres";  //the power can be maintained (resisted roll)
 
 SYMBAROUM.CHAIN = "chain";  //the power can do chain effect
 SYMBAROUM.CHAIN_NOT = "chainnot";  //the power can't do chain effect
 
 //Resisting
 SYMBAROUM.TYPE_DMG_AVOIDING = "dmgavoiding"; // damage reduction like in rapid reflexes
+
+//Healing
+SYMBAROUM.TARGET_TOKEN = "targettoken";
+SYMBAROUM.ACTING_TOKEN = "actingtoken";

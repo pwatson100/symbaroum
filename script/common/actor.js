@@ -1,6 +1,6 @@
-import { checkResoluteModifiers, getPowerLevel, getTarget, getTokenId, markScripted } from './item.js';
+import { getEffect, modifierDialog } from './item.js';
 import { prepareRollAttribute } from "../common/dialog.js";
-import { upgradeDice } from './roll.js';
+import { baseRoll } from './roll.js';
 
 export class SymbaroumActor extends Actor {
 
@@ -31,7 +31,7 @@ export class SymbaroumActor extends Actor {
         this.data.isDataPrepared = true;
     }
 
-    _initializeData(data) {    
+    _initializeData(data) {
         let armorData = foundry.utils.deepClone(game.system.model.Item.armor);
         armorData.baseProtection = "0";
         armorData.id = null;
@@ -95,8 +95,6 @@ export class SymbaroumActor extends Actor {
             mystic :  [],
             traditions : [],
             abilities : {},
-            traits : {},
-            mysticpowers : {},
             weapons : {},
             armors : {}
         };
@@ -162,16 +160,25 @@ export class SymbaroumActor extends Actor {
             }
         }
 
-        const allMysticPowers = this.data.items.filter(element => element.data.isMysticalPower);
+        //add scripted abilities / Mystic powers / traits
+        const allAbilities = this.data.items.filter(element => element.data.isAbility || element.data.isMysticalPower || element.data.isTrait);
 
-        for(let i = 0; i < allMysticPowers.length; i++) {
-            // build it
-            let base = allMysticPowers[i].getMysticPowersConfig();
-            combatMods.mysticpowers[allMysticPowers[i].id] = base;
+        for(let i = 0; i < allAbilities.length; i++) {
+            switch (allAbilities[i].data.type){
+                case "ability":
+                    combatMods.abilities[allAbilities[i].id] = allAbilities[i].getAbilitiesConfig();
+                break;
+                case "mysticalPower":
+                    combatMods.abilities[allAbilities[i].id] = allAbilities[i].getMysticPowersConfig();
+                break;
+                case "trait":
+                    combatMods.abilities[allAbilities[i].id] = allAbilities[i].getTraitsConfig();
+                break;
+            }
         }
-
+        // get modifiers 
         for( const [key, item] of this.data.items.entries() ) {
-            item.getItemModifiers(combatMods, allArmors, allWeapons, allMysticPowers);
+            item.getItemModifiers(combatMods, allArmors, allWeapons, allAbilities);
         }
         
         this._getToughnessValues(combatMods.toughness);
@@ -765,8 +772,110 @@ export class SymbaroumActor extends Actor {
 
     }
 
+    //evaluate the temmporary corruption to be received by the actor
+    async getCorruption(functionStuff){
+        if(this.data.isThoroughlyCorrupt || functionStuff.corruption === game.symbaroum.config.TEMPCORRUPTION_NONE) {return({value: 0})}
+        let corruptionFormula = functionStuff.corruptionFormula ?? "1d4";
+        let sorceryRoll;
+        if(functionStuff.corruption === game.symbaroum.config.TEMPCORRUPTION_ONE){
+            return({value: 1})
+        } else if (functionStuff.corruption === game.symbaroum.config.TEMPCORRUPTION_TESTFORONE){
+            sorceryRoll = await baseRoll(this, "resolute", null, null, 0, 0, false);
+            if(sorceryRoll.trueActorSucceeded){
+                return({value: 1, tradition: "sorcery", sorceryRoll: sorceryRoll})
+            }
+        } else{
+            for(let i = 0; i < this.data.data.combat.combatMods.corruption.length; i++) {
+                if(this.data.data.combat.combatMods.corruption[i].type === game.symbaroum.config.TEMPCORRUPTION_FAVOUR){
+                    corruptionFormula = "2d4kl";
+                }
+            }
+        }
+        let corRoll= new Roll(corruptionFormula).evaluate({async:false});
+        return({value: corRoll.total, sorceryRoll: sorceryRoll, corruptionRoll: corRoll})
+    }
+
     async usePower(ability){
-        if(ability.data.data?.script) ability.data.data?.script(ability, this);
+        if( !ability.isOwned || ability.data.data.reference === undefined || ability.data.data.reference === null) {
+        return;               
+        }
+        // get acting token
+        let tokenList = this.getActiveTokens();
+        let actingToken = tokenList[0];
+        if(this.data.data.combat.combatMods.abilities[ability.data._id]){
+            let specificStuff = foundry.utils.deepClone(this.data.data.combat.combatMods.abilities[ability.data._id]);
+            if (!specificStuff.isScripted) return;
+            //need token?
+            if(specificStuff.needToken && !actingToken){
+                ui.notifications.error(game.i18n.localize('ERROR.NO_TOKEN_SELECTED'));
+                return;
+            }
+            //casting attribute
+            if(specificStuff.attributes.length > 0){
+                let castingAttribute = specificStuff.castingAttributeName;
+                let castingAttributeValue = this.data.data.attributes[castingAttribute].total;
+                let autoParams="";
+                for(let base of specificStuff.attributes) {
+                    let alternateValue = this.data.data.attributes[base.attribute].total;
+                    if (castingAttributeValue < alternateValue) {
+                        castingAttribute = base.attribute;
+                        castingAttributeValue = alternateValue;
+                        autoParams = base.label+ ", ";
+                    }
+                }
+                specificStuff.castingAttributeName = castingAttribute;
+                specificStuff.autoParams += autoParams;
+            }
+            //resist attribute
+            if(specificStuff.multipleTargets){
+                try{specificStuff.targets = getTargets(specificStuff.targetResistAttribute, specificStuff.multipleTargetsNb)} catch(error){}
+                specificStuff.targetData = {hasTarget : false};
+            } else if(specificStuff.getTarget){
+                try{specificStuff.targetData = getTarget(specificStuff.targetResistAttribute)} catch(error){
+                    if(specificStuff.targetMandatory){
+                        ui.notifications.error(error);
+                        return;
+                    } else {
+                        specificStuff.targetData = {hasTarget : false};
+                    }
+                }
+            } else {
+                specificStuff.targetData = {hasTarget : false};
+            }
+            
+            if(specificStuff.targetPresentFSmod && specificStuff.targetData.hasTarget){
+                specificStuff = Object.assign({}, specificStuff , specificStuff.targetPresentFSmod);
+            }
+
+            specificStuff.targetFullyCorrupted = specificStuff.targetFullyCorruptedFSmod && specificStuff.targetData.hasTarget && specificStuff.targetData.isCorrupted;
+
+            if(specificStuff.targetImpeding && specificStuff.targetData.hasTarget) specificStuff.targetImpeding=specificStuff.targetData.actor.data.data.combat.impedingMov;
+            
+            if(specificStuff.targetData.hasTarget && specificStuff.targetData.actor.data.data.combat.damageReductions.length && specificStuff.targetResistAttribute === "resolute"){
+                for(let i = 0; i < specificStuff.targetData.actor.data.data.combat.damageReductions.length; i++) {
+                    if(specificStuff.targetData.actor.data.data.combat.damageReductions[i].type === game.symbaroum.config.TYPE_ALT_RESIST_ATTR_RESOLUTE){
+                        let resistributeValue = specificStuff.targetData.actor.data.data.attributes["resolute"].total;
+                        let alternateValue = specificStuff.targetData.actor.data.data.attributes[specificStuff.targetData.actor.data.data.combat.damageReductions[i].attribute].total;
+                        if (resistributeValue < alternateValue) {
+                            specificStuff.targetData.resistAttributeName = specificStuff.targetData.actor.data.data.combat.damageReductions[i].attribute;
+                            specificStuff.targetData.autoParams += specificStuff.targetData.actor.data.data.combat.damageReductions[i].label + ", ";
+                        }
+                    }
+                }
+            }
+            let fsDefault;
+            try{fsDefault = await ability.getFunctionStuffDefault(this, actingToken)} catch(error){      
+                ui.notifications.error(error);
+                return;
+            }
+            let functionStuff = Object.assign({}, fsDefault , specificStuff);
+            if(functionStuff.preDialogFunction){
+                await functionStuff.preDialogFunction(functionStuff)
+            }else {
+                await modifierDialog(functionStuff);
+            }
+        }
+        //if(ability.data.data?.script) ability.data.data?.script(ability, this);
     }
 
     async rollArmor() {
@@ -790,23 +899,21 @@ export class SymbaroumActor extends Actor {
     }
 
     async enhancedAttackRoll(weapon){
-        // get selected token
-        let token;
-        try{token = await getTokenId(this)} catch(error){
-            ui.notifications.error(error);
-            return;
-        }
+        let tokenList = this.getActiveTokens();
+        let actingToken = tokenList[0];
         // get target token, actor and defense value
         let targetData;
         try{targetData = getTarget("defense")} catch(error){
             ui.notifications.error(error);
             return;
         }
-        
+        let actingCharName = actingToken?.data?.name ?? this.name;
         let functionStuff = {
             actor: this,
-            token: token,
-            tokenId : token.id,
+            token: actingToken,
+            tokenId : actingToken?.id,
+            actingCharName : actingCharName,
+            actingCharImg: actingToken?.data?.img ?? this.data.img,
             askIgnoreArmor: true,
             askTargetAttribute: false,
             askCastingAttribute: false,
@@ -827,8 +934,10 @@ export class SymbaroumActor extends Actor {
             isMystical: weapon.qualities.mystical,
             isAlternativeDamage: false,
             alternativeDamageAttribute: "none",
-            introText: token.data.name + game.i18n.localize('COMBAT.CHAT_INTRO') + weapon.name,
+            introText: actingCharName + game.i18n.localize('COMBAT.CHAT_INTRO') + weapon.name,
             targetData: targetData,
+            targetText: game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM'),
+            resistRollText: "",
             corruptingattack: "",
             ignoreArm: false,
             castingAttributeName: weapon.attribute,
@@ -839,4 +948,58 @@ export class SymbaroumActor extends Actor {
         functionStuff.askPoison = poisoner.length != 0;
         prepareRollAttribute(this, weapon.attribute, null, weapon, functionStuff); 
     }
+}
+
+/*get the target token, its actor, and evaluate which attribute this actor will use for opposition
+@Params: {string}   targetAttributeName : the name of the resist attribute. Can be defense, and can be null.
+@returns:  {targetData object}*/
+export function getTarget(targetAttributeName) {
+    let targetsData;
+    try{targetsData = getTargets(targetAttributeName, 1)} catch(error){      
+        throw error;
+    }
+    return targetsData[0]
+}
+
+export function getTargets(targetAttributeName, maxTargets = 1) {
+    let targets = Array.from(game.user.targets)
+    if(targets.length == 0 || targets.length > maxTargets)
+    {
+        throw game.i18n.localize('ABILITY_ERROR.TARGET');
+    }
+    let targetsData = [];
+    for(let target of targets){
+        let targetToken = target;
+        let targetActor = target.actor;
+        let autoParams = "";
+        let leaderTarget = false;
+            // check for leader adept ability effect on target
+        const LeaderEffect = CONFIG.statusEffects.find(e => e.id === "eye");
+        let leaderEffect = getEffect(targetToken, LeaderEffect);
+        if(leaderEffect){
+            leaderTarget = true;
+            autoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
+        };
+        targetsData.push({
+            hasTarget: true,
+            token: targetToken,
+            actor: targetActor,
+            name: targetToken.data.name,
+            tokenId: targetToken.id,
+            resistAttributeName: targetAttributeName,
+            leaderTarget: leaderTarget,
+            autoParams: autoParams,
+            isCorrupted: target.actor.data.isThoroughlyCorrupt
+        })
+    }
+    return(targetsData)
+}
+
+export function markScripted(item){
+    item.data.data.hasScript = false;
+    if(game.symbaroum.config.scriptedAbilities.includes(item.data.data.reference)){
+        item.data.data.hasScript = true;
+        item.data.data.script = true;
+    }
+    return;
 }
