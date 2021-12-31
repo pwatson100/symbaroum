@@ -86,7 +86,7 @@
 </p>
 </p>
 <p>
-  <b>Licence</b>
+  <b>License</b>
   <br>
   Symbaroum for Foundry VTT was originally developed by Perfectro who no longer supports the system and has allowed Bithir, Khaali and myself (Paul Watson) to take over development and support. <br>
   We would like to thank him for his excellent work in putting the system together.
