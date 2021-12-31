@@ -3375,7 +3375,7 @@ async function poisonCalc(functionStuff, poisonRoll){
             else{poisonRes.poisonChatResult = game.i18n.localize('COMBAT.CHAT_POISON_NOTEXTEND')}
         }
         else{
-            //new poisonning  
+            //new poisoning  
             poisonRes.flagData ={
                 tokenId: functionStuff.targetData.tokenId,
                 addEffect: effect,
