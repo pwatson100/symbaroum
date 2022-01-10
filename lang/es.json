@@ -809,7 +809,7 @@
   "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE_HINT": "Marcar para permitir mejoras de QoL para mostrar los mod de los atributos antes de la tirada",
   "SYMBAROUM.OPTIONAL_NPC_MODIFIERS": "Show NPC modifiers",
   "SYMBAROUM.OPTIONAL_NPC_MODIFIERS_HINT": "Check to show NPC modifiers (-5 to +5) instead of attributes for NPCs on character sheet",
-  "SYMBAROUM.OPTIONAL_INIATITIVEROLLS": "Supress Initiative rolls",
+  "SYMBAROUM.OPTIONAL_INIATITIVEROLLS": "Suppress Initiative rolls",
   "SYMBAROUM.OPTIONAL_INIATITIVEROLLS_HINT": "Check to QoL disabling of Initiative rolls in chat",
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Permitir modificaciones de referencias",
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Atención - Solo GM - permite ajustar manualmente las referencias en la implementación de habilidades, rasgos y poderes místicos. Requiere reiniciar.",

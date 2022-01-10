@@ -566,18 +566,7 @@ export class SymbaroumItem extends Item {
 
     // Weapons    
     _getOwnWeaponBonuses(combatMods, armors, weapons, abilities) 
-    {
-        for(let i = 0; i < armors.length; i++)
-        {
-            if(!this.data.isActive || !armors[i].data.isActive || armors[i].data.isStackableArmor ||  !this.data.data.qualities.balanced) {
-                continue;
-            }
-            // Add 1
-            let base = this._getBaseFormat();
-            base.display = game.i18n.localize("QUALITY.BALANCED");
-            base.modifier = 1;
-            combatMods.armors[armors[i].id].defenseModifiers.push(base);            
-        }        
+    {       
         for(let i = 0; i < weapons.length; i++)
         {
             if(weapons[i].id != this.id) {
@@ -655,6 +644,19 @@ export class SymbaroumItem extends Item {
                 base.value = this.data.data.alternativeDamage;
                 combatMods.weapons[weapons[i].id].package[0].member.push(base);
             }
+            if( this.data.isActive && this.data.data.qualities.balanced)
+            {
+                for(let i = 0; i < armors.length; i++)
+                {
+                    if(!this.data.isActive || !armors[i].data.isActive || armors[i].data.isStackableArmor) {
+                        continue;
+                    }
+                    let base = this._getBaseFormat();
+                    base.label = `${this.data.name} ${game.i18n.localize("QUALITY.BALANCED")}`;
+                    base.modifier = 1;
+                    combatMods.armors[armors[i].id].defenseModifiers.push(base);            
+                }
+            }
         }
     }
 
@@ -673,6 +675,25 @@ export class SymbaroumItem extends Item {
     }
     getItemModifierShield(combatMods, armors, weapons, abilities) {
         this._getOwnWeaponBonuses(combatMods, armors, weapons, abilities);
+        if(!this.data.isActive)
+        {
+            return;
+        }
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if(weapons[i].id != this.id) {
+                continue;
+            }
+            for(let i = 0; i < armors.length; i++)
+            {
+                if(!armors[i].data.isActive || armors[i].data.isStackableArmor) {
+                    continue;
+                }
+                let base = this._getBaseFormat();
+                base.modifier = 1;
+                combatMods.armors[armors[i].id].defenseModifiers.push(base);            
+            }
+        }
     }
     getItemModifierHeavy(combatMods, armors, weapons, abilities) {
         this._getOwnWeaponBonuses(combatMods, armors, weapons, abilities);
@@ -3411,7 +3432,7 @@ async function poisonCalc(functionStuff, poisonRoll){
             else{poisonRes.poisonChatResult = game.i18n.localize('COMBAT.CHAT_POISON_NOTEXTEND')}
         }
         else{
-            //new poisonning  
+            //new poisoning  
             poisonRes.flagData ={
                 tokenId: functionStuff.targetData.tokenId,
                 addEffect: effect,
