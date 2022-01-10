@@ -260,7 +260,9 @@ export class SymbaroumActor extends Actor {
             mysticArm: 1,
             mysticIgnArm: 1,
             holy: 1,
-            mysticalWeapon: 1
+            mysticalWeapon: 1,
+            poison: 1,
+            bleeding: 1
         };
     }
 
@@ -366,6 +368,12 @@ export class SymbaroumActor extends Actor {
                 }
                 if(armorModifiers.damageReductions[i].mysticalWeapon !== undefined) {
                     damageProtection.mysticalWeapon = damageProtection.mysticalWeapon *armorModifiers.damageReductions[i].mysticalWeapon;
+                }
+                if(armorModifiers.damageReductions[i].poison !== undefined) {
+                    damageProtection.poison = damageProtection.poison *armorModifiers.damageReductions[i].poison;
+                }
+                if(armorModifiers.damageReductions[i].bleeding !== undefined) {
+                    damageProtection.bleeding = damageProtection.bleeding *armorModifiers.damageReductions[i].bleeding;
                 }
             }
             if(this.data.data.bonus.defense){
