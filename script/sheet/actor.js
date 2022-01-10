@@ -81,7 +81,7 @@ export class SymbaroumActorSheet extends ActorSheet {
       return;
     }    
     div.slideUp(200, () => {
-      this.actor.deleteEmbeddedDocuments("Item", [ item.id ], { render:false });
+      this.actor.deleteEmbeddedDocuments("Item", [ item.id ], { render:true });
     });
   }
 
