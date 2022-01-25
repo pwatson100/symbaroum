@@ -9,6 +9,19 @@ export class SymbaroumActorSheet extends ActorSheet {
     html.find('input').focusin((ev) => this._onFocusIn(ev));
     html.find('.item-state').click(async (ev) => await this._onItemStateUpdate(ev));
     html.find('.activate-ability').click(async (ev) => await this._prepareActivateAbility(ev));
+    // Drag events for macros.
+    if (this.actor.owner) {
+      let handler = ev => this._onDragStart(ev);
+      // Find all items on the character sheet.
+      html.find('li.trait').each((i, li) => {
+        // Ignore for the header row.
+        console.log("li: ", li);
+        if (li.classList.contains("item-header")) return;
+        // Add draggable attribute and dragstart listener.
+        li.setAttribute("draggable", true);
+        li.addEventListener("dragstart", handler, false);
+      });
+    }
   }
 
   _getHeaderButtons() {
