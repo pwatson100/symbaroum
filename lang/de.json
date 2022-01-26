@@ -375,6 +375,9 @@
   "EQUIPMENT.DELETEBUTTON": "Delete Equipment",
 
   "ERROR.NO_TOKEN_SELECTED": "Wähle die handelnde Figur.",
+  "ERROR.MACRO_NOT_OWNED": "You can only create macro buttons for owned Items.",
+  "ERROR.MACRO_NO_OBJECT": "The selected token character does not have an item named : ",
+  "ERROR.MACRO_NO_SCRIPT": " isn't scripted.",
 
   "EXPERIENCE": "Erfahrung",
 

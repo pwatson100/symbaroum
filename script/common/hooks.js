@@ -713,9 +713,8 @@ export async function modifyEffectOnToken(token, effect, action, options) {
  * @returns {Promise}
  */
  async function createSymbaroumMacro(data, slot) {
-   console.log("data: ", data);
   if (data.type !== "Item") return;
-  if (!("data" in data)) return ui.notifications.warn("You can only create macro buttons for owned Items");
+  if (!("data" in data)) return ui.notifications.warn(game.i18n.localize("ERROR.MACRO_NOT_OWNED"));
   const item = data.data;
 
   // Create the macro command
@@ -746,7 +745,7 @@ function rollItemMacro(itemName) {
   if (speaker.token) actor = game.actors.tokens[speaker.token];
   if (!actor) actor = game.actors.get(speaker.actor);
   const item = actor ? actor.items.find(i => i.name === itemName) : null;
-  if (!item) return ui.notifications.warn(`Your controlled Actor does not have an item named ${itemName}`);
+  if (!item) return ui.notifications.warn(game.i18n.localize("ERROR.MACRO_NO_OBJECT") + itemName);
 
   if(item.data.isWeapon){
     const weapon = actor.data.data.weapons.filter(it => it.id == item.id)[0];
@@ -759,7 +758,7 @@ function rollItemMacro(itemName) {
     if(actor.data.data.combat.combatMods.abilities[item.data._id]?.isScripted){
       return actor.usePower(item);
     }
-    else return ui.notifications.warn(`${itemName} isn't scripted`);
+    else return ui.notifications.warn(itemName + game.i18n.localize("ERROR.MACRO_NO_SCRIPT"));
   }
   else return;
 }
