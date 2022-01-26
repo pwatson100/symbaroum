@@ -1554,6 +1554,8 @@ export class SymbaroumItem extends Item {
             }
             let base = this._getBaseFormat();
             base.normal = 0.5;
+            base.poison = 0;
+            base.bleeding = 0;
             if(lvl.level > 1) {
                 base.mysticArm = 0.5;
                 base.mysticIgnArm= 0.5;
@@ -1729,6 +1731,8 @@ export class SymbaroumItem extends Item {
             base.elemental = 0.5;
             base.holy = 0.5;
             base.mysticalWeapon = 0.5
+            base.poison = 0;
+            base.bleeding = 0;
             if(lvl.level > 2) {
                 base.normal = 0.25;
                 base.mysticArm = 0.25;
@@ -1906,7 +1910,7 @@ export class SymbaroumItem extends Item {
     getItemModifierUndead(combatMods, armors, weapons, abilities) 
     {
         let lvl = this.getLevel();
-        if(lvl.level < 2) return;
+        if(lvl.level < 1) return;
         for(let i = 0; i < armors.length; i++)
         {
             // Do we apply it if they just wear stackable armor?
@@ -1914,9 +1918,13 @@ export class SymbaroumItem extends Item {
                 continue;
             }
             let base = this._getBaseFormat();
-            base.normal = 0.5;
-            base.elemental = 0.5;
-            base.mysticArm = 0.5;
+            base.poison = 0;
+            base.bleeding = 0;
+            if(lvl.level > 1) {
+                base.normal = 0.5;
+                base.elemental = 0.5;
+                base.mysticArm = 0.5;
+            }
             if(lvl.level > 2) {
                 base.mysticIgnArm= 0.5;
             }
@@ -3110,6 +3118,10 @@ async function mathDamageProt(targetActor, damage, damageType = {}){
         finalDamage = Math.round(finalDamage*targetActor.data.data.combat.damageProt.mysticalWeapon);
         infoText = await damageReductionText(targetActor.data.data.combat.damageProt.mysticalWeapon)
     }
+    else if(damageType.bleeding){
+        finalDamage = Math.round(finalDamage*targetActor.data.data.combat.damageProt.bleeding);
+        infoText = await damageReductionText(targetActor.data.data.combat.damageProt.bleeding)
+    }
     else{
         finalDamage = Math.round(finalDamage*targetActor.data.data.combat.damageProt.normal)
         infoText = await damageReductionText(targetActor.data.data.combat.damageProt.normal)
@@ -3275,7 +3287,7 @@ async function attackResult(rollData, functionStuff){
     }
     if(functionStuff.autoParams != ""){templateData.subText += ", " + functionStuff.autoParams};
 
-    if(functionStuff.poison > 0 && !targetDies && damageTot > 0){
+    if(functionStuff.poison > 0 && !targetDies && damageTot > 0 && functionStuff.targetData.actor.data.data.combat.damageProt.poison){
         let targetResMod = checkSpecialResistanceMod(functionStuff.targetData.actor.data.data.combat.damageReductions, functionStuff.targetData.autoParams, "poisoner");
         let poisonFavour = targetResMod.favour;
         functionStuff.targetData.autoParams += targetResMod.autoParams;
@@ -3292,6 +3304,8 @@ async function attackResult(rollData, functionStuff){
             let bleedDamage = doTime.damagePerRound;
             if(!functionStuff.attackFromPC) bleedDamage = doTime.damagePerRoundNPC.toString();
             templateData.bleedChat = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_BLEED') + bleedDamage;
+            let finalbleedDmg = await mathDamageProt(functionStuff.targetData.actor, 2, {bleeding: true});
+            templateData.bleedChat += finalbleedDmg.text;
             flagDataArray.push({
                 tokenId: functionStuff.targetData.tokenId,
                 addEffect: doTime.effectIcon
@@ -3314,6 +3328,8 @@ async function attackResult(rollData, functionStuff){
             });
             templateData.printFlaming = true;
             templateData.flamingChat = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_FLAMING_SUCCESS1') + flamingDamage  + game.i18n.localize('COMBAT.CHAT_POISON_SUCCESS2')  + flamingRounds.toString();
+            let finalburningDmg = await mathDamageProt(functionStuff.targetData.actor, 2, {elemental: true});
+            templateData.flamingChat += finalburningDmg.text;
         }
     }
     // Here

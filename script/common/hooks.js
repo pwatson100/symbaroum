@@ -44,6 +44,7 @@ Hooks.once('init', () => {
   game.symbaroum = {
     config: SYMBAROUM,
     SymbaroumConfig,
+    rollItemMacro
   };
   game.symbaroum.debug = (...args) => {
     console.debug('%cSymbaroum |', game.symbaroum.config.CONSOLESTYLE, ...args);
@@ -343,6 +344,8 @@ Hooks.once('ready', () => {
   setupConfigOptions();
   setupEmit();
   setup3PartySettings();
+  // hotbar drop hook
+  Hooks.on("hotbarDrop", (bar, data, slot) => createSymbaroumMacro(data, slot));
 });
 
 // create/remove the quick access config button
@@ -696,4 +699,66 @@ export async function modifyEffectOnToken(token, effect, action, options) {
       }
     }
   }
+};
+
+/* -------------------------------------------- */
+/*  Hotbar Macros                               */
+/* -------------------------------------------- */
+
+/**
+ * Create a Macro from an Item drop.
+ * Get an existing item macro if one exists, otherwise create a new one.
+ * @param {Object} data     The dropped data
+ * @param {number} slot     The hotbar slot to use
+ * @returns {Promise}
+ */
+ async function createSymbaroumMacro(data, slot) {
+  if (data.type !== "Item") return;
+  if (!("data" in data)) return ui.notifications.warn(game.i18n.localize("ERROR.MACRO_NOT_OWNED"));
+  const item = data.data;
+
+  // Create the macro command
+  const command = `game.symbaroum.rollItemMacro("${item.name}");`;
+  let macro = game.macros.find(m => (m.name === item.name) && (m.command === command));
+  if (!macro) {
+    macro = await Macro.create({
+      name: item.name,
+      type: "script",
+      img: item.img,
+      command: command,
+      flags: { "symbaroum.itemMacro": true }
+    });
+  }
+  game.user.assignHotbarMacro(macro, slot);
+  return false;
+}
+
+/**
+ * Create a Macro from an Item drop.
+ * Get an existing item macro if one exists, otherwise create a new one.
+ * @param {string} itemName
+ * @return {Promise}
+ */
+function rollItemMacro(itemName) {
+  const speaker = ChatMessage.getSpeaker();
+  let actor;
+  if (speaker.token) actor = game.actors.tokens[speaker.token];
+  if (!actor) actor = game.actors.get(speaker.actor);
+  const item = actor ? actor.items.find(i => i.name === itemName) : null;
+  if (!item) return ui.notifications.warn(game.i18n.localize("ERROR.MACRO_NO_OBJECT") + itemName);
+
+  if(item.data.isWeapon){
+    const weapon = actor.data.data.weapons.filter(it => it.id == item.id)[0];
+    return actor.rollWeapon(weapon);
+  }
+  if(item.data.isArmor){
+    return actor.rollArmor();
+  }
+  else if(item.data.isPower){
+    if(actor.data.data.combat.combatMods.abilities[item.data._id]?.isScripted){
+      return actor.usePower(item);
+    }
+    else return ui.notifications.warn(itemName + game.i18n.localize("ERROR.MACRO_NO_SCRIPT"));
+  }
+  else return;
 }

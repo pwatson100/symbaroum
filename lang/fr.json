@@ -393,6 +393,9 @@
     "EQUIPMENT.DELETEBUTTON": "Supprimer l'équipment",  
 
     "ERROR.NO_TOKEN_SELECTED": "Selectionnez le token concerné, et uniquement ce token.",
+    "ERROR.MACRO_NOT_OWNED": "Vous ne pouvez créer une macro qu'à partir d'un objet possédé.",
+    "ERROR.MACRO_NO_OBJECT": "Le token sélectionné n'a pas d'objet nommé : ",
+    "ERROR.MACRO_NO_SCRIPT": " n'est pas scripté.",
 
     "EXPERIENCE": "Expérience",
 
