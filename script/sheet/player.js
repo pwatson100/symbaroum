@@ -10,6 +10,10 @@ export class PlayerSheet extends SymbaroumActorSheet {
             width: 800,
             height: 1000,
             resizable: false,
+            dragDrop: [
+                { dragSelector: '.item[data-item-id]', dropSelector: '.tab-content' },
+                { dragSelector: '.attrDragM[data-attribute]' }
+            ],
             tabs: [
                 {
                     navSelector: ".sheet-tabs",
@@ -25,6 +29,20 @@ export class PlayerSheet extends SymbaroumActorSheet {
         return data;
     }
 
+    _onDragStart(event)
+    {
+        if(event.srcElement.dataset.attribute !== undefined) {
+            const dragData = {
+                actorId: this.actor.id,
+                sceneId: this.actor.isToken ? canvas.scene?.id : null,
+                tokenId: this.actor.isToken ? this.actor.token.id : null
+            };
+            dragData.type = 'attribute';
+            dragData.attribute = event.srcElement.dataset.attribute;
+            return event.dataTransfer.setData("text/plain",JSON.stringify(dragData));
+        }
+        return super._onDragStart(event);
+    }
 
     activateListeners(html) {
         super.activateListeners(html);
@@ -34,7 +52,6 @@ export class PlayerSheet extends SymbaroumActorSheet {
         html.find(".roll-armor").click(async ev => await this._prepareRollArmor(ev));
         html.find(".roll-weapon").click(async ev => await this._prepareRollWeapon(ev));
         html.find(".modify-attributes").click(async ev => await this._modifyAttributes(ev));
-
     }
 
     _getHeaderButtons() {

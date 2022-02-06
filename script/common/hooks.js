@@ -19,6 +19,7 @@ import { SYMBAROUM } from './config.js';
 import { MonsterSheet } from '../sheet/monster.js';
 import { SymbaroumConfig } from './symbaroumConfig.js';
 import { SymbaroumCommsListener } from './symbcomms.js';
+import { prepareRollAttribute } from "../common/dialog.js";
 
 Hooks.once('init', () => {
   CONFIG.Actor.documentClass = SymbaroumActor;
@@ -44,7 +45,8 @@ Hooks.once('init', () => {
   game.symbaroum = {
     config: SYMBAROUM,
     SymbaroumConfig,
-    rollItemMacro
+    rollItemMacro,
+    rollAttributeMacro
   };
   game.symbaroum.debug = (...args) => {
     console.debug('%cSymbaroum |', game.symbaroum.config.CONSOLESTYLE, ...args);
@@ -344,6 +346,8 @@ Hooks.once('ready', () => {
   setupConfigOptions();
   setupEmit();
   setup3PartySettings();
+  // Create system folders
+  setupSystemFolders();
   // hotbar drop hook
   Hooks.on("hotbarDrop", (bar, data, slot) => createSymbaroumMacro(data, slot));
 });
@@ -476,6 +480,23 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
 Hooks.on("renderPause", (_app, html, options) => {
 	html.find('img[src="icons/svg/clockwork.svg"]').attr("src", "systems/symbaroum/asset/image/head.webp");
 });
+
+function setupSystemFolders() {
+  game.symbaroum.info("In setupSystemFolders");
+  if( !game.user.isGM ) {
+    // Only make changes to system and 3rd party if it is a GM
+    return;
+  }
+  const folderName = game.symbaroum.config.SYSTEM_MACRO_FOLDER;
+  let folder = game.folders.filter(f => f.type === 'Macro').find(f => f.name === folderName);
+  if (!folder) {    
+      Folder.create({
+      name: folderName,
+      type: 'Macro',
+      parent: null
+    });
+  }  
+}
 
 function setup3PartySettings() {
   game.symbaroum.info("In setup3PartySettings");
@@ -701,7 +722,7 @@ export async function modifyEffectOnToken(token, effect, action, options) {
   }
 };
 
-/* -------------------------------------------- */
+  /* -------------------------------------------- */
 /*  Hotbar Macros                               */
 /* -------------------------------------------- */
 
@@ -712,25 +733,76 @@ export async function modifyEffectOnToken(token, effect, action, options) {
  * @param {number} slot     The hotbar slot to use
  * @returns {Promise}
  */
- async function createSymbaroumMacro(data, slot) {
-  if (data.type !== "Item") return;
-  if (!("data" in data)) return ui.notifications.warn(game.i18n.localize("ERROR.MACRO_NOT_OWNED"));
-  const item = data.data;
+async function createSymbaroumMacro(data, slot) {
+  game.symbaroum.log(data);
+  const folder = game.folders.filter(f => f.type === 'Macro').find(f => f.name === game.symbaroum.config.SYSTEM_MACRO_FOLDER);
+  if( data.type === "attribute") {
+    // Create the macro command
+    const command = `game.symbaroum.rollAttributeMacro('${data.attribute}');`;
+    const actor = game.actors.get(data.actorId);
+    if(!actor) 
+      return;
+    
+    const commmandName = game.i18n.format("MACRO.MakeTest", { testtype: game.i18n.localize(actor.data.data.attributes[data.attribute].label)});
 
-  // Create the macro command
-  const command = `game.symbaroum.rollItemMacro("${item.name}");`;
-  let macro = game.macros.find(m => (m.name === item.name) && (m.command === command));
-  if (!macro) {
-    macro = await Macro.create({
-      name: item.name,
-      type: "script",
-      img: item.img,
-      command: command,
-      flags: { "symbaroum.itemMacro": true }
-    });
+    let macro = game.macros.find(m => m.name === commmandName && m.data.command === command && (
+      m.data.author === game.user.id || m.data.permission.default >= CONST.ENTITY_PERMISSIONS.OBSERVER || m.data.permission[game.user.id] >= CONST.ENTITY_PERMISSIONS.OBSERVER
+      )
+    );
+    if (!macro) {
+      macro = await Macro.create({
+        name: commmandName,
+        type: "script",
+        img: game.i18n.format(game.symbaroum.config.imageRef, {"filename":game.symbaroum.config.attributeImages[data.attribute]}),
+        command: command,
+        flags: { "symbaroum.attributeMacro": true },
+        folder: folder?.id,
+        "permission.default": CONST.ENTITY_PERMISSIONS.OBSERVER
+      });
+    }
+    game.user.assignHotbarMacro(macro, slot);
+    return false;
   }
-  game.user.assignHotbarMacro(macro, slot);
-  return false;
+  else if (data.type === "Item")
+  {
+    if (!("data" in data)) return ui.notifications.warn(game.i18n.localize("ERROR.MACRO_NOT_OWNED"));
+    const item = data.data;
+
+    // Create the macro command
+    const command = `game.symbaroum.rollItemMacro("${item.name}");`;
+    let macro = game.macros.find(m => (m.name === item.name) && (m.data.command === command) && (
+      m.data.author === game.user.id || m.data.permission.default >= CONST.ENTITY_PERMISSIONS.OBSERVER || m.data.permission[game.user.id] >= CONST.ENTITY_PERMISSIONS.OBSERVER
+      )
+    );
+    if (!macro) {
+      macro = await Macro.create({
+        name: item.name,
+        type: "script",
+        img: item.img,
+        command: command,
+        flags: { "symbaroum.itemMacro": true },
+        folder: folder?.id,
+        "permission.default": CONST.ENTITY_PERMISSIONS.OBSERVER
+      });
+    }
+    game.user.assignHotbarMacro(macro, slot);
+    return false;
+  }
+}
+/**
+ * Create a Macro from an attribute drop.
+ * Get an existing item macro if one exists, otherwise create a new one.
+ * @param {string} attribute
+ */
+function rollAttributeMacro(attribute) {
+  const speaker = ChatMessage.getSpeaker();
+  let actor;
+  if (speaker.token) actor = game.actors.tokens[speaker.token];
+  if (!actor) actor = game.actors.get(speaker.actor);
+  if(!actor) {
+    return ui.notifications.warn(game.i18n.localize("ERROR.MACRO_NO_OBJECT") + speaker);
+  }
+  prepareRollAttribute(actor, attribute, null, null);
 }
 
 /**
