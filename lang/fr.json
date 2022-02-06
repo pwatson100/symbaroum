@@ -432,7 +432,7 @@
     "ITEM.WEAPON": "Arme",
     "ITEM.BOON" : "Atout",
     "ITEM.BURDEN": "Fardeau",
-  
+
     "ITEM.TypeTrait": "Trait",
     "ITEM.TypeAbility": "Talent",
     "ITEM.TypeArmor": "Armure",
@@ -443,7 +443,10 @@
     "ITEM.TypeWeapon": "Arme",
     "ITEM.TypeBoon": "Atout",
     "ITEM.TypeBurden": "Fardeau",   
-  
+
+    "MACRO.MakeTest": "Test {testtype}",
+    "MACRO.ATTRIBUTE": "Attribute",
+
     "MONEY.THALER": "Thaler",
     "MONEY.SHILLING": "Shilling",
     "MONEY.ORTEG": "Orteg",

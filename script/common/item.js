@@ -5,29 +5,10 @@ import { createLineDisplay } from './dialog.js';
 export class SymbaroumItem extends Item {
     static async create(data, options) {
         if (!data.img) {
-            if (data.type === "trait") {
-                data.img = "systems/symbaroum/asset/image/trait.png";
-            } else if (data.type === "ability") {
-                data.img = "systems/symbaroum/asset/image/ability.png";
-            } else if (data.type === "mysticalPower") {
-                data.img = "systems/symbaroum/asset/image/mysticalPower.png";
-            } else if (data.type === "ritual") {
-                data.img = "systems/symbaroum/asset/image/ritual.png";
-            } else if (data.type === "burden") {
-                data.img = "systems/symbaroum/asset/image/trait.png";
-            } else if (data.type === "boon") {
-                data.img = "systems/symbaroum/asset/image/trait.png";
-            } else if (data.type === "weapon") {
-                data.img = "systems/symbaroum/asset/image/weapon.png";
-            } else if (data.type === "armor") {
-                data.img = "systems/symbaroum/asset/image/armor.png";
-            } else if (data.type === "equipment") {
-                data.img = "systems/symbaroum/asset/image/equipment.png";
-            } else if (data.type === "artifact") {
-                data.img = "systems/symbaroum/asset/image/artifact.png";
-            } else {
-                data.img = "systems/symbaroum/asset/image/unknown-item.png";
-            }
+            if(data.type in game.symbaroum.config.itemImages)
+                data.img = game.i18n.format(game.symbaroum.config.imageRef, {"filename":game.symbaroum.config.itemImages[data.type]});
+            else
+                data.img = game.i18n.format(game.symbaroum.config.imageRef, {"filename":"unknown-item.png"});
         }
         super.create(data, options);
     }

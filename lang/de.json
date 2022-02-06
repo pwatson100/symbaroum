@@ -426,6 +426,9 @@
   "ITEM.TypeBoon": "Boon",
   "ITEM.TypeBurden": "Burden",  
 
+  "MACRO.MakeTest": "Test {testtype}",
+  "MACRO.ATTRIBUTE": "Attribute",
+
   "MONEY.THALER": "Taler",
   "MONEY.SHILLING": "Schilling",
   "MONEY.ORTEG": "Orteg",

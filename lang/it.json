@@ -449,6 +449,9 @@
     "ITEM.TypeBoon": "Pregi",
     "ITEM.TypeBurden": "Difetti",  
   
+    "MACRO.MakeTest": "Test {testtype}",
+    "MACRO.ATTRIBUTE": "Attribute",
+  
     "MONEY.THALER": "Talleri",
     "MONEY.SHILLING": "Scellini",
     "MONEY.ORTEG": "Orteghi",
