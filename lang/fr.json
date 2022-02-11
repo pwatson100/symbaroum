@@ -849,6 +849,12 @@
     "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS": "Critiques du test de Mort incluent bonus",
     "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS_HINT": "Appliquer le bonus / malus du test de Mort pour déterminer s'il s'agit d'un critique.",
     "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE": "Tous les jets avec le module DsN",
-    "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE_HINT": "Lorsque le module Dice so Nice est installé et que l'option Combats accélérés est activée, il arrive que beaucoup de dés soient affichés en même temps sur l'écran. Pour plus de lisibilité, activer cette option n'affichera que le dé d'action (d20) et pas les autres (dégâts, poison, etc)."
+    "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE_HINT": "Lorsque le module Dice so Nice est installé et que l'option Combats accélérés est activée, il arrive que beaucoup de dés soient affichés en même temps sur l'écran. Pour plus de lisibilité, activer cette option n'affichera que le dé d'action (d20) et pas les autres (dégâts, poison, etc).",
+    "SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK": "Show only local language compendium",
+    "SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK_HINT": "Will only show language compendium that matches your chosen language and the english macro & system compendium",
+    "SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS" : "Include all english compendium with the chosen language",
+    "SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS_HINT" : "In addition to your chosen language, it will also show all english compendiums",
+    "SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS" : "Exclude English macro and system compendium",
+    "SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS_HINT" : "Exclude the English system and macro compendiums, which are shown otherwise"
 }
 
