@@ -853,5 +853,11 @@
   "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS": "Dödsslagsbonus appliceras för kritisk framgång",
   "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS_HINT": "All bonus för dödsslag appliceras för att kunna uppnå kritisk framgång, dvs förbättrar eller försämrar chansen att få kritisk framgång vid dödsslag.",
   "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE": "Dice so Nice modulen för alla tärningskast",
-  "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE_HINT": "Om Dice so Nice-modulen är tillagd och alternativet Enhanced Combat är aktiverat kan det bli många tärningar som kastas samtidigt på skärmen. Som standard kommer endast grundläggande d20 framgångsslag att visas. Markera det här alternativet om du vill att alla tärningar ska visas (skada, gift, etc)."
+  "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE_HINT": "Om Dice so Nice-modulen är tillagd och alternativet Enhanced Combat är aktiverat kan det bli många tärningar som kastas samtidigt på skärmen. Som standard kommer endast grundläggande d20 framgångsslag att visas. Markera det här alternativet om du vill att alla tärningar ska visas (skada, gift, etc).",
+  "SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK": "Show only local language compendium",
+  "SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK_HINT": "Will only show language compendium that matches your chosen language and the english macro & system compendium",
+  "SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS" : "Include all english compendium with the chosen language",
+  "SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS_HINT" : "In addition to your chosen language, it will also show all english compendiums",
+  "SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS" : "Exclude English macro and system compendium",
+  "SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS_HINT" : "Exclude the English system and macro compendiums, which are shown otherwise"
 }

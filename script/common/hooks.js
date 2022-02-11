@@ -22,6 +22,8 @@ import { SymbaroumCommsListener } from './symbcomms.js';
 import { prepareRollAttribute } from "../common/dialog.js";
 
 Hooks.once('init', () => {
+  const debouncedReload = foundry.utils.debounce(() => window.location.reload(), 250);
+
   CONFIG.Actor.documentClass = SymbaroumActor;
   CONFIG.Item.documentClass = SymbaroumItem;
   Actors.unregisterSheet('core', ActorSheet);
@@ -336,6 +338,38 @@ Hooks.once('init', () => {
       SymbaroumConfig.toggleConfigButton(enabled);
     },
   });
+
+  game.settings.register('symbaroum', 'showLocalLangPack', {
+    name: 'SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK',
+    hint: 'SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: true,
+    config: true,
+    onChange: () => debouncedReload(),
+  });
+
+  game.settings.register('symbaroum', 'showEnglishPacks', {
+    name: 'SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS',
+    hint: 'SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+    onChange: () => debouncedReload(),
+  });
+  game.settings.register('symbaroum', 'hideEnglishMacroSystemPack', {
+    name: 'SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS',
+    hint: 'SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+    onChange: () => debouncedReload(),
+  });  
+  
+
+
   setupStatusEffects();
 });
 
@@ -380,6 +414,42 @@ Hooks.on('preCreateActor', (doc, createData, options, userid) => {
 });
 
 Hooks.on('createOwnedItem', (actor, item) => {});
+
+Hooks.on("renderCompendiumDirectory", (app, html, data) => {
+  game.symbaroum.log("In renderCompendiumDirectory - sorting out available compendiums");
+  if (game.settings.get("symbaroum", "showLocalLangPack") ) 
+  {
+    const packDeletions = [];
+    const filterEnglish = game.settings.get("symbaroum", "showEnglishPacks");
+    // const filterEnglish = false;
+    let languageCodeRegex = `systemuserguides|${game.i18n.lang}`;
+    if(filterEnglish && game.i18n.lang !== "en") {
+      languageCodeRegex = `en|${languageCodeRegex}`;
+    }
+    const avoidEnglishMacroSystem = game.settings.get("symbaroum", "hideEnglishMacroSystemPack") ? null : "(macros|systemitems)";
+    // const avoidEnglishMacroSystem = "(macros|systemitems)";
+    // Alternatives are:
+    // Local Langauge only
+    // Local Langauge + English macro/system abilities      
+    const langReg = new RegExp(`symbaroum.+(${languageCodeRegex})$`);
+    const macroReg = new RegExp(`symbaroum${avoidEnglishMacroSystem}en$`);
+    let irrelvantCompendiums = game.packs.contents.filter( (comp) => {                
+      if(comp.metadata.package === "symbaroum" && !/systemuserguides$/.test(comp.metadata.name) && !langReg.test(comp.metadata.name) ) {
+        if(avoidEnglishMacroSystem !== null && macroReg.test(comp.metadata.name))
+        {            
+          return false;
+        }          
+        return true;
+      }
+      return false;
+    });
+    for(const comp of irrelvantCompendiums) {
+      let compositeKey = `${comp.metadata.system}.${comp.metadata.name}`;
+      game.packs.delete(compositeKey);
+      html.find(`li[data-pack="${compositeKey}"]`).hide();
+    }
+  }
+});
 
 Hooks.once('diceSoNiceReady', (dice3d) => {
   dice3d.addSystem({ id: 'symbaroum', name: 'Symbaroum' }, 'preferred');
