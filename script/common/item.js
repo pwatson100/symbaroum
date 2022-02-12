@@ -856,7 +856,7 @@ export class SymbaroumItem extends Item {
 
         for(let i = 0; i < armors.length; i++)
         {
-            if(armors[i].isStackableArmor)
+            if(armors[i].data.isStackableArmor)
             {
                 continue;
             }
@@ -939,7 +939,7 @@ export class SymbaroumItem extends Item {
         if(lvl.level > 2) {
             for(let i = 0; i < armors.length; i++)
             {
-                if(armors[i].isStackableArmor)
+                if(armors[i].data.isStackableArmor)
                 {
                     continue;
                 }
@@ -993,7 +993,7 @@ export class SymbaroumItem extends Item {
         if(lvl.level == 0 || !this.actor.getFlag(game.system.id, 'dancingweapon') ) return;
         for(let i = 0; i < armors.length; i++)
         {
-            if(armors[i].isStackableArmor)
+            if(armors[i].data.isStackableArmor)
             {
                 continue;
             }
@@ -1072,7 +1072,7 @@ export class SymbaroumItem extends Item {
         if(lvl.level > 1) {
             for(let i = 0; i < armors.length; i++)
             {
-                if(armors[i].isStackableArmor)
+                if(armors[i].data.isStackableArmor)
                 {
                     continue;
                 }
@@ -1432,7 +1432,7 @@ export class SymbaroumItem extends Item {
 
         for(let i = 0; i < armors.length; i++)
         {
-            if(armors[i].isStackableArmor)
+            if(armors[i].data.isStackableArmor)
             {
                 continue;
             }
@@ -1482,7 +1482,7 @@ export class SymbaroumItem extends Item {
         if(lvl.level > 1) {
             for(let i = 0; i < armors.length; i++)
             {
-                if(armors[i].isStackableArmor)
+                if(armors[i].data.isStackableArmor)
                 {
                     continue;
                 }
@@ -1560,7 +1560,7 @@ export class SymbaroumItem extends Item {
         if(haveStaffEquipped) {
             for(let i = 0; i < armors.length; i++)
             {
-                if(armors[i].isStackableArmor)
+                if(armors[i].data.isStackableArmor)
                 {
                     continue;
                 }
@@ -1681,7 +1681,7 @@ export class SymbaroumItem extends Item {
         if(lvl.level < 2) return;
         for(let i = 0; i < armors.length; i++)
         {
-            if(armors[i].isStackableArmor)
+            if(armors[i].data.isStackableArmor)
             {
                 continue;
             }
