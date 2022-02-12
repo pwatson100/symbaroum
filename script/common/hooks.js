@@ -419,9 +419,9 @@ Hooks.on("renderCompendiumDirectory", (app, html, data) => {
   game.symbaroum.log("In renderCompendiumDirectory - sorting out available compendiums");
   if (game.settings.get("symbaroum", "showLocalLangPack") ) 
   {
-    const packDeletions = [];
+    const translatedDocs = [];
     const filterEnglish = game.settings.get("symbaroum", "showEnglishPacks");
-    // const filterEnglish = false;
+
     let languageCodeRegex = `systemuserguides|${game.i18n.lang}`;
     if(filterEnglish && game.i18n.lang !== "en") {
       languageCodeRegex = `en|${languageCodeRegex}`;
@@ -432,18 +432,32 @@ Hooks.on("renderCompendiumDirectory", (app, html, data) => {
     // Local Langauge only
     // Local Langauge + English macro/system abilities      
     const langReg = new RegExp(`symbaroum.+(${languageCodeRegex})$`);
+    const translatedReg = new RegExp(`symbaroum(.*)${game.i18n.lang}$`);
     const macroReg = new RegExp(`symbaroum${avoidEnglishMacroSystem}en$`);
     let irrelvantCompendiums = game.packs.contents.filter( (comp) => {                
       if(comp.metadata.package === "symbaroum" && !/systemuserguides$/.test(comp.metadata.name) && !langReg.test(comp.metadata.name) ) {
         if(avoidEnglishMacroSystem !== null && macroReg.test(comp.metadata.name))
         {            
           return false;
-        }          
+        }
         return true;
+      }
+      // store any translated docs here
+      let part = comp.metadata.name.match(translatedReg);
+      if(part !== null) {
+        translatedDocs.push(comp.metadata.name.match(translatedReg)[1]);
       }
       return false;
     });
+    const enReg = new RegExp(`symbaroum(.*)en$`);
     for(const comp of irrelvantCompendiums) {
+      // check if the english doc is not one of the translated ones, continue
+      let part = comp.metadata.name.match(enReg);
+      if(part !== null) {
+        if(!translatedDocs.includes(part[1]) ) {
+          continue;
+        }
+      }
       let compositeKey = `${comp.metadata.system}.${comp.metadata.name}`;
       game.packs.delete(compositeKey);
       html.find(`li[data-pack="${compositeKey}"]`).hide();
