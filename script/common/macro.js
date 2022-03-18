@@ -381,15 +381,12 @@ export class SymbaroumMacros {
             // If no actor selected
             // Time to get busy
             canvas.tokens.controlled.map(e => { 
-                if(e.actor.data.type === "player" && e.hasPlayerOwner) {
-                    if(game.user.isGM || e.actor.owner)
-                        actorslist.push(e.actor);
+                if(game.user.isGM || e.actor.owner && e.actor.data.type === "player" && e.hasPlayerOwner) {
+					actorslist.push(e.actor);
                 }
             });
-            if(actorslist.length > 0 ) { actorslist = [actorslist[0]]; }
-            // check if there are tokens on the map, if so, use their actors
-            // if there are no controlled tokens on the map, select all players in the actor catalogue
         } else {     
+            // if there are no controlled tokens on the map, select all player actors in the actor catalogue
             let gameacts = game.actors.filter(e => { if( (game.user.isGM || e.owner) && e.data.type === "player" && e.hasPlayerOwner) { return e; } });
             Array.prototype.push.apply(actorslist, gameacts);
         }
@@ -433,8 +430,8 @@ export class SymbaroumMacros {
             {
             Ok : { 
                 label : game.i18n.localize("DIALOG.OK"), callback : async (html)=> {
-                    let attribute = html.find("input[name='selection']").get().filter(v => { if(v.checked) return true; }).map(e => { return e.value});
-                    let actorids = html.find('#attribute')[0].value;
+                    let actorids = html.find("input[name='selection']").get().filter(v => { if(v.checked) return true; }).map(e => { return e.value});
+                    let attribute = html.find('#attribute')[0].value;
                     actorids.map(a => {
                         let aexp = game.actors.get(a);
                         aexp.rollAttribute(attribute, null, null);
