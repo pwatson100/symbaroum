@@ -373,7 +373,7 @@ export class SymbaroumMacros {
     /**********************************************
      * Macro: rollAttribute
      */
-    async rollAttribute() {
+    async rollAnyAttribute() {
         let defaultCheck = "unchecked"; // set to unchecked
         let actorslist = [];
     
