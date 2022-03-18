@@ -351,6 +351,8 @@
   "CORRUPTION.CHAT_WARNING": " is close to a corruption treshold.",
 
   "DIALOG.SYSTEM_MESSAGE":"Symbaroum system message",
+  "DIALOG.OK": "Ok",
+  "DIALOG.CANCEL": "Cancel",
   "DIALOG.AUTOPARAMS": "Included modifiers: ",
   "DIALOG.BACKSTAB": "Use Backstab?",
   "DIALOG.BEASTLORE": "Beast Lore dmg?",
@@ -449,8 +451,15 @@
   "ITEM.TypeBoon": "Boon",
   "ITEM.TypeBurden": "Burden",  
 
-  "MACRO.MakeTest": "Test {testtype}",
   "MACRO.ATTRIBUTE": "Attribute",
+  "MACRO.MAKETEST": "Test {testtype}",
+  "MACRO.SELECTPLAYERS": "Select player(s)",
+  "MACRO.EXPERIENCE" : "Experience",
+  "MACRO.ADDEXP_TITLE" : "Add experience",
+  "MACRO.ADDEXP_NUMBER":"Need a valid number of experience, either positive or negative",
+  "MACRO.ADDEXP_CHANGE":"Experience change",
+  "MACRO.ADDEXP_CHANGE_LONG":"The following actors:<ul>{actorNames}</ul> were awarded {exp} experience",
+  "MACRO.ROLLATTRIBUTE_NOACTOR": "No actor available for you to do an attribute test",
 
   "MONEY.THALER": "Thaler",
   "MONEY.SHILLING": "Shilling",
