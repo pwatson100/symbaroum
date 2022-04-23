@@ -799,9 +799,17 @@ export class SymbaroumActor extends Actor {
         if( !ability.isOwned || ability.data.data.reference === undefined || ability.data.data.reference === null) {
         return;               
         }
+        // get acting token
+        let tokenList = this.getActiveTokens();
+        let actingToken = tokenList[0];
         if(this.data.data.combat.combatMods.abilities[ability.data._id]){
             let specificStuff = foundry.utils.deepClone(this.data.data.combat.combatMods.abilities[ability.data._id]);
             if (!specificStuff.isScripted) return;
+            //need token?
+            if(specificStuff.needToken && !actingToken){
+                ui.notifications.error(game.i18n.localize('ERROR.NO_TOKEN_SELECTED'));
+                return;
+            }
             //casting attribute
             if(specificStuff.attributes.length > 0){
                 let castingAttribute = specificStuff.castingAttributeName;
@@ -856,7 +864,7 @@ export class SymbaroumActor extends Actor {
                 }
             }
             let fsDefault;
-            try{fsDefault = await ability.getFunctionStuffDefault(this)} catch(error){      
+            try{fsDefault = await ability.getFunctionStuffDefault(this, actingToken)} catch(error){      
                 ui.notifications.error(error);
                 return;
             }
@@ -891,23 +899,21 @@ export class SymbaroumActor extends Actor {
     }
 
     async enhancedAttackRoll(weapon){
-        // get selected token
-        let token;
-        try{token = await this.getTokenId()} catch(error){
-            ui.notifications.error(error);
-            return;
-        }
+        let tokenList = this.getActiveTokens();
+        let actingToken = tokenList[0];
         // get target token, actor and defense value
         let targetData;
         try{targetData = getTarget("defense")} catch(error){
             ui.notifications.error(error);
             return;
         }
-        
+        let actingCharName = actingToken?.data?.name ?? this.name;
         let functionStuff = {
             actor: this,
-            token: token,
-            tokenId : token.id,
+            token: actingToken,
+            tokenId : actingToken?.id,
+            actingCharName : actingCharName,
+            actingCharImg: actingToken?.data?.img ?? this.data.img,
             askIgnoreArmor: true,
             askTargetAttribute: false,
             askCastingAttribute: false,
@@ -928,7 +934,7 @@ export class SymbaroumActor extends Actor {
             isMystical: weapon.qualities.mystical,
             isAlternativeDamage: false,
             alternativeDamageAttribute: "none",
-            introText: token.data.name + game.i18n.localize('COMBAT.CHAT_INTRO') + weapon.name,
+            introText: actingCharName + game.i18n.localize('COMBAT.CHAT_INTRO') + weapon.name,
             targetData: targetData,
             targetText: game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM'),
             resistRollText: "",
@@ -941,18 +947,6 @@ export class SymbaroumActor extends Actor {
         let poisoner = this.items.filter(item => (item.data.data?.reference === "poisoner" || item.data.data?.reference === "poisonous"));
         functionStuff.askPoison = poisoner.length != 0;
         prepareRollAttribute(this, weapon.attribute, null, weapon, functionStuff); 
-    }
-
-    /* get the selected token ID of the actor */
-    async getTokenId(){
-        let selected = canvas.tokens.controlled;
-        if(selected.length > 1 || selected.length == 0){
-            throw game.i18n.localize('ERROR.NO_TOKEN_SELECTED');
-        }
-        if(selected[0].actor.data._id !== this.data._id){
-            throw game.i18n.localize('ERROR.NO_TOKEN_SELECTED');
-        }
-        return(selected[0])
     }
 }
 
@@ -980,7 +974,7 @@ export function getTargets(targetAttributeName, maxTargets = 1) {
         let autoParams = "";
         let leaderTarget = false;
             // check for leader adept ability effect on target
-        const LeaderEffect = "icons/svg/eye.svg";
+        const LeaderEffect = CONFIG.statusEffects.find(e => e.id === "eye");
         let leaderEffect = getEffect(targetToken, LeaderEffect);
         if(leaderEffect){
             leaderTarget = true;
