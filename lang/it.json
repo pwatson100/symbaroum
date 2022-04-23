@@ -865,10 +865,11 @@
     "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS": "I critici si applicano ai test per la morte",
     "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS_HINT": "Qualsiasi bonus tiro salvezza sulla morte si applica alle probabilità di successo critico, ovvero aggiuingere o rimuovere la possibilità di successo critico dei tiri salvezza sulla morte",
     "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE": "Dice so Nice module su tutti i tiri",
-    "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE_HINT": "Qaundo Dice so Nice module viene aggiunto e l'opzione Combattimento avanzato è abilitata, molti dadi possono essere lanciati contemporaneamente sullo schermo. Per impostazione predefinita, verrà visualizzato solo il tiro azione base del d20. Seleziona questa opzione se preferisci che tutti i dadi siano visualizzati (danno, veleno, ecc.).",
+    "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE_HINT": "Quaundo Dice so Nice module viene aggiunto e l'opzione Combattimento avanzato è abilitata, molti dadi possono essere lanciati contemporaneamente sullo schermo. Per impostazione predefinita, verrà visualizzato solo il tiro azione base del d20. Seleziona questa opzione se preferisci che tutti i dadi siano visualizzati (danno, veleno, ecc.).",
     "SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK": "Mostra solo i compendi della lingua corrente",
     "SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK_HINT": "Verranno mostrati solo i compendi della lingua attuale in aggiunta alle macro inglesi e al system compendium",
     "SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS" : "Includi tutti i compendi inglesi in aggiunta alla lingua corrente",
     "SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS_HINT" : "In aggiunta alla lingua corrente verranno mostrati tutti i compendi in inglese",
     "SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS" : "Escludi le macro inglesi e il system compendium",
     "SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS_HINT" : "Escludi le macro inglesi e il system compendium, che altrimenti verrebbero mostrati"
+}
