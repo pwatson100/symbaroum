@@ -194,7 +194,7 @@
     "ATTRIBUTE.BASE": "Base",
     "ATTRIBUTE.MODIFIER": "Mod.",
     "ATTRIBUTE.BONUS": "Bonus",
-    "ATTRIBUTE.MODIFY": "Modify",
+    "ATTRIBUTE.MODIFY": "Modifica",
   
     "BIO.NAME": "Nome",
     "BIO.RACE": "Razza",
@@ -352,7 +352,7 @@
   
     "DIALOG.SYSTEM_MESSAGE":"Messaggio di sistema di Symbaroum",
     "DIALOG.OK": "Ok",
-    "DIALOG.CANCEL": "Cancel",
+    "DIALOG.CANCEL": "Annulla",
     "DIALOG.AUTOPARAMS": "Modificatori inclusi: ",
     "DIALOG.BACKSTAB": "Usare Colpo alle Spalle?",
     "DIALOG.BEASTLORE": "danno Conoscenza Delle Bestie?",
@@ -398,9 +398,9 @@
     "EQUIPMENT.DELETEBUTTON": "Rimuovi Equipaggaimento",
   
     "ERROR.NO_TOKEN_SELECTED": "Seleziona il token.",
-    "ERROR.MACRO_NOT_OWNED": "You can only create macro buttons for owned Items.",
-    "ERROR.MACRO_NO_OBJECT": "The selected token character does not have an item named : ",
-    "ERROR.MACRO_NO_SCRIPT": " isn't scripted.",
+    "ERROR.MACRO_NOT_OWNED": "Puoi creare bottoni Macro solo per gli oggetti che possiedi.",
+    "ERROR.MACRO_NO_OBJECT": "Il personaggio del token selezionato non possiede l'oggetto con il nome : ",
+    "ERROR.MACRO_NO_SCRIPT": " non è scriptato.",
   
     "EXPERIENCE": "Esperienza",
   
@@ -451,15 +451,15 @@
     "ITEM.TypeBoon": "Pregi",
     "ITEM.TypeBurden": "Difetti",  
   
-    "MACRO.ATTRIBUTE": "Attribute",
+    "MACRO.ATTRIBUTE": "Attributo",
     "MACRO.MAKETEST": "Test {testtype}",
-    "MACRO.SELECTPLAYERS": "Select player(s)",
-    "MACRO.EXPERIENCE" : "Experience",
-    "MACRO.ADDEXP_TITLE" : "Add experience",
-    "MACRO.ADDEXP_NUMBER":"Need a valid number of experience, either positive or negative",
-    "MACRO.ADDEXP_CHANGE":"Experience change",
-    "MACRO.ADDEXP_CHANGE_LONG":"The following actors:<ul> ${actorNames}</ul> were awarded ${exp} experience",
-    "MACRO.ROLLATTRIBUTE_NOACTOR": "No actor available for you to do an attribute test",  
+    "MACRO.SELECTPLAYERS": "Seleziona giocatore/i",
+    "MACRO.EXPERIENCE" : "Eperienza",
+    "MACRO.ADDEXP_TITLE" : "Aggiungi esperienza",
+    "MACRO.ADDEXP_NUMBER":"serve un valore numerico di esperienza, o positivo o negativo",
+    "MACRO.ADDEXP_CHANGE":"Cambia esperienza",
+    "MACRO.ADDEXP_CHANGE_LONG":"I seguenti personaggi:<ul> ${actorNames}</ul> sono stati premiati con ${exp} punti esperienza",
+    "MACRO.ROLLATTRIBUTE_NOACTOR": "Nssun personaggio disponibile per te per effettuarte un test di attributo",  
     "MONEY.THALER": "Talleri",
     "MONEY.SHILLING": "Scellini",
     "MONEY.ORTEG": "Orteghi",
@@ -866,11 +866,9 @@
     "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS_HINT": "Qualsiasi bonus tiro salvezza sulla morte si applica alle probabilità di successo critico, ovvero aggiuingere o rimuovere la possibilità di successo critico dei tiri salvezza sulla morte",
     "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE": "Dice so Nice module su tutti i tiri",
     "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE_HINT": "Qaundo Dice so Nice module viene aggiunto e l'opzione Combattimento avanzato è abilitata, molti dadi possono essere lanciati contemporaneamente sullo schermo. Per impostazione predefinita, verrà visualizzato solo il tiro azione base del d20. Seleziona questa opzione se preferisci che tutti i dadi siano visualizzati (danno, veleno, ecc.).",
-    "SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK": "Show only local language compendium",
-    "SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK_HINT": "Will only show language compendium that matches your chosen language and the english macro & system compendium",
-    "SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS" : "Include all english compendium with the chosen language",
-    "SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS_HINT" : "In addition to your chosen language, it will also show all english compendiums",
-    "SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS" : "Exclude English macro and system compendium",
-    "SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS_HINT" : "Exclude the English system and macro compendiums, which are shown otherwise"
-  }
-  
+    "SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK": "Mostra solo i compendi della lingua corrente",
+    "SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK_HINT": "Verranno mostrati solo i compendi della lingua attuale in aggiunta alle macro inglesi e al system compendium",
+    "SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS" : "Includi tutti i compendi inglesi in aggiunta alla lingua corrente",
+    "SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS_HINT" : "In aggiunta alla lingua corrente verranno mostrati tutti i compendi in inglese",
+    "SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS" : "Escludi le macro inglesi e il system compendium",
+    "SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS_HINT" : "Escludi le macro inglesi e il system compendium, che altrimenti verrebbero mostrati"
