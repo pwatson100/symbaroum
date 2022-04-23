@@ -352,6 +352,8 @@
   "CORRUPTION.CHAT_WARNING": " is close to a corruption treshold.",
 
   "DIALOG.SYSTEM_MESSAGE":"Symbaroum system message",
+  "DIALOG.OK": "Ok",
+  "DIALOG.CANCEL": "Cancel",
   "DIALOG.AUTOPARAMS": "Modificadores incluidos: ",
   "DIALOG.BACKSTAB": "¿Usar Ataque Traicionero?",
   "DIALOG.BEASTLORE": "+BeastLore dmg?",
@@ -396,6 +398,9 @@
   "EQUIPMENT.DELETEBUTTON": "Delete Equipment",
 
   "ERROR.NO_TOKEN_SELECTED": "Select the acting token.",
+  "ERROR.MACRO_NOT_OWNED": "You can only create macro buttons for owned Items.",
+  "ERROR.MACRO_NO_OBJECT": "The selected token character does not have an item named : ",
+  "ERROR.MACRO_NO_SCRIPT": " isn't scripted.",
 
   "EXPERIENCE": "Experiencia",
 
@@ -443,6 +448,16 @@
   "ITEM.TypeWeapon": "Arma",
   "ITEM.TypeBoon": "Boon",
   "ITEM.TypeBurden": "Burden",   
+
+  "MACRO.ATTRIBUTE": "Attribute",
+  "MACRO.MAKETEST": "Test {testtype}",
+  "MACRO.SELECTPLAYERS": "Select player(s)",
+  "MACRO.EXPERIENCE" : "Experience",
+  "MACRO.ADDEXP_TITLE" : "Add experience",
+  "MACRO.ADDEXP_NUMBER":"Need a valid number of experience, either positive or negative",
+  "MACRO.ADDEXP_CHANGE":"Experience change",
+  "MACRO.ADDEXP_CHANGE_LONG":"The following actors:<ul> ${actorNames}</ul> were awarded ${exp} experience",
+  "MACRO.ROLLATTRIBUTE_NOACTOR": "No actor available for you to do an attribute test",
 
   "MONEY.THALER": "Tálero",
   "MONEY.SHILLING": "Chelín",
@@ -809,7 +824,7 @@
   "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE_HINT": "Marcar para permitir mejoras de QoL para mostrar los mod de los atributos antes de la tirada",
   "SYMBAROUM.OPTIONAL_NPC_MODIFIERS": "Show NPC modifiers",
   "SYMBAROUM.OPTIONAL_NPC_MODIFIERS_HINT": "Check to show NPC modifiers (-5 to +5) instead of attributes for NPCs on character sheet",
-  "SYMBAROUM.OPTIONAL_INIATITIVEROLLS": "Supress Initiative rolls",
+  "SYMBAROUM.OPTIONAL_INIATITIVEROLLS": "Suppress Initiative rolls",
   "SYMBAROUM.OPTIONAL_INIATITIVEROLLS_HINT": "Check to QoL disabling of Initiative rolls in chat",
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Permitir modificaciones de referencias",
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Atención - Solo GM - permite ajustar manualmente las referencias en la implementación de habilidades, rasgos y poderes místicos. Requiere reiniciar.",
@@ -848,5 +863,11 @@
   "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS": "Death save bonus applies for crit",
   "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS_HINT": "Any death save bonus applies to the odds of critical success, i.e. either improve or remove chance of critical success of death saves",
   "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE": "Dice so Nice module on all rolls",
-  "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE_HINT": "When the Dice so Nice module is added and Enhanced Combat option is enabled, a lot of dice can be thrown at the same time on the screen. By default, only the base d20 action roll will be displayed. Check this option if you prefer to have all dice displayed (damage, poison, etc)."
+  "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE_HINT": "When the Dice so Nice module is added and Enhanced Combat option is enabled, a lot of dice can be thrown at the same time on the screen. By default, only the base d20 action roll will be displayed. Check this option if you prefer to have all dice displayed (damage, poison, etc).",
+  "SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK": "Show only local language compendium",
+  "SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK_HINT": "Will only show language compendium that matches your chosen language and the english macro & system compendium",
+  "SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS" : "Include all english compendium with the chosen language",
+  "SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS_HINT" : "In addition to your chosen language, it will also show all english compendiums",
+  "SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS" : "Exclude English macro and system compendium",
+  "SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS_HINT" : "Exclude the English system and macro compendiums, which are shown otherwise"
 }

@@ -9,7 +9,7 @@
   "ABILITY.RESIST_ROLL": " försöker motstå:",
   "ABILITYREF.DIALOG_TITLE": "Välj motsvarande integrerade förmåga",
   "ABILITYREF.DIALOG": "Detta gör att du kan använda integrerade framgångsslag för denna specifika förmåga. Om det är en husreglad förmåga eller om du inte vill använda skripten, välj \"Ingen referens \". Varning: du kommer inte att kunna referera efter det, om du vill det måste du skapa en ny förmåga.",
- 
+
   "ABILITY_LABEL.DEFAULT": "Annat",
   "ABILITY_LABEL.ACROBATICS": "Akrobatik",
   "ABILITY_LABEL.ALCHEMY":"Alkemi",
@@ -352,6 +352,8 @@
   "CORRUPTION.CHAT_WARNING": " är nära en korruptionströskel.",
 
   "DIALOG.SYSTEM_MESSAGE":"Symbaroum systemmeddelande",
+  "DIALOG.OK": "Ok",
+  "DIALOG.CANCEL": "Avbryt",
   "DIALOG.AUTOPARAMS": "Inkluderade modifieringar: ",
   "DIALOG.BACKSTAB": "Använda Lönnstöt?",
   "DIALOG.BEASTLORE": "Monsterlärd extra skada?",
@@ -396,6 +398,9 @@
 
   
   "ERROR.NO_TOKEN_SELECTED": "Välj agerande Token.",
+  "ERROR.MACRO_NOT_OWNED": "You can only create macro buttons for owned Items.",
+  "ERROR.MACRO_NO_OBJECT": "The selected token character does not have an item named : ",
+  "ERROR.MACRO_NO_SCRIPT": " isn't scripted.",
   
   "EXPERIENCE": "Erfarenhet",
 
@@ -443,6 +448,16 @@
   "ITEM.TypeWeapon": "Vapen",
   "ITEM.TypeBoon": "Fördel",
   "ITEM.TypeBurden": "Nackdel",
+
+  "MACRO.ATTRIBUTE": "Attribute",
+  "MACRO.MAKETEST": "Test {testtype}",
+  "MACRO.SELECTPLAYERS": "Select player(s)",
+  "MACRO.EXPERIENCE" : "Experience",
+  "MACRO.ADDEXP_TITLE" : "Add experience",
+  "MACRO.ADDEXP_NUMBER":"Need a valid number of experience, either positive or negative",
+  "MACRO.ADDEXP_CHANGE":"Experience change",
+  "MACRO.ADDEXP_CHANGE_LONG":"The following actors:<ul> ${actorNames}</ul> were awarded ${exp} experience",
+  "MACRO.ROLLATTRIBUTE_NOACTOR": "No actor available for you to do an attribute test",
 
   "MONEY.THALER": "Daler",
   "MONEY.SHILLING": "Skilling",
@@ -847,5 +862,11 @@
   "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS": "Dödsslagsbonus appliceras för kritisk framgång",
   "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS_HINT": "All bonus för dödsslag appliceras för att kunna uppnå kritisk framgång, dvs förbättrar eller försämrar chansen att få kritisk framgång vid dödsslag.",
   "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE": "Dice so Nice modulen för alla tärningskast",
-  "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE_HINT": "Om Dice so Nice-modulen är tillagd och alternativet Enhanced Combat är aktiverat kan det bli många tärningar som kastas samtidigt på skärmen. Som standard kommer endast grundläggande d20 framgångsslag att visas. Markera det här alternativet om du vill att alla tärningar ska visas (skada, gift, etc)."
+  "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE_HINT": "Om Dice so Nice-modulen är tillagd och alternativet Enhanced Combat är aktiverat kan det bli många tärningar som kastas samtidigt på skärmen. Som standard kommer endast grundläggande d20 framgångsslag att visas. Markera det här alternativet om du vill att alla tärningar ska visas (skada, gift, etc).",
+  "SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK": "Show only local language compendium",
+  "SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK_HINT": "Will only show language compendium that matches your chosen language and the english macro & system compendium",
+  "SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS" : "Include all english compendium with the chosen language",
+  "SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS_HINT" : "In addition to your chosen language, it will also show all english compendiums",
+  "SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS" : "Exclude English macro and system compendium",
+  "SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS_HINT" : "Exclude the English system and macro compendiums, which are shown otherwise"
 }

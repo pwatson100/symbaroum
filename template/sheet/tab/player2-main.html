@@ -8,7 +8,7 @@
                 <h1>{{localize "TITLE.ATTRIBUTES"}}</h1><button class="modify-attributes" title="{{localize "ATTRIBUTE.MODIFY"}}"><i style="color: var(--color-label);"  class="fas fa-cog"></i></a>
                 </div>            
                 {{#each data.attributes as |attribute key|}}
-                    <div class="attribute">
+                    <div class="attribute attrDragM" data-attribute="{{key}}">
                         <button class="roll-attribute" style="width: 100%" data-attribute="{{key}}">{{localize attribute.label}}</button>
                         <span class="tooltip input">
                             <input name="data.attributes.{{key}}.total" type="text" value="{{#ifat ../symbaroumOptions.showNpcModifiers ../symbaroumOptions.isNPC}}{{#ifgt attribute.modifier 0}}+{{/ifgt}}{{attribute.modifier}}{{else}}{{attribute.total}}{{/ifat}}" data-dtype="Number" disabled />
@@ -197,7 +197,7 @@
 
     <div class="abilities-powers foreground">
         <h1>{{localize "TITLE.ABILITIES_POWERS"}}</h1>
-        <div class="traits">
+        <div class="traits item-list">
             {{#each items as |item key|}}
                 {{#if item.data.isPower}}
                     <div class="trait item" data-item-id="{{item.id}}">

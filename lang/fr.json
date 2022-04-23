@@ -350,6 +350,8 @@
     "CORRUPTION.CHAT_WARNING": " approche du seuil de souillure.",
 
     "DIALOG.SYSTEM_MESSAGE":"Message du système Symbaroum",
+    "DIALOG.OK": "Ok",
+    "DIALOG.CANCEL": "Cancel",
     "DIALOG.VERSUS": "Versus",
     "DIALOG.ASK_CORRUPTION": "Cible totalement corrompue?",
     "DIALOG.ATTRIBUTE": "Attribut",
@@ -393,6 +395,9 @@
     "EQUIPMENT.DELETEBUTTON": "Supprimer l'équipment",  
 
     "ERROR.NO_TOKEN_SELECTED": "Selectionnez le token concerné, et uniquement ce token.",
+    "ERROR.MACRO_NOT_OWNED": "Vous ne pouvez créer une macro qu'à partir d'un objet possédé.",
+    "ERROR.MACRO_NO_OBJECT": "Le token sélectionné n'a pas d'objet nommé : ",
+    "ERROR.MACRO_NO_SCRIPT": " n'est pas scripté.",
 
     "EXPERIENCE": "Expérience",
 
@@ -429,7 +434,7 @@
     "ITEM.WEAPON": "Arme",
     "ITEM.BOON" : "Atout",
     "ITEM.BURDEN": "Fardeau",
-  
+
     "ITEM.TypeTrait": "Trait",
     "ITEM.TypeAbility": "Talent",
     "ITEM.TypeArmor": "Armure",
@@ -440,7 +445,17 @@
     "ITEM.TypeWeapon": "Arme",
     "ITEM.TypeBoon": "Atout",
     "ITEM.TypeBurden": "Fardeau",   
-  
+
+    "MACRO.ATTRIBUTE": "Attribute",
+    "MACRO.MAKETEST": "Test {testtype}",
+    "MACRO.SELECTPLAYERS": "Select player(s)",
+    "MACRO.EXPERIENCE" : "Experience",
+    "MACRO.ADDEXP_TITLE" : "Add experience",
+    "MACRO.ADDEXP_NUMBER":"Need a valid number of experience, either positive or negative",
+    "MACRO.ADDEXP_CHANGE":"Experience change",
+    "MACRO.ADDEXP_CHANGE_LONG":"The following actors:<ul> ${actorNames}</ul> were awarded ${exp} experience",
+    "MACRO.ROLLATTRIBUTE_NOACTOR": "No actor available for you to do an attribute test",
+
     "MONEY.THALER": "Thaler",
     "MONEY.SHILLING": "Shilling",
     "MONEY.ORTEG": "Orteg",
@@ -843,6 +858,12 @@
     "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS": "Critiques du test de Mort incluent bonus",
     "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS_HINT": "Appliquer le bonus / malus du test de Mort pour déterminer s'il s'agit d'un critique.",
     "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE": "Tous les jets avec le module DsN",
-    "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE_HINT": "Lorsque le module Dice so Nice est installé et que l'option Combats accélérés est activée, il arrive que beaucoup de dés soient affichés en même temps sur l'écran. Pour plus de lisibilité, activer cette option n'affichera que le dé d'action (d20) et pas les autres (dégâts, poison, etc)."
+    "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE_HINT": "Lorsque le module Dice so Nice est installé et que l'option Combats accélérés est activée, il arrive que beaucoup de dés soient affichés en même temps sur l'écran. Pour plus de lisibilité, activer cette option n'affichera que le dé d'action (d20) et pas les autres (dégâts, poison, etc).",
+    "SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK": "Show only local language compendium",
+    "SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK_HINT": "Will only show language compendium that matches your chosen language and the english macro & system compendium",
+    "SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS" : "Include all english compendium with the chosen language",
+    "SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS_HINT" : "In addition to your chosen language, it will also show all english compendiums",
+    "SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS" : "Exclude English macro and system compendium",
+    "SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS_HINT" : "Exclude the English system and macro compendiums, which are shown otherwise"
 }
 
