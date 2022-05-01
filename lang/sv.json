@@ -398,9 +398,9 @@
 
   
   "ERROR.NO_TOKEN_SELECTED": "Välj agerande Token.",
-  "ERROR.MACRO_NOT_OWNED": "You can only create macro buttons for owned Items.",
-  "ERROR.MACRO_NO_OBJECT": "The selected token character does not have an item named : ",
-  "ERROR.MACRO_NO_SCRIPT": " isn't scripted.",
+  "ERROR.MACRO_NOT_OWNED": "Du kan enbart skapa makron för föremål du äger.",
+  "ERROR.MACRO_NO_OBJECT": "Karaktären för valt Token har inte ett föremål vid namn : ",
+  "ERROR.MACRO_NO_SCRIPT": " är inte skriptat.",
   
   "EXPERIENCE": "Erfarenhet",
 
@@ -449,15 +449,15 @@
   "ITEM.TypeBoon": "Fördel",
   "ITEM.TypeBurden": "Nackdel",
 
-  "MACRO.ATTRIBUTE": "Attribute",
-  "MACRO.MAKETEST": "Test {testtype}",
-  "MACRO.SELECTPLAYERS": "Select player(s)",
-  "MACRO.EXPERIENCE" : "Experience",
-  "MACRO.ADDEXP_TITLE" : "Add experience",
-  "MACRO.ADDEXP_NUMBER":"Need a valid number of experience, either positive or negative",
-  "MACRO.ADDEXP_CHANGE":"Experience change",
-  "MACRO.ADDEXP_CHANGE_LONG":"The following actors:<ul> ${actorNames}</ul> were awarded ${exp} experience",
-  "MACRO.ROLLATTRIBUTE_NOACTOR": "No actor available for you to do an attribute test",
+  "MACRO.ATTRIBUTE": "Karaktärsdrag",
+  "MACRO.MAKETEST": "Testa mot {testtype}",
+  "MACRO.SELECTPLAYERS": "Välj spelare",
+  "MACRO.EXPERIENCE" : "Erfarenhet",
+  "MACRO.ADDEXP_TITLE" : "Lägg till erfarenhet",
+  "MACRO.ADDEXP_NUMBER":"Behöver giltigt angiven mängd erfarenhet, antingen positiv eller negativ",
+  "MACRO.ADDEXP_CHANGE":"Erfarenhetsändring",
+  "MACRO.ADDEXP_CHANGE_LONG":"Följande aktörer:<ul> ${actorNames}</ul> erhöll ${exp} erfarenhet",
+  "MACRO.ROLLATTRIBUTE_NOACTOR": "Ingen aktör är tillgänglig för dig för ett karaktärsdragstest",
 
   "MONEY.THALER": "Daler",
   "MONEY.SHILLING": "Skilling",
@@ -863,10 +863,10 @@
   "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS_HINT": "All bonus för dödsslag appliceras för att kunna uppnå kritisk framgång, dvs förbättrar eller försämrar chansen att få kritisk framgång vid dödsslag.",
   "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE": "Dice so Nice modulen för alla tärningskast",
   "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE_HINT": "Om Dice so Nice-modulen är tillagd och alternativet Enhanced Combat är aktiverat kan det bli många tärningar som kastas samtidigt på skärmen. Som standard kommer endast grundläggande d20 framgångsslag att visas. Markera det här alternativet om du vill att alla tärningar ska visas (skada, gift, etc).",
-  "SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK": "Show only local language compendium",
-  "SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK_HINT": "Will only show language compendium that matches your chosen language and the english macro & system compendium",
-  "SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS" : "Include all english compendium with the chosen language",
-  "SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS_HINT" : "In addition to your chosen language, it will also show all english compendiums",
-  "SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS" : "Exclude English macro and system compendium",
-  "SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS_HINT" : "Exclude the English system and macro compendiums, which are shown otherwise"
+  "SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK": "Visa endast kompendium för lokalt språk",
+  "SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK_HINT": "Visar enbart kompendium för det språk som matchar ditt valda språk samt engelska makro- och systemkompendium.",
+  "SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS" : "Inkludera alla engelska kompendier utöver valt språk",
+  "SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS_HINT" : "Utöver ditt valda språk visas även alla kompendier på engelska",
+  "SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS" : "Exkludera engelska makro- och systemkompendium",
+  "SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS_HINT" : "Exkludera engelska makro- och systemkompendium, som annars alltid visas"
 }
