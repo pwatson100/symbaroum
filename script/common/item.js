@@ -150,7 +150,7 @@ export class SymbaroumItem extends Item {
                 if(data.data.bonusDamage.charAt(0) !== '+' ) {
                     data.data.bonusDamage = "+"+data.data.bonusDamage;
                 }
-                baseDamage += data.data.check;
+                baseDamage += data.data.bonusDamage;
             }
             data.data.pcDamage += baseDamage;
             if(data.data.qualities?.deepImpact){
@@ -566,8 +566,7 @@ export class SymbaroumItem extends Item {
                     npcDam = Math.ceil(new Roll(this.data.data.bonusDamage).evaluate({async:false, maximize: true}).total / 2);
                 } catch(err) {
                     ui.notifications?.error(`Could not evaluate weapon bonus for ${this.data.name} - check bonus damage fields - `+err);
-                }                    
-
+                }                                    
                 base.type = game.symbaroum.config.DAM_MOD;
                 base.alternatives = [{
                     damageMod: plus+this.data.data.bonusDamage,
@@ -660,6 +659,7 @@ export class SymbaroumItem extends Item {
         {
             return;
         }
+        /* - to be added later
         for(let i = 0; i < weapons.length; i++)
         {
             if(weapons[i].id != this.id) {
@@ -675,6 +675,7 @@ export class SymbaroumItem extends Item {
                 combatMods.armors[armors[i].id].defenseModifiers.push(base);            
             }
         }
+        */
     }
     getItemModifierHeavy(combatMods, armors, weapons, abilities) {
         this._getOwnWeaponBonuses(combatMods, armors, weapons, abilities);
