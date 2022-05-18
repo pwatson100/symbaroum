@@ -23,6 +23,19 @@ SYMBAROUM.attributeLabels = {
     "vigilant":"ATTRIBUTE.VIGILANT"
 };
 
+SYMBAROUM.attributeImages = {
+    "accurate":"arrow-scope.svg",
+    "cunning":"think.svg",
+    "discreet":"hooded-figure.svg",
+    "persuasive":"discussion.svg",
+    "quick":"fire-dash.svg",
+    "resolute":"rear-aura.svg",
+    "strong":"biceps.svg",
+    "vigilant":"dead-eye.svg"
+};
+
+SYMBAROUM.imageRef = "systems/symbaroum/asset/image/{filename}";
+
 SYMBAROUM.itemSortOrder = [
     "ability",
     "trait",
@@ -35,6 +48,20 @@ SYMBAROUM.itemSortOrder = [
     "equipment",
     "artifact"
 ];
+
+SYMBAROUM.itemImages = {
+    "ability":"ability.png",
+    "trait":"trait.png",
+    "mysticalPower":"mysticalPower.png",
+    "ritual":"ritual.png",
+    "boon":"trait.png",
+    "burden":"trait.png",
+    "armor":"armor.png",
+    "weapon":"weapon.png",
+    "equipment":"equipment.png",
+    "artifact":"artifact.png"
+};
+
 
 // Deprecated item types
 SYMBAROUM.itemDeprecated = [
@@ -507,3 +534,5 @@ SYMBAROUM.TYPE_DMG_AVOIDING = "dmgavoiding"; // damage reduction like in rapid r
 //Healing
 SYMBAROUM.TARGET_TOKEN = "targettoken";
 SYMBAROUM.ACTING_TOKEN = "actingtoken";
+
+SYMBAROUM.SYSTEM_MACRO_FOLDER = "Symbaroum System Macros";

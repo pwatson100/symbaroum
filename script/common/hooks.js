@@ -19,8 +19,11 @@ import { SYMBAROUM } from './config.js';
 import { MonsterSheet } from '../sheet/monster.js';
 import { SymbaroumConfig } from './symbaroumConfig.js';
 import { SymbaroumCommsListener } from './symbcomms.js';
+import { SymbaroumMacros } from './macro.js';
 
 Hooks.once('init', () => {
+  const debouncedReload = foundry.utils.debounce(() => window.location.reload(), 250);
+
   CONFIG.Actor.documentClass = SymbaroumActor;
   CONFIG.Item.documentClass = SymbaroumItem;
   Actors.unregisterSheet('core', ActorSheet);
@@ -44,21 +47,12 @@ Hooks.once('init', () => {
   game.symbaroum = {
     config: SYMBAROUM,
     SymbaroumConfig,
-    rollItemMacro
+    debug: (...args) => { console.debug('%cSymbaroum |', game.symbaroum.config.CONSOLESTYLE, ...args) },
+    error: (...args) => { console.error('%cSymbaroum |', game.symbaroum.config.CONSOLESTYLE, ...args) },
+    info: (...args) => { console.info('%cSymbaroum |', game.symbaroum.config.CONSOLESTYLE, ...args) },
+    log: (...args) => { console.log('%cSymbaroum |', game.symbaroum.config.CONSOLESTYLE, ...args) }
   };
-  game.symbaroum.debug = (...args) => {
-    console.debug('%cSymbaroum |', game.symbaroum.config.CONSOLESTYLE, ...args);
-  };
-  game.symbaroum.error = (...args) => {
-    console.error('%cSymbaroum |', game.symbaroum.config.CONSOLESTYLE, ...args);
-  };
-  game.symbaroum.info = (...args) => {
-    console.info('%cSymbaroum |', game.symbaroum.config.CONSOLESTYLE, ...args);
-  };
-  game.symbaroum.log = (...args) => {
-    console.log('%cSymbaroum |', game.symbaroum.config.CONSOLESTYLE, ...args);
-  };
-
+  
   game.settings.register('symbaroum', 'worldTemplateVersion', {
     // worldTemplateVersion is deprecated - not to use anymore
     name: 'World Template Version',
@@ -334,18 +328,49 @@ Hooks.once('init', () => {
       SymbaroumConfig.toggleConfigButton(enabled);
     },
   });
+
+  game.settings.register('symbaroum', 'showLocalLangPack', {
+    name: 'SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK',
+    hint: 'SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: true,
+    config: true,
+    onChange: () => debouncedReload(),
+  });
+
+  game.settings.register('symbaroum', 'showEnglishPacks', {
+    name: 'SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS',
+    hint: 'SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+    onChange: () => debouncedReload(),
+  });
+  game.settings.register('symbaroum', 'hideEnglishMacroSystemPack', {
+    name: 'SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS',
+    hint: 'SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+    onChange: () => debouncedReload(),
+  });  
+  
+  game.symbaroum.macros = new SymbaroumMacros();
   setupStatusEffects();
 });
 
 Hooks.once('ready', () => {
+  game.symbaroum.macros.macroReady();
+
   migrateWorld();
   sendDevMessage();
   showReleaseNotes();
   setupConfigOptions();
   setupEmit();
   setup3PartySettings();
-  // hotbar drop hook
-  Hooks.on("hotbarDrop", (bar, data, slot) => createSymbaroumMacro(data, slot));
 });
 
 // create/remove the quick access config button
@@ -375,7 +400,57 @@ Hooks.on('preCreateActor', (doc, createData, options, userid) => {
   doc.data.update(createChanges);
 });
 
-Hooks.on('createOwnedItem', (actor, item) => {});
+// Hooks.on('createOwnedItem', (actor, item) => {});
+
+Hooks.on("renderCompendiumDirectory", (app, html, data) => {
+  game.symbaroum.log("In renderCompendiumDirectory - sorting out available compendiums");
+  if (game.settings.get("symbaroum", "showLocalLangPack") ) 
+  {
+    const translatedDocs = [];
+    const filterEnglish = game.settings.get("symbaroum", "showEnglishPacks");
+
+    let languageCodeRegex = `systemuserguides|${game.i18n.lang}`;
+    if(filterEnglish && game.i18n.lang !== "en") {
+      languageCodeRegex = `en|${languageCodeRegex}`;
+    }
+    const avoidEnglishMacroSystem = game.settings.get("symbaroum", "hideEnglishMacroSystemPack") ? null : "(macros|systemitems)";
+    // const avoidEnglishMacroSystem = "(macros|systemitems)";
+    // Alternatives are:
+    // Local Langauge only
+    // Local Langauge + English macro/system abilities      
+    const langReg = new RegExp(`symbaroum.+(${languageCodeRegex})$`);
+    const translatedReg = new RegExp(`symbaroum(.*)${game.i18n.lang}$`);
+    const macroReg = new RegExp(`symbaroum${avoidEnglishMacroSystem}en$`);
+    let irrelvantCompendiums = game.packs.contents.filter( (comp) => {                
+      if(comp.metadata.package === "symbaroum" && !/systemuserguides$/.test(comp.metadata.name) && !langReg.test(comp.metadata.name) ) {
+        if(avoidEnglishMacroSystem !== null && macroReg.test(comp.metadata.name))
+        {            
+          return false;
+        }
+        return true;
+      }
+      // store any translated docs here
+      let part = comp.metadata.name.match(translatedReg);
+      if(part !== null) {
+        translatedDocs.push(comp.metadata.name.match(translatedReg)[1]);
+      }
+      return false;
+    });
+    const enReg = new RegExp(`symbaroum(.*)en$`);
+    for(const comp of irrelvantCompendiums) {
+      // check if the english doc is not one of the translated ones, continue
+      let part = comp.metadata.name.match(enReg);
+      if(part !== null) {
+        if(!translatedDocs.includes(part[1]) ) {
+          continue;
+        }
+      }
+      let compositeKey = `${comp.metadata.system}.${comp.metadata.name}`;
+      game.packs.delete(compositeKey);
+      html.find(`li[data-pack="${compositeKey}"]`).hide();
+    }
+  }
+});
 
 Hooks.once('diceSoNiceReady', (dice3d) => {
   dice3d.addSystem({ id: 'symbaroum', name: 'Symbaroum' }, 'preferred');
@@ -476,6 +551,8 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
 Hooks.on("renderPause", (_app, html, options) => {
 	html.find('img[src="icons/svg/clockwork.svg"]').attr("src", "systems/symbaroum/asset/image/head.webp");
 });
+
+
 
 function setup3PartySettings() {
   game.symbaroum.info("In setup3PartySettings");
@@ -648,9 +725,11 @@ Hooks.on('createToken', async (token, options, userID) => {
   }
 });
 
-/* action = 0 : remove effect
-   action = 1 : add effect
-   action = 2 : modify effect duration */
+/**
+ * action = 0 : remove effect
+ * action = 1 : add effect
+ * action = 2 : modify effect duration 
+ */
 export async function modifyEffectOnToken(token, effect, action, options) {
   let statusCounterMod = false;
   if (game.modules.get('statuscounter')?.active) {
@@ -700,65 +779,3 @@ export async function modifyEffectOnToken(token, effect, action, options) {
     }
   }
 };
-
-/* -------------------------------------------- */
-/*  Hotbar Macros                               */
-/* -------------------------------------------- */
-
-/**
- * Create a Macro from an Item drop.
- * Get an existing item macro if one exists, otherwise create a new one.
- * @param {Object} data     The dropped data
- * @param {number} slot     The hotbar slot to use
- * @returns {Promise}
- */
- async function createSymbaroumMacro(data, slot) {
-  if (data.type !== "Item") return;
-  if (!("data" in data)) return ui.notifications.warn(game.i18n.localize("ERROR.MACRO_NOT_OWNED"));
-  const item = data.data;
-
-  // Create the macro command
-  const command = `game.symbaroum.rollItemMacro("${item.name}");`;
-  let macro = game.macros.find(m => (m.name === item.name) && (m.command === command));
-  if (!macro) {
-    macro = await Macro.create({
-      name: item.name,
-      type: "script",
-      img: item.img,
-      command: command,
-      flags: { "symbaroum.itemMacro": true }
-    });
-  }
-  game.user.assignHotbarMacro(macro, slot);
-  return false;
-}
-
-/**
- * Create a Macro from an Item drop.
- * Get an existing item macro if one exists, otherwise create a new one.
- * @param {string} itemName
- * @return {Promise}
- */
-function rollItemMacro(itemName) {
-  const speaker = ChatMessage.getSpeaker();
-  let actor;
-  if (speaker.token) actor = game.actors.tokens[speaker.token];
-  if (!actor) actor = game.actors.get(speaker.actor);
-  const item = actor ? actor.items.find(i => i.name === itemName) : null;
-  if (!item) return ui.notifications.warn(game.i18n.localize("ERROR.MACRO_NO_OBJECT") + itemName);
-
-  if(item.data.isWeapon){
-    const weapon = actor.data.data.weapons.filter(it => it.id == item.id)[0];
-    return actor.rollWeapon(weapon);
-  }
-  if(item.data.isArmor){
-    return actor.rollArmor();
-  }
-  else if(item.data.isPower){
-    if(actor.data.data.combat.combatMods.abilities[item.data._id]?.isScripted){
-      return actor.usePower(item);
-    }
-    else return ui.notifications.warn(itemName + game.i18n.localize("ERROR.MACRO_NO_SCRIPT"));
-  }
-  else return;
-}

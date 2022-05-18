@@ -90,7 +90,9 @@ export class SymbaroumItemSheet extends ItemSheet {
   
   async _prepareActivateAbility(event) {
     event.preventDefault();
-    const ability = this.object;
-    if(ability.data.data?.script) ability.data.data?.script(ability, ability.parent);
+    if(!this.item.isOwned ) {
+      return;
+    }
+    this.item.actor.usePower(this.item);
   }
 }
