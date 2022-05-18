@@ -136,20 +136,26 @@ export function createRollData(rolls)
 export async function rollDeathTest(actor, withFavour, modifier) {
   let rolls = [];
   let death = new Roll('1d20', {});
+  let favour = 0;
+  let dicesResult;
   if( withFavour === "1") {
+    favour = 1;
     death = new Roll('2d20kl', {});
+    dicesResult= [death.terms[0].results[0].result, death.terms[0].results[1].result];
   } else if( withFavour === "-1") {
+    favour = -1;
     death = new Roll('2d20kh', {});
+    dicesResult= [death.terms[0].results[0].result, death.terms[0].results[1].result];
   }
 
   death.evaluate({async:false});
   rolls.push(death);
   let hasSucceed = death.total <= 10+modifier;
-
-  let isCriticalSuccess = death.total <= (1+( game.settings.get('symbaroum', 'enhancedDeathSaveBonus') ? modifier:0));
+  let finalMod = game.settings.get('symbaroum', 'enhancedDeathSaveBonus') ? modifier:0;
+  let isCriticalSuccess = death.total <= (1+finalMod);
   let heal = null;
   let nbrOfFailedDeathRoll = actor.data.data.nbrOfFailedDeathRoll;
-
+  let rollResult = await formatRollResult({favour: favour, diceResult: death.total, dicesResult: dicesResult});
   if (!hasSucceed) nbrOfFailedDeathRoll = Math.min(3, nbrOfFailedDeathRoll+1);
   if (isCriticalSuccess) {
     nbrOfFailedDeathRoll = 0;
@@ -160,6 +166,8 @@ export async function rollDeathTest(actor, withFavour, modifier) {
   let rollData = {
     actor: actor,
     isCriticalSuccess: isCriticalSuccess,
+    rollResult: rollResult,
+    modifier: finalMod,
     healing: heal?.total,
     isCriticalFailure: death.total === 20 || nbrOfFailedDeathRoll >= 3,
     hasSucceed: hasSucceed,
