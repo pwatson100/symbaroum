@@ -566,8 +566,7 @@ export class SymbaroumItem extends Item {
                     npcDam = Math.ceil(new Roll(this.data.data.bonusDamage).evaluate({async:false, maximize: true}).total / 2);
                 } catch(err) {
                     ui.notifications?.error(`Could not evaluate weapon bonus for ${this.data.name} - check bonus damage fields - `+err);
-                }                    
-                base.label = plus+this.data.data.bonusDamage;
+                }                                    
                 base.type = game.symbaroum.config.DAM_MOD;
                 base.alternatives = [{
                     damageMod: plus+this.data.data.bonusDamage,
