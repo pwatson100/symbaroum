@@ -2604,8 +2604,7 @@ async function weaponTypeLabel(weapon){
     return(game.i18n.localize('GEAR.OTHER'));
 }
 
-/* format the string to print the roll result, including the 2 dice if favour was involved, up to 3 rolls for multi-attacks
-@Params: {object}  rollData is the array of objects baseRoll function returns 
+/* format the string to print the roll result, including the 2 dice if favour was involved, and the second roll when the option rare crits is enabled
 @returns:  {string} the formated and localized string*/
 export function formatRollResult(rollDataElement){
     let rollResult = game.i18n.localize('ABILITY.ROLL_RESULT') + rollDataElement.diceResult.toString();
@@ -2613,7 +2612,7 @@ export function formatRollResult(rollDataElement){
         rollResult += "  (" + rollDataElement.dicesResult[0].toString() + " , " + rollDataElement.dicesResult[1].toString() + ")";
     }
     if(rollDataElement.secondRollResult){
-        rollResult += "<br />" + game.i18n.localize('ABILITY.SECOND_ROLL_RESULT') + rollDataElement.secondRollResult.toString();
+        rollResult += " - " + game.i18n.localize('ABILITY.SECOND_ROLL_RESULT') + rollDataElement.secondRollResult.toString();
     }
     return(rollResult);
 }
@@ -3146,6 +3145,7 @@ async function attackResult(rollData, functionStuff){
         rollDataElement.resultText = functionStuff.actingCharName + game.i18n.localize('COMBAT.CHAT_SUCCESS') + functionStuff.targetData.name;
         if(rollDataElement.critSuccess) {
             if(functionStuff.resistRoll){
+                //critSuccess is in the attackers perspective.
                 rollDataElement.resultText += " - "+game.i18n.localize('CHAT.CRITICAL_FAILURE');
             }
             else{
@@ -3186,6 +3186,7 @@ async function attackResult(rollData, functionStuff){
         else{
             rollDataElement.resultText = functionStuff.actingCharName + game.i18n.localize('COMBAT.CHAT_FAILURE');
             if(rollDataElement.critFail) {
+                //critFail is in the attackers perspective, so it means the defenser gets a free attack
                 if(functionStuff.resistRoll){
                     rollDataElement.resultText += " - "+game.i18n.localize('CHAT.CRITICAL_SUCCESS') + " : " + game.i18n.localize('CHAT.CRITICAL_FREEATTACK');
                 }
