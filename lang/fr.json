@@ -126,6 +126,7 @@
     "ABILITY.MASTER":"Maître",
     "ABILITY.NOT_LEARNED":"Pas apprise",
     "ABILITY.ROLL_RESULT": "Résultat du jet : ",
+    "ABILITY.SECOND_ROLL_RESULT": "Résultat du second jet sur critique : ",
 
     "ACTION.ACTIVE": "Active",
     "ACTION.FREE": "Gratuite",

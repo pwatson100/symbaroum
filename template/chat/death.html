@@ -2,6 +2,7 @@
     <div class="foreground border">
         <h3>{{localize "CHAT.DEATH_ROLL" name=actor.name }}</h3>
         <div class="dice-roll dice-total">
+            <div><h4>{{rollResult}}</h4></div>
         {{#if isCriticalSuccess}}
             <div>
                 <h4>{{localize "CHAT.CRITICAL_SUCCESS"}}</h4>

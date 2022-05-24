@@ -127,6 +127,7 @@
   "ABILITY.MASTER":"Maestro",
   "ABILITY.NOT_LEARNED":"No aprendido",
   "ABILITY.ROLL_RESULT": "Resultado de la tirada de dados: ",
+  "ABILITY.SECOND_ROLL_RESULT": "Rare critical dice roll result : ",
   
   "ACTION.ACTIVE": "Activa",
   "ACTION.FREE": "Gratuita",

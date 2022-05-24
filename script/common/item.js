@@ -2613,6 +2613,9 @@ export function formatRollResult(rollDataElement){
     if(rollDataElement.favour != 0){
         rollResult += "  (" + rollDataElement.dicesResult[0].toString() + " , " + rollDataElement.dicesResult[1].toString() + ")";
     }
+    if(rollDataElement.secondRollResult){
+        rollResult += "<br />" + game.i18n.localize('ABILITY.SECOND_ROLL_RESULT') + rollDataElement.secondRollResult.toString();
+    }
     return(rollResult);
 }
 
@@ -3142,6 +3145,14 @@ async function attackResult(rollData, functionStuff){
 
         rollDataElement.finalText="";
         rollDataElement.resultText = functionStuff.actingCharName + game.i18n.localize('COMBAT.CHAT_SUCCESS') + functionStuff.targetData.name;
+        if(rollDataElement.critSuccess) {
+            if(functionStuff.resistRoll){
+                rollDataElement.resultText += " - "+game.i18n.localize('CHAT.CRITICAL_FAILURE');
+            }
+            else{
+                rollDataElement.resultText += " - "+game.i18n.localize('CHAT.CRITICAL_SUCCESS');
+            }
+        }
         if(functionStuff.weapon.qualities.jointed && !rollDataElement.trueActorSucceeded && rollDataElement.diceResult%2!=0){
             rollDataElement.resultText = game.i18n.localize('COMBAT.CHAT_JOINTED_SECONDARY');
         }
@@ -3175,6 +3186,14 @@ async function attackResult(rollData, functionStuff){
         }
         else{
             rollDataElement.resultText = functionStuff.actingCharName + game.i18n.localize('COMBAT.CHAT_FAILURE');
+            if(rollDataElement.critFail) {
+                if(functionStuff.resistRoll){
+                    rollDataElement.resultText += " - "+game.i18n.localize('CHAT.CRITICAL_SUCCESS') + " : " + game.i18n.localize('CHAT.CRITICAL_FREEATTACK');
+                }
+                else{
+                    rollDataElement.resultText += " - "+game.i18n.localize('CHAT.CRITICAL_FAILURE') + " : " + game.i18n.localize('CHAT.CRITICAL_FAILURE_FREEATTACK');
+                }
+            }
         }
     }
     if(damageTot <= 0){
