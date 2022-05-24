@@ -114,6 +114,7 @@
   "ABILITY.MASTER":"Meister",
   "ABILITY.NOT_LEARNED":"Not Learned",
   "ABILITY.ROLL_RESULT": "Würfelergebnis: ",
+  "ABILITY.SECOND_ROLL_RESULT": "Rare critical dice roll result : ",
 
   "ACTION.ACTIVE": "Aktiv",
   "ACTION.FREE": "Frei",

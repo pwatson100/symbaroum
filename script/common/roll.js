@@ -308,12 +308,12 @@ async function doBaseRoll(actor, actingAttributeName, targetActor, targetAttribu
   }
 
   diceBreakdown = formatDice(attributeRoll.terms,"+", hasSucceed ? "normal":"failure");
-
+  let secondRollResult;
   // Check option - always succeed on 1, always fail on 20
 	if(game.settings.get('symbaroum', 'optionalCrit') || game.settings.get('symbaroum', 'optionalRareCrit') ) {     
     if( attributeRoll.total === 1 || attributeRoll.total === 20 ) {
       if( game.settings.get('symbaroum', 'optionalCrit') ) {
-          critBad = attributeRoll.total === 20 && !resistRoll;
+          critBad = (attributeRoll.total === 20 && !resistRoll) || (attributeRoll.total === 1 && resistRoll);
           critGood = !critBad;
           let css = `${critGood?"critical":critBad?"fumble":"normal"}`;
           diceBreakdown = formatDice(attributeRoll.terms,"+", css);
@@ -321,9 +321,9 @@ async function doBaseRoll(actor, actingAttributeName, targetActor, targetAttribu
       if( game.settings.get('symbaroum', 'optionalRareCrit') ) {
         let secondRoll = new Roll("1d20").evaluate({async:false});
         rolls.push(secondRoll);
-
-        critGood = (critGood && secondRoll.total <= diceTarget && !resistRoll) || (critGood && secondRoll.total > diceTarget && resistRoll);
-        critBad = (critBad && secondRoll.total > diceTarget && !resistRoll) || (critGood && secondRoll.total <= diceTarget && resistRoll);
+        secondRollResult = secondRoll.total;
+        critGood = (critGood && (secondRoll.total <= diceTarget) && !resistRoll) || (critGood && (secondRoll.total > diceTarget) && resistRoll);
+        critBad = (critBad && (secondRoll.total > diceTarget) && !resistRoll) || (critBad && (secondRoll.total <= diceTarget) && resistRoll);
         let css = `${critGood?"critical":critBad?"fumble":"normal"}`;
         diceBreakdown = formatDice(attributeRoll.terms,"+", css);
         diceBreakdown = `${diceBreakdown} &amp; <span class="symba-rolls roll d20 ${css}">${secondRoll.total}</span>`;
@@ -344,7 +344,7 @@ async function doBaseRoll(actor, actingAttributeName, targetActor, targetAttribu
     favour: favour,
     modifier: modifier,
     dicesResult: dicesResult,
-    rollResult: await formatRollResult({favour: favour, diceResult: attributeRoll.total, dicesResult: dicesResult}),
+    rollResult: await formatRollResult({favour: favour, diceResult: attributeRoll.total, dicesResult: dicesResult, secondRollResult: secondRollResult}),
     rolls: rolls,
     toolTip: new Handlebars.SafeString(await attributeRoll.getTooltip()),
     diceBreakdown: diceBreakdown,    
@@ -482,8 +482,11 @@ export async function damageRollWithDiceParams(functionStuff, critSuccess, attac
     damageAutoParams += ", " + game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
     damageModNPC += 2;
   }
-  if(critSuccess) { damageModFormula += " +1d6[crit.]"}
-
+  if(critSuccess) {
+    damageModFormula += " +1d6[crit.]";
+    damageAutoParams += ", " + game.i18n.localize('CHAT.CRITICAL_SUCCESS');
+    damageModNPC += 3;
+  }
   if(functionStuff.ignoreArm){
     damageAutoParams += ", " + game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_IGN_ARMOR');
   }
