@@ -276,7 +276,7 @@ export class SymbaroumActor extends Actor {
                 baseProtection = "1d4";
             }
             let diceSides = 0;
-            if( !item.data.isStackableArmor && !item.isNoArmor )
+            if( !item.data.isStackableArmor && !item.isNoArmor && !item.data.isSkin)
             {
                 diceSides = parseInt(baseProtection.match(/[0-9]d([0-9]+)/)[1]);
             }
@@ -383,7 +383,7 @@ export class SymbaroumActor extends Actor {
             }
             // game.symbaroum.log(armorModifiers);
             let diceRoller = "";
-            if(item.isNoArmor && diceSides === 0) {
+            if((item.isNoArmor || item.data.isSkin) && diceSides === 0) {
                 // allDefenseProtNPC contains a 0 if npc
                 diceRoller = (this.type == "player" ? "0":"");
             }
