@@ -65,12 +65,15 @@ export class SymbaroumItem extends Item {
         else if(data.type === "armor")
         {
             data.isStackableArmor = data.data.baseProtection === "0";
+            data.isSkin = data.data.baseProtection === "1d0";
             data.isLightArmor = data.data.baseProtection === "1d4";
             data.isMediumArmor = data.data.baseProtection === "1d6";
             data.isHeavyArmor = data.data.baseProtection == "1d8";
             data.isSuperArmor = data.data.baseProtection == "1d10" || data.data.baseProtection == "1d12";
             if(data.isStackableArmor ) {
-                data.data.reference = "stackable";                
+                data.data.reference = "stackable"; 
+            } else if(data.isSkin) {
+                data.data.reference = "skin"; 
             } else if(data.isLightArmor) {
                 data.data.reference = "lightarmor";
             } else if(data.isMediumArmor) {
@@ -717,7 +720,7 @@ export class SymbaroumItem extends Item {
             let base = this._getBaseFormat();
             let modifier = 0;
             // game.symbaroum.log("getItemModifierArmored", armors[i]); // TODO Remove
-            if(armors[i].isNoArmor) {
+            if(armors[i].isNoArmor || armors[i].data.isSkin) {
                 modifier = 4; // 1d4 armor
             }
             base.type = base.type = game.symbaroum.config.DAM_DICEUPGRADE;

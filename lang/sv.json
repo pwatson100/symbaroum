@@ -141,6 +141,7 @@
 
   "ARMOR.NAME": "Namn",
   "ARMOR.NOARMOR_NAME":"Utan bepansring",
+  "ARMOR.SKIN": "Skin/Hide (No base protection)",
   "ARMOR.PROTECTION": "Bepansring",
   "ARMOR.PROTECTIONABBR": "Skydd",  
   "ARMOR.PROTECTION_SHORT": "Skydd",
