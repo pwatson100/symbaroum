@@ -15,3 +15,15 @@
     text-shadow: 0px 3px 5px rgba(0, 0, 0, 1);
   }
 }
+.journal-sheet .journal-sheet-container {
+  grid-template-columns: unset;
+}
+
+.journal-sheet nav {
+  display: none;
+}
+
+article header {
+  display: none;
+
+}

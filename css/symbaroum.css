@@ -405,7 +405,7 @@
 }
 
 .symbaroum.chat.roll .strike {
-  color: black;
+  color: rgb(0, 0, 0);
   text-decoration: line-through;
 }
 
@@ -650,10 +650,10 @@
 }
 
 .symbaroum.sheet.actor .isScripted {
-  box-shadow: -1.5px 1.5px 1.5px 1.5px #878787;
+  box-shadow: -1.5px 1.5px 1.5px 1.5px hsl(0deg, 0%, 53%);
   cursor: pointer;
   border: solid 1px;
-  border-color: #c3bbbb;
+  border-color: hsl(0deg, 6%, 75%);
   margin: 0;
   background-repeat: no-repeat;
   height: 43px;
@@ -662,7 +662,7 @@
 }
 
 .symbaroum.sheet.actor .isScripted:hover {
-  box-shadow: -2px 2px 2px 2px #596c04;
+  box-shadow: -2px 2px 2px 2px hsl(71deg, 93%, 22%);
 }
 
 .symbaroum.sheet.actor .notScripted {
@@ -1330,7 +1330,19 @@
 #pause h3 {
   font-family: var(--font-text);
   font-size: 32px;
-  text-shadow: 0px 3px 5px black;
+  text-shadow: 0px 3px 5px rgb(0, 0, 0);
+}
+
+.journal-sheet .journal-sheet-container {
+  grid-template-columns: unset;
+}
+
+.journal-sheet nav {
+  display: none;
+}
+
+article header {
+  display: none;
 }
 
 /* cyrillic-ext */
@@ -1822,7 +1834,7 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  flex-basis: calc(50%);
+  flex-basis: 50%;
   border-top: none;
 }
 
