@@ -142,6 +142,7 @@
   
     "ARMOR.NAME": "Nome",
     "ARMOR.NOARMOR_NAME":"Nessun Armatura",
+    "ARMOR.SKIN": "Skin/Hide (No base protection)",
     "ARMOR.PROTECTION": "Protezione",
     "ARMOR.PROTECTIONABBR": "Prot.",
     "ARMOR.PROTECTION_SHORT": "Prot.",
