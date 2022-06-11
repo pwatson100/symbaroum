@@ -608,7 +608,7 @@ export class SymbaroumItem extends Item {
                 base.damagePerRoundNPC= 2;
                 base.duration= "1d4";
                 base.durationNPC= 2;
-                base.effectIcon = "icons/svg/fire.svg";
+                base.effectIcon = CONFIG.statusEffects.find(e => e.id === "burning");
                 combatMods.weapons[weapons[i].id].package[0].member.push(base);
             }
             if(this.data.data.qualities.massive) {
@@ -801,7 +801,7 @@ export class SymbaroumItem extends Item {
                 baseBleed.damagePerRoundNPC= 2;
                 baseBleed.duration= "";
                 baseBleed.durationNPC= 0;
-                baseBleed.effectIcon= "icons/svg/blood.svg";
+                baseBleed.effectIcon= CONFIG.statusEffects.find(e => e.id === "bleeding");
                 if(lvl.level==2)
                 {
                     baseBleed.restrictions= [game.symbaroum.config.DAM_1STATTACK];
@@ -3304,7 +3304,7 @@ async function attackResult(rollData, functionStuff){
         templateData = Object.assign(templateData, poisonRes);
     }
     for(let doTime of functionStuff.damageOverTime){
-        if(doTime.effectIcon=== "icons/svg/blood.svg" && !targetDies && damageTot > 0){
+        if(doTime.effectIcon?.id=== "bleeding" && !targetDies && damageTot > 0){
             templateData.printBleed = true;
             let bleedDamage = doTime.damagePerRound;
             if(!functionStuff.attackFromPC) bleedDamage = doTime.damagePerRoundNPC.toString();
@@ -3316,7 +3316,7 @@ async function attackResult(rollData, functionStuff){
                 addEffect: doTime.effectIcon
             });
         }
-        else if(doTime.label === game.i18n.localize("QUALITY.FLAMING") && hasDamage){
+        else if(doTime.effectIcon?.id=== "burning" && hasDamage){
             let flamingRoundsRoll= 2;
             let flamingRounds = 2;
             let flamingDamage = " 2";
@@ -3328,7 +3328,7 @@ async function attackResult(rollData, functionStuff){
             }
             flagDataArray.push({
                 tokenId: functionStuff.targetData.tokenId,
-                addEffect: "icons/svg/fire.svg",
+                addEffect: doTime.effectIcon,
                 effectDuration: flamingRounds
             });
             templateData.printFlaming = true;
@@ -3775,7 +3775,7 @@ async function standardPowerResult(rollData, functionStuff){
                     let bleedEffectCounter = await getEffect(functionStuff.targetData.token, bEffect);
                     if(bleedEffectCounter){
                         //get the number of rounds left
-                        let timeleft = 1;
+                        let timeLeft = 1;
                         let statusCounterMod = false;
                         if(game.modules.get("statuscounter")?.active){
                             //statusCounterMod = true;  until corrected
