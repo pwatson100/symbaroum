@@ -1,24 +1,21 @@
 {
-  "name": "symbaroum",
+  "id": "symbaroum",
   "title": "Symbaroum",
   "description": "Twilight falls. Davokar darkens.",
-  "version": "3.1.8",
-  "minimumCoreVersion": "0.8.5",
-  "compatibleCoreVersion": "9",
-  "authors": ["Paul Watson", "Bithir", "Khaali"],
+  "version": "4.0.0",
+  "minimumCoreVersion": "10",
+  "compatibleCoreVersion": "10",
+  "authors": [{ "name": "Paul Watson" }, { "name": "Bithir" }, { "name": "Khaali" }],
   "scripts": [],
-  "esmodules": [
-    "script/common/hooks.js"
-  ],
-  "styles": [
-    "css/symbaroum.css"
-  ],
+  "esmodules": ["script/common/hooks.js"],
+  "styles": ["css/symbaroum.css"],
   "packs": [
     {
       "name": "symbaroumsystemitemsen",
       "label": "EN - System special Traits",
       "system": "symbaroum",
       "path": "./packs/symbaroumsystemitemsen.db",
+      "module": "symbaroum",
       "type": "Item"
     },
     {
@@ -26,6 +23,7 @@
       "label": "FR - Traits spéciaux du Système",
       "system": "symbaroum",
       "path": "./packs/symbaroumsystemitemsfr.db",
+      "module": "symbaroum",
       "type": "Item"
     },
     {
@@ -33,6 +31,7 @@
       "label": "IT - Tratti speciali di Symbaroum",
       "system": "symbaroum",
       "path": "./packs/symbaroumsystemitemsit.db",
+      "module": "symbaroum",
       "type": "Item"
     },
     {
@@ -40,6 +39,7 @@
       "label": "Symbaroum for FVTT system user guides",
       "system": "symbaroum",
       "path": "./packs/systemuserguides.db",
+      "module": "symbaroum",
       "type": "JournalEntry"
     },
     {
@@ -47,6 +47,7 @@
       "label": "EN - Abilities",
       "system": "symbaroum",
       "path": "./packs/symbaroumabilitiesen.db",
+      "module": "symbaroum",
       "type": "Item"
     },
     {
@@ -54,6 +55,7 @@
       "label": "FR - Talents",
       "system": "symbaroum",
       "path": "./packs/symbaroumabilitiesfr.db",
+      "module": "symbaroum",
       "type": "Item"
     },
     {
@@ -61,6 +63,7 @@
       "label": "DE - Abilities",
       "system": "symbaroum",
       "path": "./packs/symbaroumabilitiesde.db",
+      "module": "symbaroum",
       "type": "Item"
     },
     {
@@ -68,6 +71,7 @@
       "label": "SV - Abilities",
       "system": "symbaroum",
       "path": "./packs/symbaroumabilitiessv.db",
+      "module": "symbaroum",
       "type": "Item"
     },
     {
@@ -75,6 +79,7 @@
       "label": "ES - Abilities",
       "system": "symbaroum",
       "path": "./packs/symbaroumabilitieses.db",
+      "module": "symbaroum",
       "type": "Item"
     },
     {
@@ -82,6 +87,7 @@
       "label": "IT - Abilità",
       "system": "symbaroum",
       "path": "./packs/symbaroumabilitiesit.db",
+      "module": "symbaroum",
       "type": "Item"
     },
     {
@@ -89,6 +95,7 @@
       "label": "EN - Powers",
       "system": "symbaroum",
       "path": "./packs/symbaroumpowersen.db",
+      "module": "symbaroum",
       "type": "Item"
     },
     {
@@ -96,6 +103,7 @@
       "label": "FR - Pouvoirs",
       "system": "symbaroum",
       "path": "./packs/symbaroumpowersfr.db",
+      "module": "symbaroum",
       "type": "Item"
     },
     {
@@ -103,6 +111,7 @@
       "label": "DE - Powers",
       "system": "symbaroum",
       "path": "./packs/symbaroumpowersde.db",
+      "module": "symbaroum",
       "type": "Item"
     },
     {
@@ -110,6 +119,7 @@
       "label": "SV - Powers",
       "system": "symbaroum",
       "path": "./packs/symbaroumpowerssv.db",
+      "module": "symbaroum",
       "type": "Item"
     },
     {
@@ -117,6 +127,7 @@
       "label": "ES - Powers",
       "system": "symbaroum",
       "path": "./packs/symbaroumpowerses.db",
+      "module": "symbaroum",
       "type": "Item"
     },
     {
@@ -124,6 +135,7 @@
       "label": "IT - Poteri",
       "system": "symbaroum",
       "path": "./packs/symbaroumpowersit.db",
+      "module": "symbaroum",
       "type": "Item"
     },
     {
@@ -131,6 +143,7 @@
       "label": "EN - Traits",
       "system": "symbaroum",
       "path": "./packs/symbaroumtraitsen.db",
+      "module": "symbaroum",
       "type": "Item"
     },
     {
@@ -138,6 +151,7 @@
       "label": "FR - Traits",
       "system": "symbaroum",
       "path": "./packs/symbaroumtraitsfr.db",
+      "module": "symbaroum",
       "type": "Item"
     },
     {
@@ -145,6 +159,7 @@
       "label": "DE - Traits",
       "system": "symbaroum",
       "path": "./packs/symbaroumtraitsde.db",
+      "module": "symbaroum",
       "type": "Item"
     },
     {
@@ -152,6 +167,7 @@
       "label": "SV - Traits",
       "system": "symbaroum",
       "path": "./packs/symbaroumtraitssv.db",
+      "module": "symbaroum",
       "type": "Item"
     },
     {
@@ -159,6 +175,7 @@
       "label": "ES - Traits",
       "system": "symbaroum",
       "path": "./packs/symbaroumtraitses.db",
+      "module": "symbaroum",
       "type": "Item"
     },
     {
@@ -166,6 +183,7 @@
       "label": "IT - Tratti",
       "system": "symbaroum",
       "path": "./packs/symbaroumtraitsit.db",
+      "module": "symbaroum",
       "type": "Item"
     },
     {
@@ -173,6 +191,7 @@
       "label": "EN - Weapons",
       "system": "symbaroum",
       "path": "./packs/symbaroumweaponsen.db",
+      "module": "symbaroum",
       "type": "Item"
     },
     {
@@ -180,6 +199,7 @@
       "label": "FR - Armes",
       "system": "symbaroum",
       "path": "./packs/symbaroumweaponsfr.db",
+      "module": "symbaroum",
       "type": "Item"
     },
     {
@@ -187,6 +207,7 @@
       "label": "SV - Vapen",
       "system": "symbaroum",
       "path": "./packs/symbaroumweaponssv.db",
+      "module": "symbaroum",
       "type": "Item"
     },
     {
@@ -194,13 +215,15 @@
       "label": "IT - Armi",
       "system": "symbaroum",
       "path": "./packs/symbaroumweaponsit.db",
+      "module": "symbaroum",
       "type": "Item"
-    },    
+    },
     {
       "name": "symbaroumarmorsen",
       "label": "EN - Armors",
       "system": "symbaroum",
       "path": "./packs/symbaroumarmorsen.db",
+      "module": "symbaroum",
       "type": "Item"
     },
     {
@@ -208,6 +231,7 @@
       "label": "FR - Armures",
       "system": "symbaroum",
       "path": "./packs/symbaroumarmorsfr.db",
+      "module": "symbaroum",
       "type": "Item"
     },
     {
@@ -215,13 +239,15 @@
       "label": "SV - Rustningar",
       "system": "symbaroum",
       "path": "./packs/symbaroumarmorssv.db",
+      "module": "symbaroum",
       "type": "Item"
-    },    
+    },
     {
       "name": "symbaroumarmorsit",
       "label": "IT - Armature",
       "system": "symbaroum",
       "path": "./packs/symbaroumarmorsit.db",
+      "module": "symbaroum",
       "type": "Item"
     },
     {
@@ -229,6 +255,7 @@
       "label": "FR - Macros",
       "system": "symbaroum",
       "path": "./packs/symbaroummacrosfr.db",
+      "module": "symbaroum",
       "type": "Macro"
     },
     {
@@ -236,6 +263,7 @@
       "label": "EN - Macros",
       "system": "symbaroum",
       "path": "./packs/symbaroummacrosen.db",
+      "module": "symbaroum",
       "type": "Macro"
     },
     {
@@ -243,6 +271,7 @@
       "label": "IT - Macro",
       "system": "symbaroum",
       "path": "./packs/symbaroummacrosit.db",
+      "module": "symbaroum",
       "type": "Macro"
     }
   ],
