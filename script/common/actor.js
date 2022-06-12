@@ -257,9 +257,12 @@ export class SymbaroumActor extends Actor {
         return {
             normal: 1,
             elemental: 1,
-            mystic: 1,
+            mysticArm: 1,
+            mysticIgnArm: 1,
             holy: 1,
-            mysticalWeapon: 1
+            mysticalWeapon: 1,
+            poison: 1,
+            bleeding: 1
         };
     }
 
@@ -273,7 +276,7 @@ export class SymbaroumActor extends Actor {
                 baseProtection = "1d4";
             }
             let diceSides = 0;
-            if( !item.data.isStackableArmor && !item.isNoArmor )
+            if( !item.data.isStackableArmor && !item.isNoArmor && !item.data.isSkin)
             {
                 diceSides = parseInt(baseProtection.match(/[0-9]d([0-9]+)/)[1]);
             }
@@ -354,14 +357,23 @@ export class SymbaroumActor extends Actor {
                 if(armorModifiers.damageReductions[i].elemental !== undefined) {
                     damageProtection.elemental = damageProtection.elemental *armorModifiers.damageReductions[i].elemental;
                 }
-                if(armorModifiers.damageReductions[i].mystic !== undefined) {
-                    damageProtection.mystic = damageProtection.mystic *armorModifiers.damageReductions[i].mystic;
+                if(armorModifiers.damageReductions[i].mysticArm !== undefined) {
+                    damageProtection.mysticArm = damageProtection.mysticArm *armorModifiers.damageReductions[i].mysticArm;
+                }
+                if(armorModifiers.damageReductions[i].mysticIgnArm !== undefined) {
+                    damageProtection.mysticIgnArm = damageProtection.mysticIgnArm *armorModifiers.damageReductions[i].mysticIgnArm;
                 }
                 if(armorModifiers.damageReductions[i].holy !== undefined) {
                     damageProtection.holy = damageProtection.holy *armorModifiers.damageReductions[i].holy;
                 }
                 if(armorModifiers.damageReductions[i].mysticalWeapon !== undefined) {
                     damageProtection.mysticalWeapon = damageProtection.mysticalWeapon *armorModifiers.damageReductions[i].mysticalWeapon;
+                }
+                if(armorModifiers.damageReductions[i].poison !== undefined) {
+                    damageProtection.poison = damageProtection.poison *armorModifiers.damageReductions[i].poison;
+                }
+                if(armorModifiers.damageReductions[i].bleeding !== undefined) {
+                    damageProtection.bleeding = damageProtection.bleeding *armorModifiers.damageReductions[i].bleeding;
                 }
             }
             if(this.data.data.bonus.defense){
@@ -371,7 +383,7 @@ export class SymbaroumActor extends Actor {
             }
             // game.symbaroum.log(armorModifiers);
             let diceRoller = "";
-            if(item.isNoArmor && diceSides === 0) {
+            if((item.isNoArmor || item.data.isSkin) && diceSides === 0) {
                 // allDefenseProtNPC contains a 0 if npc
                 diceRoller = (this.type == "player" ? "0":"");
             }

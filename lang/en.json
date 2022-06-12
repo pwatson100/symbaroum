@@ -127,6 +127,7 @@
   "ABILITY.MASTER":"Master",
   "ABILITY.NOT_LEARNED":"Not Learned",
   "ABILITY.ROLL_RESULT": "Dice roll result : ",
+  "ABILITY.SECOND_ROLL_RESULT": "Rare critical dice roll result : ",
 
   "ACTION.ACTIVE": "Active",
   "ACTION.FREE": "Free",
@@ -141,6 +142,7 @@
 
   "ARMOR.NAME": "Name",
   "ARMOR.NOARMOR_NAME":"No Armor",
+  "ARMOR.SKIN": "Skin/Hide (No base protection)",
   "ARMOR.PROTECTION": "Protection",
   "ARMOR.PROTECTIONABBR": "Prot.",
   "ARMOR.PROTECTION_SHORT": "Prot.",
@@ -320,7 +322,7 @@
   "COMBAT.CHAT_BLEED": " bleeds and loses toughness each round: ",
   "COMBAT.CHAT_CORRUPTED_ATTACK": "The attack inflict corruption: ",
   "COMBAT.CHAT_POISON": " tries to poison ",
-  "COMBAT.CHAT_POISON_FAILURE": "No poisonning.",
+  "COMBAT.CHAT_POISON_FAILURE": "No poisoning.",
   "COMBAT.CHAT_POISON_EXTEND": "Target was already poisoned, new duration: rounds: ",
   "COMBAT.CHAT_POISON_NOTEXTEND": "Victim was already poisoned.",
   "COMBAT.CHAT_POISON_SUCCESS1": " is poisoned. Damage per round : ",
@@ -336,8 +338,8 @@
   "COMBAT.CHAT_DMG_PARAMS_ADVANTAGE": "[Adv.] ",
   "COMBAT.CHAT_DMG_PARAMS_LEADER": "[Leader Tgt] ",
   "COMBAT.CHAT_DMG_PARAMS_DEEPIMPACT": "[Deep imp.] ",
-  "COMBAT.CHAT_DMG_PARAMS_IGN_ARMOR": "[Ignore armour] ",
-  "COMBAT.CHAT_DAMAGE_NUL": " is protected by armour.",
+  "COMBAT.CHAT_DMG_PARAMS_IGN_ARMOR": "[Ignore armor] ",
+  "COMBAT.CHAT_DAMAGE_NUL": " is protected by armor.",
   "COMBAT.CHAT_DAMAGE_DYING": " is fataly wounded.",
   "COMBAT.CHAT_DAMAGE": " endures damage : ",
   "COMBAT.CHAT_DAMAGE_PAIN": " is stunned by pain.",
@@ -351,6 +353,8 @@
   "CORRUPTION.CHAT_WARNING": " is close to a corruption treshold.",
 
   "DIALOG.SYSTEM_MESSAGE":"Symbaroum system message",
+  "DIALOG.OK": "Ok",
+  "DIALOG.CANCEL": "Cancel",
   "DIALOG.AUTOPARAMS": "Included modifiers: ",
   "DIALOG.BACKSTAB": "Use Backstab?",
   "DIALOG.BEASTLORE": "Beast Lore dmg?",
@@ -361,7 +365,7 @@
   "DIALOG.LIGHT_POISON": "Weak poison",
   "DIALOG.MEDIUM_POISON": "Medium poison",
   "DIALOG.STRONG_POISON": "Strong poison",
-  "DIALOG.IGNORE_ARMOR": "Ignore armour?",
+  "DIALOG.IGNORE_ARMOR": "Ignore armor?",
   "DIALOG.DAMAGE_IF_MODIFIER": "Iron fist damage bonus",
   "DIALOG.ATTACK": "Attack",
   "DIALOG.2ATTACKS": "Attack twice?",
@@ -396,6 +400,9 @@
   "EQUIPMENT.DELETEBUTTON": "Delete Equipment",
 
   "ERROR.NO_TOKEN_SELECTED": "Select the acting token.",
+  "ERROR.MACRO_NOT_OWNED": "You can only create macro buttons for owned Items.",
+  "ERROR.MACRO_NO_OBJECT": "The selected token character does not have an item named : ",
+  "ERROR.MACRO_NO_SCRIPT": " isn't scripted.",
 
   "EXPERIENCE": "Experience",
 
@@ -445,6 +452,16 @@
   "ITEM.TypeWeapon": "Weapon",
   "ITEM.TypeBoon": "Boon",
   "ITEM.TypeBurden": "Burden",  
+
+  "MACRO.ATTRIBUTE": "Attribute",
+  "MACRO.MAKETEST": "Test {testtype}",
+  "MACRO.SELECTPLAYERS": "Select player(s)",
+  "MACRO.EXPERIENCE" : "Experience",
+  "MACRO.ADDEXP_TITLE" : "Add experience",
+  "MACRO.ADDEXP_NUMBER":"Need a valid number of experience, either positive or negative",
+  "MACRO.ADDEXP_CHANGE":"Experience change",
+  "MACRO.ADDEXP_CHANGE_LONG":"The following actors:<ul>{actorNames}</ul> were awarded {exp} experience",
+  "MACRO.ROLLATTRIBUTE_NOACTOR": "No actor available for you to do an attribute test",
 
   "MONEY.THALER": "Thaler",
   "MONEY.SHILLING": "Shilling",
@@ -812,7 +829,7 @@
   "SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE_HINT": "Check to enable QoL enhancement for showing attribute modifiers before making the roll",
   "SYMBAROUM.OPTIONAL_NPC_MODIFIERS": "Show NPC modifiers",
   "SYMBAROUM.OPTIONAL_NPC_MODIFIERS_HINT": "Check to show NPC modifiers (-5 to +5) instead of attributes for NPCs on character sheet",
-  "SYMBAROUM.OPTIONAL_INIATITIVEROLLS": "Supress Initiative rolls",
+  "SYMBAROUM.OPTIONAL_INIATITIVEROLLS": "Suppress Initiative rolls",
   "SYMBAROUM.OPTIONAL_INIATITIVEROLLS_HINT": "Check to QoL disabling of Initiative rolls in chat",
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Allow reference modification",
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Warning - GM Only - allow to manually adjust reference implementation for abilities, traits and mystical powers. Requires refresh.",
@@ -851,6 +868,12 @@
   "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS": "Death save bonus applies for crit",
   "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS_HINT": "Any death save bonus applies to the odds of critical success, i.e. either improve or remove chance of critical success of death saves",
   "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE": "Dice so Nice module on all rolls",
-  "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE_HINT": "When the Dice so Nice module is added and Enhanced Combat option is enabled, a lot of dice can be thrown at the same time on the screen. By default, only the base d20 action roll will be displayed. Check this option if you prefer to have all dice displayed (damage, poison, etc)."
+  "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE_HINT": "When the Dice so Nice module is added and Enhanced Combat option is enabled, a lot of dice can be thrown at the same time on the screen. By default, only the base d20 action roll will be displayed. Check this option if you prefer to have all dice displayed (damage, poison, etc).",
+  "SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK": "Show only local language compendium",
+  "SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK_HINT": "Will only show language compendium that matches your chosen language and the english macro & system compendium",
+  "SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS" : "Include all english compendium with the chosen language",
+  "SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS_HINT" : "In addition to your chosen language, it will also show all english compendiums",
+  "SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS" : "Exclude English macro and system compendium",
+  "SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS_HINT" : "Exclude the English system and macro compendiums, which are shown otherwise"
 
 }

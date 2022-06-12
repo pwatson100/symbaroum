@@ -231,3 +231,14 @@ Version 3.1.7
 - fixed problems with status icons on tokens
 - quick fix for a bug with status counters module - this module isn't used by the system anymore (until bug fixed)
 - when using EC, killed actors are now registered as "defeated" in the combat tracker.
+
+Version 3.1.8
+- Fixed a problem with the balanced quality and with shields
+- Fixed screen refresh when deleting abilities/items so that updates the character sheet
+- fixed a bug when applying bleeding, poison or burning icon on token
+- fixed a bug with rare crit option + EC
+- undead are now correctly invulnerable to poison and bleeding
+- added the roll result in death roll chat message
+- added a french macro for hidden Vigilant rolls
+- some modifications for foundry v10 compatibility
+- various translations it, es, de...

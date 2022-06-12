@@ -96,9 +96,9 @@
     "ABILITY_DOMINATE_MASTER.CHAT_SUCCESS": "{actorname} sottomette il suo nemico.",
   
     "ABILITY_LEADER.CHAT_SUCCESS": "Gli alleati ottengono +1d4 danni contro {targetname}",
-    "ABILITY_LOREMASTER.CHAT_INTRO": "{actorname} tenta di ricordare qualcosa che ha sentito a profosito.",
+    "ABILITY_LOREMASTER.CHAT_INTRO": "{actorname} tenta di ricordare qualcosa che ha sentito a proposito.",
     "ABILITY_LOREMASTER.CHAT_SUCCESS": "{actorname} e effettivamente ci riesce.",
-    "ABILITY_LOREMASTER.CHAT_FAILURE": "{actorname} ma non ne ha la minima idea.",
+    "ABILITY_LOREMASTER.CHAT_FAILURE": "{actorname} non ne ha la minima idea.",
   
     "ABILITY_MEDICUS.CHAT_INTRO": "{actorname} cura le ferite",
     "ABILITY_MEDICUS.CHAT_SUCCESS": "{actorname} che sembrano iniziare a rimarginarsi.",
@@ -127,6 +127,7 @@
     "ABILITY.MASTER":"Maestro",
     "ABILITY.NOT_LEARNED":"Non Appresa",
     "ABILITY.ROLL_RESULT": "Risultato del dado: ",
+    "ABILITY.SECOND_ROLL_RESULT": "Rare critical dice roll result : ",
   
     "ACTION.ACTIVE": "Attiva",
     "ACTION.FREE": "Gratuita",
@@ -141,6 +142,7 @@
   
     "ARMOR.NAME": "Nome",
     "ARMOR.NOARMOR_NAME":"Nessun Armatura",
+    "ARMOR.SKIN": "Skin/Hide (No base protection)",
     "ARMOR.PROTECTION": "Protezione",
     "ARMOR.PROTECTIONABBR": "Prot.",
     "ARMOR.PROTECTION_SHORT": "Prot.",
@@ -194,7 +196,7 @@
     "ATTRIBUTE.BASE": "Base",
     "ATTRIBUTE.MODIFIER": "Mod.",
     "ATTRIBUTE.BONUS": "Bonus",
-    "ATTRIBUTE.MODIFY": "Modify",
+    "ATTRIBUTE.MODIFY": "Modifica",
   
     "BIO.NAME": "Nome",
     "BIO.RACE": "Razza",
@@ -351,6 +353,8 @@
     "CORRUPTION.CHAT_WARNING": " è vicino alla sogglia di corruzione.",
   
     "DIALOG.SYSTEM_MESSAGE":"Messaggio di sistema di Symbaroum",
+    "DIALOG.OK": "Ok",
+    "DIALOG.CANCEL": "Annulla",
     "DIALOG.AUTOPARAMS": "Modificatori inclusi: ",
     "DIALOG.BACKSTAB": "Usare Colpo alle Spalle?",
     "DIALOG.BEASTLORE": "danno Conoscenza Delle Bestie?",
@@ -385,7 +389,7 @@
     "DIALOG.WEAPON_DAMAGE": "Tiro danni",  
     "DIALOG.CASTING": "Casting iniziale",
     "DIALOG.IMPEDING": "Includi il malus di ingombro?",
-    "DIALOG.MAINTAINING": "Abilità per il mantenimento",
+    "DIALOG.MAINTAINING": "Mantieni il cast",
   
     "EQUIPMENT.NAME": "Nome",
     "EQUIPMENT.COST": "Costo",
@@ -396,6 +400,9 @@
     "EQUIPMENT.DELETEBUTTON": "Rimuovi Equipaggaimento",
   
     "ERROR.NO_TOKEN_SELECTED": "Seleziona il token.",
+    "ERROR.MACRO_NOT_OWNED": "Puoi creare bottoni Macro solo per gli oggetti che possiedi.",
+    "ERROR.MACRO_NO_OBJECT": "Il personaggio del token selezionato non possiede l'oggetto con il nome : ",
+    "ERROR.MACRO_NO_SCRIPT": " non è scriptato.",
   
     "EXPERIENCE": "Esperienza",
   
@@ -446,6 +453,15 @@
     "ITEM.TypeBoon": "Pregi",
     "ITEM.TypeBurden": "Difetti",  
   
+    "MACRO.ATTRIBUTE": "Attributo",
+    "MACRO.MAKETEST": "Test {testtype}",
+    "MACRO.SELECTPLAYERS": "Seleziona giocatore/i",
+    "MACRO.EXPERIENCE" : "Eperienza",
+    "MACRO.ADDEXP_TITLE" : "Aggiungi esperienza",
+    "MACRO.ADDEXP_NUMBER":"serve un valore numerico di esperienza, o positivo o negativo",
+    "MACRO.ADDEXP_CHANGE":"Cambia esperienza",
+    "MACRO.ADDEXP_CHANGE_LONG":"I seguenti personaggi:<ul> ${actorNames}</ul> sono stati premiati con ${exp} punti esperienza",
+    "MACRO.ROLLATTRIBUTE_NOACTOR": "Nssun personaggio disponibile per te per effettuarte un test di attributo",  
     "MONEY.THALER": "Talleri",
     "MONEY.SHILLING": "Scellini",
     "MONEY.ORTEG": "Orteghi",
@@ -851,6 +867,11 @@
     "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS": "I critici si applicano ai test per la morte",
     "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS_HINT": "Qualsiasi bonus tiro salvezza sulla morte si applica alle probabilità di successo critico, ovvero aggiuingere o rimuovere la possibilità di successo critico dei tiri salvezza sulla morte",
     "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE": "Dice so Nice module su tutti i tiri",
-    "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE_HINT": "Qaundo Dice so Nice module viene aggiunto e l'opzione Combattimento avanzato è abilitata, molti dadi possono essere lanciati contemporaneamente sullo schermo. Per impostazione predefinita, verrà visualizzato solo il tiro azione base del d20. Seleziona questa opzione se preferisci che tutti i dadi siano visualizzati (danno, veleno, ecc.)."
-  }
-  
+    "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE_HINT": "Quaundo Dice so Nice module viene aggiunto e l'opzione Combattimento avanzato è abilitata, molti dadi possono essere lanciati contemporaneamente sullo schermo. Per impostazione predefinita, verrà visualizzato solo il tiro azione base del d20. Seleziona questa opzione se preferisci che tutti i dadi siano visualizzati (danno, veleno, ecc.).",
+    "SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK": "Mostra solo i compendi della lingua corrente",
+    "SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK_HINT": "Verranno mostrati solo i compendi della lingua attuale in aggiunta alle macro inglesi e al system compendium",
+    "SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS" : "Includi tutti i compendi inglesi in aggiunta alla lingua corrente",
+    "SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS_HINT" : "In aggiunta alla lingua corrente verranno mostrati tutti i compendi in inglese",
+    "SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS" : "Escludi le macro inglesi e il system compendium",
+    "SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS_HINT" : "Escludi le macro inglesi e il system compendium, che altrimenti verrebbero mostrati"
+}

@@ -9,6 +9,19 @@ export class SymbaroumActorSheet extends ActorSheet {
     html.find('input').focusin((ev) => this._onFocusIn(ev));
     html.find('.item-state').click(async (ev) => await this._onItemStateUpdate(ev));
     html.find('.activate-ability').click(async (ev) => await this._prepareActivateAbility(ev));
+    // Drag events for macros.
+    if (this.actor.owner) {
+      let handler = ev => this._onDragStart(ev);
+      // Find all items on the character sheet.
+      html.find('li.trait').each((i, li) => {
+        // Ignore for the header row.
+        console.log("li: ", li);
+        if (li.classList.contains("item-header")) return;
+        // Add draggable attribute and dragstart listener.
+        li.setAttribute("draggable", true);
+        li.addEventListener("dragstart", handler, false);
+      });
+    }
   }
 
   _getHeaderButtons() {
@@ -24,29 +37,11 @@ export class SymbaroumActorSheet extends ActorSheet {
     let header = event.currentTarget;
     let data = duplicate(header.dataset);
     data['name'] = `New ${data.type.capitalize()}`;
-    if (data.type === 'trait') {
-      data.img = 'systems/symbaroum/asset/image/trait.png';
-    } else if (data.type === 'ability') {
-      data.img = 'systems/symbaroum/asset/image/ability.png';
-    } else if (data.type === 'mysticalPower') {
-      data.img = 'systems/symbaroum/asset/image/mysticalPower.png';
-    } else if (data.type === 'ritual') {
-      data.img = 'systems/symbaroum/asset/image/ritual.png';
-    } else if (data.type === 'burden') {
-      data.img = 'systems/symbaroum/asset/image/trait.png';
-    } else if (data.type === 'boon') {
-      data.img = 'systems/symbaroum/asset/image/trait.png';
-    } else if (data.type === 'weapon') {
-      data.img = 'systems/symbaroum/asset/image/weapon.png';
-    } else if (data.type === 'armor') {
-      data.img = 'systems/symbaroum/asset/image/armor.png';
-    } else if (data.type === 'equipment') {
-      data.img = 'systems/symbaroum/asset/image/equipment.png';
-    } else if (data.type === 'artifact') {
-      data.img = 'systems/symbaroum/asset/image/artifact.png';
-    } else {
-      data.img = 'systems/symbaroum/asset/image/unknown-item.png';
-    }
+    if(data.type in game.symbaroum.config.itemImages)
+      data.img = game.i18n.format(game.symbaroum.config.imageRef, {"filename":game.symbaroum.config.itemImages[data.type]});
+    else
+      data.img = game.i18n.format(game.symbaroum.config.imageRef, {"filename":"unknown-item.png"});
+
     let itemData = {
       name:data["name"],
       type:data.type,
@@ -81,7 +76,7 @@ export class SymbaroumActorSheet extends ActorSheet {
       return;
     }    
     div.slideUp(200, () => {
-      this.actor.deleteEmbeddedDocuments("Item", [ item.id ], { render:false });
+      this.actor.deleteEmbeddedDocuments("Item", [ item.id ], { render:true });
     });
   }
 

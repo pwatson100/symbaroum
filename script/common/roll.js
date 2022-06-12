@@ -136,20 +136,26 @@ export function createRollData(rolls)
 export async function rollDeathTest(actor, withFavour, modifier) {
   let rolls = [];
   let death = new Roll('1d20', {});
+  let favour = 0;
+  let dicesResult;
   if( withFavour === "1") {
+    favour = 1;
     death = new Roll('2d20kl', {});
+    dicesResult= [death.terms[0].results[0].result, death.terms[0].results[1].result];
   } else if( withFavour === "-1") {
+    favour = -1;
     death = new Roll('2d20kh', {});
+    dicesResult= [death.terms[0].results[0].result, death.terms[0].results[1].result];
   }
 
   death.evaluate({async:false});
   rolls.push(death);
   let hasSucceed = death.total <= 10+modifier;
-
-  let isCriticalSuccess = death.total <= (1+( game.settings.get('symbaroum', 'enhancedDeathSaveBonus') ? modifier:0));
+  let finalMod = game.settings.get('symbaroum', 'enhancedDeathSaveBonus') ? modifier:0;
+  let isCriticalSuccess = death.total <= (1+finalMod);
   let heal = null;
   let nbrOfFailedDeathRoll = actor.data.data.nbrOfFailedDeathRoll;
-
+  let rollResult = await formatRollResult({favour: favour, diceResult: death.total, dicesResult: dicesResult});
   if (!hasSucceed) nbrOfFailedDeathRoll = Math.min(3, nbrOfFailedDeathRoll+1);
   if (isCriticalSuccess) {
     nbrOfFailedDeathRoll = 0;
@@ -160,6 +166,8 @@ export async function rollDeathTest(actor, withFavour, modifier) {
   let rollData = {
     actor: actor,
     isCriticalSuccess: isCriticalSuccess,
+    rollResult: rollResult,
+    modifier: finalMod,
     healing: heal?.total,
     isCriticalFailure: death.total === 20 || nbrOfFailedDeathRoll >= 3,
     hasSucceed: hasSucceed,
@@ -296,26 +304,30 @@ async function doBaseRoll(actor, actingAttributeName, targetActor, targetAttribu
 
   if(attributeRoll.total <= diceTarget){
     hasSucceed = true;
+    //trueActorSucceded is boolean, success from the attacker perspective. When a defending PC succeeds, trueActorSucceded === false
     trueActorSucceeded = !resistRoll;
   }
 
   diceBreakdown = formatDice(attributeRoll.terms,"+", hasSucceed ? "normal":"failure");
-
+  let secondRollResult;
   // Check option - always succeed on 1, always fail on 20
 	if(game.settings.get('symbaroum', 'optionalCrit') || game.settings.get('symbaroum', 'optionalRareCrit') ) {     
     if( attributeRoll.total === 1 || attributeRoll.total === 20 ) {
+      //critGood and critBad below are from the attacker perspective. Hence a defending PC rolling 20 is a critGood
       if( game.settings.get('symbaroum', 'optionalCrit') ) {
-          critBad = attributeRoll.total === 20 && !resistRoll;
+          critBad = (attributeRoll.total === 20 && !resistRoll) || (attributeRoll.total === 1 && resistRoll);
           critGood = !critBad;
           let css = `${critGood?"critical":critBad?"fumble":"normal"}`;
           diceBreakdown = formatDice(attributeRoll.terms,"+", css);
       }    
       if( game.settings.get('symbaroum', 'optionalRareCrit') ) {
+        //optional rare crit do a second roll.
         let secondRoll = new Roll("1d20").evaluate({async:false});
         rolls.push(secondRoll);
-
-        critGood = (critGood && secondRoll.total <= diceTarget && !resistRoll) || (critGood && secondRoll.total > diceTarget && resistRoll);
-        critBad = (critBad && secondRoll.total > diceTarget && !resistRoll) || (critGood && secondRoll.total <= diceTarget && resistRoll);
+        secondRollResult = secondRoll.total;
+        //critGood and critBad below are again from the attacker perspective.
+        critGood = (critGood && (secondRoll.total <= diceTarget) && !resistRoll) || (critGood && (secondRoll.total > diceTarget) && resistRoll);
+        critBad = (critBad && (secondRoll.total > diceTarget) && !resistRoll) || (critBad && (secondRoll.total <= diceTarget) && resistRoll);
         let css = `${critGood?"critical":critBad?"fumble":"normal"}`;
         diceBreakdown = formatDice(attributeRoll.terms,"+", css);
         diceBreakdown = `${diceBreakdown} &amp; <span class="symba-rolls roll d20 ${css}">${secondRoll.total}</span>`;
@@ -336,7 +348,7 @@ async function doBaseRoll(actor, actingAttributeName, targetActor, targetAttribu
     favour: favour,
     modifier: modifier,
     dicesResult: dicesResult,
-    rollResult: await formatRollResult({favour: favour, diceResult: attributeRoll.total, dicesResult: dicesResult}),
+    rollResult: await formatRollResult({favour: favour, diceResult: attributeRoll.total, dicesResult: dicesResult, secondRollResult: secondRollResult}),
     rolls: rolls,
     toolTip: new Handlebars.SafeString(await attributeRoll.getTooltip()),
     diceBreakdown: diceBreakdown,    
@@ -443,17 +455,11 @@ function formatDice(diceResult, separator, css = "normal") {
 
 /*function for evaluating Damage
 
-****************this function needs damage and armor parameters as dice (ie: weapon.data.data.damage = "1d8")
-for the NPC side, it will transform those parameters as NPC fixed values using the formula (dice maximum value)/2
-It won't work with NPC fixed values as input
-
-* @param {boolean} attackFromPC true: the actor that does damage is a PC; false : the damage is done by a NPC
-* @param {actor object} actor  is the actor that does damage
-* @param {item object} weapon is the weapon that is used
-* @param {{isRanged: boolean, useBackstab: boolean, hasAdvantage: boolean, ignoreArm: boolean, modifier: string}} dmgData is an object of damage parameters.
-* @param {object} targetData is information on the target that will receive the damage (as returned by the getTarget function)
-* @param {boolean} critSuccess  for optional bonus damage on crits
-* @param {integer} attack number - if > 0 some bonuses won't apply*/
+it works for PC and NPC
+for the PC, it builds the damage formula with tags: 1d8+1d4[advantage]+1d4[leader target]... than roll and substract NPC fixed armor
+for the NPC side, it will first sum up the fixed damage 4+2+2 than roll armor and substract
+It will also use parameters like ignore armor, damage favour / unfavour from weapon qualities...
+*/
 
 export async function damageRollWithDiceParams(functionStuff, critSuccess, attackNumber){
   let newRollDmgString = "";
@@ -474,8 +480,12 @@ export async function damageRollWithDiceParams(functionStuff, critSuccess, attac
     damageAutoParams += ", " + game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
     damageModNPC += 2;
   }
-  if(critSuccess) { damageModFormula += " +1d6[crit.]"}
-
+  if(critSuccess) {
+    //critSuccess is in the attackers perspective, so it always add damage.
+    damageModFormula += " +1d6[crit.]";
+    damageAutoParams += ", " + game.i18n.localize('CHAT.CRITICAL_SUCCESS');
+    damageModNPC += 3;
+  }
   if(functionStuff.ignoreArm){
     damageAutoParams += ", " + game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_IGN_ARMOR');
   }
