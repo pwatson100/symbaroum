@@ -22,6 +22,8 @@ import { SymbaroumCommsListener } from './symbcomms.js';
 import { SymbaroumMacros } from './macro.js';
 
 Hooks.once('init', () => {
+
+
   const debouncedReload = foundry.utils.debounce(() => window.location.reload(), 250);
 
   CONFIG.Actor.documentClass = SymbaroumActor;
@@ -52,7 +54,7 @@ Hooks.once('init', () => {
     info: (...args) => { console.info('%cSymbaroum |', game.symbaroum.config.CONSOLESTYLE, ...args) },
     log: (...args) => { console.log('%cSymbaroum |', game.symbaroum.config.CONSOLESTYLE, ...args) }
   };
-  
+
   game.settings.register('symbaroum', 'worldTemplateVersion', {
     // worldTemplateVersion is deprecated - not to use anymore
     name: 'World Template Version',
@@ -356,8 +358,8 @@ Hooks.once('init', () => {
     default: false,
     config: true,
     onChange: () => debouncedReload(),
-  });  
-  
+  });
+
   game.symbaroum.macros = new SymbaroumMacros();
   setupStatusEffects();
 });
@@ -404,13 +406,12 @@ Hooks.on('preCreateActor', (doc, createData, options, userid) => {
 
 Hooks.on("renderCompendiumDirectory", (app, html, data) => {
   game.symbaroum.log("In renderCompendiumDirectory - sorting out available compendiums");
-  if (game.settings.get("symbaroum", "showLocalLangPack") ) 
-  {
+  if (game.settings.get("symbaroum", "showLocalLangPack")) {
     const translatedDocs = [];
     const filterEnglish = game.settings.get("symbaroum", "showEnglishPacks");
 
     let languageCodeRegex = `systemuserguides|${game.i18n.lang}`;
-    if(filterEnglish && game.i18n.lang !== "en") {
+    if (filterEnglish && game.i18n.lang !== "en") {
       languageCodeRegex = `en|${languageCodeRegex}`;
     }
     const avoidEnglishMacroSystem = game.settings.get("symbaroum", "hideEnglishMacroSystemPack") ? null : "(macros|systemitems)";
@@ -421,27 +422,26 @@ Hooks.on("renderCompendiumDirectory", (app, html, data) => {
     const langReg = new RegExp(`symbaroum.+(${languageCodeRegex})$`);
     const translatedReg = new RegExp(`symbaroum(.*)${game.i18n.lang}$`);
     const macroReg = new RegExp(`symbaroum${avoidEnglishMacroSystem}en$`);
-    let irrelvantCompendiums = game.packs.contents.filter( (comp) => {                
-      if(comp.metadata.package === "symbaroum" && !/systemuserguides$/.test(comp.metadata.name) && !langReg.test(comp.metadata.name) ) {
-        if(avoidEnglishMacroSystem !== null && macroReg.test(comp.metadata.name))
-        {            
+    let irrelvantCompendiums = game.packs.contents.filter((comp) => {
+      if (comp.metadata.package === "symbaroum" && !/systemuserguides$/.test(comp.metadata.name) && !langReg.test(comp.metadata.name)) {
+        if (avoidEnglishMacroSystem !== null && macroReg.test(comp.metadata.name)) {
           return false;
         }
         return true;
       }
       // store any translated docs here
       let part = comp.metadata.name.match(translatedReg);
-      if(part !== null) {
+      if (part !== null) {
         translatedDocs.push(comp.metadata.name.match(translatedReg)[1]);
       }
       return false;
     });
     const enReg = new RegExp(`symbaroum(.*)en$`);
-    for(const comp of irrelvantCompendiums) {
+    for (const comp of irrelvantCompendiums) {
       // check if the english doc is not one of the translated ones, continue
       let part = comp.metadata.name.match(enReg);
-      if(part !== null) {
-        if(!translatedDocs.includes(part[1]) ) {
+      if (part !== null) {
+        if (!translatedDocs.includes(part[1])) {
           continue;
         }
       }
@@ -501,7 +501,7 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
             }
           }
           let actor = token?.actor ?? game.actors.get(flagData.actorId);
-          if(actor !== undefined){
+          if (actor !== undefined) {
             if (flagData.toughnessChange) {
               let newToughness = Math.max(0, Math.min(actor.data.data.health.toughness.max, actor.data.data.health.toughness.value + flagData.toughnessChange));
               await actor.update({ 'data.health.toughness.value': newToughness });
@@ -549,24 +549,24 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
 });
 
 Hooks.on("renderPause", (_app, html, options) => {
-	html.find('img[src="icons/svg/clockwork.svg"]').attr("src", "systems/symbaroum/asset/image/head.webp");
+  html.find('img[src="icons/svg/clockwork.svg"]').attr("src", "systems/symbaroum/asset/image/head.webp");
 });
 
 
 
 function setup3PartySettings() {
   game.symbaroum.info("In setup3PartySettings");
-  if( !game.user.isGM ) {
+  if (!game.user.isGM) {
     // Only make changes to system and 3rd party if it is a GM
     return;
   }
   if (game.settings.settings.has('dice-so-nice.enabledSimultaneousRollForMessage')) {
     game.settings.set('dice-so-nice', 'enabledSimultaneousRollForMessage', false);
   }
-  
-  if( game.modules.get("dice-so-nice")?.active && foundry.utils.isNewerVersion("4.2.2", game.modules.get("dice-so-nice").data.version) ) {
+
+  if (game.modules.get("dice-so-nice")?.active && foundry.utils.isNewerVersion("4.2.2", game.modules.get("dice-so-nice").data.version)) {
     // If dice so nice is older than 4.2.2 - lets notify
-    ui.notifications.warn("Dice So Nice needs to be at minimum 4.2.2 to work with Symbaroum", {permanent: true });
+    ui.notifications.warn("Dice So Nice needs to be at minimum 4.2.2 to work with Symbaroum", { permanent: true });
   }
 }
 // This sets the css DOM objects we will change with the registered settings
@@ -581,7 +581,7 @@ async function setupConfigOptions() {
 }
 
 // this add new status effect to the foundry list
-async function setupStatusEffects(){
+async function setupStatusEffects() {
   CONFIG.statusEffects.push(
     {
       id: "bendwill",
@@ -738,7 +738,7 @@ export async function modifyEffectOnToken(token, effect, action, options) {
   let duration = options.effectDuration ?? 1;
   if (action == 1) {
     //add effect
-    if(!getEffect(token, effect)){
+    if (!getEffect(token, effect)) {
       if (statusCounterMod) {
         let alreadyHereEffect = await EffectCounter.findCounter(token.document, effect.icon);
         if (alreadyHereEffect === undefined) {
@@ -753,19 +753,19 @@ export async function modifyEffectOnToken(token, effect, action, options) {
           }
         }
       } else {
-        token.toggleEffect(effect, {overlay: options.overlay });
+        token.toggleEffect(effect, { overlay: options.overlay });
       }
     }
   } else if (action == 0) {
     //remove effect
-    if(getEffect(token, effect)){
+    if (getEffect(token, effect)) {
       if (statusCounterMod) {
         let statusEffectCounter = await EffectCounter.findCounter(token, effect).getDisplayValue();
         if (statusEffectCounter != undefined) {
           await statusEffectCounter.remove();
         }
       } else {
-        token.toggleEffect(effect, {overlay: options.overlay });
+        token.toggleEffect(effect, { overlay: options.overlay });
       }
     }
   } else {

@@ -16,14 +16,18 @@
   }
 }
 .journal-sheet .journal-sheet-container {
-  grid-template-columns: unset;
+  //   grid-template-columns: unset;
+  width: auto;
 }
 
-.journal-sheet nav {
-  display: none;
-}
+// .journal-sheet nav {
+//   display: none;
+// }
 
 article header {
   display: none;
+}
 
+.journal-sheet form .journal-entry-pages {
+  width: inherit;
 }

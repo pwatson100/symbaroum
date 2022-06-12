@@ -1334,15 +1334,15 @@
 }
 
 .journal-sheet .journal-sheet-container {
-  grid-template-columns: unset;
-}
-
-.journal-sheet nav {
-  display: none;
+  width: auto;
 }
 
 article header {
   display: none;
+}
+
+.journal-sheet form .journal-entry-pages {
+  width: inherit;
 }
 
 /* cyrillic-ext */
