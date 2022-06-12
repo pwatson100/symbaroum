@@ -753,7 +753,7 @@ export async function modifyEffectOnToken(token, effect, action, options) {
           }
         }
       } else {
-        token.toggleEffect(effect, { overlay: options.overlay });
+        await token.toggleEffect(effect, { overlay: options.overlay });
       }
     }
   } else if (action == 0) {
