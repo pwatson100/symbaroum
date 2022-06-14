@@ -41,7 +41,7 @@ export class SymbaroumMacros {
 	 * @returns {Promise}
 	 */
 	async createSymbaroumMacro(data, slot) {
-		game.symbaroum.log(system);
+		game.symbaroum.log(data);
 		const folder = game.folders
 			.filter((f) => f.type === "Macro")
 			.find((f) => f.name === game.symbaroum.config.SYSTEM_MACRO_FOLDER);
@@ -63,9 +63,9 @@ export class SymbaroumMacros {
 					m.command === command &&
 					(m.author === game.user.id ||
 						m.ownership.default >=
-							CONST.ENTITY_PERMISSIONS.OBSERVER ||
+							CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER ||
 						m.ownership[game.user.id] >=
-							CONST.ENTITY_PERMISSIONS.OBSERVER)
+							CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER)
 			);
 			if (!macro) {
 				macro = await Macro.create({
@@ -80,7 +80,7 @@ export class SymbaroumMacros {
 					command: command,
 					flags: { "symbaroum.attributeMacro": true },
 					folder: folder?.id,
-					"ownership.default": CONST.ENTITY_PERMISSIONS.OBSERVER,
+					"ownership.default": CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER,
 				});
 			}
 			game.user.assignHotbarMacro(macro, slot);
@@ -100,9 +100,9 @@ export class SymbaroumMacros {
 					m.command === command &&
 					(m.author === game.user.id ||
 						m.ownership.default >=
-							CONST.ENTITY_PERMISSIONS.OBSERVER ||
+							CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER ||
 						m.ownership[game.user.id] >=
-							CONST.ENTITY_PERMISSIONS.OBSERVER)
+							CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER)
 			);
 			if (!macro) {
 				macro = await Macro.create({
@@ -112,7 +112,7 @@ export class SymbaroumMacros {
 					command: command,
 					flags: { "symbaroum.itemMacro": true },
 					folder: folder?.id,
-					"ownership.default": CONST.ENTITY_PERMISSIONS.OBSERVER,
+					"ownership.default": CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER,
 				});
 			}
 			game.user.assignHotbarMacro(macro, slot);

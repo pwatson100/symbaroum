@@ -224,7 +224,7 @@ export function getAttributeValue(actor, attributeName) {
 export async function getOwnerPlayer(actor){
     let permissions = Object.entries(actor.ownership);
     let ownerIds = permissions.reduce((idValue, e) => {
-        if(e[1] === CONST.ENTITY_PERMISSIONS.OWNER) {
+        if(e[1] === CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER) {
             idValue.push(e[0]);
         }
         return idValue
