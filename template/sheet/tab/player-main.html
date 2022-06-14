@@ -2,10 +2,10 @@
     <div class="attributes foreground border">
         <h1>{{localize "TITLE.ATTRIBUTES"}}</h1>
         <button class="modify-attribute">{{localize "ATTRIBUTE.MODIFY"}}</button>
-        {{#each data.attributes as |attribute key|}}
+        {{#each system.attributes as |attribute key|}}
             <div class="attribute">
                 <button class="roll-attribute" data-attribute="{{key}}">{{localize attribute.label}}</button>
-                <input class="input" name="data.attributes.{{key}}.total" type="number" value="{{attribute.total}}" data-dtype="Number" disabled/>
+                <input class="input" name="system.attributes.{{key}}.total" type="number" value="{{attribute.total}}" data-dtype="Number" disabled/>
             </div>
         {{/each}}
     </div>
@@ -15,28 +15,28 @@
         <label for="toughness-current" class="toughness">{{localize "HEALTH.TOUGHNESS"}}</label>
         <div id="toughness-current" class="toughness-current" title="{{localize "TOOLTIP.HEALTH.TOUGHNESS_CURRENT"}}">
             <label>{{localize "HEALTH.TOUGHNESS_CURRENT"}}</label>
-            <input name="data.health.toughness.value" type="number" value="{{data.health.toughness.value}}" data-dtype="Number"/>
+            <input name="system.health.toughness.value" type="number" value="{{system.health.toughness.value}}" data-dtype="Number"/>
         </div>
         <div class="toughness-total" title="{{localize "TOOLTIP.HEALTH.TOUGHNESS_TOTAL"}}">
             <label>{{localize "HEALTH.TOUGHNESS_TOTAL"}}</label>
-            <input type="number" value="{{data.health.toughness.max}}" data-dtype="Number" disabled/>
+            <input type="number" value="{{system.health.toughness.max}}" data-dtype="Number" disabled/>
         </div>
         <div class="toughness-threshold" title="{{localize "TOOLTIP.HEALTH.TOUGHNESS_THRESHOLD"}}">
             <label>{{localize "HEALTH.TOUGHNESS_THRESHOLD"}}</label>
-            <input type="number" value="{{data.health.toughness.threshold}}" data-dtype="Number" disabled/>
+            <input type="number" value="{{system.health.toughness.threshold}}" data-dtype="Number" disabled/>
         </div>
         <label class="corruption">{{localize "HEALTH.CORRUPTION"}}</label>
         <div class="corruption-temporary"  title="{{localize "TOOLTIP.HEALTH.CORRUPTION_CURRENT"}}">
-            <label for="data.health.corruption.temporary">{{localize "HEALTH.CORRUPTION_TEMPORARY"}}</label>
-            <input id="data.health.corruption.temporary" name="data.health.corruption.temporary" type="number" value="{{data.health.corruption.temporary}}" data-dtype="Number"/>
+            <label for="system.health.corruption.temporary">{{localize "HEALTH.CORRUPTION_TEMPORARY"}}</label>
+            <input id="system.health.corruption.temporary" name="system.health.corruption.temporary" type="number" value="{{system.health.corruption.temporary}}" data-dtype="Number"/>
         </div>
         <div class="corruption-permanent" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_PERMANENT"}}">
-            <label for="data.health.corruption.permanent">{{localize "HEALTH.CORRUPTION_PERMANENT"}}</label>
-            <input id="data.health.corruption.permanent" name="data.health.corruption.permanent" type="number" value="{{data.health.corruption.permanent}}" data-dtype="Number"/>
+            <label for="system.health.corruption.permanent">{{localize "HEALTH.CORRUPTION_PERMANENT"}}</label>
+            <input id="system.health.corruption.permanent" name="system.health.corruption.permanent" type="number" value="{{system.health.corruption.permanent}}" data-dtype="Number"/>
         </div>
         <div class="corruption-threshold" title="{{localize "TOOLTIP.HEALTH.CORRUPTION_THRESHOLD"}}">
             <label>{{localize "HEALTH.CORRUPTION_THRESHOLD"}}</label>
-            <input type="number" value="{{data.health.corruption.threshold}}" data-dtype="Number" disabled/>
+            <input type="number" value="{{system.health.corruption.threshold}}" data-dtype="Number" disabled/>
         </div>
     </div>
 
@@ -44,8 +44,8 @@
         <h1>{{localize "TITLE.COMBAT"}}</h1>
         <div class="initiative" title="{{localize "TOOLTIP.COMBAT.INITIATIVE"}}">
             <label>{{localize "INITIATIVE.TITLE"}}</label>
-            <select name="data.initiative.attribute" class="attribute">
-                {{#select data.initiative.attribute}}
+            <select name="system.initiative.attribute" class="attribute">
+                {{#select system.initiative.attribute}}
                 <option value="quick">{{localize "ATTRIBUTE.QUICK"}}</option>
                 <option value="accurate">{{localize "ATTRIBUTE.ACCURATE"}}</option>
                 <option value="cunning">{{localize "ATTRIBUTE.CUNNING"}}</option>
@@ -58,19 +58,19 @@
             </select>
         </div>
         <div class="armor">
-            <button class="roll-armor">{{data.combat.armor}}</button>
+            <button class="roll-armor">{{system.combat.armor}}</button>
             <div class="quality">
                 <label>{{localize "ARMOR.DEFENSE"}}</label>
-                <input type="text" value={{localize data.defense.attributelabel}} disabled />
-                <input type="number" value="{{data.combat.defense}}" data-dtype="Number" disabled />
+                <input type="text" value={{localize system.defense.attributelabel}} disabled />
+                <input type="number" value="{{system.combat.defense}}" data-dtype="Number" disabled />
             </div>
             <div class="protection">
                 <label>{{localize "ARMOR.PROTECTION"}}</label>
-                <input type="text" value="{{data.combat.protectionPc}}" disabled />
+                <input type="text" value="{{system.combat.protectionPc}}" disabled />
             </div>
             <div class="protection">
                 <label>{{localize "ARMOR.IMPEDING"}}</label>
-                <input type="text" value="{{data.combat.impeding}}" disabled />
+                <input type="text" value="{{system.combat.impeding}}" disabled />
             </div>
         </div>
         <div class="weapons">
@@ -80,7 +80,7 @@
                     <b class="damage">{{localize "WEAPON.DAMAGE"}}</b>
                 </div>
                 <div class="items">
-                    {{#each actor.data.weapons as |item|}}
+                    {{#each actor.weapons as |item|}}
                     {{#if item.isActive}}
                         <div class="weapon item" data-item-id="{{item.id}}">
                             <div class="name">
@@ -110,7 +110,7 @@
                             </div>
                             <button class="item-edit ellipsis">{{item.name}}</button>
                         </div>
-                        <div class="actions" title="{{localize "TOOLTIP.POWER_ACTIONS"}}">{{item.data.actions}}</div>
+                        <div class="actions" title="{{localize "TOOLTIP.POWER_ACTIONS"}}">{{item.actions}}</div>
                         <div class="button">
                             <a class="item-control item-delete" title="{{localize "TOOLTIP.DELETE_ABILITY"}}"><i class="fas fa-trash"></i></a>
                         </div>

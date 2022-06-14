@@ -24,22 +24,22 @@
                 <div class="description foreground border">
                     <h1>{{localize "TITLE.DESCRIPTION"}}</h1>
                     <div class="cost">
-                        <label for="{{id}}-data.cost">{{localize "EQUIPMENT.COST"}}</label>
-                        <input id="{{id}}-data.cost" name="data.cost" type="text" value="{{data.cost}}"/>
+                        <label for="{{id}}-system.cost">{{localize "EQUIPMENT.COST"}}</label>
+                        <input id="{{id}}-system.cost" name="system.cost" type="text" value="{{system.cost}}"/>
                     </div>
                     <div class="number">
-                        <label for="{{id}}-data.number">{{localize "EQUIPMENT.NUMBER"}}</label>
-                        <input id="{{id}}-data.number" name="data.number" type="number" value="{{data.number}}"/>
+                        <label for="{{id}}-system.number">{{localize "EQUIPMENT.NUMBER"}}</label>
+                        <input id="{{id}}-system.number" name="system.number" type="number" value="{{system.number}}"/>
                     </div>
                     <div class="number">
-                        <label for="{{id}}-data.isArtifact">{{localize "ITEM.ARTIFACT"}}</label>
+                        <label for="{{id}}-system.isArtifact">{{localize "ITEM.ARTIFACT"}}</label>
                         {{#if data.isArtifact}}
-                        <input id="{{id}}-data.isArtifact" name="data.isArtifact" type="checkbox" value="artifact" checked/>
+                        <input id="{{id}}-system.isArtifact" name="system.isArtifact" type="checkbox" value="artifact" checked/>
                         {{else}}
-                        <input id="{{id}}-data.isArtifact" name="data.isArtifact" type="checkbox" value="artifact"/>
+                        <input id="{{id}}-system.isArtifact" name="system.isArtifact" type="checkbox" value="artifact"/>
                         {{/if}}
                     </div>
-                    {{editor content=data.description target="data.description" button=true owner=owner editable=true}}
+                    {{editor content=system.description target="system.description" button=true owner=owner editable=true}}
                 </div>
             </div>
             <div class="tab" data-group="primary" data-tab="bonus">

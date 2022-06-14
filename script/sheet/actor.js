@@ -93,15 +93,15 @@ export class SymbaroumActorSheet extends ActorSheet {
       return;
     }
     let data;
-    switch (item.data.data.state) {
+    switch (item.system.state) {
       case 'active':
-        data = { _id: item.id, id: item.id, 'data.state': 'equipped' };
+        data = { _id: item.id, id: item.id, 'system.state': 'equipped' };
         break;
       case 'equipped':
-        data = { _id: item.id, id: item.id, 'data.state': 'other' };
+        data = { _id: item.id, id: item.id, 'system.state': 'other' };
         break;
       default:
-        data = { _id: item.id, id: item.id, 'data.state': 'active' };
+        data = { _id: item.id, id: item.id, 'system.state': 'active' };
         break;
     }    
     

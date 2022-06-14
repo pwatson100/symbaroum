@@ -9,8 +9,8 @@ export class SymbaroumItemSheet extends ItemSheet {
   getData() {
     let data = { 
       id:this.item.id,
-      item: this.item.data,
-      data: foundry.utils.deepClone(this.item.data.data),
+      item: this.item,
+      system: foundry.utils.deepClone(this.item.system),
       cssClass : this.isEditable ? "editable" : "locked",
       editable : this.isEditable
     };
@@ -54,7 +54,7 @@ export class SymbaroumItemSheet extends ItemSheet {
     if( isNaN(powerId) ) { 
       return;
     }
-    let arr = this.item.data.data.power;
+    let arr = this.item.system.power;
     delete arr[powerId];
     let vals = Object.values(arr);
     let newArr = {};
@@ -62,20 +62,20 @@ export class SymbaroumItemSheet extends ItemSheet {
       newArr[i] = vals[i];
     }
     let update = { _id:this.item.id};
-    update["data.power"] = newArr;
-    update["data.power.-="+vals.length] = null;
+    update["system.power"] = newArr;
+    update["system.power.-="+vals.length] = null;
     await this.item.update(update);
   }
 
   async _onPowerCreate(event) {
     this.updateOutstandingMCEValues();
     // Lets check editors
-    let arr = this.item.data.data.power;
+    let arr = this.item.system.power;
     let keys = Object.keys(arr);
     arr[keys.length] = {"name": "", "description": "", "action": "", "corruption": ""};
     let update = { 
       _id:this.item.id,
-      "data.power": arr
+      "system.power": arr
     };
     
     this.item.update(update);

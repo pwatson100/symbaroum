@@ -391,15 +391,15 @@ Hooks.on('preCreateActor', (doc, createData, options, userid) => {
     'token.name': createData.name,
   });
 
-  if (doc.data.img === 'icons/svg/mystery-man.svg') {
+  if (doc.img === 'icons/svg/mystery-man.svg') {
     createChanges.img = 'systems/symbaroum/asset/image/unknown-actor.png';
   }
 
-  if (doc.data.type === 'player') {
+  if (doc.type === 'player') {
     createChanges.token.vision = true;
     createChanges.token.actorLink = true;
   }
-  doc.data.update(createChanges);
+  doc.updateSource(createChanges);
 });
 
 // Hooks.on('createOwnedItem', (actor, item) => {});
@@ -503,16 +503,16 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
           let actor = token?.actor ?? game.actors.get(flagData.actorId);
           if (actor !== undefined) {
             if (flagData.toughnessChange) {
-              let newToughness = Math.max(0, Math.min(actor.data.data.health.toughness.max, actor.data.data.health.toughness.value + flagData.toughnessChange));
+              let newToughness = Math.max(0, Math.min(actor.system.health.toughness.max, actor.system.health.toughness.value + flagData.toughnessChange));
               await actor.update({ 'data.health.toughness.value': newToughness });
             }
             if (flagData.attributeChange) {
-              let newMod = actor.data.data.attributes[flagData.attributeName].temporaryMod + flagData.attributeChange;
+              let newMod = actor.system.attributes[flagData.attributeName].temporaryMod + flagData.attributeChange;
               let linkMod = 'data.attributes.' + flagData.attributeName + '.temporaryMod';
               await actor.update({ [linkMod]: newMod });
             }
             if (flagData.corruptionChange) {
-              let newCorruption = actor.data.data.health.corruption.temporary + flagData.corruptionChange;
+              let newCorruption = actor.system.health.corruption.temporary + flagData.corruptionChange;
               await actor.update({ 'data.health.corruption.temporary': newCorruption });
             }
             if (flagData.addObject) {
@@ -564,7 +564,7 @@ function setup3PartySettings() {
     game.settings.set('dice-so-nice', 'enabledSimultaneousRollForMessage', false);
   }
 
-  if (game.modules.get("dice-so-nice")?.active && foundry.utils.isNewerVersion("4.2.2", game.modules.get("dice-so-nice").data.version)) {
+  if (game.modules.get("dice-so-nice")?.active && foundry.utils.isNewerVersion("4.2.2", game.modules.get("dice-so-nice").version)) {
     // If dice so nice is older than 4.2.2 - lets notify
     ui.notifications.warn("Dice So Nice needs to be at minimum 4.2.2 to work with Symbaroum", { permanent: true });
   }
@@ -658,7 +658,7 @@ async function createBlessedShield(actor, protection = '1d4') {
 async function showReleaseNotes() {
   if (game.user.isGM) {
     try {
-      const newVer = game.system.data.version;
+      const newVer = game.system.version;
       const releaseNoteName = 'Symbaroum System guide EN';
       const releasePackLabel = 'Symbaroum for FVTT system user guides';
 

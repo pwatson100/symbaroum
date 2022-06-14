@@ -251,15 +251,15 @@ export const migrateCompendium = async function (pack, worldSystemVersion) {
 const migrateOldActorData = (actor, worldTemplateVersion) => {
     let update = {};
     if (worldTemplateVersion < 3) {
-        update = setValueIfNotExists(update, actor, "data.data.initiative.attribute", "quick");
-        update = setValueIfNotExists(update, actor, "data.data.initiative.value", 0);
-        update = setValueIfNotExists(update, actor, "data.data.defense.attribute", "quick");
-        update = setValueIfNotExists(update, actor, "data.data.corruption.max", 0);
-        update = setValueIfNotExists(update, actor, "data.data.experience.spent", 0);
-        update = setValueIfNotExists(update, actor, "data.data.experience.available", 0);
-        update = setValueIfNotExists(update, actor, "data.data.experience.artifactrr", 0);
-        update = setValueIfNotExists(update, actor, "data.data.health.corruption.value", 0);
-        update = setValueIfNotExists(update, actor, "data.data.health.corruption.longterm", 0)
+        update = setValueIfNotExists(update, actor, "system.initiative.attribute", "quick");
+        update = setValueIfNotExists(update, actor, "system.initiative.value", 0);
+        update = setValueIfNotExists(update, actor, "system.defense.attribute", "quick");
+        update = setValueIfNotExists(update, actor, "system.corruption.max", 0);
+        update = setValueIfNotExists(update, actor, "system.experience.spent", 0);
+        update = setValueIfNotExists(update, actor, "system.experience.available", 0);
+        update = setValueIfNotExists(update, actor, "system.experience.artifactrr", 0);
+        update = setValueIfNotExists(update, actor, "system.health.corruption.value", 0);
+        update = setValueIfNotExists(update, actor, "system.health.corruption.longterm", 0)
     };
     if (worldTemplateVersion < 3.2) {
         update = setValueIfNotExists(update, actor, "data.attributes.accurate.temporaryMod", 0);

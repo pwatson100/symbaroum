@@ -4,7 +4,7 @@
             <div class="avatar" style="position:relative">
                 <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
                 {{#ifgt data.nbrOfFailedDeathRoll 0}}
-                <div title="Death is reached at 3 skulls" style="position: absolute; top: 70%;left: 15px;">{{#times data.nbrOfFailedDeathRoll}}<i class="fas fa-skull" style="margin: 5px; color:rgb(255, 255, 255); vertical-align: bottom; -webkit-text-stroke-width: 1px; -webkit-text-stroke-color: rgb(0, 0, 0);"></i>{{/times}}</div>
+                <div title="Death is reached at 3 skulls" style="position: absolute; top: 70%;left: 15px;">{{#times system.nbrOfFailedDeathRoll}}<i class="fas fa-skull" style="margin: 5px; color:rgb(255, 255, 255); vertical-align: bottom; -webkit-text-stroke-width: 1px; -webkit-text-stroke-color: rgb(0, 0, 0);"></i>{{/times}}</div>
                 {{/ifgt}}
             </div>
             <div class="wrapper-column">
@@ -15,29 +15,29 @@
                     </div>
                     <div class="experience">
                         <label for="data.experience.total">{{localize "EXPERIENCE"}}</label>
-                        <input id="data.experience.total" name="data.experience.total" title="{{localize "TOOLTIP.EXPERIENCE_TOTAL"}}" type="number" value="{{data.experience.total}}" data-dtype="Number" />
-                        <input name="data.experience.artifactrr" title="{{localize "TOOLTIP.EXPERIENCE_ARTIFACTRR"}}" type="number" value="{{data.experience.artifactrr}}" data-dtype="Number" />
-                        <input name="data.experience.spent" title="{{localize "TOOLTIP.EXPERIENCE_SPENT"}}" type="number" value="{{data.experience.spent}}" data-dtype="Number" disabled />
-                        <input name="data.experience.available" title="{{localize "TOOLTIP.EXPERIENCE_AVAILABLE"}}" type="number" value="{{data.experience.available}}" data-dtype="Number" disabled />
+                        <input id="data.experience.total" name="system.experience.total" title="{{localize "TOOLTIP.EXPERIENCE_TOTAL"}}" type="number" value="{{system.experience.total}}" data-dtype="Number" />
+                        <input name="system.experience.artifactrr" title="{{localize "TOOLTIP.EXPERIENCE_ARTIFACTRR"}}" type="number" value="{{system.experience.artifactrr}}" data-dtype="Number" />
+                        <input name="system.experience.spent" title="{{localize "TOOLTIP.EXPERIENCE_SPENT"}}" type="number" value="{{system.experience.spent}}" data-dtype="Number" disabled />
+                        <input name="system.experience.available" title="{{localize "TOOLTIP.EXPERIENCE_AVAILABLE"}}" type="number" value="{{system.experience.available}}" data-dtype="Number" disabled />
 
                     </div>
 
                 </div>
                 <div class="wrapper-row">
                     <div class="race">
-                        <label for="{{id}}-data.bio.race">{{localize "BIO.RACE"}}</label>
-                        <input id="{{id}}-data.bio.race" name="data.bio.race" type="text" value="{{data.bio.race}}" />
+                        <label for="{{id}}-system.bio.race">{{localize "BIO.RACE"}}</label>
+                        <input id="{{id}}-system.bio.race" name="system.bio.race" type="text" value="{{system.bio.race}}" />
                     </div>
                     <div class="occupation">
-                        <label for="{{id}}-data.bio.occupation">{{localize "BIO.OCCUPATION"}}</label>
-                        <input id="{{id}}-data.bio.occupation" name="data.bio.occupation" type="text" value="{{data.bio.occupation}}" />
+                        <label for="{{id}}-system.bio.occupation">{{localize "BIO.OCCUPATION"}}</label>
+                        <input id="{{id}}-system.bio.occupation" name="system.bio.occupation" type="text" value="{{system.bio.occupation}}" />
                     </div>
                 </div>
                 {{#ife actor.type 'player'}}
                     <div class="wrapper-row">
                         <div class="quote">
-                            <label for="{{id}}-data.bio.quote">{{localize "BIO.QUOTE"}}</label>
-                            <input id="{{id}}-data.bio.quote" name="data.bio.quote" type="text" value="{{data.bio.quote}}" />
+                            <label for="{{id}}-system.bio.quote">{{localize "BIO.QUOTE"}}</label>
+                            <input id="{{id}}-system.bio.quote" name="system.bio.quote" type="text" value="{{system.bio.quote}}" />
                         </div>
                     </div>
                 {{/ife}}
@@ -45,14 +45,14 @@
                 {{#ife actor.type 'monster'}}
                     <div class="wrapper-row">
                         <div class="manner">
-                            <label for="{{id}}-data.bio.manner">{{localize "BIO.MANNER"}}</label>
-                            <input id="{{id}}-data.bio.manner" name="data.bio.manner" type="text" value="{{data.bio.manner}}" />
+                            <label for="{{id}}-system.bio.manner">{{localize "BIO.MANNER"}}</label>
+                            <input id="{{id}}-system.bio.manner" name="system.bio.manner" type="text" value="{{system.bio.manner}}" />
                         </div>
                     </div>
                     <div class="wrapper-row">
                         <div class="shadow">
-                            <label for="{{id}}-data.bio.shadow">{{localize "BIO.SHADOW"}}</label>
-                            <input id="{{id}}-data.bio.shadow" name="data.bio.shadow" type="text" value="{{data.bio.shadow}}" />
+                            <label for="{{id}}-system.bio.shadow">{{localize "BIO.SHADOW"}}</label>
+                            <input id="{{id}}-system.bio.shadow" name="system.bio.shadow" type="text" value="{{system.bio.shadow}}" />
                         </div>
                     </div>
                 {{/ife}}
