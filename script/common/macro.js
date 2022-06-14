@@ -53,19 +53,19 @@ export class SymbaroumMacros {
 
 			const commmandName = game.i18n.format("MACRO.MAKETEST", {
 				testtype: game.i18n.localize(
-					actor.data.data.attributes[data.attribute].label
+					actor.system.attributes[data.attribute].label
 				),
 			});
 
 			let macro = game.macros.find(
 				(m) =>
 					m.name === commmandName &&
-					m.data.command === command &&
-					(m.data.author === game.user.id ||
-						m.data.permission.default >=
-							CONST.ENTITY_PERMISSIONS.OBSERVER ||
-						m.data.permission[game.user.id] >=
-							CONST.ENTITY_PERMISSIONS.OBSERVER)
+					m.command === command &&
+					(m.author === game.user.id ||
+						m.ownership.default >=
+							CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER ||
+						m.ownership[game.user.id] >=
+							CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER)
 			);
 			if (!macro) {
 				macro = await Macro.create({
@@ -80,7 +80,7 @@ export class SymbaroumMacros {
 					command: command,
 					flags: { "symbaroum.attributeMacro": true },
 					folder: folder?.id,
-					"permission.default": CONST.ENTITY_PERMISSIONS.OBSERVER,
+					"ownership.default": CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER,
 				});
 			}
 			game.user.assignHotbarMacro(macro, slot);
@@ -90,18 +90,19 @@ export class SymbaroumMacros {
 				return ui.notifications.warn(
 					game.i18n.localize("ERROR.MACRO_NOT_OWNED")
 				);
+			// TODO - Not sure what do do here
 			const item = data.data;
 			// Create the macro command
 			const command = `game.symbaroum.macros.rollItem("${item.name}");`;
 			let macro = game.macros.find(
 				(m) =>
 					m.name === item.name &&
-					m.data.command === command &&
-					(m.data.author === game.user.id ||
-						m.data.permission.default >=
-							CONST.ENTITY_PERMISSIONS.OBSERVER ||
-						m.data.permission[game.user.id] >=
-							CONST.ENTITY_PERMISSIONS.OBSERVER)
+					m.command === command &&
+					(m.author === game.user.id ||
+						m.ownership.default >=
+							CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER ||
+						m.ownership[game.user.id] >=
+							CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER)
 			);
 			if (!macro) {
 				macro = await Macro.create({
@@ -111,7 +112,7 @@ export class SymbaroumMacros {
 					command: command,
 					flags: { "symbaroum.itemMacro": true },
 					folder: folder?.id,
-					"permission.default": CONST.ENTITY_PERMISSIONS.OBSERVER,
+					"ownership.default": CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER,
 				});
 			}
 			game.user.assignHotbarMacro(macro, slot);
@@ -149,7 +150,7 @@ export class SymbaroumMacros {
 		if (!actor) actor = game.actors.get(speaker.actor);
 		const item = actor
 			? actor.items.find(
-					(i) => i.name === itemName && i.data.data.isActive
+					(i) => i.name === itemName && i.system.isActive
 			)
 			: null;
 		if (!item)
@@ -157,17 +158,17 @@ export class SymbaroumMacros {
 				game.i18n.localize("ERROR.MACRO_NO_OBJECT") + itemName
 			);
 
-		if (item.data.isWeapon) {
-			const weapon = actor.data.data.weapons.filter(
+		if (item.system.isWeapon) {
+			const weapon = actor.system.weapons.filter(
 				(it) => it.id == item.id
 			)[0];
 			return actor.rollWeapon(weapon);
 		}
-		if (item.data.isArmor) {
+		if (item.system.isArmor) {
 			return actor.rollArmor();
-		} else if (item.data.isPower) {
+		} else if (item.system.isPower) {
 			if (
-				actor.data.data.combat.combatMods.abilities[item.data._id]
+				actor.system.combat.combatMods.abilities[item.id]
 					?.isScripted
 			) {
 				return actor.usePower(item);
@@ -191,7 +192,7 @@ export class SymbaroumMacros {
 			// If no actor selected
 			// Time to get busy
 			canvas.tokens.controlled.map((e) => {
-				if (e.actor.data.type === "player") {
+				if (e.actor.type === "player") {
 					if (game.user.isGM || e.actor.owner)
 						actorslist.push(e.actor);
 				}
@@ -200,7 +201,7 @@ export class SymbaroumMacros {
 			let gameacts = game.actors.filter((e) => {
 				if (
 					(game.user.isGM || e.owner) &&
-					e.data.type === "player" &&
+					e.type === "player" &&
 					e.hasPlayerOwner
 				) {
 					return e;
@@ -213,8 +214,8 @@ export class SymbaroumMacros {
 		actorslist.forEach((t) => {
 			allKeys =
 				allKeys.concat(`<div style="flex-basis: auto;flex-direction: row;display: flex;">
-                    <div style="width:10em;min-width:10em;"><label for="${t.data._id}">${t.data.name}</label> </div>
-                    <div><input id="${t.data._id}" type="checkbox" name="selection" value="${t.data._id}" ${defaultCheck}="${defaultCheck}"></div>
+                    <div style="width:10em;min-width:10em;"><label for="${t.id}">${t.name}</label> </div>
+                    <div><input id="${t.id}" type="checkbox" name="selection" value="${t.id}" ${defaultCheck}="${defaultCheck}"></div>
                 </div>`);
 		});
 
@@ -275,7 +276,7 @@ export class SymbaroumMacros {
 
 			return {
 				_id: a,
-				"data.experience.total": aexp.data.data.experience.total + exp,
+				"system.experience.total": aexp.system.experience.total + exp,
 			};
 		});
 
@@ -351,18 +352,18 @@ export class SymbaroumMacros {
 				}
 				let actor = token.actor;
 				if (
-					actor.data.data.attributes[type] === undefined ||
-					actor.data.data.attributes[type] === null
+					actor.system.attributes[type] === undefined ||
+					actor.system.attributes[type] === null
 				) {
 					console.log("This is not an attribute in Symbaroum");
 					break;
 				}
 				let tot =
-					actor.data.data.attributes[type].temporaryMod + calcDam;
+					actor.system.attributes[type].temporaryMod + calcDam;
 				let modification = {};
 				setProperty(
 					modification,
-					`data.attributes.${type}.temporaryMod`,
+					`system.attributes.${type}.temporaryMod`,
 					tot
 				);
 				await actor.update(modification);
@@ -381,13 +382,13 @@ export class SymbaroumMacros {
             // If no actor selected
             // Time to get busy
             canvas.tokens.controlled.map(e => { 
-                if(game.user.isGM || e.actor.owner && e.actor.data.type === "player" && e.hasPlayerOwner) {
+                if(game.user.isGM || e.actor.owner && e.actor.type === "player" && e.hasPlayerOwner) {
 					actorslist.push(e.actor);
                 }
             });
         } else {     
             // if there are no controlled tokens on the map, select all player actors in the actor catalogue
-            let gameacts = game.actors.filter(e => { if( (game.user.isGM || e.owner) && e.data.type === "player" && e.hasPlayerOwner) { return e; } });
+            let gameacts = game.actors.filter(e => { if( (game.user.isGM || e.owner) && e.type === "player" && e.hasPlayerOwner) { return e; } });
             Array.prototype.push.apply(actorslist, gameacts);
         }
     
@@ -401,15 +402,15 @@ export class SymbaroumMacros {
         let allActors = "";
         actorslist.forEach(t => {
             allActors = allActors.concat(`<div style="flex-basis: auto;flex-direction: row;display: flex;">
-                    <div style="width:10em;min-width:10em;"><label for="${t.data._id}">${t.data.name}</label> </div>
-                    <div><input id="${t.data._id}" type="radio" name="selection" value="${t.data._id}" ${defaultCheck}="${defaultCheck}"></div>
+                    <div style="width:10em;min-width:10em;"><label for="${t.id}">${t.name}</label> </div>
+                    <div><input id="${t.id}" type="radio" name="selection" value="${t.id}" ${defaultCheck}="${defaultCheck}"></div>
                 </div>`);
         });
         
-        let keys = Object.keys(actorslist[0].data.data.attributes);
+        let keys = Object.keys(actorslist[0].system.attributes);
         let allKeys = "";
         keys.forEach(t => {
-            allKeys = allKeys.concat(`<option value="${t}">${game.i18n.localize(actorslist[0].data.data.attributes[t].label)}`);
+            allKeys = allKeys.concat(`<option value="${t}">${game.i18n.localize(actorslist[0].system.attributes[t].label)}`);
         });
     
         let dialog_content = `  

@@ -23,7 +23,7 @@
             <div class="tab" data-group="primary" data-tab="description">
                 <div class="description foreground border">
                     <h1>{{localize "TITLE.DESCRIPTION"}}</h1>
-                    {{editor content=data.description target="data.description" button=true owner=owner editable=true}}
+                    {{editor content=system.description target="system.description" button=true owner=owner editable=true}}
                 </div>
             </div>
             <div class="tab" data-group="primary" data-tab="power1">
@@ -31,8 +31,8 @@
                     <h1>{{localize "TITLE.POWER"}} 1</h1>
                     <div class="action">
                         <label>{{localize "ARTIFACT.ACTION"}}</label>
-                        <select name="data.power1.action">
-                            {{#select data.power1.action}}
+                        <select name="system.power1.action">
+                            {{#select system.power1.action}}
                                 <option value="-">-</option>
                                 <option value="A">{{localize "ACTION.ACTIVE"}}</option>
                                 <option value="M">{{localize "ACTION.MOVEMENT"}}</option>
@@ -46,9 +46,9 @@
                     </div>
                     <div class="corruption">
                         <label>{{localize "ARTIFACT.CORRUPTION"}}</label>
-                        <input name="data.power1.corruption" type="text" value="{{data.power1.corruption}}" />
+                        <input name="system.power1.corruption" type="text" value="{{system.power1.corruption}}" />
                     </div>
-                    {{editor content=data.power1.description target="data.power1.description" button=true owner=owner editable=true}}
+                    {{editor content=system.power1.description target="system.power1.description" button=true owner=owner editable=true}}
                 </div>
             </div>
             <div class="tab" data-group="primary" data-tab="power2">
@@ -56,8 +56,8 @@
                     <h1>{{localize "TITLE.POWER"}} 2</h1>
                     <div class="action">
                         <label>{{localize "ARTIFACT.ACTION"}}</label>
-                        <select name="data.power2.action">
-                            {{#select data.power2.action}}
+                        <select name="system.power2.action">
+                            {{#select system.power2.action}}
                                 <option value="-">-</option>
                                 <option value="A">{{localize "ACTION.ACTIVE"}}</option>
                                 <option value="M">{{localize "ACTION.MOVEMENT"}}</option>
@@ -71,9 +71,9 @@
                     </div>
                     <div class="corruption">
                         <label>{{localize "ARTIFACT.CORRUPTION"}}</label>
-                        <input name="data.power2.corruption" type="text" value="{{data.power2.corruption}}" />
+                        <input name="system.power2.corruption" type="text" value="{{system.power2.corruption}}" />
                     </div>
-                    {{editor content=data.power2.description target="data.power2.description" button=true owner=owner editable=true}}
+                    {{editor content=system.power2.description target="system.power2.description" button=true owner=owner editable=true}}
                 </div>
             </div>
             <div class="tab" data-group="primary" data-tab="power3">
@@ -81,8 +81,8 @@
                     <h1>{{localize "TITLE.POWER"}} 3</h1>
                     <div class="action">
                         <label>{{localize "ARTIFACT.ACTION"}}</label>
-                        <select name="data.power3.action">
-                            {{#select data.power3.action}}
+                        <select name="system.power3.action">
+                            {{#select system.power3.action}}
                                 <option value="-">-</option>
                                 <option value="A">{{localize "ACTION.ACTIVE"}}</option>
                                 <option value="M">{{localize "ACTION.MOVEMENT"}}</option>
@@ -96,9 +96,9 @@
                     </div>
                     <div class="corruption">
                         <label>{{localize "ARTIFACT.CORRUPTION"}}</label>
-                        <input name="data.power3.corruption" type="text" value="{{data.power3.corruption}}" />
+                        <input name="system.power3.corruption" type="text" value="{{system.power3.corruption}}" />
                     </div>
-                    {{editor content=data.power3.description target="data.power3.description" button=true owner=owner editable=true}}
+                    {{editor content=system.power3.description target="system.power3.description" button=true owner=owner editable=true}}
                 </div>
             </div>
             <div class="tab" data-group="primary" data-tab="bonus">

@@ -68,7 +68,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
                     label: game.i18n.localize("BUTTON.RECOVER"),
                     class: "recover-death-roll",
                     icon: "fas fa-heart",
-                    onclick: async (ev) => await this.actor.update( {"data.nbrOfFailedDeathRoll":0 })
+                    onclick: async (ev) => await this.actor.update( {"system.nbrOfFailedDeathRoll":0 })
                 }
             ].concat(buttons);
         }
@@ -95,17 +95,18 @@ export class PlayerSheet extends SymbaroumActorSheet {
     async _prepareRollWeapon(event) {
         event.preventDefault();
         const div = $(event.currentTarget).parents(".item");
-        const weapon = this.actor.data.data.weapons.filter(item => item.id == div.data("itemId"))[0];
+        const weapon = this.actor.system.weapons.filter(item => item.id == div.data("itemId"))[0];
         await this.actor.rollWeapon(weapon);
     }
 
     async _modifyAttributes(event) {
         event.preventDefault();
-        let data = foundry.utils.deepClone(this.actor.data.data);
-        data.id = this.actor.id;
+        let system = foundry.utils.deepClone(this.actor.system);
+        system.id = this.actor.id;
 
         const html = await renderTemplate('systems/symbaroum/template/sheet/attributes.html', {
-            data: data
+            id: this.actor.id,
+            system: system
         });
         let title = game.i18n.localize('TITLE.ATTRIBUTES');
         let dialog = new Dialog({
@@ -117,18 +118,18 @@ export class PlayerSheet extends SymbaroumActorSheet {
                     icon: '<i class="fas fa-check"></i>',
                     label: game.i18n.localize('BUTTON.CONFIRM'),
                     callback: async (html) => {
-                        for (var aKey in data.attributes) {
-                            var base = "#" + data.id + "-" + [aKey] + "-value";
+                        for (var aKey in system.attributes) {
+                            var base = "#" + system.id + "-" + [aKey] + "-value";
                             const stringValue = html.find(base)[0].value;
 
                             let newValue = parseInt(stringValue, 10);
                             if( !isNaN(newValue)) {
-                                let link = "data.attributes."+[aKey]+".value";
+                                let link = "system.attributes."+[aKey]+".value";
                                 var mod = "#" + [aKey] + "-mod";
                                 const stringMod = html.find(mod)[0].value;
                                 let newModValue = parseInt(stringMod, 10);
                                 if( !isNaN(newModValue)) {
-                                    let linkMod = "data.attributes."+[aKey]+".temporaryMod";
+                                    let linkMod = "system.attributes."+[aKey]+".temporaryMod";
                                     await this.actor.update({ [link] : newValue, [linkMod] : newModValue });
                                 }
                             }

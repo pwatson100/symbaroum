@@ -12,13 +12,13 @@ export class SymbaroumCommsListener
                 content: html
             };
             let newMessage = await ChatMessage.create(chatData);
-            await newMessage.setFlag(game.system.id, 'applyEffects', data.data);
+            await newMessage.setFlag(game.system.id, 'applyEffects', data.system);
         }
-        else if(data.type === "ResistRoll" && data.data.targetUserId === game.user.data._id)
+        else if(data.type === "ResistRoll" && system.targetUserId === game.user.data.id)
         {
             let templateData = {
-                introText: data.data.introText,
-                mainText: data.data.mainText
+                introText: system.introText,
+                mainText: system.mainText
             }
             const html = await renderTemplate("systems/symbaroum/template/chat/resistButton.html", templateData);
             const chatData = {
@@ -27,7 +27,7 @@ export class SymbaroumCommsListener
                 content: html
             };
             let newMessage = await ChatMessage.create(chatData);
-            await newMessage.setFlag(game.system.id, 'resistRoll', data.data);
+            await newMessage.setFlag(game.system.id, 'resistRoll', data.system);
         }
     }
 

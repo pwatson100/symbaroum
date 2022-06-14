@@ -19,7 +19,7 @@
                         </tr>
                     </thead>
                     </tbody>
-                    {{#each actor.data.armors as |item|}}   
+                    {{#each actor.system.armors as |item|}}   
                         <tr class="armor item" data-item-id="{{item.id}}" >
                             <td>
                                 <div class="cell">
@@ -78,7 +78,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                {{#each actor.data.weapons as |item|}}
+                {{#each actor.system.weapons as |item|}}
                     <tr class="weapon item" data-item-id="{{item.id}}" >
                         <td>
                             <div class="cell">
@@ -132,7 +132,7 @@
                     </thead>
                     <tbody>
                         {{#each items as |item|}}
-                        {{#if item.data.isArtifact}}                        
+                        {{#if item.system.isArtifact}}                        
                         <tr class="artifact item" data-item-id="{{item.id}}">
                             <td class="name">
                                 <div class="cell">
@@ -151,16 +151,16 @@
                                 <div class="corruption ellipsis">{{item.getArtifactCorruptions}}</div>
                             </td>
                             <td class="state">
-                                {{#if item.data.isActive}}
+                                {{#if item.system.isActive}}
                                     <a class="item-state" title="{{localize 'GEAR.ACTIVE'}}"><i class="fas fa-tshirt"></i></a>
-                                {{else if item.data.isEquipped}}
+                                {{else if item.system.isEquipped}}
                                     <a class="item-state" title="{{localize 'GEAR.EQUIPPED'}}"><i class="fas fa-suitcase"></i></a>
                                 {{else}}
                                     <a class="item-state" title="{{localize 'GEAR.OTHER'}}"><i class="fas fa-warehouse"></i></a>
                                 {{/if}}
                             </td>
                             <td class="button">
-                                {{#if item.data.typeArtifact}}
+                                {{#if item.system.typeArtifact}}
                                 <a class="item-control item-delete" title="{{localize "ARTIFACT.DELETEBUTTON"}}"><i class="fas fa-trash"></i></a>
                                 {{/if}}
                             </td>                            
@@ -189,7 +189,7 @@
                     </thead>
                     <tbody>
                         {{#each items as |item|}}
-                        {{#if item.data.isEquipment}}                       
+                        {{#if item.system.isEquipment}}                       
                         <tr class="equipment item" data-item-id="{{item.id}}">
                             <td class="name" title="{{item.name}}">
                                 <div class="cell">
@@ -202,12 +202,12 @@
                                 </div>
                             </td>
                             <td class="quantity">
-                                <div class="quantity">{{item.data.data.number}}</div>
+                                <div class="quantity">{{item.system.number}}</div>
                             </td>
                             <td class="state">
-                                {{#if item.data.isActive}}
+                                {{#if item.system.isActive}}
                                     <a class="item-state" title="{{localize 'GEAR.ACTIVE'}}"><i class="fas fa-tshirt"></i></a>
-                                {{else if item.data.isEquipped}}
+                                {{else if item.system.isEquipped}}
                                     <a class="item-state" title="{{localize 'GEAR.EQUIPPED'}}"><i class="fas fa-suitcase"></i></a>
                                 {{else}}
                                     <a class="item-state" title="{{localize 'GEAR.OTHER'}}"><i class="fas fa-warehouse"></i></a>
@@ -226,16 +226,16 @@
         <div class="money foreground">
             <h1>{{localize "TITLE.MONEY"}}</h1>
             <div class="thaler">
-                <label for="{{id}}-data.money.thaler">{{localize "MONEY.THALER"}}</label>
-                <input id="{{id}}-data.money.thaler" name="data.money.thaler" type="number" value="{{data.money.thaler}}" data-dtype="Number" />
+                <label for="{{id}}-system.money.thaler">{{localize "MONEY.THALER"}}</label>
+                <input id="{{id}}-system.money.thaler" name="system.money.thaler" type="number" value="{{system.money.thaler}}" data-dtype="Number" />
             </div>
             <div class="shilling">
-                <label for="{{id}}-data.money.shilling">{{localize "MONEY.SHILLING"}}</label>
-                <input id="{{id}}-data.money.shilling" name="data.money.shilling" type="number" value="{{data.money.shilling}}" data-dtype="Number" />
+                <label for="{{id}}-system.money.shilling">{{localize "MONEY.SHILLING"}}</label>
+                <input id="{{id}}-system.money.shilling" name="system.money.shilling" type="number" value="{{system.money.shilling}}" data-dtype="Number" />
             </div>
             <div class="orteg">
-                <label for="{{id}}-data.money.orteg">{{localize "MONEY.ORTEG"}}</label>
-                <input id="{{id}}-data.money.orteg" name="data.money.orteg" type="number" value="{{data.money.orteg}}" data-dtype="Number" />
+                <label for="{{id}}-system.money.orteg">{{localize "MONEY.ORTEG"}}</label>
+                <input id="{{id}}-system.money.orteg" name="system.money.orteg" type="number" value="{{system.money.orteg}}" data-dtype="Number" />
             </div>
         </div>
     </div>

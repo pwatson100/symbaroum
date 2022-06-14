@@ -22,15 +22,15 @@ export class PlayerSheet2 extends PlayerSheet {
     getData() {
         let data = {
             id: this.actor.id,
-            actor: foundry.utils.deepClone(this.actor.data),
-            data: foundry.utils.deepClone(this.actor.data.data),        
+            actor: foundry.utils.deepClone(this.actor),
+            system: foundry.utils.deepClone(this.actor.system),        
         }
 
-        let items = Array.from(this.actor.data.items.values()).sort( (a, b) => {
-            if(a.data.type == b.data.type) {
-                return a.data.name == b.data.name ? 0 : a.data.name < b.data.name ? -1:1;
+        let items = Array.from(this.actor.items.values()).sort( (a, b) => {
+            if(a.type == b.type) {
+                return a.name == b.name ? 0 : a.name < b.name ? -1:1;
             } else {                
-                return  (game.symbaroum.config.itemSortOrder.indexOf(a.data.type) - game.symbaroum.config.itemSortOrder.indexOf(b.data.type));
+                return  (game.symbaroum.config.itemSortOrder.indexOf(a.type) - game.symbaroum.config.itemSortOrder.indexOf(b.type));
             }
         });
 

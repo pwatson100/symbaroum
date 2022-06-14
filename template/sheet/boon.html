@@ -10,13 +10,13 @@
                     <input id="{{id}}-name" name="name" type="text" value="{{item.name}}"/>
                 </div>
                 <div class="level">
-                    <label for="{{id}}-data.level">{{localize "BOON.LEVEL"}}</label>
-                    <input id="{{id}}-data.level" name="data.level" type="text" value="{{data.level}}" data-dtype="Number"/>
+                    <label for="{{id}}-system.level">{{localize "BOON.LEVEL"}}</label>
+                    <input id="{{id}}-system.level" name="system.level" type="text" value="{{system.level}}" data-dtype="Number"/>
                 </div>
                 {{#ifat symbaroumOptions.isGM symbaroumOptions.allowShowReference }}
                 <div class="name">
-                    <label for="{{id}}-data.reference">{{localize "ABILITY.REFERENCE"}}</label>
-                    <input id="{{id}}-data.reference" name="data.reference" type="text" value="{{data.reference}}"/>
+                    <label for="{{id}}-system.reference">{{localize "ABILITY.REFERENCE"}}</label>
+                    <input id="{{id}}-system.reference" name="system.reference" type="text" value="{{system.reference}}"/>
                 </div>
                 {{/ifat}}
             </div>
@@ -31,7 +31,7 @@
             <div class="tab" data-group="primary" data-tab="description">
                 <div class="description foreground border">
                     <h1>{{localize "TITLE.DESCRIPTION"}}</h1>
-                    {{editor content=data.description target="data.description" button=true owner=owner editable=true}}
+                    {{editor content=system.description target="system.description" button=true owner=owner editable=true}}
                 </div>
             </div>
             <div class="tab" data-group="primary" data-tab="bonus">
