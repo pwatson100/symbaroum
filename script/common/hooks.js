@@ -403,6 +403,10 @@ Hooks.on('preCreateActor', (doc, createData, options, userid) => {
 });
 
 // Hooks.on('createOwnedItem', (actor, item) => {});
+Hooks.on("changeSidebarTabA", (app) => {
+  game.symbaroum.log("In changeSidebarTab - sorting out available compendiums", app, app.rendered);
+  
+});
 
 Hooks.on("renderCompendiumDirectory", (app, html, data) => {
   game.symbaroum.log("In renderCompendiumDirectory - sorting out available compendiums");
@@ -411,6 +415,7 @@ Hooks.on("renderCompendiumDirectory", (app, html, data) => {
     const filterEnglish = game.settings.get("symbaroum", "showEnglishPacks");
 
     let languageCodeRegex = `systemuserguides|${game.i18n.lang}`;
+    game.symbaroum.log("languageCodeRegex",languageCodeRegex);
     if (filterEnglish && game.i18n.lang !== "en") {
       languageCodeRegex = `en|${languageCodeRegex}`;
     }
@@ -423,7 +428,7 @@ Hooks.on("renderCompendiumDirectory", (app, html, data) => {
     const translatedReg = new RegExp(`symbaroum(.*)${game.i18n.lang}$`);
     const macroReg = new RegExp(`symbaroum${avoidEnglishMacroSystem}en$`);
     let irrelvantCompendiums = game.packs.contents.filter((comp) => {
-      if (comp.metadata.package === "symbaroum" && !/systemuserguides$/.test(comp.metadata.name) && !langReg.test(comp.metadata.name)) {
+      if (comp.metadata.packageName === "symbaroum" && !/systemuserguides$/.test(comp.metadata.name) && !langReg.test(comp.metadata.name)) {
         if (avoidEnglishMacroSystem !== null && macroReg.test(comp.metadata.name)) {
           return false;
         }
@@ -436,6 +441,8 @@ Hooks.on("renderCompendiumDirectory", (app, html, data) => {
       }
       return false;
     });
+    game.symbaroum.log("Translated docs are",translatedDocs);
+    game.symbaroum.log("Irrelvnant docs are",irrelvantCompendiums);
     const enReg = new RegExp(`symbaroum(.*)en$`);
     for (const comp of irrelvantCompendiums) {
       // check if the english doc is not one of the translated ones, continue
@@ -446,6 +453,7 @@ Hooks.on("renderCompendiumDirectory", (app, html, data) => {
         }
       }
       let compositeKey = `${comp.metadata.system}.${comp.metadata.name}`;
+      game.symbaroum.log("Removing compendium", compositeKey);
       game.packs.delete(compositeKey);
       html.find(`li[data-pack="${compositeKey}"]`).hide();
     }
