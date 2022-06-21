@@ -3611,7 +3611,7 @@ async function standardPowerResult(rollData, functionStuff){
     }
 
     if(functionStuff.ability.data.reference === "witchsight" && functionStuff.targetData.hasTarget && trueActorSucceeded){
-        finalText = game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_FINAL1') + functionStuff.targetData.name + game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_FINAL2') +  functionStuff.targetData.actor.data.data.bio.shadow;
+        finalText = game.i18n.format(game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_FINAL'), namesForText) + functionStuff.targetData.actor.data.data.bio.shadow;
     }
 
     if(doDamage){
