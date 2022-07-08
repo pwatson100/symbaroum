@@ -2167,7 +2167,7 @@ export class SymbaroumItem extends Item {
         base.introText= game.i18n.localize('POWER_INHERITWOUND.CHAT_INTRO');
         base.resultTextSuccess= game.i18n.localize('POWER_INHERITWOUND.CHAT_SUCCESS');
         base.resultTextFail= game.i18n.localize('POWER_INHERITWOUND.CHAT_FAILURE');
-        base.healFormulaSucceed = (base.powerLvl.level > 2) ? "1d8" : "1d6";
+        base.healFormulaSucceed = (base.powerLvl.level > 1) ? "1d8" : "1d6";
         base.damageType = {
             mysticIgnArm: true
         };
