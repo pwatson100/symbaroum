@@ -225,7 +225,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
                     ecData.modifier += member.modifier;
                     ecData.autoParams += ", "+member.label;
                   }
-                  else if(member.type == game.symbaroum.config.STATUS_DOT) {
+                  else if(ecOn && member.type == game.symbaroum.config.STATUS_DOT) {
                     let dotime = Object.assign({}, member);
                     ecData.damageOverTime.push(dotime)
                   }
