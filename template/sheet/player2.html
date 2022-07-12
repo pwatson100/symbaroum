@@ -15,13 +15,11 @@
                     </div>
                     <div class="experience">
                         <label for="data.experience.total">{{localize "EXPERIENCE"}}</label>
-                        <input id="data.experience.total" name="system.experience.total" title="{{localize "TOOLTIP.EXPERIENCE_TOTAL"}}" type="number" value="{{system.experience.total}}" data-dtype="Number" />
-                        <input name="system.experience.artifactrr" title="{{localize "TOOLTIP.EXPERIENCE_ARTIFACTRR"}}" type="number" value="{{system.experience.artifactrr}}" data-dtype="Number" />
-                        <input name="system.experience.spent" title="{{localize "TOOLTIP.EXPERIENCE_SPENT"}}" type="number" value="{{system.experience.spent}}" data-dtype="Number" disabled />
-                        <input name="system.experience.available" title="{{localize "TOOLTIP.EXPERIENCE_AVAILABLE"}}" type="number" value="{{system.experience.available}}" data-dtype="Number" disabled />
-
+                        <input id="data.experience.total" name="system.experience.total" data-tooltip="{{localize "TOOLTIP.EXPERIENCE_TOTAL"}}" type="number" value="{{system.experience.total}}" data-dtype="Number" />
+                        <input name="system.experience.artifactrr" data-tooltip="{{localize "TOOLTIP.EXPERIENCE_ARTIFACTRR"}}" type="number" value="{{system.experience.artifactrr}}" data-dtype="Number" />
+                        <input name="system.experience.spent" data-tooltip="{{localize "TOOLTIP.EXPERIENCE_SPENT"}}" type="number" value="{{system.experience.spent}}" data-dtype="Number" disabled />
+                        <input name="system.experience.available" data-tooltip="{{localize "TOOLTIP.EXPERIENCE_AVAILABLE"}}" type="number" value="{{system.experience.available}}" data-dtype="Number" disabled />
                     </div>
-
                 </div>
                 <div class="wrapper-row">
                     <div class="race">
