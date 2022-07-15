@@ -643,6 +643,9 @@
   "QUALITY.POISON": "Giftdrypande",
   "QUALITY.THUNDERING": "Dundrande",
   "QUALITY.RETRIBUTIVE": "Vedergällande",
+  "QUALITY.KNIFEPLAY_COMP": "Knife Play compatible",
+  "QUALITY.STAFFFIGHTING_COMP": "Staff Fighting compatible",
+  "QUALITY.SWORDSAINT_COMP": "Sword saint compatible",
 
   "RITUAL.TRADITION": "Tradition",
   "RITUAL.DESCRIPTION": "Beskrivning",
@@ -680,6 +683,7 @@
   "TITLE.POWER": "KRAFT",
   "TITLE.MONEY": "PENGAR",
   "TITLE.QUALITIES":"KVALITETER",
+  "TITLE.SPECIALQUALITIES":"ABILITIES COMPATIBILITY",
 
   "TOOLTIP.BONUS_TOTAL": "Totalt",
 

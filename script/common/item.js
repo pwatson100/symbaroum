@@ -1186,7 +1186,7 @@ export class SymbaroumItem extends Item {
         if(lvl.level == 0) return;
         for(let i = 0; i < weapons.length; i++)
         {
-            if(!weapons[i].data.data.isMelee || !weapons[i].data.data.qualities.short) {
+            if(!weapons[i].data.data.qualities.knifePlayCompatibility) {
                 continue;
             }
             let base = this._getBaseFormat();
@@ -1560,8 +1560,10 @@ export class SymbaroumItem extends Item {
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
-        let haveStaffEquipped = this.actor.items.filter(element => element.data.data.isWeapon && element.data.data.qualities.long && element.data.isActive)
-        if(haveStaffEquipped) {
+       let haveStaffEquipped = this.actor.items.filter(element => element.data.isWeapon && element.data.data.qualities.long && element.data.isActive);
+        if(haveStaffEquipped.length) {
+            let mod = 1;
+            if(this.actor.items.filter(element => element.data.isWeapon && element.data.data.qualities.long && element.data.isActive && element.data.data.qualities.staffFightingCompatibility).length) mod =2;
             for(let i = 0; i < armors.length; i++)
             {
                 if(armors[i].data.isStackableArmor)
@@ -1569,7 +1571,7 @@ export class SymbaroumItem extends Item {
                     continue;
                 }
                 let base = this._getBaseFormat();
-                base.modifier = 1;
+                base.modifier = mod;
                 combatMods.armors[armors[i].id].defenseModifiers.push(base); 
             }
         }
@@ -1728,7 +1730,24 @@ export class SymbaroumItem extends Item {
             }
             combatMods.armors[armors[i].id].damageReductions.push(base);            
         }
-    } 
+    }
+    
+    getItemModifierSwordsaint(combatMods, armors, weapons, abilities)
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if( weapons[i].data.data.qualities.swordSaintCompatibility)
+            {
+                // Upgrade weapon
+                let base = this._getBaseFormat();
+                base.type = game.symbaroum.config.DAM_DICEUPGRADE;
+                base.diceUpgrade = lvl.level == 3 ? 4:2;
+                combatMods.weapons[weapons[i].id].package[0].member.push(base);
+            }
+        }
+    }
 
     getItemModifierTactician(combatMods, armors, weapons, abilities) 
     {

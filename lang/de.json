@@ -607,6 +607,17 @@
   "QUALITY.SHORT": "Kurz",
   "QUALITY.UNWIELDY": "Unhandlich",
   "QUALITY.WRECKING": "Zerstörend",
+  "QUALITY.ACIDCOATED": "Acid coated",
+  "QUALITY.BANE": "Bane",
+  "QUALITY.DEATHRUNE": "Death Rune",
+  "QUALITY.DESECRATED": "Desecrated",
+  "QUALITY.FLAMING": "Flaming",
+  "QUALITY.HALLOWED": "Hallowed",
+  "QUALITY.POISON": "Poison",
+  "QUALITY.RETRIBUTIVE": "Retributive",
+  "QUALITY.KNIFEPLAY_COMP": "Knife Play compatible",
+  "QUALITY.STAFFFIGHTING_COMP": "Staff Fighting compatible",
+  "QUALITY.SWORDSAINT_COMP": "Sword saint compatible",
 
   "RITUAL.TRADITION": "Tradition",
   "RITUAL.DESCRIPTION": "Beschreibung",
@@ -644,6 +655,7 @@
   "TITLE.POWER": "KRAFT",
   "TITLE.MONEY": "GELD",
   "TITLE.QUALITIES":"QUALITÄTEN",
+  "TITLE.SPECIALQUALITIES":"ABILITIES COMPATIBILITY",
   
   "TOOLTIP.BONUS_TOTAL": "Total",
   

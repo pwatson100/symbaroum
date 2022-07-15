@@ -643,8 +643,10 @@
   "QUALITY.FLAMING": "Flaming",
   "QUALITY.HALLOWED": "Hallowed",
   "QUALITY.POISON": "Poison",
-  "QUALITY.THUNDERING": "Thundering",
   "QUALITY.RETRIBUTIVE": "Retributive",
+  "QUALITY.KNIFEPLAY_COMP": "Knife Play compatible",
+  "QUALITY.STAFFFIGHTING_COMP": "Staff Fighting compatible",
+  "QUALITY.SWORDSAINT_COMP": "Sword saint compatible",
 
   "RITUAL.TRADITION": "Tradition",
   "RITUAL.DESCRIPTION": "Description",
@@ -682,6 +684,7 @@
   "TITLE.POWER": "POWER",
   "TITLE.MONEY": "MONEY",
   "TITLE.QUALITIES":"QUALITIES",
+  "TITLE.SPECIALQUALITIES":"ABILITIES COMPATIBILITY",
   
   "TOOLTIP.BONUS_TOTAL": "Total",
   

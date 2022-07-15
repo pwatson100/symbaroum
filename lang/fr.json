@@ -640,6 +640,10 @@
     "QUALITY.POISON": "Empoisonné",
     "QUALITY.THUNDERING": "Rugissant",
     "QUALITY.RETRIBUTIVE": "Punitif",
+    "QUALITY.KNIFEPLAY_COMP": "Compatible Jeu de lame",
+    "QUALITY.STAFFFIGHTING_COMP": "Compatible Combat au bâton",
+    "QUALITY.SWORDSAINT_COMP": "Compatible Épéiste virtuose",
+    
     "RITUAL.TRADITION": "Tradition",
     "RITUAL.DESCRIPTION": "Description",
 
@@ -676,6 +680,7 @@
     "TITLE.POWER": "POUVOIR",
     "TITLE.MONEY": "ARGENT",
     "TITLE.QUALITIES":"QUALITÉS",
+    "TITLE.SPECIALQUALITIES":"COMPATIBILITÉ TALENTS SPÉCIAUX",
     
     "TOOLTIP.EXPERIENCE_CURRENT": "Vos points d'expérience non dépensés",
     "TOOLTIP.EXPERIENCE_TOTAL": "Total des points d'expérience acquis",
