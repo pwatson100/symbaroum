@@ -1187,7 +1187,7 @@ export class SymbaroumItem extends Item {
         if(lvl.level == 0) return;
         for(let i = 0; i < weapons.length; i++)
         {
-            if(!weapons[i].system.isMelee || !weapons[i].system.qualities.short) {
+            if(!weapons[i].system.qualities.knifePlayCompatibility) {
                 continue;
             }
             let base = this._getBaseFormat();
@@ -1562,7 +1562,9 @@ export class SymbaroumItem extends Item {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
         let haveStaffEquipped = this.actor.items.filter(element => element.system.isWeapon && element.system.qualities.long && element.system.isActive)
-        if(haveStaffEquipped) {
+        if(haveStaffEquipped.length) {
+            let mod = 1;
+            if(this.actor.items.filter(element => element.system.isWeapon && element.system.isActive && element.system.qualities.staffFightingCompatibility).length) mod =2;
             for(let i = 0; i < armors.length; i++)
             {
                 if(armors[i].system.isStackableArmor)
@@ -1570,7 +1572,7 @@ export class SymbaroumItem extends Item {
                     continue;
                 }
                 let base = this._getBaseFormat();
-                base.modifier = 1;
+                base.modifier = mod;
                 combatMods.armors[armors[i].id].defenseModifiers.push(base); 
             }
         }
@@ -1729,7 +1731,24 @@ export class SymbaroumItem extends Item {
             }
             combatMods.armors[armors[i].id].damageReductions.push(base);            
         }
-    } 
+    }
+    
+    getItemModifierSwordsaint(combatMods, armors, weapons, abilities)
+    {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if( weapons[i].system.qualities.swordSaintCompatibility)
+            {
+                // Upgrade weapon
+                let base = this._getBaseFormat();
+                base.type = game.symbaroum.config.DAM_DICEUPGRADE;
+                base.diceUpgrade = lvl.level == 3 ? 4:2;
+                combatMods.weapons[weapons[i].id].package[0].member.push(base);
+            }
+        }
+    }
 
     getItemModifierTactician(combatMods, armors, weapons, abilities) 
     {

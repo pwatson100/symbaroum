@@ -644,6 +644,9 @@
     "QUALITY.POISON": "Avvelenata",
     "QUALITY.THUNDERING": "Folgorante",
     "QUALITY.RETRIBUTIVE": "Vendicativa",
+    "QUALITY.KNIFEPLAY_COMP": "Knife Play compatible",
+    "QUALITY.STAFFFIGHTING_COMP": "Staff Fighting compatible",
+    "QUALITY.SWORDSAINT_COMP": "Sword saint compatible",
   
     "RITUAL.TRADITION": "Tradizione",
     "RITUAL.DESCRIPTION": "Descrizione",
@@ -681,6 +684,7 @@
     "TITLE.POWER": "POTERE",
     "TITLE.MONEY": "SOLDI",
     "TITLE.QUALITIES":"QUALITÀ",
+    "TITLE.SPECIALQUALITIES":"ABILITIES COMPATIBILITY",
     
     "TOOLTIP.BONUS_TOTAL": "Totale",
     
