@@ -329,7 +329,11 @@
         "hallowed": false,
         "poison": false,
         "thundering": false,
-        "mystical": false
+        "mystical": false,
+        "staffFightingCompatibility": false,
+        "swordSaintCompatibility": false,
+        "knifePlayCompatibility": false
+
       },
       "cost": "",
       "number": 1,
