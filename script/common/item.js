@@ -1160,7 +1160,7 @@ export class SymbaroumItem extends Item {
                 if(this.actor.type === "player") {
                     pack.defaultSelect = "+1d4";
                 } else {
-                    pack.defaultSelect = 2;
+                    pack.defaultSelect = "2";
                 }
                 base.alternatives = [
                     {
@@ -1955,6 +1955,45 @@ export class SymbaroumItem extends Item {
         base.level = lvl.level
         combatMods.traditions.push(base);
     }
+
+    getItemModifierWitchhammer(combatMods, armors, weapons, abilities) {
+        let lvl = this.getLevel();
+        if((lvl.level < 1) || !this.actor.getFlag(game.system.id, 'witchhammer')) {
+            return;
+        }
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if((weapons[i].data.data.alternativeDamage !== "none") || !weapons[i].system.isMelee) {
+                continue;
+            }
+            let pack = this._getPackageFormat();
+            pack.label =game.i18n.localize('POWER_LABEL.WITCH_HAMMER');
+            pack.type = game.symbaroum.config.PACK_RADIO;
+            let base = this._getBaseFormat();
+            base.type = game.symbaroum.config.DAM_RADIO;
+            if(this.actor.type === "player") {
+                pack.defaultSelect = "+1d4";
+            } else {
+                pack.defaultSelect = "2";
+            }
+            base.alternatives = [
+                {
+                    label: game.i18n.localize('POWER_LABEL.WITCH_HAMMER'),
+                    damageMod: "+1d4",
+                    damageModNPC: 2,
+                    restrictions: [game.symbaroum.config.DAM_ACTIVE]    
+                },
+                {
+                    label: game.i18n.localize('POWER_LABEL.WITCH_HAMMER'),
+                    damageMod: "+1d" + (4 + (lvl.level*2)).toString(),
+                    damageModNPC: 2 + lvl.level,
+                    restrictions: [game.symbaroum.config.DAM_NOTACTIVE]
+                }
+            ];
+            pack.member.push(base);
+            combatMods.weapons[weapons[i].id].package.push(pack);
+        }
+    }
     
     getItemModifierWizardry(combatMods, armors, weapons, abilities){
         let lvl = this.getLevel();
@@ -2342,6 +2381,25 @@ export class SymbaroumItem extends Item {
         return(base);
     }
 
+    mysticPowerSetupWitchhammer(base) {
+        base.casting = game.symbaroum.config.CASTING_NOT;
+        base.gmOnlyChatResultNPC = true;
+        base.flagTest = "witchhammer";
+        base.flagPresentFSmod = {
+            introText: game.i18n.localize('POWER_WITCHHAMMER.CHAT_DESACTIVATE'),
+            resultTextSuccess: game.i18n.localize('POWER_WITCHHAMMER.CHAT_RESULT_DESACTIVATE'),
+            corruption: game.symbaroum.config.TEMPCORRUPTION_NONE,
+            removeCasterEffect: [CONFIG.statusEffects.find(e => e.id === "witchhammer")]
+        };
+        base.flagNotPresentFSmod = {
+            flagData: base.powerLvl.level,
+            introText: game.i18n.localize('POWER_WITCHHAMMER.CHAT_ACTIVATE'),
+            addCasterEffect: [CONFIG.statusEffects.find(e => e.id === "witchhammer")]
+        }
+        base.flagNotPresentFSmod.resultTextSuccess = game.i18n.localize('POWER_WITCHHAMMER.CHAT_RESULT');
+        return(base);
+    }
+
     // ********************************************* ABILITIES *****************************************************
     
     abilitySetupAcrobatics(base) {
@@ -2567,6 +2625,9 @@ export class SymbaroumItem extends Item {
             maintain: game.symbaroum.config.MAINTAIN_NOT,
             chain: game.symbaroum.config.CHAIN_NOT,
             ability: this.system,
+            abilityName: this.name,
+            abilityImg: this.img,
+            abilityId: this._id,
             actor: actor,
             askTargetAttribute: false,
             askCastingAttribute: false,
@@ -2644,7 +2705,7 @@ export function formatRollResult(rollDataElement){
 async function checkCorruptionThreshold(actor, corruptionGained){
     let img ="icons/magic/air/wind-vortex-swirl-purple.webp";
     let introText = actor.name + game.i18n.localize('CORRUPTION.CHAT_WARNING');
-    let finalText=actlr + game.i18n.localize('CORRUPTION.CHAT_WARNING');
+    let finalText=actor + game.i18n.localize('CORRUPTION.CHAT_WARNING');
     if(!actor.system.health.corruption.threshold) return;
     else if(actor.system.health.corruption.value < actor.system.health.corruption.threshold){
         if(actor.system.health.corruption.value+corruptionGained >= actor.system.health.corruption.threshold){
@@ -2823,7 +2884,7 @@ export async function modifierDialog(functionStuff){
         hasRoll: hasRoll
     });
     let title;
-    if(functionStuff.ability){title = functionStuff.ability.name}
+    if(functionStuff.ability){title = functionStuff.abilityName}
     else{title = functionStuff.weapon.name}
     let dialog = new Dialog({
         title: title,
@@ -2998,7 +3059,7 @@ export async function modifierDialog(functionStuff){
                 }
                 functionStuff.notResisted = functionStuff.notResisted ?? !(((functionStuff.casting === game.symbaroum.config.CASTING_RES) && !functionStuff.isMaintained ) || ((functionStuff.maintain === game.symbaroum.config.MAINTAIN_RES) && functionStuff.isMaintained));
                 if(hasTarget && !functionStuff.combat && !functionStuff.notResisted){
-                    let targetResMod = checkSpecialResistanceMod(functionStuff.targetData.actor.system.combat.damageReductions, functionStuff.targetData.autoParams, functionStuff.ability.system.reference);
+                    let targetResMod = checkSpecialResistanceMod(functionStuff.targetData.actor.system.combat.damageReductions, functionStuff.targetData.autoParams, functionStuff.ability.reference);
                     functionStuff.favour += targetResMod.favour;
                     functionStuff.modifier += -1*targetResMod.modifier;
                     functionStuff.dmgavoiding = targetResMod.dmgavoiding;
@@ -3546,7 +3607,7 @@ async function standardPowerResult(rollData, functionStuff){
     }
     let resultText = game.i18n.format(trueActorSucceeded ? functionStuff.resultTextSuccess : functionStuff.resultTextFail, namesForText);
     let finalText = game.i18n.format(functionStuff.finalText ?? "", namesForText);
-    let subText = functionStuff.subText ?? functionStuff.ability.name + " (" + functionStuff.powerLvl.lvlName + ")";
+    let subText = functionStuff.subText ?? functionStuff.abilityName + " (" + functionStuff.powerLvl.lvlName + ")";
     let introText = game.i18n.format(functionStuff.isMaintained ? functionStuff.introTextMaintain : functionStuff.introText, namesForText);
     if(functionStuff.finalTextSucceed && trueActorSucceeded) finalText = game.i18n.format(functionStuff.finalTextSucceed, namesForText);
     else 
@@ -3569,7 +3630,7 @@ async function standardPowerResult(rollData, functionStuff){
         doDamage=false;
         resultText= game.i18n.format(game.i18n.localize('POWER_BRIMSTONECASC.CHAT_FAILURE_RR'), namesForText);
     }
-    if(functionStuff.ability.system.reference === "blessedshield" && trueActorSucceeded){
+    if(functionStuff.ability.reference === "blessedshield" && trueActorSucceeded){
         let protectionFormula = "1d" + (2 + (2*functionStuff.powerLvl.level));
 
         flagDataArray.push({
@@ -3626,11 +3687,11 @@ async function standardPowerResult(rollData, functionStuff){
         if(poisonRes.flagData) flagDataArray.push(poisonRes.flagData);
     }
 
-    if(functionStuff.ability.system.reference === "strangler" && trueActorSucceeded){
+    if(functionStuff.ability.reference === "strangler" && trueActorSucceeded){
         functionStuff.hasAdvantage = false; //to prevent +1d4 damage
     }
 
-    if(functionStuff.ability.system.reference === "witchsight" && functionStuff.targetData.hasTarget && trueActorSucceeded){
+    if(functionStuff.ability.reference === "witchsight" && functionStuff.targetData.hasTarget && trueActorSucceeded){
         finalText = game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_FINAL1') + functionStuff.targetData.name + game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_FINAL2') +  functionStuff.targetData.actor.system.bio.shadow;
     }
 
@@ -3712,7 +3773,7 @@ async function standardPowerResult(rollData, functionStuff){
         introImg: functionStuff.actingCharImg,
         targetText: targetText,
         subText: subText,
-        subImg: functionStuff.ability.img,
+        subImg: functionStuff.abilityImg,
         hasRoll: hasRoll,
         resistRoll: functionStuff.resistRoll,
         resistRollText: functionStuff.resistRollText,
@@ -3759,7 +3820,7 @@ async function standardPowerResult(rollData, functionStuff){
             templateData.damageFinalText = "";
             flagDataArray.push(healResult.flagData);
 
-            if(functionStuff.ability.system.reference === "inheritwound"){
+            if(functionStuff.ability.reference === "inheritwound"){
                 let inheritDamage = (functionStuff.powerLvl.level > 1) ? Math.ceil(healResult.healed /2) : healResult.healed;
                 templateData.finalText += game.i18n.format(game.i18n.localize('POWER_INHERITWOUND.CHAT_HEALED'), namesForText) + healResult.healed.toString() + "; " + game.i18n.format(game.i18n.localize('POWER_INHERITWOUND.CHAT_DAMAGE'), namesForText) + inheritDamage.toString();
                 flagDataArray.push({
@@ -3819,7 +3880,7 @@ async function standardPowerResult(rollData, functionStuff){
     }
     // Maestro
     let actorid = functionStuff.actor.id;
-    templateData.id = functionStuff.ability._id;        
+    templateData.id = functionStuff.abilityId;        
     // End Maestro
 
     // Pick up roll system

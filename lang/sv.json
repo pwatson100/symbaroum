@@ -610,6 +610,11 @@
   "POWER_TORMENTINGSPIRITS.CHAT_SUCCESS":"{actorname} åkallar andar kring {targetname}.",
   "POWER_TORMENTINGSPIRITS.CHAT_FAILURE":"{actorname} misslyckas med sin andeåkallan.",
 
+  "POWER_WITCHHAMMER.CHAT_ACTIVATE": "{actorname}'s weapon starts glowing.",
+  "POWER_WITCHHAMMER.CHAT_DESACTIVATE": "{actorname}'s weapon stops glowing.",
+  "POWER_WITCHHAMMER.CHAT_RESULT_DESACTIVATE": "Weapon stats stats revert to normal.",
+  "POWER_WITCHHAMMER.CHAT_RESULT": "Witch hammer bonus damage will be available in combat dialog window.",
+
   "QUALITY.AREAMRR": "Ytverkande - Närstidsradie",
   "QUALITY.AREASRR": "Ytverkande - Kort radie", 
   "QUALITY.AREAC": "Ytverkande - Kon",

@@ -609,6 +609,11 @@
   "POWER_TORMENTINGSPIRITS.CHAT_INTRO_M":"{actorname} intenta mantener a los Espíritus Atormentadores.",
   "POWER_TORMENTINGSPIRITS.CHAT_SUCCESS":"{actorname} invoca a los espíritus alrededor {targetname}.",
   "POWER_TORMENTINGSPIRITS.CHAT_FAILURE":"{actorname} falla la invocación.",
+
+  "POWER_WITCHHAMMER.CHAT_ACTIVATE": "{actorname}'s weapon starts glowing.",
+  "POWER_WITCHHAMMER.CHAT_DESACTIVATE": "{actorname}'s weapon stops glowing.",
+  "POWER_WITCHHAMMER.CHAT_RESULT_DESACTIVATE": "Weapon stats stats revert to normal.",
+  "POWER_WITCHHAMMER.CHAT_RESULT": "Witch hammer bonus damage will be available in combat dialog window.",
   
   "QUALITY.AREAMRR": "Efecto Área: Rango melee",
   "QUALITY.AREASRR": "Efecto Área: Rango corto", 

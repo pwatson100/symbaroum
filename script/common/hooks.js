@@ -645,6 +645,11 @@ async function setupStatusEffects() {
       id: "unnoticeable",
       label: "POWER_LABEL.UNNOTICEABLE",
       icon: "systems/symbaroum/asset/image/invisible.png"
+    },
+      {
+        id: "witchhammer",
+        label: "POWER_LABEL.WITCH_HAMMER",
+        icon: "systems/symbaroum/asset/image/powers/witchhammer.svg"
     });
 }
 

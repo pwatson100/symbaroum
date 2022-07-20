@@ -411,7 +411,7 @@ SYMBAROUM.scriptedAbilities =
  "anathema", "brimstonecascade", "bendwill", "blackbolt", "blessedshield",
  "confusion", "curse", "dancingweapon", "entanglingvines", "flamewall", "holyaura", "inheritwound", "larvaeboils", "layonhands",
  "levitate", "maltransformation", "mindthrow", "priosburningglass", "tormentingspirits", "unnoticeable",
- "poisonous", "regeneration", "shapeshifter", "wisdomages"];
+ "poisonous", "regeneration", "shapeshifter", "wisdomages", "witchhammer"];
 
 SYMBAROUM.steadFastNovResistList = [
     "drainingglyph",

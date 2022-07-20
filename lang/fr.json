@@ -607,6 +607,11 @@
     "POWER_TORMENTINGSPIRITS.CHAT_SUCCESS":"{actorname} invoque les esprits tourmenteurs autour de {targetname}.",
     "POWER_TORMENTINGSPIRITS.CHAT_FAILURE":"{actorname} échoue son invocation.",
 
+    "POWER_WITCHHAMMER.CHAT_ACTIVATE": "L'arme de {actorname} se met à briller.",
+    "POWER_WITCHHAMMER.CHAT_DESACTIVATE": "L'arme de {actorname} ne brille plus.",
+    "POWER_WITCHHAMMER.CHAT_RESULT_DESACTIVATE": "Les dommages de l'arme rediviennent normaux.",
+    "POWER_WITCHHAMMER.CHAT_RESULT": "Les bonus de dégâts de Marteau à sorcière apparaitront dans la fenêtre de dialogue de combat.",
+
     "QUALITY.AREAMRR": "Zone d’effet - rayon portée mélée",
     "QUALITY.AREASRR": "Zone d’effet - rayon portée courte",
     "QUALITY.AREAC": "Zone d'effet - cône",
