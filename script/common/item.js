@@ -1159,7 +1159,7 @@ export class SymbaroumItem extends Item {
                 if(this.actor.type === "player") {
                     pack.defaultSelect = "+1d4";
                 } else {
-                    pack.defaultSelect = 2;
+                    pack.defaultSelect = "2";
                 }
                 base.alternatives = [
                     {
@@ -1963,7 +1963,7 @@ export class SymbaroumItem extends Item {
         }
         for(let i = 0; i < weapons.length; i++)
         {
-            if(weapons[i].data.data.alternativeDamage !== "none") {
+            if(weapons[i].data.data.alternativeDamage !== "none" || !weapons[i].data.data.isMelee) {
                 continue;
             }
             let pack = this._getPackageFormat();
@@ -1974,7 +1974,7 @@ export class SymbaroumItem extends Item {
             if(this.actor.type === "player") {
                 pack.defaultSelect = "+1d4";
             } else {
-                pack.defaultSelect = 2;
+                pack.defaultSelect = "2";
             }
             base.alternatives = [
                 {
