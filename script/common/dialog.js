@@ -501,6 +501,7 @@ export function createLineDisplay(weaponModifiers, attackFromPC)
             }
           }
         }
+        console.log("pack",pack);
       }
     }
   }

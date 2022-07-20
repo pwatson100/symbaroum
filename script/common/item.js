@@ -1159,7 +1159,7 @@ export class SymbaroumItem extends Item {
                 if(this.actor.type === "player") {
                     pack.defaultSelect = "+1d4";
                 } else {
-                    pack.defaultSelect = 2;
+                    pack.defaultSelect = "2";
                 }
                 base.alternatives = [
                     {
@@ -1954,6 +1954,46 @@ export class SymbaroumItem extends Item {
         base.level = lvl.level
         combatMods.traditions.push(base);
     }
+
+
+    getItemModifierWitchhammer(combatMods, armors, weapons, abilities) {
+        let lvl = this.getLevel();
+        if((lvl.level < 1) || !this.actor.getFlag(game.system.id, 'witchhammer')) {
+            return;
+        }
+        for(let i = 0; i < weapons.length; i++)
+        {
+            if(weapons[i].data.data.alternativeDamage !== "none" || !weapons[i].data.data.isMelee) {
+                continue;
+            }
+            let pack = this._getPackageFormat();
+            pack.label =game.i18n.localize('POWER_LABEL.WITCH_HAMMER');
+            pack.type = game.symbaroum.config.PACK_RADIO;
+            let base = this._getBaseFormat();
+            base.type = game.symbaroum.config.DAM_RADIO;
+            if(this.actor.type === "player") {
+                pack.defaultSelect = "+1d4";
+            } else {
+                pack.defaultSelect = "2";
+            }
+            base.alternatives = [
+                {
+                    label: game.i18n.localize('POWER_LABEL.WITCH_HAMMER'),
+                    damageMod: "+1d4",
+                    damageModNPC: 2,
+                    restrictions: [game.symbaroum.config.DAM_ACTIVE]    
+                },
+                {
+                    label: game.i18n.localize('POWER_LABEL.WITCH_HAMMER'),
+                    damageMod: "+1d" + (4 + (lvl.level*2)).toString(),
+                    damageModNPC: 2 + lvl.level,
+                    restrictions: [game.symbaroum.config.DAM_NOTACTIVE]
+                }
+            ];
+            pack.member.push(base);
+            combatMods.weapons[weapons[i].id].package.push(pack);
+        }
+    }
     
     getItemModifierWizardry(combatMods, armors, weapons, abilities){
         let lvl = this.getLevel();
@@ -2340,6 +2380,26 @@ export class SymbaroumItem extends Item {
         base.addCasterEffect = [CONFIG.statusEffects.find(e => e.id === "unnoticeable")];
         return(base);
     }
+
+    mysticPowerSetupWitchhammer(base) {
+        base.casting = game.symbaroum.config.CASTING_NOT;
+        base.gmOnlyChatResultNPC = true;
+        base.flagTest = "witchhammer";
+        base.flagPresentFSmod = {
+            introText: game.i18n.localize('POWER_WITCHHAMMER.CHAT_DESACTIVATE'),
+            resultTextSuccess: game.i18n.localize('POWER_WITCHHAMMER.CHAT_RESULT_DESACTIVATE'),
+            corruption: game.symbaroum.config.TEMPCORRUPTION_NONE,
+            removeCasterEffect: [CONFIG.statusEffects.find(e => e.id === "witchhammer")]
+        };
+        base.flagNotPresentFSmod = {
+            flagData: base.powerLvl.level,
+            introText: game.i18n.localize('POWER_WITCHHAMMER.CHAT_ACTIVATE'),
+            addCasterEffect: [CONFIG.statusEffects.find(e => e.id === "witchhammer")]
+        }
+        base.flagNotPresentFSmod.resultTextSuccess = game.i18n.localize('POWER_WITCHHAMMER.CHAT_RESULT');
+        return(base);
+    }
+
 
     // ********************************************* ABILITIES *****************************************************
     
