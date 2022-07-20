@@ -60,11 +60,7 @@
                     {{#if isOwned}}
                     <div class="active">
                         <label for="{{id}}-system.novice.isActive">{{localize "MYSTICAL_POWER.ACTIVE"}}</label>
-                        {{#if data.novice.isActive}}
-                        <input id="{{id}}-system.novice.isActive" name="system.novice.isActive" type="checkbox" value="active" checked/>
-                        {{else}}
-                        <input id="{{id}}-system.novice.isActive" name="system.novice.isActive" type="checkbox" value="active"/>
-                        {{/if}}
+                        <input id="{{id}}-system.novice.isActive" name="system.novice.isActive" type="checkbox" value="active" {{checked system.novice.isActive}}/>
                     </div>
                     {{/if}}
                     {{editor content=system.novice.description target="system.novice.description" button=true owner=owner editable=true}}
@@ -90,11 +86,7 @@
                     {{#if isOwned}}
                     <div class="active">
                         <label for="{{id}}-system.adept.isActive">{{localize "MYSTICAL_POWER.ACTIVE"}}</label>
-                        {{#if data.adept.isActive}}
-                        <input id="{{id}}-system.adept.isActive" name="system.adept.isActive" type="checkbox" value="active" checked/>
-                        {{else}}
-                        <input id="{{id}}-system.adept.isActive" name="system.adept.isActive" type="checkbox" value="active"/>
-                        {{/if}}
+                        <input id="{{id}}-system.adept.isActive" name="system.adept.isActive" type="checkbox" value="active" {{checked system.adept.isActive}}/>
                     </div>
                     {{/if}}    
                     {{editor content=system.adept.description target="system.adept.description" button=true owner=owner editable=true}}
@@ -120,11 +112,7 @@
                     {{#if isOwned}}
                     <div class="active">
                         <label for="{{id}}-system.master.isActive">{{localize "MYSTICAL_POWER.ACTIVE"}}</label>
-                        {{#if data.master.isActive}}
-                        <input id="{{id}}-system.master.isActive" name="system.master.isActive" type="checkbox" value="active" checked/>
-                        {{else}}
-                        <input id="{{id}}-system.master.isActive" name="system.master.isActive" type="checkbox" value="active"/>
-                        {{/if}}
+                        <input id="{{id}}-system.master.isActive" name="system.master.isActive" type="checkbox" value="active" {{checked system.master.isActive}}/>
                     </div>
                     {{/if}}
                     {{editor content=system.master.description target="system.master.description" button=true owner=owner editable=true}}

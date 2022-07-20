@@ -23,7 +23,7 @@
 
         <div class="sheet-tabs tabs" data-group="primary">
             <b class="item" data-tab="description">{{localize "TAB.DESCRIPTION"}}</b>
-            {{#ifn data.marker}}            
+            {{#ifn system.marker}}            
             <b class="item" data-tab="novice">{{localize "TAB.NOVICE"}}</b>
             <b class="item" data-tab="adept">{{localize "TAB.ADEPT"}}</b>
             <b class="item" data-tab="master">{{localize "TAB.MASTER"}}</b>
@@ -37,7 +37,7 @@
                     <h1>{{localize "TITLE.DESCRIPTION"}}</h1>
                     {{editor content=system.description target="system.description" button=true owner=owner editable=true}}
                     <div class="marker" style="width:100%"><label for="{{id}}-system.marker">{{localize "TRAIT.MARKERTRAIT"}}</label>                        
-                        <input id="{{id}}-system.marker" name="system.marker" type="checkbox" value="active" {{#if data.marker}}checked{{/if}}/>
+                        <input id="{{id}}-system.marker" name="system.marker" type="checkbox" value="active" {{#if system.marker}}checked{{/if}}/>
                     </div>
                 </div>
             </div>
@@ -60,8 +60,8 @@
                     </div>
                     {{#if isOwned}}
                     <div class="active">
-                        <label for="{{id}}-system.novice.isActive">{{localize "TRAIT.ACTIVE"}}</label>                        
-                        <input id="{{id}}-system.novice.isActive" name="system.novice.isActive" type="checkbox" value="active" {{#if data.novice.isActive}}checked{{/if}}/>                        
+                        <label for="{{id}}-system.novice.isActive">{{localize "TRAIT.ACTIVE"}}</label>
+                        <input id="{{id}}-system.novice.isActive" name="system.novice.isActive" type="checkbox" value="active" {{checked system.novice.isActive}}/>
                     </div>
                     {{/if}}            
                     {{editor content=system.novice.description target="system.novice.description" button=true owner=owner editable=true}}
@@ -87,11 +87,7 @@
                     {{#if isOwned}}
                     <div class="active">
                         <label for="{{id}}-system.adept.isActive">{{localize "TRAIT.ACTIVE"}}</label>
-                        {{#if data.adept.isActive}}
-                        <input id="{{id}}-system.adept.isActive" name="system.adept.isActive" type="checkbox" value="active" checked/>
-                        {{else}}
-                        <input id="{{id}}-system.adept.isActive" name="system.adept.isActive" type="checkbox" value="active"/>
-                        {{/if}}
+                        <input id="{{id}}-system.adept.isActive" name="system.adept.isActive" type="checkbox" value="active" {{checked system.adept.isActive}}/>}
                     </div>
                     {{/if}}
                     {{editor content=system.adept.description target="system.adept.description" button=true owner=owner editable=true}}
@@ -117,11 +113,7 @@
                     {{#if isOwned}}
                     <div class="active">
                         <label for="{{id}}-system.master.isActive">{{localize "TRAIT.ACTIVE"}}</label>
-                        {{#if data.master.isActive}}
-                        <input id="{{id}}-system.master.isActive" name="system.master.isActive" type="checkbox" value="active" checked/>
-                        {{else}}
-                        <input id="{{id}}-system.master.isActive" name="system.master.isActive" type="checkbox" value="active"/>
-                        {{/if}}
+                        <input id="{{id}}-system.master.isActive" name="system.master.isActive" type="checkbox" value="active" {{checked system.master.isActive}}/>
                     </div>
                     {{/if}}
                     {{editor content=system.master.description target="system.master.description" button=true owner=owner editable=true}}

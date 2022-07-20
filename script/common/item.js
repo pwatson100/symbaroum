@@ -1963,7 +1963,7 @@ export class SymbaroumItem extends Item {
         }
         for(let i = 0; i < weapons.length; i++)
         {
-            if((weapons[i].data.data.alternativeDamage !== "none") || !weapons[i].system.isMelee) {
+            if((weapons[i].system.alternativeDamage !== "none") || !weapons[i].system.isMelee) {
                 continue;
             }
             let pack = this._getPackageFormat();

@@ -92,7 +92,7 @@
 
   "ABILITY_DOMINATE_ADEPT.CHAT_INTRO": "{actorname} tries to indimidate his target.",
   "ABILITY_DOMINATE_MASTER.CHAT_INTRO": "{actorname} tries to subdue his target.",
-  "ABILITY_DOMINATE_ADEPT.CHAT_SUCCESS": "{actorname} makes is target hesitate.",
+  "ABILITY_DOMINATE_ADEPT.CHAT_SUCCESS": "{actorname} makes his target hesitate.",
   "ABILITY_DOMINATE_MASTER.CHAT_SUCCESS": "{actorname} subdues his ennemy.",
 
   "ABILITY_LEADER.CHAT_SUCCESS": "Allies gain +1d4 damage against {targetname}",

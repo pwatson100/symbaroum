@@ -68,11 +68,7 @@
                     </div>
                     <div class="number">
                         <label for="{{id}}-system.isArtifact">{{localize "ITEM.ARTIFACT"}}</label>
-                        {{#if system.isArtifact}}
-                        <input id="{{id}}-system.isArtifact" name="system.isArtifact" type="checkbox" value="artifact" checked/>
-                        {{else}}
-                        <input id="{{id}}-system.isArtifact" name="system.isArtifact" type="checkbox" value="artifact"/>
-                        {{/if}}
+                        <input id="{{id}}-system.isArtifact" name="system.isArtifact" type="checkbox" value="artifact" {{checked system.isArtifact}}/>
                     </div>
                     <div class="quality">
                         <label for="{{id}}-system.quality">{{localize "ARMOR.QUALITY"}}</label>
@@ -85,59 +81,31 @@
                     <h1>{{localize "TITLE.QUALITIES"}}</h1>
                     <div class="leftcolumn">
                         <label for="{{id}}-system.qualities.flexible">{{localize "QUALITY.FLEXIBLE"}}</label>
-                        {{#if system.qualities.flexible}}
-                        <input id="{{id}}-system.qualities.flexible" name="system.qualities.flexible" type="checkbox" value="flexible" checked/>
-                        {{else}}
-                        <input id="{{id}}-system.qualities.flexible" name="system.qualities.flexible" type="checkbox" value="flexible"/>
-                        {{/if}}
+                        <input id="{{id}}-system.qualities.flexible" name="system.qualities.flexible" type="checkbox" value="flexible" {{checked system.qualities.flexible}}/>
                     </div>
                     <div class="rightcolumn">
                         <label for="{{id}}-system.qualities.cumbersome">{{localize "QUALITY.CUMBERSOME"}}</label>
-                        {{#if system.qualities.cumbersome}}
-                        <input id="{{id}}-system.qualities.cumbersome" name="system.qualities.cumbersome" type="checkbox" value="cumbersome" checked/>
-                        {{else}}
-                        <input id="{{id}}-system.qualities.cumbersome" name="system.qualities.cumbersome" type="checkbox" value="cumbersome"/>
-                        {{/if}}
+                        <input id="{{id}}-system.qualities.cumbersome" name="system.cumbersome.flexible" type="checkbox" value="cumbersome" {{checked system.qualities.cumbersome}}/>
                     </div>
                     <div class="leftcolumn">
                         <label for="{{id}}-system.qualities.reinforced">{{localize "QUALITY.REINFORCED"}}</label>
-                        {{#if system.qualities.reinforced}}
-                        <input id="{{id}}-system.qualities.reinforced" name="system.qualities.reinforced" type="checkbox" value="reinforced" checked/>
-                        {{else}}
-                        <input id="{{id}}-system.qualities.reinforced" name="system.qualities.reinforced" type="checkbox" value="reinforced"/>
-                        {{/if}}
+                        <input id="{{id}}-system.qualities.reinforced" name="system.qualities.reinforced" type="checkbox" value="reinforced" {{checked system.qualities.reinforced}}/>
                     </div>
                     <div class="rightcolumn">
                         <label for="{{id}}-system.qualities.concealed">{{localize "QUALITY.CONCEALED"}}</label>
-                        {{#if system.qualities.concealed}}
-                        <input id="{{id}}-system.qualities.concealed" name="system.qualities.concealed" type="checkbox" value="concealed" checked/>
-                        {{else}}
-                        <input id="{{id}}-system.qualities.concealed" name="system.qualities.concealed" type="checkbox" value="concealed"/>
-                        {{/if}}
+                        <input id="{{id}}-system.qualities.concealed" name="system.qualities.concealed" type="checkbox" value="concealed" {{checked system.qualities.concealed}}/>
                     </div>
                     <div class="leftcolumn">
                         <label for="{{id}}-system.qualities.hallowed">{{localize "QUALITY.HALLOWED"}}</label>
-                        {{#if system.qualities.hallowed}}
-                        <input id="{{id}}-system.qualities.hallowed" name="system.qualities.hallowed" type="checkbox" value="hallowed" checked/>
-                        {{else}}
-                        <input id="{{id}}-system.qualities.hallowed" name="system.qualities.hallowed" type="checkbox" value="hallowed"/>
-                        {{/if}}
+                        <input id="{{id}}-system.qualities.hallowed" name="system.qualities.hallowed" type="checkbox" value="hallowed" {{checked system.qualities.hallowed}}/>
                     </div>
                     <div class="rightcolumn">
                         <label for="{{id}}-system.qualities.retributive">{{localize "QUALITY.RETRIBUTIVE"}}</label>
-                        {{#if system.qualities.retributive}}
-                        <input id="{{id}}-system.qualities.retributive" name="system.qualities.retributive" type="checkbox" value="retributive" checked/>
-                        {{else}}
-                        <input id="{{id}}-system.qualities.retributive" name="system.qualities.retributive" type="checkbox" value="retributive"/>
-                        {{/if}}
+                        <input id="{{id}}-system.qualities.retributive" name="system.qualities.retributive" type="checkbox" value="retributive" {{checked system.qualities.retributive}}/>
                     </div>
                     <div class="leftcolumn">
                         <label for="{{id}}-system.qualities.desecrated">{{localize "QUALITY.DESECRATED"}}</label>
-                        {{#if system.qualities.desecrated}}
-                        <input id="{{id}}-system.qualities.desecrated" name="system.qualities.desecrated" type="checkbox" value="desecrated" checked/>
-                        {{else}}
-                        <input id="{{id}}-system.qualities.desecrated" name="system.qualities.desecrated" type="checkbox" value="desecrated"/>
-                        {{/if}}
+                        <input id="{{id}}-system.qualities.desecrated" name="system.qualities.desecrated" type="checkbox" value="desecrated" {{checked system.qualities.desecrated}}/>
                     </div>
                 </div>
             </div>
