@@ -612,6 +612,11 @@
   "POWER_TORMENTINGSPIRITS.CHAT_SUCCESS":"{actorname} invokes spirits around {targetname}.",
   "POWER_TORMENTINGSPIRITS.CHAT_FAILURE":"{actorname} fails the invokation.",
   
+  "POWER_WITCHHAMMER.CHAT_ACTIVATE": "{actorname}'s weapon starts glowing.",
+  "POWER_WITCHHAMMER.CHAT_DESACTIVATE": "{actorname}'s weapon stops glowing.",
+  "POWER_WITCHHAMMER.CHAT_RESULT_DESACTIVATE": "Weapon stats stats revert to normal.",
+  "POWER_WITCHHAMMER.CHAT_RESULT": "Witch hammer bonus damage will be available in combat dialog window.",
+  
   "QUALITY.AREAMRR": "Area Effect - melee range radius",
   "QUALITY.AREASRR": "Area Effect - short range radius", 
   "QUALITY.AREAC": "Area Effect - cone",
@@ -644,6 +649,7 @@
   "QUALITY.HALLOWED": "Hallowed",
   "QUALITY.POISON": "Poison",
   "QUALITY.RETRIBUTIVE": "Retributive",
+  "QUALITY.THUNDERING": "Thundering",
   "QUALITY.KNIFEPLAY_COMP": "Knife Play compatible",
   "QUALITY.STAFFFIGHTING_COMP": "Staff Fighting compatible",
   "QUALITY.SWORDSAINT_COMP": "Sword saint compatible",
