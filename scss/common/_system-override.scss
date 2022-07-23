@@ -17,19 +17,20 @@
 }
 
 // override the V2 Journal stuff
-.journal-sheet .journal-sheet-container {
-  //   grid-template-columns: unset;
-  width: auto;
-}
+// .journal-sheet .journal-sheet-container {
+//   //   grid-template-columns: unset;
+//   width: auto;
+// }
 
-// .journal-sheet nav {
+// // Not using this one at present.
+// // .journal-sheet nav {
+// //   display: none;
+// // }
+
+// article header {
 //   display: none;
 // }
 
-article header {
-  display: none;
-}
-
-.journal-sheet form .journal-entry-pages {
-  width: inherit;
-}
+// .journal-sheet form .journal-entry-pages {
+//   width: inherit;
+// }
