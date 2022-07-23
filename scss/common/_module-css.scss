@@ -1,0 +1,375 @@
+/* Global styles */
+
+@font-face {
+  font-family: 'Primitive';
+  /* font-style: normal;
+    font-weight: 400;
+    font-display: swap; */
+  src: url('../fonts/Primitive-4yGY.ttf');
+  /* unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; */
+}
+@font-face {
+  font-family: 'Fondamento';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/fondamento/v11/4UaHrEJGsxNmFTPDnkaJ96rp5w.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Jim Nightshade';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/jimnightshade/v10/PlIkFlu9Pb08Q8HLM1PxmB0g-NS_XXs.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+.journal-sheet form {
+  display: flex;
+  flex-direction: column;
+  background-image: url(../asset/modules/foreground2a.png);
+  background-size: 100% 100%;
+}
+.journal-sheet form select {
+  display: none;
+}
+.app.window-app.sheet.journal-sheet {
+  color: hsl(0, 0%, 0%);
+  border: 9px solid transparent;
+  border-image: url(../asset/modules/sym-journal-border.webp) 108/3 repeat;
+  border-image-outset: 2;
+  width: 1228px !important;
+}
+
+.journal-sheet form .editor {
+  height: 100%;
+}
+.app.window-app.journal-sheet.sheet.journal-sheet .window-header {
+  background-image: url(../asset/modules/foreground.jpg);
+}
+.app.window-app.journal-sheet.sheet.journal-sheet.window-app.minimized .window-header {
+  border: none;
+  line-height: 14px;
+  padding: 0 6px;
+  flex-basis: 15px;
+  position: relative;
+  top: -3px;
+}
+
+/*Journal Entry Input Border*/
+.journal-sheet form input[name='name'] {
+  font-family: 'Primitive';
+  font-size: 3rem;
+  text-align: center;
+  background-image: url(../asset/modules/foreground.jpg);
+  border: 1px solid transparent;
+  border-image: url(../asset/modules/sym-journal-header.webp);
+  border-image-slice: 50%;
+  border-image-width: 100%;
+  text-overflow: ellipsis;
+  width: min(100%, 900px);
+  min-height: 65px;
+  margin: auto;
+  color: hsl(39, 77%, 83%);
+}
+
+.journal-sheet form input[name='name']:focus {
+  box-shadow: none;
+}
+
+.window-app.sheet.minimized .window-header .window-title {
+  overflow: hidden;
+  white-space: pre;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(0, 0%, 50%);
+  border-color: hsl(180, 25%, 25%);
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: 0 0 3px hsl(0, 0%, 60%) inset;
+  border-radius: 3px;
+}
+
+.journal-sheet form button[type='submit']:focus {
+  opacity: 100%;
+  box-shadow: 0 0 8px hsl(0, 0%, 50%);
+}
+
+.symbaroum-mod .content-link-I {
+  color: hsl(39, 77%, 83%);
+  background: transparent;
+  font-size: 15pt;
+  border: 0;
+}
+.symbaroum-mod a.inline-link {
+  background-color: transparent;
+  /* color: hsl(0, 0%, 0%); */
+  color: hsl(6, 56%, 30%);
+
+  font-size: 15pt;
+  border: 0;
+  font-family: 'Fondamento';
+}
+.symbaroum-mod p {
+  background: transparent;
+  font-size: 12pt;
+  margin: 10px;
+}
+.symbaroum-mod .pblock {
+  text-align: justify;
+  margin: 0px 20px 0px 10px;
+}
+
+.symbaroum-mod h1 {
+  /* font-family: 'Jim Nightshade'; */
+  font-family: 'Primitive';
+  font-size: 68pt;
+}
+
+.symbaroum-mod h1 .indexsheet {
+  color: hsl(0, 0%, 100%);
+  text-align: center;
+  font-size: 50pt;
+}
+
+.symbaroum-mod h2 {
+  font-family: 'Primitive';
+  font-size: 25pt;
+}
+.symbaroum-mod h3 {
+  padding: 0;
+  margin: 0;
+  margin-top: 5px;
+  font-size: 14pt !important;
+  border-bottom: none !important;
+}
+
+.symbaroum-mod h4 {
+  font-family: 'Jim Nightshade';
+  font-size: 18pt;
+}
+
+.symbaroum-mod h5 {
+  font-weight: bold;
+  font-family: 'Fondamento';
+  font-size: 12pt;
+  color: hsl(19, 70%, 37%);
+  display: block;
+  margin: 0px 20px 0px 10px;
+}
+
+.symbaroum-mod h6 {
+  font-weight: bold;
+  /* font-family: 'Fondamento'; */
+  font-size: 12pt;
+  color: hsl(0, 0%, 100%);
+  /* display: block; */
+  /* margin: 0px 20px 0px 10px; */
+  margin: 0;
+}
+.symbaroum-mod .parahead {
+  font-weight: bold;
+  font-family: 'Fondamento';
+  font-size: 12pt;
+  color: hsl(19, 70%, 37%);
+}
+.symbaroum-mod li {
+  font-size: 12pt;
+}
+.symbaroum-mod ul {
+  margin: 20px;
+}
+
+.symbaroum-mod .heading2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  font-family: 'Primitive';
+  font-size: 25pt;
+  border-bottom: 1px solid hsl(8, 56%, 30%);
+  padding: 0 14px;
+  margin-bottom: 8px;
+}
+.symbaroum-mod .h2NoUnder {
+  border: 0;
+  margin-bottom: 0;
+}
+
+.symbaroum-mod .arpgtable {
+  height: 36px;
+  width: 80%;
+  /* border-style: double;
+    border-color: greenyellow; */
+  margin-left: auto;
+  margin-right: auto;
+  border: 0;
+}
+.symbaroum-mod .arpgtable tr:nth-child(even) {
+  background-color: transparent;
+}
+
+.symbaroum-mod .tdstyle {
+  width: 40%;
+  height: 18px;
+  text-align: left;
+}
+.symbaroum-mod .tdstyleR {
+  width: 40%;
+  height: 18px;
+  text-align: Right;
+}
+.symbaroum-mod .tdstyleC {
+  width: 100%;
+  height: 18px;
+  text-align: center;
+}
+.symbaroum-mod .tdstyle3D {
+  width: 30%;
+  height: 18px;
+  text-align: center;
+}
+.symbaroum-mod .tdstyle2D {
+  width: 50%;
+  height: 18px;
+  text-align: center;
+}
+
+.symbaroum-mod .blockquoteright {
+  background-image: url(../asset/modules/foreground.jpg);
+  max-width: 35%;
+  padding: 10px;
+  margin-top: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  margin-left: 15px;
+  break-inside: avoid;
+  font-style: normal;
+  float: right;
+  border: 5px double hsl(0, 0%, 0%);
+  border-radius: 25px;
+  box-shadow: 3px 3px;
+}
+.symbaroum-mod .blockquoteleft {
+  background-image: url(../asset/modules/foreground.jpg);
+  max-width: 35%;
+  padding: 10px;
+  margin-top: 10px;
+  margin-right: 15px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  break-inside: avoid;
+  font-style: normal;
+  float: left;
+  border: 5px double hsl(0, 0%, 0%);
+  border-radius: 25px;
+  box-shadow: 3px 3px;
+}
+.symbaroum-mod .blockquotecenter {
+  background-image: url(../asset/modules/foreground.jpg);
+  max-width: 35%;
+  padding: 10px;
+  margin-top: 10px;
+  margin-right: 15px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  break-inside: avoid;
+  font-style: normal;
+  float: center;
+  border: 5px double hsl(0, 0%, 0%);
+  border-radius: 25px;
+  box-shadow: 3px 3px;
+}
+.symbaroum-mod .blockquoteplain {
+  max-width: 50%;
+  break-inside: avoid;
+  font-style: normal;
+  float: left;
+  border: none;
+}
+
+.symbaroum-mod .fancytextleft {
+  max-width: 20%;
+  padding: 10px;
+  margin-top: 10px;
+  margin-right: 15px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  break-inside: avoid;
+  font-style: normal;
+  float: left;
+  border: none;
+  text-align: center;
+}
+.symbaroum-mod .fancytextright {
+  max-width: 20%;
+  padding: 10px;
+  margin-top: 10px;
+  margin-right: 15px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  break-inside: avoid;
+  font-style: normal;
+  float: right;
+  border: none;
+  text-align: center;
+}
+.symbaroum-mod .fancyheader {
+  display: inline-block;
+  background-image: url('../asset/modules/fancytextheader.png');
+  width: 140px;
+  height: 26px;
+  vertical-align: middle;
+  background-size: 140px;
+  border: 0;
+}
+.symbaroum-mod .fancytext {
+  color: hsl(19, 70%, 37%);
+}
+
+.symbaroum-mod .newstatheader {
+  height: 15px;
+  padding: 0;
+  width: 1%;
+  text-align: center;
+  border-right: solid 1px;
+}
+.symbaroum-mod .newstatheader2 {
+  height: 15px;
+  padding: 0;
+  width: 1%;
+  text-align: center;
+}
+
+/* .symbaroum-mod .timeline {
+    display: inline-block;
+    background-image: url('../asset/modules/timeline.webp');
+    width: 500px;
+    height: 1150px;
+    vertical-align: middle;
+    background-size: 500px;
+    border: 0;
+  } */
+.symbaroum-mod .symtitle {
+  display: block;
+  background-image: url('../asset/modules/symbaroum_onelayer.webp');
+  width: 600px;
+  height: 200px;
+  margin-left: auto;
+  margin-right: auto;
+  background-size: 100%;
+  border: 0;
+}
+.symbaroum-mod .boxtext {
+  background-image: url('../asset/modules/foreground.jpg');
+  padding-left: 5px;
+  padding-right: 3px;
+  margin-left: 10px;
+  border: 5px double hsl(0, 0%, 0%);
+  border-radius: 25px;
+  box-shadow: 3px 3px;
+}
