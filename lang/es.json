@@ -127,7 +127,7 @@
   "ABILITY.MASTER":"Maestro",
   "ABILITY.NOT_LEARNED":"No aprendido",
   "ABILITY.ROLL_RESULT": "Resultado de la tirada de dados: ",
-  "ABILITY.SECOND_ROLL_RESULT": "Rare critical dice roll result : ",
+  "ABILITY.SECOND_ROLL_RESULT": "Resultado de tirada crítica rara : ",
   
   "ACTION.ACTIVE": "Activa",
   "ACTION.FREE": "Gratuita",
@@ -142,7 +142,7 @@
 
   "ARMOR.NAME": "Nombre",
   "ARMOR.NOARMOR_NAME":"Sin Armadura",
-  "ARMOR.SKIN": "Skin/Hide (No base protection)",
+  "ARMOR.SKIN": "Piel/Cuero (Sin protección base)",
   "ARMOR.PROTECTION": "Protección",
   "ARMOR.PROTECTIONABBR": "Prot.",  
   "ARMOR.PROTECTION_SHORT": "Prot.",
@@ -353,7 +353,7 @@
   "CORRUPTION.CHAT_MAX": " se convierte en una abominación (max alcanzado).",
   "CORRUPTION.CHAT_WARNING": " se acerca a su umbral de corrupción.",
 
-  "DIALOG.SYSTEM_MESSAGE":"mensaje del sistema SymbaroumSymbaroum system message",
+  "DIALOG.SYSTEM_MESSAGE":"mensaje del sistema Symbaroum",
   "DIALOG.OK": "Ok",
   "DIALOG.CANCEL": "Cancelar",
   "DIALOG.AUTOPARAMS": "Modificadores incluidos: ",
@@ -448,8 +448,8 @@
   "ITEM.TypeMysticalpower": "Poder Místico",
   "ITEM.TypeRitual": "Ritual",
   "ITEM.TypeWeapon": "Arma",
-  "ITEM.TypeBoon": "Boon",
-  "ITEM.TypeBurden": "Burden",   
+  "ITEM.TypeBoon": "Bendición",
+  "ITEM.TypeBurden": "Carga",   
 
   "MACRO.ATTRIBUTE": "Atributo",
   "MACRO.MAKETEST": "Prueba {testtype}",
@@ -610,10 +610,10 @@
   "POWER_TORMENTINGSPIRITS.CHAT_SUCCESS":"{actorname} invoca a los espíritus alrededor {targetname}.",
   "POWER_TORMENTINGSPIRITS.CHAT_FAILURE":"{actorname} falla la invocación.",
 
-  "POWER_WITCHHAMMER.CHAT_ACTIVATE": "{actorname}'s weapon starts glowing.",
-  "POWER_WITCHHAMMER.CHAT_DESACTIVATE": "{actorname}'s weapon stops glowing.",
-  "POWER_WITCHHAMMER.CHAT_RESULT_DESACTIVATE": "Weapon stats stats revert to normal.",
-  "POWER_WITCHHAMMER.CHAT_RESULT": "Witch hammer bonus damage will be available in combat dialog window.",
+  "POWER_WITCHHAMMER.CHAT_ACTIVATE": "El arma de {actorname} comienza a brillar.",
+  "POWER_WITCHHAMMER.CHAT_DESACTIVATE": "El arma de {actorname} deja de brillar.",
+  "POWER_WITCHHAMMER.CHAT_RESULT_DESACTIVATE": "Los stars del arma vuelven a ser normales.",
+  "POWER_WITCHHAMMER.CHAT_RESULT": "El bonus de daño de Martillo de Monstruos estará disponible en la ventana de diálogo de combate.",
   
   "QUALITY.AREAMRR": "Efecto Área: Rango melee",
   "QUALITY.AREASRR": "Efecto Área: Rango corto", 
@@ -648,9 +648,9 @@
   "QUALITY.POISON": "Veneno",
   "QUALITY.THUNDERING": "Atronadora",
   "QUALITY.RETRIBUTIVE": "Castigadora",
-  "QUALITY.KNIFEPLAY_COMP": "Knife Play compatible",
-  "QUALITY.STAFFFIGHTING_COMP": "Staff Fighting compatible",
-  "QUALITY.SWORDSAINT_COMP": "Sword saint compatible",
+  "QUALITY.KNIFEPLAY_COMP": "Compatible con Cuchillo rápido",
+  "QUALITY.STAFFFIGHTING_COMP": "Compatible con Combate con Vara",
+  "QUALITY.SWORDSAINT_COMP": "Compatible con Santo de la Espada",
 
   "RITUAL.TRADITION": "Tradición",
   "RITUAL.DESCRIPTION": "Descr.",
@@ -688,7 +688,7 @@
   "TITLE.POWER": "PODER",
   "TITLE.MONEY": "DINERO",
   "TITLE.QUALITIES":"CUALIDADES",
-  "TITLE.SPECIALQUALITIES":"ABILITIES COMPATIBILITY",
+  "TITLE.SPECIALQUALITIES":"COMP. CON HABILIDADES",
 
   "TOOLTIP.BONUS_TOTAL": "Total",
 
