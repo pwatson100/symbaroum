@@ -611,11 +611,11 @@
     "POWER_TORMENTINGSPIRITS.CHAT_SUCCESS":"{actorname} invoca gli spiriti intorno {targetname}.",
     "POWER_TORMENTINGSPIRITS.CHAT_FAILURE":"{actorname} fallisce l'evocazione.",
 
-    "POWER_WITCHHAMMER.CHAT_ACTIVATE": "{actorname}'s weapon starts glowing.",
-    "POWER_WITCHHAMMER.CHAT_DESACTIVATE": "{actorname}'s weapon stops glowing.",
-    "POWER_WITCHHAMMER.CHAT_RESULT_DESACTIVATE": "Weapon stats stats revert to normal.",
-    "POWER_WITCHHAMMER.CHAT_RESULT": "Witch hammer bonus damage will be available in combat dialog window.",
-    
+    "POWER_WITCHHAMMER.CHAT_ACTIVATE": "L'arma di {actorname} inizia a risplendere.",
+    "POWER_WITCHHAMMER.CHAT_DESACTIVATE": "L'arma di {actorname} smette di splendere.",
+    "POWER_WITCHHAMMER.CHAT_RESULT_DESACTIVATE": "Le statistiche dell'arma tornano normali.",
+    "POWER_WITCHHAMMER.CHAT_RESULT": "I bonus ai danni di Maglio Purificatore appariranno nella finestra di dialogo del combattimento.",
+        
     "QUALITY.AREAMRR": "Effetto ad area - Raggio Corpo a Corpo",
     "QUALITY.AREASRR": "Effetto ad area - Raggio Corto", 
     "QUALITY.AREAC": "Effetto ad area - Cono",
