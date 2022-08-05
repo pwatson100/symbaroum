@@ -127,7 +127,7 @@
   "ABILITY.MASTER":"Mästare",
   "ABILITY.NOT_LEARNED":"Ej inlärd",
   "ABILITY.ROLL_RESULT": "Tärningsslag resultat : ",
-  "ABILITY.SECOND_ROLL_RESULT": "Rare critical dice roll result : ",
+  "ABILITY.SECOND_ROLL_RESULT": "Sällsynt kritiskt tärningsslag - resultat:",
   
   "ACTION.ACTIVE": "Aktiv",
   "ACTION.FREE": "Fri",
@@ -142,7 +142,7 @@
 
   "ARMOR.NAME": "Namn",
   "ARMOR.NOARMOR_NAME":"Utan bepansring",
-  "ARMOR.SKIN": "Skin/Hide (No base protection)",
+  "ARMOR.SKIN": "Hud/skinn (inget basskydd)",
   "ARMOR.PROTECTION": "Bepansring",
   "ARMOR.PROTECTIONABBR": "Skydd",  
   "ARMOR.PROTECTION_SHORT": "Skydd",
@@ -610,10 +610,10 @@
   "POWER_TORMENTINGSPIRITS.CHAT_SUCCESS":"{actorname} åkallar andar kring {targetname}.",
   "POWER_TORMENTINGSPIRITS.CHAT_FAILURE":"{actorname} misslyckas med sin andeåkallan.",
 
-  "POWER_WITCHHAMMER.CHAT_ACTIVATE": "{actorname}'s weapon starts glowing.",
-  "POWER_WITCHHAMMER.CHAT_DESACTIVATE": "{actorname}'s weapon stops glowing.",
-  "POWER_WITCHHAMMER.CHAT_RESULT_DESACTIVATE": "Weapon stats stats revert to normal.",
-  "POWER_WITCHHAMMER.CHAT_RESULT": "Witch hammer bonus damage will be available in combat dialog window.",
+  "POWER_WITCHHAMMER.CHAT_ACTIVATE": "{actorname}'s vapen flammar upp med helig eld .",
+  "POWER_WITCHHAMMER.CHAT_DESACTIVATE": "{actorname}'s vapen slutar brinna.",
+  "POWER_WITCHHAMMER.CHAT_RESULT_DESACTIVATE": "Vapenegenskaper återgår till normala.",
+  "POWER_WITCHHAMMER.CHAT_RESULT": "Bonusskada för Häxhammare kommer vara tillgängliga i stridsdialogfönstret.",
 
   "QUALITY.AREAMRR": "Ytverkande - Närstidsradie",
   "QUALITY.AREASRR": "Ytverkande - Kort radie", 
@@ -648,9 +648,9 @@
   "QUALITY.POISON": "Giftdrypande",
   "QUALITY.THUNDERING": "Dundrande",
   "QUALITY.RETRIBUTIVE": "Vedergällande",
-  "QUALITY.KNIFEPLAY_COMP": "Knife Play compatible",
-  "QUALITY.STAFFFIGHTING_COMP": "Staff Fighting compatible",
-  "QUALITY.SWORDSAINT_COMP": "Sword saint compatible",
+  "QUALITY.KNIFEPLAY_COMP": "Kompatibel med Knivgöra",
+  "QUALITY.STAFFFIGHTING_COMP": "Kompatibel med Stavkamp",
+  "QUALITY.SWORDSAINT_COMP": "Kompatibel med Svärdshelgon",
 
   "RITUAL.TRADITION": "Tradition",
   "RITUAL.DESCRIPTION": "Beskrivning",
@@ -688,7 +688,7 @@
   "TITLE.POWER": "KRAFT",
   "TITLE.MONEY": "PENGAR",
   "TITLE.QUALITIES":"KVALITETER",
-  "TITLE.SPECIALQUALITIES":"ABILITIES COMPATIBILITY",
+  "TITLE.SPECIALQUALITIES":"KOMPATIBILITET FÖRMÅGOR",
 
   "TOOLTIP.BONUS_TOTAL": "Totalt",
 
