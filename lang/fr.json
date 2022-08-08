@@ -307,11 +307,11 @@
     "CHAT.CRITICAL_FREEATTACK": "Attaque gratuite",
     "CHAT.CRITICAL_PLUS3DAMAGE": "+3 de Dégâts",
     "CHAT.CRITICAL_FAILURE_FREEATTACK": "Attaque gratuite",
-    "CHAT.RECOVER": "Ton heure n'est pas encore venu. {name} est à nouveau conscient et regagne ",
+    "CHAT.RECOVER": "Ton heure n'est pas encore venue. {name} est à nouveau conscient et regagne ",
     "CHAT.TOUGHNESS": "Endurance",
     "CHAT.STAY_ALIVE": "Tu t'accroches... mais pour combien de temps",
     "CHAT.NEAR_DEATH": "La fin approche :",
-    "CHAT.DEAD": "{name} rend son dernier souffle",
+    "CHAT.DEAD": "{name} rend son dernier souffle.",
 
     "COMBAT.CHAT_INTRO": " attaque avec ",
     "COMBAT.CHAT_SUCCESS": " touche ",
