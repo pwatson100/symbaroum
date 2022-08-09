@@ -107,10 +107,16 @@
 }
 .symbaroum-mod a.inline-link {
   background-color: transparent;
-  /* color: hsl(0, 0%, 0%); */
   color: hsl(6, 56%, 30%);
-
   font-size: 15pt;
+  border: 0;
+  font-family: 'Fondamento';
+}
+
+.symbaroum-mod .inline-link2 .content-link {
+  background-color: transparent;
+  color: hsl(6, 56%, 30%);
+  font-size: 16pt;
   border: 0;
   font-family: 'Fondamento';
 }
