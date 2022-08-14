@@ -86,12 +86,12 @@ export class SymbaroumMacros {
 			game.user.assignHotbarMacro(macro, slot);
 			return false;
 		} else if (data.type === "Item") {
-			if (!("data" in data))
+			const item = await Item.implementation.fromDropData(data);
+			if(!item) {
 				return ui.notifications.warn(
 					game.i18n.localize("ERROR.MACRO_NOT_OWNED")
 				);
-			// TODO - Not sure what do do here
-			const item = data.data;
+			}
 			// Create the macro command
 			const command = `game.symbaroum.macros.rollItem("${item.name}");`;
 			let macro = game.macros.find(
