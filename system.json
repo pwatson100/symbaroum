@@ -27,6 +27,14 @@
       "type": "Item"
     },
     {
+      "name": "symbaroumsystemitemses",
+      "label": "ES - System special traits",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumsystemitemses.db",
+      "module": "symbaroum",
+      "type": "Item"
+    },    
+    {
       "name": "symbaroumsystemitemsit",
       "label": "IT - Tratti speciali di Symbaroum",
       "system": "symbaroum",
@@ -211,6 +219,14 @@
       "type": "Item"
     },
     {
+      "name": "symbaroumweaponses",
+      "label": "ES - Weapons",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumweaponses.db",
+      "module": "symbaroum",
+      "type": "Item"
+    },    
+    {
       "name": "symbaroumweaponsit",
       "label": "IT - Armi",
       "system": "symbaroum",
@@ -243,6 +259,14 @@
       "type": "Item"
     },
     {
+      "name": "symbaroumarmorses",
+      "label": "ES - Armors",
+      "system": "symbaroum",
+      "path": "./packs/symbaroumarmorses.db",
+      "module": "symbaroum",
+      "type": "Item"
+    },    
+    {
       "name": "symbaroumarmorsit",
       "label": "IT - Armature",
       "system": "symbaroum",
@@ -266,6 +290,14 @@
       "module": "symbaroum",
       "type": "Macro"
     },
+    {
+      "name": "symbaroummacroses",
+      "label": "ES - Macros",
+      "system": "symbaroum",
+      "path": "./packs/symbaroummacroses.db",
+      "module": "symbaroum",
+      "type": "Macro"
+    },    
     {
       "name": "symbaroummacrosit",
       "label": "IT - Macro",
