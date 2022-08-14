@@ -19,12 +19,22 @@ export class PlayerSheet2 extends PlayerSheet {
         });
     }
 
-    getData() {
+    async getData() {
         let data = {
             id: this.actor.id,
             actor: foundry.utils.deepClone(this.actor),
             system: foundry.utils.deepClone(this.actor.system),        
         }
+
+        let enrichedFields = [ 
+            "system.bio.appearance",
+            "system.bio.background",
+            "system.bio.personalGoal",
+            "system.bio.stigmas",
+            "system.bio.tactics",
+            "system.notes"
+        ];
+        await this._enrichTextFields(data,enrichedFields);
 
         let items = Array.from(this.actor.items.values()).sort( (a, b) => {
             if(a.type == b.type) {
@@ -43,7 +53,7 @@ export class PlayerSheet2 extends PlayerSheet {
             isNPC: this.actor.type === "monster",
             showNpcModifiers: game.settings.get('symbaroum', 'showNpcModifiers')
         };
-
+        game.symbaroum.log("data", data);
         return data;
     }
 

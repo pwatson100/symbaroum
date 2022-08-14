@@ -251,7 +251,7 @@ export class SymbaroumItem extends Item {
         itemData.isWeapon = itemData.type === "weapon";
         itemData.isArmor = itemData.type === "armor";
         itemData.isEquipment = itemData.type === "equipment";
-        itemData.isArtifact = itemData.type === "artifact";
+        itemsystem.isArtifact = itemData.type === "artifact";
         const html = await renderTemplate("systems/symbaroum/template/chat/item.html", itemData);
         const chatData = {
             user: game.user.id,

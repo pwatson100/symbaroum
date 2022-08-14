@@ -6,7 +6,7 @@ export class SymbaroumItemSheet extends ItemSheet {
     html.find('.power-create').click((ev) => this._onPowerCreate(ev));
   }
 
-  getData() {
+  async getData() {
     let data = { 
       id:this.item.id,
       item: this.item,
@@ -15,6 +15,20 @@ export class SymbaroumItemSheet extends ItemSheet {
       editable : this.isEditable
     };
 
+    let enrichedFields = [ 
+      "system.description",
+      "system.novice.description",
+      "system.adept.description",
+      "system.master.description",
+  ];
+
+  if(hasProperty(data,"system.power")) {
+    for(let key in data.system.power) {
+      enrichedFields.push(`system.power.${key}.description`);
+    }
+  }
+
+  await this._enrichTextFields(data,enrichedFields);    
     data.symbaroumOptions = {
       isGM: game.user.isGM,
       allowShowReference:  game.settings.get('symbaroum', 'allowShowReference')
@@ -38,7 +52,7 @@ export class SymbaroumItemSheet extends ItemSheet {
 
   updateOutstandingMCEValues()
   {
-    let upDate = this.item.data;
+    let upDate = this.item;
     const editors = Object.values(this.editors).filter((editor) => editor.active);
     for (const editor of editors) {
       if(editor.mce)
@@ -94,5 +108,14 @@ export class SymbaroumItemSheet extends ItemSheet {
       return;
     }
     this.item.actor.usePower(this.item);
+  }
+
+  async _enrichTextFields(data, fieldNameArr) {
+    for(let t = 0; t < fieldNameArr.length; t++ ) 
+    {
+      if(hasProperty(data,fieldNameArr[t])) {
+        setProperty(data, fieldNameArr[t], await TextEditor.enrichHTML(getProperty(data,fieldNameArr[t]), { async:true}) );
+      }
+    };
   }
 }

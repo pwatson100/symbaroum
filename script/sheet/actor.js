@@ -121,4 +121,13 @@ export class SymbaroumActorSheet extends ActorSheet {
     const weapon = this.actor.items.get(div.data('itemId'));
     await this.actor.rollWeapon(weapon);
   }
+
+  async _enrichTextFields(data, fieldNameArr) {
+    for(let t = 0; t < fieldNameArr.length; t++ ) 
+    {
+      if(hasProperty(data,fieldNameArr[t])) {
+        setProperty(data, fieldNameArr[t], await TextEditor.enrichHTML(getProperty(data,fieldNameArr[t]), { async:true}) );
+      }
+    }
+  }
 }

@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="wrapper-right">
-            {{editor content=system.bio.appearance target="system.bio.appearance" button=true owner=owner editable=true}}
+            {{editor system.bio.appearance target="system.bio.appearance" button=true owner=owner editable=true}}
         </div>
         {{#ife actor.type 'player'}}
 
@@ -31,23 +31,23 @@
     </div>
     <div class="background foreground border">
         <h1 style="text-transform: uppercase">{{localize "BIO.BACKGROUND"}}</h1>
-        {{editor content=system.bio.background target="system.bio.background" button=true owner=owner editable=true}}
+        {{editor system.bio.background target="system.bio.background" button=true owner=owner editable=true}}
     </div>
     <div class="personal-goal foreground border">
         <h1 style="text-transform: uppercase">{{localize "BIO.GOAL"}}</h1>
-        {{editor content=system.bio.personalGoal target="system.bio.personalGoal" button=true owner=owner editable=true}}
+        {{editor system.bio.personalGoal target="system.bio.personalGoal" button=true owner=owner editable=true}}
     </div>
     {{#ife actor.type 'player'}}
         <div class="stigmas foreground border">
             <h1 style="text-transform: uppercase">{{localize "BIO.STIGMAS"}}</h1>
-            {{editor content=system.bio.stigmas target="system.bio.stigmas" button=true owner=owner editable=true}}
+            {{editor system.bio.stigmas target="system.bio.stigmas" button=true owner=owner editable=true}}
         </div>
     {{/ife}}
 
     {{#ife actor.type 'monster'}}
         <div class="stigmas foreground border">
             <h1 style="text-transform: uppercase">{{localize "BIO.TACTICS"}}</h1>
-            {{editor content=system.bio.tactics target="system.bio.tactics" button=true owner=owner editable=true}}
+            {{editor system.bio.tactics target="system.bio.tactics" button=true owner=owner editable=true}}
         </div>
     {{/ife}}
 </div>

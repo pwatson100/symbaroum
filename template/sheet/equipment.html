@@ -13,7 +13,7 @@
         </div>
         <div class="sheet-tabs tabs" data-group="primary">
             <b class="item" data-tab="description">{{localize "TAB.DESCRIPTION"}}</b>
-            {{#if data.isArtifact}}
+            {{#if system.isArtifact}}
             <b class="item" data-tab="power">{{localize "TAB.POWER"}}</b>
             {{/if}}
             <b class="item" data-tab="bonus">{{localize "TAB.BONUS"}}</b>
@@ -33,19 +33,19 @@
                     </div>
                     <div class="number">
                         <label for="{{id}}-system.isArtifact">{{localize "ITEM.ARTIFACT"}}</label>
-                        {{#if data.isArtifact}}
+                        {{#if system.isArtifact}}
                         <input id="{{id}}-system.isArtifact" name="system.isArtifact" type="checkbox" value="artifact" checked/>
                         {{else}}
                         <input id="{{id}}-system.isArtifact" name="system.isArtifact" type="checkbox" value="artifact"/>
                         {{/if}}
                     </div>
-                    {{editor content=system.description target="system.description" button=true owner=owner editable=true}}
+                    {{editor system.description target="system.description" button=true owner=owner editable=true}}
                 </div>
             </div>
             <div class="tab" data-group="primary" data-tab="bonus">
                 {{> systems/symbaroum/template/sheet/tab/bonus.html}}
             </div>
-            {{#if data.isArtifact}}
+            {{#if system.isArtifact}}
             <div class="tab" data-group="primary" data-tab="power">
                 {{> systems/symbaroum/template/sheet/tab/artifact.html}}
             </div>
