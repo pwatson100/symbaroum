@@ -3,6 +3,63 @@ import { modifyEffectOnToken } from './hooks.js';
 import { createLineDisplay } from './dialog.js';
 
 export class SymbaroumItem extends Item {
+
+  /* -------------------------------------------- */
+  /*  Importing and Exporting                     */
+  /* -------------------------------------------- */
+
+  /**
+   * Present a Dialog form to create a new Document of this type.
+   * Choose a name and a type from a select menu of types.
+   * @param {object} data              Initial data with which to populate the creation form
+   * @param {object} [context={}]      Additional context options or dialog positioning options
+   * @returns {Promise<Document|null>} A Promise which resolves to the created Document, or null if the dialog was
+   *                                   closed.
+   * @memberof ClientDocumentMixin
+   */
+   static async createDialog(data={}, {parent=null, pack=null, ...options}={}) {
+
+        // Collect data
+        const documentName = this.metadata.name;
+        const types = game.documentTypes[documentName]?.filter(e => !game.symbaroum.config.itemDeprecated.includes(e));
+        const folders = parent ? [] : game.folders.filter(f => (f.data.type === documentName) && f.displayed);
+        const label = game.i18n.localize(this.metadata.label);
+        const title = game.i18n.format("DOCUMENT.Create", {type: label});
+
+        // Render the document creation form
+        const html = await renderTemplate("templates/sidebar/document-create.html", {
+        name: data.name || game.i18n.format("DOCUMENT.New", {type: label}),
+        folder: data.folder,
+        folders: folders,
+        hasFolders: folders.length >= 1,
+        type: data.type || CONFIG[documentName]?.defaultType || types[0],
+        types: types.reduce((obj, t) => {
+            const label = CONFIG[documentName]?.typeLabels?.[t] ?? t;
+            obj[t] = game.i18n.has(label) ? game.i18n.localize(label) : t;
+            return obj;
+        }, {}),
+        hasTypes: types.length > 1
+        });
+
+        // Render the confirmation dialog window
+        return Dialog.prompt({
+        title: title,
+        content: html,
+        label: title,
+        callback: html => {
+            const form = html[0].querySelector("form");
+            const fd = new FormDataExtended(form);
+            foundry.utils.mergeObject(data, fd.object, {inplace: true});
+            if ( !data.folder ) delete data.folder;
+            if ( types.length === 1 ) data.type = types[0];
+            return this.create(data, {parent, pack, renderSheet: true});
+        },
+        rejectClose: false,
+        options: options
+        });
+    }
+
+
     static async create(data, options) {
         if (!data.img) {
             if(data.type in game.symbaroum.config.itemImages)
