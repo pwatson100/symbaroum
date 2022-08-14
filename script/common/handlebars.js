@@ -78,7 +78,7 @@ function registerHandlebarsHelpers() {
     return args.indexOf(false) === -1 ? options.fn(this) : options.inverse(this);
   });    
   Handlebars.registerHelper('keyIndex', function (str) {
-    return 'data.power.' + str + '.description';
+    return 'system.power.' + str + '.description';
   });
   Handlebars.registerHelper('addOne', function (v1) {
     let newOne = parseInt(v1) + 1;

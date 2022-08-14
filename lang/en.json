@@ -348,7 +348,7 @@
   "COMBAT.PARAMS_PRECISE": "Precise weapon, ",
 
   "CORRUPTION.CHAT_INTRO": " increases his degree of taint.",
-  "CORRUPTION.CHAT_THRESHOLD": " becomes Blight-marked (theshold reached).",
+  "CORRUPTION.CHAT_THRESHOLD": " becomes Blight-marked (threshold reached).",
   "CORRUPTION.CHAT_MAX": " turns into an abomination (max reached).",
   "CORRUPTION.CHAT_WARNING": " is close to a corruption treshold.",
 

@@ -441,8 +441,8 @@ Hooks.on("renderCompendiumDirectory", (app, html, data) => {
       }
       return false;
     });
-    game.symbaroum.log("Translated docs are",translatedDocs);
-    game.symbaroum.log("Irrelvnant docs are",irrelvantCompendiums);
+    // game.symbaroum.log("Translated docs are",translatedDocs);
+    // game.symbaroum.log("Irrelevnant docs are",irrelvantCompendiums);
     const enReg = new RegExp(`symbaroum(.*)en$`);
     for (const comp of irrelvantCompendiums) {
       // check if the english doc is not one of the translated ones, continue
@@ -453,7 +453,7 @@ Hooks.on("renderCompendiumDirectory", (app, html, data) => {
         }
       }
       let compositeKey = `${comp.metadata.system}.${comp.metadata.name}`;
-      game.symbaroum.log("Removing compendium", compositeKey);
+      // game.symbaroum.log("Removing compendium", compositeKey);
       game.packs.delete(compositeKey);
       html.find(`li[data-pack="${compositeKey}"]`).hide();
     }

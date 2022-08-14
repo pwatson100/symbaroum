@@ -1,52 +1,50 @@
 <div class="symbaroum chat item">
     <div class="foreground border">
         <h3>{{name}}</h3>
-        {{#if isTrait}}
+        {{#if system.isTrait}}
         <h4>{{localize "ITEM.TRAIT"}}</h4>
         {{/if}}
-        {{#if isAbility}}
+        {{#if system.isAbility}}
         <h4>{{localize "ITEM.ABILITY"}}</h4>
         {{/if}}
-        {{#if isMysticalPower}}
+        {{#if system.isMysticalPower}}
         <h4>{{localize "ITEM.MYSTICAL_POWER"}}</h4>
         {{/if}}
-        {{#if isRitual}}
+        {{#if system.isRitual}}
         <h4>{{localize "ITEM.RITUAL"}}</h4>
         {{/if}}
-        {{#if isWeapon}}
-        <h4>{{localize "ITEM.WEAPON"}}</h4>
+        {{#if system.isWeapon}}
+        <h4>{{localize "ITEM.WEAPON"}} {{#if system.isArtifact}}- {{localize "ITEM.ARTIFACT"}} {{/if}}</h4>
         {{/if}}
-        {{#if isArmor}}
-        <h4>{{localize "ITEM.ARMOR"}}</h4>
+        {{#if system.isArmor}}
+        <h4>{{localize "ITEM.ARMOR"}} {{#if system.isArtifact}}- {{localize "ITEM.ARTIFACT"}} {{/if}}</h4>
         {{/if}}
-        {{#if isEquipment}}
-        <h4>{{localize "ITEM.EQUIPMENT"}}</h4>
+        {{#if system.isEquipment}}
+        <h4>{{localize "ITEM.EQUIPMENT"}} {{#if system.isArtifact}}- {{localize "ITEM.ARTIFACT"}} {{/if}}</h4>
         {{/if}}
-        {{#if isArtifact}}
-        <h4>{{localize "ITEM.ARTIFACT"}}</h4>
-        {{/if}}
+
 
 
         {{#if img}}
         <img src="{{img}}" title="{{name}}"/>
         {{/if}}
-        <p class="name" data-item-id="{{id}}">@Item[{{name}}]</p>
+        <p class="name" data-item-id="{{id}}">{{{enrichedName}}}</p>
 
-        {{#if isTrait}}
+        {{#if system.Trait}}
         <p><strong>{{localize "TRAIT.DESCRIPTION"}}:</strong> {{removeStyling system.description}}</p>
         <p><strong>{{localize "TITLE.NOVICE"}} [{{system.novice.action}}]:</strong> {{removeStyling system.novice.description}}</p>
         <p><strong>{{localize "TITLE.ADEPT"}} [{{system.adept.action}}]:</strong> {{removeStyling system.adept.description}}</p>
         <p><strong>{{localize "TITLE.MASTER"}} [{{system.master.action}}]:</strong> {{removeStyling system.master.description}}</p>
         {{/if}}
 
-        {{#if isAbility}}
+        {{#if system.Ability}}
         <p><strong>{{localize "ABILITY.DESCRIPTION"}}:</strong> {{removeStyling system.description}}</p>
         <p><strong>{{localize "TITLE.NOVICE"}} [{{system.novice.action}}]:</strong> {{removeStyling system.novice.description}}</p>
         <p><strong>{{localize "TITLE.ADEPT"}} [{{system.adept.action}}]:</strong> {{removeStyling system.adept.description}}</p>
         <p><strong>{{localize "TITLE.MASTER"}} [{{system.master.action}}]:</strong> {{removeStyling system.master.description}}</p>
         {{/if}}
 
-        {{#if isMysticalPower}}
+        {{#if system.MysticalPower}}
         <p><strong>{{localize "MYSTICAL_POWER.MATERIAL"}}:</strong> {{system.material}}</p>
         <p><strong>{{localize "MYSTICAL_POWER.DESCRIPTION"}}:</strong> {{removeStyling system.description}}</p>
         <p><strong>{{localize "TITLE.NOVICE"}} [{{system.novice.action}}]:</strong> {{removeStyling system.novice.description}}</p>
@@ -54,48 +52,35 @@
         <p><strong>{{localize "TITLE.MASTER"}} [{{system.master.action}}]:</strong> {{removeStyling system.master.description}}</p>
         {{/if}}
 
-        {{#if isRitual}}
+        {{#if system.Ritual}}
         <p><strong>{{localize "RITUAL.TRADITION"}}:</strong> {{system.tradition}}</p>
         <p><strong>{{localize "RITUAL.DESCRIPTION"}}:</strong> {{removeStyling system.description}}</p>
         {{/if}}
 
-        {{#if isWeapon}}
+        {{#if system.Weapon}}
         <p><strong>{{localize "WEAPON_CLASS.LABEL"}}:</strong> {{system.reference}}</p>
         <p><strong>{{localize "WEAPON.PC_DAMAGE"}}:</strong> {{system.baseDamage}}</p>
         <p><strong>{{localize "WEAPON.COST"}}:</strong> {{system.cost}}</p>
         <p><strong>{{localize "WEAPON.DESCRIPTION"}}:</strong> {{removeStyling system.description}}</p>
         {{/if}}
 
-        {{#if isArmor}}
+        {{#if system.Armor}}
         <p><strong>{{localize "ARMOR.PC_PROTCETION"}}:</strong> {{system.pcProtection}}</p>
         <p><strong>{{localize "ARMOR.IMPEDING"}}:</strong> {{system.impeding}}</p>
         <p><strong>{{localize "ARMOR.COST"}}:</strong> {{system.cost}}</p>
         <p><strong>{{localize "ARMOR.DESCRIPTION"}}:</strong> {{removeStyling system.description}}</p>
         {{/if}}
 
-        {{#if isEquipment}}
+        {{#if system.Equipment}}
         <p><strong>{{localize "EQUIPMENT.COST"}}:</strong> {{system.cost}}</p>
         <p><strong>{{localize "EQUIPMENT.DESCRIPTION"}}:</strong> {{removeStyling system.description}}</p>
         {{/if}}
 
-        {{#if isArtifact}}
-        <p><strong>{{localize "ARTIFACT.DESCRIPTION"}}:</strong> {{{keepMarkup system.description}}}</p>
-        {{#ifne system.power1.action "-"}}
-        <hr>
-        <p><b>{{localize "TITLE.POWER"}} 1</b> [{{localize system.power1.actionlabel}}] - Corruption: {{system.power1.corruption}}</p>
-        <p>{{{system.power1.description}}}</p>        
-        {{/ifne}}
-        {{#ifne system.power2.action "-"}}
-        <hr>
-        <p><b>{{localize "TITLE.POWER"}} 2</b> [{{localize system.power2.actionlabel}}] - Corruption: {{system.power2.corruption}}</p>
-        <p>{{{system.power2.description}}}</p>        
-        {{/ifne}}
-        {{#ifne system.power3.action "-"}}
-        <hr>
-        <p><b>{{localize "TITLE.POWER"}} 3</b> [{{localize system.power3.actionlabel}}] - Corruption: {{system.power3.corruption}}</p>
-        <p>{{{system.power3.description}}}</p>        
-        {{/ifne}}
-
+        {{#if system.isArtifact}}
+        <h3>{{localize "ARTIFACT.TITLE"}}</h3>
+            {{#each system.power  as |power key|}}
+                <p><strong>{{power.name}}:</strong> {{removeStyling power.description}}</p>
+            {{/each}}
         {{/if}}
     </div>
 </div>
