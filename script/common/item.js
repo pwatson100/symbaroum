@@ -239,38 +239,6 @@ export class SymbaroumItem extends Item {
         return this._getArtifactInfo("corruption");
     }
 
-    async sendToChat() {
-        const itemData = duplicate(this.system);
-        if (itemData.img.includes("/unknown")) {
-            itemData.img = null;
-        }        
-        itemData.isTrait = itemData.type === "trait";
-        itemData.isAbility = itemData.type === "ability";
-        itemData.isMysticalPower = itemData.type === "mysticalPower";
-        itemData.isRitual = itemData.type === "ritual";
-        itemData.isWeapon = itemData.type === "weapon";
-        itemData.isArmor = itemData.type === "armor";
-        itemData.isEquipment = itemData.type === "equipment";
-        itemsystem.isArtifact = itemData.type === "artifact";
-        const html = await renderTemplate("systems/symbaroum/template/chat/item.html", itemData);
-        const chatData = {
-            user: game.user.id,
-            speaker: ChatMessage.getSpeaker({ 
-                alias: this.actor?.name ?? game.user.name,
-                actor: this.actor?.id
-            }),            
-            rollMode: game.settings.get("core", "rollMode"),
-            content: html,
-        };
-        if (["gmroll", "blindroll"].includes(chatData.rollMode)) {
-            chatData.whisper = ChatMessage.getWhisperRecipients("GM");
-        } else if (chatData.rollMode === "selfroll") {
-            chatData.whisper = [game.user];
-        }
-        ChatMessage.create(chatData);
-    }
-
-
     /* affect reference on this item */
     async affectReference()
     {

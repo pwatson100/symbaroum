@@ -6,6 +6,25 @@ export class SymbaroumItemSheet extends ItemSheet {
     html.find('.power-create').click((ev) => this._onPowerCreate(ev));
   }
 
+  async enrichAllFields(data)
+  {
+    let enrichedFields = [ 
+        "system.description",
+        "system.novice.description",
+        "system.adept.description",
+        "system.master.description",
+    ];
+
+    if(hasProperty(data,"system.power")) {
+      for(let key in data.system.power) {
+        enrichedFields.push(`system.power.${key}.description`);
+      }
+    }
+
+    await this._enrichTextFields(data,enrichedFields);    
+
+  }
+
   async getData() {
     let data = { 
       id:this.item.id,
@@ -14,21 +33,7 @@ export class SymbaroumItemSheet extends ItemSheet {
       cssClass : this.isEditable ? "editable" : "locked",
       editable : this.isEditable
     };
-
-    let enrichedFields = [ 
-      "system.description",
-      "system.novice.description",
-      "system.adept.description",
-      "system.master.description",
-  ];
-
-  if(hasProperty(data,"system.power")) {
-    for(let key in data.system.power) {
-      enrichedFields.push(`system.power.${key}.description`);
-    }
-  }
-
-  await this._enrichTextFields(data,enrichedFields);    
+    await this.enrichAllFields(data);
     data.symbaroumOptions = {
       isGM: game.user.isGM,
       allowShowReference:  game.settings.get('symbaroum', 'allowShowReference')
@@ -43,7 +48,7 @@ export class SymbaroumItemSheet extends ItemSheet {
         label: game.i18n.localize("BUTTON.POST_ITEM"),
         class: "item-post",
         icon: "fas fa-comment",
-        onclick: (ev) => this.item.sendToChat(),
+        onclick: (ev) => this.sendToChat(),
       }
     ].concat(buttons);
     return buttons;
@@ -109,6 +114,38 @@ export class SymbaroumItemSheet extends ItemSheet {
     }
     this.item.actor.usePower(this.item);
   }
+
+  async sendToChat() {
+    const itemData = {};
+    itemData.system = duplicate(this.item.system);
+    game.symbaroum.log("sendToChat data:",itemData);
+    itemData.img = this.item.img;
+    itemData.name = this.item.name;
+    itemData.enrichedName = `@Item[${this.item.name}]`;
+    if (itemData.img.includes("/unknown")) {
+        itemData.img = null;
+    }
+    await this.enrichAllFields(itemData);
+    await this._enrichTextFields(itemData,["enrichedName"]);
+
+    const html = await renderTemplate("systems/symbaroum/template/chat/item.html", itemData);
+    const chatData = {
+        user: game.user.id,
+        speaker: ChatMessage.getSpeaker({ 
+            alias: this.item.actor?.name ?? game.user.name,
+            actor: this.item.actor?.id
+        }),            
+        rollMode: game.settings.get("core", "rollMode"),
+        content: html,
+    };
+    if (["gmroll", "blindroll"].includes(chatData.rollMode)) {
+        chatData.whisper = ChatMessage.getWhisperRecipients("GM");
+    } else if (chatData.rollMode === "selfroll") {
+        chatData.whisper = [game.user];
+    }
+    ChatMessage.create(chatData);
+}
+
 
   async _enrichTextFields(data, fieldNameArr) {
     for(let t = 0; t < fieldNameArr.length; t++ ) 
