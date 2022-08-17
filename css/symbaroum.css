@@ -1431,11 +1431,6 @@
   border: 9px solid transparent;
   border-image: url(../asset/modules/sym-journal-border.webp) 108/3 repeat;
   border-image-outset: 2;
-  width: 1000px !important;
-}
-
-.sheet.journal-entry .journal-entry-page {
-  width: 900px;
 }
 
 .journal-sheet form .editor {

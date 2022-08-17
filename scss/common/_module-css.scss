@@ -36,7 +36,6 @@
   display: none;
 }
 
-// V10 journal and sidebar manipulation
 .journal-entry-content .journal-header .title {
   width: auto;
 }
@@ -46,13 +45,7 @@
   border: 9px solid transparent;
   border-image: url(../asset/modules/sym-journal-border.webp) 108/3 repeat;
   border-image-outset: 2;
-  width: 1000px !important;
 }
-
-.sheet.journal-entry .journal-entry-page {
-  width: 900px;
-}
-// V10 journal and sidebar manipulation
 
 .journal-sheet form .editor {
   height: 100%;

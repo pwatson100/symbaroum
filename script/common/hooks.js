@@ -20,6 +20,7 @@ import { MonsterSheet } from '../sheet/monster.js';
 import { SymbaroumConfig } from './symbaroumConfig.js';
 import { SymbaroumCommsListener } from './symbcomms.js';
 import { SymbaroumMacros } from './macro.js';
+import { SymbaroumJournalSheet } from '../sheet/journal.js';
 
 Hooks.once('init', () => {
 
@@ -44,6 +45,8 @@ Hooks.once('init', () => {
   Items.registerSheet('symbaroum', ArmorSheet, { types: ['armor'], makeDefault: true });
   Items.registerSheet('symbaroum', EquipmentSheet, { types: ['equipment'], makeDefault: true });
   Items.registerSheet('symbaroum', ArtifactSheet, { types: ['artifact'], makeDefault: true });
+  Journal.unregisterSheet('core', JournalSheet);
+  Journal.registerSheet('symbaroum', SymbaroumJournalSheet, { makeDefault: true });
   initializeHandlebars();
 
   game.symbaroum = {
@@ -405,7 +408,7 @@ Hooks.on('preCreateActor', (doc, createData, options, userid) => {
 // Hooks.on('createOwnedItem', (actor, item) => {});
 Hooks.on("changeSidebarTabA", (app) => {
   game.symbaroum.log("In changeSidebarTab - sorting out available compendiums", app, app.rendered);
-  
+
 });
 
 Hooks.on("renderCompendiumDirectory", (app, html, data) => {
@@ -415,7 +418,7 @@ Hooks.on("renderCompendiumDirectory", (app, html, data) => {
     const filterEnglish = game.settings.get("symbaroum", "showEnglishPacks");
 
     let languageCodeRegex = `systemuserguides|${game.i18n.lang}`;
-    game.symbaroum.log("languageCodeRegex",languageCodeRegex);
+    game.symbaroum.log("languageCodeRegex", languageCodeRegex);
     if (filterEnglish && game.i18n.lang !== "en") {
       languageCodeRegex = `en|${languageCodeRegex}`;
     }
@@ -646,10 +649,10 @@ async function setupStatusEffects() {
       label: "POWER_LABEL.UNNOTICEABLE",
       icon: "systems/symbaroum/asset/image/invisible.png"
     },
-      {
-        id: "witchhammer",
-        label: "POWER_LABEL.WITCH_HAMMER",
-        icon: "systems/symbaroum/asset/image/powers/witchhammer.svg"
+    {
+      id: "witchhammer",
+      label: "POWER_LABEL.WITCH_HAMMER",
+      icon: "systems/symbaroum/asset/image/powers/witchhammer.svg"
     });
 }
 
