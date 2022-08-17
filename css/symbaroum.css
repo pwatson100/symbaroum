@@ -1422,12 +1422,20 @@
   display: none;
 }
 
-.app.window-app.sheet.journal-sheet {
+.journal-entry-content .journal-header .title {
+  width: auto;
+}
+
+.app.window-app.sheet.journal-sheet.journal-entry {
   color: hsl(0deg, 0%, 0%);
   border: 9px solid transparent;
   border-image: url(../asset/modules/sym-journal-border.webp) 108/3 repeat;
   border-image-outset: 2;
-  width: 1228px !important;
+  width: 1000px !important;
+}
+
+.sheet.journal-entry .journal-entry-page {
+  width: 900px;
 }
 
 .journal-sheet form .editor {
@@ -1522,13 +1530,13 @@
   margin: 0px 20px 0px 10px;
 }
 
-.symbaroum-mod h1 {
+.symbaroum-mod .h1mod {
   /* font-family: 'Jim Nightshade'; */
   font-family: "Primitive";
   font-size: 68pt;
 }
 
-.symbaroum-mod h1 .indexsheet {
+.symbaroum-mod .h1mod .indexsheet {
   color: hsl(0deg, 0%, 100%);
   text-align: center;
   font-size: 50pt;
