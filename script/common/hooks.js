@@ -20,10 +20,9 @@ import { MonsterSheet } from '../sheet/monster.js';
 import { SymbaroumConfig } from './symbaroumConfig.js';
 import { SymbaroumCommsListener } from './symbcomms.js';
 import { SymbaroumMacros } from './macro.js';
-import { SymbaroumJournalSheet } from '../sheet/journal.js';
+import { SymbaroumWide } from '../sheet/journal.js';
 
 Hooks.once('init', () => {
-
 
   const debouncedReload = foundry.utils.debounce(() => window.location.reload(), 250);
 
@@ -45,8 +44,8 @@ Hooks.once('init', () => {
   Items.registerSheet('symbaroum', ArmorSheet, { types: ['armor'], makeDefault: true });
   Items.registerSheet('symbaroum', EquipmentSheet, { types: ['equipment'], makeDefault: true });
   Items.registerSheet('symbaroum', ArtifactSheet, { types: ['artifact'], makeDefault: true });
-  Journal.unregisterSheet('core', JournalSheet);
-  Journal.registerSheet('symbaroum', SymbaroumJournalSheet, { makeDefault: true });
+  Journal.registerSheet('symbaroum', SymbaroumWide, { label: game.i18n.localize("SYMBAROUM.OPTIONAL_CUSTOMSHEETJOURNAL"), makeDefault: false });
+
   initializeHandlebars();
 
   game.symbaroum = {
@@ -367,6 +366,7 @@ Hooks.once('init', () => {
   setupStatusEffects();
 });
 
+
 Hooks.once('ready', () => {
   game.symbaroum.macros.macroReady();
 
@@ -376,6 +376,14 @@ Hooks.once('ready', () => {
   setupConfigOptions();
   setupEmit();
   setup3PartySettings();
+});
+
+Hooks.on("preDocumentSheetRegistrarInit", (settings) => {
+  settings["JournalEntry"] = true;
+});
+
+Hooks.on("documentSheetRegistrarInit", (documentTypes) => {
+  DocumentSheetConfig.updateDefaultSheets(game.settings.get("core", "sheetClasses"));
 });
 
 // create/remove the quick access config button

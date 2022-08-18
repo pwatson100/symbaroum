@@ -26,34 +26,34 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-.journal-sheet form {
+.symbaroum-mod.journal-sheet form {
   display: flex;
   flex-direction: column;
   background-image: url(../asset/modules/foreground2a.png);
   background-size: 100% 100%;
 }
-.journal-sheet form select {
+.symbaroum-mod.journal-sheet form select {
   display: none;
 }
 
-.journal-entry-content .journal-header .title {
+.symbaroum-mod journal-entry-content .journal-header .title {
   width: auto;
 }
 
-.app.window-app.sheet.journal-sheet.journal-entry {
+.symbaroum-mod.app.window-app.sheet.journal-sheet.journal-entry {
   color: hsl(0, 0%, 0%);
   border: 9px solid transparent;
   border-image: url(../asset/modules/sym-journal-border.webp) 108/3 repeat;
   border-image-outset: 2;
 }
 
-.journal-sheet form .editor {
+.symbaroum-mod.journal-sheet form .editor {
   height: 100%;
 }
-.app.window-app.journal-sheet.sheet.journal-sheet .window-header {
+.symbaroum-mod.app.window-app.journal-sheet.sheet.journal-sheet .window-header {
   background-image: url(../asset/modules/foreground.jpg);
 }
-.app.window-app.journal-sheet.sheet.journal-sheet.window-app.minimized .window-header {
+.symbaroum-mod.app.window-app.journal-sheet.sheet.journal-sheet.window-app.minimized .window-header {
   border: none;
   line-height: 14px;
   padding: 0 6px;
@@ -63,7 +63,7 @@
 }
 
 /*Journal Entry Input Border*/
-.journal-sheet form input[name='name'] {
+.symbaroum-mod.journal-sheet form input[name='name'] {
   font-family: 'Primitive';
   font-size: 3rem;
   text-align: center;
@@ -79,26 +79,26 @@
   color: hsl(39, 77%, 83%);
 }
 
-.journal-sheet form input[name='name']:focus {
+.symbaroum-mod.journal-sheet form input[name='name']:focus {
   box-shadow: none;
 }
 
-.window-app.sheet.minimized .window-header .window-title {
+.symbaroum-mod.window-app.sheet.minimized .window-header .window-title {
   overflow: hidden;
   white-space: pre;
 }
 
-::-webkit-scrollbar-thumb {
+.symbaroum-mod ::-webkit-scrollbar-thumb {
   background: hsl(0, 0%, 50%);
   border-color: hsl(180, 25%, 25%);
 }
 
-::-webkit-scrollbar-track {
+.symbaroum-mod ::-webkit-scrollbar-track {
   box-shadow: 0 0 3px hsl(0, 0%, 60%) inset;
   border-radius: 3px;
 }
 
-.journal-sheet form button[type='submit']:focus {
+.symbaroum-mod.journal-sheet form button[type='submit']:focus {
   opacity: 100%;
   box-shadow: 0 0 8px hsl(0, 0%, 50%);
 }
