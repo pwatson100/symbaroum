@@ -36,7 +36,7 @@
                             </div>
                             <div class="toughness-threshold" data-tooltip='{{localize "TOOLTIP.HEALTH.TOUGHNESS_THRESHOLD"}}'>
                                 <label>{{localize "HEALTH.TOUGHNESS_THRESHOLD"}}</label>
-                                {{#if actor.hasNoPainThreshold }}
+                                {{#if actor.system.hasNoPainThreshold }}
                                     <span class="input flex30">
                                         <input type="text" value="{{localize "HEALTH.TOUGHNESS_THRESHOLD_NA"}}" disabled />
                                     </span>
@@ -56,7 +56,7 @@
                             <div class="corruption-col1">
                                 <div class="corruption-current" data-tooltip="{{#if actor.isThoroughlyCorrupt}}{{localize "TOOLTIP.HEALTH.CORRUPTION_NA_TEXT"}}{{else}}{{localize "TOOLTIP.HEALTH.CORRUPTION_CURRENT"}}{{/if}}">
                                     <label>{{localize "HEALTH.CORRUPTION_CURRENT"}}</label>
-                                    {{#if actor.isThoroughlyCorrupt}}
+                                    {{#if actor.system.isThoroughlyCorrupt}}
                                     <input type="text" value="{{localize "HEALTH.CORRUPTION_NA"}}" disabled />
                                     {{else}}
                                     <input name="system.health.corruption.value" type="number" value="{{system.health.corruption.value}}" data-dtype="Number" disabled />
@@ -78,29 +78,27 @@
                                 </div>
                                 <div class="corruption-threshold">
                                     <label data-tooltip="{{localize "TOOLTIP.HEALTH.CORRUPTION_THRESHOLD"}}">{{localize "HEALTH.CORRUPTION_THRESHOLD"}}</label>                                    
-                                        {{#if actor.isThoroughlyCorrupt}}
-                                        <span class="input flex30"></span>
-                                            <input type="text" value="{{localize "HEALTH.CORRUPTION_NA"}}" disabled />
-                                        </span>
-                                        {{else}}
-                                        <span class="input flex30" data-tooltip='{{localize "TOOLTIP.BONUS_TOTAL"}} {{system.health.corruption.threshold}}''>
-                                            <input name="system.health.corruption.threshold" type="number" value="{{system.health.corruption.threshold}}" data-dtype="Number" disabled />
-                                        </span>                                        
-                                        {{/if}}
+                                    {{#if actor.system.isThoroughlyCorrupt}}
+                                    <span class="input flex30">
+                                        <input type="text" value="{{localize "HEALTH.CORRUPTION_NA"}}" disabled />
                                     </span>
+                                    {{else}}
+                                    <span class="input flex30" data-tooltip='{{localize "TOOLTIP.BONUS_TOTAL"}} {{system.health.corruption.threshold}}''>
+                                        <input name="system.health.corruption.threshold" type="number" value="{{system.health.corruption.threshold}}" data-dtype="Number" disabled />
+                                    </span>                                        
+                                    {{/if}}
                                 </div>
                                 <div class="corruption-max">
                                     <label data-tooltip="{{localize "TOOLTIP.HEALTH.CORRUPTION_MAX"}}">{{localize "HEALTH.CORRUPTION_MAX"}}</label>
-                                        {{#if actor.isThoroughlyCorrupt}}
-                                        <span class="input flex30">
-                                            <input type="text" value="{{localize "HEALTH.CORRUPTION_NA"}}" disabled />
-                                        </span>
-                                        {{else}}
-                                        <span class="input flex30" data-tooltip="{{localize "TOOLTIP.BONUS_TOTAL"}} {{system.health.corruption.max}} {{{system.bonus.corruption.max_msg}}}">
-                                            <input style="flex-basis: unset" name="system.health.corruption.max" type="number" value="{{system.health.corruption.max}}" data-dtype="Number" disabled />
-                                        </span>
-                                        {{/if}}
+                                    {{#if actor.system.isThoroughlyCorrupt}}
+                                    <span class="input flex30">
+                                        <input style="flex-basis: unset" type="text" value="{{localize "HEALTH.CORRUPTION_NA"}}" disabled />
                                     </span>
+                                    {{else}}
+                                    <span class="input flex30" data-tooltip="{{localize "TOOLTIP.BONUS_TOTAL"}} {{system.health.corruption.max}} {{{system.bonus.corruption.max_msg}}}">
+                                        <input style="flex-basis: unset" name="system.health.corruption.max" type="number" value="{{system.health.corruption.max}}" data-dtype="Number" disabled />
+                                    </span>
+                                    {{/if}}
                                 </div>
                             </div> <!-- end of col 2 -->
                         </div> <!-- end of corruptioncol -->
