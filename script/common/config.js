@@ -530,6 +530,7 @@ SYMBAROUM.CHAIN_NOT = "chainnot";  //the power can't do chain effect
 
 //Resisting
 SYMBAROUM.TYPE_DMG_AVOIDING = "dmgavoiding"; // damage reduction like in rapid reflexes
+SYMBAROUM.TYPE_ALT_RESIST_ATTR_RESOLUTE = "altresistatt"; //Alt resist attribute against mental alterations
 
 //Healing
 SYMBAROUM.TARGET_TOKEN = "targettoken";
