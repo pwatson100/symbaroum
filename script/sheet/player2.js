@@ -53,7 +53,6 @@ export class PlayerSheet2 extends PlayerSheet {
             isNPC: this.actor.type === "monster",
             showNpcModifiers: game.settings.get('symbaroum', 'showNpcModifiers')
         };
-        game.symbaroum.log("data", data);
         return data;
     }
 

@@ -5,6 +5,10 @@
   "version": "4.0.0",
   "minimumCoreVersion": "10",
   "compatibleCoreVersion": "10",
+  "compatibility": {
+    "minimum": 10,
+    "verified": "10.278"
+  },
   "authors": [{ "name": "Paul Watson" }, { "name": "Bithir" }, { "name": "Khaali" }],
   "scripts": [],
   "esmodules": ["script/common/hooks.js"],
