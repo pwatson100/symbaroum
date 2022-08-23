@@ -1542,7 +1542,7 @@
   font-size: 25pt;
 }
 
-.symbaroum-mod h3 {
+.symbaroum-mod h5 {
   padding: 0;
   margin: 0;
   margin-top: 5px;
@@ -1555,13 +1555,14 @@
   font-size: 18pt;
 }
 
-.symbaroum-mod h5 {
+.symbaroum-mod h3 {
   font-weight: bold;
   font-family: "Fondamento";
   font-size: 12pt;
   color: hsl(19deg, 70%, 37%);
   display: block;
   margin: 0px 20px 0px 10px;
+  border-bottom: none !important;
 }
 
 .symbaroum-mod h6 {
@@ -1772,15 +1773,6 @@
   margin-left: auto;
 }
 
-/* .symbaroum-mod .timeline {
-    display: inline-block;
-    background-image: url('../asset/modules/timeline.webp');
-    width: 500px;
-    height: 1150px;
-    vertical-align: middle;
-    background-size: 500px;
-    border: 0;
-  } */
 .symbaroum-mod .symtitle {
   display: block;
   background-image: url("../asset/modules/symbaroum_onelayer.webp");
@@ -1800,6 +1792,40 @@
   border: 5px double hsl(0deg, 0%, 0%);
   border-radius: 25px;
   box-shadow: 3px 3px;
+}
+
+.symbaroum-mod .lettertext {
+  width: 85%;
+  margin: auto;
+  font-family: "Primitive";
+  font-size: large;
+}
+
+.symbaroum-mod .imagecontainer {
+  position: relative;
+  text-align: center;
+  color: white;
+}
+
+/* Bottom left text */
+.symbaroum-mod .image-text-box {
+  position: absolute;
+  top: 187px;
+  left: 16px;
+  width: 200px;
+  height: 297px;
+  /* border: 3px solid #73ad21; */
+  text-align: left;
+}
+
+.symbaroum-mod .timeline-symbol {
+  display: inline-block;
+  background-image: url("../asset/modules/timeline-symbol.png");
+  width: 69px;
+  height: 29px;
+  vertical-align: middle;
+  background-size: 67px;
+  border: 0;
 }
 
 /* Tabs styles */
