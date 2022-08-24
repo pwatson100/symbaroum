@@ -6,9 +6,7 @@ export const initializeHandlebars = () => {
 function preloadHandlebarsTemplates() {
   const templatePaths = [
     'systems/symbaroum/template/sheet/player.html',
-    'systems/symbaroum/template/sheet/player2.html',
     'systems/symbaroum/template/sheet/tab/player-main.html',
-    'systems/symbaroum/template/sheet/tab/player2-main.html',
     'systems/symbaroum/template/sheet/tab/player-gear.html',
     'systems/symbaroum/template/sheet/tab/player-bio.html',
     'systems/symbaroum/template/sheet/tab/player-note.html',

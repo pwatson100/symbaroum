@@ -5,27 +5,61 @@ export class PlayerSheet extends SymbaroumActorSheet {
 
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
-            classes: ["symbaroum", "sheet", "actor"],
+            classes: ["symbaroum", "sheet", "actor", "player"],
             template: "systems/symbaroum/template/sheet/player.html",
             width: 800,
             height: 1000,
-            resizable: false,
+            resizable: true,
             dragDrop: [
                 { dragSelector: '.item[data-item-id]', dropSelector: '.tab-content' },
                 { dragSelector: '.attrDragM[data-attribute]' }
-            ],
+            ],            
             tabs: [
                 {
                     navSelector: ".sheet-tabs",
                     contentSelector: ".sheet-body",
-                    initial: "main",
+                    initial: "main"
                 },
             ]
         });
     }
 
-    getData() {
-        const data = super.getData();
+    async getData(options) {
+        game.symbaroum.log("actor-getData(..)",options);
+        let data = {
+            id: this.actor.id,
+            actor: foundry.utils.deepClone(this.actor),
+            system: foundry.utils.deepClone(this.actor.system),  
+            options: options      
+        }
+
+        let enrichedFields = [ 
+            "system.bio.appearance",
+            "system.bio.background",
+            "system.bio.personalGoal",
+            "system.bio.stigmas",
+            "system.bio.tactics",
+            "system.notes"
+        ];
+        await this._enrichTextFields(data,enrichedFields);
+
+        let items = Array.from(this.actor.items.values()).sort( (a, b) => {
+            if(a.type == b.type) {
+                return a.name == b.name ? 0 : a.name < b.name ? -1:1;
+            } else {                
+                return  (game.symbaroum.config.itemSortOrder.indexOf(a.type) - game.symbaroum.config.itemSortOrder.indexOf(b.type));
+            }
+        });
+
+        data.items = items;
+        data.cssClass = this.isEditable ? "editable" : "locked";
+        data.editable = this.isEditable;
+
+        data.symbaroumOptions = {
+            isGM: game.user.isGM,
+            isNPC: this.actor.type === "monster",
+            showNpcModifiers: game.settings.get('symbaroum', 'showNpcModifiers')
+        };
         return data;
     }
 
