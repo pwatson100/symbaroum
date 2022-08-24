@@ -10,6 +10,10 @@ export class PlayerSheet extends SymbaroumActorSheet {
             width: 800,
             height: 1000,
             resizable: true,
+            dragDrop: [
+                { dragSelector: '.item[data-item-id]', dropSelector: '.tab-content' },
+                { dragSelector: '.attrDragM[data-attribute]' }
+            ],            
             tabs: [
                 {
                     navSelector: ".sheet-tabs",
