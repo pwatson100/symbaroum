@@ -11,6 +11,11 @@
         {
             "version":13,
             "message":"<h1>Symbaroum 3.1.8</h1><br />We are happy to let you know that we released the Symbaroum 3.1.8. <br /> This is likely the last release before Foundry v10 is released. <br /><br /> As always, if you have comments, please visit the #free-league channel on the Foundry Discord or join #symbaroum-vtt-foundry on Davokar Explorers League Discord.  You can also see open features and bugs on our github page and are welcome to contribute. If you have comments, positive or negative feedback, please visit the #free-league channel on the Foundry Discord.  You can also see open features and bugs on our github page and are welcome to contribute."
+        },
+        {
+            "version":14,
+            "message":"<h1>Preparations</h1><br />We are gearing up for the release of Foundry v10 and with that a new version of the Symbaroum system. We expect the new version to be released when the commercial modules have a v10 version available. So the new version <b>is not out yet.</b><br /><br /> An important note that the Symbaroum system will only support upgrading to Foundry v10 from Symbaroum v3.1.8. If you are currently on Symbaroum v3.1.8 or newer than you are all prepared.<br /><br />If your system is older than 3.1.8, then we encourage you to upgrade to Symbaroum v3.1.8, as we can't guarantee a safe migration from older releases.  Remember that always, when upgrading systems to make a backup - see <a href='https://www.youtube.com/watch?v=OmbxMmqNNXU'>Foundry tutorial for backups</a>. <br/><br/><b>With Foundry, only you can prevent data loss</b><br/><br/> If you have to do a manual upgrade to v3.1.8 because foundry does not allow you to upgrade, please see https://foundryvtt.com/article/tutorial/ for how to perform a manual installation - the  manifest for Symbaroum 3.1.8 can be found <a target='_blank' href='https://github.com/pwatson100/symbaroum/releases/tag/3.1.8'>https://github.com/pwatson100/symbaroum/releases/tag/3.1.8</a> - There you can right click and select 'copy link' on the system.json and use that for your manual installation. <br/><br/> If you have questions and/or need help, ping us on either on #symbaroum-vtt-foundry on Davokar Explorers Discord or the #free-league channel on Foundry discord."
         }
+
     ]    
 }
