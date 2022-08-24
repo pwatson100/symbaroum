@@ -25,7 +25,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
     }
 
     async getData(options) {
-        game.symbaroum.log("actor-getData(..)",options);
+        // game.symbaroum.log("actor-getData(..)",options);
         let data = {
             id: this.actor.id,
             actor: foundry.utils.deepClone(this.actor),

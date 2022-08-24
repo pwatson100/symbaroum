@@ -687,6 +687,8 @@
     "TITLE.QUALITIES":"QUALITÉS",
     "TITLE.SPECIALQUALITIES":"COMPATIBILITÉ TALENTS SPÉCIAUX",
     
+    "TOOLTIP.BONUS_TOTAL": "Total",
+    "TOOLTIP.DEATH_SKULLS": "Death is reached at 3 skulls",
     "TOOLTIP.EXPERIENCE_CURRENT": "Vos points d'expérience non dépensés",
     "TOOLTIP.EXPERIENCE_TOTAL": "Total des points d'expérience acquis",
     "TOOLTIP.EXPERIENCE_ARTIFACTRR": "Points d'expérience dépensés pour les artefacts et relances",

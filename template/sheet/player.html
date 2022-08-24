@@ -2,9 +2,9 @@
     <div class="player">
         <div class="sheet-header foreground border">
             <div class="avatar" style="position:relative">
-                <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
+                <img class="profile-img" src="{{actor.img}}" data-edit="img" data-tooltip="{{actor.name}}" />
                 {{#ifgt data.nbrOfFailedDeathRoll 0}}
-                <div title="Death is reached at 3 skulls" style="position: absolute; top: 70%;left: 15px;">{{#times system.nbrOfFailedDeathRoll}}<i class="fas fa-skull" style="margin: 5px; color:rgb(255, 255, 255); vertical-align: bottom; -webkit-text-stroke-width: 1px; -webkit-text-stroke-color: rgb(0, 0, 0);"></i>{{/times}}</div>
+                <div data-tooltip="{{localize "TOOLTIP.DEATH_SKULLS"}}" style="position: absolute; top: 70%;left: 15px;">{{#times system.nbrOfFailedDeathRoll}}<i class="fas fa-skull" style="margin: 5px; color:rgb(255, 255, 255); vertical-align: bottom; -webkit-text-stroke-width: 1px; -webkit-text-stroke-color: rgb(0, 0, 0);"></i>{{/times}}</div>
                 {{/ifgt}}
             </div>
             <div class="wrapper-column">

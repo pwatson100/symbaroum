@@ -694,6 +694,7 @@
 
   "TOOLTIP.BONUS_TOTAL": "Total",
 
+  "TOOLTIP.DEATH_SKULLS": "Death is reached at 3 skulls",
   "TOOLTIP.EXPERIENCE_CURRENT": "Your current available (unspent) experience points",
   "TOOLTIP.EXPERIENCE_TOTAL": "The total amount of experience that you earnt",
   "TOOLTIP.EXPERIENCE_ARTIFACTRR": "Experience spent on artifacts and/or re-rolls",
