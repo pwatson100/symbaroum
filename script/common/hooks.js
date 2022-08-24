@@ -1,7 +1,6 @@
 import { SymbaroumActor } from './actor.js';
 import { SymbaroumItem, buildRolls, getEffect } from './item.js';
 import { PlayerSheet } from '../sheet/player.js';
-import { PlayerSheet2 } from '../sheet/player2.js';
 import { TraitSheet } from '../sheet/trait.js';
 import { AbilitySheet } from '../sheet/ability.js';
 import { MysticalPowerSheet } from '../sheet/mystical-power.js';
@@ -29,10 +28,9 @@ Hooks.once('init', () => {
   CONFIG.Actor.documentClass = SymbaroumActor;
   CONFIG.Item.documentClass = SymbaroumItem;
   Actors.unregisterSheet('core', ActorSheet);
-  Actors.registerSheet('symbaroum', PlayerSheet2, { types: ['player'], makeDefault: true });
-  Actors.registerSheet('symbaroum', PlayerSheet, { types: ['player'], makeDefault: false });
+  Actors.registerSheet('symbaroum', PlayerSheet, { types: ['player'], makeDefault: true });
   Actors.registerSheet('symbaroum', MonsterSheet, { types: ['monster'], makeDefault: true });
-  Actors.registerSheet('symbaroum', PlayerSheet2, { types: ['monster'], makeDefault: false });
+  Actors.registerSheet('symbaroum', PlayerSheet, { types: ['monster'], makeDefault: false });
   Items.unregisterSheet('core', ItemSheet);
   Items.registerSheet('symbaroum', TraitSheet, { types: ['trait'], makeDefault: true });
   Items.registerSheet('symbaroum', AbilitySheet, { types: ['ability'], makeDefault: true });
