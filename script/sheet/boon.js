@@ -18,17 +18,4 @@ export class BoonSheet extends SymbaroumItemSheet {
         });
     }
 
-    getData() {
-        const data = super.getData();
-        return data;
-    }
-
-    _getHeaderButtons() {
-        let buttons = super._getHeaderButtons();
-        return buttons;
-    }
-
-    activateListeners(html) {
-        super.activateListeners(html);
-    }
 }

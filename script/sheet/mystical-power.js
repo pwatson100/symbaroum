@@ -18,18 +18,4 @@ export class MysticalPowerSheet extends SymbaroumItemSheet {
         });
     }
 
-    getData() {
-        const data = super.getData();
-        data.isOwned = this.item.isOwned;
-        return data;
-    }
-
-    _getHeaderButtons() {
-        let buttons = super._getHeaderButtons();
-        return buttons;
-    }
-
-    activateListeners(html) {
-        super.activateListeners(html);
-    }
 }

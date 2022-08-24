@@ -664,7 +664,8 @@
   "TITLE.SPECIALQUALITIES":"ABILITIES COMPATIBILITY",
   
   "TOOLTIP.BONUS_TOTAL": "Total",
-  
+  "TOOLTIP.DEATH_SKULLS": "Death is reached at 3 skulls",
+    
   "TOOLTIP.EXPERIENCE_CURRENT": "Deine verfügbaren (nicht ausgegebenen) Erfahrungspunkte",
   "TOOLTIP.EXPERIENCE_TOTAL": "Deine ingesamt erworbenen Erfahrungspunkte",
   "TOOLTIP.EXPERIENCE_ARTIFACTRR": "Für Artefakte und Würfelwürfe ausgegebenen Erfahrungspunkte",
