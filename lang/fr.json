@@ -1,4 +1,5 @@
 {
+    "ABILITY.HEADER": "Ability",
     "ABILITY.NAME": "Nom",
     "ABILITY.REFERENCE": "Reference",
     "ABILITY.ACTIVE": "Appris",
@@ -414,6 +415,7 @@
     "HEALTH.TOUGHNESS_TOTAL": "Total",
     "HEALTH.TOUGHNESS_THRESHOLD": "Seuil",
     "HEALTH.TOUGHNESS_THRESHOLD_MAX": "Seuil d'End.",
+    "HEALTH.TOUGHNESS_THRESHOLD_FULL": "Pain Threshold",
     "HEALTH.CORRUPTION": "Corruption",
     "HEALTH.CORRUPTION_CURRENT": "Actuelle",
     "HEALTH.CORRUPTION_TEMPORARY": "Temporaire",
@@ -422,6 +424,7 @@
     "HEALTH.CORRUPTION_THRESHOLD": "Seuil",
     "HEALTH.CORRUPTION_THRESHOLD_MAX": "Seuil de Cor.",
     "HEALTH.CORRUPTION_MAX": "Maximale",
+    "HEALTH.CORRUPTION_THROUGHLY": "thoroughly corrupt",
 
     "INITIATIVE.TITLE": "Initiative",
     "INITIATIVE.EXPLANATION": "Initiative indiquée comme [Attribut utilisé.vigilance]",
@@ -670,7 +673,7 @@
 
     "TITLE.ABILITIES_POWERS": "TALENTS & POUVOIRS",
     "TITLE.HEALTH": "SANTÉ",
-    "TITLE.ATTRIBUTES": "ATTRIBUTS",
+    "TITLE.ATTRIBUTES": "Attributs",
     "TITLE.COMBAT": "COMBAT",
     "TITLE.NOTES": "NOTES",
     "TITLE.ARMORS": "ARMURES",
@@ -713,6 +716,7 @@
     "TOOLTIP.DELETE_ABILITY" : "Supprimer ce talent",
     "TOOLTIP.POWER_ACTIONS" : "Type d'action (A - active, P - passive, S - spéciale, etc)",
 
+    "TRAIT.HEADER": "Traits",
     "TRAIT.NAME": "Nom",
     "TRAIT.ACTIVE": "Acquis",
     "TRAIT.ACTION": "Action",

@@ -453,6 +453,10 @@ SYMBAROUM.monsterTraitLevels = {
     3: "III"
 }
 
+SYMBAROUM.systemTraits = [
+    "nopainthreshold",
+    "thoroughlycorrupt"
+]
 
 //combat mod types
 SYMBAROUM.TYPE_ALTERNATIVE_DAMAGE = "alternative_damage";

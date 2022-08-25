@@ -96,7 +96,8 @@ export class SymbaroumItem extends Item {
         system.hasLevels = system.isTrait || system.isAbility || system.isMysticalPower;
         system.isArtifact = this.type === "artifact" || system.isArtifact;
         system.isGear = system.isWeapon || system.isArmor || system.isEquipment || system.isArtifact;
-
+        system.isMarker = system.marker === "active";
+        
         if(system.isTrait && system.reference && system.reference !== "") {
             let label = game.symbaroum.config.traitsList[system.reference];
             if(label)

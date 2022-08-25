@@ -64,52 +64,52 @@ export function enrichTextEditors()
             // Wielded weapons
             let weapons = actor.items.filter( weap => { return weap.system.isWeapon && weap.system.isActive; });
             // Traits
-            const traits = actor.items.filter( trait => { return isTrait(trait) && integrated.indexOf(trait) == -1});
+            const traits = actor.items.filter( trait => { return isTrait(trait) && integrated.indexOf(trait) == -1 && !game.symbaroum.config.systemTraits.includes(trait.system.reference)});
             // Abilities
             const abilities = actor.items.filter( ability => { return !isTrait(ability) && ability.system.isPower && !ability.system.isRitual && integrated.indexOf(ability) == -1});
             
 
             const htmlFormat = 
 `<h5 style="margin-left: 25%;">${name}, ${actor.system.bio.race} <a class="content-link" draggable="false" data-type="Macro" data-uuid="Actor.${actor.id}">${name}</a></h5>
-<p class="pblock" style="margin-left: auto; margin-right: auto; width: 50%;"><em>${actor.system.bio.quote}</em></p>
+<p class="pblock" style="margin-left: auto; margin-right: auto; width: 50%;"><em>${monster ? actor.system.bio.manner : actor.system.bio.quote}</em></p>
 <hr style="margin-left: auto; margin-right: auto; width: 50%;" />
 <table style="border-style: solid; margin-left: auto; margin-right: auto; width: 50%; border: 3px; font-size: 12pt;">
 <tbody>
 <tr style="color: aliceblue; background-color: black;">
 <td style="width: 15%; text-align: center;" colspan="8">
 <h6>${name.toUpperCase()}</h6>
-<hr /><strong>${actor.system.bio.race}</strong><br />${actor.system.bio.appearance}</td>
+<hr /><strong>${actor.system.bio.race}</strong><br />${actor.system.bio.appearance == null ? "": actor.system.bio.appearance}</td>
 </tr>
 ${getAttributes(actor, monster)}
 <tr style="border-top: solid 1px;">
-<td style="width: 25%; text-align: center; border-right: solid 1px;" colspan="2"><strong>Defence</strong><br />${ monster? actor.system.combat.defmod: actor.system.combat.defense}</td>
-<td style="width: 25%; text-align: center; border-right: solid 1px;" colspan="2"><strong>Armor</strong><br />${actor.system.combat.name} ${actor.system.combat.displayTextShort}</td>
-<td style="width: 25%; text-align: center; border-right: solid 1px;" colspan="2"><strong>Toughness</strong><br />${actor.system.health.toughness.value}</td>
-<td style="width: 25%; text-align: center;" colspan="2"><strong>Pain Threshold</strong><br />${actor.system.health.toughness.threshold}</td>
+<td style="width: 25%; text-align: center; border-right: solid 1px;" colspan="2"><strong>${game.i18n.localize("ARMOR.DEFENSE")}</strong><br />${ monster? actor.system.combat.defmod: actor.system.combat.defense}</td>
+<td style="width: 25%; text-align: center; border-right: solid 1px;" colspan="2"><strong>${game.i18n.localize("ITEM.ARMOR")}</strong><br />${actor.system.combat.name} ${actor.system.combat.displayTextShort}</td>
+<td style="width: 25%; text-align: center; border-right: solid 1px;" colspan="2"><strong>${game.i18n.localize("HEALTH.TOUGHNESS")}</strong><br />${actor.system.health.toughness.value}</td>
+<td style="width: 25%; text-align: center;" colspan="2"><strong>${game.i18n.localize("HEALTH.TOUGHNESS_THRESHOLD_FULL")}</strong><br />${actor.system.health.toughness.threshold}</td>
 </tr>
 <tr>
-<td style="width: 15%;" colspan="2"><strong>Weapons</strong><br />${weapons.length > 0 ? game.i18n.localize(`ATTRIBUTE.${weapons[0].system.attribute.toUpperCase()}`) : ""}</td>
+<td style="width: 15%;" colspan="2"><strong>${game.i18n.localize("WEAPON.HEADER")}</strong><br />${weapons.length > 0 ? game.i18n.localize(`ATTRIBUTE.${weapons[0].system.attribute.toUpperCase()}`) : ""}</td>
 <td style="width: 85%;" colspan="6">${displayWeaponFacts(actor, weapons)}</td>
 </tr>
 <tr>
-<td style="width: 15%; font-weight: bold;" colspan="2">Abilities</td>
+<td style="width: 15%; font-weight: bold;" colspan="2">${game.i18n.localize("ABILITY.HEADER")}</td>
 <td style="width: 85%;" colspan="6">${getAbilities(actor, monster, abilities)}</td>
 </tr>
 <tr>
-<td style="width: 15%; font-weight: bold;" colspan="2">Traits</td>
+<td style="width: 15%; font-weight: bold;" colspan="2">${game.i18n.localize("TRAIT.HEADER")}</td>
 <td style="width: 85%;" colspan="6">${getAbilities(actor, monster, traits)}</td>
 </tr>
 <tr>
-<td style="width: 15%; font-weight: bold;" colspan="2">Integrated</td>
+<td style="width: 15%; font-weight: bold;" colspan="2">${game.i18n.localize("ENRICHER.INTEGRATED_HEADER")}</td>
 <td style="width: 85%;" colspan="6">${getAbilities(actor, monster, integrated)}</td>
 </tr>
 <tr>
-<td style="width: 15%; font-weight: bold;" colspan="2">Equipment</td>
+<td style="width: 15%; font-weight: bold;" colspan="2">${game.i18n.localize("ITEM.TypeEquipment")}</td>
 <td style="width: 85%;" colspan="6">${getMoney(actor)} ${getEquipment(actor)}</td>
 </tr>
 <tr>
-<td style="width: 15%; font-weight: bold;" colspan="2">Shadow</td>
-<td style="width: 85%;" colspan="6">${actor.system.bio.shadow} (corruption: ${actor.system.health.corruption.value})</td>
+<td style="width: 15%; font-weight: bold;" colspan="2">${game.i18n.localize("BIO.SHADOW")}</td>
+<td style="width: 85%;" colspan="6">${actor.system.bio.shadow} (${getCorruption(actor)})</td>
 </tr>
 ${monster ? getTactics(actor) : ""}
 
@@ -165,15 +165,28 @@ function getAbilities(actor, monster, abilityList) {
             list += ", ";        
         }
         first = false;
-        list += `${ability.name} (${getAbilityLevelName(actor, monster, ability)})`;
+        list += `${ability.name}`;
+        if(!ability.system.isMarker) {
+            list += ` (${getAbilityLevelName(actor, monster, ability)})`;
+        }
     }
     return list;
 }
 
 function getTactics(actor) {
-    return `<tr><td style="width: 15%; font-weight: bold;" colspan="2">Tactics</td>
+    return `<tr><td style="width: 15%; font-weight: bold;" colspan="2">${game.i18n.localize("BIO.TACTICS")}</td>
     <td style="width: 15%;" colspan="6">${actor.system.bio.tactics}</td>
     </tr>`;
+}
+
+function getCorruption(actor) {
+    let info = "";
+    if(actor.system.isThoroughlyCorrupt) {
+        info += `${game.i18n.localize("HEALTH.CORRUPTION_THROUGHLY")}`;
+    } else {
+        info += `<span style="text-transform:lowercase">${game.i18n.localize("HEALTH.CORRUPTION")}</span>: ${actor.system.health.corruption.value}`;
+    }
+    return info;
 }
 
 function getMoney(actor) {
