@@ -446,6 +446,13 @@ SYMBAROUM.rapidReflexesResistList = [
     "deadlybreath"
 ];
 
+SYMBAROUM.monsterTraitLevels = {
+    0: "ABILITY.NOT_LEARNED",
+    1: "I",
+    2: "II",        
+    3: "III"
+}
+
 
 //combat mod types
 SYMBAROUM.TYPE_ALTERNATIVE_DAMAGE = "alternative_damage";

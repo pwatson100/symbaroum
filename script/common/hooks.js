@@ -20,6 +20,7 @@ import { SymbaroumConfig } from './symbaroumConfig.js';
 import { SymbaroumCommsListener } from './symbcomms.js';
 import { SymbaroumMacros } from './macro.js';
 import { SymbaroumWide } from '../sheet/journal.js';
+import { enrichTextEditors } from './enricher.js';
 
 Hooks.once('init', () => {
 
@@ -374,6 +375,7 @@ Hooks.once('ready', () => {
   setupConfigOptions();
   setupEmit();
   setup3PartySettings();
+  enrichTextEditors();
 });
 
 Hooks.on("preDocumentSheetRegistrarInit", (settings) => {
