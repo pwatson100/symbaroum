@@ -6,8 +6,7 @@ export function enrichTextEditors()
         enricher : (match, options) => {
             // Match 1 would be actor name or actorID
             // Match 2 would be a given name overruling Actor name
-            // Match 3 would be a comma separated with integrated abilities (beyong the default)
-            game.symbaroum.log("match",match);
+            // Match 3 would be a comma separated with integrated abilities (beyond the default)
 
             const actorDoc = document.createElement("span");
             let actor = game.actors.get(match[1]);
@@ -27,8 +26,7 @@ export function enrichTextEditors()
             let integrated = [];
             let namedIntegrated = match[3] ? match[3].split(',') : [];
             // Add "special ones"
-            for(var thingy of namedIntegrated) {
-                console.log("integrated things", namedIntegrated);
+            for(var thingy of namedIntegrated) {                
                 let fetchedItem = actor.items.getName(thingy);
                 if( fetchedItem ) {
                     integrated.push( fetchedItem);
@@ -37,36 +35,28 @@ export function enrichTextEditors()
             // weapons            
             for(var weaponModifiers in actor.system.combat.combatMods.weapons) {
                 // Get weapon modifier abilities
-                console.log("weaponModifiers",weaponModifiers);
                 for(let pack of actor.system.combat.combatMods.weapons[weaponModifiers].package) {
                     if(pack.type ==game.symbaroum.config.PACK_DEFAULT || pack.type === game.symbaroum.config.PACK_CHECK) {
                         for(let member of pack.member) {
-                            // member.id is our goal here
-                            console.log("member", member);
                             integrated.push( actor.items.get(member.id));
                         }
                     }
                 }
             }
             for(var armorModifiers in actor.system.combat.combatMods.armors) {
-                // Get weapon modifier abilities
-                console.log("armorModifiers",armorModifiers);
+                // Get armor modifier abilities
                 for(let defMod of actor.system.combat.combatMods.armors[armorModifiers].defenseModifiers) {
-                    console.log("defMod",defMod);
                     integrated.push( actor.items.get(defMod.id));
                 }
                 for(let impMod of actor.system.combat.combatMods.armors[armorModifiers].impedingModifiers) {
-                    console.log("impMod",impMod);
                     integrated.push( actor.items.get(impMod.id));
                 }
                 for(let attribs of actor.system.combat.combatMods.armors[armorModifiers].attributes) {
-                    console.log("attribs",attribs);
                     integrated.push( actor.items.get(attribs.id));
                 }
             }
             for(var initiativeMod of actor.system.combat.combatMods.initiative) {
                 // Get weapon modifier abilities
-                console.log("initiativeMod",initiativeMod);
                 integrated.push( actor.items.get(initiativeMod.id));
             }
             integrated = integrated.filter(onlyUnique).filter( abil => { return abil.system.isPower});
@@ -76,7 +66,7 @@ export function enrichTextEditors()
             // Traits
             const traits = actor.items.filter( trait => { return isTrait(trait) && integrated.indexOf(trait) == -1});
             // Abilities
-            const abilities = actor.items.filter( ability => { return !isTrait(ability) && ability.system.isPower && integrated.indexOf(ability) == -1});
+            const abilities = actor.items.filter( ability => { return !isTrait(ability) && ability.system.isPower && !ability.system.isRitual && integrated.indexOf(ability) == -1});
             
 
             const htmlFormat = 
@@ -158,7 +148,6 @@ function displayWeaponFacts(actor, weapons) {
             }
         }
         display += `${weap.name} ${dam}`;
-        console.log("weap",weap,actor.system.combat.combatMods);
         if(actor.system.combat.combatMods.weapons[weap.id].maxAttackNb > 1) {
             display += `, ${actor.system.combat.combatMods.weapons[weap.id].maxAttackNb} attacks`;
         }
@@ -169,7 +158,6 @@ function displayWeaponFacts(actor, weapons) {
 }
 
 function getAbilities(actor, monster, abilityList) {    
-    console.log("Processing ability list",abilityList);
     let first = true;
     let list = "";
     for(var ability of abilityList) {
@@ -177,8 +165,6 @@ function getAbilities(actor, monster, abilityList) {
             list += ", ";        
         }
         first = false;
-        // Ritualist needs special handling
-        console.log("Processing abilities",ability);
         list += `${ability.name} (${getAbilityLevelName(actor, monster, ability)})`;
     }
     return list;
@@ -215,6 +201,9 @@ function getEquipment(actor) {
     const eq = actor.items.filter( obj => { return obj.system.isGear && !(obj.system.isWeapon && obj.system.isActive || obj.system.isArmor && obj.system.isActive ) });    
     for(let i = 0; i < eq.length; i++) {
         if( i > 0 ) equipment += ", ";
+        if(eq[i].system.isEquipment && eq[i].system.number > 1) {
+            equipment += `${eq[i].system.number } `;
+        }
         equipment += eq[i].name;
     }
     return equipment;
@@ -233,6 +222,11 @@ function getAbilityLevelName(actor, monster, item) {
     if(monster && item.system.isTrait) {
         return game.symbaroum.config.monsterTraitLevels[item.getLevel().level];
     } else {
+        if(item.system.reference == "ritualist") {
+            let rituals = Array.prototype.map.call(actor.items.filter(itm => {  return itm.system.isRitual;}), tmp => { return tmp.name; }).join(", ");
+
+            return `${game.i18n.localize(item.getLevel().lvlName)}, ${rituals}`;
+        }
         return game.i18n.localize(item.getLevel().lvlName);
     }
 }
