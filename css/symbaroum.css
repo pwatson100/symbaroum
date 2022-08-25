@@ -2490,6 +2490,10 @@
       flex-basis: 100%;
 }
 
+.symbaroum.sheet.actor .player .main .toUpperCase {
+  text-transform: uppercase;
+}
+
 .symbaroum.sheet.actor .player .main .attributes .attributes-header {
   display: -webkit-box;
   display: -ms-flexbox;
