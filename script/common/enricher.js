@@ -166,7 +166,7 @@ function getAbilities(actor, monster, abilityList) {
         }
         first = false;
         list += `${ability.name}`;
-        if(!ability.system.isMarker) {
+        if(!ability.system.isMarker && !ability.system.isBoon && !ability.system.isBurden) {
             list += ` (${getAbilityLevelName(actor, monster, ability)})`;
         }
     }
