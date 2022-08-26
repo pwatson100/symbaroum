@@ -415,3 +415,189 @@
   background-size: 67px;
   border: 0;
 }
+
+/* 
+Monster Codex Stuff
+ */
+.symbaroum-mod .bigText {
+  font-weight: bold;
+  font-family: 'Fondamento';
+  font-size: 20pt;
+  color: hsl(19, 70%, 37%);
+  display: block;
+  margin: 0px 20px 0px 10px;
+}
+.symbaroum-mod .newHead {
+  font-family: 'Jim Nightshade';
+  text-align: center;
+  font-size: 68pt;
+  margin-bottom: 0;
+}
+.symbaroum-mod .centerHead {
+  text-align: center;
+  font-size: 68pt;
+  margin-bottom: 0;
+}
+.symbaroum-mod .h2subHead {
+  font-weight: bold;
+  color: hsl(19, 70%, 37%);
+  border: 0;
+  margin-bottom: 0;
+  margin-left: 10px;
+  font-family: 'Primitive';
+  font-size: 20pt;
+}
+
+.symbaroum-mod .timetable {
+  background-color: transparent;
+  height: 36px;
+  width: 89%;
+  margin-left: 5%;
+  margin-right: 5%;
+  border: 0;
+}
+.symbaroum-mod .timetable tr:nth-child(even) {
+  background-color: transparent;
+}
+
+.symbaroum-mod .fancytextcenter {
+  max-width: 20%;
+  padding: 10px;
+  margin-top: 73px;
+  float: none;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+  break-inside: avoid;
+  font-style: normal;
+  border: none;
+  text-align: center;
+}
+
+.symbaroum-mod .statblock1 {
+  width: 15%;
+  padding: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.symbaroum-mod .statblock2 {
+  color: hsl(6, 55%, 30%);
+  background-color: hsl(45, 13%, 87%);
+  border-top: hsl(6, 55%, 30%) solid 2px;
+}
+
+.symbaroum-mod .blockrotate {
+  transform: translateX (45px);
+  transform: rotate(-3deg);
+}
+
+.symbaroum-mod .statblockcenter {
+  background-color: hsl(60, 6%, 86%);
+  padding: 10px;
+  margin-top: 10px;
+  margin-right: auto;
+  margin-bottom: 10px;
+  margin-left: auto;
+}
+
+.symbaroum-mod .subhead::first-letter {
+  font-family: 'BarloesiusSchrift';
+  color: hsl(6, 55%, 30%);
+  float: left;
+  font-size: 4rem;
+  line-height: 0.65;
+  margin: 0.1em 0.1em 0.1em 0;
+}
+.symbaroum-mod .subhead1::first-letter {
+  font-family: 'BarloesiusSchrift';
+  color: hsl(32, 76%, 42%);
+  float: left;
+  font-size: 6rem;
+  line-height: 0.65;
+  margin: 0.1em 0.1em 0.1em 0;
+}
+.symbaroum-mod .subhead2::first-letter {
+  font-family: 'BarloesiusSchrift';
+  color: hsl(0, 0%, 0%);
+  float: left;
+  font-size: 4rem;
+  line-height: 0.65;
+  margin: 0.1em 0.1em 0.1em 0;
+}
+.symbaroum-mod .subhead3::first-letter {
+  font-family: 'Jim Nightshade';
+  color: hsl(174, 50%, 37%);
+  float: left;
+  font-size: 4rem;
+  line-height: 0.65;
+  margin: 0.1em 0.1em 0.1em 0;
+}
+
+.symbaroum-mod .lettertext2 {
+  margin: 0;
+  font-family: 'Jim Nightshade';
+  font-size: 17pt;
+}
+.symbaroum-mod .lettertext3 {
+  margin: 0;
+  font-family: 'BarloesiusSchrift';
+  font-size: 17pt;
+}
+
+.symbaroum-mod .textover img {
+  width: auto;
+  border: none;
+  margin: 0;
+}
+
+.symbaroum-mod .textover {
+  position: relative;
+  margin: 0;
+} /* REQUIRED */
+
+.symbaroum-mod .textover figcaption {
+  position: absolute;
+  top: 0%;
+  bottom: 0%;
+  text-align: left;
+  width: auto;
+  margin: 0;
+  padding: 0px;
+  // margin-right: 51px;
+  // margin-left: 50px;
+  // margin-top: 38px;
+  font-weight: normal;
+}
+
+.symbaroum-mod .blockquoteplainleft {
+  max-width: 50%;
+  break-inside: avoid;
+  float: left;
+  border: none;
+  padding: 0;
+  margin: 10px;
+}
+.symbaroum-mod .blockquoteplainright {
+  max-width: 50%;
+  break-inside: avoid;
+  float: right;
+  border: none;
+  padding: 0;
+  margin: 10px;
+}
+
+.symbaroum-mod .blockquoteplaincenter {
+  max-width: 100%;
+  padding: 0px;
+  margin: auto;
+  break-inside: avoid;
+  border: none;
+  position: relative;
+}
+
+.symbaroum-mod .besttable tr:nth-child(even) {
+  background-color: hsl(39deg 56% 91%);
+}
+.symbaroum-mod .libox {
+  font-size: var(--font-size-14);
+}
