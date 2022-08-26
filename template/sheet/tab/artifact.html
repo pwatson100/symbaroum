@@ -7,7 +7,7 @@
                 <div class="heading"><h2>{{localize "TITLE.POWER"}} {{addOne key}} </h2></div>
                 {{#if @first}} {{else}}
                 <div class="button">
-                    <a class="power-control power-delete" title="{{localize "ARTIFACT.POWER_DELETEBUTTON"}}"><i class="fas fa-trash"></i></a>
+                    <a class="power-control power-delete" data-tooltip="{{localize "ARTIFACT.POWER_DELETEBUTTON"}}"><i class="fas fa-trash"></i></a>
                 </div> 
                 {{/if}}
             </div>
@@ -39,7 +39,7 @@
         {{/each}}
         <div class="power-add">
             <div class="button"></div>
-            <div><a class="power-control power-create" title="{{localize "ARTIFACT.POWER_ADDBUTTON"}}" data-type="power"><label>{{localize "ARTIFACT.POWER_ADDBUTTON"}}</label><i class="fas fa-plus"></i></a></div>
+            <div><a class="power-control power-create" data-tooltip="{{localize "ARTIFACT.POWER_ADDBUTTON"}}" data-type="power"><label>{{localize "ARTIFACT.POWER_ADDBUTTON"}}</label><i class="fas fa-plus"></i></a></div>
         </div>
     </div>
 </div>

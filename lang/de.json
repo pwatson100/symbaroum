@@ -1,4 +1,5 @@
 {
+  "ABILITY.HEADER": "Ability",
   "ABILITY.NAME": "Name",
   "ABILITY.ACTIVE": "Erlernt",
   "ABILITY.ACTION": "Aktion",
@@ -396,6 +397,7 @@
   "HEALTH.TOUGHNESS_TOTAL": "Gesamt",
   "HEALTH.TOUGHNESS_THRESHOLD": "Schmerzgr.",
   "HEALTH.TOUGHNESS_THRESHOLD_MAX": "Zäh. Schmerzgr.",
+  "HEALTH.TOUGHNESS_THRESHOLD_FULL": "Pain Threshold",
   "HEALTH.CORRUPTION": "Korruption",
   "HEALTH.CORRUPTION_CURRENT": "Aktuell",
   "HEALTH.CORRUPTION_TEMPORARY": "Temporär",
@@ -404,6 +406,7 @@
   "HEALTH.CORRUPTION_THRESHOLD": "Kor. Schwelle",
   "HEALTH.CORRUPTION_THRESHOLD_MAX": "Kor. Schwelle",
   "HEALTH.CORRUPTION_MAX": "Abso.",
+  "HEALTH.CORRUPTION_THROUGHLY": "thoroughly corrupt",
   
   "INITIATIVE.TITLE": "Initiative",
   "INITIATIVE.EXPLANATION": "Initiative shown as [initiative attribute.vigilant]",
@@ -646,7 +649,7 @@
 
   "TITLE.ABILITIES_POWERS": "FÄHIGKEITEN & KRÄFTE",
   "TITLE.HEALTH": "ZUSTAND",
-  "TITLE.ATTRIBUTES": "EIGENSCHAFTEN",
+  "TITLE.ATTRIBUTES": "Eigenschaften",
   "TITLE.COMBAT": "KAMPF",
   "TITLE.NOTES": "NOTIZEN",
   "TITLE.ARMORS": "RÜSTUNG",
@@ -664,7 +667,8 @@
   "TITLE.SPECIALQUALITIES":"ABILITIES COMPATIBILITY",
   
   "TOOLTIP.BONUS_TOTAL": "Total",
-  
+  "TOOLTIP.DEATH_SKULLS": "Death is reached at 3 skulls",
+    
   "TOOLTIP.EXPERIENCE_CURRENT": "Deine verfügbaren (nicht ausgegebenen) Erfahrungspunkte",
   "TOOLTIP.EXPERIENCE_TOTAL": "Deine ingesamt erworbenen Erfahrungspunkte",
   "TOOLTIP.EXPERIENCE_ARTIFACTRR": "Für Artefakte und Würfelwürfe ausgegebenen Erfahrungspunkte",
@@ -688,7 +692,8 @@
 
   "TOOLTIP.DELETE_ABILITY" : "Delete ability",
   "TOOLTIP.POWER_ACTIONS" : "Art der Aktivierung (A - Aktiv, P - Passiv, S - Speziell, etc)",
-
+  
+  "TRAIT.HEADER": "Traits",
   "TRAIT.NAME": "Name",
   "TRAIT.ACTIVE": "Erworben",
   "TRAIT.ACTION": "Abtion",

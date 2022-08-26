@@ -446,6 +446,17 @@ SYMBAROUM.rapidReflexesResistList = [
     "deadlybreath"
 ];
 
+SYMBAROUM.monsterTraitLevels = {
+    0: "ABILITY.NOT_LEARNED",
+    1: "I",
+    2: "II",        
+    3: "III"
+}
+
+SYMBAROUM.systemTraits = [
+    "nopainthreshold",
+    "thoroughlycorrupt"
+]
 
 //combat mod types
 SYMBAROUM.TYPE_ALTERNATIVE_DAMAGE = "alternative_damage";
@@ -530,6 +541,7 @@ SYMBAROUM.CHAIN_NOT = "chainnot";  //the power can't do chain effect
 
 //Resisting
 SYMBAROUM.TYPE_DMG_AVOIDING = "dmgavoiding"; // damage reduction like in rapid reflexes
+SYMBAROUM.TYPE_ALT_RESIST_ATTR_RESOLUTE = "altresistatt"; //Alt resist attribute against mental alterations
 
 //Healing
 SYMBAROUM.TARGET_TOKEN = "targettoken";

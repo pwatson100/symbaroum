@@ -1,4 +1,5 @@
 {
+  "ABILITY.HEADER": "Ability",
   "ABILITY.NAME": "Namn",
   "ABILITY.REFERENCE": "Referens",
   "ABILITY.ACTIVE": "Aktiv",
@@ -417,6 +418,7 @@
   "HEALTH.TOUGHNESS_TOTAL": "Totalt",
   "HEALTH.TOUGHNESS_THRESHOLD": "Smärtgräns",
   "HEALTH.TOUGHNESS_THRESHOLD_MAX": "Smärtgräns",
+  "HEALTH.TOUGHNESS_THRESHOLD_FULL": "Smärtgräns",
   "HEALTH.CORRUPTION": "Korruption",
   "HEALTH.CORRUPTION_CURRENT": "Nuvarande",
   "HEALTH.CORRUPTION_TEMPORARY": "Temporär",
@@ -425,6 +427,7 @@
   "HEALTH.CORRUPTION_THRESHOLD": "Tröskel",
   "HEALTH.CORRUPTION_THRESHOLD_MAX": "Korruptionströskel",
   "HEALTH.CORRUPTION_MAX": "Förstyggelse",
+  "HEALTH.CORRUPTION_THROUGHLY": "thoroughly corrupt",
     
   "INITIATIVE.TITLE": "Initiativ",
   "INITIATIVE.EXPLANATION": "Initiativ visas som [initiativ-karaktärsdrag.vaksam]",
@@ -673,7 +676,7 @@
 
   "TITLE.ABILITIES_POWERS": "FÖRMÅGOR & KRAFTER",
   "TITLE.HEALTH": "HÄLSA",
-  "TITLE.ATTRIBUTES": "ATTRIBUT",
+  "TITLE.ATTRIBUTES": "Attribut",
   "TITLE.COMBAT": "STRID",
   "TITLE.NOTES": "ANTECKNINGAR",
   "TITLE.ARMORS": "BEPANSRING",
@@ -691,6 +694,7 @@
   "TITLE.SPECIALQUALITIES":"KOMPATIBILITET FÖRMÅGOR",
 
   "TOOLTIP.BONUS_TOTAL": "Totalt",
+  "TOOLTIP.DEATH_SKULLS": "Death is reached at 3 skulls",
 
   "TOOLTIP.EXPERIENCE_CURRENT": "Tillgängliga erfarenhetspoäng",
   "TOOLTIP.EXPERIENCE_TOTAL": "Alla intjänade erfarenhetspoäng",
@@ -716,6 +720,7 @@
   "TOOLTIP.DELETE_ABILITY" : "Radera förmåga",
   "TOOLTIP.POWER_ACTIONS" : "Typ av aktivering (A - Aktiv, P - Passiv, S - special, etc)",
 
+  "TRAIT.HEADER": "Traits",
   "TRAIT.NAME": "Namn",
   "TRAIT.ACTIVE": "Aktiv",
   "TRAIT.ACTION": "Handling",

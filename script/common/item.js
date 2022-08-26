@@ -96,7 +96,8 @@ export class SymbaroumItem extends Item {
         system.hasLevels = system.isTrait || system.isAbility || system.isMysticalPower;
         system.isArtifact = this.type === "artifact" || system.isArtifact;
         system.isGear = system.isWeapon || system.isArmor || system.isEquipment || system.isArtifact;
-
+        system.isMarker = system.marker === "active";
+        
         if(system.isTrait && system.reference && system.reference !== "") {
             let label = game.symbaroum.config.traitsList[system.reference];
             if(label)
@@ -175,19 +176,24 @@ export class SymbaroumItem extends Item {
             let novice = "-";
             let adept = "-";
             let master = "-";
-            if (system.novice.isActive) {
+            if (system.novice.isActive || system.marker) {
                 novice = system.novice.action;
                 expCost += 10;
             }
-            if (system.adept.isActive) { 
+            if (system.adept.isActive && !system.marker) { 
                 adept = system.adept.action;
                 expCost += 20;
             }
-            if (system.master.isActive) {
+            if (system.master.isActive && !system.marker) { 
                 master = system.master.action;
                 expCost += 30;
             }
-            system.actions = `${novice}/${adept}/${master}`;
+
+            if(system.marker) {
+                system.actions = ``;            
+            } else {
+                system.actions = `${novice}/${adept}/${master}`;            
+            }
         }
         system.bonus.experience.cost = expCost;
     }

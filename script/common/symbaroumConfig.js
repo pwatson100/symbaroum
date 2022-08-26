@@ -15,7 +15,7 @@ export class SymbaroumConfig extends FormApplication {
     if (shown) {
       const title = game.i18n.localize('SYMBAROUM.OPTIONAL_CONFIG_MENULABEL');
 
-      $(`<button id="SymbaroumButton" data-action="symbaroumConfig" title="${title}">
+      $(`<button id="SymbaroumButton" data-action="symbaroumConfig" data-tooltip="${title}">
        <i class="fas fa-palette"></i> ${title}
      </button>`)
         .insertAfter('button[data-action="configure"]')
