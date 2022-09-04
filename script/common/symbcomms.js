@@ -14,7 +14,7 @@ export class SymbaroumCommsListener
             let newMessage = await ChatMessage.create(chatData);
             await newMessage.setFlag(game.system.id, 'applyEffects', comData.data);
         }
-        else if(comData.type === "ResistRoll" && comData.data.targetUserId === game.user.data.id)
+        else if(comData.type === "ResistRoll" && comData.data.targetUserId === game.userId)
         {
             let templateData = {
                 introText: comData.data.introText,

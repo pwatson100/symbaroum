@@ -919,13 +919,13 @@ export class SymbaroumActor extends Actor {
             ui.notifications.error(error);
             return;
         }
-        let actingCharName = actingToken?.data?.name ?? this.name;
+        let actingCharName = actingToken?.name ?? this.name;
         let functionStuff = {
             actor: this,
             token: actingToken,
             tokenId : actingToken?.id,
             actingCharName : actingCharName,
-            actingCharImg: actingToken?.data?.img ?? this.img,
+            actingCharImg: actingToken?.img ?? this.img,
             askIgnoreArmor: true,
             askTargetAttribute: false,
             askCastingAttribute: false,
