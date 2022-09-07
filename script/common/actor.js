@@ -891,10 +891,8 @@ export class SymbaroumActor extends Actor {
     }
 
     async rollArmor() {
-        if(!game.settings.get('symbaroum', 'combatAutomation')){
             const armor = this.system.combat;
             await prepareRollAttribute(this, "defense", armor, null)
-        }
     }
 
     async rollWeapon(weapon){
