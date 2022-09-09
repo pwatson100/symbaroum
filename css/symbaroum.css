@@ -1422,10 +1422,6 @@
   display: none;
 }
 
-.symbaroum-mod .journal-entry-content .journal-header .title {
-  width: auto;
-}
-
 .symbaroum-mod.app.window-app.sheet.journal-sheet.journal-entry {
   color: hsl(0deg, 0%, 0%);
   border: 9px solid transparent;
@@ -1461,7 +1457,7 @@
   border-image-slice: 50%;
   border-image-width: 100%;
   text-overflow: ellipsis;
-  width: min(100%, 900px);
+  /* width: min(100%, 900px); */
   min-height: 65px;
   margin: auto;
   color: hsl(39deg, 77%, 83%);
