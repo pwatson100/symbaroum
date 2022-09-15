@@ -361,6 +361,15 @@ Hooks.once('init', () => {
     onChange: () => debouncedReload(),
   });
 
+  game.settings.register('symbaroum', 'symSemaphore', {
+    name: 'Semaphore Flag',
+    hint: 'Flag for running sequential actions/scripts',
+    scope: 'world',
+    type: String,
+    config: false,
+    default: '',
+  });
+
   game.symbaroum.macros = new SymbaroumMacros();
   setupStatusEffects();
 });
