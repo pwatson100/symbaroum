@@ -7,7 +7,8 @@
   "compatibleCoreVersion": "10",
   "compatibility": {
     "minimum": 10,
-    "verified": "10.278"
+    "verified": 10,
+    "maximum": 10    
   },
   "authors": [{ "name": "Paul Watson" }, { "name": "Bithir" }, { "name": "Khaali" }],
   "scripts": [],
