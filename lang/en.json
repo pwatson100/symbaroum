@@ -311,9 +311,9 @@
   "CHAT.CRITICAL_FAILURE_FREEATTACK": "Opponent Free Attack",
   "CHAT.RECOVER": "Recover",
   "CHAT.TOUGHNESS": "toughness",
-  "CHAT.STAY_ALIVE": "{name} may stay alive for now !",
+  "CHAT.STAY_ALIVE": "{name} may stay alive for now",
   "CHAT.NEAR_DEATH": "The end is near for {name}:",
-  "CHAT.DEAD": "{name} dies!",
+  "CHAT.DEAD": "{name} draws their final breath",
 
   "COMBAT.DAMAGE": "Inflicted damage: ",
   "COMBAT.BLEED": "Bleed",

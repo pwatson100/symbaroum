@@ -347,7 +347,7 @@
   "gridDistance": 1,
   "gridUnits": "m",
   "primaryTokenAttribute": "health.toughness",
-  "secondaryTokenAttribute": "combat.defense",
+  "secondaryTokenAttribute": "health.corruption",
   "initiative": "1d20[tiebreaker]/100000 + @initiative.value",
   "socket": true,
   "url": "https://github.com/pwatson100/symbaroum",
