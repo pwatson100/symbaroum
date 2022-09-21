@@ -2017,6 +2017,90 @@ Monster Codex Stuff
   font-size: var(--font-size-14);
 }
 
+/* Import settings */
+.symbaroum-mod .container {
+  width: 100%;
+}
+
+.symbaroum-mod .listHeading {
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px 0px;
+  border-bottom: 1px solid black;
+  margin-bottom: 10px;
+}
+
+.symbaroum-mod .twogridcol {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 50%));
+}
+
+.symbaroum-mod .twogridcol input[type=checkbox] {
+  vertical-align: middle;
+}
+
+.symbaroum-mod .actors.content {
+  background: lightblue;
+}
+
+.symbaroum-mod .actors.content.toggle-display {
+  display: none;
+}
+
+.symbaroum-mod .items.content {
+  background: lightcoral;
+}
+
+.symbaroum-mod .items.content.toggle-display {
+  display: none;
+}
+
+.symbaroum-mod .journal.content {
+  background: lightgray;
+}
+
+.symbaroum-mod .journal.content.toggle-display {
+  display: none;
+}
+
+.symbaroum-mod .scenes.content {
+  background: lightseagreen;
+}
+
+.symbaroum-mod .scenes.content.toggle-display {
+  display: none;
+}
+
+.symbaroum-mod .tables.content {
+  background: lightgray;
+}
+
+.symbaroum-mod .tables.content.toggle-display {
+  display: none;
+}
+
+.symbaroum-mod .macros.content {
+  background: lightcoral;
+}
+
+.symbaroum-mod .macros.content.toggle-display {
+  display: none;
+}
+
+.symbaroum-mod .title {
+  cursor: pointer;
+}
+
+/* Footer */
+.symbaroum-mod .footer {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  width: inherit;
+  height: auto;
+  background-color: #d0daee;
+}
+
 /* Tabs styles */
 .symbaroum.sheet.actor .player .bio {
   display: flex;
