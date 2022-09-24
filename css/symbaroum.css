@@ -2040,7 +2040,7 @@ Monster Codex Stuff
 }
 
 .symbaroum-mod .actors.content {
-  background: lightblue;
+  background: lightgray;
 }
 
 .symbaroum-mod .actors.content.toggle-display {
@@ -2048,7 +2048,7 @@ Monster Codex Stuff
 }
 
 .symbaroum-mod .items.content {
-  background: lightcoral;
+  background: lightgray;
 }
 
 .symbaroum-mod .items.content.toggle-display {
@@ -2064,7 +2064,7 @@ Monster Codex Stuff
 }
 
 .symbaroum-mod .scenes.content {
-  background: lightseagreen;
+  background: lightgray;
 }
 
 .symbaroum-mod .scenes.content.toggle-display {
@@ -2080,7 +2080,7 @@ Monster Codex Stuff
 }
 
 .symbaroum-mod .macros.content {
-  background: lightcoral;
+  background: lightgray;
 }
 
 .symbaroum-mod .macros.content.toggle-display {
