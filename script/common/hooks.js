@@ -102,16 +102,6 @@ Hooks.once('init', () => {
     config: true,
   });
 
-  /*TODO
-  /*game.settings.register('symbaroum', 'allRollsDsN', {
-    name: 'SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE',
-    hint: 'SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE_HINT',
-    scope: 'world',
-    type: Boolean,
-    default: false,
-    config: true,
-  });*/
-
   game.settings.register('symbaroum', 'alwaysSucceedOnOne', {
     name: 'SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE',
     hint: 'SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE_HINT',
@@ -332,35 +322,6 @@ Hooks.once('init', () => {
     },
   });
 
-  game.settings.register('symbaroum', 'showLocalLangPack', {
-    name: 'SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK',
-    hint: 'SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK_HINT',
-    scope: 'world',
-    type: Boolean,
-    default: true,
-    config: true,
-    onChange: () => debouncedReload(),
-  });
-
-  game.settings.register('symbaroum', 'showEnglishPacks', {
-    name: 'SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS',
-    hint: 'SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS_HINT',
-    scope: 'world',
-    type: Boolean,
-    default: false,
-    config: true,
-    onChange: () => debouncedReload(),
-  });
-  game.settings.register('symbaroum', 'hideEnglishMacroSystemPack', {
-    name: 'SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS',
-    hint: 'SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS_HINT',
-    scope: 'world',
-    type: Boolean,
-    default: false,
-    config: true,
-    onChange: () => debouncedReload(),
-  });
-
   game.settings.register('symbaroum', 'symSemaphore', {
     name: 'Semaphore Flag',
     hint: 'Flag for running sequential actions/scripts',
@@ -428,57 +389,6 @@ Hooks.on("changeSidebarTabA", (app) => {
 
 });
 
-Hooks.on("renderCompendiumDirectory", (app, html, data) => {
-  game.symbaroum.log("In renderCompendiumDirectory - sorting out available compendiums");
-  if (game.settings.get("symbaroum", "showLocalLangPack")) {
-    const translatedDocs = [];
-    const filterEnglish = game.settings.get("symbaroum", "showEnglishPacks");
-
-    let languageCodeRegex = `systemuserguides|${game.i18n.lang}`;
-    game.symbaroum.log("languageCodeRegex", languageCodeRegex);
-    if (filterEnglish && game.i18n.lang !== "en") {
-      languageCodeRegex = `en|${languageCodeRegex}`;
-    }
-    const avoidEnglishMacroSystem = game.settings.get("symbaroum", "hideEnglishMacroSystemPack") ? null : "(macros|systemitems)";
-    // const avoidEnglishMacroSystem = "(macros|systemitems)";
-    // Alternatives are:
-    // Local Langauge only
-    // Local Langauge + English macro/system abilities      
-    const langReg = new RegExp(`symbaroum.+(${languageCodeRegex})$`);
-    const translatedReg = new RegExp(`symbaroum(.*)${game.i18n.lang}$`);
-    const macroReg = new RegExp(`symbaroum${avoidEnglishMacroSystem}en$`);
-    let irrelvantCompendiums = game.packs.contents.filter((comp) => {
-      if (comp.metadata.packageName === "symbaroum" && !/systemuserguides$/.test(comp.metadata.name) && !langReg.test(comp.metadata.name)) {
-        if (avoidEnglishMacroSystem !== null && macroReg.test(comp.metadata.name)) {
-          return false;
-        }
-        return true;
-      }
-      // store any translated docs here
-      let part = comp.metadata.name.match(translatedReg);
-      if (part !== null) {
-        translatedDocs.push(comp.metadata.name.match(translatedReg)[1]);
-      }
-      return false;
-    });
-    // game.symbaroum.log("Translated docs are",translatedDocs);
-    // game.symbaroum.log("Irrelevnant docs are",irrelvantCompendiums);
-    const enReg = new RegExp(`symbaroum(.*)en$`);
-    for (const comp of irrelvantCompendiums) {
-      // check if the english doc is not one of the translated ones, continue
-      let part = comp.metadata.name.match(enReg);
-      if (part !== null) {
-        if (!translatedDocs.includes(part[1])) {
-          continue;
-        }
-      }
-      let compositeKey = `${comp.metadata.system}.${comp.metadata.name}`;
-      // game.symbaroum.log("Removing compendium", compositeKey);
-      game.packs.delete(compositeKey);
-      html.find(`li[data-pack="${compositeKey}"]`).hide();
-    }
-  }
-});
 
 Hooks.once('diceSoNiceReady', (dice3d) => {
   dice3d.addSystem({ id: 'symbaroum', name: 'Symbaroum' }, 'preferred');
