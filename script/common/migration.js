@@ -63,7 +63,7 @@ export const migrateWorld = async () => {
         }
         for (let scene of game.scenes) {
             try {
-                const updateData = migrateSceneData(scene.data, worldSystemVersion);
+                const updateData = migrateSceneData(scene, worldSystemVersion);
                 if (!foundry.utils.isObjectEmpty(updateData)) {
                     await scene.update(updateData, {enforceTypes: false});
                     scene.tokens.forEach(t => t._actor = null);
@@ -161,7 +161,7 @@ export const migrateCompendium = async function (pack, worldSystemVersion) {
             } else if (entity === "Actor") {
                 updateData = migrateActorData(ent.toObject(), worldSystemVersion);
             } else if (entity === "Scene") {
-                updateData = migrateSceneData(ent.data, worldSystemVersion);
+                updateData = migrateSceneData(ent, worldSystemVersion);
             }
 
                 // Save the entry, if data was changed

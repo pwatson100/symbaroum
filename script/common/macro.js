@@ -5,9 +5,19 @@ export class SymbaroumMacros {
 
 	macroReady() {
 		this.setupMacroFolders();
-		Hooks.on("hotbarDrop", (bar, data, slot) =>
-			this.createSymbaroumMacro(data, slot)
-		);
+		Hooks.on("hotbarDrop", (bar, data, slot) => {
+			if (data.type === "attribute") {
+				createSymbaroumAttributeMacro(data, slot);
+				return false;
+			} else if (data.type === "Item" && typeof data.uuid === "string") {
+				// Check more
+				let item = fromUuidSync(data.uuid);								
+				if(item && item.system && (item.system.isWeapon || item.system.isArmor || item.system.isPower)) {
+					this.createSymbaroumItemMacro(item, slot);
+					return false;
+				}	
+			}
+		});
 	}
 
 	setupMacroFolders() {
@@ -33,6 +43,52 @@ export class SymbaroumMacros {
 	/*  Hotbar Macros                               */
 	/* -------------------------------------------- */
 
+	async createSymbaroumAttributeMacro(data, slot)
+	{
+		game.symbaroum.log(data);
+		const folder = game.folders
+			.filter((f) => f.type === "Macro")
+			.find((f) => f.name === game.symbaroum.config.SYSTEM_MACRO_FOLDER);
+		// Create the macro command
+		const command = `game.symbaroum.macros.rollAttribute('${data.attribute}');`;
+		const actor = game.actors.get(data.actorId);
+		if (!actor) return;
+
+		const commmandName = game.i18n.format("MACRO.MAKETEST", {
+			testtype: game.i18n.localize(
+				actor.system.attributes[data.attribute].label
+			),
+		});
+
+		let macro = game.macros.find(
+			(m) =>
+				m.name === commmandName &&
+				m.command === command &&
+				(m.author === game.user.id ||
+					m.ownership.default >=
+						CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER ||
+					m.ownership[game.user.id] >=
+						CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER)
+		);
+		if (!macro) {
+			macro = await Macro.create({
+				name: commmandName,
+				type: "script",
+				img: game.i18n.format(game.symbaroum.config.imageRef, {
+					filename:
+						game.symbaroum.config.attributeImages[
+							data.attribute
+						],
+				}),
+				command: command,
+				flags: { "symbaroum.attributeMacro": true },
+				folder: folder?.id,
+				"ownership.default": CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER,
+			});
+		}
+		game.user.assignHotbarMacro(macro, slot);
+	}
+
 	/**
 	 * Create a Macro from an Item drop.
 	 * Get an existing item macro if one exists, otherwise create a new one.
@@ -40,84 +96,35 @@ export class SymbaroumMacros {
 	 * @param {number} slot     The hotbar slot to use
 	 * @returns {Promise}
 	 */
-	async createSymbaroumMacro(data, slot) {
-		game.symbaroum.log(data);
+	async createSymbaroumItemMacro(item, slot) {
+		game.symbaroum.log(item);
 		const folder = game.folders
 			.filter((f) => f.type === "Macro")
 			.find((f) => f.name === game.symbaroum.config.SYSTEM_MACRO_FOLDER);
-		if (data.type === "attribute") {
-			// Create the macro command
-			const command = `game.symbaroum.macros.rollAttribute('${data.attribute}');`;
-			const actor = game.actors.get(data.actorId);
-			if (!actor) return;
-
-			const commmandName = game.i18n.format("MACRO.MAKETEST", {
-				testtype: game.i18n.localize(
-					actor.system.attributes[data.attribute].label
-				),
+		// Create the macro command
+		const command = `game.symbaroum.macros.rollItem("${item.name}");`;
+		let macro = game.macros.find(
+			(m) =>
+				m.name === item.name &&
+				m.command === command &&
+				(m.author === game.user.id ||
+					m.ownership.default >=
+						CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER ||
+					m.ownership[game.user.id] >=
+						CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER)
+		);
+		if (!macro) {
+			macro = await Macro.create({
+				name: item.name,
+				type: "script",
+				img: item.img,
+				command: command,
+				flags: { "symbaroum.itemMacro": true },
+				folder: folder?.id,
+				"ownership.default": CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER,
 			});
-
-			let macro = game.macros.find(
-				(m) =>
-					m.name === commmandName &&
-					m.command === command &&
-					(m.author === game.user.id ||
-						m.ownership.default >=
-							CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER ||
-						m.ownership[game.user.id] >=
-							CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER)
-			);
-			if (!macro) {
-				macro = await Macro.create({
-					name: commmandName,
-					type: "script",
-					img: game.i18n.format(game.symbaroum.config.imageRef, {
-						filename:
-							game.symbaroum.config.attributeImages[
-								data.attribute
-							],
-					}),
-					command: command,
-					flags: { "symbaroum.attributeMacro": true },
-					folder: folder?.id,
-					"ownership.default": CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER,
-				});
-			}
-			game.user.assignHotbarMacro(macro, slot);
-			return false;
-		} else if (data.type === "Item") {
-			const item = await Item.implementation.fromDropData(data);
-			if(!item) {
-				return ui.notifications.warn(
-					game.i18n.localize("ERROR.MACRO_NOT_OWNED")
-				);
-			}
-			// Create the macro command
-			const command = `game.symbaroum.macros.rollItem("${item.name}");`;
-			let macro = game.macros.find(
-				(m) =>
-					m.name === item.name &&
-					m.command === command &&
-					(m.author === game.user.id ||
-						m.ownership.default >=
-							CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER ||
-						m.ownership[game.user.id] >=
-							CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER)
-			);
-			if (!macro) {
-				macro = await Macro.create({
-					name: item.name,
-					type: "script",
-					img: item.img,
-					command: command,
-					flags: { "symbaroum.itemMacro": true },
-					folder: folder?.id,
-					"ownership.default": CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER,
-				});
-			}
-			game.user.assignHotbarMacro(macro, slot);
-			return false;
 		}
+		game.user.assignHotbarMacro(macro, slot);
 	}
 	/**
 	 * Create a Macro from an attribute drop.

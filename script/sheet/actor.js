@@ -46,14 +46,9 @@ export class SymbaroumActorSheet extends ActorSheet {
       name:data["name"],
       type:data.type,
       img:data.img,
-      data:foundry.utils.deepClone(data)
+      system:foundry.utils.deepClone(data)
     };
     
-    // Not required in "data.<x>"
-    delete itemData.data["name"];
-    delete itemData.data["type"];
-    delete itemData.data["img"];
-
     this.actor.createEmbeddedDocuments('Item', [itemData], {render:true} ).then( item => {
       // Automatically render the item sheet we just created
       item[0].sheet.render(true);
