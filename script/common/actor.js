@@ -7,8 +7,6 @@ export class SymbaroumActor extends Actor {
     prepareData() {
         // console.log("In prepareData");
         super.prepareData();
-        // this.items.forEach(item => item.prepareFinalAttributes());
-        // let data = foundry.utils.deepClone(this.data);
         // console.log("Init data");
         this._initializeData(this.system);
         // console.log("Init data - complete");
