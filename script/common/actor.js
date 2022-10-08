@@ -15,7 +15,7 @@ export class SymbaroumActor extends Actor {
         // game.symbaroum.log("original items",this.items);
         let items = this.items.contents.sort( (a, b) => {
             if(a.type == b.type) {
-                return a.name == b.name ? 0 : a.name < b.name ? -1:1;
+                return a.name.toLowerCase() == b.name.toLowerCase() ? 0 : a.name.toLowerCase() < b.name.toLowerCase() ? -1:1;
             } else {                
                 return  (game.symbaroum.config.itemSortOrder.indexOf(a.type) - game.symbaroum.config.itemSortOrder.indexOf(b.type));
             }
