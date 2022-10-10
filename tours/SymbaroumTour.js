@@ -62,10 +62,10 @@ export class SymbaroumTour extends Tour {
         let target = this.currentStep.target ? this.currentStep.target : this.currentStep.selector;
         switch (this.currentStep.action) {
             case "click":
-                document.querySelector(target).click();
+                document.querySelector(target)?.click();
                 break;
             case "scrollIntoView":
-                document.querySelector(target).scrollIntoView({ block: "start", inline: "nearest" });
+                document.querySelector(target)?.scrollIntoView({ block: "start", inline: "nearest" });
                 break;
         }
     }

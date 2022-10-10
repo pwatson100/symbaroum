@@ -875,6 +875,9 @@
   "SYMBAROUM.OPTIONAL_EDITABLE_BG_IMGS": "Editable Field Background Images",
   "SYMBAROUM.OPTIONAL_NON_EDITABLE_COLOUR_SELECTOR": "Select Non-Editable Field Color",
   "SYMBAROUM.OPTIONAL_NON_EDITABLE_BG_IMGS": "Non-Editable Field Background Images",
+  "SYMBAROUM.OPTIONAL_FOUNDRY_DEFAULT" : "Default Foundry chat background",
+  "SYMBAROUM.OPTIONAL_CHAT_BG_IMGS" : "Chat background image",
+  "SYMBAROUM.OPTIONAL_CHAT_COLOUR_SELECTOR" : "Select chat background color",
   "SYMBAROUM.OPTIONAL_RESET_NON_EDITABLE_BUTTON": "Reset Non-Editable Field",
   "SYMBAROUM.OPTIONAL_RESET_ALL_BUTTON": "Reset all settings to defaults",
   "SYMBAROUM.OPTIONAL_PLAYER_RESIST": "Resist roll button",
@@ -891,5 +894,26 @@
   "SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS_HINT": "In addition to your chosen language, it will also show all english compendiums",
   "SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS": "Exclude English macro and system compendium",
   "SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS_HINT": "Exclude the English system and macro compendiums, which are shown otherwise",
-  "SYMBAROUM.OPTIONAL_CUSTOMSHEETJOURNAL": "Symbaroum Wide Journal"
+  "SYMBAROUM.OPTIONAL_CUSTOMSHEETJOURNAL": "Symbaroum Wide Journal",
+
+  "SYMBAROUM.TOUR_CONFIG_TITLE": "Guide to Symbaroum system configuration (GM)",
+  "SYMBAROUM.TOUR_CONFIG_SETTINGS": "The game settings",
+  "SYMBAROUM.TOUR_CONFIG_SETTINGS_CONTENT": "To get to the Symbaroum configuration, click the 'Game Settings' icon",
+  "SYMBAROUM.TOUR_CONFIG_CONFIGURE": "Select the 'Configure Settings'",
+  "SYMBAROUM.TOUR_CONFIG_CONFIGURE_CONTENT": "Select the 'Configure Settings' for the settings for Foundry, Symbaroum and all modules",
+  "SYMBAROUM.TOUR_CONFIG_SYSSETTINGS": "Select 'Symbaroum'",
+  "SYMBAROUM.TOUR_CONFIG_SYSSETTINGS_CONTENT": "To see the Symbaroum specific settings, select Symbaroum in the panel",
+  "SYMBAROUM.TOUR_CONFIG_SYMBSETTINGS": "The Symbaroum colors and backgrounds",
+  "SYMBAROUM.TOUR_CONFIG_SYMBSETTINGS_CONTENT": "The 'Configure Symbaroum settings' allows tailoring of colours and background images used in the system",
+  "SYMBAROUM.TOUR_CONFIG_SYMBSETTINGS_GS": "Symbaroum colors and backgrounds shortcut",
+  "SYMBAROUM.TOUR_CONFIG_SYMBSETTINGS_GS_CONTENT": "The 'Configure Symbaroum settings' is also available directly under the 'Game Settings'",
+  "SYMBAROUM.TOUR_CONFIG_SYMBSETTINGS_EC": "Combat Enhancement",
+  "SYMBAROUM.TOUR_CONFIG_SYMBSETTINGS_EC_CONTENT": "Enhanced combat, nicknamed EC, can be turned on here for combat automation",
+  "SYMBAROUM.TOUR_CONFIG_SYMBSETTINGS_ALL": "All Symbaroum Settings",
+  "SYMBAROUM.TOUR_CONFIG_SYMBSETTINGS_ALL_CONTENT": "There are quite a few settings for Symbaroum that might have a better fit at your table",
+  "SYMBAROUM.TOUR_CONFIG_SYSGUIDE_JOURNALS": "Foundry journals",
+  "SYMBAROUM.TOUR_CONFIG_SYSGUIDE_JOURNALS_CONTENT": "For further information and details, go to 'Journals'",
+  "SYMBAROUM.TOUR_CONFIG_SYSGUIDE_DOC": "System guide",
+  "SYMBAROUM.TOUR_CONFIG_SYSGUIDE_DOC_CONTENT": "The Symbaroum System guide comes automatically with the system and is recommended reading"
+
 }
