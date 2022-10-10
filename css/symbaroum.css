@@ -306,6 +306,11 @@
   text-align: center;
 }
 
+.symbaroum.chat.item p.type {
+  margin: 0 0 0.4em;
+  text-align: center;
+}
+
 .symbaroum.chat.roll {
   color: var(--color-text);
   font-family: var(--font-text);

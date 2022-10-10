@@ -1,6 +1,8 @@
 // Namespace Configuration Values
 export const SYMBAROUM = {};
 
+SYMBAROUM.namespace = 'symbaroum',
+
 SYMBAROUM.attributes = [
     "accurate",
     "cunning",

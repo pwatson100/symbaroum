@@ -2,25 +2,25 @@
     <div class="foreground border">
         <h3>{{name}}</h3>
         {{#if system.isTrait}}
-        <h4>{{localize "ITEM.TRAIT"}}</h4>
+        <p class="type">{{localize "ITEM.TRAIT"}}</p>
         {{/if}}
         {{#if system.isAbility}}
-        <h4>{{localize "ITEM.ABILITY"}}</h4>
+        <p class="type">{{localize "ITEM.ABILITY"}}</p>
         {{/if}}
         {{#if system.isMysticalPower}}
-        <h4>{{localize "ITEM.MYSTICAL_POWER"}}</h4>
+        <p class="type">{{localize "ITEM.MYSTICAL_POWER"}}</p>
         {{/if}}
         {{#if system.isRitual}}
-        <h4>{{localize "ITEM.RITUAL"}}</h4>
+        <p class="type">{{localize "ITEM.RITUAL"}}</p>
         {{/if}}
         {{#if system.isWeapon}}
-        <h4>{{localize "ITEM.WEAPON"}} {{#if system.isArtifact}}- {{localize "ITEM.ARTIFACT"}} {{/if}}</h4>
+        <p class="type">{{localize "ITEM.WEAPON"}} {{#if system.isArtifact}}- {{localize "ITEM.ARTIFACT"}} {{/if}}</p>
         {{/if}}
         {{#if system.isArmor}}
-        <h4>{{localize "ITEM.ARMOR"}} {{#if system.isArtifact}}- {{localize "ITEM.ARTIFACT"}} {{/if}}</h4>
+        <p class="type">{{localize "ITEM.ARMOR"}} {{#if system.isArtifact}}- {{localize "ITEM.ARTIFACT"}} {{/if}}</p>
         {{/if}}
         {{#if system.isEquipment}}
-        <h4>{{localize "ITEM.EQUIPMENT"}} {{#if system.isArtifact}}- {{localize "ITEM.ARTIFACT"}} {{/if}}</h4>
+        <p class="type">{{localize "ITEM.EQUIPMENT"}} {{#if system.isArtifact}}- {{localize "ITEM.ARTIFACT"}} {{/if}}</p>
         {{/if}}
 
 

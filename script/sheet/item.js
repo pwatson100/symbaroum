@@ -122,7 +122,7 @@ export class SymbaroumItemSheet extends ItemSheet {
     game.symbaroum.log("sendToChat data:",itemData);
     itemData.img = this.item.img;
     itemData.name = this.item.name;
-    itemData.enrichedName = `@Item[${this.item.name}]`;
+    itemData.enrichedName = `@UUID[${this.item.uuid}]{${this.item.name}}`;
     if (itemData.img.includes("/unknown")) {
         itemData.img = null;
     }
