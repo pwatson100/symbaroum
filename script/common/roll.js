@@ -362,7 +362,7 @@ will be intercepted by a hook (see hook.js)
 The actions to do on the token and its actor have to be detailled in the actionsData object:
 * @param actionsDataArray is an array of actionData
 ActionData = {
-    tokenId: {string} the id of the token that will be modified (ex: token.data.id),
+    tokenId: {string} the id of the token that will be modified (ex: token.id),
     
 To add a status effect    
     addEffect: {string}  Path to the icon (ex:"icons/svg/daze.svg"),

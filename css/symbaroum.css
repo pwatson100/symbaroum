@@ -2719,6 +2719,8 @@ Monster Codex Stuff
 
 .symbaroum.sheet.actor .player .main .combat .combatheader .iniheader .title {
   color: var(--color-title);
+  font-weight: bold;
+  font-family: var(--font-text);
   text-align: center;
   padding: 5px;
 }
