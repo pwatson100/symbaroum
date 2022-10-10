@@ -21,6 +21,7 @@ import { SymbaroumCommsListener } from './symbcomms.js';
 import { SymbaroumMacros } from './macro.js';
 import { SymbaroumWide } from '../sheet/journal.js';
 import { enrichTextEditors } from './enricher.js';
+import { tourSetup } from '../../tours/toursetup.js';
 
 Hooks.once('init', () => {
 
@@ -346,6 +347,8 @@ Hooks.once('ready', () => {
   setupEmit();
   setup3PartySettings();
   enrichTextEditors();
+  tourSetup();
+
 });
 
 Hooks.on("preDocumentSheetRegistrarInit", (settings) => {
@@ -639,7 +642,7 @@ async function showReleaseNotes() {
         await oldReleaseNotes.delete();
       }
 
-      await game.journal.importFromCompendium(newReleasePack, newReleaseNotes._id);
+      await game.journal.importFromCompendium(newReleasePack, newReleaseNotes._id,{}, { keepId: true });
       let newReleaseJournal = game.journal.getName(newReleaseNotes.name);
 
       await newReleaseJournal.setFlag('symbaroum', 'ver', newVer);
