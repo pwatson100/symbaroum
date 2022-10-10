@@ -33,6 +33,12 @@
             "content": "SYMBAROUM.TOUR_CONFIG_SYMBSETTINGS_CONTENT"
         },
         {
+            "id": "goto-settingsymbSettingsGS",
+            "selector": "[data-action='symbaroumConfig']",
+            "title": "SYMBAROUM.TOUR_CONFIG_SYMBSETTINGS_GS",
+            "content": "SYMBAROUM.TOUR_CONFIG_SYMBSETTINGS_GS_CONTENT"
+        },
+        {
             "id": "goto-settingec",
             "selector": "div.form-group:has([name='symbaroum.combatAutomation'])",
             "title": "SYMBAROUM.TOUR_CONFIG_SYMBSETTINGS_EC",

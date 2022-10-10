@@ -300,6 +300,20 @@ Hooks.once('init', () => {
     scope: 'client',
     default: 'url(../asset/image/background/not-editable.webp)',
   });
+  game.settings.register('symbaroum', 'chatBGChoice', {
+    restricted: false,
+    type: String,
+    config: false,
+    scope: 'client',
+    default: 'url(../asset/image/background/editable.webp)',
+  });
+  game.settings.register('symbaroum', 'switchChatBGColour', {
+    restricted: false,
+    type: String,
+    config: false,
+    scope: 'client',
+    default: 'url(../asset/image/background/green_flower_light.webp) repeat',
+  });  
 
   game.settings.registerMenu('symbaroum', 'symbaroumSettings', {
     name: 'SYMBAROUM.OPTIONAL_CONFIG_MENULABEL',
@@ -504,11 +518,6 @@ function setup3PartySettings() {
   if (game.settings.settings.has('dice-so-nice.enabledSimultaneousRollForMessage')) {
     game.settings.set('dice-so-nice', 'enabledSimultaneousRollForMessage', false);
   }
-
-  if (game.modules.get("dice-so-nice")?.active && foundry.utils.isNewerVersion("4.2.2", game.modules.get("dice-so-nice").version)) {
-    // If dice so nice is older than 4.2.2 - lets notify
-    ui.notifications.warn("Dice So Nice needs to be at minimum 4.2.2 to work with Symbaroum", { permanent: true });
-  }
 }
 // This sets the css DOM objects we will change with the registered settings
 async function setupConfigOptions() {
@@ -517,8 +526,9 @@ async function setupConfigOptions() {
   await r.style.setProperty('--color-npcBG', game.settings.get('symbaroum', 'switchNpcBGColour'));
   await r.style.setProperty('--title-image', game.settings.get('symbaroum', 'titleBGChoice'));
   await r.style.setProperty('--title-color', game.settings.get('symbaroum', 'switchTitleColour'));
-  await r.style.setProperty('--box-editable', game.settings.get('symbaroum', 'switchEditableColour'));
+  await r.style.setProperty('--box-editable', game.settings.get('symbaroum', 'switchEditableColour'));  
   await r.style.setProperty('--box-non-editable', game.settings.get('symbaroum', 'switchNoNEditableColour'));
+  await r.style.setProperty('--chat-background', game.settings.get('symbaroum', 'chatBGChoice'));
 }
 
 // this add new status effect to the foundry list

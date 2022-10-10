@@ -9,8 +9,7 @@
 
 .symbaroum.chat.combat .foreground,
 .symbaroum.chat.ability .foreground {
-  background: var(--box-editable) repeat;
-  padding: 10px;
+  padding: 5px;
 }
 
 .symbaroum.chat.combat .border,
@@ -89,7 +88,7 @@
 .symbaroum.chat.ability img {
   border: 0;
   display: block;
-  margin: 0 auto 8px;
+  margin: 5px auto 8px;
   max-height: 64px;
   width: auto;
 }

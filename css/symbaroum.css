@@ -9,8 +9,7 @@
 
 .symbaroum.chat.combat .foreground,
 .symbaroum.chat.ability .foreground {
-  background: var(--box-editable) repeat;
-  padding: 10px;
+  padding: 5px;
 }
 
 .symbaroum.chat.combat .border,
@@ -95,7 +94,7 @@
 .symbaroum.chat.ability img {
   border: 0;
   display: block;
-  margin: 0 auto 8px;
+  margin: 5px auto 8px;
   max-height: 64px;
   width: auto;
 }
@@ -351,8 +350,7 @@
 }
 
 .symbaroum.chat.roll .foreground {
-  background: var(--chat-background) repeat;
-  padding: 10px;
+  padding: 5px;
 }
 
 .symbaroum.chat.roll .border {
@@ -1448,6 +1446,10 @@
   text-shadow: 0px 3px 5px rgb(0, 0, 0);
 }
 
+.chat-message {
+  background: var(--chat-background);
+}
+
 /* cyrillic-ext */
 @font-face {
   font-family: "Philosopher";
@@ -1498,7 +1500,8 @@
   --title-color: black;
   --box-editable: "url(../asset/image/background/editable.webp)";
   --box-non-editable: "url(../asset/image/background/not-editable.webp)";
-  --chat-background: "url(../asset/image/background/editable.webp)";
+  --chat-background: url(../asset/image/background/editable.webp);
+  --chat-colorBG: burlywood;
   --chat-roll-border: "url(../asset/image/background/title.webp)";
 }
 
