@@ -45,16 +45,9 @@
 
 .symbaroum.chat.combat .targetText,
 .symbaroum.chat.ability .targetText {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: reverse;
-      -ms-flex-direction: row-reverse;
-          flex-direction: row-reverse;
-  -webkit-box-flex: 100;
-      -ms-flex-positive: 100;
-          flex-grow: 100;
+  flex-direction: row-reverse;
+  flex-grow: 100;
   vertical-align: middle;
   text-align: center;
   font-size: 12px;
@@ -132,17 +125,10 @@
 }
 
 .symbaroum.dialog {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: 100%;
   margin-bottom: 5px;
 }
 
@@ -170,20 +156,14 @@
   width: 100%;
   text-align: center;
   white-space: nowrap;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-basis: 100%;
 }
 
 .symbaroum.dialog .packageInfo .checkbox {
   white-space: nowrap;
-  width: -webkit-min-content;
-  width: -moz-min-content;
   width: min-content;
-  -ms-flex-item-align: center;
-      align-self: center;
+  align-self: center;
 }
 
 .symbaroum.dialog .packageInfo .packageDetail {
@@ -221,8 +201,7 @@
 .symbaroum.dialog select {
   background: var(--box-editable) repeat;
   border: 1px solid var(--color-border);
-  -webkit-box-shadow: inset 0 0 6px black;
-          box-shadow: inset 0 0 6px black;
+  box-shadow: inset 0 0 6px black;
   color: var(--color-text);
   font-size: 14px;
   height: auto;
@@ -237,8 +216,7 @@
 
 .symbaroum.dialog .infotext {
   border: 1px solid var(--color-border);
-  -webkit-box-shadow: inset 0 0 6px black;
-          box-shadow: inset 0 0 6px black;
+  box-shadow: inset 0 0 6px black;
   color: var(--color-text);
   font-size: 14px;
   height: auto;
@@ -264,15 +242,9 @@
 .symbaroum.dialog .attribute,
 .symbaroum.dialog .maintain,
 .symbaroum.dialog .bonus {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-basis: 100%;
   margin: 5px 10px;
 }
 
@@ -325,10 +297,7 @@
 
 .symbaroum.chat.item p {
   margin: 0.4em 0 0.4em;
-  -webkit-user-select: text;
-     -moz-user-select: text;
-      -ms-user-select: text;
-          user-select: text;
+  user-select: text;
 }
 
 .symbaroum.chat.item p.name {
@@ -358,8 +327,7 @@
 .symbaroum.chat.roll .border {
   border: 1px solid transparent;
   border-color: var(--color-border);
-  -o-border-image: var(--chat-roll-border) 20/10px;
-     border-image: var(--chat-roll-border) 20/10px;
+  border-image: var(--chat-roll-border) 20/10px;
 }
 
 .symbaroum.chat.roll .baseinfo {
@@ -460,8 +428,7 @@
   float: right;
   height: 18px;
   width: auto;
-  -webkit-filter: sepia(0.5) contrast(0.75) opacity(0.4);
-          filter: sepia(0.5) contrast(0.75) opacity(0.4);
+  filter: sepia(0.5) contrast(0.75) opacity(0.4);
 }
 
 .symba-rolls.roll {
@@ -505,38 +472,32 @@
 .symba-rolls.roll.discarded,
 .symba-rolls.roll.rerolled,
 .symba-rolls.roll.strike {
-  -webkit-filter: sepia(0.5) contrast(0.75) opacity(0.4);
-          filter: sepia(0.5) contrast(0.75) opacity(0.4);
+  filter: sepia(0.5) contrast(0.75) opacity(0.4);
 }
 
 .symba-rolls.roll.normal {
   color: #18520b;
-  -webkit-filter: sepia(0.5) hue-rotate(60deg);
-          filter: sepia(0.5) hue-rotate(60deg);
+  filter: sepia(0.5) hue-rotate(60deg);
 }
 
 .symba-rolls.roll.success {
   color: #18520b;
-  -webkit-filter: sepia(0.5) hue-rotate(60deg);
-          filter: sepia(0.5) hue-rotate(60deg);
+  filter: sepia(0.5) hue-rotate(60deg);
 }
 
 .symba-rolls.roll.failure {
   color: #aa0200;
-  -webkit-filter: sepia(0.5) hue-rotate(-60deg);
-          filter: sepia(0.5) hue-rotate(-60deg);
+  filter: sepia(0.5) hue-rotate(-60deg);
 }
 
 .symba-rolls.roll.critical {
   color: #18520b;
-  -webkit-filter: sepia(0.5) hue-rotate(60deg);
-          filter: sepia(0.5) hue-rotate(60deg);
+  filter: sepia(0.5) hue-rotate(60deg);
 }
 
 .symba-rolls.roll.fumble {
   color: #aa0200;
-  -webkit-filter: sepia(0.5) hue-rotate(-60deg);
-          filter: sepia(0.5) hue-rotate(-60deg);
+  filter: sepia(0.5) hue-rotate(-60deg);
 }
 
 /* Common styles */
@@ -549,9 +510,7 @@
 }
 
 .symbaroum.sheet.actor .window-content .editable {
-  -webkit-box-flex: 0;
-      -ms-flex: 0;
-          flex: 0;
+  flex: 0;
 }
 
 .symbaroum.sheet.actor .foreground {
@@ -561,8 +520,7 @@
 .symbaroum.sheet.actor .border {
   border: 10px solid transparent;
   border-color: var(--title-color);
-  -o-border-image: var(--title-image) 20/10px;
-     border-image: var(--title-image) 20/10px;
+  border-image: var(--title-image) 20/10px;
 }
 
 .symbaroum.sheet.actor h1 {
@@ -607,16 +565,14 @@
 .symbaroum.sheet.actor button:hover {
   color: var(--color-active);
   text-shadow: 0 0 10px var(--color-active);
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 
 .symbaroum.sheet.actor input[type=text],
 .symbaroum.sheet.actor input[type=number] {
   background: var(--box-editable) repeat;
   border: 1px solid var(--color-border);
-  -webkit-box-shadow: inset 0 0 6px black;
-          box-shadow: inset 0 0 6px black;
+  box-shadow: inset 0 0 6px black;
   color: var(--color-text);
   font-size: 14px;
   height: auto;
@@ -633,8 +589,7 @@
 .symbaroum.sheet.actor select {
   background: var(--box-editable) repeat;
   border: 1px solid var(--color-border);
-  -webkit-box-shadow: inset 0 0 6px black;
-          box-shadow: inset 0 0 6px black;
+  box-shadow: inset 0 0 6px black;
   color: var(--color-text);
   font-size: 14px;
   height: auto;
@@ -645,8 +600,7 @@
   -moz-appearance: textfield;
   text-align: center;
   border-color: var(--title-color);
-  -o-border-image: var(--title-image) 20/10px;
-     border-image: var(--title-image) 20/10px;
+  border-image: var(--title-image) 20/10px;
 }
 
 .symbaroum.sheet.actor input[type=number]::-webkit-outer-spin-button,
@@ -661,13 +615,8 @@
 }
 
 .symbaroum.sheet.actor .item-list {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
   font-family: var(--font-text);
   font-size: 14px;
   line-height: 16px;
@@ -676,8 +625,6 @@
 }
 
 .symbaroum.sheet.actor .item-list .item-header {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   font-size: 14px;
   font-weight: bold;
@@ -697,22 +644,18 @@
 }
 
 .symbaroum.sheet.actor .item-list .items .item {
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
   margin-bottom: 5px;
 }
 
 .symbaroum.sheet.actor .image-container {
   background: var(--box-editable) repeat;
   border: 1px solid var(--color-border);
-  -webkit-box-shadow: inset 0 0 6px black;
-          box-shadow: inset 0 0 6px black;
+  box-shadow: inset 0 0 6px black;
 }
 
 .symbaroum.sheet.actor .isScripted {
-  -webkit-box-shadow: -1.5px 1.5px 1.5px 1.5px hsl(0deg, 0%, 53%);
-          box-shadow: -1.5px 1.5px 1.5px 1.5px hsl(0deg, 0%, 53%);
+  box-shadow: -1.5px 1.5px 1.5px 1.5px hsl(0deg, 0%, 53%);
   cursor: pointer;
   border: solid 1px;
   border-color: hsl(0deg, 6%, 75%);
@@ -724,8 +667,7 @@
 }
 
 .symbaroum.sheet.actor .isScripted:hover {
-  -webkit-box-shadow: -2px 2px 2px 2px hsl(71deg, 93%, 22%);
-          box-shadow: -2px 2px 2px 2px hsl(71deg, 93%, 22%);
+  box-shadow: -2px 2px 2px 2px hsl(71deg, 93%, 22%);
 }
 
 .symbaroum.sheet.actor .notScripted {
@@ -752,8 +694,7 @@
 .symbaroum.sheet.actor .window-content .button:hover,
 .symbaroum.sheet.actor .window-content .item-control:hover {
   text-shadow: 0 0 10px var(--color-active);
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 
 .symbaroum.sheet.actor .ellipsis {
@@ -767,9 +708,7 @@
 }
 
 .symbaroum.sheet.item .window-content .editable {
-  -webkit-box-flex: 0;
-      -ms-flex: 0;
-          flex: 0;
+  flex: 0;
 }
 
 .symbaroum.sheet.item .foreground {
@@ -779,8 +718,7 @@
 .symbaroum.sheet.item .border {
   border: 10px solid transparent;
   border-color: var(--title-color);
-  -o-border-image: var(--title-image) 20/10px;
-     border-image: var(--title-image) 20/10px;
+  border-image: var(--title-image) 20/10px;
 }
 
 .symbaroum.sheet.item h1 {
@@ -828,8 +766,7 @@
 }
 
 .symbaroum.sheet.item button:hover {
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
   cursor: pointer;
 }
 
@@ -850,8 +787,7 @@
 .symbaroum.sheet.actor button:hover {
   color: var(--color-active);
   text-shadow: 0 0 10px var(--color-active);
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 
 .symbaroum.sheet.item input[type=text][disabled],
@@ -864,8 +800,7 @@
 .symbaroum.sheet.item select {
   background: var(--box-editable) repeat;
   border: 1px solid var(--color-border);
-  -webkit-box-shadow: inset 0 0 6px black;
-          box-shadow: inset 0 0 6px black;
+  box-shadow: inset 0 0 6px black;
   color: var(--color-text);
   font-size: 14px;
   height: auto;
@@ -880,8 +815,7 @@
 
 .symbaroum.sheet.item input[type=checkbox] {
   border: 1px solid var(--color-border);
-  -webkit-box-shadow: inset 0 0 6px black;
-          box-shadow: inset 0 0 6px black;
+  box-shadow: inset 0 0 6px black;
   color: var(--color-text);
   border-radius: 0;
 }
@@ -900,33 +834,22 @@
 .symbaroum.sheet.item .window-content .button:hover,
 .symbaroum.sheet.item .window-content .item-control:hover {
   text-shadow: 0 0 10px var(--color-active);
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 
 .symbaroum.sheet.item .sheet-header {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: nowrap;
-      flex-wrap: nowrap;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  flex-basis: 100%;
   margin: 5px;
 }
 
 .symbaroum.sheet.item .sheet-header .avatar {
   background: var(--box-editable) repeat;
   border: 1px solid black;
-  -webkit-box-shadow: inset 0 0 6px black;
-          box-shadow: inset 0 0 6px black;
-  -webkit-box-flex: 0;
-      -ms-flex: 0 0 auto;
-          flex: 0 0 auto;
+  box-shadow: inset 0 0 6px black;
+  flex: 0 0 auto;
   height: 100px;
   margin: 5px 5px 5px 5px;
   width: 100px;
@@ -940,55 +863,31 @@
 }
 
 .symbaroum.sheet.item .sheet-header .avatar img:hover {
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
   cursor: pointer;
 }
 
 .symbaroum.sheet.item .sheet-header .wrapper-column {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
+  flex-direction: column;
+  flex-grow: 1;
   margin: 5px;
 }
 
 .symbaroum.sheet.item .sheet-header .level,
 .symbaroum.sheet.item .sheet-header .name {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: column;
+  flex-basis: 100%;
+  align-items: center;
   margin: 0px 0px 5px 0px;
 }
 
 .symbaroum.sheet.item .sheet-header .computedvalues {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: row;
+  flex-basis: 100%;
+  align-items: center;
   margin: auto;
 }
 
@@ -1005,8 +904,7 @@
   height: 100%;
   width: 100%;
   background: var(--box-editable) repeat;
-  -webkit-box-shadow: inset 0 0 6px black;
-          box-shadow: inset 0 0 6px black;
+  box-shadow: inset 0 0 6px black;
 }
 
 .symbaroum.sheet.item .editor {
@@ -1030,22 +928,14 @@
 .symbaroum.sheet.item .editor .tox .tox-tbtn svg:hover {
   fill: var(--color-active);
   text-shadow: 0 0 10px var(--color-active);
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 
 .symbaroum.sheet.item .sheet-tabs {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: nowrap;
-      flex-wrap: nowrap;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  flex-basis: 100%;
   font-size: 18px;
   margin: 5px;
   padding: 5px;
@@ -1068,8 +958,7 @@
 }
 
 .symbaroum.sheet.item .sheet-body {
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-basis: 100%;
   margin: 5px;
 }
 
@@ -1528,13 +1417,8 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 .symbaroum-mod.journal-sheet form {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
   background-image: url(../asset/modules/foreground2a.png);
   background-size: 100% 100%;
 }
@@ -1546,8 +1430,7 @@
 .symbaroum-mod.app.window-app.sheet.journal-sheet.journal-entry {
   color: hsl(0deg, 0%, 0%);
   border: 9px solid transparent;
-  -o-border-image: url(../asset/modules/sym-journal-border.webp) 108/3 repeat;
-     border-image: url(../asset/modules/sym-journal-border.webp) 108/3 repeat;
+  border-image: url(../asset/modules/sym-journal-border.webp) 108/3 repeat;
   border-image-outset: 2;
 }
 
@@ -1563,8 +1446,7 @@
   border: none;
   line-height: 14px;
   padding: 0 6px;
-  -ms-flex-preferred-size: 15px;
-      flex-basis: 15px;
+  flex-basis: 15px;
   position: relative;
   top: -3px;
 }
@@ -1576,8 +1458,7 @@
   text-align: center;
   background-image: url(../asset/modules/foreground.jpg);
   border: 1px solid transparent;
-  -o-border-image: url(../asset/modules/sym-journal-header.webp);
-     border-image: url(../asset/modules/sym-journal-header.webp);
+  border-image: url(../asset/modules/sym-journal-header.webp);
   border-image-slice: 50%;
   border-image-width: 100%;
   text-overflow: ellipsis;
@@ -1588,8 +1469,7 @@
 }
 
 .symbaroum-mod.journal-sheet form input[name=name]:focus {
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 
 .symbaroum-mod.window-app.sheet.minimized .window-header .window-title {
@@ -1603,15 +1483,13 @@
 }
 
 .symbaroum-mod ::-webkit-scrollbar-track {
-  -webkit-box-shadow: 0 0 3px hsl(0deg, 0%, 60%) inset;
-          box-shadow: 0 0 3px hsl(0deg, 0%, 60%) inset;
+  box-shadow: 0 0 3px hsl(0deg, 0%, 60%) inset;
   border-radius: 3px;
 }
 
 .symbaroum-mod.journal-sheet form button[type=submit]:focus {
   opacity: 100%;
-  -webkit-box-shadow: 0 0 8px hsl(0deg, 0%, 50%);
-          box-shadow: 0 0 8px hsl(0deg, 0%, 50%);
+  box-shadow: 0 0 8px hsl(0deg, 0%, 50%);
 }
 
 .symbaroum-mod .content-link-I {
@@ -1678,6 +1556,11 @@
   font-size: 18pt;
 }
 
+.symbaroum-mod .h4mod {
+  font-family: "Jim Nightshade";
+  font-size: 18pt;
+}
+
 .symbaroum-mod h3 {
   font-weight: bold;
   font-family: "Fondamento";
@@ -1714,16 +1597,9 @@
 }
 
 .symbaroum-mod .heading2 {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  flex-direction: row;
+  justify-content: space-between;
   width: 100%;
   font-family: "Primitive";
   font-size: 25pt;
@@ -1789,15 +1665,12 @@
   margin-right: 10px;
   margin-bottom: 10px;
   margin-left: 15px;
-  -webkit-column-break-inside: avoid;
-     -moz-column-break-inside: avoid;
-          break-inside: avoid;
+  break-inside: avoid;
   font-style: normal;
   float: right;
   border: 5px double hsl(0deg, 0%, 0%);
   border-radius: 25px;
-  -webkit-box-shadow: 3px 3px;
-          box-shadow: 3px 3px;
+  box-shadow: 3px 3px;
 }
 
 .symbaroum-mod .blockquoteleft {
@@ -1808,15 +1681,12 @@
   margin-right: 15px;
   margin-bottom: 10px;
   margin-left: 10px;
-  -webkit-column-break-inside: avoid;
-     -moz-column-break-inside: avoid;
-          break-inside: avoid;
+  break-inside: avoid;
   font-style: normal;
   float: left;
   border: 5px double hsl(0deg, 0%, 0%);
   border-radius: 25px;
-  -webkit-box-shadow: 3px 3px;
-          box-shadow: 3px 3px;
+  box-shadow: 3px 3px;
 }
 
 .symbaroum-mod .blockquotecenter {
@@ -1827,22 +1697,17 @@
   margin-right: 15px;
   margin-bottom: 10px;
   margin-left: 10px;
-  -webkit-column-break-inside: avoid;
-     -moz-column-break-inside: avoid;
-          break-inside: avoid;
+  break-inside: avoid;
   font-style: normal;
   float: center;
   border: 5px double hsl(0deg, 0%, 0%);
   border-radius: 25px;
-  -webkit-box-shadow: 3px 3px;
-          box-shadow: 3px 3px;
+  box-shadow: 3px 3px;
 }
 
 .symbaroum-mod .blockquoteplain {
   max-width: 50%;
-  -webkit-column-break-inside: avoid;
-     -moz-column-break-inside: avoid;
-          break-inside: avoid;
+  break-inside: avoid;
   font-style: normal;
   float: left;
   border: none;
@@ -1855,9 +1720,7 @@
   margin-right: 15px;
   margin-bottom: 10px;
   margin-left: 10px;
-  -webkit-column-break-inside: avoid;
-     -moz-column-break-inside: avoid;
-          break-inside: avoid;
+  break-inside: avoid;
   font-style: normal;
   float: left;
   border: none;
@@ -1871,9 +1734,7 @@
   margin-right: 15px;
   margin-bottom: 10px;
   margin-left: 10px;
-  -webkit-column-break-inside: avoid;
-     -moz-column-break-inside: avoid;
-          break-inside: avoid;
+  break-inside: avoid;
   font-style: normal;
   float: right;
   border: none;
@@ -1936,8 +1797,7 @@
   margin-left: 10px;
   border: 5px double hsl(0deg, 0%, 0%);
   border-radius: 25px;
-  -webkit-box-shadow: 3px 3px;
-          box-shadow: 3px 3px;
+  box-shadow: 3px 3px;
 }
 
 .symbaroum-mod .lettertext {
@@ -2030,9 +1890,7 @@ Monster Codex Stuff
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 10px;
-  -webkit-column-break-inside: avoid;
-     -moz-column-break-inside: avoid;
-          break-inside: avoid;
+  break-inside: avoid;
   font-style: normal;
   border: none;
   text-align: center;
@@ -2052,10 +1910,8 @@ Monster Codex Stuff
 }
 
 .symbaroum-mod .blockrotate {
-  -webkit-transform: translateX 45px;
-          transform: translateX 45px;
-  -webkit-transform: rotate(-3deg);
-          transform: rotate(-3deg);
+  transform: translateX 45px;
+  transform: rotate(-3deg);
 }
 
 .symbaroum-mod .statblockcenter {
@@ -2138,9 +1994,7 @@ Monster Codex Stuff
 
 .symbaroum-mod .blockquoteplainleft {
   max-width: 50%;
-  -webkit-column-break-inside: avoid;
-     -moz-column-break-inside: avoid;
-          break-inside: avoid;
+  break-inside: avoid;
   float: left;
   border: none;
   padding: 0;
@@ -2149,9 +2003,7 @@ Monster Codex Stuff
 
 .symbaroum-mod .blockquoteplainright {
   max-width: 50%;
-  -webkit-column-break-inside: avoid;
-     -moz-column-break-inside: avoid;
-          break-inside: avoid;
+  break-inside: avoid;
   float: right;
   border: none;
   padding: 0;
@@ -2162,9 +2014,7 @@ Monster Codex Stuff
   max-width: 100%;
   padding: 0px;
   margin: auto;
-  -webkit-column-break-inside: avoid;
-     -moz-column-break-inside: avoid;
-          break-inside: avoid;
+  break-inside: avoid;
   border: none;
   position: relative;
 }
@@ -2263,31 +2113,17 @@ Monster Codex Stuff
 
 /* Tabs styles */
 .symbaroum.sheet.actor .player .bio {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: 100%;
 }
 
 .symbaroum.sheet.actor .player .bio .appearance {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: 100%;
   border-top: none;
 }
 
@@ -2297,67 +2133,37 @@ Monster Codex Stuff
 
 .symbaroum.sheet.actor .player .bio .appearance input {
   width: 50px;
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
+  flex-grow: 1;
 }
 
 .symbaroum.sheet.actor .player .bio .appearance .wrapper-left {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -ms-flex-preferred-size: 30%;
-      flex-basis: 30%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: 30%;
 }
 
 .symbaroum.sheet.actor .player .bio .appearance .wrapper-right {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -ms-flex-preferred-size: 70%;
-      flex-basis: 70%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: 70%;
 }
 
 .symbaroum.sheet.actor .player .bio .appearance .wrapper-full {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-basis: 100%;
 }
 
 .symbaroum.sheet.actor .player .bio .appearance .wrapper-left .age,
 .symbaroum.sheet.actor .player .bio .appearance .wrapper-left .height,
 .symbaroum.sheet.actor .player .bio .appearance .wrapper-left .weight {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-basis: 100%;
   margin: 10px 10px 0 10px;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  justify-content: center;
 }
 
 .symbaroum.sheet.actor .player .bio .appearance .wrapper-left .weight {
@@ -2365,34 +2171,19 @@ Monster Codex Stuff
 }
 
 .symbaroum.sheet.actor .player .bio .appearance .wrapper-full .shadow {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-basis: 100%;
   margin: 0 10px 10px 10px;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  justify-content: center;
 }
 
 .symbaroum.sheet.actor .player .bio .background,
 .symbaroum.sheet.actor .player .bio .personal-goal {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -ms-flex-preferred-size: calc(50% - 5px);
-      flex-basis: calc(50% - 5px);
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: calc(50% - 5px);
   border-top: none;
   margin-top: 10px;
   margin-right: 5px;
@@ -2404,17 +2195,10 @@ Monster Codex Stuff
 }
 
 .symbaroum.sheet.actor .player .bio .stigmas {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: 100%;
   border-top: none;
   margin-top: 10px;
 }
@@ -2427,8 +2211,7 @@ Monster Codex Stuff
   height: 100%;
   width: 100%;
   background: var(--box-editable) repeat;
-  -webkit-box-shadow: inset 0 0 6px black;
-          box-shadow: inset 0 0 6px black;
+  box-shadow: inset 0 0 6px black;
 }
 
 .symbaroum.sheet.actor .player .bio .editor {
@@ -2461,52 +2244,30 @@ Monster Codex Stuff
 .symbaroum.sheet.actor .player .bio .editor .tox .tox-tbtn svg:hover {
   fill: var(--color-active);
   text-shadow: 0 0 10px var(--color-active);
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 
 .symbaroum.sheet.actor .player .gear {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: nowrap;
-      flex-wrap: nowrap;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  flex-basis: 100%;
 }
 
 .symbaroum.sheet.actor .player .gear .wrapper-left {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -ms-flex-preferred-size: calc(60% - 5px);
-      flex-basis: calc(60% - 5px);
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: calc(60% - 5px);
   border-top: none;
   margin-right: 5px;
 }
 
 .symbaroum.sheet.actor .player .gear .wrapper-right {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -ms-flex-preferred-size: calc(40% - 5px);
-      flex-basis: calc(40% - 5px);
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: calc(40% - 5px);
   border-top: none;
   margin-left: 5px;
 }
@@ -2516,15 +2277,9 @@ Monster Codex Stuff
 .symbaroum.sheet.actor .player .gear .wrapper-left .artifacts,
 .symbaroum.sheet.actor .player .gear .wrapper-right .money,
 .symbaroum.sheet.actor .player .gear .wrapper-right .equipments {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: column;
+  flex-basis: 100%;
   border-top: none;
 }
 
@@ -2614,8 +2369,7 @@ Monster Codex Stuff
 .symbaroum.sheet.actor .player .gear .wrapper-right .equipments .equipment td .quantity {
   background: var(--box-non-editable) repeat;
   border: 1px solid var(--color-border);
-  -webkit-box-shadow: inset 0 0 6px black;
-          box-shadow: inset 0 0 6px black;
+  box-shadow: inset 0 0 6px black;
   height: 28px;
   line-height: 28px;
   text-align: center;
@@ -2639,20 +2393,14 @@ Monster Codex Stuff
 .symbaroum.sheet.actor .player .gear .wrapper-left .armors .armor td .namefield,
 .symbaroum.sheet.actor .player .gear .wrapper-left .weapons .weapon td .namefield,
 .symbaroum.sheet.actor .player .gear .wrapper-left .artifacts .artifact td .namefield {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-flow: nowrap;
-      flex-flow: nowrap;
+  flex-flow: nowrap;
   min-width: 131px;
 }
 
 .symbaroum.sheet.actor .player .gear .wrapper-right .equipments .equipment td .namefield {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-flow: nowrap;
-      flex-flow: nowrap;
+  flex-flow: nowrap;
   min-width: 108px;
 }
 
@@ -2723,27 +2471,17 @@ Monster Codex Stuff
 .symbaroum.sheet.actor .player .gear .wrapper-left .artifacts .artifact td.state,
 .symbaroum.sheet.actor .player .gear .wrapper-right .equipments .equipment td.state {
   text-align: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
 }
 
 .symbaroum.sheet.actor .player .gear .wrapper-right .money .thaler,
 .symbaroum.sheet.actor .player .gear .wrapper-right .money .shilling,
 .symbaroum.sheet.actor .player .gear .wrapper-right .money .orteg {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-basis: 100%;
   margin: 10px 10px 0 10px;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  justify-content: center;
 }
 
 .symbaroum.sheet.actor .player .gear .wrapper-right .money .orteg {
@@ -2753,41 +2491,26 @@ Monster Codex Stuff
 .symbaroum.sheet.actor .player .gear .wrapper-right .money .thaler label,
 .symbaroum.sheet.actor .player .gear .wrapper-right .money .shilling label,
 .symbaroum.sheet.actor .player .gear .wrapper-right .money .orteg label {
-  -ms-flex-preferred-size: 70%;
-      flex-basis: 70%;
+  flex-basis: 70%;
 }
 
 .symbaroum.sheet.actor .player .gear .wrapper-right .money .thaler input,
 .symbaroum.sheet.actor .player .gear .wrapper-right .money .shilling input,
 .symbaroum.sheet.actor .player .gear .wrapper-right .money .orteg input {
-  -ms-flex-preferred-size: 30%;
-      flex-basis: 30%;
+  flex-basis: 30%;
 }
 
 .symbaroum.sheet.actor .player .main {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: 100%;
 }
 
 .symbaroum.sheet.actor .player .main .attributes .attributes-header {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: nowrap;
-      flex-wrap: nowrap;
+  flex-direction: row;
+  flex-wrap: nowrap;
 }
 
 .symbaroum.sheet.actor .player .main .attributes .attributes-header .modify-attributes {
@@ -2795,108 +2518,56 @@ Monster Codex Stuff
 }
 
 .symbaroum.sheet.actor .player .section1 {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: nowrap;
-      flex-wrap: nowrap;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  flex-basis: 100%;
 }
 
 .symbaroum.sheet.actor .health-toughnesscol {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -ms-flex-preferred-size: calc(30% - 5px);
-      flex-basis: calc(30% - 5px);
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: calc(30% - 5px);
   border-top: none;
   margin-right: 5px;
 }
 
 .symbaroum.sheet.actor .health-corruptioncol {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: initial;
-  -webkit-box-direction: initial;
-      -ms-flex-direction: initial;
-          flex-direction: initial;
-  -ms-flex-preferred-size: calc(60% - 5px);
-      flex-basis: calc(60% - 5px);
-  -webkit-box-flex: 2;
-      -ms-flex-positive: 2;
-          flex-grow: 2;
+  flex-direction: initial;
+  flex-basis: calc(60% - 5px);
+  flex-grow: 2;
   border-top: none;
 }
 
 .symbaroum.sheet.actor .corruption-col1,
 .symbaroum.sheet.actor .corruption-col2 {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -ms-flex-preferred-size: 50%;
-      flex-basis: 50%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: 50%;
   border-top: none;
 }
 
 .symbaroum.sheet.actor .toughness {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: calc(25% - 5px);
-      flex-basis: calc(25% - 5px);
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  flex-direction: row;
+  flex-basis: calc(25% - 5px);
+  justify-content: center;
 }
 
 .symbaroum.sheet.actor .nonattributes {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -ms-flex-preferred-size: calc(60% - 5px);
-      flex-basis: calc(60% - 5px);
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
+  flex-direction: column;
+  flex-basis: calc(60% - 5px);
+  flex-grow: 1;
 }
 
 .symbaroum.sheet.actor .toughness .corruption {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .symbaroum.sheet.actor .player .main .attributes {
@@ -2911,13 +2582,8 @@ Monster Codex Stuff
 }
 
 .symbaroum.sheet.actor .player .main .attributes .attribute {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
+  flex-direction: row;
   margin: 10px 5px 0 5px;
 }
 
@@ -2926,45 +2592,28 @@ Monster Codex Stuff
 }
 
 .symbaroum.sheet.actor .player .main .attributes .attribute button {
-  -ms-flex-preferred-size: 70%;
-      flex-basis: 70%;
+  flex-basis: 70%;
   width: 10em;
 }
 
 .symbaroum.sheet.actor .player .main .attributes .attribute .input {
-  -ms-flex-preferred-size: 30%;
-      flex-basis: 30%;
-  display: -webkit-box;
-  display: -ms-flexbox;
+  flex-basis: 30%;
   display: flex;
 }
 
 .symbaroum.sheet.actor .player .main .health {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -ms-flex-preferred-size: calc(25% - 5px);
-      flex-basis: calc(25% - 5px);
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: calc(25% - 5px);
   border-top: none;
   margin-left: 5px;
 }
 
 .symbaroum.sheet.actor .player .main .health2 {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: nowrap;
-      flex-wrap: nowrap;
+  flex-direction: row;
+  flex-wrap: nowrap;
   /* flex-basis: calc(70% - 5px); */
   border-top: none;
   margin-left: 5px;
@@ -2972,14 +2621,9 @@ Monster Codex Stuff
 }
 
 .symbaroum.sheet.actor .player .main .stat-modifiers {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-wrap: nowrap;
-      flex-wrap: nowrap;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  flex-wrap: nowrap;
+  justify-content: center;
   margin-left: 5px;
   margin-right: 5px;
 }
@@ -3001,19 +2645,11 @@ Monster Codex Stuff
 .symbaroum.sheet.actor .player .main .health2 .corruption-permanent,
 .symbaroum.sheet.actor .player .main .health2 .corruption-threshold,
 .symbaroum.sheet.actor .player .main .health2 .corruption-max {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-basis: 100%;
   margin: 5px 5px 0 5px;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  justify-content: center;
 }
 
 .symbaroum.sheet.actor .player .main .health .corruption-threshold {
@@ -3035,8 +2671,7 @@ Monster Codex Stuff
 .symbaroum.sheet.actor .player .main .health2 .corruption-permanent label,
 .symbaroum.sheet.actor .player .main .health2 .corruption-threshold label,
 .symbaroum.sheet.actor .player .main .health2 .corruption-max label {
-  -ms-flex-preferred-size: 70%;
-      flex-basis: 70%;
+  flex-basis: 70%;
 }
 
 .symbaroum.sheet.actor .player .main .health .toughness-current input,
@@ -3051,8 +2686,7 @@ Monster Codex Stuff
 .symbaroum.sheet.actor .player .main .health2 .corruption-temporary input,
 .symbaroum.sheet.actor .player .main .health2 .corruption-longterm input,
 .symbaroum.sheet.actor .player .main .health2 .corruption-permanent input {
-  -ms-flex-preferred-size: 30%;
-      flex-basis: 30%;
+  flex-basis: 30%;
 }
 
 .symbaroum.sheet.actor .player .main .health2 .toughness-threshold,
@@ -3062,50 +2696,29 @@ Monster Codex Stuff
 }
 
 .symbaroum.sheet.actor .player .main .combat {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
-  -ms-flex-preferred-size: calc(40% - 5px);
-      flex-basis: calc(40% - 5px);
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-grow: 1;
+  flex-basis: calc(40% - 5px);
   border-top: none;
   margin-left: 5px;
 }
 
 .symbaroum.sheet.actor .player .main .combat .combatheader,
 .symbaroum.sheet.actor .player .main .combat .combatheader {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: nowrap;
-      flex-wrap: nowrap;
+  flex-direction: row;
+  flex-wrap: nowrap;
   border-top: none;
   width: 100%;
   background: var(--title-color) repeat;
 }
 
 .symbaroum.sheet.actor .player .main .combat .combatheader .iniheader {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: nowrap;
-      flex-wrap: nowrap;
+  flex-direction: row;
+  flex-wrap: nowrap;
   border-top: none;
 }
 
@@ -3128,41 +2741,24 @@ Monster Codex Stuff
 
 .symbaroum.sheet.actor .player .main .combat .initiative,
 .symbaroum.sheet.actor .player .main .combat .defenseAttr {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  flex-basis: 100%;
   margin-top: 5px;
 }
 
 .symbaroum.sheet.actor .player .main .combat .stat-modifiers .initiative,
 .symbaroum.sheet.actor .player .main .combat .stat-modifiers .defenseAttr {
-  -ms-flex-wrap: nowrap;
-      flex-wrap: nowrap;
+  flex-wrap: nowrap;
 }
 
 .symbaroum.sheet.actor .player .main .combat .armor {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: 100%;
   margin-bottom: 5px;
   margin-right: 5px;
   margin-left: 5px;
@@ -3171,13 +2767,8 @@ Monster Codex Stuff
 
 .symbaroum.sheet.actor .player .main .combat .armor .roll-armor,
 .symbaroum.sheet.actor .player .main .combat .weapons .roll-weapon {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
+  flex-direction: row;
   /* justify-content: center; */
 }
 
@@ -3188,12 +2779,9 @@ Monster Codex Stuff
 }
 
 .symbaroum.sheet.actor .player .main .combat .armor .item-row {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   width: 100%;
-  -ms-flex-wrap: nowrap;
-      flex-wrap: nowrap;
+  flex-wrap: nowrap;
   background-image: var(--title-color);
   background-repeat: repeat;
 }
@@ -3224,9 +2812,7 @@ Monster Codex Stuff
 }
 
 .symbaroum.sheet.actor .player .main .combat .armor .roll-armor {
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  justify-content: center;
 }
 
 .symbaroum.sheet.actor .player .main .combat .armor .quality {
@@ -3239,15 +2825,9 @@ Monster Codex Stuff
 }
 
 .symbaroum.sheet.actor .player .main .combat .weapons {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: column;
+  flex-basis: 100%;
   margin-left: 0px;
   margin-right: 0px;
   margin: 5px;
@@ -3256,51 +2836,32 @@ Monster Codex Stuff
 
 .symbaroum.sheet.actor .player .main .combat .armor .item-list .name,
 .symbaroum.sheet.actor .player .main .combat .weapons .item-list .name {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  flex-basis: 100%;
+  justify-content: center;
 }
 
 .symbaroum.sheet.actor .player .main .combat .weapons .item-list .weapon {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-basis: 100%;
 }
 
 .symbaroum.sheet.actor .player .main .combat .weapons .item-list .weapon .damage {
   background: var(--box-non-editable) repeat;
   border: 1px solid var(--color-border);
   border-left: none;
-  -webkit-box-shadow: inset 0 0 6px black;
-          box-shadow: inset 0 0 6px black;
+  box-shadow: inset 0 0 6px black;
   height: 28px;
   line-height: 28px;
   text-align: center;
 }
 
 .symbaroum.sheet.actor .player .main .abilities-powers {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: 100%;
   border-top: none;
   margin-top: 10px;
   height: 390px;
@@ -3319,103 +2880,63 @@ Monster Codex Stuff
 }
 
 .symbaroum.sheet.actor .player .main .abilities-powers .traits {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: 100%;
   height: 350px;
   overflow-y: scroll;
-  -ms-flex-line-pack: baseline;
-      align-content: baseline;
+  align-content: baseline;
 }
 
 .symbaroum.sheet.actor .player .main .abilities-powers .traits .trait {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-direction: row;
+  flex-wrap: wrap;
   width: calc(50% - 10px);
   margin: 5px; /* changing any of the following two affects '.trait .actions' */
   height: 38px;
 }
 
 .symbaroum.sheet.actor .player .main .abilities-powers .traits .trait .name {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-preferred-size: 75%;
-      flex-basis: 75%;
+  flex-basis: 75%;
 }
 
 .symbaroum.sheet.actor .player .main .abilities-powers .traits .trait .actions {
-  -ms-flex-preferred-size: 15%;
-      flex-basis: 15%;
+  flex-basis: 15%;
   color: var(--color-text);
   background: var(--box-non-editable) repeat;
   text-align: center;
   border: 1px solid var(--color-border);
   border-left: none;
-  -webkit-box-shadow: inset 0 0 6px black;
-          box-shadow: inset 0 0 6px black;
+  box-shadow: inset 0 0 6px black;
   line-height: 43px; /* 38px + 5px margin as in '.traits .trait' */
 }
 
 .symbaroum.sheet.actor .player .main .abilities-powers .traits .trait .button {
   color: var(--color-text);
   text-align: center;
-  -ms-flex-preferred-size: 9%;
-      flex-basis: 9%;
+  flex-basis: 9%;
   font-size: 20px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  align-items: center;
+  justify-content: center;
 }
 
 .symbaroum.sheet.actor .player .note {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: 100%;
 }
 
 .symbaroum.sheet.actor .player .note .wrapper {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-direction: row;
+  flex-wrap: wrap;
   border-top: none;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-basis: 100%;
   height: 754px;
 }
 
@@ -3427,8 +2948,7 @@ Monster Codex Stuff
   height: 100%;
   width: 100%;
   background: var(--box-editable) repeat;
-  -webkit-box-shadow: inset 0 0 6px black;
-          box-shadow: inset 0 0 6px black;
+  box-shadow: inset 0 0 6px black;
 }
 
 .symbaroum.sheet.actor .player .note .wrapper .editor {
@@ -3452,21 +2972,14 @@ Monster Codex Stuff
 .symbaroum.sheet.actor .player .note .wrapper .editor .tox .tox-tbtn svg:hover {
   fill: var(--color-active);
   text-shadow: 0 0 10px var(--color-active);
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 
 /* Sheet styles */
 .symbaroum.sheet.item .ability {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-direction: row;
+  flex-wrap: wrap;
   height: 100%;
   width: 100%;
 }
@@ -3476,17 +2989,10 @@ Monster Codex Stuff
 .symbaroum.sheet.item .ability .adept,
 .symbaroum.sheet.item .ability .master,
 .symbaroum.sheet.item .ability .bonus {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: 100%;
   border-top: none;
 }
 
@@ -3496,15 +3002,9 @@ Monster Codex Stuff
 
 .symbaroum.sheet.item .ability .tab .active,
 .symbaroum.sheet.item .ability .tab .action {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: calc(50% - 15px);
-      flex-basis: calc(50% - 15px);
+  flex-direction: row;
+  flex-basis: calc(50% - 15px);
 }
 
 .symbaroum.sheet.item .ability .tab .action {
@@ -3518,25 +3018,15 @@ Monster Codex Stuff
 .symbaroum.sheet.item .ability .tab .bonus .scroll {
   overflow-y: scroll;
   height: 186px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-basis: 100%;
+  flex-wrap: wrap;
 }
 
 .symbaroum.sheet.item .ability .tab .bonus .attribute {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-basis: 100%;
   margin: 5px 10px;
 }
 
@@ -3549,15 +3039,9 @@ Monster Codex Stuff
 }
 
 .symbaroum.sheet.item .armor {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-direction: row;
+  flex-wrap: wrap;
   height: 100%;
   width: 100%;
 }
@@ -3567,17 +3051,10 @@ Monster Codex Stuff
 .symbaroum.sheet.item .armor .qualities,
 .symbaroum.sheet.item .armor .artifact,
 .symbaroum.sheet.item .armor .bonus {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: 100%;
   border-top: none;
 }
 
@@ -3590,98 +3067,58 @@ Monster Codex Stuff
 .symbaroum.sheet.item .armor .tab .quality,
 .symbaroum.sheet.item .armor .tab .number,
 .symbaroum.sheet.item .armor .tab .cost {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-basis: 100%;
   margin: 5px;
 }
 
 .symbaroum.sheet.item .armor .tab .qualities .scroll {
   overflow-y: scroll;
   height: 154px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-basis: 100%;
+  flex-wrap: wrap;
 }
 
 .symbaroum.sheet.item .armor .tab .qualities .leftcolumn,
 .symbaroum.sheet.item .armor .tab .qualities .rightcolumn {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  flex-direction: row;
+  justify-content: center;
 }
 
 .symbaroum.sheet.item .armor .tab .qualities .leftcolumn,
 .symbaroum.sheet.item .armor .tab .qualities .rightcolumn {
-  -ms-flex-preferred-size: calc(50% - 10px);
-      flex-basis: calc(50% - 10px);
+  flex-basis: calc(50% - 10px);
   margin: 5px;
 }
 
 .symbaroum.sheet.item .armor .tab .bonus .scroll {
   overflow-y: scroll;
   height: 154px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-basis: 100%;
+  flex-wrap: wrap;
 }
 
 .symbaroum.sheet.item .armor .tab .bonus .attribute {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-basis: 100%;
   margin: 5px;
 }
 
 .symbaroum.sheet.item .artifact {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -ms-flex-wrap: nowrap;
-      flex-wrap: nowrap;
+  flex-direction: column;
+  flex-wrap: nowrap;
   width: 100%;
 }
 
 .symbaroum.sheet.item .artifact .power-n {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  height: -webkit-fit-content;
+  flex-direction: column;
   height: fit-content;
   height: -moz-fit-content;
   width: 100%;
@@ -3693,22 +3130,11 @@ Monster Codex Stuff
 
 .symbaroum.sheet.item .artifact .power-n .power-header,
 .symbaroum.sheet.item .artifact .power-add {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-flex: 1;
-      -ms-flex: auto;
-          flex: auto;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-flow: row;
-          flex-flow: row;
-  -ms-flex-wrap: nowrap;
-      flex-wrap: nowrap;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
-  height: -webkit-fit-content;
-  height: -moz-fit-content;
+  flex: auto;
+  flex-flow: row;
+  flex-wrap: nowrap;
+  flex-basis: 100%;
   height: fit-content;
   margin: 5px;
   background: var(--title-color) repeat;
@@ -3722,15 +3148,9 @@ Monster Codex Stuff
 .symbaroum.sheet.item .artifact .power-n .name,
 .symbaroum.sheet.item .artifact .power-n .action,
 .symbaroum.sheet.item .artifact .power-n .corruption {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-basis: 100%;
   margin: 5px;
 }
 
@@ -3770,17 +3190,10 @@ Monster Codex Stuff
 .symbaroum.sheet.item .artifact .power2,
 .symbaroum.sheet.item .artifact .power3,
 .symbaroum.sheet.item .artifact .bonus {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: 100%;
   border-top: none;
 }
 
@@ -3790,15 +3203,9 @@ Monster Codex Stuff
 
 .symbaroum.sheet.item .artifact .tab .corruption,
 .symbaroum.sheet.item .artifact .tab .action {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: calc(50% - 15px);
-      flex-basis: calc(50% - 15px);
+  flex-direction: row;
+  flex-basis: calc(50% - 15px);
 }
 
 .symbaroum.sheet.item .artifact .tab .action {
@@ -3812,25 +3219,15 @@ Monster Codex Stuff
 .symbaroum.sheet.item .artifact .tab .bonus .scroll {
   overflow-y: scroll;
   height: 186px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-basis: 100%;
+  flex-wrap: wrap;
 }
 
 .symbaroum.sheet.item .artifact .tab .bonus .attribute {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-basis: 100%;
   margin: 5px 10px;
 }
 
@@ -3843,32 +3240,19 @@ Monster Codex Stuff
 }
 
 .symbaroum.sheet.item .boon {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-direction: row;
+  flex-wrap: wrap;
   height: 100%;
   width: 100%;
 }
 
 .symbaroum.sheet.item .boon .description,
 .symbaroum.sheet.item .boon .bonus {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: 100%;
   border-top: none;
 }
 
@@ -3879,25 +3263,15 @@ Monster Codex Stuff
 .symbaroum.sheet.item .boon .tab .bonus .scroll {
   overflow-y: scroll;
   height: 186px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-basis: 100%;
+  flex-wrap: wrap;
 }
 
 .symbaroum.sheet.item .boon .tab .bonus .attribute {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-basis: 100%;
   margin: 5px 10px;
 }
 
@@ -3910,32 +3284,19 @@ Monster Codex Stuff
 }
 
 .symbaroum.sheet.item .burden {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-direction: row;
+  flex-wrap: wrap;
   height: 100%;
   width: 100%;
 }
 
 .symbaroum.sheet.item .burden .description,
 .symbaroum.sheet.item .burden .bonus {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: 100%;
   border-top: none;
 }
 
@@ -3946,25 +3307,15 @@ Monster Codex Stuff
 .symbaroum.sheet.item .burden .tab .bonus .scroll {
   overflow-y: scroll;
   height: 186px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-basis: 100%;
+  flex-wrap: wrap;
 }
 
 .symbaroum.sheet.item .burden .tab .bonus .attribute {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-basis: 100%;
   margin: 5px 10px;
 }
 
@@ -3977,15 +3328,9 @@ Monster Codex Stuff
 }
 
 .symbaroum.sheet.item .equipment {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-direction: row;
+  flex-wrap: wrap;
   height: 100%;
   width: 100%;
 }
@@ -3993,17 +3338,10 @@ Monster Codex Stuff
 .symbaroum.sheet.item .equipment .description,
 .symbaroum.sheet.item .equipment .artifact,
 .symbaroum.sheet.item .equipment .bonus {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: 100%;
   border-top: none;
 }
 
@@ -4013,53 +3351,31 @@ Monster Codex Stuff
 
 .symbaroum.sheet.item .equipment .tab .cost,
 .symbaroum.sheet.item .equipment .tab .number {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-basis: 100%;
   margin: 5px;
 }
 
 .symbaroum.sheet.item .equipment .tab .bonus .scroll {
   overflow-y: scroll;
   height: 186px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-basis: 100%;
+  flex-wrap: wrap;
 }
 
 .symbaroum.sheet.item .equipment .tab .bonus .attribute {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-basis: 100%;
   margin: 5px;
 }
 
 .symbaroum.sheet.item .mystical-power {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-direction: row;
+  flex-wrap: wrap;
   height: 100%;
   width: 100%;
 }
@@ -4069,44 +3385,25 @@ Monster Codex Stuff
 .symbaroum.sheet.item .mystical-power .adept,
 .symbaroum.sheet.item .mystical-power .master,
 .symbaroum.sheet.item .mystical-power .bonus {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: 100%;
   border-top: none;
 }
 
 .symbaroum.sheet.item .mystical-power .tab .material {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-basis: 100%;
   margin: 10px 10px 0 10px;
 }
 
 .symbaroum.sheet.item .mystical-power .tab .active,
 .symbaroum.sheet.item .mystical-power .tab .action {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: calc(50% - 15px);
-      flex-basis: calc(50% - 15px);
+  flex-direction: row;
+  flex-basis: calc(50% - 15px);
 }
 
 .symbaroum.sheet.item .mystical-power .tab .action {
@@ -4120,25 +3417,15 @@ Monster Codex Stuff
 .symbaroum.sheet.item .mystical-power .tab .bonus .scroll {
   overflow-y: scroll;
   height: 186px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-basis: 100%;
+  flex-wrap: wrap;
 }
 
 .symbaroum.sheet.item .mystical-power .tab .bonus .attribute {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-basis: 100%;
   margin: 5px 10px;
 }
 
@@ -4151,20 +3438,11 @@ Monster Codex Stuff
 }
 
 .symbaroum.sheet.actor .player {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -webkit-box-align: start;
-      -ms-flex-align: start;
-          align-items: flex-start;
-  -ms-flex-line-pack: start;
-      align-content: flex-start;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
   height: 100%;
   width: 100%;
 }
@@ -4172,32 +3450,22 @@ Monster Codex Stuff
 .symbaroum.sheet.actor .player .disable:hover {
   color: var(--color-title);
   text-shadow: none;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
   cursor: default;
 }
 
 .symbaroum.sheet.actor .player .sheet-header {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-basis: 100%;
   margin: 5px;
 }
 
 .symbaroum.sheet.actor .player .sheet-header .avatar {
   background: var(--box-editable) repeat;
   border: 1px solid black;
-  -webkit-box-shadow: inset 0 0 6px black;
-          box-shadow: inset 0 0 6px black;
-  -webkit-box-flex: 0;
-      -ms-flex: 0 0 auto;
-          flex: 0 0 auto;
+  box-shadow: inset 0 0 6px black;
+  flex: 0 0 auto;
   height: 100px;
   margin: 10px 0 10px 10px;
   width: 100px;
@@ -4211,33 +3479,20 @@ Monster Codex Stuff
 }
 
 .symbaroum.sheet.actor .player .sheet-header .avatar img:hover {
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
   cursor: pointer;
 }
 
 .symbaroum.sheet.actor .player .sheet-header .wrapper-column {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
+  flex-direction: column;
+  flex-grow: 1;
   margin: 5px;
 }
 
 .symbaroum.sheet.actor .player .sheet-header .wrapper-row {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
+  flex-direction: row;
   margin: 5px;
 }
 
@@ -4247,83 +3502,48 @@ Monster Codex Stuff
 
 .symbaroum.sheet.actor .player .sheet-header input {
   width: 50px;
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
+  flex-grow: 1;
 }
 
 .symbaroum.sheet.actor .player .sheet-header .name,
 .symbaroum.sheet.actor .player .sheet-header .race {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: calc(50% - 5px);
-      flex-basis: calc(50% - 5px);
+  flex-direction: row;
+  flex-basis: calc(50% - 5px);
   margin-right: 5px;
 }
 
 .symbaroum.sheet.actor .player .sheet-header .experience,
 .symbaroum.sheet.actor .player .sheet-header .occupation {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: calc(50% - 5px);
-      flex-basis: calc(50% - 5px);
+  flex-direction: row;
+  flex-basis: calc(50% - 5px);
   margin-left: 5px;
 }
 
 .symbaroum.sheet.actor .player .sheet-header .shadow,
 .symbaroum.sheet.actor .player .sheet-header .manner {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-basis: 100%;
 }
 
 .symbaroum.sheet.actor .player .sheet-header .quote {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-basis: 100%;
 }
 
 .symbaroum.sheet.actor .player .sheet-tabs {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: nowrap;
-      flex-wrap: nowrap;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  flex-basis: 100%;
   font-size: 18px;
   margin: 5px;
   padding: 5px;
   background: var(--title-color) repeat;
   font-family: var(--font-text);
-  height: -webkit-fit-content;
-  height: -moz-fit-content;
   height: fit-content;
 }
 
@@ -4342,19 +3562,14 @@ Monster Codex Stuff
 }
 
 .symbaroum.sheet.actor .player .sheet-body {
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-basis: 100%;
   margin: 5px;
 }
 
 .symbaroum.sheet.actor .tooltip {
   position: relative;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: start;
-      -ms-flex-pack: start;
-          justify-content: flex-start;
+  justify-content: flex-start;
 }
 
 /* Tooltip text */
@@ -4371,19 +3586,13 @@ Monster Codex Stuff
 }
 
 .symbaroum.sheet.actor .flex30 {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-preferred-size: 30%;
-      flex-basis: 30%;
+  flex-basis: 30%;
 }
 
 .symbaroum.sheet.actor .flex50 {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-preferred-size: 50%;
-      flex-basis: 50%;
+  flex-basis: 50%;
 }
 
 .symbaroum.sheet.actor .tooltip .right {
@@ -4412,70 +3621,41 @@ Monster Codex Stuff
 }
 
 .symbaroum.sheet.item .ritual {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-direction: row;
+  flex-wrap: wrap;
   height: 100%;
   width: 100%;
 }
 
 .symbaroum.sheet.item .ritual .description,
 .symbaroum.sheet.item .ritual .bonus {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: 100%;
   border-top: none;
 }
 
 .symbaroum.sheet.item .ritual .tab .tradition {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-basis: 100%;
   margin: 10px 10px 0 10px;
 }
 
 .symbaroum.sheet.item .ritual .tab .bonus .scroll {
   overflow-y: scroll;
   height: 186px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-basis: 100%;
+  flex-wrap: wrap;
 }
 
 .symbaroum.sheet.item .ritual .tab .bonus .attribute {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-basis: 100%;
   margin: 5px 10px;
 }
 
@@ -4488,15 +3668,9 @@ Monster Codex Stuff
 }
 
 .symbaroum.sheet.item .trait {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-direction: row;
+  flex-wrap: wrap;
   height: 100%;
   width: 100%;
 }
@@ -4506,17 +3680,10 @@ Monster Codex Stuff
 .symbaroum.sheet.item .trait .adept,
 .symbaroum.sheet.item .trait .master,
 .symbaroum.sheet.item .trait .bonus {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: 100%;
   border-top: none;
 }
 
@@ -4526,29 +3693,17 @@ Monster Codex Stuff
 }
 */
 .symbaroum.sheet.item .trait .tab .marker {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-basis: 100%;
   margin: 5px 5px 5px 10px;
 }
 
 .symbaroum.sheet.item .trait .tab .active,
 .symbaroum.sheet.item .trait .tab .action {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: calc(50% - 15px);
-      flex-basis: calc(50% - 15px);
+  flex-direction: row;
+  flex-basis: calc(50% - 15px);
 }
 
 .symbaroum.sheet.item .trait .tab .action {
@@ -4562,25 +3717,15 @@ Monster Codex Stuff
 .symbaroum.sheet.item .trait .tab .bonus .scroll {
   overflow-y: scroll;
   height: 186px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-basis: 100%;
+  flex-wrap: wrap;
 }
 
 .symbaroum.sheet.item .trait .tab .bonus .attribute {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-basis: 100%;
   margin: 5px 10px;
 }
 
@@ -4593,15 +3738,9 @@ Monster Codex Stuff
 }
 
 .symbaroum.sheet.item .weapon {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-direction: row;
+  flex-wrap: wrap;
   height: 100%;
   width: 100%;
 }
@@ -4611,17 +3750,10 @@ Monster Codex Stuff
 .symbaroum.sheet.item .weapon .qualities,
 .symbaroum.sheet.item .weapon .artifact,
 .symbaroum.sheet.item .weapon .bonus {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: 100%;
   border-top: none;
 }
 
@@ -4635,73 +3767,45 @@ Monster Codex Stuff
 .symbaroum.sheet.item .weapon .tab .stats .number,
 .symbaroum.sheet.item .weapon .tab .stats .attribute,
 .symbaroum.sheet.item .weapon .tab .stats .reference {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-basis: 100%;
   margin: 5px;
 }
 
 .symbaroum.sheet.item .weapon .tab .qualities .scroll {
   overflow-y: scroll;
   height: 154px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-basis: 100%;
+  flex-wrap: wrap;
 }
 
 .symbaroum.sheet.item .weapon .tab .qualities .leftcolumn,
 .symbaroum.sheet.item .weapon .tab .qualities .rightcolumn {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  flex-direction: row;
+  justify-content: center;
 }
 
 .symbaroum.sheet.item .weapon .tab .qualities .leftcolumn,
 .symbaroum.sheet.item .weapon .tab .qualities .rightcolumn {
-  -ms-flex-preferred-size: calc(50% - 10px);
-      flex-basis: calc(50% - 10px);
+  flex-basis: calc(50% - 10px);
   margin: 5px;
 }
 
 .symbaroum.sheet.item .weapon .tab .bonus .scroll {
   overflow-y: scroll;
   height: 188px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-basis: 100%;
+  flex-wrap: wrap;
 }
 
 .symbaroum.sheet.item .weapon .tab .bonus .attribute {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-basis: 100%;
   margin: 5px;
 }
 
@@ -4710,9 +3814,7 @@ Monster Codex Stuff
 }
 
 .symbaroum.attributes .window-content .editable {
-  -webkit-box-flex: 0;
-      -ms-flex: 0;
-          flex: 0;
+  flex: 0;
 }
 
 .symbaroum.attributes .foreground {
@@ -4760,16 +3862,14 @@ Monster Codex Stuff
 .symbaroum.attributes button:hover {
   color: var(--color-active);
   text-shadow: 0 0 10px var(--color-active);
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 
 .symbaroum.attributes input[type=text],
 .symbaroum.attributes input[type=number] {
   background: var(--box-editable) repeat;
   border: 1px solid var(--color-border);
-  -webkit-box-shadow: inset 0 0 6px black;
-          box-shadow: inset 0 0 6px black;
+  box-shadow: inset 0 0 6px black;
   color: var(--color-text);
   font-size: 14px;
   height: auto;
@@ -4790,8 +3890,7 @@ Monster Codex Stuff
 .symbaroum.attributes .fixed {
   background: var(--box-non-editable) repeat;
   border: 1px solid var(--color-border);
-  -webkit-box-shadow: inset 0 0 6px black;
-          box-shadow: inset 0 0 6px black;
+  box-shadow: inset 0 0 6px black;
   font-size: 14px;
   height: auto;
   line-height: 16px;
@@ -4805,25 +3904,17 @@ Monster Codex Stuff
 }
 
 .symbaroum.attributes .attArray {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
+  flex-direction: row;
   /* justify-content: center; */
 }
 
 .symbaroum.attributes .attArray {
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-basis: 100%;
 }
 
 .symbaroum.attributes .attArray {
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  justify-content: center;
 }
 
 .symbaroum.attributes .attArray {
@@ -4832,14 +3923,9 @@ Monster Codex Stuff
 }
 
 .symbaroum.attributes .item {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-preferred-size: 25%;
-      flex-basis: 25%;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  flex-basis: 25%;
+  justify-content: center;
 }
 
 .symbaroum.attributes .item-name {
@@ -4847,23 +3933,16 @@ Monster Codex Stuff
 }
 
 .symbaroum.attributes .col-header {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
+  flex-direction: row;
+  flex-basis: 100%;
 }
 
 .symbaroum.attributes .col-header {
   background: var(--box-non-editable) repeat;
   border: 1px solid var(--color-border);
   border-left: none;
-  -webkit-box-shadow: inset 0 0 6px black;
-          box-shadow: inset 0 0 6px black;
+  box-shadow: inset 0 0 6px black;
   height: 28px;
   line-height: 28px;
   text-align: center;
