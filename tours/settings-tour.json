@@ -60,11 +60,31 @@
             "action": "click"
         },
         {
-            "id": "goto-symbaroumsysgude",
+            "id": "goto-symbaroumsysguide",
             "selector": "li[data-document-id='sSZzEbMgSLEclyBL']",
             "title": "SYMBAROUM.TOUR_CONFIG_SYSGUIDE_DOC",
             "content": "SYMBAROUM.TOUR_CONFIG_SYSGUIDE_DOC_CONTENT",
             "action": "scrollIntoView"
+        },
+        {
+            "id": "goto-compendiums",
+            "selector": "[data-tab='compendium']",
+            "title": "SYMBAROUM.TOUR_COMPENDIUMS",
+            "content": "SYMBAROUM.TOUR_COMPENDIUMS_CONTENT",
+            "action": "click"
+        },
+        {
+            "id": "goto-compendiumadventure",
+            "selector": "li[data-pack='symbaroum.symbaroum']",
+            "title": "SYMBAROUM.TOUR_ADVENTURECOMPENDIUM",
+            "content": "SYMBAROUM.TOUR_ADVENTURECOMPENDIUM_CONTENT",
+            "action": "click"
+        },
+        {
+            "id": "goto-compendiumadventure-highlight",
+            "selector": "li[data-document-id='ftwXXmIBSABngqGy']",
+            "title": "SYMBAROUM.TOUR_ADVENTURECOMPENDIUM_HIGHLIGHT",
+            "content": "SYMBAROUM.TOUR_ADVENTURECOMPENDIUM_HIGHLIGHT_CONTENT"
         }
     ]
 }

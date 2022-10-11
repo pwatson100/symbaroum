@@ -15,7 +15,7 @@ export const migrateWorld = async () => {
     let systemVersion = game.system.version;
     let worldSystemVersion;
     try{
-        worldSystemVersion = game.settings.get('symbaroum', 'systemMigrationVersion')
+        worldSystemVersion = game.settings.get('symbaroum', 'systemMigrationVersion');
     }catch (e) {
         game.symbaroum.error(e);
         worldSystemVersion = '0';

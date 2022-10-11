@@ -62,7 +62,7 @@ Hooks.once('init', () => {
     name: 'World Template Version',
     hint: 'Used to automatically upgrade worlds data when the template is upgraded.',
     scope: 'world',
-    config: true,
+    config: false,
     default: 0,
     type: Number,
   });
@@ -71,7 +71,7 @@ Hooks.once('init', () => {
     name: 'World System Version',
     hint: 'Used to automatically upgrade worlds data when needed.',
     scope: 'world',
-    config: true,
+    config: false,
     default: '0',
     type: String,
   });
@@ -347,21 +347,33 @@ Hooks.once('init', () => {
   });
 
   game.symbaroum.macros = new SymbaroumMacros();
+  enrichTextEditors();
   setupStatusEffects();
 });
 
 
 Hooks.once('ready', () => {
   game.symbaroum.macros.macroReady();
-
+  let originalVersion = game.settings.get('symbaroum', 'systemMigrationVersion');
   migrateWorld();
   sendDevMessage();
   showReleaseNotes();
   setupConfigOptions();
   setupEmit();
   setup3PartySettings();
-  enrichTextEditors();
+  // enrichTextEditors();
   tourSetup();
+  if(originalVersion === '0' && game.user.isGM) {
+    let message = `<h1>Welcome to your new Symbaroum world</h1>
+    If you are new to the system, recommend that you check out the @UUID[JournalEntry.sSZzEbMgSLEclyBL]{system guide} in the journals.
+    <br/>We also have a set of tours to help you get started, for @Tour[settings-tour]{settings} and @Tour[acompendium-tour]{compendiums}. `;
+    ChatMessage.create(
+      {
+          speaker: ChatMessage.getSpeaker({alias: "Symbaroum"}),
+          whisper: [game.user], // ChatMessage.getWhisperRecipients('GM'),
+          content: message
+      }); 
+  }
 
 });
 

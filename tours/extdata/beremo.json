@@ -1,0 +1,257 @@
+{
+    "_id": "14xreF7lUoXqvHjh",
+    "name": "Beremo",
+    "type": "player",
+    "img": "icons/environment/people/infantry.webp",
+    "items": [
+        {
+            "name": "One-handed Sword",
+            "type": "weapon",
+            "img": "icons/weapons/swords/sword-guard-brass-worn.webp",
+            "effects": [],
+            "sort": 1850000,
+            "system": {
+                "power": {},
+                "description": "<p>A straight and mean looking one-handed sword</p>",
+                "reference": "1handed",
+                "baseDamage": "1d8",
+                "bonusDamage": "",
+                "alternativeDamage": "none",
+                "cost": "",
+                "number": 1,
+                "attribute": "accurate",
+                "state": "active",
+                "quality": ""
+            }
+        },
+        {
+            "name": "Light Leather",
+            "type": "armor",
+            "img": "icons/equipment/chest/breastplate-banded-leather-brown.webp",
+            "effects": [],
+            "sort": -75000,
+            "flags": {},
+            "system": {
+                "power": {},
+                "description": "<p>A simple leather armor</p>",
+                "reference": "",
+                "baseProtection": "1d4",
+                "bonusProtection": "",
+                "impeding": 2,
+                "cost": "",
+                "state": "active",
+                "quality": ""
+            }
+        },
+        {
+            "name": "Shield Fighter",
+            "type": "ability",
+            "img": "icons/equipment/shield/oval-wooden-boss-bronze.webp",
+            "effects": [],
+            "sort": 0,
+            "flags": { },
+            "system": {
+                "description": "<p>Beremo knows how to best utilise a shield</p>",
+                "reference": "shieldfighter",
+                "novice": {
+                    "isActive": "active",
+                    "action": "P",
+                    "description": "<p>Gives additional defense</p>"
+                },
+                "adept": {
+                    "isActive": null,
+                    "action": "R",
+                    "description": "<p></p>"
+                },
+                "master": {
+                    "isActive": null,
+                    "action": "R",
+                    "description": "<p></p>"
+                }
+            }
+        },
+        {
+            "name": "Shield",
+            "type": "weapon",
+            "img": "icons/equipment/shield/buckler-wooden-boss-brown.webp",
+            "effects": [],
+            "folder": "pWGco5QQUSCOGSQU",
+            "sort": 300000,
+            "flags": {},
+            "system": {
+                "power": {},
+                "description": "<p>A sturdy shield.</p>",
+                "reference": "shield",
+                "baseDamage": "1d4",
+                "bonusDamage": "",
+                "alternativeDamage": "none",
+                "cost": "",
+                "number": 1,
+                "attribute": "accurate",
+                "state": "active",
+                "quality": ""
+            }
+        },
+        {
+            "name": "Iron Fist",
+            "type": "ability",
+            "img": "icons/tools/smithing/hammer-maul-steel-grey.webp",
+            "effects": [],
+            "sort": 0,
+            "flags": {},
+            "system": {
+                "description": "<p>Beremo is best with using his brute force for melee attacks.</p>",
+                "reference": "ironfist",
+                "novice": {
+                    "isActive": "active",
+                    "action": "P",
+                    "description": "<p>Beremo strikes with STRONG in battle</p>"
+                },
+                "adept": {
+                    "isActive": "active",
+                    "action": "P",
+                    "description": "<p>Beremo hurts more in battle, +1d4 damage on meele attacks.</p>"
+                },
+                "master": {
+                    "isActive": null,
+                    "action": "A",
+                    "description": "<p></p>"
+                }
+            }
+        },
+        {
+            "name": "Man-at-arms",
+            "type": "ability",
+            "img": "icons/equipment/chest/breastplate-banded-blue.webp",
+            "effects": [],
+            "sort": 0,
+            "flags": {},
+            "system": {
+                "description": "<p>Beremo is trained well by the army and knows a lot about it as well on how to best move and utilise his armor</p>",
+                "reference": "manatarms",
+                "novice": {
+                    "isActive": "active",
+                    "action": "P",
+                    "description": "<p>Beremo knows how to best utilise his armor, increase the armor protection die (i.e. 1d4 -> 1d6)</p>"
+                },
+                "adept": {
+                    "isActive": null,
+                    "action": "P",
+                    "description": "<p></p>"
+                },
+                "master": {
+                    "isActive": null,
+                    "action": "R",
+                    "description": "<p>The character may roll against <em>Quick</em> to counteract effects from Abilities or equipment that make enemy attacks ignore or reduce its Armor value; if the test is successful the Armor protects as usual. Mystical powers that ignore Armor may not be blocked this way; they are not affected by the Man-at-arms ability.</p>"
+                }
+            }
+        },
+        {
+            "name": "Contacts (Queens Army)",
+            "type": "boon",
+            "img": "icons/environment/people/infantry-army.webp",
+            "system": {
+                "bonus": {
+                    "defense": 0,
+                    "accurate": 0,
+                    "cunning": 0,
+                    "discreet": 0,
+                    "persuasive": 0,
+                    "quick": 0,
+                    "resolute": 0,
+                    "strong": 0,
+                    "vigilant": 0,
+                    "toughness": {
+                        "max": 0,
+                        "threshold": 0
+                    },
+                    "corruption": {
+                        "max": 0,
+                        "threshold": 0
+                    },
+                    "experience": {
+                        "value": 5,
+                        "cost": 0
+                    }
+                },              
+                "description": "",
+                "reference": "",
+                "level": 1
+            },
+            "effects": [],
+            "folder": null,
+            "sort": 0,
+            "flags": { }
+        }
+    ],
+    "folder": null,
+    "sort": 100000,
+    "flags": {},
+    "system": {
+        "attributes": {
+            "accurate": {
+                "value": 10
+            },
+            "cunning": {
+                "value": 9
+            },
+            "discreet": {
+                "value": 5
+            },
+            "persuasive": {
+                "value": 7
+            },
+            "quick": {
+                "value": 11
+            },
+            "resolute": {
+                "value": 13
+            },
+            "strong": {
+                "value": 15
+            },
+            "vigilant": {
+                "value": 10
+            }
+        },
+        "health": {
+            "toughness": {
+                "value": 15
+            }
+        },
+        "money": {
+            "thaler": 1,
+            "shilling": 6,
+            "orteg": 4
+        },
+        "experience": {
+            "total": 50
+        },
+        "bio": {
+            "race": "Ambrian",
+            "occupation": "Ex Queen Army",
+            "shadow": "Silver, like the coins earned from treasures",
+            "quote": "\"For the queen, for Nightbane\"",
+            "age": "22",
+            "height": "1m 79cm",
+            "weight": "72kg",
+            "appearance": "Unshaved, ",
+            "background": "Beremo started in the queens army and have seen things",
+            "personalGoal": "To get rich",
+            "stigmas": "",
+            "resistance": "",
+            "tactics": "Get in close and personal and bash with shield",
+            "manner": ""
+        },
+        "nbrOfFailedDeathRoll": 0,
+        "notes": "<p>Beremo's notes:<br/>Step 1: Combat<br/>Step 2: ???<br/>Step 3: A million thaler</p>"
+    },
+    "ownership": {
+        "default": 3
+    },
+    "prototypeToken": {
+        "texture": {
+            "src": "icons/environment/people/infantry.webp"
+        }
+    }
+}
