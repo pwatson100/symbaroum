@@ -120,6 +120,16 @@ ${monster ? getTactics(actor) : ""}
 
             return actorDoc;
         }
+    },
+    {
+        pattern : /@Tour\[(.+?)\](?:{(.+?)})/gm,
+        enricher : (match, options) => {
+            const tourDoc = document.createElement("span");
+            let tour = match[1];
+            let name = match[2];
+            tourDoc.innerHTML = `${name} <a class="control" data-tour-id="${tour}" data-action="play" data-tooltip="Start Tour" aria-describedby="tooltip" onclick="script:game.symbaroum.tourLink(this);"><i class="fas fa-play"></i></a>`;
+            return tourDoc;
+        }
     }]);
 }
 

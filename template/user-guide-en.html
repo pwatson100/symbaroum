@@ -19,19 +19,27 @@
     <h1>Change history for latest version</h1>
     <p>
         <ul>
-            <li>Enhanced user experience - drag-n-drop for abilities and attributes to the macro bar #162</li>
-            <li>Enhanced user experience - reduced the number of system compendiums to those relevant to the language #459</li>
-            <li>Bug Fix for survival instinct & stackable protection #445</li>
-            <li>Bug Fix for clicking the die-icon on a characters item sheet #462</li>
-            <li>Bug Fix for stackable armor #460</li>
-            <li>Bug Fix for spent exp not updating when deleting abilities/powers #446</li>
-            <li>Bug Fix for balanced quality #447</li>
+            <li>Support for Foundry v10 (#493, #494, #495, #502, #505, #506, #513)</li>
+            <li>Added multiple tours - see @Tour[settings-tour]{Symbaroum configuration guide}</li>
+            <li>Refactured the compendiums into adventures for easier management and less busy data</li>
+            <li>General cleanup & css fixes (#505, #451, #531) - thank you yjeroen for some of the css</li>
+            <li>Lessened the abruptness of the death sequence (#546)</li>
+            <li>Minor fixes (#528, #530)</li>
+            <li>The equipment type "Artifact" is now removed. Please use the artifact button instead (#417)</li>
+            <li>Fix to inherit wounds (#499 - thanks Lasenist)</li>
+            <li>Send to chat fixes and homogenising chat output</li>
+            <li>Item sorting order</li>
+            <li>Manifest updates for v10 with v9 support</li>
+            <li>A couple of text enrichers added (@Tour + @SymbaroumActor)</li>
+            <li>Migrated to v10 tooltips (thanks Lasenist for assistance)</li>
+            <li>Extra wide Symbaroum Journal</li>
+            <li>Ability fixes (witchammer, staff fighting, sword saint, knife play)</li>
         </ul>
     </p>
 
     <h1>Creating Characters</h1>
     <p>
-        To create a character, go to the Actor and click&nbsp;<em>Create Actor.</em>&nbsp;
+        To create a character, go to the Actor and click&nbsp;<em>Create Actor.</em>&nbsp; (see @Tour[charactersheet-tour]{Character tour (GM)} / @Tour[charactersheet-tour]{Character tour (Player)} ). Note that the player tour required GM to finish his first.
         It will then prompt you for a name of the actor and what type it is, either&nbsp;<em>player<strong>&nbsp;</strong></em>or&nbsp;<em>monster</em>.
         Once it has been selected, it shows a Character sheet where details of the character can be filled in.&nbsp;
         Items such as character name and race can be filled in, as well as the experience it has and how much of it that has been spent on re-rolls or binding to artifacts, how much has been spent on abilities and traits and finally how much is unspent.
@@ -65,7 +73,7 @@
     <p>
         Please note that this System Module does not contain the details about these abilities, traits, boons and burdens and it is advised that the Game Master sets them up in advance.
         <br>
-        There is a Compendium with the names of these in multiple languages that is recommended for use.
+        There is an Adventure Compendium that contains assets in multiple languages that is recommended for use. See @Tour[acompendium-tour]{System Adventure Compendium}
         <br><br>
         To add an ability, trait, boon or burden, the player drags them from the Item's selection to the Abilities &amp; Powers section of the character sheet.
         <br>
@@ -86,7 +94,7 @@
 
     <h1>Weapons and Armor</h1>
     <p>
-        Pre-configured weapons and armors are available in compendiums. We recommand you use them. Just find the compendiums corresponding to your langage in the compendium tab, and select "import".
+        Pre-configured weapons and armors are available in the Adventure compendiums. We recommand you use them. Just find the adventure corresponding to your language in the Adventure compendium tab, and select "import".
         <br>
         To create an armor or weapon, select the tab&nbsp;<em>GEAR</em>&nbsp;on the character sheet.
         There is a&nbsp;<strong>+</strong>&nbsp;at the end of the tables for armor and weapons which when clicked, will create new armor or weapon and details about can be filled in.
@@ -443,9 +451,15 @@
         <br/>
         In case of one or more failed death rolls, skulls appears on the portrait of the character sheet, 1 skull for 1 failure, 2 skulls for 2 failures and 3 skulls for the final failure.  The skulls are removed as soon as the person <i>recover</i>.
     </p>
+    <h1>Text Enrichers</h1>
+    <p>
+        Two text enrichers exists within the system, @Tour and @SymbaroumActor. 
+        <br>The Tour command requires a tourId in brackets [] followed by display name in curly brackets {}.
+        <br>The SymbaroumActor command requires an actor-name in [] and optional display name in {} and optional comma separated list of integrated abilities</br>
+    </p>
     <h1>System settings</h1>
     <p>
-        The following system settings exist - you can turn on and of to your hearts content or as you see fit for running your campaign.
+        The following system settings exist (see @Tour[settings-tour]{Symbaroum configuration guide}) - you can turn on and of to your hearts content or as you see fit for running your campaign.
         <br>
         <b>Configure Symbaroum Settings</b><br>
         This is a user setting which allows some modification of sheet backgrounds and colorations (see below). <br>
@@ -482,10 +496,10 @@
         <br>
         <b>Allow reference modifications</b><br>
         Only shows for GM and shows a reference field on abilities, traits, etc. This reference is used for the automation of abilities. <br>
-        <b>Suppress Iniatiative Rolls</b><br>
-        While Symbaroum do not roll for iniatiative, the system has to do so for the tie breaker. This just turns of the visibility of this roll from chat. <br>
-        <b>Manually select iniatiative</b><br>
-        Allows manual selection of the iniatiative attribute.<br>
+        <b>Suppress initiative Rolls</b><br>
+        While Symbaroum do not roll for initiative, the system has to do so for the tie breaker. This just turns of the visibility of this roll from chat. <br>
+        <b>Manually select initiative</b><br>
+        Allows manual selection of the initiative attribute.<br>
         <b>Add Symbaroum Settings button</b><br>
         This adds a Symbaroum setting button under the Foundry Configuration sidebar<br>
 
@@ -571,7 +585,5 @@
     <br><br>
     <h1>Supported Modules</h1>
     <p><a href="https://foundryvtt.com/packages/dice-so-nice/">Dice-so-nice</a>
-    <br/>Please note that Symbaroum requires DsN 4.2.2 or higher. There is also a <a href="https://gitlab.com/riccisi/foundryvtt-dice-so-nice/-/issues/266">known bug</a> that occurs when "Display Chat messages immediatly" is selected</p>
-    <p><a href="https://foundryvtt.com/packages/statuscounter/">Status icons counters</a></p>
     <p><a href="https://foundryvtt.com/packages/token-action-hud/">Token action hud</a></p>
 </div>

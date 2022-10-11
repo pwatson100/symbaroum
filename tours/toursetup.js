@@ -19,5 +19,16 @@ export async function tourSetup()
     } catch(err) {
         return console.error(`Issues with SymbaroumTour`,err);
     }
+    game.symbaroum.tourLink = tourLink;
+}
 
+async function tourLink(event) {
+    let header = $(event);
+    // game.symbaroum.log("event",header);
+    let tourId = header[0].dataset.tourId;
+    if(!tourId.includes('.')) {
+        tourId = `symbaroum.${ tourId}`;
+    }
+    let tour = game.tours.get(`symbaroum.${ header[0].dataset.tourId }`);
+    tour?.start();
 }

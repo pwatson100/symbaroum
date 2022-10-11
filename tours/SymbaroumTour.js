@@ -58,16 +58,36 @@ export class SymbaroumTour extends Tour {
 
         if (!this.currentStep?.action)
             return;
-
+		if(this.id.startsWith('charactersheet-tour') && !game.user.isGM && !game.actors.get('14xreF7lUoXqvHjh'))
+		{
+			return ui.notifications.error(game.i18n.localize("SYMBAROUM.TOUR_ACTOR_ERROR") );
+		}
         let target = this.currentStep.target ? this.currentStep.target : this.currentStep.selector;
         switch (this.currentStep.action) {
             case "click":
                 document.querySelector(target)?.click();
                 break;
+			case "click-delay":
+				document.querySelector(target)?.click();
+				await this.wait(300);
+				break;				
             case "scrollIntoView":
                 document.querySelector(target)?.scrollIntoView({ block: "start", inline: "nearest" });
                 break;
-        }
+			case "addActor":
+				if(!game.actors.get('14xreF7lUoXqvHjh') ) {
+					const data = await foundry.utils.fetchJsonWithTimeout('/systems/symbaroum/tours/extdata/beremo.json', {}, { int:30000});
+					console.log('data',JSON.stringify(data),data);
+					await Actor.create([data], { keepId: true});
+				}
+				break;
+			case "deleteActor":
+				// Warning, this do not work very well because Foundry fails to move to the next step
+				// and to remove the tour-overlay - this action has been removed from the tour
+				if(game.actors.get('14xreF7lUoXqvHjh')) {
+					await game.actors.get('14xreF7lUoXqvHjh').delete();
+				}
+				break;
+			}
     }
-
 }
