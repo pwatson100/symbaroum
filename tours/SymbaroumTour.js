@@ -76,8 +76,7 @@ export class SymbaroumTour extends Tour {
                 break;
 			case "addActor":
 				if(!game.actors.get('14xreF7lUoXqvHjh') ) {
-					const data = await foundry.utils.fetchJsonWithTimeout('/systems/symbaroum/tours/extdata/beremo.json', {}, { int:30000});
-					console.log('data',JSON.stringify(data),data);
+					const data = await foundry.utils.fetchJsonWithTimeout('/systems/symbaroum/tours/extdata/beremo.json', {}, { int:30000});					
 					await Actor.create([data], { keepId: true});
 				}
 				break;

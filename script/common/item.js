@@ -3001,7 +3001,7 @@ export async function modifierDialog(functionStuff){
                       damString = damString.trim();
                       
                       if(damString.length) {
-                        attri_defaults.additionalModifier = damString; // Regardless if valid or not, set it as attri_defaults
+                        functionStuff.additionalModifier = damString; // Regardless if valid or not, set it as attri_defaults
                         let plus = '+';
                         let damSource = "["+game.i18n.localize("DIALOG.DAMAGE_MODIFIER")+"] ";
                         if(damString.charAt(0)=== "+" ) {
@@ -3019,8 +3019,8 @@ export async function modifierDialog(functionStuff){
                             ui.notifications.error(`The ${game.i18n.localize("DIALOG.DAMAGE_MODIFIER")} can't be used for rolling damage ${err}`);
                             return;
                         }
-                        damModifierAttSup = damModifier;
-                        if(!attackFromPC && functionStuff.targetData.hasTarget && functionStuff.targetData.actor.type !== "monster"){
+                        // damModifierAttSup = damModifier;
+                        if(!functionStuff.attackFromPC && functionStuff.targetData.hasTarget && functionStuff.targetData.actor.type !== "monster"){
                           let parsedMod = parseInt(damString);
                           if (!isNaN(parsedMod)) { 
                             damModifierNPC = parsedMod;

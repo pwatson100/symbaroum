@@ -350,7 +350,7 @@ export class SymbaroumMacros {
 			for (let token of canvas.tokens.controlled) {
 				let calcDam = parseInt(damage) * -1;
 				if (isNaN(calcDam)) {
-					console.log(
+					game.symbaroum.error(
 						"Can't understand damage[" +
 							damage +
 							"] - is this a number?"
@@ -362,7 +362,7 @@ export class SymbaroumMacros {
 					actor.system.attributes[type] === undefined ||
 					actor.system.attributes[type] === null
 				) {
-					console.log("This is not an attribute in Symbaroum");
+					game.symbaroum.error(`This[${type}] is not an attribute in Symbaroum`);
 					break;
 				}
 				let tot =

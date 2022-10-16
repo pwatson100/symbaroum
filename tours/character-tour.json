@@ -4,6 +4,10 @@
     "title": "SYMBAROUM.TOUR_ACTOR_TITLE",
     "canBeResumed": false,
     "display": true,
+    "permission": {
+        "GM":true,
+        "Players":false
+    },    
     "steps": [
         {
             "id": "goto-actortab",
