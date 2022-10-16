@@ -15,7 +15,6 @@ export class SymbaroumActorSheet extends ActorSheet {
       // Find all items on the character sheet.
       html.find('li.trait').each((i, li) => {
         // Ignore for the header row.
-        console.log("li: ", li);
         if (li.classList.contains("item-header")) return;
         // Add draggable attribute and dragstart listener.
         li.setAttribute("draggable", true);
