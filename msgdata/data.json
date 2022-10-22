@@ -19,9 +19,10 @@
         {
             "version":15,
             "message":"<h1>Avoding pain</h1><br />In the next couple of weeks, give or take, Symbaroum and the commercial modules will go to v10.  As part of that, it is prudent to remind everyone that <a href='https://www.youtube.com/watch?v=OmbxMmqNNXU'><b>backups are important</b></a>. Once a world has been upgraded to v10, it can't go back unless you have a backup.  <br/>Remember to check your key modules work in v10, as they might not be available yet. If you are unsure and would like to test to see what works and what does not work in v10, you can follow the <a href='https://www.youtube.com/watch?v=B74ZAp3xx3o'>guide for running two</a> (or more) versions of Foundry on the same machine. However, always make a <b>backup</b>. <br/> If you have questions and/or need help, ping us on either on #symbaroum-vtt-foundry on Davokar Explorers Discord or the #free-league channel on Foundry discord."
+        },
+        {
+            "version":16,
+            "message":"<h1>Time is near</h1><br />In just a few days we are going to release Symbaroum for Foundry VTT V10.<br/>As always, take care and be in no hurry to upgrade.  There are only minor fixes in this version - the majority of work has to make it fully compatible with Foundry VTT V10.</p><p>Before you upgrade, remember make backup - see this on how to make a <a href='https://www.youtube.com/watch?v=OmbxMmqNNXU'><b>backup</b></a>.  Once a world has been upgraded to V10, you can not go back.</p><p>The foundry discord have channel #v10-update-troubleshooting to help with upgrades if you run into problems,  but as long as you have a backup, you can always rescue your world.</p>"
         }
-
-
-
     ]    
 }
