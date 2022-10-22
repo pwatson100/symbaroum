@@ -2,6 +2,17 @@ export function enrichTextEditors()
 {
     CONFIG.TextEditor.enrichers = CONFIG.TextEditor.enrichers.concat([
     {
+        pattern : /@RAW\[(.+?)\]/gm,
+        enricher : async (match, options) => {
+            const myData = await $.ajax({
+                url: match[1],
+                type: 'GET',
+            });
+            const doc = document.createElement("span");
+            doc.innerHTML = myData;
+            return doc;
+        }
+    },{
         pattern : /@SymbaroumActor\[(.+?)\](?:{(.+?)})?(?:{(.+?)})?/gm,
         enricher : (match, options) => {
             // Match 1 would be actor name or actorID
