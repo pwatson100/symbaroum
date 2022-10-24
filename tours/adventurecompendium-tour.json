@@ -1,0 +1,52 @@
+{
+    "namespace": "symbaroum",
+    "id": "acompendium-tour",
+    "title": "SYMBAROUM.TOUR_ACOMPENDIUM",
+    "canBeResumed": false,
+    "display": true,
+    "permission": {
+        "GM":true,
+        "Players":false
+    },    
+    "steps": [
+        {
+            "id": "goto-compendiums",
+            "selector": "[data-tab='compendium']",
+            "title": "SYMBAROUM.TOUR_ACOMPENDIUM_GOTO",
+            "content": "SYMBAROUM.TOUR_ACOMPENDIUM_GOTOCONTENT",
+            "action": "click"
+        },
+        {
+            "id": "goto-systemcompendium",
+            "selector": "[data-pack='symbaroum.symbaroum']",
+            "title": "SYMBAROUM.TOUR_ACOMPENDIUM_SYSTEM",
+            "content": "SYMBAROUM.TOUR_ACOMPENDIUM_SYSTEM_CONTENT",
+            "action": "click-delay"
+        },
+        {
+            "id": "goto-systembase-english",
+            "selector": "li[data-document-id='ftwXXmIBSABngqGy'] h4",
+            "title": "SYMBAROUM.TOUR_ACOMPENDIUM_SYSTEM_ENGLISH",
+            "content": "SYMBAROUM.TOUR_ACOMPENDIUM_SYSTEM_ENGLISH_CONTENT",
+            "action": "click"
+        },
+        {
+            "id": "goto-systembase-english-overview",
+            "selector": "section.adventure-overview",
+            "title": "SYMBAROUM.TOUR_ACOMPENDIUM_SYSTEM_ENGLISH_OVERVIEW",
+            "content": "SYMBAROUM.TOUR_ACOMPENDIUM_SYSTEM_ENGLISH_OVERVIEW_CONTENT"
+        },
+        {
+            "id": "goto-systembase-english-contents",
+            "selector": "section.adventure-contents",
+            "title": "SYMBAROUM.TOUR_ACOMPENDIUM_SYSTEM_ENGLISH_CONTENTS",
+            "content": "SYMBAROUM.TOUR_ACOMPENDIUM_SYSTEM_ENGLISH_CONTENTS_CONTENT"
+        },
+        {
+            "id": "goto-systembase-english-imports",
+            "selector": "footer.adventure-footer",
+            "title": "SYMBAROUM.TOUR_ACOMPENDIUM_SYSTEM_ENGLISH_IMPORT",
+            "content": "SYMBAROUM.TOUR_ACOMPENDIUM_SYSTEM_ENGLISH_IMPORT"
+        }
+    ]
+}

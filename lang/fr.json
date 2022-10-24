@@ -1,4 +1,5 @@
 {
+    "ABILITY.HEADER": "Ability",
     "ABILITY.NAME": "Nom",
     "ABILITY.REFERENCE": "Reference",
     "ABILITY.ACTIVE": "Appris",
@@ -306,12 +307,12 @@
     "CHAT.CRITICAL_FAILURE": "Echec Critique",
     "CHAT.CRITICAL_FREEATTACK": "Attaque gratuite",
     "CHAT.CRITICAL_PLUS3DAMAGE": "+3 de Dégâts",
-    "CHAT.CRITICAL_FAILURE_FREEATTACK": "Attaque gratuite",  
-    "CHAT.RECOVER": "La blessure n'était pas si terrible. {name} est à nouveau conscient et regagne ",
+    "CHAT.CRITICAL_FAILURE_FREEATTACK": "Attaque gratuite",
+    "CHAT.RECOVER": "Ton heure n'est pas encore venue. {name} est à nouveau conscient et regagne ",
     "CHAT.TOUGHNESS": "Endurance",
-    "CHAT.STAY_ALIVE": "Tu restes en vie pour le moment !",
-    "CHAT.NEAR_DEATH": "La fin est proche :",
-    "CHAT.DEAD": "Tu es mort !",
+    "CHAT.STAY_ALIVE": "Tu t'accroches... mais pour combien de temps",
+    "CHAT.NEAR_DEATH": "La fin approche :",
+    "CHAT.DEAD": "{name} rend son dernier souffle.",
 
     "COMBAT.CHAT_INTRO": " attaque avec ",
     "COMBAT.CHAT_SUCCESS": " touche ",
@@ -414,6 +415,7 @@
     "HEALTH.TOUGHNESS_TOTAL": "Total",
     "HEALTH.TOUGHNESS_THRESHOLD": "Seuil",
     "HEALTH.TOUGHNESS_THRESHOLD_MAX": "Seuil d'End.",
+    "HEALTH.TOUGHNESS_THRESHOLD_FULL": "Pain Threshold",
     "HEALTH.CORRUPTION": "Corruption",
     "HEALTH.CORRUPTION_CURRENT": "Actuelle",
     "HEALTH.CORRUPTION_TEMPORARY": "Temporaire",
@@ -422,6 +424,7 @@
     "HEALTH.CORRUPTION_THRESHOLD": "Seuil",
     "HEALTH.CORRUPTION_THRESHOLD_MAX": "Seuil de Cor.",
     "HEALTH.CORRUPTION_MAX": "Maximale",
+    "HEALTH.CORRUPTION_THROUGHLY": "thoroughly corrupt",
 
     "INITIATIVE.TITLE": "Initiative",
     "INITIATIVE.EXPLANATION": "Initiative indiquée comme [Attribut utilisé.vigilance]",
@@ -607,6 +610,11 @@
     "POWER_TORMENTINGSPIRITS.CHAT_SUCCESS":"{actorname} invoque les esprits tourmenteurs autour de {targetname}.",
     "POWER_TORMENTINGSPIRITS.CHAT_FAILURE":"{actorname} échoue son invocation.",
 
+    "POWER_WITCHHAMMER.CHAT_ACTIVATE": "L'arme de {actorname} se met à briller.",
+    "POWER_WITCHHAMMER.CHAT_DESACTIVATE": "L'arme de {actorname} ne brille plus.",
+    "POWER_WITCHHAMMER.CHAT_RESULT_DESACTIVATE": "Les dommages de l'arme rediviennent normaux.",
+    "POWER_WITCHHAMMER.CHAT_RESULT": "Les bonus de dégâts de Marteau à sorcière apparaitront dans la fenêtre de dialogue de combat.",
+
     "QUALITY.AREAMRR": "Zone d’effet - rayon portée mélée",
     "QUALITY.AREASRR": "Zone d’effet - rayon portée courte",
     "QUALITY.AREAC": "Zone d'effet - cône",
@@ -640,6 +648,10 @@
     "QUALITY.POISON": "Empoisonné",
     "QUALITY.THUNDERING": "Rugissant",
     "QUALITY.RETRIBUTIVE": "Punitif",
+    "QUALITY.KNIFEPLAY_COMP": "Compatible Jeu de lame",
+    "QUALITY.STAFFFIGHTING_COMP": "Compatible Combat au bâton",
+    "QUALITY.SWORDSAINT_COMP": "Compatible Épéiste virtuose",
+    
     "RITUAL.TRADITION": "Tradition",
     "RITUAL.DESCRIPTION": "Description",
 
@@ -661,7 +673,7 @@
 
     "TITLE.ABILITIES_POWERS": "TALENTS & POUVOIRS",
     "TITLE.HEALTH": "SANTÉ",
-    "TITLE.ATTRIBUTES": "ATTRIBUTS",
+    "TITLE.ATTRIBUTES": "Attributs",
     "TITLE.COMBAT": "COMBAT",
     "TITLE.NOTES": "NOTES",
     "TITLE.ARMORS": "ARMURES",
@@ -676,7 +688,10 @@
     "TITLE.POWER": "POUVOIR",
     "TITLE.MONEY": "ARGENT",
     "TITLE.QUALITIES":"QUALITÉS",
+    "TITLE.SPECIALQUALITIES":"COMPATIBILITÉ TALENTS SPÉCIAUX",
     
+    "TOOLTIP.BONUS_TOTAL": "Total",
+    "TOOLTIP.DEATH_SKULLS": "Death is reached at 3 skulls",
     "TOOLTIP.EXPERIENCE_CURRENT": "Vos points d'expérience non dépensés",
     "TOOLTIP.EXPERIENCE_TOTAL": "Total des points d'expérience acquis",
     "TOOLTIP.EXPERIENCE_ARTIFACTRR": "Points d'expérience dépensés pour les artefacts et relances",
@@ -701,6 +716,7 @@
     "TOOLTIP.DELETE_ABILITY" : "Supprimer ce talent",
     "TOOLTIP.POWER_ACTIONS" : "Type d'action (A - active, P - passive, S - spéciale, etc)",
 
+    "TRAIT.HEADER": "Traits",
     "TRAIT.NAME": "Nom",
     "TRAIT.ACTIVE": "Acquis",
     "TRAIT.ACTION": "Action",

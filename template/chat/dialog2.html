@@ -4,7 +4,7 @@
     <label>Choose weapon</label>
     <select id="weapon">
         {{#each weapons}}
-        <option value={{this.id}}>{{this.name}} | Attribut: {{this.data.data.attribute}} </option>
+        <option value={{this.id}}>{{this.name}} | Attribut: {{this.system.attribute}} </option>
         {{/each}}
     </select>
   </div>

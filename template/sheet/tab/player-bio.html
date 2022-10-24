@@ -1,53 +1,53 @@
 <div class="bio">
     <div class="appearance foreground border">
-        <h1 style="text-transform: uppercase">{{localize "BIO.APPEARANCE"}}</h1>
+        <h1>{{localize "BIO.APPEARANCE"}}</h1>
         <div class="wrapper-left">
             <div class="age">
-                <label for="{{id}}-data.bio.age">{{localize "BIO.AGE"}}</label>
-                <input id="{{id}}-data.bio.age" name="data.bio.age" type="text" value="{{data.bio.age}}" />
+                <label for="{{id}}-system.bio.age">{{localize "BIO.AGE"}}</label>
+                <input id="{{id}}-system.bio.age" name="system.bio.age" type="text" value="{{system.bio.age}}" />
             </div>
             <div class="height">
-                <label for="{{id}}-data.bio.height">{{localize "BIO.HEIGHT"}}</label>
-                <input id="{{id}}-data.bio.height" name="data.bio.height" type="text" value="{{data.bio.height}}" />
+                <label for="{{id}}-system.bio.height">{{localize "BIO.HEIGHT"}}</label>
+                <input id="{{id}}-system.bio.height" name="system.bio.height" type="text" value="{{system.bio.height}}" />
             </div>
             <div class="weight">
-                <label for="{{id}}-data.bio.weight">{{localize "BIO.WEIGHT"}}</label>
-                <input id="{{id}}-data.bio.weight" name="data.bio.weight" type="text" value="{{data.bio.weight}}" />
+                <label for="{{id}}-system.bio.weight">{{localize "BIO.WEIGHT"}}</label>
+                <input id="{{id}}-system.bio.weight" name="system.bio.weight" type="text" value="{{system.bio.weight}}" />
             </div>
         </div>
         <div class="wrapper-right">
-            {{editor content=data.bio.appearance target="data.bio.appearance" button=true owner=owner editable=true}}
+            {{editor system.bio.appearance target="system.bio.appearance" button=true owner=owner editable=true}}
         </div>
         {{#ife actor.type 'player'}}
 
             <div class="wrapper-full">
                 <div class="shadow">
-                    <label for="{{id}}-data.bio.shadow">{{localize "BIO.SHADOW"}}</label>
-                    <input id="{{id}}-data.bio.shadow" name="data.bio.shadow" type="text" value="{{data.bio.shadow}}" />
+                    <label for="{{id}}-system.bio.shadow">{{localize "BIO.SHADOW"}}</label>
+                    <input id="{{id}}-system.bio.shadow" name="system.bio.shadow" type="text" value="{{system.bio.shadow}}" />
                 </div>
             </div>
         {{/ife}}
 
     </div>
     <div class="background foreground border">
-        <h1 style="text-transform: uppercase">{{localize "BIO.BACKGROUND"}}</h1>
-        {{editor content=data.bio.background target="data.bio.background" button=true owner=owner editable=true}}
+        <h1>{{localize "BIO.BACKGROUND"}}</h1>
+        {{editor system.bio.background target="system.bio.background" button=true owner=owner editable=true}}
     </div>
     <div class="personal-goal foreground border">
-        <h1 style="text-transform: uppercase">{{localize "BIO.GOAL"}}</h1>
-        {{editor content=data.bio.personalGoal target="data.bio.personalGoal" button=true owner=owner editable=true}}
+        <h1>{{localize "BIO.GOAL"}}</h1>
+        {{editor system.bio.personalGoal target="system.bio.personalGoal" button=true owner=owner editable=true}}
     </div>
     {{#ife actor.type 'player'}}
         <div class="stigmas foreground border">
-            <h1 style="text-transform: uppercase">{{localize "BIO.STIGMAS"}}</h1>
-            {{editor content=data.bio.stigmas target="data.bio.stigmas" button=true owner=owner editable=true}}
+            <h1>{{localize "BIO.STIGMAS"}}</h1>
+            {{editor system.bio.stigmas target="system.bio.stigmas" button=true owner=owner editable=true}}
         </div>
     {{/ife}}
 
     {{#ife actor.type 'monster'}}
         <div class="stigmas foreground border">
-            <h1 style="text-transform: uppercase">{{localize "BIO.TACTICS"}}</h1>
-            {{editor content=data.bio.tactics target="data.bio.tactics" button=true owner=owner editable=true}}
+            <h1>{{localize "BIO.TACTICS"}}</h1>
+            {{editor system.bio.tactics target="system.bio.tactics" button=true owner=owner editable=true}}
         </div>
     {{/ife}}
 </div>

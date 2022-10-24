@@ -72,8 +72,8 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
 
   let tokenList = actor.getActiveTokens();
   let actingToken = tokenList[0];
-  let actingCharName= actingToken?.data?.name ?? actor.name;
-  let actingCharImg= actingToken?.data?.actorLink ? actor.data.img : actingToken?.data?.img ?? actor.data.img;
+  let actingCharName= actingToken?.name ?? actor.name;
+  let actingCharImg= actingToken?.document.actorLink ? actor.img : actingToken?.document?.texture.src ?? actor.img;
   let rollData = {
     subImg: actingCharImg,
     name: `${getAttributeLabel(actor, actingAttributeName) } (${ getAttributeValue(actor, actingAttributeName) }) ⬅ ${getAttributeLabel(targetActor, targetAttributeName)} (${finalMod})`,
@@ -154,7 +154,7 @@ export async function rollDeathTest(actor, withFavour, modifier) {
   let finalMod = game.settings.get('symbaroum', 'enhancedDeathSaveBonus') ? modifier:0;
   let isCriticalSuccess = death.total <= (1+finalMod);
   let heal = null;
-  let nbrOfFailedDeathRoll = actor.data.data.nbrOfFailedDeathRoll;
+  let nbrOfFailedDeathRoll = actor.system.nbrOfFailedDeathRoll;
   let rollResult = await formatRollResult({favour: favour, diceResult: death.total, dicesResult: dicesResult});
   if (!hasSucceed) nbrOfFailedDeathRoll = Math.min(3, nbrOfFailedDeathRoll+1);
   if (isCriticalSuccess) {
@@ -191,8 +191,8 @@ export async function rollDeathTest(actor, withFavour, modifier) {
     chatData.whisper = [game.user];
   }
   ChatMessage.create(chatData);
-  if(actor.data.data.nbrOfFailedDeathRoll != nbrOfFailedDeathRoll) {
-    await actor.update({"data.nbrOfFailedDeathRoll":nbrOfFailedDeathRoll });
+  if(actor.system.nbrOfFailedDeathRoll != nbrOfFailedDeathRoll) {
+    await actor.update({"system.nbrOfFailedDeathRoll":nbrOfFailedDeathRoll });
   }
 }
 
@@ -204,7 +204,7 @@ export function getAttributeLabel(actor, attributeName) {
   else if (attributeName === 'defense') {
     return (game.i18n.localize("ARMOR.DEFENSE"));
   } else {
-      return (game.i18n.localize(actor.data.data?.attributes[attributeName].label));
+      return (game.i18n.localize(actor.system.attributes[attributeName].label));
   }
 }
 
@@ -214,22 +214,22 @@ export function getAttributeValue(actor, attributeName) {
     return 10;
   }
   if (attributeName === 'defense') {    
-    return actor.data.data.combat.defense;
+    return actor.system.combat.defense;
   } else {
-    return actor.data.data?.attributes[attributeName].total;
+    return actor.system.attributes[attributeName].total;
   }
 }
 
 /* Get the Players owning an actor, that is not a GM and that is connected */
 export async function getOwnerPlayer(actor){
-    let permissions = Object.entries(actor.data.permission);
+    let permissions = Object.entries(actor.ownership);
     let ownerIds = permissions.reduce((idValue, e) => {
-        if(e[1] === CONST.ENTITY_PERMISSIONS.OWNER) {
+        if(e[1] === CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER) {
             idValue.push(e[0]);
         }
         return idValue
     },[])
-    let owningPlayers = game.users.filter(user => user.active && !user.isGM && ownerIds.includes(user.data._id));
+    let owningPlayers = game.users.filter(user => user.active && !user.isGM && ownerIds.includes(user.id));
     // game.symbaroum.log(owningPlayers);
     return(owningPlayers)
 }
@@ -362,7 +362,7 @@ will be intercepted by a hook (see hook.js)
 The actions to do on the token and its actor have to be detailled in the actionsData object:
 * @param actionsDataArray is an array of actionData
 ActionData = {
-    tokenId: {string} the id of the token that will be modified (ex: token.data.id),
+    tokenId: {string} the id of the token that will be modified (ex: token.id),
     
 To add a status effect    
     addEffect: {string}  Path to the icon (ex:"icons/svg/daze.svg"),
@@ -497,18 +497,18 @@ export async function damageRollWithDiceParams(functionStuff, critSuccess, attac
         newRollDmgString += damageModFormula
       }
       if(!functionStuff.ignoreArm){
-        newRollDmgString += " - " + functionStuff.targetData.actor.data.data.combat.protectionNpc.toString();
+        newRollDmgString += " - " + functionStuff.targetData.actor.system.combat.protectionNpc.toString();
       }
     }
     else{
       // If the attack is made by a NPC, evaluate static value for damage (=max damage/2) then roll armor and substract
      //build roll string
       newRollDmgString = (functionStuff.weapon.damage.npcBase + damageModNPC).toString();
-      if(!functionStuff.ignoreArm && functionStuff.targetData.actor.data.data.combat.protectionPc != 0){
+      if(!functionStuff.ignoreArm && functionStuff.targetData.actor.system.combat.protectionPc != 0){
         if(functionStuff.weapon.damage.damageFavour){
-          newRollDmgString += " - (" + functionStuff.targetData.actor.data.data.combat.unfavourPcProt + ")";
+          newRollDmgString += " - (" + functionStuff.targetData.actor.system.combat.unfavourPcProt + ")";
         }
-        else newRollDmgString += " - (" + functionStuff.targetData.actor.data.data.combat.protectionPc + ")";
+        else newRollDmgString += " - (" + functionStuff.targetData.actor.system.combat.protectionPc + ")";
       }
       else newRollDmgString += " - 0";
     }
@@ -541,7 +541,7 @@ export async function simpleDamageRoll(functionStuff, damageFormula){
     newRollDmgString = damageFormula;
     //build roll string
     if(!functionStuff.ignoreArm){
-      newRollDmgString += " - " + functionStuff.targetData.actor.data.data.combat.protectionNpc.toString();
+      newRollDmgString += " - " + functionStuff.targetData.actor.system.combat.protectionNpc.toString();
     }
   }
   else{
@@ -552,7 +552,7 @@ export async function simpleDamageRoll(functionStuff, damageFormula){
    //build roll string
     newRollDmgString = weaponDmgValue.toString();
     if(!functionStuff.ignoreArm){
-      newRollDmgString += " - (" + functionStuff.targetData.actor.data.data.combat.protectionPc + ")";
+      newRollDmgString += " - (" + functionStuff.targetData.actor.system.combat.protectionPc + ")";
     }
   }
   // final damage

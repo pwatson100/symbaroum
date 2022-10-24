@@ -15,7 +15,6 @@ export class SymbaroumActorSheet extends ActorSheet {
       // Find all items on the character sheet.
       html.find('li.trait').each((i, li) => {
         // Ignore for the header row.
-        console.log("li: ", li);
         if (li.classList.contains("item-header")) return;
         // Add draggable attribute and dragstart listener.
         li.setAttribute("draggable", true);
@@ -46,14 +45,9 @@ export class SymbaroumActorSheet extends ActorSheet {
       name:data["name"],
       type:data.type,
       img:data.img,
-      data:foundry.utils.deepClone(data)
+      system:foundry.utils.deepClone(data)
     };
     
-    // Not required in "data.<x>"
-    delete itemData.data["name"];
-    delete itemData.data["type"];
-    delete itemData.data["img"];
-
     this.actor.createEmbeddedDocuments('Item', [itemData], {render:true} ).then( item => {
       // Automatically render the item sheet we just created
       item[0].sheet.render(true);
@@ -93,15 +87,15 @@ export class SymbaroumActorSheet extends ActorSheet {
       return;
     }
     let data;
-    switch (item.data.data.state) {
+    switch (item.system.state) {
       case 'active':
-        data = { _id: item.id, id: item.id, 'data.state': 'equipped' };
+        data = { _id: item.id, id: item.id, 'system.state': 'equipped' };
         break;
       case 'equipped':
-        data = { _id: item.id, id: item.id, 'data.state': 'other' };
+        data = { _id: item.id, id: item.id, 'system.state': 'other' };
         break;
       default:
-        data = { _id: item.id, id: item.id, 'data.state': 'active' };
+        data = { _id: item.id, id: item.id, 'system.state': 'active' };
         break;
     }    
     
@@ -120,5 +114,14 @@ export class SymbaroumActorSheet extends ActorSheet {
     const div = $(event.currentTarget).parents('.item');
     const weapon = this.actor.items.get(div.data('itemId'));
     await this.actor.rollWeapon(weapon);
+  }
+
+  async _enrichTextFields(data, fieldNameArr) {
+    for(let t = 0; t < fieldNameArr.length; t++ ) 
+    {
+      if(hasProperty(data,fieldNameArr[t])) {
+        setProperty(data, fieldNameArr[t], await TextEditor.enrichHTML(getProperty(data,fieldNameArr[t]), { async:true}) );
+      }
+    }
   }
 }

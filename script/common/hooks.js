@@ -1,7 +1,6 @@
 import { SymbaroumActor } from './actor.js';
 import { SymbaroumItem, buildRolls, getEffect } from './item.js';
 import { PlayerSheet } from '../sheet/player.js';
-import { PlayerSheet2 } from '../sheet/player2.js';
 import { TraitSheet } from '../sheet/trait.js';
 import { AbilitySheet } from '../sheet/ability.js';
 import { MysticalPowerSheet } from '../sheet/mystical-power.js';
@@ -20,17 +19,20 @@ import { MonsterSheet } from '../sheet/monster.js';
 import { SymbaroumConfig } from './symbaroumConfig.js';
 import { SymbaroumCommsListener } from './symbcomms.js';
 import { SymbaroumMacros } from './macro.js';
+import { SymbaroumWide } from '../sheet/journal.js';
+import { enrichTextEditors } from './enricher.js';
+import { tourSetup } from '../../tours/toursetup.js';
 
 Hooks.once('init', () => {
+
   const debouncedReload = foundry.utils.debounce(() => window.location.reload(), 250);
 
   CONFIG.Actor.documentClass = SymbaroumActor;
   CONFIG.Item.documentClass = SymbaroumItem;
   Actors.unregisterSheet('core', ActorSheet);
-  Actors.registerSheet('symbaroum', PlayerSheet2, { types: ['player'], makeDefault: true });
-  Actors.registerSheet('symbaroum', PlayerSheet, { types: ['player'], makeDefault: false });
+  Actors.registerSheet('symbaroum', PlayerSheet, { types: ['player'], makeDefault: true });
   Actors.registerSheet('symbaroum', MonsterSheet, { types: ['monster'], makeDefault: true });
-  Actors.registerSheet('symbaroum', PlayerSheet2, { types: ['monster'], makeDefault: false });
+  Actors.registerSheet('symbaroum', PlayerSheet, { types: ['monster'], makeDefault: false });
   Items.unregisterSheet('core', ItemSheet);
   Items.registerSheet('symbaroum', TraitSheet, { types: ['trait'], makeDefault: true });
   Items.registerSheet('symbaroum', AbilitySheet, { types: ['ability'], makeDefault: true });
@@ -42,6 +44,8 @@ Hooks.once('init', () => {
   Items.registerSheet('symbaroum', ArmorSheet, { types: ['armor'], makeDefault: true });
   Items.registerSheet('symbaroum', EquipmentSheet, { types: ['equipment'], makeDefault: true });
   Items.registerSheet('symbaroum', ArtifactSheet, { types: ['artifact'], makeDefault: true });
+  Journal.registerSheet('symbaroum', SymbaroumWide, { label: game.i18n.localize("SYMBAROUM.OPTIONAL_CUSTOMSHEETJOURNAL"), makeDefault: false });
+
   initializeHandlebars();
 
   game.symbaroum = {
@@ -52,13 +56,13 @@ Hooks.once('init', () => {
     info: (...args) => { console.info('%cSymbaroum |', game.symbaroum.config.CONSOLESTYLE, ...args) },
     log: (...args) => { console.log('%cSymbaroum |', game.symbaroum.config.CONSOLESTYLE, ...args) }
   };
-  
+
   game.settings.register('symbaroum', 'worldTemplateVersion', {
     // worldTemplateVersion is deprecated - not to use anymore
     name: 'World Template Version',
     hint: 'Used to automatically upgrade worlds data when the template is upgraded.',
     scope: 'world',
-    config: true,
+    config: false,
     default: 0,
     type: Number,
   });
@@ -67,7 +71,7 @@ Hooks.once('init', () => {
     name: 'World System Version',
     hint: 'Used to automatically upgrade worlds data when needed.',
     scope: 'world',
-    config: true,
+    config: false,
     default: '0',
     type: String,
   });
@@ -98,16 +102,6 @@ Hooks.once('init', () => {
     default: false,
     config: true,
   });
-
-  /*TODO
-  /*game.settings.register('symbaroum', 'allRollsDsN', {
-    name: 'SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE',
-    hint: 'SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE_HINT',
-    scope: 'world',
-    type: Boolean,
-    default: false,
-    config: true,
-  });*/
 
   game.settings.register('symbaroum', 'alwaysSucceedOnOne', {
     name: 'SYMBAROUM.OPTIONAL_ALWAYSSUCCEDONONE',
@@ -306,6 +300,20 @@ Hooks.once('init', () => {
     scope: 'client',
     default: 'url(../asset/image/background/not-editable.webp)',
   });
+  game.settings.register('symbaroum', 'chatBGChoice', {
+    restricted: false,
+    type: String,
+    config: false,
+    scope: 'client',
+    default: 'url(../asset/image/background/editable.webp)',
+  });
+  game.settings.register('symbaroum', 'switchChatBGColour', {
+    restricted: false,
+    type: String,
+    config: false,
+    scope: 'client',
+    default: 'url(../asset/image/background/green_flower_light.webp) repeat',
+  });  
 
   game.settings.registerMenu('symbaroum', 'symbaroumSettings', {
     name: 'SYMBAROUM.OPTIONAL_CONFIG_MENULABEL',
@@ -329,48 +337,52 @@ Hooks.once('init', () => {
     },
   });
 
-  game.settings.register('symbaroum', 'showLocalLangPack', {
-    name: 'SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK',
-    hint: 'SYMBAROUM.OPTIONAL_SHOWLOCALLANGPACK_HINT',
+  game.settings.register('symbaroum', 'symSemaphore', {
+    name: 'Semaphore Flag',
+    hint: 'Flag for running sequential actions/scripts',
     scope: 'world',
-    type: Boolean,
-    default: true,
-    config: true,
-    onChange: () => debouncedReload(),
+    type: String,
+    config: false,
+    default: '',
   });
 
-  game.settings.register('symbaroum', 'showEnglishPacks', {
-    name: 'SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS',
-    hint: 'SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS_HINT',
-    scope: 'world',
-    type: Boolean,
-    default: false,
-    config: true,
-    onChange: () => debouncedReload(),
-  });
-  game.settings.register('symbaroum', 'hideEnglishMacroSystemPack', {
-    name: 'SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS',
-    hint: 'SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS_HINT',
-    scope: 'world',
-    type: Boolean,
-    default: false,
-    config: true,
-    onChange: () => debouncedReload(),
-  });  
-  
   game.symbaroum.macros = new SymbaroumMacros();
+  enrichTextEditors();
   setupStatusEffects();
 });
 
+
 Hooks.once('ready', () => {
   game.symbaroum.macros.macroReady();
-
+  let originalVersion = game.settings.get('symbaroum', 'systemMigrationVersion');
   migrateWorld();
   sendDevMessage();
   showReleaseNotes();
   setupConfigOptions();
   setupEmit();
   setup3PartySettings();
+  // enrichTextEditors();
+  tourSetup();
+  if(originalVersion === '0' && game.user.isGM) {
+    let message = `<h1>Welcome to your new Symbaroum world</h1>
+    If you are new to the system, recommend that you check out the @UUID[JournalEntry.sSZzEbMgSLEclyBL]{system guide} in the journals.
+    <br/>We also have a set of tours to help you get started, for @Tour[settings-tour]{settings} and @Tour[acompendium-tour]{compendiums}. `;
+    ChatMessage.create(
+      {
+          speaker: ChatMessage.getSpeaker({alias: "Symbaroum"}),
+          whisper: [game.user], // ChatMessage.getWhisperRecipients('GM'),
+          content: message
+      }); 
+  }
+
+});
+
+Hooks.on("preDocumentSheetRegistrarInit", (settings) => {
+  settings["JournalEntry"] = true;
+});
+
+Hooks.on("documentSheetRegistrarInit", (documentTypes) => {
+  DocumentSheetConfig.updateDefaultSheets(game.settings.get("core", "sheetClasses"));
 });
 
 // create/remove the quick access config button
@@ -389,68 +401,23 @@ Hooks.on('preCreateActor', (doc, createData, options, userid) => {
     'token.name': createData.name,
   });
 
-  if (doc.data.img === 'icons/svg/mystery-man.svg') {
+  if (doc.img === 'icons/svg/mystery-man.svg') {
     createChanges.img = 'systems/symbaroum/asset/image/unknown-actor.png';
   }
 
-  if (doc.data.type === 'player') {
+  if (doc.type === 'player') {
     createChanges.token.vision = true;
     createChanges.token.actorLink = true;
   }
-  doc.data.update(createChanges);
+  doc.updateSource(createChanges);
 });
 
 // Hooks.on('createOwnedItem', (actor, item) => {});
+Hooks.on("changeSidebarTabA", (app) => {
+  game.symbaroum.log("In changeSidebarTab - sorting out available compendiums", app, app.rendered);
 
-Hooks.on("renderCompendiumDirectory", (app, html, data) => {
-  game.symbaroum.log("In renderCompendiumDirectory - sorting out available compendiums");
-  if (game.settings.get("symbaroum", "showLocalLangPack") ) 
-  {
-    const translatedDocs = [];
-    const filterEnglish = game.settings.get("symbaroum", "showEnglishPacks");
-
-    let languageCodeRegex = `systemuserguides|${game.i18n.lang}`;
-    if(filterEnglish && game.i18n.lang !== "en") {
-      languageCodeRegex = `en|${languageCodeRegex}`;
-    }
-    const avoidEnglishMacroSystem = game.settings.get("symbaroum", "hideEnglishMacroSystemPack") ? null : "(macros|systemitems)";
-    // const avoidEnglishMacroSystem = "(macros|systemitems)";
-    // Alternatives are:
-    // Local Langauge only
-    // Local Langauge + English macro/system abilities      
-    const langReg = new RegExp(`symbaroum.+(${languageCodeRegex})$`);
-    const translatedReg = new RegExp(`symbaroum(.*)${game.i18n.lang}$`);
-    const macroReg = new RegExp(`symbaroum${avoidEnglishMacroSystem}en$`);
-    let irrelvantCompendiums = game.packs.contents.filter( (comp) => {                
-      if(comp.metadata.package === "symbaroum" && !/systemuserguides$/.test(comp.metadata.name) && !langReg.test(comp.metadata.name) ) {
-        if(avoidEnglishMacroSystem !== null && macroReg.test(comp.metadata.name))
-        {            
-          return false;
-        }
-        return true;
-      }
-      // store any translated docs here
-      let part = comp.metadata.name.match(translatedReg);
-      if(part !== null) {
-        translatedDocs.push(comp.metadata.name.match(translatedReg)[1]);
-      }
-      return false;
-    });
-    const enReg = new RegExp(`symbaroum(.*)en$`);
-    for(const comp of irrelvantCompendiums) {
-      // check if the english doc is not one of the translated ones, continue
-      let part = comp.metadata.name.match(enReg);
-      if(part !== null) {
-        if(!translatedDocs.includes(part[1]) ) {
-          continue;
-        }
-      }
-      let compositeKey = `${comp.metadata.system}.${comp.metadata.name}`;
-      game.packs.delete(compositeKey);
-      html.find(`li[data-pack="${compositeKey}"]`).hide();
-    }
-  }
 });
+
 
 Hooks.once('diceSoNiceReady', (dice3d) => {
   dice3d.addSystem({ id: 'symbaroum', name: 'Symbaroum' }, 'preferred');
@@ -501,18 +468,18 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
             }
           }
           let actor = token?.actor ?? game.actors.get(flagData.actorId);
-          if(actor !== undefined){
+          if (actor !== undefined) {
             if (flagData.toughnessChange) {
-              let newToughness = Math.max(0, Math.min(actor.data.data.health.toughness.max, actor.data.data.health.toughness.value + flagData.toughnessChange));
+              let newToughness = Math.max(0, Math.min(actor.system.health.toughness.max, actor.system.health.toughness.value + flagData.toughnessChange));
               await actor.update({ 'data.health.toughness.value': newToughness });
             }
             if (flagData.attributeChange) {
-              let newMod = actor.data.data.attributes[flagData.attributeName].temporaryMod + flagData.attributeChange;
+              let newMod = actor.system.attributes[flagData.attributeName].temporaryMod + flagData.attributeChange;
               let linkMod = 'data.attributes.' + flagData.attributeName + '.temporaryMod';
               await actor.update({ [linkMod]: newMod });
             }
             if (flagData.corruptionChange) {
-              let newCorruption = actor.data.data.health.corruption.temporary + flagData.corruptionChange;
+              let newCorruption = actor.system.health.corruption.temporary + flagData.corruptionChange;
               await actor.update({ 'data.health.corruption.temporary': newCorruption });
             }
             if (flagData.addObject) {
@@ -549,24 +516,19 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
 });
 
 Hooks.on("renderPause", (_app, html, options) => {
-	html.find('img[src="icons/svg/clockwork.svg"]').attr("src", "systems/symbaroum/asset/image/head.webp");
+  html.find('img[src="icons/svg/clockwork.svg"]').attr("src", "systems/symbaroum/asset/image/head.webp");
 });
 
 
 
 function setup3PartySettings() {
   game.symbaroum.info("In setup3PartySettings");
-  if( !game.user.isGM ) {
+  if (!game.user.isGM) {
     // Only make changes to system and 3rd party if it is a GM
     return;
   }
   if (game.settings.settings.has('dice-so-nice.enabledSimultaneousRollForMessage')) {
     game.settings.set('dice-so-nice', 'enabledSimultaneousRollForMessage', false);
-  }
-  
-  if( game.modules.get("dice-so-nice")?.active && foundry.utils.isNewerVersion("4.2.2", game.modules.get("dice-so-nice").data.version) ) {
-    // If dice so nice is older than 4.2.2 - lets notify
-    ui.notifications.warn("Dice So Nice needs to be at minimum 4.2.2 to work with Symbaroum", {permanent: true });
   }
 }
 // This sets the css DOM objects we will change with the registered settings
@@ -576,12 +538,13 @@ async function setupConfigOptions() {
   await r.style.setProperty('--color-npcBG', game.settings.get('symbaroum', 'switchNpcBGColour'));
   await r.style.setProperty('--title-image', game.settings.get('symbaroum', 'titleBGChoice'));
   await r.style.setProperty('--title-color', game.settings.get('symbaroum', 'switchTitleColour'));
-  await r.style.setProperty('--box-editable', game.settings.get('symbaroum', 'switchEditableColour'));
+  await r.style.setProperty('--box-editable', game.settings.get('symbaroum', 'switchEditableColour'));  
   await r.style.setProperty('--box-non-editable', game.settings.get('symbaroum', 'switchNoNEditableColour'));
+  await r.style.setProperty('--chat-background', game.settings.get('symbaroum', 'chatBGChoice'));
 }
 
 // this add new status effect to the foundry list
-async function setupStatusEffects(){
+async function setupStatusEffects() {
   CONFIG.statusEffects.push(
     {
       id: "bendwill",
@@ -637,6 +600,11 @@ async function setupStatusEffects(){
       id: "unnoticeable",
       label: "POWER_LABEL.UNNOTICEABLE",
       icon: "systems/symbaroum/asset/image/invisible.png"
+    },
+    {
+      id: "witchhammer",
+      label: "POWER_LABEL.WITCH_HAMMER",
+      icon: "systems/symbaroum/asset/image/powers/witchhammer.svg"
     });
 }
 
@@ -658,7 +626,7 @@ async function createBlessedShield(actor, protection = '1d4') {
 async function showReleaseNotes() {
   if (game.user.isGM) {
     try {
-      const newVer = game.system.data.version;
+      const newVer = game.system.version;
       const releaseNoteName = 'Symbaroum System guide EN';
       const releasePackLabel = 'Symbaroum for FVTT system user guides';
 
@@ -696,7 +664,7 @@ async function showReleaseNotes() {
         await oldReleaseNotes.delete();
       }
 
-      await game.journal.importFromCompendium(newReleasePack, newReleaseNotes._id);
+      await game.journal.importFromCompendium(newReleasePack, newReleaseNotes._id,{}, { keepId: true });
       let newReleaseJournal = game.journal.getName(newReleaseNotes.name);
 
       await newReleaseJournal.setFlag('symbaroum', 'ver', newVer);
@@ -738,7 +706,7 @@ export async function modifyEffectOnToken(token, effect, action, options) {
   let duration = options.effectDuration ?? 1;
   if (action == 1) {
     //add effect
-    if(!getEffect(token, effect)){
+    if (!getEffect(token, effect)) {
       if (statusCounterMod) {
         let alreadyHereEffect = await EffectCounter.findCounter(token.document, effect.icon);
         if (alreadyHereEffect === undefined) {
@@ -753,19 +721,19 @@ export async function modifyEffectOnToken(token, effect, action, options) {
           }
         }
       } else {
-        await token.toggleEffect(effect, {overlay: options.overlay });
+        await token.toggleEffect(effect, { overlay: options.overlay });
       }
     }
   } else if (action == 0) {
     //remove effect
-    if(getEffect(token, effect)){
+    if (getEffect(token, effect)) {
       if (statusCounterMod) {
         let statusEffectCounter = await EffectCounter.findCounter(token, effect).getDisplayValue();
         if (statusEffectCounter != undefined) {
           await statusEffectCounter.remove();
         }
       } else {
-        token.toggleEffect(effect, {overlay: options.overlay });
+        token.toggleEffect(effect, { overlay: options.overlay });
       }
     }
   } else {

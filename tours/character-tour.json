@@ -1,0 +1,138 @@
+{
+    "namespace": "symbaroum",
+    "id": "charactersheet-tour",
+    "title": "SYMBAROUM.TOUR_ACTOR_TITLE",
+    "canBeResumed": false,
+    "display": true,
+    "permission": {
+        "GM":true,
+        "Players":false
+    },    
+    "steps": [
+        {
+            "id": "goto-actortab",
+            "selector": "[data-tab='actors']",
+            "title": "SYMBAROUM.TOUR_CHARACTER_ACTORTAB",
+            "content": "SYMBAROUM.TOUR_CHARACTER_ACTORTAB_CONTENT",
+            "action": "click"
+        },
+        {
+            "id": "goto-actortabcreate",
+            "selector": "section[data-tab=actors] button.create-document",
+            "title": "SYMBAROUM.TOUR_CHARACTER_ACTORTAB_CREATE",
+            "content": "SYMBAROUM.TOUR_CHARACTER_ACTORTAB_CREATE_CONTENT",
+            "action": "addActor"
+        },
+        {
+            "id": "goto-actorsheet-open",
+            "selector": "li[data-document-id='14xreF7lUoXqvHjh'] h4.document-name",
+            "title": "SYMBAROUM.TOUR_CHARACTER_SELECTACTOR",
+            "content": "SYMBAROUM.TOUR_CHARACTER_SELECTACTOR_CONTENT",
+            "action": "click"
+        },
+        {
+            "id": "goto-actorsheet-sheetheader",
+            "selector": "div.sheet-header",
+            "title": "SYMBAROUM.TOUR_CHARACTER_HEADER",
+            "content": "SYMBAROUM.TOUR_CHARACTER_HEADER_CONTENT"
+        },
+        {
+            "id": "goto-actorsheet-sheettabs",
+            "selector": "div.sheet-tabs",
+            "title": "SYMBAROUM.TOUR_CHARACTER_TABS",
+            "content": "SYMBAROUM.TOUR_CHARACTER_TABS_CONTENT"
+        },
+        {
+            "id": "goto-actorsheet-sheetattributes",
+            "selector": "div.attributes",
+            "title": "SYMBAROUM.TOUR_CHARACTER_ATTRIBUTES",
+            "content": "SYMBAROUM.TOUR_CHARACTER_ATTRIBUTES_CONTENT"
+        },
+        {
+            "id": "goto-actorsheet-sheetattributeaccurate",
+            "selector": "div[data-attribute='accurate']",
+            "title": "SYMBAROUM.TOUR_CHARACTER_ATTRIBUTES_ACCURATE",
+            "content": "SYMBAROUM.TOUR_CHARACTER_ATTRIBUTES_ACCURATE_CONTENT"
+        },        {
+            "id": "goto-actorsheet-sheetattributesconf",
+            "selector": "button.modify-attributes",
+            "title": "SYMBAROUM.TOUR_CHARACTER_ATTRIBUTES_CONF",
+            "content": "SYMBAROUM.TOUR_CHARACTER_ATTRIBUTES_CONF_CONTENT"
+        },
+        {
+            "id": "goto-actorsheet-sheetcombat-armor",
+            "selector": "button.roll-armor",
+            "title": "SYMBAROUM.TOUR_CHARACTER_COMBAT_ARMOR",
+            "content": "SYMBAROUM.TOUR_CHARACTER_COMBAT_ARMOR_CONTENT"
+        },
+        {
+            "id": "goto-actorsheet-sheetcombat-weapon",
+            "selector": "div.weapons div.weapon",
+            "title": "SYMBAROUM.TOUR_CHARACTER_COMBAT_WEAPON",
+            "content": "SYMBAROUM.TOUR_CHARACTER_COMBAT_WEAPON_CONTENT"
+        },
+        {
+            "id": "goto-actorsheet-sheetabilities",
+            "selector": "div.abilities-powers",
+            "title": "SYMBAROUM.TOUR_CHARACTER_COMBAT_ABILITIES",
+            "content": "SYMBAROUM.TOUR_CHARACTER_COMBAT_ABILITIES_CONTENT"
+        },
+        {
+            "id": "goto-actorsheet-sheetgear",
+            "selector": "b[data-tab='gear']",
+            "title": "SYMBAROUM.TOUR_CHARACTER_GEAR",
+            "content": "SYMBAROUM.TOUR_CHARACTER_GEAR_CONTENT",
+            "action" : "click"
+        },
+        {
+            "id": "goto-actorsheet-sheetgear-armor",
+            "selector": "tr.armor",
+            "title": "SYMBAROUM.TOUR_CHARACTER_GEAR_ARMOR",
+            "content": "SYMBAROUM.TOUR_CHARACTER_GEAR_ARMOR_CONTENT"
+        },
+        {
+            "id": "goto-actorsheet-sheetgear-armor-equip",
+            "selector": "tr.armor a.item-state",
+            "title": "SYMBAROUM.TOUR_CHARACTER_GEAR_ARMOR_EQUIP",
+            "content": "SYMBAROUM.TOUR_CHARACTER_GEAR_ARMOR_EQUIP_CONTENT"
+        },
+        {
+            "id": "goto-actorsheet-sheetgear-name",
+            "selector": "tr.armor div.namefield",
+            "title": "SYMBAROUM.TOUR_CHARACTER_GEAR_ARMOR_NAME",
+            "content": "SYMBAROUM.TOUR_CHARACTER_GEAR_ARMOR_NAME_CONTENT"
+        },
+        {
+            "id": "goto-actorsheet-sheetbio",
+            "selector": "b[data-tab='bio']",
+            "title": "SYMBAROUM.TOUR_CHARACTER_BIO",
+            "content": "SYMBAROUM.TOUR_CHARACTER_BIO_CONTENT",
+            "action" : "click"
+        },
+        {
+            "id": "goto-actorsheet-sheetbio-shadow",
+            "selector": "[name='system.bio.shadow']",
+            "title": "SYMBAROUM.TOUR_CHARACTER_BIO_SHADOW",
+            "content": "SYMBAROUM.TOUR_CHARACTER_BIO_SHADOW_CONTENT"
+        },        
+        {
+            "id": "goto-actorsheet-sheetnotes",
+            "selector": "b[data-tab='note']",
+            "title": "SYMBAROUM.TOUR_CHARACTER_NOTES",
+            "content": "SYMBAROUM.TOUR_CHARACTER_NOTES_CONTENT",
+            "action" : "click"
+        },
+        {
+            "id": "goto-actorsheet-sheetnotes-field",
+            "selector": "div.note div.editor-content",
+            "title": "SYMBAROUM.TOUR_CHARACTER_NOTES_FIELD",
+            "content": "SYMBAROUM.TOUR_CHARACTER_NOTES_FIELD_CONTENT"
+        },
+        {
+            "id": "goto-actor-cleanup",
+            "selector": "section.actors-sidebar ol.directory-list",
+            "title": "SYMBAROUM.TOUR_CHARACTER_OVERVIEW",
+            "content": "SYMBAROUM.TOUR_CHARACTER_OVERVIEW_CONTENT"
+        }
+    ]
+}

@@ -1,4 +1,5 @@
 {
+  "ABILITY.HEADER": "Ability",
   "ABILITY.NAME": "Name",
   "ABILITY.ACTIVE": "Erlernt",
   "ABILITY.ACTION": "Aktion",
@@ -329,7 +330,7 @@
   "COMBAT.BLEED": "Bleed",
 
   "CORRUPTION.CHAT_INTRO": " increases his degree of taint.",
-  "CORRUPTION.CHAT_THRESHOLD": " becomes Blight-marked (theshold reached).",
+  "CORRUPTION.CHAT_THRESHOLD": " becomes Blight-marked (threshold reached).",
   "CORRUPTION.CHAT_MAX": " turns into an abomination (max reached).",
   "CORRUPTION.CHAT_WARNING": " is close to a corruption treshold.",
 
@@ -396,6 +397,7 @@
   "HEALTH.TOUGHNESS_TOTAL": "Gesamt",
   "HEALTH.TOUGHNESS_THRESHOLD": "Schmerzgr.",
   "HEALTH.TOUGHNESS_THRESHOLD_MAX": "Zäh. Schmerzgr.",
+  "HEALTH.TOUGHNESS_THRESHOLD_FULL": "Pain Threshold",
   "HEALTH.CORRUPTION": "Korruption",
   "HEALTH.CORRUPTION_CURRENT": "Aktuell",
   "HEALTH.CORRUPTION_TEMPORARY": "Temporär",
@@ -404,6 +406,7 @@
   "HEALTH.CORRUPTION_THRESHOLD": "Kor. Schwelle",
   "HEALTH.CORRUPTION_THRESHOLD_MAX": "Kor. Schwelle",
   "HEALTH.CORRUPTION_MAX": "Abso.",
+  "HEALTH.CORRUPTION_THROUGHLY": "thoroughly corrupt",
   
   "INITIATIVE.TITLE": "Initiative",
   "INITIATIVE.EXPLANATION": "Initiative shown as [initiative attribute.vigilant]",
@@ -583,6 +586,11 @@
   "POWER_TORMENTINGSPIRITS.CHAT_INTRO_M":"{actorname} tries to maintain the tormenting spirits.",
   "POWER_TORMENTINGSPIRITS.CHAT_SUCCESS":"{actorname} invokes spirits around {targetname}.",
   "POWER_TORMENTINGSPIRITS.CHAT_FAILURE":"{actorname} fails the invokation.",
+
+  "POWER_WITCHHAMMER.CHAT_ACTIVATE": "{actorname}'s weapon starts glowing.",
+  "POWER_WITCHHAMMER.CHAT_DESACTIVATE": "{actorname}'s weapon stops glowing.",
+  "POWER_WITCHHAMMER.CHAT_RESULT_DESACTIVATE": "Weapon stats stats revert to normal.",
+  "POWER_WITCHHAMMER.CHAT_RESULT": "Witch hammer bonus damage will be available in combat dialog window.",
   
   "QUALITY.AREAMRR": "Bereichseffekt – Nahkampf Reichweite",
   "QUALITY.AREASRR": " Bereichseffekt – Kurze Reichweite",
@@ -607,6 +615,18 @@
   "QUALITY.SHORT": "Kurz",
   "QUALITY.UNWIELDY": "Unhandlich",
   "QUALITY.WRECKING": "Zerstörend",
+  "QUALITY.ACIDCOATED": "Acid coated",
+  "QUALITY.BANE": "Bane",
+  "QUALITY.DEATHRUNE": "Death Rune",
+  "QUALITY.DESECRATED": "Desecrated",
+  "QUALITY.FLAMING": "Flaming",
+  "QUALITY.HALLOWED": "Hallowed",
+  "QUALITY.POISON": "Poison",
+  "QUALITY.THUNDERING": "Thundering",
+  "QUALITY.RETRIBUTIVE": "Retributive",
+  "QUALITY.KNIFEPLAY_COMP": "Knife Play compatible",
+  "QUALITY.STAFFFIGHTING_COMP": "Staff Fighting compatible",
+  "QUALITY.SWORDSAINT_COMP": "Sword saint compatible",
 
   "RITUAL.TRADITION": "Tradition",
   "RITUAL.DESCRIPTION": "Beschreibung",
@@ -629,7 +649,7 @@
 
   "TITLE.ABILITIES_POWERS": "FÄHIGKEITEN & KRÄFTE",
   "TITLE.HEALTH": "ZUSTAND",
-  "TITLE.ATTRIBUTES": "EIGENSCHAFTEN",
+  "TITLE.ATTRIBUTES": "Eigenschaften",
   "TITLE.COMBAT": "KAMPF",
   "TITLE.NOTES": "NOTIZEN",
   "TITLE.ARMORS": "RÜSTUNG",
@@ -644,9 +664,11 @@
   "TITLE.POWER": "KRAFT",
   "TITLE.MONEY": "GELD",
   "TITLE.QUALITIES":"QUALITÄTEN",
+  "TITLE.SPECIALQUALITIES":"ABILITIES COMPATIBILITY",
   
   "TOOLTIP.BONUS_TOTAL": "Total",
-  
+  "TOOLTIP.DEATH_SKULLS": "Death is reached at 3 skulls",
+    
   "TOOLTIP.EXPERIENCE_CURRENT": "Deine verfügbaren (nicht ausgegebenen) Erfahrungspunkte",
   "TOOLTIP.EXPERIENCE_TOTAL": "Deine ingesamt erworbenen Erfahrungspunkte",
   "TOOLTIP.EXPERIENCE_ARTIFACTRR": "Für Artefakte und Würfelwürfe ausgegebenen Erfahrungspunkte",
@@ -670,7 +692,8 @@
 
   "TOOLTIP.DELETE_ABILITY" : "Delete ability",
   "TOOLTIP.POWER_ACTIONS" : "Art der Aktivierung (A - Aktiv, P - Passiv, S - Speziell, etc)",
-
+  
+  "TRAIT.HEADER": "Traits",
   "TRAIT.NAME": "Name",
   "TRAIT.ACTIVE": "Erworben",
   "TRAIT.ACTION": "Abtion",

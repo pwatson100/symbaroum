@@ -172,8 +172,8 @@
 }
 
 .symbaroum.sheet.actor .player .main .health .toughness-current input,
-.symbaroum.sheet.actor .player .main .health .toughness-total input,
-.symbaroum.sheet.actor .player .main .health .toughness-threshold input,
+.symbaroum.sheet.actor .player .main .health .toughness-total .input,
+.symbaroum.sheet.actor .player .main .health .toughness-threshold .input,
 .symbaroum.sheet.actor .player .main .health .corruption-temporary input,
 .symbaroum.sheet.actor .player .main .health .corruption-permanent input,
 .symbaroum.sheet.actor .player .main .health .corruption-threshold input,
@@ -221,6 +221,8 @@
 
 .symbaroum.sheet.actor .player .main .combat .combatheader .iniheader .title {
   color: var(--color-title);
+  font-weight: bold;
+  font-family: var(--font-text);
   text-align: center;
   padding: 5px;
 }

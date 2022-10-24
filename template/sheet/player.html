@@ -1,37 +1,59 @@
 <form class="{{cssClass}}" autocomplete="off">
     <div class="player">
         <div class="sheet-header foreground border">
-            <div class="avatar">
-                <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
+            <div class="avatar" style="position:relative">
+                <img class="profile-img" src="{{actor.img}}" data-edit="img" data-tooltip="{{actor.name}}" />
+                {{#ifgt system.nbrOfFailedDeathRoll 0}}
+                <div data-tooltip="{{localize "TOOLTIP.DEATH_SKULLS"}}" style="position: absolute; top: 70%;left: 15px;">{{#times system.nbrOfFailedDeathRoll}}<i class="fas fa-skull" style="margin: 5px; color:rgb(255, 255, 255); vertical-align: bottom; -webkit-text-stroke-width: 1px; -webkit-text-stroke-color: rgb(0, 0, 0);"></i>{{/times}}</div>
+                {{/ifgt}}
             </div>
             <div class="wrapper-column">
                 <div class="wrapper-row">
                     <div class="name">
-                        <label for={{id}}-name">{{localize "BIO.NAME"}}</label>
+                        <label for="{{id}}-name">{{localize "BIO.NAME"}}</label>
                         <input id="{{id}}-name" name="name" type="text" value="{{actor.name}}" />
                     </div>
                     <div class="experience">
-                        <label for="{{id}}-data.experience.current">{{localize "EXPERIENCE"}}</label>
-                        <input id="{{id}}-data.experience.current" name="data.experience.current" title="{{localize "TOOLTIP.EXPERIENCE_CURRENT"}}" type="number" value="{{data.experience.current}}" data-dtype="Number" />
-                        <input name="data.experience.total" title="{{localize "TOOLTIP.EXPERIENCE_TOTAL"}}" type="number" value="{{data.experience.total}}" data-dtype="Number" />
+                        <label for="data.experience.total">{{localize "EXPERIENCE"}}</label>
+                        <input id="data.experience.total" name="system.experience.total" data-tooltip="{{localize "TOOLTIP.EXPERIENCE_TOTAL"}}" type="number" value="{{system.experience.total}}" data-dtype="Number" />
+                        <input name="system.experience.artifactrr" data-tooltip="{{localize "TOOLTIP.EXPERIENCE_ARTIFACTRR"}}" type="number" value="{{system.experience.artifactrr}}" data-dtype="Number" />
+                        <input name="system.experience.spent" data-tooltip="{{localize "TOOLTIP.EXPERIENCE_SPENT"}}" type="number" value="{{system.experience.spent}}" data-dtype="Number" disabled />
+                        <input name="system.experience.available" data-tooltip="{{localize "TOOLTIP.EXPERIENCE_AVAILABLE"}}" type="number" value="{{system.experience.available}}" data-dtype="Number" disabled />
                     </div>
                 </div>
                 <div class="wrapper-row">
                     <div class="race">
-                        <label for="{{id}}-data.bio.race">{{localize "BIO.RACE"}}</label>
-                        <input id="{{id}}-data.bio.race" name="data.bio.race" type="text" value="{{data.bio.race}}" />
+                        <label for="{{id}}-system.bio.race">{{localize "BIO.RACE"}}</label>
+                        <input id="{{id}}-system.bio.race" name="system.bio.race" type="text" value="{{system.bio.race}}" />
                     </div>
                     <div class="occupation">
-                        <label for="{{id}}-data.bio.occupation">{{localize "BIO.OCCUPATION"}}</label>
-                        <input id="{{id}}-data.bio.occupation" name="data.bio.occupation" type="text" value="{{data.bio.occupation}}" />
+                        <label for="{{id}}-system.bio.occupation">{{localize "BIO.OCCUPATION"}}</label>
+                        <input id="{{id}}-system.bio.occupation" name="system.bio.occupation" type="text" value="{{system.bio.occupation}}" />
                     </div>
                 </div>
-                <div class="wrapper-row">
-                    <div class="quote">
-                        <label for="{{id}}-data.bio.quote">{{localize "BIO.QUOTE"}}</label>
-                        <input id="{{id}}-data.bio.quote" name="data.bio.quote" type="text" value="{{data.bio.quote}}" />
+                {{#ife actor.type 'player'}}
+                    <div class="wrapper-row">
+                        <div class="quote">
+                            <label for="{{id}}-system.bio.quote">{{localize "BIO.QUOTE"}}</label>
+                            <input id="{{id}}-system.bio.quote" name="system.bio.quote" type="text" value="{{system.bio.quote}}" />
+                        </div>
                     </div>
-                </div>
+                {{/ife}}
+
+                {{#ife actor.type 'monster'}}
+                    <div class="wrapper-row">
+                        <div class="manner">
+                            <label for="{{id}}-system.bio.manner">{{localize "BIO.MANNER"}}</label>
+                            <input id="{{id}}-system.bio.manner" name="system.bio.manner" type="text" value="{{system.bio.manner}}" />
+                        </div>
+                    </div>
+                    <div class="wrapper-row">
+                        <div class="shadow">
+                            <label for="{{id}}-system.bio.shadow">{{localize "BIO.SHADOW"}}</label>
+                            <input id="{{id}}-system.bio.shadow" name="system.bio.shadow" type="text" value="{{system.bio.shadow}}" />
+                        </div>
+                    </div>
+                {{/ife}}
             </div>
         </div>
 
@@ -43,10 +65,18 @@
         </div>
 
         <div class="sheet-body">
-            <div class="tab" data-group="primary" data-tab="main">{{> systems/symbaroum/template/sheet/tab/player-main.html}}</div>
-            <div class="tab" data-group="primary" data-tab="gear">{{> systems/symbaroum/template/sheet/tab/player-gear.html}}</div>
-            <div class="tab" data-group="primary" data-tab="bio">{{> systems/symbaroum/template/sheet/tab/player-bio.html}}</div>
-            <div class="tab" data-group="primary" data-tab="note">{{> systems/symbaroum/template/sheet/tab/player-note.html}}</div>
+            <div class="tab" data-group="primary" data-tab="main">
+                {{> systems/symbaroum/template/sheet/tab/player-main.html}}
+            </div>
+            <div class="tab" data-group="primary" data-tab="gear">
+                {{> systems/symbaroum/template/sheet/tab/player-gear.html}}
+            </div>
+            <div class="tab" data-group="primary" data-tab="bio">
+                {{> systems/symbaroum/template/sheet/tab/player-bio.html}}
+            </div>
+            <div class="tab" data-group="primary" data-tab="note">
+                {{> systems/symbaroum/template/sheet/tab/player-note.html}}
+            </div>
         </div>
     </div>
 </form>
