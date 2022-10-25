@@ -23,6 +23,10 @@
         {
             "version":16,
             "message":"<h1>Time is near</h1><br />In just a few days we are going to release Symbaroum for Foundry VTT V10.<br/>As always, take care and be in no hurry to upgrade.  There are only minor fixes in this version - the majority of work has to make it fully compatible with Foundry VTT V10.</p><p>Before you upgrade, remember make backup - see this on how to make a <a href='https://www.youtube.com/watch?v=OmbxMmqNNXU'><b>backup</b></a>.  Once a world has been upgraded to V10, you can not go back.</p><p>The foundry discord have channel #v10-update-troubleshooting to help with upgrades if you run into problems,  but as long as you have a backup, you can always rescue your world.</p>"
+        },
+        {
+            "version":17,
+            "message":"<h1>Symbaroum released for v10</h1><p>The Symbaroum system has now gone to v10, with the Free-League Symbaroum modules as well.  As always, make a <a href='https://www.youtube.com/watch?v=OmbxMmqNNXU'>backup</a>, especially if you are going from Foundry v9 to Foundry v10. There are a couple of new features in v10 and some bugs squashed, but the majority of work has been to make it stable and ready for Foundry v10.</p><p>Note that while Symbaroum v9 and the modules works perfectly fine, there are no plans to enhance them further nor provide further bug-fixes for them going forward. For the Foundry Symbaroum System  we will accept pull requests for it, if there is a brave soul wanting to enhance it further.</p><p>Feel welcome to drop in to the Symbaroum Davokar Explorers league  discord were we Symbaroum developers often hang out in <a href='https://discord.gg/6f9tAHsaHV'>#symbaroum-vtt-foundry</a> channel - or in the <a href='https://discord.gg/foundryvtt'>#free-league</a> channel on the Foundry discord.</a>.</p><p>May Prios be with us all and glory to Nightbane, who saved us all</p>"
         }
     ]    
 }
