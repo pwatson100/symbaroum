@@ -316,14 +316,14 @@ export class SymbaroumActor extends Actor {
                 let protChoice = armorModifiers.protectionChoices[i];
                 if (protChoice.type == game.symbaroum.config.DAM_DICEUPGRADE) {
                     diceSides += protChoice.diceUpgrade;
-                    tooltip += `${protChoice.label}</br>`;
+                    tooltip += `${game.symbaroum.htmlEscape(protChoice.label)}</br>`;
                 } else {
                     let restricted = false;
                     let alternatives = protChoice.alternatives;
                     for (let j = 0; j < alternatives.length; j++) {
-                        allDefenseProt += alternatives[j].protectionMod + "[" + protChoice.label + "]";
+                        allDefenseProt += alternatives[j].protectionMod + "[" +game.symbaroum.htmlEscape( protChoice.label ) + "]";
                         allDefenseProtNPC += alternatives[j].protectionModNPC;
-                        tooltip += `${protChoice.label}</br>`;
+                        tooltip += `${game.symbaroum.htmlEscape(protChoice.label)}</br>`;
                     }
                 }
             }
@@ -402,7 +402,7 @@ export class SymbaroumActor extends Actor {
                     protectionPc: finalProtText,
                     protectionNpc: (diceSides / 2 + allDefenseProtNPC) + "",
                     unfavourPcProt: unfavourPcProt,
-                    tooltip: tooltip.replace(/'/gm, "&#039;"),
+                    tooltip: tooltip,
                     impeding: impeding,
                     impedingMov: impedingMov,
                     impedingMagic: impedingMagic,
@@ -410,7 +410,7 @@ export class SymbaroumActor extends Actor {
                     isEquipped: item.system.isEquipped,
                     isNoArmor: item.isNoArmor,
                     img: item.img,
-                    tooltipProt: tooltip.replace(/'/gm, "&#039;"),
+                    tooltipProt: tooltip,
                     defense: totDefense,
                     defenseAttribute: {
                         attribute: defense.attribute,
@@ -460,7 +460,7 @@ export class SymbaroumActor extends Actor {
             for (let i = 0; i < weaponModifiers.attackModifiers?.length; i++) {
                 // weaponModifers.attribute[i].label
                 attributeMod += weaponModifiers.attackModifiers[i].modifier;
-                tooltip += weaponModifiers.attackModifiers[i].label + ", ";
+                tooltip += game.symbaroum.htmlEscape(weaponModifiers.attackModifiers[i].label) + ", ";
             }
 
             let displayText = "";
@@ -578,7 +578,7 @@ export class SymbaroumActor extends Actor {
                 attributeLabel: this.system.attributes[attribute].label,
                 attributeValue: this.system.attributes[attribute].total + attributeMod,
                 attributeMod: (10 - attributeMod - this.system.attributes[attribute].total),
-                tooltip: tooltip.replace(/'/gm, "&#039;"),
+                tooltip: tooltip,
                 isActive: item.system.isActive,
                 isEquipped: item.system.isEquipped,
                 reference: item.system.reference,

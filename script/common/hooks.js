@@ -347,6 +347,23 @@ Hooks.once('init', () => {
   });
 
   game.symbaroum.macros = new SymbaroumMacros();
+
+  game.symbaroum.htmlEscape = function (str) {
+    let escapeMap = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;',
+      '/': '&#x2F;',
+      '`': '&#x60;',
+      '=': '&#x3D;'
+    };  
+    return str.replace(/[&<>"'`=\/]/g, function (s) {
+      return escapeMap[s];
+    });
+  };
+
   enrichTextEditors();
   setupStatusEffects();
 });
