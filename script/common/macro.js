@@ -7,7 +7,7 @@ export class SymbaroumMacros {
 		this.setupMacroFolders();
 		Hooks.on("hotbarDrop", (bar, data, slot) => {
 			if (data.type === "attribute") {
-				createSymbaroumAttributeMacro(data, slot);
+				this.createSymbaroumAttributeMacro(data, slot);
 				return false;
 			} else if (data.type === "Item" && typeof data.uuid === "string") {
 				// Check more
