@@ -157,7 +157,7 @@ export class SymbaroumMacros {
 		if (!actor) actor = game.actors.get(speaker.actor);
 		const item = actor
 			? actor.items.find(
-					(i) => i.name === itemName && i.system.isActive
+					(i) => i.name === itemName && (i.system.isGear && i.system.isActive || i.system.isPower)
 			)
 			: null;
 		if (!item)
