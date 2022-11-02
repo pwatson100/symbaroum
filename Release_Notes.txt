@@ -262,3 +262,8 @@ Version 4.0.0
 
 Version 4.0.1
 Fixed error with fonts. 
+
+
+Version 4.0.3
+- Fixed macro issues for attributes & Abilities
+- Fixed actor links not correctly created on prototype token #570
