@@ -410,8 +410,6 @@ Hooks.once('renderSettings', () => {
 Hooks.on('preCreateActor', (doc, createData, options, userid) => {
   let createChanges = {};
   mergeObject(createChanges, {
-    'prototypeToken.bar1': { attribute: 'health.toughness' },
-    'prototypeToken.bar2': { attribute: 'health.corruption' },
     'prototypeToken.displayName': CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,
     'prototypeToken.displayBars': CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,
     'prototypeToken.disposition': CONST.TOKEN_DISPOSITIONS.NEUTRAL,
