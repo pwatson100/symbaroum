@@ -410,12 +410,10 @@ Hooks.once('renderSettings', () => {
 Hooks.on('preCreateActor', (doc, createData, options, userid) => {
   let createChanges = {};
   mergeObject(createChanges, {
-    'token.bar1': { attribute: 'health.toughness' },
-    'token.bar2': { attribute: 'combat.defense' },
-    'token.displayName': CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,
-    'token.displayBars': CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,
-    'token.disposition': CONST.TOKEN_DISPOSITIONS.NEUTRAL,
-    'token.name': createData.name,
+    'prototypeToken.displayName': CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,
+    'prototypeToken.displayBars': CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,
+    'prototypeToken.disposition': CONST.TOKEN_DISPOSITIONS.NEUTRAL,
+    'prototypeToken.name': createData.name,
   });
 
   if (doc.img === 'icons/svg/mystery-man.svg') {
@@ -423,8 +421,8 @@ Hooks.on('preCreateActor', (doc, createData, options, userid) => {
   }
 
   if (doc.type === 'player') {
-    createChanges.token.vision = true;
-    createChanges.token.actorLink = true;
+    createChanges.prototypeToken.vision = true;
+    createChanges.prototypeToken.actorLink = true;
   }
   doc.updateSource(createChanges);
 });
