@@ -7,7 +7,7 @@ export class SymbaroumMacros {
 		this.setupMacroFolders();
 		Hooks.on("hotbarDrop", (bar, data, slot) => {
 			if (data.type === "attribute") {
-				createSymbaroumAttributeMacro(data, slot);
+				this.createSymbaroumAttributeMacro(data, slot);
 				return false;
 			} else if (data.type === "Item" && typeof data.uuid === "string") {
 				// Check more
@@ -157,7 +157,7 @@ export class SymbaroumMacros {
 		if (!actor) actor = game.actors.get(speaker.actor);
 		const item = actor
 			? actor.items.find(
-					(i) => i.name === itemName && i.system.isActive
+					(i) => i.name === itemName && (i.system.isGear && i.system.isActive || i.system.isPower)
 			)
 			: null;
 		if (!item)
