@@ -67,7 +67,7 @@ export class SymbaroumItem extends Item {
             else
                 data.img = game.i18n.format(game.symbaroum.config.imageRef, {"filename":"unknown-item.png"});
         }
-        super.create(data, options);
+        return super.create(data, options);
     }
 
 
