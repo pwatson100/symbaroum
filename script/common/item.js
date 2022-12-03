@@ -2609,7 +2609,7 @@ export class SymbaroumItem extends Item {
         }
         else base.corruption = game.symbaroum.config.TEMPCORRUPTION_ONE;
         base.introText= game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_INTRO');
-        baseRoll.resultTextSuccess= game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_SUCCESS');
+        base.resultTextSuccess= game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_SUCCESS');
         base.resultTextFail= game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_FAILURE');
         return(base);
     }
@@ -3723,7 +3723,7 @@ async function standardPowerResult(rollData, functionStuff){
     }
 
     if(functionStuff.ability.reference === "witchsight" && functionStuff.targetData.hasTarget && trueActorSucceeded){
-        finalText = game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_FINAL1') + functionStuff.targetData.name + game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_FINAL2') +  functionStuff.targetData.actor.system.bio.shadow;
+        finalText = game.i18n.format(game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_FINAL'), namesForText) + functionStuff.targetData.actor.system.bio.shadow;
     }
 
     if(doDamage){
