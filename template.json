@@ -65,7 +65,7 @@
             "threshold": 0
           },
           "corruption": {
-	        "max": 0,
+            "max": 0,
             "permanent": 0,
             "temporary": 0,
             "threshold": 0,
@@ -185,7 +185,7 @@
             "threshold": 0
           },
           "corruption": {
-	          "max": 0,
+            "max": 0,
             "threshold": 0
           },
           "experience": {
