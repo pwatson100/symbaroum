@@ -121,7 +121,7 @@
   "ABILITY_WITCHSIGHT.CHAT_INTRO": "{actorname} försöker urskilja skuggorna.",
   "ABILITY_WITCHSIGHT.CHAT_SUCCESS": "{actorname} genomborrar skuggornas slöja.",
   "ABILITY_WITCHSIGHT.CHAT_FAILURE": "{actorname} kan inte urskilja skuggorna.",
-  "ABILITY_WITCHSIGHT.CHAT_FINAL": "Färgen på skuggan hos {targetname} är: ",
+  "ABILITY_WITCHSIGHT.CHAT_FINAL": "Färgen på skuggan hos {targetname} är: {targetshadow}",
 
   "ABILITY.NOVICE":"Novis",
   "ABILITY.ADEPT":"Gesäll",
