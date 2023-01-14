@@ -54,7 +54,7 @@
                         <div class="health-corruptioncol">
 
                             <div class="corruption-col1">
-                                <div class="corruption-current" data-tooltip="{{#if actor.isThoroughlyCorrupt}}{{localize "TOOLTIP.HEALTH.CORRUPTION_NA_TEXT"}}{{else}}{{localize "TOOLTIP.HEALTH.CORRUPTION_CURRENT"}}{{/if}}">
+                                <div class="corruption-current" data-tooltip="{{#if actor.system.isThoroughlyCorrupt}}{{localize "TOOLTIP.HEALTH.CORRUPTION_NA_TEXT"}}{{else}}{{localize "TOOLTIP.HEALTH.CORRUPTION_CURRENT"}}{{/if}}">
                                     <label>{{localize "HEALTH.CORRUPTION_CURRENT"}}</label>
                                     {{#if actor.system.isThoroughlyCorrupt}}
                                     <input type="text" value="{{localize "HEALTH.CORRUPTION_NA"}}" disabled />

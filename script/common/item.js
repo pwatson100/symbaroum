@@ -3618,7 +3618,11 @@ async function standardPowerResult(rollData, functionStuff){
     let haveCorruption = false;
     let corruptionText = "";
     let corruption;
-    let namesForText = {actorname: functionStuff.actingCharName, targetname: functionStuff.targetData?.name ?? ""};
+    let namesForText = {
+        actorname: functionStuff.actingCharName, 
+        targetname: functionStuff.targetData?.name ?? "",
+        targetshadow: functionStuff.targetData.actor.system.bio.shadow ?? ""
+    };
     let targetText = game.i18n.format(functionStuff.targetText ?? "", namesForText);
     if((!functionStuff.isMaintained) && (functionStuff.corruption !== game.symbaroum.config.TEMPCORRUPTION_NONE)){
         haveCorruption = true;
@@ -3723,7 +3727,7 @@ async function standardPowerResult(rollData, functionStuff){
     }
 
     if(functionStuff.ability.reference === "witchsight" && functionStuff.targetData.hasTarget && trueActorSucceeded){
-        finalText = game.i18n.format(game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_FINAL'), namesForText) + functionStuff.targetData.actor.system.bio.shadow;
+        finalText = game.i18n.format(game.i18n.localize('ABILITY_WITCHSIGHT.CHAT_FINAL'), namesForText);
     }
 
     if(doDamage){
