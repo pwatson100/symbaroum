@@ -13,6 +13,15 @@ export function enrichTextEditors()
             return doc;
         }
     },{
+        pattern : /@fas\[(.+?)\]/gm,
+        enricher : async (match, options) => {
+            const doc = document.createElement("i");
+            doc.style.textIndent = 0;
+            doc.classList.add('fas');
+            doc.classList.add(match[1]);            
+            return doc;
+        }
+    },{        
         pattern : /@SymbaroumActor\[(.+?)\](?:{(.+?)})?(?:{(.+?)})?/gm,
         enricher : (match, options) => {
             // Match 1 would be actor name or actorID
