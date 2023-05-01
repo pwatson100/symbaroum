@@ -1,4 +1,4 @@
-import { getOwnerPlayer, rollAttribute, getAttributeLabel, createResistRollChatButton, rollDeathTest } from './roll.js';
+import { getOwnerPlayer, createResistRollChatButton, rollDeathTest } from './roll.js';
 import { buildRolls } from './item.js';
 
 let roll_defaults = {};
@@ -99,7 +99,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
       ecData.alternativeDamageAttribute = weapon.damage.alternativeDamageAttribute;
       ecData.ignoreArm = true;
       ecData.isMystical = true;
-      weaponDamage += " ("+getAttributeLabel(actor, ecData.alternativeDamageAttribute)+")";
+      weaponDamage += " ("+game.symbaroum.api.getAttributeLabel(actor, ecData.alternativeDamageAttribute)+")";
     }
     if(game.settings.get('symbaroum', 'combatAutomation')){
       askAttackNb = weaponModifiers.maxAttackNb > 1;
@@ -124,7 +124,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
   });
 
   let dialog = new CombatDialog({
-    title: getAttributeLabel(actor, attributeName),
+    title: game.symbaroum.api.getAttributeLabel(actor, attributeName),
     content: html,
     buttons: {
       roll: {
@@ -298,7 +298,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
               }
             }
           }
-                    
+
           let favours = html.find("input[name='favour']");
           let fvalue = 0;
           for ( let f of favours) {						
@@ -368,7 +368,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
             }
           }
           else{
-            await rollAttribute(actor, attributeName, getTarget(), targetAttributeName, favour, modifier, armor, weapon, advantage, damModifier);
+            await game.symbaroum.api.rollAttribute(actor, attributeName, getTarget(), targetAttributeName, favour, modifier, armor, weapon, advantage, damModifier);
           }
         },
       },

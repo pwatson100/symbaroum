@@ -1,6 +1,17 @@
+import { initializeHandlebars } from './handlebars.js';
+import { SYMBAROUM } from './config.js';
+import { sendDevMessage } from './devmsg.js';
+import { SymbaroumAPI } from './api.js';
+import { SymbaroumCommsListener } from './symbcomms.js';
+import { SymbaroumMacros } from './macro.js';
+import { SymbaroumConfig } from './symbaroumConfig.js';
+import { enrichTextEditors } from './enricher.js';
+
 import { SymbaroumActor } from './actor.js';
-import { SymbaroumItem, buildRolls, getEffect } from './item.js';
+import { SymbaroumItem, buildRolls } from './item.js';
+
 import { PlayerSheet } from '../sheet/player.js';
+import { MonsterSheet } from '../sheet/monster.js';
 import { TraitSheet } from '../sheet/trait.js';
 import { AbilitySheet } from '../sheet/ability.js';
 import { MysticalPowerSheet } from '../sheet/mystical-power.js';
@@ -11,16 +22,10 @@ import { WeaponSheet } from '../sheet/weapon.js';
 import { ArmorSheet } from '../sheet/armor.js';
 import { EquipmentSheet } from '../sheet/equipment.js';
 import { ArtifactSheet } from '../sheet/artifact.js';
-import { initializeHandlebars } from './handlebars.js';
-import { migrateWorld } from './migration.js';
-import { sendDevMessage } from './devmsg.js';
-import { SYMBAROUM } from './config.js';
-import { MonsterSheet } from '../sheet/monster.js';
-import { SymbaroumConfig } from './symbaroumConfig.js';
-import { SymbaroumCommsListener } from './symbcomms.js';
-import { SymbaroumMacros } from './macro.js';
 import { SymbaroumWide } from '../sheet/journal.js';
-import { enrichTextEditors } from './enricher.js';
+
+import { migrateWorld } from './migration.js';
+
 import { tourSetup } from '../../tours/toursetup.js';
 
 Hooks.once('init', () => {
@@ -54,8 +59,10 @@ Hooks.once('init', () => {
     debug: (...args) => { console.debug('%cSymbaroum |', game.symbaroum.config.CONSOLESTYLE, ...args) },
     error: (...args) => { console.error('%cSymbaroum |', game.symbaroum.config.CONSOLESTYLE, ...args) },
     info: (...args) => { console.info('%cSymbaroum |', game.symbaroum.config.CONSOLESTYLE, ...args) },
-    log: (...args) => { console.log('%cSymbaroum |', game.symbaroum.config.CONSOLESTYLE, ...args) }
+    log: (...args) => { console.log('%cSymbaroum |', game.symbaroum.config.CONSOLESTYLE, ...args) },
+    api: new SymbaroumAPI()
   };
+
 
   game.settings.register('symbaroum', 'worldTemplateVersion', {
     // worldTemplateVersion is deprecated - not to use anymore
@@ -721,7 +728,7 @@ export async function modifyEffectOnToken(token, effect, action, options) {
   let duration = options.effectDuration ?? 1;
   if (action == 1) {
     //add effect
-    if (!getEffect(token, effect)) {
+    if (!game.symbaroum.api.getEffect(token, effect)) {
       if (statusCounterMod) {
         let alreadyHereEffect = await EffectCounter.findCounter(token.document, effect.icon);
         if (alreadyHereEffect === undefined) {
@@ -741,7 +748,7 @@ export async function modifyEffectOnToken(token, effect, action, options) {
     }
   } else if (action == 0) {
     //remove effect
-    if (getEffect(token, effect)) {
+    if (game.symbaroum.api.getEffect(token, effect)) {
       if (statusCounterMod) {
         let statusEffectCounter = await EffectCounter.findCounter(token, effect).getDisplayValue();
         if (statusEffectCounter != undefined) {

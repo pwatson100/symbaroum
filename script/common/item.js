@@ -1,4 +1,4 @@
-import { baseRoll, createRollData, damageRollWithDiceParams, simpleDamageRoll, getAttributeValue, getAttributeLabel, getOwnerPlayer, createModifyTokenChatButton, createResistRollChatButton } from './roll.js';
+import { baseRoll, createRollData, damageRollWithDiceParams, simpleDamageRoll, getAttributeValue, getOwnerPlayer, createModifyTokenChatButton, createResistRollChatButton } from './roll.js';
 import { modifyEffectOnToken } from './hooks.js';
 import { createLineDisplay } from './dialog.js';
 
@@ -2788,26 +2788,6 @@ async function checkCorruptionThreshold(actor, corruptionGained){
     let NewMessage = await ChatMessage.create(chatData);
 }
 
-//check if there is an icon effect on the token
-export function getEffect(token, effect){
-    let statusCounterMod = false;
-    if(game.modules.get("statuscounter")?.active){
-        //statusCounterMod = true;  until corrected
-    };
-    if(statusCounterMod){
-        if(EffectCounter.findCounter(token.document, effect.icon)){
-            return(true)
-        }
-        else return(false)
-    }
-    else{
-        if(token.actor.effects.find(e => e.getFlag("core", "statusId") === effect.id)){
-            return(true)
-        }
-        else return(false)
-    }
-}
-
 // check if pain (damage > toughness treshold)
 function checkPainEffect(functionStuff, damageTotal){
     if(!functionStuff.isAlternativeDamage && functionStuff.targetData.actor.system.health.toughness.threshold && (damageTotal > functionStuff.targetData.actor.system.health.toughness.threshold))
@@ -2874,7 +2854,7 @@ export async function modifierDialog(functionStuff){
                 d4=" (+2)";
             }
             if(functionStuff.isAlternativeDamage){
-                weaponDamage += " ("+getAttributeLabel(functionStuff.actor, functionStuff.alternativeDamageAttribute)+")";
+                weaponDamage += " ("+game.symbaroum.api.getAttributeLabel(functionStuff.actor, functionStuff.alternativeDamageAttribute)+")";
             }
         }
     }
@@ -3296,7 +3276,7 @@ async function attackResult(rollData, functionStuff){
             rollDataElement.damageText = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_DAMAGE') + rollDataElement.dmg.toString();
             damageTot += rollDataElement.dmg;
             if(functionStuff.isAlternativeDamage){
-                rollDataElement.damageText += " ("+getAttributeLabel(functionStuff.actor, functionStuff.alternativeDamageAttribute)+")";
+                rollDataElement.damageText += " ("+game.symbaroum.api.getAttributeLabel(functionStuff.actor, functionStuff.alternativeDamageAttribute)+")";
             }
         }
         else{
@@ -3540,7 +3520,7 @@ async function poisonCalc(functionStuff, poisonRoll){
         poisonRes.roll = PoisonRoundsRoll;
 
         let NewPoisonRounds = PoisonRoundsRoll.total;
-        let poisonedEffectCounter = getEffect(functionStuff.targetData.token, effect);
+        let poisonedEffectCounter = game.symbaroum.api.getEffect(functionStuff.targetData.token, effect);
         if(poisonedEffectCounter){
             //target already poisoned
             //get the number of rounds left
@@ -3752,8 +3732,8 @@ async function standardPowerResult(rollData, functionStuff){
         damageTooltip = new Handlebars.SafeString(await damage.roll.getTooltip());
 
         if(functionStuff.isAlternativeDamage){
-            dmgFormula +=  " ("+getAttributeLabel(functionStuff.targetData.actor, functionStuff.alternativeDamageAttribute)+")";
-            damageText +=  " ("+getAttributeLabel(functionStuff.targetData.actor, functionStuff.alternativeDamageAttribute)+")";
+            dmgFormula +=  " ("+game.symbaroum.api.getAttributeLabel(functionStuff.targetData.actor, functionStuff.alternativeDamageAttribute)+")";
+            damageText +=  " ("+game.symbaroum.api.getAttributeLabel(functionStuff.targetData.actor, functionStuff.alternativeDamageAttribute)+")";
         }
         if(damageTot <= 0){
             damageTot = 0;
@@ -3865,7 +3845,7 @@ async function standardPowerResult(rollData, functionStuff){
                 if(functionStuff.powerLvl.level > 1){
                     templateData.finalText += game.i18n.localize('POWER_INHERITWOUND.CHAT_REDIRECT');
                     const pEffect = CONFIG.statusEffects.find(e => e.id === "poison");
-                    let poisonedEffectCounter = await getEffect(functionStuff.targetData.token, pEffect);
+                    let poisonedEffectCounter = game.symbaroum.api.getEffect(functionStuff.targetData.token, pEffect);
                     if(poisonedEffectCounter){
                         //target  poisoned
                         //get the number of rounds left
@@ -3888,7 +3868,7 @@ async function standardPowerResult(rollData, functionStuff){
                         })
                     }
                     const bEffect = CONFIG.statusEffects.find(e => e.id === "bleeding");
-                    let bleedEffectCounter = await getEffect(functionStuff.targetData.token, bEffect);
+                    let bleedEffectCounter = game.symbaroum.api.getEffect(functionStuff.targetData.token, bEffect);
                     if(bleedEffectCounter){
                         //get the number of rounds left
                         let timeLeft = 1;
@@ -3942,7 +3922,7 @@ async function standardPowerResult(rollData, functionStuff){
     let NewMessage = await ChatMessage.create(chatData);
     if(trueActorSucceeded && (functionStuff.addTargetEffect.length >0)){
         for(let effect of functionStuff.addTargetEffect){
-            let effectPresent = getEffect(functionStuff.targetData.token, effect);
+            let effectPresent = game.symbaroum.api.getEffect(functionStuff.targetData.token, effect);
             if(!effectPresent){
                 flagDataArray.push({
                         tokenId: functionStuff.targetData.tokenId,
@@ -3954,7 +3934,7 @@ async function standardPowerResult(rollData, functionStuff){
     }
     if(trueActorSucceeded && (functionStuff.addCasterEffect.length >0) && functionStuff.tokenId){
         for(let effect of functionStuff.addCasterEffect){
-            let effectPresent = getEffect(functionStuff.token, effect);
+            let effectPresent = game.symbaroum.api.getEffect(functionStuff.token, effect);
             if(!effectPresent){
                 await modifyEffectOnToken(functionStuff.token, effect, 1, 1);
             }
@@ -3962,7 +3942,7 @@ async function standardPowerResult(rollData, functionStuff){
     }
     if(trueActorSucceeded && (functionStuff.removeTargetEffect.length >0)){
         for(let effect of functionStuff.removeTargetEffect){
-            let effectPresent = getEffect(functionStuff.targetData.token, effect);
+            let effectPresent = game.symbaroum.api.getEffect(functionStuff.targetData.token, effect);
             if(effectPresent){
                 flagDataArray.push({
                     tokenId: functionStuff.targetData.tokenId,
@@ -3973,7 +3953,7 @@ async function standardPowerResult(rollData, functionStuff){
     }
     if(trueActorSucceeded && (functionStuff.removeCasterEffect.length >0) && functionStuff.tokenId){ 
         for(let effect of functionStuff.removeCasterEffect){
-            let effectPresent = getEffect(functionStuff.token, effect);
+            let effectPresent = game.symbaroum.api.getEffect(functionStuff.token, effect);
             if(effectPresent){
                 modifyEffectOnToken(functionStuff.token, effect, 0, 1);
             }
@@ -3981,7 +3961,7 @@ async function standardPowerResult(rollData, functionStuff){
     }
     if(trueActorSucceeded && !functionStuff.isMaintained && (functionStuff.activelyMaintainedTargetEffect.length >0)){ 
         for(let effect of functionStuff.activelyMaintainedTargetEffect){
-            let effectPresent = getEffect(functionStuff.targetData.token, effect);
+            let effectPresent = game.symbaroum.api.getEffect(functionStuff.targetData.token, effect);
             if(!effectPresent){
                 flagDataArray.push({
                     tokenId: functionStuff.targetData.tokenId,
@@ -3993,7 +3973,7 @@ async function standardPowerResult(rollData, functionStuff){
     }
     if(!trueActorSucceeded && functionStuff.isMaintained && (functionStuff.activelyMaintainedTargetEffect.length >0)){ 
         for(let effect of functionStuff.activelyMaintainedTargetEffect){
-            let effectPresent = getEffect(functionStuff.targetData.token, effect);
+            let effectPresent = game.symbaroum.api.getEffect(functionStuff.targetData.token, effect);
             if(effectPresent){ 
                 flagDataArray.push({
                     tokenId: functionStuff.targetData.tokenId,
@@ -4004,7 +3984,7 @@ async function standardPowerResult(rollData, functionStuff){
     }
     if(trueActorSucceeded && !functionStuff.isMaintained && (functionStuff.activelyMaintaninedCasterEffect.length >0) && functionStuff.tokenId){ 
         for(let effect of functionStuff.activelyMaintaninedCasterEffect){
-            let effectPresent = getEffect(functionStuff.token, effect);
+            let effectPresent = game.symbaroum.api.getEffect(functionStuff.token, effect);
             if(!effectPresent){
                 flagDataArray.push({
                     tokenId: functionStuff.tokenId,
@@ -4016,7 +3996,7 @@ async function standardPowerResult(rollData, functionStuff){
     }
     if(!trueActorSucceeded && functionStuff.isMaintained && (functionStuff.activelyMaintaninedCasterEffect.length >0) && functionStuff.tokenId){ 
         for(let effect of functionStuff.activelyMaintaninedCasterEffect){
-            let effectPresent = getEffect(functionStuff.token, effect);
+            let effectPresent = game.symbaroum.api.getEffect(functionStuff.token, effect);
             if(effectPresent){ 
                 flagDataArray.push({
                     tokenId: functionStuff.tokenId,
