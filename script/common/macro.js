@@ -457,8 +457,60 @@ export class SymbaroumMacros {
     }
 
     /**********************************************
-     * Macro: 
+     * Macro: Generate Name
      */
+	async generateNames()
+	{
+		// allNames needs to load json
+		const response = await fetch('systems/symbaroum/supplemental-data/names.json');
+		if(!response.ok) {
+			game.symbaroum.error("Could not fetch supplemental name data",response);
+			return;
+		}
+		const allNames = await response.json();
+		let keys = Object.keys(allNames);
+		console.log(keys);
+		let allKeys = "";
+		keys.forEach(t => {
+			allKeys = allKeys.concat(`<option value="${t}">${t}`);
+		});
+	
+		let dialog_content = `  
+		<div class="form-group">
+			<label for="category">Select name generator</label>
+			<select id="category" name="category">${allKeys}
+			</select>
+		</div>`;
+	
+		// let template = Handlebars.compile(dialog_content);
+		
+		let x = new Dialog({
+			content : dialog_content,
+			alternatives: keys,
+			buttons : 
+			{
+				Ok : { label : `Ok`, callback : async (html)=> await this.generateNameChat(html.find('#category')[0].value, allNames)},
+				Cancel : {label : `Cancel`}
+			}
+		});
+		x.options.width = 400;
+		x.position.width = 300;
+		x.render(true);
+	}
+
+	async generateNameChat(category, allNames)
+	{
+		let message = `Category ${category} - Names<br />`;
+	
+		const myNames = game.symbaroum.api.generateCategoryName(allNames[category], 10);
+		message += myNames.join('<br />');
+
+		ChatMessage.create({
+			speaker: ChatMessage.getSpeaker({alias: "Name generator"}),
+			whisper: [game.user], // ChatMessage.getWhisperRecipients('GM'),
+			content: message        
+		});
+	}
 
     /**********************************************
      * Macro: 

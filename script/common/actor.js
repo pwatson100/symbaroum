@@ -1,4 +1,4 @@
-import { getEffect, modifierDialog } from './item.js';
+import { modifierDialog } from './item.js';
 import { prepareRollAttribute } from "../common/dialog.js";
 import { baseRoll } from './roll.js';
 
@@ -177,6 +177,8 @@ export class SymbaroumActor extends Actor {
         for (const [key, item] of this.items.entries()) {
             item.getItemModifiers(combatMods, allArmors, allWeapons, allAbilities);
         }
+        // Hook - itemModifiers retrieved
+        game.symbaroum.api.symbaroumItemModifiersSetup(this, combatMods, allArmors, allWeapons, allAbilities);
 
         this._getToughnessValues(combatMods.toughness);
         this._getCorruptionValues(combatMods.corruption);
@@ -220,6 +222,7 @@ export class SymbaroumActor extends Actor {
         if (rrAbility.length != 0) {
             if (rrAbility[0].system.master.isActive) system.initiative.value += 20;
         }
+        // Hook - symbaroumSecondary
     }
 
     _computePower(system, item) {
@@ -875,20 +878,20 @@ export class SymbaroumActor extends Actor {
 
     async rollArmor() {
         const armor = this.system.combat;
-        await prepareRollAttribute(this, "defense", armor, null)
+        return prepareRollAttribute(this, "defense", armor, null)
     }
 
     async rollWeapon(weapon) {
         if (game.settings.get('symbaroum', 'combatAutomation')) {
-            await this.enhancedAttackRoll(weapon);
+            return this.enhancedAttackRoll(weapon);
         }
         else {
-            await prepareRollAttribute(this, weapon.attribute, null, weapon)
+            return prepareRollAttribute(this, weapon.attribute, null, weapon)
         }
     }
 
     async rollAttribute(attributeName) {
-        await prepareRollAttribute(this, attributeName, null, null);
+        return prepareRollAttribute(this, attributeName, null, null);
     }
 
     async enhancedAttackRoll(weapon) {
@@ -967,7 +970,7 @@ export function getTargets(targetAttributeName, maxTargets = 1) {
         let leaderTarget = false;
         // check for leader adept ability effect on target
         const LeaderEffect = CONFIG.statusEffects.find(e => e.id === "eye");
-        let leaderEffect = getEffect(targetToken, LeaderEffect);
+        let leaderEffect = game.symbaroum.api.getEffect(targetToken, LeaderEffect);
         if (leaderEffect) {
             leaderTarget = true;
             autoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');

@@ -550,3 +550,7 @@ SYMBAROUM.TARGET_TOKEN = "targettoken";
 SYMBAROUM.ACTING_TOKEN = "actingtoken";
 
 SYMBAROUM.SYSTEM_MACRO_FOLDER = "Symbaroum System Macros";
+
+SYMBAROUM.HOOKS = {
+    symbaroumItemModifiersSetup: "symbaroumItemModifiersSetup"
+}
