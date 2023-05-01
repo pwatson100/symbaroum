@@ -36,11 +36,11 @@ export class SymbaroumAPI
     }
 
     /**
-     * De-registers an API reference. Note that the API is used internally and you might brick the system by un-registering API required.
+     * Unregisters an API reference. Note that the API is used internally and you might brick the system by un-registering API required.
      * 
      * @param {string} name - The name of the API reference
      */
-    deregisterFunction(name) {
+    unregisterFunction(name) {
         if( this[name] == undefined) {
             throw `Function ${name} is already deregistered`;
         } else {
