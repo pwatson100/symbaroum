@@ -1,5 +1,26 @@
 export function enrichTextEditors()
 {
+    // With permission from @mcglintlock
+    // e.g., @DRAW[Compendium.cy-borg-core.random-tables.vX47Buopuq9t0x9r]{Names}
+    // optionally add a roll for the draw at the end
+    // e.g., @DRAW[Compendium.cy-borg-core.random-tables.vX47Buopuq9t0x9r]{Names}{1d4}
+    const DRAW_FROM_TABLE_PATTERN = /@DRAW\[([^\]]+)\]{([^}]*)}(?:{([^}]*)})?/gm;
+    const drawFromTableEnricher = (match, _options) => {
+        const uuid = match[1];
+        const tableName = match[2];
+        const roll = match[3];
+        const elem = document.createElement("span");
+        elem.className = "draw-from-table";
+        elem.setAttribute("data-tooltip", `Draw from ${tableName}`);
+        elem.setAttribute("data-uuid", uuid);
+        if (roll) {
+            elem.setAttribute("data-roll", roll);
+        }
+        elem.innerHTML = `<i class="fas fa-dice-d20">&nbsp;</i>`;
+        return elem;
+    };
+
+
     CONFIG.TextEditor.enrichers = CONFIG.TextEditor.enrichers.concat([
     {
         pattern : /@RAW\[(.+?)\]/gm,
@@ -12,7 +33,20 @@ export function enrichTextEditors()
             doc.innerHTML = myData;
             return doc;
         }
+    },
+    {
+        pattern: DRAW_FROM_TABLE_PATTERN,
+        enricher: drawFromTableEnricher,
     },{
+        pattern : /@fas\[(.+?)\]/gm,
+        enricher : async (match, options) => {
+            const doc = document.createElement("i");
+            doc.style.textIndent = 0;
+            doc.classList.add('fas');
+            doc.classList.add(match[1]);            
+            return doc;
+        }
+    },{        
         pattern : /@SymbaroumActor\[(.+?)\](?:{(.+?)})?(?:{(.+?)})?/gm,
         enricher : (match, options) => {
             // Match 1 would be actor name or actorID
@@ -138,10 +172,25 @@ ${monster ? getTactics(actor) : ""}
             const tourDoc = document.createElement("span");
             let tour = match[1];
             let name = match[2];
-            tourDoc.innerHTML = `${name} <a class="control" data-tour-id="${tour}" data-action="play" data-tooltip="Start Tour" aria-describedby="tooltip" onclick="script:game.symbaroum.tourLink(this);"><i class="fas fa-play"></i></a>`;
+            tourDoc.innerHTML = `${name} <a class="control symbaroum-tour" data-tour-id="${tour}" data-action="play" data-tooltip="Start Tour" aria-describedby="tooltip"><i class="fas fa-play"></i></a>`;
             return tourDoc;
         }
     }]);
+
+    async function drawFromRollableTable(event) {        
+        event.preventDefault();
+        const uuid = event.currentTarget.getAttribute("data-uuid");
+        if (uuid) {
+            const table = await fromUuid(uuid);
+            if (table instanceof RollTable) {
+                const formula = event.currentTarget.getAttribute("data-roll");
+                const roll = formula ? new Roll(formula) : new Roll(table.formula);
+                await table.draw({ roll });
+
+            }
+        }
+    }
+    $(document).on("click",".draw-from-table", drawFromRollableTable);
 }
 
 function getAttributes(actor, monster) {

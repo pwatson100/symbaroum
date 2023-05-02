@@ -4,7 +4,7 @@ export async function tourSetup()
 {
     try {        
         game.symbaroum.log("Loading tours");
-        const {files} = await FilePicker.browse("data", '/systems/symbaroum/tours');
+        const {files} = await FilePicker.browse("data", 'systems/symbaroum/tours');
         for(let i = 0; i < files.length; i++) {
             if(!files[i].endsWith(".json")) {
                 continue;
@@ -19,16 +19,18 @@ export async function tourSetup()
     } catch(err) {
         return game.symbaroum.error(`Issues with SymbaroumTour`,err);
     }
-    game.symbaroum.tourLink = tourLink;
-}
+    game.symbaroum.api.tourLink = tourLink;
+
+    $(document).on("click",".symbaroum-tour", tourLink);
+
+} // game.symbaroum.tourLink(this);
 
 async function tourLink(event) {
-    let header = $(event);
-    // game.symbaroum.log("event",header);
-    let tourId = header[0].dataset.tourId;
+    event.preventDefault();
+    let tourId = event.currentTarget.getAttribute("data-tour-id");
     if(!tourId.includes('.')) {
         tourId = `symbaroum.${ tourId}`;
     }
-    let tour = game.tours.get(`symbaroum.${ header[0].dataset.tourId }`);
+    let tour = game.tours.get(tourId);
     tour?.start();
 }

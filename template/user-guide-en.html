@@ -19,23 +19,16 @@
     <h1>Change history for v10</h1>
     <p>
         <ul>
-            <li>Fixed player attribute macro</li>
-            <li>Fixed player actors token link #570</li>
-            <li>Support for Foundry v10 (#493, #494, #495, #502, #505, #506, #513)</li>
-            <li>Added multiple tours - see @Tour[settings-tour]{Symbaroum configuration guide}</li>
-            <li>Refactured the compendiums into adventures for easier management and less busy data</li>
-            <li>General cleanup & css fixes (#505, #451, #531) - thank you yjeroen for some of the css</li>
-            <li>Lessened the abruptness of the death sequence (#546)</li>
-            <li>Minor fixes (#528, #530)</li>
-            <li>The equipment type "Artifact" is now removed. Please use the artifact button instead (#417)</li>
-            <li>Fix to inherit wounds (#499 - thanks Lasenist)</li>
-            <li>Send to chat fixes and homogenising chat output</li>
-            <li>Item sorting order</li>
-            <li>Manifest updates for v10 with v9 support</li>
-            <li>A couple of text enrichers added (@Tour + @SymbaroumActor)</li>
-            <li>Migrated to v10 tooltips (thanks Lasenist for assistance)</li>
-            <li>Extra wide Symbaroum Journal</li>
-            <li>Ability fixes (witchammer, staff fighting, sword saint, knife play)</li>
+            <li>Added support for API calls for Foundry></li>
+            <li>Added support for Hooks - currently only a single event</li>
+            <li>Cleaned up some of the depedencies</li>
+            <li>Fixed prototypeToken configuration</li>
+            <li>Fixed disadvantage for non-EC</li>
+            <li>Removed errorounous bracket in dialogue</li>
+            <li>Witch sight fix</li>
+            <li>Tooltip fixes</li>
+            <li>German Updates (thanks Padraig359)</li>
+            <li>Added enrichers</li>
         </ul>
     </p>
 
@@ -577,7 +570,7 @@
         The developers of the Symbaroum for Foundry system would like to thank everyone that contributes to the system. This includes our fantastic translators for the various languages that Symbaroum now supports. Our current translators are:<br/>
         <ul>
             <li>French - Khaali</li>
-            <li>German - DasTorfu</li>
+            <li>German - DasTorfu,Padraig359</li>
             <li>Spanish - kufferino</li>
             <li>Italian - Surcof</li>
             <li>Swedish - Weymyss, Krister Persson</li>
@@ -588,4 +581,5 @@
     <h1>Supported Modules</h1>
     <p><a href="https://foundryvtt.com/packages/dice-so-nice/">Dice-so-nice</a>
     <p><a href="https://foundryvtt.com/packages/token-action-hud/">Token action hud</a></p>
+    <p>Note that Token Action Hud have an issue with "No armor" - solution is to create a skin-armor</p>
 </div>

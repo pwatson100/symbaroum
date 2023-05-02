@@ -1,4 +1,3 @@
-import { formatRollResult } from './item.js';
 
 export async function rollAttribute(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier, armor, weapon, advantage, damModifier) {
   let dam = "";	
@@ -76,7 +75,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   let actingCharImg= actingToken?.document.actorLink ? actor.img : actingToken?.document?.texture.src ?? actor.img;
   let rollData = {
     subImg: actingCharImg,
-    name: `${getAttributeLabel(actor, actingAttributeName) } (${ getAttributeValue(actor, actingAttributeName) }) ⬅ ${getAttributeLabel(targetActor, targetAttributeName)} (${finalMod})`,
+    name: `${game.symbaroum.api.getAttributeLabel(actor, actingAttributeName) } (${ getAttributeValue(actor, actingAttributeName) }) ⬅ ${game.symbaroum.api.getAttributeLabel(targetActor, targetAttributeName)} (${finalMod})`,
     margin: (rollResults.diceTarget - rollResults.diceResult),
     hasSucceed: rollResults.hasSucceed,
     diceResult: rollResults.diceResult,
@@ -155,7 +154,7 @@ export async function rollDeathTest(actor, withFavour, modifier) {
   let isCriticalSuccess = death.total <= (1+finalMod);
   let heal = null;
   let nbrOfFailedDeathRoll = actor.system.nbrOfFailedDeathRoll;
-  let rollResult = await formatRollResult({favour: favour, diceResult: death.total, dicesResult: dicesResult});
+  let rollResult = game.symbaroum.api.formatRollResult({favour: favour, diceResult: death.total, dicesResult: dicesResult});
   if (!hasSucceed) nbrOfFailedDeathRoll = Math.min(3, nbrOfFailedDeathRoll+1);
   if (isCriticalSuccess) {
     nbrOfFailedDeathRoll = 0;
@@ -193,18 +192,6 @@ export async function rollDeathTest(actor, withFavour, modifier) {
   ChatMessage.create(chatData);
   if(actor.system.nbrOfFailedDeathRoll != nbrOfFailedDeathRoll) {
     await actor.update({"system.nbrOfFailedDeathRoll":nbrOfFailedDeathRoll });
-  }
-}
-
-//this function returns the localized name, and also accept defense.
-export function getAttributeLabel(actor, attributeName) {
-  if (attributeName === 'custom') {
-    return (game.i18n.localize("ATTRIBUTE.CUSTOM"));
-  }
-  else if (attributeName === 'defense') {
-    return (game.i18n.localize("ARMOR.DEFENSE"));
-  } else {
-      return (game.i18n.localize(actor.system.attributes[attributeName].label));
   }
 }
 
@@ -285,7 +272,7 @@ async function doBaseRoll(actor, actingAttributeName, targetActor, targetAttribu
   diceBreakdown = formatDice(attributeRoll.terms,"+");
 
   let actingAttributeValue = getAttributeValue(actor, actingAttributeName);
-  let actingAttributeLabel = getAttributeLabel(actor, actingAttributeName);
+  let actingAttributeLabel = game.symbaroum.api.getAttributeLabel(actor, actingAttributeName);
 
   let diceTarget = actingAttributeValue + modifier;
   
@@ -294,7 +281,7 @@ async function doBaseRoll(actor, actingAttributeName, targetActor, targetAttribu
 
   if(targetActor && targetAttributeName){
     resistAttributeValue = getAttributeValue(targetActor, targetAttributeName);
-    targetAttributeLabel = getAttributeLabel(targetActor, targetAttributeName);
+    targetAttributeLabel = game.symbaroum.api.getAttributeLabel(targetActor, targetAttributeName);
     diceTarget += (10 - resistAttributeValue);
   }
 
@@ -348,7 +335,7 @@ async function doBaseRoll(actor, actingAttributeName, targetActor, targetAttribu
     favour: favour,
     modifier: modifier,
     dicesResult: dicesResult,
-    rollResult: await formatRollResult({favour: favour, diceResult: attributeRoll.total, dicesResult: dicesResult, secondRollResult: secondRollResult}),
+    rollResult: game.symbaroum.api.formatRollResult({favour: favour, diceResult: attributeRoll.total, dicesResult: dicesResult, secondRollResult: secondRollResult}),
     rolls: rolls,
     toolTip: new Handlebars.SafeString(await attributeRoll.getTooltip()),
     diceBreakdown: diceBreakdown,    
@@ -400,7 +387,7 @@ export async function createResistRollChatButton(functionStuff){
   //send data message to the player session
   
   const emitData = Object.assign({}, functionStuff);
-  emitData.mainText= functionStuff.targetData.name + game.i18n.localize("CHAT.RESIST_TEXT_BUTTON") + getAttributeLabel(functionStuff.targetData.actor, functionStuff.targetData.resistAttributeName);
+  emitData.mainText= functionStuff.targetData.name + game.i18n.localize("CHAT.RESIST_TEXT_BUTTON") + game.symbaroum.api.getAttributeLabel(functionStuff.targetData.actor, functionStuff.targetData.resistAttributeName);
   emitData.actor = null;
   emitData.token = null;
   emitData.targetData.token = null;

@@ -121,7 +121,7 @@
     "ABILITY_WITCHSIGHT.CHAT_INTRO": "{actorname} prova a percepire le ombre.",
     "ABILITY_WITCHSIGHT.CHAT_SUCCESS": "{actorname} penetra il velo tra le ombre.",
     "ABILITY_WITCHSIGHT.CHAT_FAILURE": "{actorname} non riesce a distinguere le ombre.",
-    "ABILITY_WITCHSIGHT.CHAT_FINAL1": "Il colore dell'ombra di {targetname} è: ",
+    "ABILITY_WITCHSIGHT.CHAT_FINAL": "Il colore dell'ombra di {targetname} è: {targetshadow}",
   
     "ABILITY.NOVICE":"Novizio",
     "ABILITY.ADEPT":"Adepto",
