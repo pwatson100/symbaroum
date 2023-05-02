@@ -268,7 +268,7 @@ Version 4.0.3
 - Fixed macro issues for attributes & Abilities
 - Fixed actor links not correctly created on prototype token #570
 
-Version 4.1
+Version 4.1.0
 - Added support for API calls for Foundry
 - Added support for Hooks - currently only a single event
 - Cleaned up some of the depedencies
@@ -279,3 +279,7 @@ Version 4.1
 - Tooltip fixes
 - German Updates (thanks Padraig359)
 - Added enrichers
+
+Version 4.1.1
+
+- Fixed issue #595 with the german translation fields
