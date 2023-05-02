@@ -681,7 +681,7 @@
   "TOOLTIP.HEALTH.CORRUPTION_LONGTERM": "Deine Korruption, die heute mehr als eine Szene anhält",
   "TOOLTIP.HEALTH.CORRUPTION_PERMANENT": "Deine Korruption, die auf unbestimmte Zeit anhält",
   "TOOLTIP.HEALTH.CORRUPTION_THRESHOLD": "Deine Korruptionsschwelle",
-  "TOOLTIP.HEALTH.CORRUPTION_MAX": "Deine Willenskraft versagt ab diesem Wert und du wirst zur Ausgeburt"
+  "TOOLTIP.HEALTH.CORRUPTION_MAX": "Deine Willenskraft versagt ab diesem Wert und du wirst zur Ausgeburt",
   
   "TOOLTIP.HEALTH.TOUGHNESS_CURRENT": "Deine aktuelle Zähigkeit",
   "TOOLTIP.HEALTH.TOUGHNESS_TOTAL": "Die Menge an Schaden, die dich umbringen wird",
@@ -816,7 +816,7 @@
   "SYMBAROUM.OPTIONAL_RESET_NPC_BUTTON":"Design für NSCs zurücksetzen",
   "SYMBAROUM.OPTIONAL_CONFIG_MENULABEL": "Symbaroum Design Einstellungen",
   "SYMBAROUM.OPTIONAL_CONFIG_MENUHINT": "Design für (Nicht-)Spieler-Charakterbögen für meinen Client konfigurieren.",
-  "SYMBAROUM.OPTIONAL_ADD_MENUNAME": "Symbaroum Regel Einstellungen-Schaltfläche zum Spieleinstellungen Tab hinzufügen."
+  "SYMBAROUM.OPTIONAL_ADD_MENUNAME": "Symbaroum Regel Einstellungen-Schaltfläche zum Spieleinstellungen Tab hinzufügen.",
   "SYMBAROUM.OPTIONAL_ADD_MENUHINT": "Symbaroum Design Einstellungen-Schaltfläche zum Spieleinstellungen Tab hinzufügen.",
   "SYMBAROUM.OPTIONAL_PC_CHAR_BG_IMGS":"Charakterbogen Hintergrundbild",
   "SYMBAROUM.OPTIONAL_NPC_CHAR_BG_IMGS":"NSC-Bogen Hintergrundbild",
