@@ -3601,7 +3601,7 @@ async function standardPowerResult(rollData, functionStuff){
     let namesForText = {
         actorname: functionStuff.actingCharName, 
         targetname: functionStuff.targetData?.name ?? "",
-        targetshadow: functionStuff.targetData?.actor.system.bio.shadow ?? ""
+        targetshadow: functionStuff.targetData?.actor?.system.bio.shadow ?? ""
     };
     let targetText = game.i18n.format(functionStuff.targetText ?? "", namesForText);
     if((!functionStuff.isMaintained) && (functionStuff.corruption !== game.symbaroum.config.TEMPCORRUPTION_NONE)){
