@@ -753,15 +753,9 @@ export class SymbaroumActor extends Actor {
         let itemBonusExperience = itemBonus.experience;
 
         this._addBonusData(currentBonus, item, itemBonus, "defense");
-        this._addBonusData(currentBonus, item, itemBonus, "accurate");
-        this._addBonusData(currentBonus, item, itemBonus, "cunning");
-        this._addBonusData(currentBonus, item, itemBonus, "discreet");
-        this._addBonusData(currentBonus, item, itemBonus, "persuasive");
-        this._addBonusData(currentBonus, item, itemBonus, "quick");
-        this._addBonusData(currentBonus, item, itemBonus, "resolute");
-        this._addBonusData(currentBonus, item, itemBonus, "strong");
-        this._addBonusData(currentBonus, item, itemBonus, "vigilant");
-
+        game.symbaroum.config.attributes.forEach( (value, index, arr) => { 
+            this._addBonusData(currentBonus, item, itemBonus, value);
+        });
         this._addBonusData(currentBonusToughness, item, itemBonusToughness, "max");
         this._addBonusData(currentBonusToughness, item, itemBonusToughness, "threshold");
         this._addBonusData(currentBonusCorruption, item, itemtBonusCorruption, "max");
