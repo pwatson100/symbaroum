@@ -256,12 +256,10 @@ export class SymbaroumItem extends Item {
                 system.pcProtection +=  "+1";
             }
 
-            if(protection === "") {
-                armorRoll = new Roll("0").evaluate({maximize: true, async:false});
-            } else {
-                armorRoll = new Roll(protection).evaluate({maximize: true, async:false});
+            system.npcProtection = 0;
+            if(protection !== "" && Roll.validate(protection)) {
+                system.npcProtection = Math.ceil(new Roll(protection).evaluate({maximize: true, async:false}).total/2);
             }
-            system.npcProtection = Math.ceil(armorRoll.total/2);
             if(system.qualities?.reinforced){
                 system.npcProtection +=  1;
             }

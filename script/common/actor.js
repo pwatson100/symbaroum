@@ -67,17 +67,18 @@ export class SymbaroumActor extends Actor {
             // If there are corrupt attributes added, ignore this
             if (!!!system.attributes[aKey].value || !!!system.attributes[aKey].label) continue;
 
-            system.attributes[aKey].bonus = system.bonus[aKey];
-            system.attributes[aKey].total = system.attributes[aKey].value + system.bonus[aKey] + system.attributes[aKey].temporaryMod;
+            system.attributes[aKey].bonus = system.bonus[aKey] ?? 0;
+            console.log(`system.attributes[aKey].value[${system.attributes[aKey].value}] + system.bonus[aKey] ?? 0[${system.bonus[aKey]}] + system.attributes[aKey].temporaryMod[${system.attributes[aKey].temporaryMod}];`);
+            system.attributes[aKey].total = system.attributes[aKey].value + system.attributes[aKey].bonus + system.attributes[aKey].temporaryMod;
             system.attributes[aKey].modifier = 10 - system.attributes[aKey].total;
             if (this.type === "monster") {
                 let modSign = "";
                 if (system.attributes[aKey].modifier > 0) {
                     modSign = "+";
                 }
-                system.attributes[aKey].msg = game.i18n.localize("TOOLTIP.BONUS_TOTAL") + ` ${system.attributes[aKey].total} (${modSign}${system.attributes[aKey].modifier})<br />${game.i18n.localize("ATTRIBUTE.BASE")}(${system.attributes[aKey].value.toString()}) ${system.bonus[aKey + "_msg"]}`;
+                system.attributes[aKey].msg = game.i18n.localize("TOOLTIP.BONUS_TOTAL") + ` ${system.attributes[aKey].total} (${modSign}${system.attributes[aKey].modifier})<br />${game.i18n.localize("ATTRIBUTE.BASE")}(${system.attributes[aKey].value.toString()}) ${system.bonus[aKey + "_msg"] ?? ""}`;
             } else {
-                system.attributes[aKey].msg = game.i18n.localize("TOOLTIP.BONUS_TOTAL") + ` ${system.attributes[aKey].total}` + "<br />" + game.i18n.localize("ATTRIBUTE.BASE") + "(" + system.attributes[aKey].value.toString() + ")" + `${system.bonus[aKey + "_msg"]}`;
+                system.attributes[aKey].msg = game.i18n.localize("TOOLTIP.BONUS_TOTAL") + ` ${system.attributes[aKey].total}` + "<br />" + game.i18n.localize("ATTRIBUTE.BASE") + "(" + system.attributes[aKey].value.toString() + ")" + `${system.bonus[aKey + "_msg"]  ?? ""}`;
             }
             if (system.attributes[aKey].temporaryMod != 0) { system.attributes[aKey].msg += "<br />" + game.i18n.localize("ATTRIBUTE.MODIFIER") + "(" + system.attributes[aKey].temporaryMod.toString() + ")" };
         }
