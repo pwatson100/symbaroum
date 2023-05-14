@@ -68,7 +68,7 @@ export class SymbaroumActor extends Actor {
             if (!!!system.attributes[aKey].value || !!!system.attributes[aKey].label) continue;
 
             system.attributes[aKey].bonus = system.bonus[aKey] ?? 0;
-            console.log(`system.attributes[aKey].value[${system.attributes[aKey].value}] + system.bonus[aKey] ?? 0[${system.bonus[aKey]}] + system.attributes[aKey].temporaryMod[${system.attributes[aKey].temporaryMod}];`);
+
             system.attributes[aKey].total = system.attributes[aKey].value + system.attributes[aKey].bonus + system.attributes[aKey].temporaryMod;
             system.attributes[aKey].modifier = 10 - system.attributes[aKey].total;
             if (this.type === "monster") {
