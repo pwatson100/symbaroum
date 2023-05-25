@@ -67,7 +67,8 @@ SYMBAROUM.itemImages = {
 
 // Deprecated item types
 SYMBAROUM.itemDeprecated = [
-'artifact'
+'artifact',
+'base'
 ];
 
 // Ability definitions

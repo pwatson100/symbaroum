@@ -457,6 +457,17 @@
   "ITEM.TypeWeapon": "Weapon",
   "ITEM.TypeBoon": "Boon",
   "ITEM.TypeBurden": "Burden",
+  "TYPES.Item.trait": "Trait",
+  "TYPES.Item.ability": "Ability",
+  "TYPES.Item.armor": "Armor",
+  "TYPES.Item.artifact": "Artifact",
+  "TYPES.Item.equipment": "Equipment",
+  "TYPES.Item.mysticalpower": "Mystical Power",
+  "TYPES.Item.ritual": "Ritual",
+  "TYPES.Item.weapon": "Weapon",
+  "TYPES.Item.boon": "Boon",
+  "TYPES.Item.burden": "Burden",
+  
 
   "MACRO.ATTRIBUTE": "Attribute",
   "MACRO.MAKETEST": "Test {testtype}",

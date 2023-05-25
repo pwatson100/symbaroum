@@ -453,7 +453,17 @@
   "ITEM.TypeWeapon": "Vapen",
   "ITEM.TypeBoon": "Fördel",
   "ITEM.TypeBurden": "Nackdel",
-
+  "TYPES.Item.trait": "Särdrag",
+  "TYPES.Item.ability": "Förmåga",
+  "TYPES.Item.armor": "Rustning",
+  "TYPES.Item.artifact": "Artefakt",
+  "TYPES.Item.equipment": "Utrustning",
+  "TYPES.Item.mysticalpower": "Mystisk kraft",
+  "TYPES.Item.ritual": "Ritual",
+  "TYPES.Item.weapon": "Vapen",
+  "TYPES.Item.boon": "Fördel",
+  "TYPES.Item.burden": "Nackdel",
+  
   "MACRO.ATTRIBUTE": "Karaktärsdrag",
   "MACRO.MAKETEST": "Testa mot {testtype}",
   "MACRO.SELECTPLAYERS": "Välj spelare",

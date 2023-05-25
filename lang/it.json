@@ -444,7 +444,7 @@
     "ITEM.WEAPON": "Armi",
     "ITEM.BOON" : "Pregi",
     "ITEM.BURDEN": "Difetti",
-  
+
     "ITEM.TypeTrait": "Tratti",
     "ITEM.TypeAbility": "Abilità",
     "ITEM.TypeArmor": "Armatura",
@@ -454,8 +454,18 @@
     "ITEM.TypeRitual": "Rituali",
     "ITEM.TypeWeapon": "Armi",
     "ITEM.TypeBoon": "Pregi",
-    "ITEM.TypeBurden": "Difetti",  
-  
+    "ITEM.TypeBurden": "Difetti",
+    "TYPES.Item.trait": "Tratti",
+    "TYPES.Item.ability": "Abilità",
+    "TYPES.Item.armor": "Armatura",
+    "TYPES.Item.artifact": "Artefatto",
+    "TYPES.Item.equipment": "Equipaggiamento",
+    "TYPES.Item.mysticalpower": "Poteri Mistici",
+    "TYPES.Item.ritual": "Rituali",
+    "TYPES.Item.weapon": "Armi",
+    "TYPES.Item.boon": "Pregi",
+    "TYPES.Item.burden": "Difetti",      
+
     "MACRO.ATTRIBUTE": "Attributo",
     "MACRO.MAKETEST": "Test {testtype}",
     "MACRO.SELECTPLAYERS": "Seleziona giocatore/i",

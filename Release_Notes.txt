@@ -286,4 +286,10 @@ Version 4.1.1
 
 Version 4.1.2
 
-- Fixed issued #598
+- Fixed issue #598
+
+Version 4.2
+
+- Fixed issue #600
+- Fixed issue #601
+- Made compatible with v10 & v11
