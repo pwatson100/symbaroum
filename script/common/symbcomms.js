@@ -1,9 +1,9 @@
 
 export class SymbaroumCommsListener
 {
-    static async receiveData(data) 
+    static async receiveData(comData) 
     {
-        if(game.user.isGM && data.type === "GMMessage")
+        if(game.user.isGM && comData.type === "GMMessage")
         {
             const html = await renderTemplate("systems/symbaroum/template/chat/applyEffectsButton.html");
             const chatData = {
@@ -12,13 +12,13 @@ export class SymbaroumCommsListener
                 content: html
             };
             let newMessage = await ChatMessage.create(chatData);
-            await newMessage.setFlag(game.system.id, 'applyEffects', data.data);
+            await newMessage.setFlag(game.system.id, 'applyEffects', comData.data);
         }
-        else if(data.type === "ResistRoll" && data.data.targetUserId === game.user.data._id)
+        else if(comData.type === "ResistRoll" && comData.data.targetUserId === game.userId)
         {
             let templateData = {
-                introText: data.data.introText,
-                mainText: data.data.mainText
+                introText: comData.data.introText,
+                mainText: comData.data.mainText
             }
             const html = await renderTemplate("systems/symbaroum/template/chat/resistButton.html", templateData);
             const chatData = {
@@ -27,7 +27,7 @@ export class SymbaroumCommsListener
                 content: html
             };
             let newMessage = await ChatMessage.create(chatData);
-            await newMessage.setFlag(game.system.id, 'resistRoll', data.data);
+            await newMessage.setFlag(game.system.id, 'resistRoll', comData.data);
         }
     }
 

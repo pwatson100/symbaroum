@@ -1,6 +1,6 @@
-import { PlayerSheet2 } from "./player2.js";
+import { PlayerSheet } from "./player.js";
 
-export class MonsterSheet extends PlayerSheet2 {
+export class MonsterSheet extends PlayerSheet {
 
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {

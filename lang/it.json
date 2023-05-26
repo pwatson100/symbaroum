@@ -1,4 +1,5 @@
 {
+    "ABILITY.HEADER": "Ability",
     "ABILITY.NAME": "Nome",
     "ABILITY.REFERENCE": "Reference",
     "ABILITY.ACTIVE": "Conosciuta",
@@ -120,7 +121,7 @@
     "ABILITY_WITCHSIGHT.CHAT_INTRO": "{actorname} prova a percepire le ombre.",
     "ABILITY_WITCHSIGHT.CHAT_SUCCESS": "{actorname} penetra il velo tra le ombre.",
     "ABILITY_WITCHSIGHT.CHAT_FAILURE": "{actorname} non riesce a distinguere le ombre.",
-    "ABILITY_WITCHSIGHT.CHAT_FINAL1": "Il colore dell'ombra di {targetname} è: ",
+    "ABILITY_WITCHSIGHT.CHAT_FINAL": "Il colore dell'ombra di {targetname} è: {targetshadow}",
   
     "ABILITY.NOVICE":"Novizio",
     "ABILITY.ADEPT":"Adepto",
@@ -418,6 +419,7 @@
     "HEALTH.TOUGHNESS_THRESHOLD": "Soglia",
     "HEALTH.TOUGHNESS_THRESHOLD_MAX": "Soglia Dolore",  
     "HEALTH.TOUGHNESS_THRESHOLD_NA": "N/A",
+    "HEALTH.TOUGHNESS_THRESHOLD_FULL": "Pain Threshold",
     "HEALTH.CORRUPTION": "CORRUZIONE",
     "HEALTH.CORRUPTION_NA": "N/A",
     "HEALTH.CORRUPTION_CURRENT": "Attuale",
@@ -427,6 +429,7 @@
     "HEALTH.CORRUPTION_THRESHOLD": "Soglia",
     "HEALTH.CORRUPTION_THRESHOLD_MAX": "Soglia Corr.",
     "HEALTH.CORRUPTION_MAX": "ABOM.",
+    "HEALTH.CORRUPTION_THROUGHLY": "thoroughly corrupt",
     
     "INITIATIVE.TITLE": "Iniziativa",
     "INITIATIVE.EXPLANATION": "Iniziativa mostrata come [initiative attribute.vigilant]",
@@ -610,7 +613,12 @@
     "POWER_TORMENTINGSPIRITS.CHAT_INTRO_M":"{actorname} cerca di mantenere gli spiriti tormentatori.",
     "POWER_TORMENTINGSPIRITS.CHAT_SUCCESS":"{actorname} invoca gli spiriti intorno {targetname}.",
     "POWER_TORMENTINGSPIRITS.CHAT_FAILURE":"{actorname} fallisce l'evocazione.",
-    
+
+    "POWER_WITCHHAMMER.CHAT_ACTIVATE": "L'arma di {actorname} inizia a risplendere.",
+    "POWER_WITCHHAMMER.CHAT_DESACTIVATE": "L'arma di {actorname} smette di splendere.",
+    "POWER_WITCHHAMMER.CHAT_RESULT_DESACTIVATE": "Le statistiche dell'arma tornano normali.",
+    "POWER_WITCHHAMMER.CHAT_RESULT": "I bonus ai danni di Maglio Purificatore appariranno nella finestra di dialogo del combattimento.",
+        
     "QUALITY.AREAMRR": "Effetto ad area - Raggio Corpo a Corpo",
     "QUALITY.AREASRR": "Effetto ad area - Raggio Corto", 
     "QUALITY.AREAC": "Effetto ad area - Cono",
@@ -644,6 +652,9 @@
     "QUALITY.POISON": "Avvelenata",
     "QUALITY.THUNDERING": "Folgorante",
     "QUALITY.RETRIBUTIVE": "Vendicativa",
+    "QUALITY.KNIFEPLAY_COMP": "Knife Play compatible",
+    "QUALITY.STAFFFIGHTING_COMP": "Staff Fighting compatible",
+    "QUALITY.SWORDSAINT_COMP": "Sword saint compatible",
   
     "RITUAL.TRADITION": "Tradizione",
     "RITUAL.DESCRIPTION": "Descrizione",
@@ -666,7 +677,7 @@
   
     "TITLE.ABILITIES_POWERS": "ABILITÀ & POTERI",
     "TITLE.HEALTH": "SALUTE",
-    "TITLE.ATTRIBUTES": "ATTRIBUTI",
+    "TITLE.ATTRIBUTES": "Attributi",
     "TITLE.COMBAT": "COMBAT",
     "TITLE.NOTES": "NOTE",
     "TITLE.ARMORS": "ARMATURA",
@@ -681,8 +692,10 @@
     "TITLE.POWER": "POTERE",
     "TITLE.MONEY": "SOLDI",
     "TITLE.QUALITIES":"QUALITÀ",
+    "TITLE.SPECIALQUALITIES":"ABILITIES COMPATIBILITY",
     
     "TOOLTIP.BONUS_TOTAL": "Totale",
+    "TOOLTIP.DEATH_SKULLS": "Death is reached at 3 skulls",
     
     "TOOLTIP.EXPERIENCE_CURRENT": "I tuoi punti esperienza attualmente disponibili (non spesi)",
     "TOOLTIP.EXPERIENCE_TOTAL": "La quantità totale di punti esperienza che hai guadagnato",
@@ -708,6 +721,7 @@
     "TOOLTIP.DELETE_ABILITY" : "Elimina abilità",
     "TOOLTIP.POWER_ACTIONS" : "Tipo di attivazione (A - attivo, P - passivo, S - speciale, ecc.)",
   
+    "TRAIT.HEADER": "Traits",
     "TRAIT.NAME": "Nome",
     "TRAIT.ACTIVE": "Acquisito",
     "TRAIT.ACTION": "Azione",

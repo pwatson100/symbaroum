@@ -1,12 +1,11 @@
 <div class="symbaroum chat ability">
-    <div class="foreground border">
+    <div class="foreground">
         <div class="introImg" style="background-image: url('{{introImg}}')">
             <div class="introTxt">{{removeMarkup introText}}</div>
             {{#if hasTarget}}
-            <div class="introImg" style="background-image: url('{{targetData.actor.data.img}}')"></div>
-        </div>
-        <div class="targetText">{{removeMarkup targetText}}
-        {{/if}}
+            <div class="introImg" style="background-image: url('{{targetData.actor.img}}')"></div>            
+            <div class="targetText">{{removeMarkup targetText}}</div>
+            {{/if}}
         </div>
         <div class="subText">{{removeMarkup subText}}</div>            
         <img src="{{subImg}}"/>

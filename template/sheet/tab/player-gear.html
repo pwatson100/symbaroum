@@ -14,12 +14,12 @@
                             </th>
                             <th class="state">{{localize "GEAR.STATE"}}</th>
                             <th class="addbutton">
-                                <a class="item-create" title="{{localize "ARMOR.ADDBUTTON"}}" data-type="armor"><i class="fas fa-plus"></i></a>
+                                <a class="item-create" data-tooltip="{{localize "ARMOR.ADDBUTTON"}}" data-type="armor"><i class="fas fa-plus"></i></a>
                             </td>
                         </tr>
                     </thead>
                     </tbody>
-                    {{#each actor.data.armors as |item|}}   
+                    {{#each actor.system.armors as |item|}}   
                         <tr class="armor item" data-item-id="{{item.id}}" >
                             <td>
                                 <div class="cell">
@@ -32,28 +32,28 @@
                                 </div>
                             </td>
                             <td class="protection">
-                                <div style="padding-left: 3px;" {{#ife ../actor.type "player"}}title="{{item.displayText}}"{{/ife}} class="playergear protection ellipsis">
+                                <div style="padding-left: 3px;" {{#ife ../actor.type "player"}}data-tooltip="{{item.displayText}}"{{/ife}} class="playergear protection ellipsis">
                                 {{item.displayTextShort}}
                                 </div>
                             </td>
-                            <td class="impeding" title="{{localize "ARMOR.IMPEDING"}} {{item.impeding}}"><div class="impeding">{{item.impeding}}</div>
+                            <td class="impeding" data-tooltip="{{localize "ARMOR.IMPEDING"}} {{item.impeding}}"><div class="impeding">{{item.impeding}}</div>
                             </td>
                             <td class="state">
                                 {{#if item.isNoArmor }}
                                     <i class="fas fa-tshirt"></i>
                                 {{else}}
                                     {{#if item.isActive}}
-                                        <a class="item-state" title="{{localize 'GEAR.ACTIVE'}}"><i class="fas fa-tshirt"></i></a>
+                                        <a class="item-state" data-tooltip="{{localize 'GEAR.ACTIVE'}}"><i class="fas fa-tshirt"></i></a>
                                     {{else if item.isEquipped}}
-                                        <a class="item-state" title="{{localize 'GEAR.EQUIPPED'}}"><i class="fas fa-suitcase"></i></a>
+                                        <a class="item-state" data-tooltip="{{localize 'GEAR.EQUIPPED'}}"><i class="fas fa-suitcase"></i></a>
                                     {{else}}
-                                        <a class="item-state" title="{{localize 'GEAR.OTHER'}}"><i class="fas fa-warehouse"></i></a>
+                                        <a class="item-state" data-tooltip="{{localize 'GEAR.OTHER'}}"><i class="fas fa-warehouse"></i></a>
                                     {{/if}}
                                 {{/if}}
                             </td>
                             <td class="button">
                                 {{#if item.isNoArmor }} {{else}}
-                                <a class="item-control item-delete" title="{{localize "ARMOR.DELETEBUTTON"}}"><i class="fas fa-trash"></i></a>
+                                <a class="item-control item-delete" data-tooltip="{{localize "ARMOR.DELETEBUTTON"}}"><i class="fas fa-trash"></i></a>
                                 {{/if}}
                             </td>                            
                         </tr>
@@ -69,16 +69,16 @@
                 <thead>
                     <tr class="item-header">
                         <th class="name">{{localize "WEAPON.NAME"}}</th>
-                        <th class="damage" title="{{localize "WEAPON.DAMAGE"}}">{{localizeabbr "WEAPON.DAMAGE"}}</th>
-                        <th class="attribute" title="{{localize "WEAPON.ATTRIBUTE"}}">{{localizeabbr "WEAPON.ATTRIBUTE"}}</th>
+                        <th class="damage" data-tooltip="{{localize "WEAPON.DAMAGE"}}">{{localizeabbr "WEAPON.DAMAGE"}}</th>
+                        <th class="attribute" data-tooltip="{{localize "WEAPON.ATTRIBUTE"}}">{{localizeabbr "WEAPON.ATTRIBUTE"}}</th>
                         <th class="state">{{localize "GEAR.STATE"}}</th>
                         <th class="addbutton">
-                            <a class="item-create" title="{{localize "WEAPON.ADDBUTTON"}}" data-type="weapon"><i class="fas fa-plus"></i></a>
+                            <a class="item-create" data-tooltip="{{localize "WEAPON.ADDBUTTON"}}" data-type="weapon"><i class="fas fa-plus"></i></a>
                         </td>
                     </tr>
                 </thead>
                 <tbody>
-                {{#each actor.data.weapons as |item|}}
+                {{#each actor.system.weapons as |item|}}
                     <tr class="weapon item" data-item-id="{{item.id}}" >
                         <td>
                             <div class="cell">
@@ -91,23 +91,23 @@
                             </div>
                         </td>
                         <td class="damage">
-                            <div style="padding-left: 3px;" {{#ife ../actor.type "player"}}title="{{item.damage.displayText}}"{{/ife}} class="playergear damage ellipsis">
+                            <div style="padding-left: 3px;" {{#ife ../actor.type "player"}}data-tooltip="{{item.damage.displayText}}"{{/ife}} class="playergear damage ellipsis">
                             {{item.damage.displayTextShort}}
                             </div>
                         </td>
-                        <td class="attribute" title="{{localize "WEAPON.ATTRIBUTE"}} {{localize item.attributeLabel}}"><div class="attribute">{{localizeabbr item.attributeLabel}}</div>
+                        <td class="attribute" data-tooltip="{{localize "WEAPON.ATTRIBUTE"}} {{localize item.attributeLabel}}"><div class="attribute">{{localizeabbr item.attributeLabel}}</div>
                         </td>
                         <td class="state">
                             {{#if item.isActive}}
-                                <a class="item-state" title="{{localize 'GEAR.ACTIVE'}}"><i class="fas fa-tshirt"></i></a>
+                                <a class="item-state" data-tooltip="{{localize 'GEAR.ACTIVE'}}"><i class="fas fa-tshirt"></i></a>
                             {{else if item.isEquipped}}
-                                <a class="item-state" title="{{localize 'GEAR.EQUIPPED'}}"><i class="fas fa-suitcase"></i></a>
+                                <a class="item-state" data-tooltip="{{localize 'GEAR.EQUIPPED'}}"><i class="fas fa-suitcase"></i></a>
                             {{else}}
-                                <a class="item-state" title="{{localize 'GEAR.OTHER'}}"><i class="fas fa-warehouse"></i></a>
+                                <a class="item-state" data-tooltip="{{localize 'GEAR.OTHER'}}"><i class="fas fa-warehouse"></i></a>
                             {{/if}}
                         </td>
                         <td class="button">
-                            <a class="item-control item-delete" title="{{localize "WEAPON.DELETEBUTTON"}}"><i class="fas fa-trash"></i></a>
+                            <a class="item-control item-delete" data-tooltip="{{localize "WEAPON.DELETEBUTTON"}}"><i class="fas fa-trash"></i></a>
                         </td>
                     </tr>  
                 {{/each}}
@@ -126,13 +126,13 @@
                             <th class="corruption">{{localizeabbr "ARTIFACT.CORRUPTION"}}</th>
                             <th class="state">{{localize "GEAR.STATE"}}</th>
                             <th class="addbutton">
-                                <!-- <a class="item-create" title="{{localize "ARTIFACT.ADDBUTTON"}}" data-type="artifact"><i class="fas fa-plus"></i></a> -->
+                                <!-- <a class="item-create" data-tooltip="{{localize "ARTIFACT.ADDBUTTON"}}" data-type="artifact"><i class="fas fa-plus"></i></a> -->
                             </td>
                         </tr>
                     </thead>
                     <tbody>
                         {{#each items as |item|}}
-                        {{#if item.data.isArtifact}}                        
+                        {{#if item.system.isArtifact}}                        
                         <tr class="artifact item" data-item-id="{{item.id}}">
                             <td class="name">
                                 <div class="cell">
@@ -144,24 +144,24 @@
                                 </div>
                                 </div>
                             </td>
-                            <td class="action" title="{{item.getArtifactActions}}">
+                            <td class="action" data-tooltip="{{item.getArtifactActions}}">
                                 <div class="action ellipsis">{{item.getArtifactActions}}</div>
                             </td>
-                            <td class="corruption" title="{{item.getArtifactCorruptions}}">
+                            <td class="corruption" data-tooltip="{{item.getArtifactCorruptions}}">
                                 <div class="corruption ellipsis">{{item.getArtifactCorruptions}}</div>
                             </td>
                             <td class="state">
-                                {{#if item.data.isActive}}
-                                    <a class="item-state" title="{{localize 'GEAR.ACTIVE'}}"><i class="fas fa-tshirt"></i></a>
-                                {{else if item.data.isEquipped}}
-                                    <a class="item-state" title="{{localize 'GEAR.EQUIPPED'}}"><i class="fas fa-suitcase"></i></a>
+                                {{#if item.system.isActive}}
+                                    <a class="item-state" data-tooltip="{{localize 'GEAR.ACTIVE'}}"><i class="fas fa-tshirt"></i></a>
+                                {{else if item.system.isEquipped}}
+                                    <a class="item-state" data-tooltip="{{localize 'GEAR.EQUIPPED'}}"><i class="fas fa-suitcase"></i></a>
                                 {{else}}
-                                    <a class="item-state" title="{{localize 'GEAR.OTHER'}}"><i class="fas fa-warehouse"></i></a>
+                                    <a class="item-state" data-tooltip="{{localize 'GEAR.OTHER'}}"><i class="fas fa-warehouse"></i></a>
                                 {{/if}}
                             </td>
                             <td class="button">
-                                {{#if item.data.typeArtifact}}
-                                <a class="item-control item-delete" title="{{localize "ARTIFACT.DELETEBUTTON"}}"><i class="fas fa-trash"></i></a>
+                                {{#if item.system.typeArtifact}}
+                                <a class="item-control item-delete" data-tooltip="{{localize "ARTIFACT.DELETEBUTTON"}}"><i class="fas fa-trash"></i></a>
                                 {{/if}}
                             </td>                            
                         </tr>
@@ -183,15 +183,15 @@
                             <th class="quantity">{{localize "EQUIPMENT.QUANTITY_SHORT"}}</th>
                             <th class="state">{{localize "GEAR.STATE"}}</th>
                             <th class="addbutton">
-                                <a class="item-create" title="{{localize "EQUIPMENT.ADDBUTTON"}}" data-type="equipment"><i class="fas fa-plus"></i></a>
+                                <a class="item-create" data-tooltip="{{localize "EQUIPMENT.ADDBUTTON"}}" data-type="equipment"><i class="fas fa-plus"></i></a>
                             </td>
                         </tr>
                     </thead>
                     <tbody>
                         {{#each items as |item|}}
-                        {{#if item.data.isEquipment}}                       
+                        {{#if item.system.isEquipment}}                       
                         <tr class="equipment item" data-item-id="{{item.id}}">
-                            <td class="name" title="{{item.name}}">
+                            <td class="name" data-tooltip="{{item.name}}">
                                 <div class="cell">
                                 <div class="namefield">
                                     <div class="image-container">
@@ -202,19 +202,19 @@
                                 </div>
                             </td>
                             <td class="quantity">
-                                <div class="quantity">{{item.data.data.number}}</div>
+                                <div class="quantity">{{item.system.number}}</div>
                             </td>
                             <td class="state">
-                                {{#if item.data.isActive}}
-                                    <a class="item-state" title="{{localize 'GEAR.ACTIVE'}}"><i class="fas fa-tshirt"></i></a>
-                                {{else if item.data.isEquipped}}
-                                    <a class="item-state" title="{{localize 'GEAR.EQUIPPED'}}"><i class="fas fa-suitcase"></i></a>
+                                {{#if item.system.isActive}}
+                                    <a class="item-state" data-tooltip="{{localize 'GEAR.ACTIVE'}}"><i class="fas fa-tshirt"></i></a>
+                                {{else if item.system.isEquipped}}
+                                    <a class="item-state" data-tooltip="{{localize 'GEAR.EQUIPPED'}}"><i class="fas fa-suitcase"></i></a>
                                 {{else}}
-                                    <a class="item-state" title="{{localize 'GEAR.OTHER'}}"><i class="fas fa-warehouse"></i></a>
+                                    <a class="item-state" data-tooltip="{{localize 'GEAR.OTHER'}}"><i class="fas fa-warehouse"></i></a>
                                 {{/if}}
                             </td>
                             <td class="button">
-                                <a class="item-control item-delete" title="{{localize "EQUIPMENT.DELETEBUTTON"}}"><i class="fas fa-trash"></i></a>
+                                <a class="item-control item-delete" data-tooltip="{{localize "EQUIPMENT.DELETEBUTTON"}}"><i class="fas fa-trash"></i></a>
                             </td>                            
                         </tr>
                         {{/if}}
@@ -226,16 +226,16 @@
         <div class="money foreground">
             <h1>{{localize "TITLE.MONEY"}}</h1>
             <div class="thaler">
-                <label for="{{id}}-data.money.thaler">{{localize "MONEY.THALER"}}</label>
-                <input id="{{id}}-data.money.thaler" name="data.money.thaler" type="number" value="{{data.money.thaler}}" data-dtype="Number" />
+                <label for="{{id}}-system.money.thaler">{{localize "MONEY.THALER"}}</label>
+                <input id="{{id}}-system.money.thaler" name="system.money.thaler" type="number" value="{{system.money.thaler}}" data-dtype="Number" />
             </div>
             <div class="shilling">
-                <label for="{{id}}-data.money.shilling">{{localize "MONEY.SHILLING"}}</label>
-                <input id="{{id}}-data.money.shilling" name="data.money.shilling" type="number" value="{{data.money.shilling}}" data-dtype="Number" />
+                <label for="{{id}}-system.money.shilling">{{localize "MONEY.SHILLING"}}</label>
+                <input id="{{id}}-system.money.shilling" name="system.money.shilling" type="number" value="{{system.money.shilling}}" data-dtype="Number" />
             </div>
             <div class="orteg">
-                <label for="{{id}}-data.money.orteg">{{localize "MONEY.ORTEG"}}</label>
-                <input id="{{id}}-data.money.orteg" name="data.money.orteg" type="number" value="{{data.money.orteg}}" data-dtype="Number" />
+                <label for="{{id}}-system.money.orteg">{{localize "MONEY.ORTEG"}}</label>
+                <input id="{{id}}-system.money.orteg" name="system.money.orteg" type="number" value="{{system.money.orteg}}" data-dtype="Number" />
             </div>
         </div>
     </div>

@@ -6,9 +6,7 @@ export const initializeHandlebars = () => {
 function preloadHandlebarsTemplates() {
   const templatePaths = [
     'systems/symbaroum/template/sheet/player.html',
-    'systems/symbaroum/template/sheet/player2.html',
     'systems/symbaroum/template/sheet/tab/player-main.html',
-    'systems/symbaroum/template/sheet/tab/player2-main.html',
     'systems/symbaroum/template/sheet/tab/player-gear.html',
     'systems/symbaroum/template/sheet/tab/player-bio.html',
     'systems/symbaroum/template/sheet/tab/player-note.html',
@@ -78,7 +76,7 @@ function registerHandlebarsHelpers() {
     return args.indexOf(false) === -1 ? options.fn(this) : options.inverse(this);
   });    
   Handlebars.registerHelper('keyIndex', function (str) {
-    return 'data.power.' + str + '.description';
+    return 'system.power.' + str + '.description';
   });
   Handlebars.registerHelper('addOne', function (v1) {
     let newOne = parseInt(v1) + 1;

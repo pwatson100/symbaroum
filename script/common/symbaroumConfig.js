@@ -15,7 +15,7 @@ export class SymbaroumConfig extends FormApplication {
     if (shown) {
       const title = game.i18n.localize('SYMBAROUM.OPTIONAL_CONFIG_MENULABEL');
 
-      $(`<button id="SymbaroumButton" data-action="symbaroumConfig" title="${title}">
+      $(`<button id="SymbaroumButton" data-action="symbaroumConfig" data-tooltip="${title}">
        <i class="fas fa-palette"></i> ${title}
      </button>`)
         .insertAfter('button[data-action="configure"]')
@@ -46,6 +46,7 @@ export class SymbaroumConfig extends FormApplication {
       titleBGChoice: game.settings.get('symbaroum', 'titleBGChoice'),
       editableChoice: game.settings.get('symbaroum', 'editableChoice'),
       noneditableChoice: game.settings.get('symbaroum', 'nonEditableChoice'),
+      chatBGChoice: game.settings.get('symbaroum', 'chatBGChoice'),
     };
     if (game.settings.get('symbaroum', 'charBGChoice') === 'none') {
       newData['charBGColour'] = game.settings.get('symbaroum', 'switchCharBGColour');
@@ -72,7 +73,11 @@ export class SymbaroumConfig extends FormApplication {
     } else {
       newData['noneditableColour'] = '#000000';
     }
-
+    if (game.settings.get('symbaroum', 'chatBGChoice').startsWith("#") ) {
+      newData['chatBGColour'] = game.settings.get('symbaroum', 'chatBGChoice');
+    } else {
+      newData['chatBGColour'] = '#burlywood';
+    }
     return foundry.utils.mergeObject(newData);
   }
 
@@ -83,6 +88,7 @@ export class SymbaroumConfig extends FormApplication {
     html.find('#titleBGImage').change((ev) => this._showColOption(ev, '#titleColPanel', titleBGImage.value));
     html.find('#editableImage').change((ev) => this._showColOption(ev, '#editableColPanel', editableImage.value));
     html.find('#nonEditableImage').change((ev) => this._showColOption(ev, '#noneditableColPanel', nonEditableImage.value));
+    html.find('#chatBGImage').change((ev) => this._showColOption(ev, '#chatColPanel', chatBGImage.value));
     html.find('button[name="resetPC"]').click(this.onResetPC.bind(this));
     html.find('button[name="resetNPC"]').click(this.onResetNPC.bind(this));
     html.find('button[name="resetTitle"]').click(this.onResetTitle.bind(this));
@@ -95,7 +101,8 @@ export class SymbaroumConfig extends FormApplication {
     document.getElementById('titleBGImage').value = game.settings.get('symbaroum', 'titleBGChoice');
     document.getElementById('editableImage').value = game.settings.get('symbaroum', 'editableChoice');
     document.getElementById('nonEditableImage').value = game.settings.get('symbaroum', 'nonEditableChoice');
-
+    document.getElementById('chatBGImage').value = game.settings.get('symbaroum', 'chatBGChoice').startsWith('#')?'none':game.settings.get('symbaroum', 'chatBGChoice');
+    
     if (game.settings.get('symbaroum', 'charBGChoice') === 'none') {
       document.getElementById('pcColPanel').style.display = 'block';
     }
@@ -111,6 +118,10 @@ export class SymbaroumConfig extends FormApplication {
     if (game.settings.get('symbaroum', 'nonEditableChoice') === 'none') {
       document.getElementById('noneditableColPanel').style.display = 'block';
     }
+    if (game.settings.get('symbaroum', 'chatBGChoice')?.startsWith("#")) {
+      document.getElementById('chatColPanel').style.display = 'block';
+    }
+
   }
 
   onResetPC() {
@@ -153,6 +164,7 @@ export class SymbaroumConfig extends FormApplication {
     game.settings.set('symbaroum', 'switchEditableColour', 'url(../asset/image/background/editable.webp)');
     game.settings.set('symbaroum', 'nonEditableChoice', 'url(../asset/image/background/not-editable.webp)');
     game.settings.set('symbaroum', 'switchNoNEditableColour', 'url(../asset/image/background/not-editable.webp)');
+    game.settings.set('symbaroum', 'chatBGChoice', 'url(../asset/image/background/editable.webp)');
     location.reload();
   }
 
@@ -162,6 +174,8 @@ export class SymbaroumConfig extends FormApplication {
     await game.settings.set('symbaroum', 'titleBGChoice', formData.titleBGImage);
     await game.settings.set('symbaroum', 'editableChoice', formData.editableImage);
     await game.settings.set('symbaroum', 'nonEditableChoice', formData.nonEditableImage);
+    await game.settings.set('symbaroum', 'chatBGChoice', formData.chatBGImage === 'none' ? formData.chatBGColour : formData.chatBGImage);
+    
 
     if (charBGImage.value === 'none') {
       if (formData.charBGColour.length > 0 && formData.charBGColour[0] != '#') {
@@ -207,6 +221,16 @@ export class SymbaroumConfig extends FormApplication {
       await game.settings.set('symbaroum', 'switchNoNEditableColour', formData.nonEditableImage);
     }
 
+    /*
+    if (chatBGImage.value === 'none') {
+      if (formData.chatBGColour.length > 0 && formData.chatBGColour[0] != '#') {
+        formData.chatBGColour = '';
+      }
+      await game.settings.set('symbaroum', 'chatBGChoice', formData.chatBGColour);
+    } else {
+      await game.settings.set('symbaroum', 'chatBGChoice', formData.chatBGImage);
+    }
+    */   
     location.reload();
   }
 

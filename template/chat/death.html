@@ -1,8 +1,9 @@
 <div class="symbaroum chat roll">
-    <div class="foreground border">
+    <div class="foreground">
         <h3>{{localize "CHAT.DEATH_ROLL" name=actor.name }}</h3>
         <div class="dice-roll dice-total">
             <div><h4>{{rollResult}}</h4></div>
+        </div>
         {{#if isCriticalSuccess}}
             <div>
                 <h4>{{localize "CHAT.CRITICAL_SUCCESS"}}</h4>
@@ -13,7 +14,7 @@
         {{else if isCriticalFailure}}
             <div><h4>{{localize "CHAT.DEAD"  name=actor.name }}</h4></div>
         {{else}}
-            <div><h4>{{localize "CHAT.NEAR_DEATH"  name=actor.name }} ({{nbrOfFailure}}/3) !</h4></div>
+            <div><h4>{{localize "CHAT.NEAR_DEATH"  name=actor.name }} ({{nbrOfFailure}}/3)</h4></div>
         {{/if}}
         <div class="dice-tooltip" style="display:none; text-align: center;">{{{diceBreakdown}}}</div>
     </div>

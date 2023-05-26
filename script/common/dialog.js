@@ -1,4 +1,4 @@
-import { getOwnerPlayer, rollAttribute, getAttributeLabel, createResistRollChatButton, rollDeathTest } from './roll.js';
+import { getOwnerPlayer, createResistRollChatButton, rollDeathTest } from './roll.js';
 import { buildRolls } from './item.js';
 
 let roll_defaults = {};
@@ -67,7 +67,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
   let targetTokens = Array.from(game.user.targets);
   let attri_mods = getVersusModifiers(targetTokens);
 	let attri_defaults = getRollDefaults(attributeName,armor !== null, weapon !== null, ecData);
-  let askImpeding = actor.data.data.combat.impeding !== 0 && weapon === null && armor === null;
+  let askImpeding = actor.system.combat.impeding !== 0 && weapon === null && armor === null;
   let weaponModifiers = null;
   let askTargetAttribute = ecData.askTargetAttribute ?? false;
   let askIgnoreArmor = ecData.askIgnoreArmor ?? false;
@@ -90,7 +90,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
     askTargetAttribute = targetTokens.length > 0;
   }
   if(weapon !== null) {
-    weaponModifiers = foundry.utils.deepClone(actor.data.data.combat.combatMods.weapons[weapon.id]); // All modifiers needed
+    weaponModifiers = foundry.utils.deepClone(actor.system.combat.combatMods.weapons[weapon.id]); // All modifiers needed
     // Create any radio box alternatives from weaponModifiers
     createLineDisplay(weaponModifiers, attackFromPC);
     weaponDamage = attackFromPC ? weapon.damage.base : weapon.damage.npcBase;
@@ -99,7 +99,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
       ecData.alternativeDamageAttribute = weapon.damage.alternativeDamageAttribute;
       ecData.ignoreArm = true;
       ecData.isMystical = true;
-      weaponDamage += " ("+getAttributeLabel(actor, ecData.alternativeDamageAttribute)+")";
+      weaponDamage += " ("+game.symbaroum.api.getAttributeLabel(actor, ecData.alternativeDamageAttribute)+")";
     }
     if(game.settings.get('symbaroum', 'combatAutomation')){
       askAttackNb = weaponModifiers.maxAttackNb > 1;
@@ -124,7 +124,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
   });
 
   let dialog = new CombatDialog({
-    title: getAttributeLabel(actor, attributeName),
+    title: game.symbaroum.api.getAttributeLabel(actor, attributeName),
     content: html,
     buttons: {
       roll: {
@@ -160,7 +160,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
           if(advantage){
               ecData.modifier += 2;
               ecData.autoParams += game.i18n.localize('DIALOG.ADVANTAGE') + ", ";
-              if(ecData.askBackstab && ecData.actor.data.data.attributes.discreet.total > ecData.actor.data.data.attributes[ecData.castingAttributeName].total){
+              if(ecData.askBackstab && ecData.actor.system.attributes.discreet.total > ecData.actor.system.attributes[ecData.castingAttributeName].total){
                   ecData.castingAttributeName = "discreet";
               }
           }
@@ -225,7 +225,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
                     ecData.modifier += member.modifier;
                     ecData.autoParams += ", "+member.label;
                   }
-                  else if(member.type == game.symbaroum.config.STATUS_DOT) {
+                  else if(ecOn && member.type == game.symbaroum.config.STATUS_DOT) {
                     let dotime = Object.assign({}, member);
                     ecData.damageOverTime.push(dotime)
                   }
@@ -271,7 +271,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
                     }
                     else if(member.type == game.symbaroum.config.TYPE_ATTRIBUTE) {
                       let replacementAttribute = member.attribute;
-                      if(actor.data.data.attributes[attributeName].total < actor.data.data.attributes[replacementAttribute].total)
+                      if(actor.system.attributes[attributeName].total < actor.system.attributes[replacementAttribute].total)
                       {
                         attributeName = replacementAttribute;
                         ecData.castingAttributeName = replacementAttribute;
@@ -298,7 +298,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
               }
             }
           }
-                    
+
           let favours = html.find("input[name='favour']");
           let fvalue = 0;
           for ( let f of favours) {						
@@ -310,7 +310,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
 
           if(askImpeding){
             if(html.find("#impeding")[0].checked){
-              modifier = modifier - actor.data.data.combat.impeding;
+              modifier = modifier - actor.system.combat.impeding;
               ecData.modifier += -ecData.impeding;
               ecData.autoParams += game.i18n.localize("ARMOR.IMPEDINGLONG") + ", ";
             }            
@@ -354,8 +354,8 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
                 ecData.resistRollText = (weapon !== null) ? ecData.targetData.name+game.i18n.localize('COMBAT.DEFENSE_ROLL') : ecData.targetData.name+game.i18n.localize('ABILITY.RESIST_ROLL');
                 let userArray = await getOwnerPlayer(ecData.targetData.actor);
                 if(userArray.length>0 && game.settings.get('symbaroum', 'playerResistButton')){
-                    ecData.targetUserId=userArray[0].data._id;
-                    ecData.targetUserName=userArray[0].data.name;
+                    ecData.targetUserId=userArray[0].id;
+                    ecData.targetUserName=userArray[0].name;
                     createResistRollChatButton(ecData);
                 }
                 else{
@@ -368,7 +368,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
             }
           }
           else{
-            await rollAttribute(actor, attributeName, getTarget(), targetAttributeName, favour, modifier, armor, weapon, advantage, damModifier);
+            await game.symbaroum.api.rollAttribute(actor, attributeName, getTarget(), targetAttributeName, favour, modifier, armor, weapon, advantage, damModifier);
           }
         },
       },
@@ -424,15 +424,15 @@ function getVersusModifiers(targetTokens) {
   return {
     show: game.settings.get('symbaroum', 'showModifiersInDialogue'),
     custom:0,
-    defense: (10 - targetTokens[0].actor.data.data?.combat.defense),
-    accurate: (10 - targetTokens[0].actor.data.data?.attributes.accurate.total),
-    cunning: (10 - targetTokens[0].actor.data.data?.attributes.cunning.total),
-    discreet: (10 - targetTokens[0].actor.data.data?.attributes.discreet.total),
-    persuasive: (10 - targetTokens[0].actor.data.data?.attributes.persuasive.total),
-    quick: (10 - targetTokens[0].actor.data.data?.attributes.quick.total),
-    resolute: (10 - targetTokens[0].actor.data.data?.attributes.resolute.total),
-    strong: (10 - targetTokens[0].actor.data.data?.attributes.strong.total),
-    vigilant: (10 - targetTokens[0].actor.data.data?.attributes.vigilant.total),
+    defense: (10 - targetTokens[0].actor.system?.combat.defense),
+    accurate: (10 - targetTokens[0].actor.system?.attributes.accurate.total),
+    cunning: (10 - targetTokens[0].actor.system?.attributes.cunning.total),
+    discreet: (10 - targetTokens[0].actor.system?.attributes.discreet.total),
+    persuasive: (10 - targetTokens[0].actor.system?.attributes.persuasive.total),
+    quick: (10 - targetTokens[0].actor.system?.attributes.quick.total),
+    resolute: (10 - targetTokens[0].actor.system?.attributes.resolute.total),
+    strong: (10 - targetTokens[0].actor.system?.attributes.strong.total),
+    vigilant: (10 - targetTokens[0].actor.system?.attributes.vigilant.total),
   };
 }
 

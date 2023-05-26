@@ -1,6 +1,8 @@
 // Namespace Configuration Values
 export const SYMBAROUM = {};
 
+SYMBAROUM.namespace = 'symbaroum',
+
 SYMBAROUM.attributes = [
     "accurate",
     "cunning",
@@ -411,7 +413,7 @@ SYMBAROUM.scriptedAbilities =
  "anathema", "brimstonecascade", "bendwill", "blackbolt", "blessedshield",
  "confusion", "curse", "dancingweapon", "entanglingvines", "flamewall", "holyaura", "inheritwound", "larvaeboils", "layonhands",
  "levitate", "maltransformation", "mindthrow", "priosburningglass", "tormentingspirits", "unnoticeable",
- "poisonous", "regeneration", "shapeshifter", "wisdomages"];
+ "poisonous", "regeneration", "shapeshifter", "wisdomages", "witchhammer"];
 
 SYMBAROUM.steadFastNovResistList = [
     "drainingglyph",
@@ -446,6 +448,17 @@ SYMBAROUM.rapidReflexesResistList = [
     "deadlybreath"
 ];
 
+SYMBAROUM.monsterTraitLevels = {
+    0: "ABILITY.NOT_LEARNED",
+    1: "I",
+    2: "II",        
+    3: "III"
+}
+
+SYMBAROUM.systemTraits = [
+    "nopainthreshold",
+    "thoroughlycorrupt"
+]
 
 //combat mod types
 SYMBAROUM.TYPE_ALTERNATIVE_DAMAGE = "alternative_damage";
@@ -530,9 +543,14 @@ SYMBAROUM.CHAIN_NOT = "chainnot";  //the power can't do chain effect
 
 //Resisting
 SYMBAROUM.TYPE_DMG_AVOIDING = "dmgavoiding"; // damage reduction like in rapid reflexes
+SYMBAROUM.TYPE_ALT_RESIST_ATTR_RESOLUTE = "altresistatt"; //Alt resist attribute against mental alterations
 
 //Healing
 SYMBAROUM.TARGET_TOKEN = "targettoken";
 SYMBAROUM.ACTING_TOKEN = "actingtoken";
 
 SYMBAROUM.SYSTEM_MACRO_FOLDER = "Symbaroum System Macros";
+
+SYMBAROUM.HOOKS = {
+    symbaroumItemModifiersSetup: "symbaroumItemModifiersSetup"
+}

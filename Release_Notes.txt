@@ -242,3 +242,48 @@ Version 3.1.8
 - added a french macro for hidden Vigilant rolls
 - some modifications for foundry v10 compatibility
 - various translations it, es, de...
+
+Version 4.0.0
+- Support for Foundry v10 (#493, #494, #495, #502, #505, #506, #513)
+- Added multiple tours - see @Tour[settings-tour]{Symbaroum configuration guide}
+- Refactured the compendiums into adventures for easier management and less busy data
+- General cleanup & css fixes (#505, #451, #531) - thank you yjeroen for some of the css
+- Lessened the abruptness of the death sequence (#546)
+- Minor fixes (#528, #530)
+- The equipment type "Artifact" is now removed. Please use the artifact button instead (#417)
+- Fix to inherit wounds (#499 - thanks Lasenist)
+- Send to chat fixes and homogenising chat output
+- Item sorting order
+- Manifest updates for v10 with v9 support
+- A couple of text enrichers added (@Tour + @SymbaroumActor)
+- Migrated to v10 tooltips (thanks Lasenist for assistance)
+- Extra wide Symbaroum Journal
+- Ability fixes (witchammer, staff fighting, sword saint, knife play)
+
+Version 4.0.1
+Fixed error with fonts. 
+
+
+Version 4.0.3
+- Fixed macro issues for attributes & Abilities
+- Fixed actor links not correctly created on prototype token #570
+
+Version 4.1.0
+- Added support for API calls for Foundry
+- Added support for Hooks - currently only a single event
+- Cleaned up some of the depedencies
+- Fixed prototypeToken configuration
+- Fixed disadvantage for non-EC
+- Removed errorounous bracket in dialogue
+- Witch sight fix
+- Tooltip fixes
+- German Updates (thanks Padraig359)
+- Added enrichers
+
+Version 4.1.1
+
+- Fixed issue #595 with the german translation fields
+
+Version 4.1.2
+
+- Fixed issued #598

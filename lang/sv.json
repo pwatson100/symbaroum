@@ -1,4 +1,5 @@
 {
+  "ABILITY.HEADER": "Ability",
   "ABILITY.NAME": "Namn",
   "ABILITY.REFERENCE": "Referens",
   "ABILITY.ACTIVE": "Aktiv",
@@ -120,14 +121,14 @@
   "ABILITY_WITCHSIGHT.CHAT_INTRO": "{actorname} försöker urskilja skuggorna.",
   "ABILITY_WITCHSIGHT.CHAT_SUCCESS": "{actorname} genomborrar skuggornas slöja.",
   "ABILITY_WITCHSIGHT.CHAT_FAILURE": "{actorname} kan inte urskilja skuggorna.",
-  "ABILITY_WITCHSIGHT.CHAT_FINAL1": "Färgen på skuggan hos {targetname} är: ",
+  "ABILITY_WITCHSIGHT.CHAT_FINAL": "Färgen på skuggan hos {targetname} är: {targetshadow}",
 
   "ABILITY.NOVICE":"Novis",
   "ABILITY.ADEPT":"Gesäll",
   "ABILITY.MASTER":"Mästare",
   "ABILITY.NOT_LEARNED":"Ej inlärd",
   "ABILITY.ROLL_RESULT": "Tärningsslag resultat : ",
-  "ABILITY.SECOND_ROLL_RESULT": "Rare critical dice roll result : ",
+  "ABILITY.SECOND_ROLL_RESULT": "Sällsynt kritiskt tärningsslag - resultat:",
   
   "ACTION.ACTIVE": "Aktiv",
   "ACTION.FREE": "Fri",
@@ -142,7 +143,7 @@
 
   "ARMOR.NAME": "Namn",
   "ARMOR.NOARMOR_NAME":"Utan bepansring",
-  "ARMOR.SKIN": "Skin/Hide (No base protection)",
+  "ARMOR.SKIN": "Hud/skinn (inget basskydd)",
   "ARMOR.PROTECTION": "Bepansring",
   "ARMOR.PROTECTIONABBR": "Skydd",  
   "ARMOR.PROTECTION_SHORT": "Skydd",
@@ -417,6 +418,7 @@
   "HEALTH.TOUGHNESS_TOTAL": "Totalt",
   "HEALTH.TOUGHNESS_THRESHOLD": "Smärtgräns",
   "HEALTH.TOUGHNESS_THRESHOLD_MAX": "Smärtgräns",
+  "HEALTH.TOUGHNESS_THRESHOLD_FULL": "Smärtgräns",
   "HEALTH.CORRUPTION": "Korruption",
   "HEALTH.CORRUPTION_CURRENT": "Nuvarande",
   "HEALTH.CORRUPTION_TEMPORARY": "Temporär",
@@ -425,6 +427,7 @@
   "HEALTH.CORRUPTION_THRESHOLD": "Tröskel",
   "HEALTH.CORRUPTION_THRESHOLD_MAX": "Korruptionströskel",
   "HEALTH.CORRUPTION_MAX": "Förstyggelse",
+  "HEALTH.CORRUPTION_THROUGHLY": "thoroughly corrupt",
     
   "INITIATIVE.TITLE": "Initiativ",
   "INITIATIVE.EXPLANATION": "Initiativ visas som [initiativ-karaktärsdrag.vaksam]",
@@ -610,6 +613,11 @@
   "POWER_TORMENTINGSPIRITS.CHAT_SUCCESS":"{actorname} åkallar andar kring {targetname}.",
   "POWER_TORMENTINGSPIRITS.CHAT_FAILURE":"{actorname} misslyckas med sin andeåkallan.",
 
+  "POWER_WITCHHAMMER.CHAT_ACTIVATE": "{actorname}'s vapen flammar upp med helig eld .",
+  "POWER_WITCHHAMMER.CHAT_DESACTIVATE": "{actorname}'s vapen slutar brinna.",
+  "POWER_WITCHHAMMER.CHAT_RESULT_DESACTIVATE": "Vapenegenskaper återgår till normala.",
+  "POWER_WITCHHAMMER.CHAT_RESULT": "Bonusskada för Häxhammare kommer vara tillgängliga i stridsdialogfönstret.",
+
   "QUALITY.AREAMRR": "Ytverkande - Närstidsradie",
   "QUALITY.AREASRR": "Ytverkande - Kort radie", 
   "QUALITY.AREAC": "Ytverkande - Kon",
@@ -643,6 +651,9 @@
   "QUALITY.POISON": "Giftdrypande",
   "QUALITY.THUNDERING": "Dundrande",
   "QUALITY.RETRIBUTIVE": "Vedergällande",
+  "QUALITY.KNIFEPLAY_COMP": "Kompatibel med Knivgöra",
+  "QUALITY.STAFFFIGHTING_COMP": "Kompatibel med Stavkamp",
+  "QUALITY.SWORDSAINT_COMP": "Kompatibel med Svärdshelgon",
 
   "RITUAL.TRADITION": "Tradition",
   "RITUAL.DESCRIPTION": "Beskrivning",
@@ -665,7 +676,7 @@
 
   "TITLE.ABILITIES_POWERS": "FÖRMÅGOR & KRAFTER",
   "TITLE.HEALTH": "HÄLSA",
-  "TITLE.ATTRIBUTES": "ATTRIBUT",
+  "TITLE.ATTRIBUTES": "Attribut",
   "TITLE.COMBAT": "STRID",
   "TITLE.NOTES": "ANTECKNINGAR",
   "TITLE.ARMORS": "BEPANSRING",
@@ -680,8 +691,10 @@
   "TITLE.POWER": "KRAFT",
   "TITLE.MONEY": "PENGAR",
   "TITLE.QUALITIES":"KVALITETER",
+  "TITLE.SPECIALQUALITIES":"KOMPATIBILITET FÖRMÅGOR",
 
   "TOOLTIP.BONUS_TOTAL": "Totalt",
+  "TOOLTIP.DEATH_SKULLS": "Death is reached at 3 skulls",
 
   "TOOLTIP.EXPERIENCE_CURRENT": "Tillgängliga erfarenhetspoäng",
   "TOOLTIP.EXPERIENCE_TOTAL": "Alla intjänade erfarenhetspoäng",
@@ -707,6 +720,7 @@
   "TOOLTIP.DELETE_ABILITY" : "Radera förmåga",
   "TOOLTIP.POWER_ACTIONS" : "Typ av aktivering (A - Aktiv, P - Passiv, S - special, etc)",
 
+  "TRAIT.HEADER": "Traits",
   "TRAIT.NAME": "Namn",
   "TRAIT.ACTIVE": "Aktiv",
   "TRAIT.ACTION": "Handling",

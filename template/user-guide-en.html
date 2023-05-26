@@ -16,22 +16,25 @@
         It is assumed that the people using this system for Foundry VTT are in possession of the Symbaroum rulebooks or purchased the Free League foundry modules.
     </p>
     <br>
-    <h1>Change history for latest version</h1>
+    <h1>Change history for v10</h1>
     <p>
         <ul>
-            <li>Enhanced user experience - drag-n-drop for abilities and attributes to the macro bar #162</li>
-            <li>Enhanced user experience - reduced the number of system compendiums to those relevant to the language #459</li>
-            <li>Bug Fix for survival instinct & stackable protection #445</li>
-            <li>Bug Fix for clicking the die-icon on a characters item sheet #462</li>
-            <li>Bug Fix for stackable armor #460</li>
-            <li>Bug Fix for spent exp not updating when deleting abilities/powers #446</li>
-            <li>Bug Fix for balanced quality #447</li>
+            <li>Added support for API calls for Foundry></li>
+            <li>Added support for Hooks - currently only a single event</li>
+            <li>Cleaned up some of the depedencies</li>
+            <li>Fixed prototypeToken configuration</li>
+            <li>Fixed disadvantage for non-EC</li>
+            <li>Removed errorounous bracket in dialogue</li>
+            <li>Witch sight fix</li>
+            <li>Tooltip fixes</li>
+            <li>German Updates (thanks Padraig359)</li>
+            <li>Added enrichers</li>
         </ul>
     </p>
 
     <h1>Creating Characters</h1>
     <p>
-        To create a character, go to the Actor and click&nbsp;<em>Create Actor.</em>&nbsp;
+        To create a character, go to the Actor and click&nbsp;<em>Create Actor.</em>&nbsp; (see @Tour[charactersheet-tour]{Character tour (GM)} / @Tour[charactersheet-tour]{Character tour (Player)} ). Note that the player tour required GM to finish his first.
         It will then prompt you for a name of the actor and what type it is, either&nbsp;<em>player<strong>&nbsp;</strong></em>or&nbsp;<em>monster</em>.
         Once it has been selected, it shows a Character sheet where details of the character can be filled in.&nbsp;
         Items such as character name and race can be filled in, as well as the experience it has and how much of it that has been spent on re-rolls or binding to artifacts, how much has been spent on abilities and traits and finally how much is unspent.
@@ -65,7 +68,7 @@
     <p>
         Please note that this System Module does not contain the details about these abilities, traits, boons and burdens and it is advised that the Game Master sets them up in advance.
         <br>
-        There is a Compendium with the names of these in multiple languages that is recommended for use.
+        There is an Adventure Compendium that contains assets in multiple languages that is recommended for use. See @Tour[acompendium-tour]{System Adventure Compendium}
         <br><br>
         To add an ability, trait, boon or burden, the player drags them from the Item's selection to the Abilities &amp; Powers section of the character sheet.
         <br>
@@ -86,7 +89,7 @@
 
     <h1>Weapons and Armor</h1>
     <p>
-        Pre-configured weapons and armors are available in compendiums. We recommand you use them. Just find the compendiums corresponding to your langage in the compendium tab, and select "import".
+        Pre-configured weapons and armors are available in the Adventure compendiums. We recommand you use them. Just find the adventure corresponding to your language in the Adventure compendium tab, and select "import".
         <br>
         To create an armor or weapon, select the tab&nbsp;<em>GEAR</em>&nbsp;on the character sheet.
         There is a&nbsp;<strong>+</strong>&nbsp;at the end of the tables for armor and weapons which when clicked, will create new armor or weapon and details about can be filled in.
@@ -224,7 +227,7 @@
     </p>
     <h3><strong>Shield fighter, Staff fighting, Steel throw, Natural warrior, Natural weapon</strong></h3>
     <p>
-        Damage value of the weapon will be increased, and/or defense value. Please note that the extra bonus of Staff fighting when using a wooden staff or a mystic staff isn't included (please add +1 defense in the bonus tab of the relevant weapons).
+        Damage value of the weapon will be increased, and/or defense value.
     </p>
     <h3><strong>Man-at-arms, Armored, Armored Mystic, Robust, Survival instinct</strong></h3>
     <p>
@@ -239,6 +242,10 @@
     <p>
         When using Enhanced Combat option, having those abilities or traits and using the right weapon type will make specific options available in the attack window.
     </p>
+    <h3><strong>Knife Play, Staff fighting, Sword saint</strong></h3>
+    <p>
+        Those traits activate when the character wields special weapons. In order for the bonuses to appear on the character sheet, the corresponding compatibilities must be checked in the "qualities" tab of the weapon sheet.
+    </p>
     <br><br>
 
     <h1>Using Powers</h1>
@@ -247,15 +254,15 @@
         <br>
         &nbsp;<span class="img11">&nbsp;</span>&nbsp;
         <br>
-        Power activation is a WIP. <br>
-        For now, only those active powers are supported: <br>
-        Anathema,&nbsp;blessed shield, brimstone cascade,&nbsp;bend will,&nbsp;black bolt,&nbsp;confusion,&nbsp;curse,&nbsp;dancing weapon,&nbsp;entangling vines,&nbsp;holy aura,&nbsp;inherit wound,&nbsp;larvae boils,&nbsp;lay on hands,&nbsp;levitate,&nbsp;maltransformation,&nbsp;Prios burning glass,&nbsp;tormenting spirits,&nbsp;unnoticeable
+        Many powers, abilities and traits have been automatized. Using a power this way will calculate damage / healing on the target, generated corruption, etc. <br>
+        Powers: <br>
+        Anathema,&nbsp;blessed shield, brimstone cascade,&nbsp;bend will,&nbsp;black bolt,&nbsp;confusion,&nbsp;curse,&nbsp;dancing weapon,&nbsp;entangling vines,&nbsp;holy aura,&nbsp;inherit wound,&nbsp;larvae boils,&nbsp;lay on hands,&nbsp;levitate,&nbsp;maltransformation,&nbsp;Prios burning glass,&nbsp;tormenting spirits,&nbsp;unnoticeable,&nbsp;witch hammer
         <br>
-        the abilities:
+        Abilities:
         <br>
         Alchemy,&nbsp;acrobatics,&nbsp;berserker,&nbsp;dominate,&nbsp;leader,&nbsp;loremaster,&nbsp;medicus,&nbsp;poisoner,&nbsp;quickdraw,&nbsp;recovery,&nbsp;witchsight.
         <br>
-        the traits:
+        Traits:
         <br>
         Poisonous,&nbsp;Regeneration,&nbsp;Shapeshifter,&nbsp;Wisdom of the ages.
         <br><br>
@@ -309,7 +316,7 @@
     <p>If no target are selected, the spell will be cast on self. If a target is selected and level is adept or master, the power will be cast on the target.
     </p>
     <h3><strong>Leader</strong></h3>
-    <p>When using leader, it will trigger the adept level effect: the target will receive a "targeted" status effect. When any character attacks this target, damage will receive a +1d4 bonus (or +2 if attack from a NPC). Just delete the status effect on the token to remove the effect.</p>
+    <p>Using leader will trigger the adept level effect: the target will receive a "targeted" status effect. When any character attacks this target, damage will receive a +1d4 bonus (or +2 if attack from a NPC). Just delete the status effect on the token to remove the effect.</p>
     <br><br>
 
     <h1>Combat</span></h1>
@@ -352,11 +359,18 @@
     <h2>Enhanced Combat:</h2>
     <p>
         Enhanced combat can be activated by selecting the option in the system settings. The purpose of EC is to accelerate combat, limit Players and GM fidgeting with character sheets, and vastly simplify NPC management.
+        <br />
+        The main functionnalities of EC are:
+        <ul>
+            <li>Process attacks by integrating relevent attacker and defender abilities, traits, items...</li>
+            <li>Automaticaly calculate attack result (damage, corruption, status effects, alternative damage) and apply them on the target</li>
+            <li>Offer to process multiple attacks in one click</li>
+        </ul>
+        When using EC option with token-action-hub module, a GM can play a whole combat without opening sheets. Vastly limiting fidgeting with sheets, checking NPC abilities and calculating stuff, EC will simplify and accelerate the technical part of managing combat so you can focus on story, descriptions and roleplay.
     <p>
         <a href="https://youtu.be/P615_E_GpLQ">This quick video</a> explains how to use the enhanced combat features.
     </p>
     <br><br>
-    <strong>it is still a Work in Progress. Not every passive abilities have been integrated.</strong><br><br>
     Armor and weapons have to be equipped by the PCs and NPCs in order to be taken in account.<br>
     It automaticaly processes the attributes, traits&nbsp; and abilities of the attacker and its target, rolls the dice, evaluate damage.<br><br>
     The attribute used for attacking has to be defined on the weapon sheet. The defense attribute has to be selected on the character sheet. PCs and NPCs armors and weapons value have to be entered as 'dice' (for example a sword damage value would be 1d8 - the system will automaticaly transform this value to a fixed 4 when a NPC attacks a PC)
@@ -364,11 +378,16 @@
     If a player character attacks a NPC, the player has to select its target, then click on a weapon to do the attack.
     If a NPC attacks a PC, the GM select the target, then clicks on the NPC weapon.
     <br><br>
-    A dialog window will appear, asking which abilities of the attacker to use (iron fist, hunter's instinct...).
+    A dialog window will appear, asking which active or contextual abilities of the attacker are to be used (iron fist, hunter's instinct...).
     <br>
     &nbsp;<span class="img21">&nbsp;</span>&nbsp;
     <br>
-    Then the attack roll is made, and if it's a hit, damage is roll. Result is printed in the chat. If it's an NPC attack against a PC, then the damage is fixed and the armor is rolled, as per the rules - please note the Player don't have to initiate the defense and armor roll (but see the "resist roll button" option).
+    Then the attack roll is made, and if it's a hit, damage is roll. Result is printed in the chat.<br />
+    Please note that, even if it's always the attacker that initiates the attack and choose wich abilies he uses, the roll is done from the player's perspective: 
+    <ul><li>PC attacks NPC: the roll is made against attack modifed by defense. If success, damage is rolled and fixed protection is substracted.</li>
+        <li>NPC attacks PC: the roll is made against defense modifed by attack. If failure, protection is- rolled than substracted from fixed damage.</li>
+        <li>NPC attacks NPC or PC attacks PC: the roll is made against attack modifed by defense. If success, damage is rolled and fixed protection is substracted.</li>
+    </ul>
     <br>
     &nbsp;<span class="img22">&nbsp;</span>&nbsp;
     <br>
@@ -383,6 +402,7 @@
     The "Undead", "Spirit form" and "swarm" traits will apply damage reduction. Remember to check the "magical" quality box on artifact weapons, so their damage will be evaluated as such.
     <br>
     Alternative damage will reduce the relevant attribute (it will use the "modifier" field of the attribute sheet.)
+    <br />Please note that damage over time (poison, bleeding, burning) is calculated but not applied by the system. That kind of damage have to be manualy modified on the character. Only the relevant status icon will be applied on the token.
     </p>
     <br><br>
 
@@ -426,9 +446,15 @@
         <br/>
         In case of one or more failed death rolls, skulls appears on the portrait of the character sheet, 1 skull for 1 failure, 2 skulls for 2 failures and 3 skulls for the final failure.  The skulls are removed as soon as the person <i>recover</i>.
     </p>
+    <h1>Text Enrichers</h1>
+    <p>
+        Two text enrichers exists within the system, @Tour and @SymbaroumActor. 
+        <br>The Tour command requires a tourId in brackets [] followed by display name in curly brackets {}.
+        <br>The SymbaroumActor command requires an actor-name in [] and optional display name in {} and optional comma separated list of integrated abilities</br>
+    </p>
     <h1>System settings</h1>
     <p>
-        The following system settings exist - you can turn on and of to your hearts content or as you see fit for running your campaign.
+        The following system settings exist (see @Tour[settings-tour]{Symbaroum configuration guide}) - you can turn on and of to your hearts content or as you see fit for running your campaign.
         <br>
         <b>Configure Symbaroum Settings</b><br>
         This is a user setting which allows some modification of sheet backgrounds and colorations (see below). <br>
@@ -465,10 +491,10 @@
         <br>
         <b>Allow reference modifications</b><br>
         Only shows for GM and shows a reference field on abilities, traits, etc. This reference is used for the automation of abilities. <br>
-        <b>Suppress Iniatiative Rolls</b><br>
-        While Symbaroum do not roll for iniatiative, the system has to do so for the tie breaker. This just turns of the visibility of this roll from chat. <br>
-        <b>Manually select iniatiative</b><br>
-        Allows manual selection of the iniatiative attribute.<br>
+        <b>Suppress initiative Rolls</b><br>
+        While Symbaroum do not roll for initiative, the system has to do so for the tie breaker. This just turns of the visibility of this roll from chat. <br>
+        <b>Manually select initiative</b><br>
+        Allows manual selection of the initiative attribute.<br>
         <b>Add Symbaroum Settings button</b><br>
         This adds a Symbaroum setting button under the Foundry Configuration sidebar<br>
 
@@ -544,7 +570,7 @@
         The developers of the Symbaroum for Foundry system would like to thank everyone that contributes to the system. This includes our fantastic translators for the various languages that Symbaroum now supports. Our current translators are:<br/>
         <ul>
             <li>French - Khaali</li>
-            <li>German - DasTorfu</li>
+            <li>German - DasTorfu,Padraig359</li>
             <li>Spanish - kufferino</li>
             <li>Italian - Surcof</li>
             <li>Swedish - Weymyss, Krister Persson</li>
@@ -554,7 +580,6 @@
     <br><br>
     <h1>Supported Modules</h1>
     <p><a href="https://foundryvtt.com/packages/dice-so-nice/">Dice-so-nice</a>
-    <br/>Please note that Symbaroum requires DsN 4.2.2 or higher. There is also a <a href="https://gitlab.com/riccisi/foundryvtt-dice-so-nice/-/issues/266">known bug</a> that occurs when "Display Chat messages immediatly" is selected</p>
-    <p><a href="https://foundryvtt.com/packages/statuscounter/">Status icons counters</a></p>
     <p><a href="https://foundryvtt.com/packages/token-action-hud/">Token action hud</a></p>
+    <p>Note that Token Action Hud have an issue with "No armor" - solution is to create a skin-armor</p>
 </div>

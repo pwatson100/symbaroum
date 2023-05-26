@@ -112,6 +112,24 @@
       <input id="noneditableColPanel-ColourSelector" type="color" name="ColourSelector" value="{{noneditableColour}}" data-edit="noneditableColour" />
     </div>
 
+    <hr>    
+    <div class="form-group">
+      <label for="chatBGImage">{{localize 'SYMBAROUM.OPTIONAL_CHAT_BG_IMGS'}}</label>
+      <select name="chatBGImage" id="chatBGImage">
+        <option value="url(../asset/image/background/editable.webp)">{{localize 'SYMBAROUM.OPTIONAL_DEFAULT_IMAGE'}}</option>
+        <option value="url(../asset/image/background/new-editable.webp) repeat">{{localize 'SYMBAROUM.OPTIONAL_NEW_LIGHTER'}}</option>
+        <option value="url(/ui/parchment.jpg) repeat">{{localize 'SYMBAROUM.OPTIONAL_FOUNDRY_DEFAULT'}}</option>
+        <option value="none">{{localize 'SYMBAROUM.OPTIONAL_COLOR_PICKER'}}</option>
+      </select>
+    </div>
+
+    <div style="display:none" id="chatColPanel">
+      <input type="hidden" name="chatBGColour" value="{{chatBGColour}}" id="chatBGColour" data-dtype="String" />
+      <label for="chatColPanel-ColourSelector">{{localize 'SYMBAROUM.OPTIONAL_CHAT_COLOUR_SELECTOR'}}</label>
+      <input id="chatColPanel-ColourSelector" type="color" name="ColourSelector" value="{{chatBGColour}}" data-edit="chatBGColour" />
+    </div>
+
+    <hr>    
     <p><i style="font-size: smaller">{{localize "SYMBAROUM.OPTIONAL_RESET_NOTE"}}</i></p>
 
     <div class="form-group buttons-save">

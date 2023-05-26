@@ -6,8 +6,7 @@
     top: -50px;
     left: calc(50% - 100px);
     opacity: 0.7;
-    -webkit-animation: rotation 10s infinite linear;
-    animation: rotation 10s infinite linear;
+    --fa-animation-duration: 10s;
   }
   h3 {
     font-family: var(--font-text);
@@ -15,3 +14,26 @@
     text-shadow: 0px 3px 5px rgba(0, 0, 0, 1);
   }
 }
+
+.chat-message {
+  background: var(--chat-background);
+}
+
+// override the V2 Journal stuff
+// .journal-sheet .journal-sheet-container {
+//   //   grid-template-columns: unset;
+//   width: auto;
+// }
+
+// // Not using this one at present.
+// // .journal-sheet nav {
+// //   display: none;
+// // }
+
+// article header {
+//   display: none;
+// }
+
+// .journal-sheet form .journal-entry-pages {
+//   width: inherit;
+// }

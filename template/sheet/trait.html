@@ -2,7 +2,7 @@
     <div class="trait">
         <div class="sheet-header foreground border">
             <div class="avatar">
-                <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+                <img class="profile-img" src="{{item.img}}" data-edit="img" data-tooltip="{{item.name}}"/>
             </div>
             <div class="wrapper-column">
                 <div class="name">
@@ -11,8 +11,8 @@
                 </div>
                 {{#ifat symbaroumOptions.isGM symbaroumOptions.allowShowReference }}
                 <div class="name">
-                    <label for="{{id}}-data.reference">{{localize "ABILITY.REFERENCE"}}</label>
-                    <input id="{{id}}-data.reference" name="data.reference" type="text" value="{{data.reference}}"/>
+                    <label for="{{id}}-system.reference">{{localize "ABILITY.REFERENCE"}}</label>
+                    <input id="{{id}}-system.reference" name="system.reference" type="text" value="{{system.reference}}"/>
                 </div>
                 {{/ifat}}                
             </div>
@@ -23,21 +23,21 @@
 
         <div class="sheet-tabs tabs" data-group="primary">
             <b class="item" data-tab="description">{{localize "TAB.DESCRIPTION"}}</b>
-            {{#ifn data.marker}}            
+            {{#ifn system.marker}}            
             <b class="item" data-tab="novice">{{localize "TAB.NOVICE"}}</b>
             <b class="item" data-tab="adept">{{localize "TAB.ADEPT"}}</b>
             <b class="item" data-tab="master">{{localize "TAB.MASTER"}}</b>
-            <b class="item" data-tab="bonus">{{localize "TAB.BONUS"}}</b>
             {{/ifn}}
+            <b class="item" data-tab="bonus">{{localize "TAB.BONUS"}}</b>
         </div>
 
         <div class="sheet-body">
             <div class="tab" data-group="primary" data-tab="description">
                 <div class="description foreground border">
                     <h1>{{localize "TITLE.DESCRIPTION"}}</h1>
-                    {{editor content=data.description target="data.description" button=true owner=owner editable=true}}
-                    <div class="marker" style="width:100%"><label for="{{id}}-data.marker">{{localize "TRAIT.MARKERTRAIT"}}</label>                        
-                        <input id="{{id}}-data.marker" name="data.marker" type="checkbox" value="active" {{#if data.marker}}checked{{/if}}/>
+                    {{editor system.description target="system.description" button=true owner=owner editable=true}}
+                    <div class="marker" style="width:100%"><label for="{{id}}-system.marker">{{localize "TRAIT.MARKERTRAIT"}}</label>                        
+                        <input id="{{id}}-system.marker" name="system.marker" type="checkbox" value="active" {{#if system.marker}}checked{{/if}}/>
                     </div>
                 </div>
             </div>
@@ -45,9 +45,9 @@
                 <div class="novice foreground border">
                     <h1>{{localize "TITLE.NOVICE"}}</h1>
                     <div class="action">
-                        <label for="{{id}}-data.novice.action">{{localize "TRAIT.ACTION"}}</label>
-                        <select id="{{id}}-data.novice.action" name="data.novice.action">
-                            {{#select data.novice.action}}
+                        <label for="{{id}}-system.novice.action">{{localize "TRAIT.ACTION"}}</label>
+                        <select id="{{id}}-system.novice.action" name="system.novice.action">
+                            {{#select system.novice.action}}
                             <option value="A">{{localize "ACTION.ACTIVE"}}</option>
                             <option value="M">{{localize "ACTION.MOVEMENT"}}</option>
                             <option value="T">{{localize "ACTION.FULL_TURN"}}</option>
@@ -60,20 +60,20 @@
                     </div>
                     {{#if isOwned}}
                     <div class="active">
-                        <label for="{{id}}-data.novice.isActive">{{localize "TRAIT.ACTIVE"}}</label>                        
-                        <input id="{{id}}-data.novice.isActive" name="data.novice.isActive" type="checkbox" value="active" {{#if data.novice.isActive}}checked{{/if}}/>                        
+                        <label for="{{id}}-system.novice.isActive">{{localize "TRAIT.ACTIVE"}}</label>
+                        <input id="{{id}}-system.novice.isActive" name="system.novice.isActive" type="checkbox" value="active" {{checked system.novice.isActive}}/>
                     </div>
                     {{/if}}            
-                    {{editor content=data.novice.description target="data.novice.description" button=true owner=owner editable=true}}
+                    {{editor system.novice.description target="system.novice.description" button=true owner=owner editable=true}}
                 </div>
             </div>
             <div class="tab" data-group="primary" data-tab="adept">
                 <div class="adept foreground border">
                     <h1>{{localize "TITLE.ADEPT"}}</h1>
                     <div class="action">
-                        <label for="{{id}}-data.adept.action" >{{localize "TRAIT.ACTION"}}</label>
-                        <select id="{{id}}-data.adept.action" name="data.adept.action">
-                            {{#select data.adept.action}}
+                        <label for="{{id}}-system.adept.action" >{{localize "TRAIT.ACTION"}}</label>
+                        <select id="{{id}}-system.adept.action" name="system.adept.action">
+                            {{#select system.adept.action}}
                             <option value="A">{{localize "ACTION.ACTIVE"}}</option>
                             <option value="M">{{localize "ACTION.MOVEMENT"}}</option>
                             <option value="T">{{localize "ACTION.FULL_TURN"}}</option>
@@ -86,24 +86,20 @@
                     </div>
                     {{#if isOwned}}
                     <div class="active">
-                        <label for="{{id}}-data.adept.isActive">{{localize "TRAIT.ACTIVE"}}</label>
-                        {{#if data.adept.isActive}}
-                        <input id="{{id}}-data.adept.isActive" name="data.adept.isActive" type="checkbox" value="active" checked/>
-                        {{else}}
-                        <input id="{{id}}-data.adept.isActive" name="data.adept.isActive" type="checkbox" value="active"/>
-                        {{/if}}
+                        <label for="{{id}}-system.adept.isActive">{{localize "TRAIT.ACTIVE"}}</label>
+                        <input id="{{id}}-system.adept.isActive" name="system.adept.isActive" type="checkbox" value="active" {{checked system.adept.isActive}}/>
                     </div>
                     {{/if}}
-                    {{editor content=data.adept.description target="data.adept.description" button=true owner=owner editable=true}}
+                    {{editor system.adept.description target="system.adept.description" button=true owner=owner editable=true}}
                 </div>
             </div>
             <div class="tab" data-group="primary" data-tab="master">
                 <div class="master foreground border">
                     <h1>{{localize "TITLE.MASTER"}}</h1>
                     <div class="action">
-                        <label for="{{id}}-data.master.action">{{localize "TRAIT.ACTION"}}</label>
-                        <select id="{{id}}-data.master.action" name="data.master.action">
-                            {{#select data.master.action}}
+                        <label for="{{id}}-system.master.action">{{localize "TRAIT.ACTION"}}</label>
+                        <select id="{{id}}-system.master.action" name="system.master.action">
+                            {{#select system.master.action}}
                             <option value="A">{{localize "ACTION.ACTIVE"}}</option>
                             <option value="M">{{localize "ACTION.MOVEMENT"}}</option>
                             <option value="T">{{localize "ACTION.FULL_TURN"}}</option>
@@ -116,15 +112,11 @@
                     </div>
                     {{#if isOwned}}
                     <div class="active">
-                        <label for="{{id}}-data.master.isActive">{{localize "TRAIT.ACTIVE"}}</label>
-                        {{#if data.master.isActive}}
-                        <input id="{{id}}-data.master.isActive" name="data.master.isActive" type="checkbox" value="active" checked/>
-                        {{else}}
-                        <input id="{{id}}-data.master.isActive" name="data.master.isActive" type="checkbox" value="active"/>
-                        {{/if}}
+                        <label for="{{id}}-system.master.isActive">{{localize "TRAIT.ACTIVE"}}</label>
+                        <input id="{{id}}-system.master.isActive" name="system.master.isActive" type="checkbox" value="active" {{checked system.master.isActive}}/>
                     </div>
                     {{/if}}
-                    {{editor content=data.master.description target="data.master.description" button=true owner=owner editable=true}}
+                    {{editor system.master.description target="system.master.description" button=true owner=owner editable=true}}
                 </div>
             </div>
             <div class="tab" data-group="primary" data-tab="bonus">
