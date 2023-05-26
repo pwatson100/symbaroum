@@ -10,7 +10,7 @@
         },
         {
             "version":19,
-            "message":"<h1>It's a whole new world</h1><br />We are gearing up for the release of Symbaroum for Foundry v11. Before you get to installing the new version of Foundry, here are some healthy and good tips.  <h2>Make a backup</h2> See <a href='https://www.youtube.com/watch?v=OmbxMmqNNXU'>Foundry tutorial for backups</a>. <h2>Check your systems</h2> Many systems are not yet updated to v11 - so check if the systems you run are updated <h2>Check your modules</h2> Check that your modules are up to v11<br/><br/><b>And finally, once again, make a backup - with Foundry, only you can prevent data loss</b><br/>If you have questions and/or need help, ping us on either on #symbaroum-vtt-foundry on Davokar Explorers Discord or the #free-league channel on Foundry discord."
+            "message":"<h1>It's a whole new world</h1><br />We are gearing up for the release of Symbaroum for Foundry v11. Before you get to installing the new version of Foundry, here are some healthy and good tips.<br /><h2>Make a backup</h2> See <a href='https://www.youtube.com/watch?v=OmbxMmqNNXU'>Foundry tutorial for backups</a><br /><h2>Check your systems</h2> Many systems are not yet updated to v11 - so check if the systems you run are updated<br /><h2>Check your modules</h2> Check that your modules are up to v11<br/><br/><b>And finally, once again, make a backup - with Foundry, only you can prevent data loss</b><br/>If you have questions and/or need help, ping us on either on #symbaroum-vtt-foundry on Davokar Explorers Discord or the #free-league channel on Foundry discord."
         }
 
     ]    
