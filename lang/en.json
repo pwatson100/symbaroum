@@ -579,8 +579,8 @@
 
   "POWER_CURSE.CHAT_INTRO": "{actorname} casts a curse.",
   "POWER_CURSE.CHAT_INTRO_M": "{actorname} maintains a curse.",
-  "POWER_CURSE.CHAT_SUCCESS_N": "{targetname} is cursed (has unfavour against mystic).",
-  "POWER_CURSE.CHAT_SUCCESS_A": "{targetname} is cursed (has unfavour).",
+  "POWER_CURSE.CHAT_SUCCESS_N": "{targetname} is cursed (has disfavour against mystic).",
+  "POWER_CURSE.CHAT_SUCCESS_A": "{targetname} is cursed (has disfavour).",
   "POWER_CURSE.CHAT_SUCCESS_M": "{targetname} is heavily cursed (1d6 damage for each action).",
   "POWER_CURSE.CHAT_FAILURE": "{actorname} can't maintain the curse.",
   "POWER_CURSE.CHAT_FAIL_FINAL": "The curse has no more effect on {targetname}.",
