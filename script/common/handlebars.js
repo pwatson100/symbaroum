@@ -98,4 +98,9 @@ function registerHandlebarsHelpers() {
     return accum;
   });  
 
+  // ifNotLimited to return whether permissions are not set to Limited or if the user is a GM
+  Handlebars.registerHelper('ifNotLimited', function (v1, options) {
+    if (v1.getUserLevel(game.user) > CONST.DOCUMENT_OWNERSHIP_LEVELS.LIMITED || game.user.isGM) return options.fn(this);
+    else return options.inverse(this);
+  });
 }
