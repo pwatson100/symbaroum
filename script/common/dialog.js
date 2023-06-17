@@ -53,6 +53,7 @@ export async function prepareRollDeathTest(actor, showDialogue) {
 }
 
 export async function prepareRollAttribute(actor, attributeName, armor, weapon, ecData = {targetData: {hasTarget: false, leaderTarget: false, actor: {}}}) {
+  return new Promise(async (resolve, reject) => {
   const CombatDialog = class extends Dialog {
     activateListeners (html) {
       super.activateListeners(html);
@@ -191,6 +192,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
                 let r = new Roll(damModifier,{}).evaluate({async:false});
               } catch (err) {
                   ui.notifications.error(`The ${game.i18n.localize("DIALOG.DAMAGE_MODIFIER")} can't be used for rolling damage ${err}`);
+                  reject("invalid");
                   return;
               }
               damModifierAttSup = damModifier;
@@ -347,7 +349,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
             if(hasTarget && !ecData.notResisted){
               if(ecData.attackFromPC || ecData.targetData.actor.type === "monster"){
                   ecData.resistRoll = false;
-                  buildRolls(ecData);
+                  buildRolls(ecData).then(val => resolve(val));
               }
               else{
                 ecData.resistRoll = true;
@@ -356,26 +358,26 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
                 if(userArray.length>0 && game.settings.get('symbaroum', 'playerResistButton')){
                     ecData.targetUserId=userArray[0].id;
                     ecData.targetUserName=userArray[0].name;
-                    createResistRollChatButton(ecData);
+                    createResistRollChatButton(ecData).then(val => resolve(val));
                 }
                 else{
-                    buildRolls(ecData);
+                    buildRolls(ecData).then(val => resolve(val));
                 }
               }
             }
             else{
-                buildRolls(ecData)
+                buildRolls(ecData).then((val)=>resolve(val))
             }
           }
           else{
-            await game.symbaroum.api.rollAttribute(actor, attributeName, getTarget(), targetAttributeName, favour, modifier, armor, weapon, advantage, damModifier);
+            game.symbaroum.api.rollAttribute(actor, attributeName, getTarget(), targetAttributeName, favour, modifier, armor, weapon, advantage, damModifier).then((roll) => {resolve(roll)});
           }
         },
       },
       cancel: {
           icon: '<i class="fas fa-times"></i>',
           label: game.i18n.localize('BUTTON.CANCEL'),
-          callback: () => {},
+          callback: () => {reject("Cancelled")},
       },
     },
     default: 'roll',
@@ -383,6 +385,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
   });
 
   dialog.render(true);
+  })
 }
 
 function getRollDefaults(attributeName, isArmor, isWeapon, ecData) {

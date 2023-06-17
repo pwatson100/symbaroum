@@ -3112,8 +3112,7 @@ export async function modifierDialog(functionStuff){
 
 export async function buildRolls(functionStuff){
     if(functionStuff.casting === game.symbaroum.config.CASTING_NOT && !functionStuff.isMaintained){
-        standardPowerResult(null, functionStuff);
-        return;
+        return await standardPowerResult(null, functionStuff);
     }
     let isWeaponRoll = functionStuff.combat;
     let rollData = [];
@@ -3129,10 +3128,10 @@ export async function buildRolls(functionStuff){
         rollData.push(await baseRoll(functionStuff.actor, functionStuff.castingAttributeName, null, null, functionStuff.favour, functionStuff.modifier, functionStuff.resistRoll));
     }
     if(isWeaponRoll){
-        await attackResult(rollData, functionStuff);
+        return await attackResult(rollData, functionStuff);
     }
     else{
-        await standardPowerResult(rollData, functionStuff);
+        return await standardPowerResult(rollData, functionStuff);
     }
 }
 
@@ -3453,6 +3452,7 @@ async function attackResult(rollData, functionStuff){
     if(flagDataArray.length > 0){
         await createModifyTokenChatButton(flagDataArray);
     }
+    return templateData;
 }
 
 async function formatRollString(rollDataElement, hasTarget, modifier){
@@ -4007,6 +4007,7 @@ async function standardPowerResult(rollData, functionStuff){
     if(flagDataArray.length){
         await createModifyTokenChatButton(flagDataArray);
     }
+    return templateData;
 }
 
 async function preDialogLayonHands(functionStuff){
