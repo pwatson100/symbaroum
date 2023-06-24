@@ -370,6 +370,7 @@
   "DIALOG.CASTING": "Erster Zauber",
   "DIALOG.IMPEDING": "Zuzüglich Behinderungsmalus?",
   "DIALOG.MAINTAINING": "Benötigte Eigenschaft",
+  "DIALOG.ROLLONTABLE": "Roll on table {tablename}",
 
   "EQUIPMENT.NAME": "Name",
   "EQUIPMENT.COST": "Kosten",

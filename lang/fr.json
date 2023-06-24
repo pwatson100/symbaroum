@@ -368,6 +368,8 @@
     "DIALOG.WEAPON_DAMAGE": "Jet de dégâts",  
     "DIALOG.CASTING": "Lancement du talent",
     "DIALOG.MAINTAINING": "Jet pour maintenir le talent",
+    "DIALOG.ROLLONTABLE": "Roll on table {tablename}",    
+    
     "DIALOG.AUTOPARAMS": "Modificateurs déjà comptés: ",
     "DIALOG.BACKSTAB": "Utiliser coup en traître?",
     "DIALOG.HUNTERS_INSTINCT": "Cible instinct du chasseur?",

@@ -179,15 +179,50 @@ ${monster ? getTactics(actor) : ""}
 
     async function drawFromRollableTable(event) {        
         event.preventDefault();
-        const uuid = event.currentTarget.getAttribute("data-uuid");
-        if (uuid) {
-            const table = await fromUuid(uuid);
+        // const & var = globally defined
+        let uuid = event.currentTarget.getAttribute("data-uuid");
+        if (!uuid) {
+            return;
+        }
+        let table = await fromUuid(uuid);
+        let myF = async function(uuid, modifier) {             
             if (table instanceof RollTable) {
                 const formula = event.currentTarget.getAttribute("data-roll");
-                const roll = formula ? new Roll(formula) : new Roll(table.formula);
-                await table.draw({ roll });
-
-            }
+                const roll = formula ? new Roll(formula) : new Roll(`${table.formula} + ${modifier}`);
+                await table.draw({ roll });    
+            }    
+        };
+        if(event.ctrlKey) {
+            let dialog_content = `<p>${game.i18n.format("DIALOG.ROLLONTABLE", {
+                tablename: table.name
+            })}</p>
+            <form>
+                <div class="form-group">
+                    <label>${game.i18n.localize("DIALOG.MODIFIER")}</label>
+                    <input type="text" id="modifier" name="modifier" value="0" autofocus="autofocus" />
+                </div>
+            </form>`;
+            let x = new Dialog({
+                title: game.i18n.format("DIALOG.ROLLONTABLE", {
+                    tablename: table.name
+                }),
+                content : dialog_content,
+                buttons : 
+                {
+                    Ok :{ label : game.i18n.localize("DIALOG.OK"), callback : async (html) => {
+                            let modifier = parseInt(html.find("input[name='modifier'")[0].value);
+                            if(isNaN(modifier)) { modifier = 0; }
+                            await myF(uuid, modifier);
+                        }
+                    },
+                    Cancel : {label : game.i18n.localize("DIALOG.CANCEL")}
+                }
+            });
+            x.options.width = 200;
+            x.position.width = 300;    
+            x.render(true);
+        } else {
+            await myF(uuid, 0);
         }
     }
     $(document).on("click",".draw-from-table", drawFromRollableTable);

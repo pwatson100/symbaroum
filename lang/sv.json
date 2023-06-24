@@ -390,6 +390,7 @@
   "DIALOG.IMPEDING": "Inkludera begränsande avdrag?",
   "DIALOG.CASTING": "Initial besvärjelse",
   "DIALOG.MAINTAINING": "Upprätthålla förmåga/kraft",
+  "DIALOG.ROLLONTABLE": "Slå på tabellen {tablename}",    
 
   "EQUIPMENT.NAME": "Namn",
   "EQUIPMENT.COST": "Kostnad",

@@ -391,7 +391,8 @@
     "DIALOG.CASTING": "Casting iniziale",
     "DIALOG.IMPEDING": "Includi il malus di ingombro?",
     "DIALOG.MAINTAINING": "Mantieni il cast",
-  
+    "DIALOG.ROLLONTABLE": "Roll on table {tablename}",    
+
     "EQUIPMENT.NAME": "Nome",
     "EQUIPMENT.COST": "Costo",
     "EQUIPMENT.NUMBER": "Numero",

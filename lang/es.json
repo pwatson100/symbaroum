@@ -391,6 +391,7 @@
   "DIALOG.IMPEDING": "¿Incluir impedimento?",
   "DIALOG.CASTING": "Casteo inicial",
   "DIALOG.MAINTAINING": "Manteniendo habilidad",
+  "DIALOG.ROLLONTABLE": "Roll on table {tablename}",
   
   "EQUIPMENT.NAME": "Nombre",
   "EQUIPMENT.COST": "Precio",
