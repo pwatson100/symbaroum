@@ -937,7 +937,7 @@ export class SymbaroumActor extends Actor {
         }
         let poisoner = this.items.filter(item => (item.system?.reference === "poisoner" || item.system?.reference === "poisonous"));
         functionStuff.askPoison = poisoner.length != 0;
-        prepareRollAttribute(this, weapon.attribute, null, weapon, functionStuff);
+        return prepareRollAttribute(this, weapon.attribute, null, weapon, functionStuff);
     }
 }
 
