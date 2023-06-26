@@ -3649,11 +3649,6 @@ async function standardPowerResult(rollData, functionStuff){
         flagDataArray.push({
             tokenId: functionStuff.tokenId,
             actorId: functionStuff.actor.id,
-            addEffect: CONFIG.statusEffects.find(e => e.id === "holyShield"),
-            effectDuration: 1
-        },{
-            tokenId: functionStuff.tokenId,
-            actorId: functionStuff.actor.id,
             addObject: "blessedshield",
             protection: protectionFormula
         })

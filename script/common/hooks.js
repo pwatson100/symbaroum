@@ -440,6 +440,19 @@ Hooks.on("changeSidebarTabA", (app) => {
 
 });
 
+Hooks.on("preDeleteActiveEffect", (ae) => {
+
+  let ecOn = game.settings.get('symbaroum', 'combatAutomation');
+  if (ecOn && ae.name == "Holy Shield") {
+    let actor = ae.parent;
+    if (undefined != actor) {
+      const ids = actor.items.filter(i => i.getFlag(game.system.id, "blessedshield")).map(i => i.id);
+      if (undefined != ids && ids.length > 0) {
+        actor.deleteEmbeddedDocuments("Item", ids);
+      }
+    }
+  }
+})
 
 Hooks.once('diceSoNiceReady', (dice3d) => {
   dice3d.addSystem({ id: 'symbaroum', name: 'Symbaroum' }, 'preferred');
@@ -631,18 +644,18 @@ async function setupStatusEffects() {
 }
 
 async function createBlessedShield(actor, protection = '1d4') {
-  let data = {
-    name: game.i18n.localize('POWER_LABEL.BLESSED_SHIELD'),
-    img: 'icons/svg/holy-shield.svg',
-    type: 'armor',
-    data: {
-      state: 'active',
-      baseProtection: '0',
-      bonusProtection: protection,
-    },
-  };
-  //actor.createEmbeddedEntity('OwnedItem', data, { renderSheet: false });
-  await Item.create(data, { parent: actor }, { renderSheet: false });
+  let blessedShield = {};
+  blessedShield.system = foundry.utils.deepClone(game.system.model.Item.armor);
+
+  blessedShield.name = game.i18n.localize('POWER_LABEL.BLESSED_SHIELD');
+  blessedShield.type = "armor";
+  blessedShield.img = 'icons/svg/holy-shield.svg',
+  blessedShield.system.baseProtection = '0',
+  blessedShield.system.bonusProtection = protection,
+  blessedShield.system.state = "active";
+  blessedShield.flags = {}
+  blessedShield.flags[game.system.id] = {"blessedshield": true};
+  await Item.create(blessedShield, { parent: actor }, { renderSheet: false });
 }
 
 async function showReleaseNotes() {
