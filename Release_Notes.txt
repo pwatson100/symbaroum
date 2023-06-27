@@ -290,6 +290,11 @@ Version 4.1.2
 
 Version 4.2
 
+- Support for auto roll initiative at combat start
+- Auto delete of blessed shield when changing the status icon
+- Added Limited View of character sheets
+- Fixed issue API additions, including roll-returns give a promise
+- Table rolling text enrichers for journals
 - Fixed issue #600
 - Fixed issue #601
 - Made compatible with v10 & v11
