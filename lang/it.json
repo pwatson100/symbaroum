@@ -855,6 +855,8 @@
     "SYMBAROUM.OPTIONAL_NPC_MODIFIERS_HINT": "Seleziona per mostrare i modificatori (da -5 a +5) invece degli attributi per i PNG sulla scheda del personaggio",
     "SYMBAROUM.OPTIONAL_INIATITIVEROLLS": "Sopprimere i tiri di Iniziativa",
     "SYMBAROUM.OPTIONAL_INIATITIVEROLLS_HINT": "Seleziona per la disabilitazione QoL dei tiri di iniziativa in chat",
+    "SYMBAROUM.OPTIONAL_AUTOROLLINITIATIVE": "Automatically roll initiative at start of combat",
+    "SYMBAROUM.OPTIONAL_AUTOROLLINITIATIVE_HINT": "Check to enable automatic initiative at start of combat",
     "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Consenti modifica reference",
     "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Attenzione - Solo GM - consente di regolare manualmente l'implementazione di riferimento per abilità, tratti e poteri mistici. Richiede refresh",
     "SYMBAROUM.OPTIONAL_INIT_MANUAL": "Seleziona manualmente l'attributo dell'iniziativa",

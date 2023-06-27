@@ -859,6 +859,8 @@
   "SYMBAROUM.OPTIONAL_NPC_MODIFIERS_HINT": "Check to show NPC modifiers (-5 to +5) instead of attributes for NPCs on character sheet",
   "SYMBAROUM.OPTIONAL_INIATITIVEROLLS": "Suppress Initiative rolls",
   "SYMBAROUM.OPTIONAL_INIATITIVEROLLS_HINT": "Check to QoL disabling of Initiative rolls in chat",
+  "SYMBAROUM.OPTIONAL_AUTOROLLINITIATIVE": "Automatically roll initiative at start of combat",
+  "SYMBAROUM.OPTIONAL_AUTOROLLINITIATIVE_HINT": "Check to enable automatic initiative at start of combat",
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Allow reference modification",
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Warning - GM Only - allow to manually adjust reference implementation for abilities, traits and mystical powers. Requires refresh.",
   "SYMBAROUM.OPTIONAL_INIT_MANUAL": "Manually select initiative attribute",

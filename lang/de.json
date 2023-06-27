@@ -815,6 +815,8 @@
   "SYMBAROUM.OPTIONAL_NPC_MODIFIERS_HINT": "Zeige bei Proben den Modifikator des Nicht-Spieler-Charakters an (-5 bis +5) anstatt dem Wert der Eigenschaft auf dem Charakterbogen.",
   "SYMBAROUM.OPTIONAL_INIATITIVEROLLS": "Blende Würfe auf Initiative aus.",
   "SYMBAROUM.OPTIONAL_INIATITIVEROLLS_HINT": "QoL Option, um die Flut von Initiative-Würfen zum Kampfbeginn nicht im Chat anzuzeigen.",
+  "SYMBAROUM.OPTIONAL_AUTOROLLINITIATIVE": "Automatically roll initiative at start of combat",
+  "SYMBAROUM.OPTIONAL_AUTOROLLINITIATIVE_HINT": "Check to enable automatic initiative at start of combat",
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Erlaube Beispiel Modifizierungen",
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Warnung - NUR FÜR DEN SL - Erlaube die manuelle Einstellung für Referenz Fähigkeiten, Merkmalen und Mystischen Fähigkeiten. Benötigt einen Reload.",
   "SYMBAROUM.OPTIONAL_INIT_MANUAL": "Manuelle Auswahl der Eigenschaft für Initiative",

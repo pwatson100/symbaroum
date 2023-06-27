@@ -852,6 +852,8 @@
   "SYMBAROUM.OPTIONAL_NPC_MODIFIERS_HINT": "Välj för att visa NPC-modifikationer (-5 till +5) istället för karaktärsdragens värden för NPCs på rollformuläret",
   "SYMBAROUM.OPTIONAL_INIATITIVEROLLS": "Dölj Initiativ-slag",
   "SYMBAROUM.OPTIONAL_INIATITIVEROLLS_HINT": "Välj för att dölja Initiativ-slag i chatten",
+  "SYMBAROUM.OPTIONAL_AUTOROLLINITIATIVE": "Automatically roll initiative at start of combat",
+  "SYMBAROUM.OPTIONAL_AUTOROLLINITIATIVE_HINT": "Check to enable automatic initiative at start of combat",
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Tillåt referensmodifikation",
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Varning - enbart SL - tillåt att manuellt justera referensimplementation för förmågor, särdrag och mystiska krafter. Kräver omladdning (refresh).",
   "SYMBAROUM.OPTIONAL_INIT_MANUAL": "Välj karaktärsdrag för Initiativ manuellt",

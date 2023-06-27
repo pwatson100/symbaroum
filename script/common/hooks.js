@@ -212,7 +212,15 @@ Hooks.once('init', () => {
     default: false,
     config: true,
   });
-
+  game.settings.register('symbaroum', 'autoRollInitiative', {
+    name: 'SYMBAROUM.OPTIONAL_AUTOROLLINITIATIVE',
+    hint: 'SYMBAROUM.OPTIONAL_AUTOROLLINITIATIVE_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });
+  
   game.settings.register('symbaroum', 'enhancedDeathSaveBonus', {
     name: 'SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS',
     hint: 'SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS_HINT',
@@ -394,7 +402,7 @@ Hooks.once('ready', () => {
     ChatMessage.create(
       {
           speaker: ChatMessage.getSpeaker({alias: "Symbaroum"}),
-          whisper: [game.user], // ChatMessage.getWhisperRecipients('GM'),
+             // ChatMessage.getWhisperRecipients('GM'),
           content: message
       }); 
   }
@@ -471,6 +479,15 @@ Hooks.once('diceSoNiceReady', (dice3d) => {
   );
 });
 
+Hooks.on('combatStart', async (combat, ...args) => {
+  // let isFirstRound = combat.active && combat.current.round == 1 && combat.current.turn == 0 && combat.previous.turn == null;
+  console.log(combat, ...args);
+  if(game.user.isGM &&  game.settings.get('symbaroum', 'autoRollInitiative') )
+  {
+    await combat.rollAll();
+  }
+})
+
 Hooks.on('preCreateChatMessage', (doc, message, options, userid) => {
   if (message.flags !== undefined) {
     if (getProperty(message.flags, 'core.initiativeRoll') && game.settings.get('symbaroum', 'hideIniativeRolls')) {
@@ -526,6 +543,7 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
         }
       }
       await chatItem.unsetFlag(game.system.id, 'applyEffects');
+      await chatItem.delete();
       return;
     });
   }
