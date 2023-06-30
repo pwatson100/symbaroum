@@ -3656,10 +3656,11 @@ async function standardPowerResult(rollData, functionStuff){
 
         if(functionStuff.targets){
             for(let target of functionStuff.targets){
+                let effect = CONFIG.statusEffects.find(e => e.id === "holyShield");
                 flagDataArray.push({
                     tokenId: target.tokenId,
-                    addEffect: CONFIG.statusEffects.find(e => e.id === "holyShield"),
-                    effectDuration: 1 
+                    addEffect: effect,
+                    effectDuration: 1
                 },{
                     tokenId: target.tokenId,
                     addObject: "blessedshield",

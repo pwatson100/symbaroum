@@ -499,6 +499,7 @@ Hooks.on('preCreateChatMessage', (doc, message, options, userid) => {
 /*Hook for the chatMessage that contain a button for the GM to apply status icons or damage to a token.*/
 Hooks.on('renderChatMessage', async (chatItem, html, data) => {
   const flagDataArray = await chatItem.getFlag(game.system.id, 'applyEffects');
+  
   if (flagDataArray && game.user.isGM) {
     await html.find('#applyEffect').click(async () => {
       for (let flagData of flagDataArray) {
@@ -506,13 +507,13 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
           let token = flagData.tokenId ? canvas.tokens.objects.children.find((token) => token.id === flagData.tokenId) : null;
           if (token !== undefined) {
             if (flagData.addEffect) {
-              modifyEffectOnToken(token, flagData.addEffect, 1, flagData);
+              await modifyEffectOnToken(token, flagData.addEffect, 1, flagData);
             }
             if (flagData.removeEffect) {
-              modifyEffectOnToken(token, flagData.removeEffect, 0, flagData);
+              await modifyEffectOnToken(token, flagData.removeEffect, 0, flagData);
             }
             if (flagData.modifyEffectDuration) {
-              modifyEffectOnToken(token, flagData.modifyEffectDuration, 2, flagData);
+              await modifyEffectOnToken(token, flagData.modifyEffectDuration, 2, flagData);
             }
             if (flagData.defeated && ui.combat.viewed) {
               let c = ui.combat.viewed.getCombatantByToken(flagData.tokenId);
@@ -760,6 +761,7 @@ export async function modifyEffectOnToken(token, effect, action, options) {
   if (action == 1) {
     //add effect
     if (!game.symbaroum.api.getEffect(token, effect)) {
+      // Currently disabled
       if (statusCounterMod) {
         let alreadyHereEffect = await EffectCounter.findCounter(token.document, effect.icon);
         if (alreadyHereEffect === undefined) {
