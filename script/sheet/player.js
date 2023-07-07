@@ -8,7 +8,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
             classes: ["symbaroum", "sheet", "actor", "player"],
             template: "systems/symbaroum/template/sheet/player.html",
             width: 800,
-            height: 1000,
+            height: "auto",
             resizable: true,
             dragDrop: [
                 { dragSelector: '.item[data-item-id]', dropSelector: '.tab-content' },

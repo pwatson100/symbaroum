@@ -58,6 +58,15 @@ export class SymbaroumAPI
     }
 
     /**
+     * 
+     * @param {The name of the modifier function} name 
+     * @returns 
+     */
+    _getAbilityFunctionName(name) {
+        return `abilitySetup${name.charAt(0).toUpperCase() + name.slice(1)}`;
+    }
+
+    /**
      * Register a function as an item modifier
      * 
      * @param {The name of the function} name 
@@ -87,6 +96,38 @@ export class SymbaroumAPI
             delete CONFIG.Item.documentClass.prototype[funcName];
         }        
     }
+
+    /**
+     * Register a function as an item modifier
+     * 
+     * @param {The name of the function} name 
+     * @param {The function} func 
+     */
+    registerAbility(name, func) {
+        const funcName = this._getAbilityFunctionName(name)
+
+        if( CONFIG.Item.documentClass.prototype[funcName] != undefined) {
+            throw `Ability ${name} is already registered`
+        } else {
+            CONFIG.Item.documentClass.prototype[funcName] = func;
+        }        
+    }
+
+    /**
+     * Unregisters an item modifier function
+     * 
+     * @param {The name of the function} name 
+     */
+    unregisterAbility(name) {
+        const funcName = this._getAbilityFunctionName(name)
+
+        if( CONFIG.Item.documentClass.prototype[funcName] == undefined) {
+            throw `Ability ${name} is already unregistered`
+        } else {
+            delete CONFIG.Item.documentClass.prototype[funcName];
+        }        
+    }
+
 
     /**
      * format the string to print the roll result, including the 2 dice if favour was involved, and the second roll when the option rare crits is enabled

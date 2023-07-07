@@ -67,17 +67,18 @@ export class SymbaroumActor extends Actor {
             // If there are corrupt attributes added, ignore this
             if (!!!system.attributes[aKey].value || !!!system.attributes[aKey].label) continue;
 
-            system.attributes[aKey].bonus = system.bonus[aKey];
-            system.attributes[aKey].total = system.attributes[aKey].value + system.bonus[aKey] + system.attributes[aKey].temporaryMod;
+            system.attributes[aKey].bonus = system.bonus[aKey] ?? 0;
+
+            system.attributes[aKey].total = system.attributes[aKey].value + system.attributes[aKey].bonus + system.attributes[aKey].temporaryMod;
             system.attributes[aKey].modifier = 10 - system.attributes[aKey].total;
             if (this.type === "monster") {
                 let modSign = "";
                 if (system.attributes[aKey].modifier > 0) {
                     modSign = "+";
                 }
-                system.attributes[aKey].msg = game.i18n.localize("TOOLTIP.BONUS_TOTAL") + ` ${system.attributes[aKey].total} (${modSign}${system.attributes[aKey].modifier})<br />${game.i18n.localize("ATTRIBUTE.BASE")}(${system.attributes[aKey].value.toString()}) ${system.bonus[aKey + "_msg"]}`;
+                system.attributes[aKey].msg = game.i18n.localize("TOOLTIP.BONUS_TOTAL") + ` ${system.attributes[aKey].total} (${modSign}${system.attributes[aKey].modifier})<br />${game.i18n.localize("ATTRIBUTE.BASE")}(${system.attributes[aKey].value.toString()}) ${system.bonus[aKey + "_msg"] ?? ""}`;
             } else {
-                system.attributes[aKey].msg = game.i18n.localize("TOOLTIP.BONUS_TOTAL") + ` ${system.attributes[aKey].total}` + "<br />" + game.i18n.localize("ATTRIBUTE.BASE") + "(" + system.attributes[aKey].value.toString() + ")" + `${system.bonus[aKey + "_msg"]}`;
+                system.attributes[aKey].msg = game.i18n.localize("TOOLTIP.BONUS_TOTAL") + ` ${system.attributes[aKey].total}` + "<br />" + game.i18n.localize("ATTRIBUTE.BASE") + "(" + system.attributes[aKey].value.toString() + ")" + `${system.bonus[aKey + "_msg"]  ?? ""}`;
             }
             if (system.attributes[aKey].temporaryMod != 0) { system.attributes[aKey].msg += "<br />" + game.i18n.localize("ATTRIBUTE.MODIFIER") + "(" + system.attributes[aKey].temporaryMod.toString() + ")" };
         }
@@ -752,15 +753,9 @@ export class SymbaroumActor extends Actor {
         let itemBonusExperience = itemBonus.experience;
 
         this._addBonusData(currentBonus, item, itemBonus, "defense");
-        this._addBonusData(currentBonus, item, itemBonus, "accurate");
-        this._addBonusData(currentBonus, item, itemBonus, "cunning");
-        this._addBonusData(currentBonus, item, itemBonus, "discreet");
-        this._addBonusData(currentBonus, item, itemBonus, "persuasive");
-        this._addBonusData(currentBonus, item, itemBonus, "quick");
-        this._addBonusData(currentBonus, item, itemBonus, "resolute");
-        this._addBonusData(currentBonus, item, itemBonus, "strong");
-        this._addBonusData(currentBonus, item, itemBonus, "vigilant");
-
+        game.symbaroum.config.attributes.forEach( (value, index, arr) => { 
+            this._addBonusData(currentBonus, item, itemBonus, value);
+        });
         this._addBonusData(currentBonusToughness, item, itemBonusToughness, "max");
         this._addBonusData(currentBonusToughness, item, itemBonusToughness, "threshold");
         this._addBonusData(currentBonusCorruption, item, itemtBonusCorruption, "max");
@@ -942,7 +937,7 @@ export class SymbaroumActor extends Actor {
         }
         let poisoner = this.items.filter(item => (item.system?.reference === "poisoner" || item.system?.reference === "poisonous"));
         functionStuff.askPoison = poisoner.length != 0;
-        prepareRollAttribute(this, weapon.attribute, null, weapon, functionStuff);
+        return prepareRollAttribute(this, weapon.attribute, null, weapon, functionStuff);
     }
 }
 

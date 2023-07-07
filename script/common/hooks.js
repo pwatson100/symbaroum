@@ -212,7 +212,15 @@ Hooks.once('init', () => {
     default: false,
     config: true,
   });
-
+  game.settings.register('symbaroum', 'autoRollInitiative', {
+    name: 'SYMBAROUM.OPTIONAL_AUTOROLLINITIATIVE',
+    hint: 'SYMBAROUM.OPTIONAL_AUTOROLLINITIATIVE_HINT',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true,
+  });
+  
   game.settings.register('symbaroum', 'enhancedDeathSaveBonus', {
     name: 'SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS',
     hint: 'SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS_HINT',
@@ -394,7 +402,7 @@ Hooks.once('ready', () => {
     ChatMessage.create(
       {
           speaker: ChatMessage.getSpeaker({alias: "Symbaroum"}),
-          whisper: [game.user], // ChatMessage.getWhisperRecipients('GM'),
+             // ChatMessage.getWhisperRecipients('GM'),
           content: message
       }); 
   }
@@ -440,6 +448,19 @@ Hooks.on("changeSidebarTabA", (app) => {
 
 });
 
+Hooks.on("preDeleteActiveEffect", (ae) => {
+
+  let ecOn = game.settings.get('symbaroum', 'combatAutomation');
+  if (ecOn && ae.name == "Holy Shield") {
+    let actor = ae.parent;
+    if (undefined != actor) {
+      const ids = actor.items.filter(i => i.getFlag(game.system.id, "blessedshield")).map(i => i.id);
+      if (undefined != ids && ids.length > 0) {
+        actor.deleteEmbeddedDocuments("Item", ids);
+      }
+    }
+  }
+})
 
 Hooks.once('diceSoNiceReady', (dice3d) => {
   dice3d.addSystem({ id: 'symbaroum', name: 'Symbaroum' }, 'preferred');
@@ -458,6 +479,15 @@ Hooks.once('diceSoNiceReady', (dice3d) => {
   );
 });
 
+Hooks.on('combatStart', async (combat, ...args) => {
+  // let isFirstRound = combat.active && combat.current.round == 1 && combat.current.turn == 0 && combat.previous.turn == null;
+  console.log(combat, ...args);
+  if(game.user.isGM &&  game.settings.get('symbaroum', 'autoRollInitiative') )
+  {
+    await combat.rollAll();
+  }
+})
+
 Hooks.on('preCreateChatMessage', (doc, message, options, userid) => {
   if (message.flags !== undefined) {
     if (getProperty(message.flags, 'core.initiativeRoll') && game.settings.get('symbaroum', 'hideIniativeRolls')) {
@@ -469,6 +499,7 @@ Hooks.on('preCreateChatMessage', (doc, message, options, userid) => {
 /*Hook for the chatMessage that contain a button for the GM to apply status icons or damage to a token.*/
 Hooks.on('renderChatMessage', async (chatItem, html, data) => {
   const flagDataArray = await chatItem.getFlag(game.system.id, 'applyEffects');
+  
   if (flagDataArray && game.user.isGM) {
     await html.find('#applyEffect').click(async () => {
       for (let flagData of flagDataArray) {
@@ -476,13 +507,13 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
           let token = flagData.tokenId ? canvas.tokens.objects.children.find((token) => token.id === flagData.tokenId) : null;
           if (token !== undefined) {
             if (flagData.addEffect) {
-              modifyEffectOnToken(token, flagData.addEffect, 1, flagData);
+              await modifyEffectOnToken(token, flagData.addEffect, 1, flagData);
             }
             if (flagData.removeEffect) {
-              modifyEffectOnToken(token, flagData.removeEffect, 0, flagData);
+              await modifyEffectOnToken(token, flagData.removeEffect, 0, flagData);
             }
             if (flagData.modifyEffectDuration) {
-              modifyEffectOnToken(token, flagData.modifyEffectDuration, 2, flagData);
+              await modifyEffectOnToken(token, flagData.modifyEffectDuration, 2, flagData);
             }
             if (flagData.defeated && ui.combat.viewed) {
               let c = ui.combat.viewed.getCombatantByToken(flagData.tokenId);
@@ -513,6 +544,7 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
         }
       }
       await chatItem.unsetFlag(game.system.id, 'applyEffects');
+      await chatItem.delete();
       return;
     });
   }
@@ -631,18 +663,18 @@ async function setupStatusEffects() {
 }
 
 async function createBlessedShield(actor, protection = '1d4') {
-  let data = {
-    name: game.i18n.localize('POWER_LABEL.BLESSED_SHIELD'),
-    img: 'icons/svg/holy-shield.svg',
-    type: 'armor',
-    data: {
-      state: 'active',
-      baseProtection: '0',
-      bonusProtection: protection,
-    },
-  };
-  //actor.createEmbeddedEntity('OwnedItem', data, { renderSheet: false });
-  await Item.create(data, { parent: actor }, { renderSheet: false });
+  let blessedShield = {};
+  blessedShield.system = foundry.utils.deepClone(game.system.model.Item.armor);
+
+  blessedShield.name = game.i18n.localize('POWER_LABEL.BLESSED_SHIELD');
+  blessedShield.type = "armor";
+  blessedShield.img = 'icons/svg/holy-shield.svg',
+  blessedShield.system.baseProtection = '0',
+  blessedShield.system.bonusProtection = protection,
+  blessedShield.system.state = "active";
+  blessedShield.flags = {}
+  blessedShield.flags[game.system.id] = {"blessedshield": true};
+  await Item.create(blessedShield, { parent: actor }, { renderSheet: false });
 }
 
 async function showReleaseNotes() {
@@ -729,6 +761,7 @@ export async function modifyEffectOnToken(token, effect, action, options) {
   if (action == 1) {
     //add effect
     if (!game.symbaroum.api.getEffect(token, effect)) {
+      // Currently disabled
       if (statusCounterMod) {
         let alreadyHereEffect = await EffectCounter.findCounter(token.document, effect.icon);
         if (alreadyHereEffect === undefined) {

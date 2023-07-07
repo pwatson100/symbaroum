@@ -256,12 +256,10 @@ export class SymbaroumItem extends Item {
                 system.pcProtection +=  "+1";
             }
 
-            if(protection === "") {
-                armorRoll = new Roll("0").evaluate({maximize: true, async:false});
-            } else {
-                armorRoll = new Roll(protection).evaluate({maximize: true, async:false});
+            system.npcProtection = 0;
+            if(protection !== "" && Roll.validate(protection)) {
+                system.npcProtection = Math.ceil(new Roll(protection).evaluate({maximize: true, async:false}).total/2);
             }
-            system.npcProtection = Math.ceil(armorRoll.total/2);
             if(system.qualities?.reinforced){
                 system.npcProtection +=  1;
             }
@@ -3114,8 +3112,7 @@ export async function modifierDialog(functionStuff){
 
 export async function buildRolls(functionStuff){
     if(functionStuff.casting === game.symbaroum.config.CASTING_NOT && !functionStuff.isMaintained){
-        standardPowerResult(null, functionStuff);
-        return;
+        return await standardPowerResult(null, functionStuff);
     }
     let isWeaponRoll = functionStuff.combat;
     let rollData = [];
@@ -3131,10 +3128,10 @@ export async function buildRolls(functionStuff){
         rollData.push(await baseRoll(functionStuff.actor, functionStuff.castingAttributeName, null, null, functionStuff.favour, functionStuff.modifier, functionStuff.resistRoll));
     }
     if(isWeaponRoll){
-        await attackResult(rollData, functionStuff);
+        return await attackResult(rollData, functionStuff);
     }
     else{
-        await standardPowerResult(rollData, functionStuff);
+        return await standardPowerResult(rollData, functionStuff);
     }
 }
 
@@ -3455,6 +3452,7 @@ async function attackResult(rollData, functionStuff){
     if(flagDataArray.length > 0){
         await createModifyTokenChatButton(flagDataArray);
     }
+    return templateData;
 }
 
 async function formatRollString(rollDataElement, hasTarget, modifier){
@@ -3651,11 +3649,6 @@ async function standardPowerResult(rollData, functionStuff){
         flagDataArray.push({
             tokenId: functionStuff.tokenId,
             actorId: functionStuff.actor.id,
-            addEffect: CONFIG.statusEffects.find(e => e.id === "holyShield"),
-            effectDuration: 1
-        },{
-            tokenId: functionStuff.tokenId,
-            actorId: functionStuff.actor.id,
             addObject: "blessedshield",
             protection: protectionFormula
         })
@@ -3663,10 +3656,11 @@ async function standardPowerResult(rollData, functionStuff){
 
         if(functionStuff.targets){
             for(let target of functionStuff.targets){
+                let effect = CONFIG.statusEffects.find(e => e.id === "holyShield");
                 flagDataArray.push({
                     tokenId: target.tokenId,
-                    addEffect: CONFIG.statusEffects.find(e => e.id === "holyShield"),
-                    effectDuration: 1 
+                    addEffect: effect,
+                    effectDuration: 1
                 },{
                     tokenId: target.tokenId,
                     addObject: "blessedshield",
@@ -4009,6 +4003,7 @@ async function standardPowerResult(rollData, functionStuff){
     if(flagDataArray.length){
         await createModifyTokenChatButton(flagDataArray);
     }
+    return templateData;
 }
 
 async function preDialogLayonHands(functionStuff){

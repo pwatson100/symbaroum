@@ -27,27 +27,29 @@
                 </div>
             </div>
         {{/ife}}
-
     </div>
-    <div class="background foreground border">
-        <h1>{{localize "BIO.BACKGROUND"}}</h1>
-        {{editor system.bio.background target="system.bio.background" button=true owner=owner editable=true}}
-    </div>
-    <div class="personal-goal foreground border">
-        <h1>{{localize "BIO.GOAL"}}</h1>
-        {{editor system.bio.personalGoal target="system.bio.personalGoal" button=true owner=owner editable=true}}
-    </div>
-    {{#ife actor.type 'player'}}
-        <div class="stigmas foreground border">
-            <h1>{{localize "BIO.STIGMAS"}}</h1>
-            {{editor system.bio.stigmas target="system.bio.stigmas" button=true owner=owner editable=true}}
+    
+    {{#ifNotLimited actor}}
+        <div class="background foreground border">
+            <h1>{{localize "BIO.BACKGROUND"}}</h1>
+            {{editor system.bio.background target="system.bio.background" button=true owner=owner editable=true}}
         </div>
-    {{/ife}}
-
-    {{#ife actor.type 'monster'}}
-        <div class="stigmas foreground border">
-            <h1>{{localize "BIO.TACTICS"}}</h1>
-            {{editor system.bio.tactics target="system.bio.tactics" button=true owner=owner editable=true}}
+        <div class="personal-goal foreground border">
+            <h1>{{localize "BIO.GOAL"}}</h1>
+            {{editor system.bio.personalGoal target="system.bio.personalGoal" button=true owner=owner editable=true}}
         </div>
-    {{/ife}}
+        {{#ife actor.type 'player'}}
+            <div class="stigmas foreground border">
+                <h1>{{localize "BIO.STIGMAS"}}</h1>
+                {{editor system.bio.stigmas target="system.bio.stigmas" button=true owner=owner editable=true}}
+            </div>
+        {{/ife}}
+
+        {{#ife actor.type 'monster'}}
+            <div class="stigmas foreground border">
+                <h1>{{localize "BIO.TACTICS"}}</h1>
+                {{editor system.bio.tactics target="system.bio.tactics" button=true owner=owner editable=true}}
+            </div>
+        {{/ife}}
+    {{/ifNotLimited}}
 </div>

@@ -623,6 +623,8 @@
   font-family: var(--font-text);
   border-left: 0;
   border-radius: 0;
+  -webkit-appearance: textfield;
+          appearance: textfield;
   -moz-appearance: textfield;
   text-align: center;
   min-width: 0;
@@ -640,6 +642,8 @@
   font-family: var(--font-text);
   border-left: 0;
   border-radius: 0;
+  -webkit-appearance: textfield;
+          appearance: textfield;
   -moz-appearance: textfield;
   text-align: center;
   border-color: var(--title-color);
@@ -709,11 +713,11 @@
 }
 
 .symbaroum.sheet.actor .isScripted {
-  -webkit-box-shadow: -1.5px 1.5px 1.5px 1.5px hsl(0deg, 0%, 53%);
-          box-shadow: -1.5px 1.5px 1.5px 1.5px hsl(0deg, 0%, 53%);
+  -webkit-box-shadow: -1.5px 1.5px 1.5px 1.5px hsl(0, 0%, 53%);
+          box-shadow: -1.5px 1.5px 1.5px 1.5px hsl(0, 0%, 53%);
   cursor: pointer;
   border: solid 1px;
-  border-color: hsl(0deg, 6%, 75%);
+  border-color: hsl(0, 6%, 75%);
   margin: 0;
   background-repeat: no-repeat;
   height: 43px;
@@ -722,8 +726,8 @@
 }
 
 .symbaroum.sheet.actor .isScripted:hover {
-  -webkit-box-shadow: -2px 2px 2px 2px hsl(71deg, 93%, 22%);
-          box-shadow: -2px 2px 2px 2px hsl(71deg, 93%, 22%);
+  -webkit-box-shadow: -2px 2px 2px 2px hsl(71, 93%, 22%);
+          box-shadow: -2px 2px 2px 2px hsl(71, 93%, 22%);
 }
 
 .symbaroum.sheet.actor .notScripted {
@@ -1547,7 +1551,7 @@
 }
 
 .symbaroum-mod.app.window-app.sheet.journal-sheet.journal-entry {
-  color: hsl(0deg, 0%, 0%);
+  color: hsl(0, 0%, 0%);
   border: 9px solid transparent;
   -o-border-image: url(../asset/modules/sym-journal-border.webp) 108/3 repeat;
      border-image: url(../asset/modules/sym-journal-border.webp) 108/3 repeat;
@@ -1587,7 +1591,7 @@
   /* width: min(100%, 900px); */
   min-height: 65px;
   margin: auto;
-  color: hsl(39deg, 77%, 83%);
+  color: hsl(39, 77%, 83%);
 }
 
 .symbaroum-mod.journal-sheet form input[name=name]:focus {
@@ -1601,24 +1605,24 @@
 }
 
 .symbaroum-mod ::-webkit-scrollbar-thumb {
-  background: hsl(0deg, 0%, 50%);
-  border-color: hsl(180deg, 25%, 25%);
+  background: hsl(0, 0%, 50%);
+  border-color: hsl(180, 25%, 25%);
 }
 
 .symbaroum-mod ::-webkit-scrollbar-track {
-  -webkit-box-shadow: 0 0 3px hsl(0deg, 0%, 60%) inset;
-          box-shadow: 0 0 3px hsl(0deg, 0%, 60%) inset;
+  -webkit-box-shadow: 0 0 3px hsl(0, 0%, 60%) inset;
+          box-shadow: 0 0 3px hsl(0, 0%, 60%) inset;
   border-radius: 3px;
 }
 
 .symbaroum-mod.journal-sheet form button[type=submit]:focus {
   opacity: 100%;
-  -webkit-box-shadow: 0 0 8px hsl(0deg, 0%, 50%);
-          box-shadow: 0 0 8px hsl(0deg, 0%, 50%);
+  -webkit-box-shadow: 0 0 8px hsl(0, 0%, 50%);
+          box-shadow: 0 0 8px hsl(0, 0%, 50%);
 }
 
 .symbaroum-mod .content-link-I {
-  color: hsl(39deg, 77%, 83%);
+  color: hsl(39, 77%, 83%);
   background: transparent;
   font-size: 15pt;
   border: 0;
@@ -1626,7 +1630,7 @@
 
 .symbaroum-mod a.inline-link {
   background-color: transparent;
-  color: hsl(6deg, 56%, 30%);
+  color: hsl(6, 56%, 30%);
   font-size: 15pt;
   border: 0;
   font-family: "Fondamento";
@@ -1634,7 +1638,7 @@
 
 .symbaroum-mod .inline-link2 .content-link {
   background-color: transparent;
-  color: hsl(6deg, 56%, 30%);
+  color: hsl(6, 56%, 30%);
   font-size: 16pt;
   border: 0;
   font-family: "Fondamento";
@@ -1658,7 +1662,7 @@
 }
 
 .symbaroum-mod .h1mod .indexsheet {
-  color: hsl(0deg, 0%, 100%);
+  color: hsl(0, 0%, 100%);
   text-align: center;
   font-size: 50pt;
 }
@@ -1690,7 +1694,7 @@
   font-weight: bold;
   font-family: "Fondamento";
   font-size: 12pt;
-  color: hsl(19deg, 70%, 37%);
+  color: hsl(19, 70%, 37%);
   display: block;
   margin: 0px 20px 0px 10px;
   border-bottom: none !important;
@@ -1700,7 +1704,7 @@
   font-weight: bold;
   /* font-family: 'Fondamento'; */
   font-size: 12pt;
-  color: hsl(0deg, 0%, 100%);
+  color: hsl(0, 0%, 100%);
   /* display: block; */
   /* margin: 0px 20px 0px 10px; */
   margin: 0;
@@ -1710,7 +1714,7 @@
   font-weight: bold;
   font-family: "Fondamento";
   font-size: 12pt;
-  color: hsl(19deg, 70%, 37%);
+  color: hsl(19, 70%, 37%);
 }
 
 .symbaroum-mod li {
@@ -1735,7 +1739,7 @@
   width: 100%;
   font-family: "Primitive";
   font-size: 25pt;
-  border-bottom: 1px solid hsl(8deg, 56%, 30%);
+  border-bottom: 1px solid hsl(8, 56%, 30%);
   padding: 0 14px;
   margin-bottom: 8px;
 }
@@ -1802,7 +1806,7 @@
           break-inside: avoid;
   font-style: normal;
   float: right;
-  border: 5px double hsl(0deg, 0%, 0%);
+  border: 5px double hsl(0, 0%, 0%);
   border-radius: 25px;
   -webkit-box-shadow: 3px 3px;
           box-shadow: 3px 3px;
@@ -1821,7 +1825,7 @@
           break-inside: avoid;
   font-style: normal;
   float: left;
-  border: 5px double hsl(0deg, 0%, 0%);
+  border: 5px double hsl(0, 0%, 0%);
   border-radius: 25px;
   -webkit-box-shadow: 3px 3px;
           box-shadow: 3px 3px;
@@ -1840,7 +1844,7 @@
           break-inside: avoid;
   font-style: normal;
   float: center;
-  border: 5px double hsl(0deg, 0%, 0%);
+  border: 5px double hsl(0, 0%, 0%);
   border-radius: 25px;
   -webkit-box-shadow: 3px 3px;
           box-shadow: 3px 3px;
@@ -1899,7 +1903,7 @@
 }
 
 .symbaroum-mod .fancytext {
-  color: hsl(19deg, 70%, 37%);
+  color: hsl(19, 70%, 37%);
 }
 
 .symbaroum-mod .newstatheader {
@@ -1918,7 +1922,7 @@
 }
 
 .symbaroum-mod .statblockcenter {
-  background-color: hsl(60deg, 6%, 86%);
+  background-color: hsl(60, 6%, 86%);
   padding: 10px;
   margin-top: 10px;
   margin-right: auto;
@@ -1942,7 +1946,7 @@
   padding-left: 5px;
   padding-right: 3px;
   margin-left: 10px;
-  border: 5px double hsl(0deg, 0%, 0%);
+  border: 5px double hsl(0, 0%, 0%);
   border-radius: 25px;
   -webkit-box-shadow: 3px 3px;
           box-shadow: 3px 3px;
@@ -1989,7 +1993,7 @@ Monster Codex Stuff
   font-weight: bold;
   font-family: "Fondamento";
   font-size: 20pt;
-  color: hsl(19deg, 70%, 37%);
+  color: hsl(19, 70%, 37%);
   display: block;
   margin: 0px 20px 0px 10px;
 }
@@ -2009,7 +2013,7 @@ Monster Codex Stuff
 
 .symbaroum-mod .h2subHead {
   font-weight: bold;
-  color: hsl(19deg, 70%, 37%);
+  color: hsl(19, 70%, 37%);
   border: 0;
   margin-bottom: 0;
   margin-left: 10px;
@@ -2054,9 +2058,9 @@ Monster Codex Stuff
 }
 
 .symbaroum-mod .statblock2 {
-  color: hsl(6deg, 55%, 30%);
-  background-color: hsl(45deg, 13%, 87%);
-  border-top: hsl(6deg, 55%, 30%) solid 2px;
+  color: hsl(6, 55%, 30%);
+  background-color: hsl(45, 13%, 87%);
+  border-top: hsl(6, 55%, 30%) solid 2px;
 }
 
 .symbaroum-mod .blockrotate {
@@ -2067,7 +2071,7 @@ Monster Codex Stuff
 }
 
 .symbaroum-mod .statblockcenter {
-  background-color: hsl(60deg, 6%, 86%);
+  background-color: hsl(60, 6%, 86%);
   padding: 10px;
   margin-top: 10px;
   margin-right: auto;
@@ -2077,7 +2081,7 @@ Monster Codex Stuff
 
 .symbaroum-mod .subhead::first-letter {
   font-family: "BarloesiusSchrift";
-  color: hsl(6deg, 55%, 30%);
+  color: hsl(6, 55%, 30%);
   float: left;
   font-size: 4rem;
   line-height: 0.65;
@@ -2086,7 +2090,7 @@ Monster Codex Stuff
 
 .symbaroum-mod .subhead1::first-letter {
   font-family: "BarloesiusSchrift";
-  color: hsl(32deg, 76%, 42%);
+  color: hsl(32, 76%, 42%);
   float: left;
   font-size: 6rem;
   line-height: 0.65;
@@ -2095,7 +2099,7 @@ Monster Codex Stuff
 
 .symbaroum-mod .subhead2::first-letter {
   font-family: "BarloesiusSchrift";
-  color: hsl(0deg, 0%, 0%);
+  color: hsl(0, 0%, 0%);
   float: left;
   font-size: 4rem;
   line-height: 0.65;
@@ -2104,7 +2108,7 @@ Monster Codex Stuff
 
 .symbaroum-mod .subhead3::first-letter {
   font-family: "Jim Nightshade";
-  color: hsl(174deg, 50%, 37%);
+  color: hsl(174, 50%, 37%);
   float: left;
   font-size: 4rem;
   line-height: 0.65;
@@ -2178,7 +2182,7 @@ Monster Codex Stuff
 }
 
 .symbaroum-mod .besttable tr:nth-child(even) {
-  background-color: hsl(39deg, 56%, 91%);
+  background-color: hsl(39, 56%, 91%);
 }
 
 .symbaroum-mod .libox {
