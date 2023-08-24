@@ -163,7 +163,7 @@
   margin: 0;
   background-repeat: no-repeat;
   height: 43px;
-  width: 50px;
+  width: 57px;
   background-size: 43px;
 }
 
@@ -203,4 +203,31 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+
+.symbaroum.sheet.actor .automatic {
+  display: inline-block;
+  height: 46%;
+  width: 20px;
+  // vertical-align: middle;
+  background-size: 20px;
+  border: 0;
+  background-image: url('../asset/image/bolt-shield.webp');
+  background-color: rgb(0, 0, 0, 1);
+}
+.symbaroum.sheet.actor .automatic1 {
+  display: inline-block;
+  height: 46%;
+  width: 20px;
+  // vertical-align: middle;
+  background-size: 20px;
+  border: 0;
+  background-image: url('../asset/image/surrounded-shield.webp');
+  background-color: rgb(0, 0, 0, 1);
+}
+
+.smallbackground {
+  background: var(--title-color) repeat;
+  width: 20px;
+  height: 45px;
 }
