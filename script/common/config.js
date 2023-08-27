@@ -350,6 +350,9 @@ SYMBAROUM.rangeWeapons = [
     "thrown"
 ];
 
+SYMBAROUM.baseDamage = "1d8";
+SYMBAROUM.baseProtection = "1d4";
+
 SYMBAROUM.powersList = {
     "none": 'ABILITY_LABEL.DEFAULT', 
     "anathema": 'POWER_LABEL.ANATHEMA', 
@@ -465,9 +468,26 @@ SYMBAROUM.abilityArmor = [
     "armored"
 ]
 
+SYMBAROUM.expCosts = {
+    "ritual": { 
+        "free":6,
+        "cost":10
+    },
+    "burden":{ "cost":-5 },
+    "boon": { "cost": 5 },
+    "power": { 
+        "novice":10,
+        "adept":20,
+        "master":30,
+        "nocost": [ ]
+    },
+}
+
 //combat mod types
 SYMBAROUM.TYPE_ALTERNATIVE_DAMAGE = "alternative_damage";
 SYMBAROUM.TYPE_FAVOUR = "favour";
+
+SYMBAROUM.RAPIREFLEXINIBONUS = 20;
 
 
 SYMBAROUM.DAM_FAVOUR = "damagefavour";

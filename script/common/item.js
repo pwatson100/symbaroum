@@ -8,7 +8,7 @@ export class SymbaroumItem extends Item {
   /*  Importing and Exporting                     */
   /* -------------------------------------------- */
 
-  /**
+/**
    * Present a Dialog form to create a new Document of this type.
    * Choose a name and a type from a select menu of types.
    * @param {object} data              Initial data with which to populate the creation form
@@ -17,7 +17,7 @@ export class SymbaroumItem extends Item {
    *                                   closed.
    * @memberof ClientDocumentMixin
    */
-   static async createDialog(data={}, {parent=null, pack=null, ...options}={}) {
+    static async createDialog(data={}, {parent=null, pack=null, ...options}={}) {
 
         // Collect data
         const documentName = this.metadata.name;
@@ -89,7 +89,6 @@ export class SymbaroumItem extends Item {
             S:"ACTION.SPECIAL"
         }
 
-        system["type"+this.type.capitalize()] = true;
         system["is"+this.type.capitalize()] = true;
         
         system.isPower = system.isTrait || system.isAbility || system.isMysticalPower || system.isRitual || system.isBurden || system.isBoon;
@@ -164,29 +163,31 @@ export class SymbaroumItem extends Item {
 
         if (system.isRitual) {
             system.actions = "Ritual";
-        }
-        else if (system.isBurden) {
+        } else if (system.isBurden) {
             system.actions = "Burden";
-            expCost = -5 * system.level;
+            expCost = game.symbaroum.config.expCosts.burden['cost'] * system.level;
         } else if (system.isBoon) {
             system.actions = "Boon";
-            expCost = 5 * system.level;
+            expCost = game.symbaroum.config.expCosts.boon['cost'] * system.level;
         } else if (system.isPower) {
 			
             let novice = "-";
             let adept = "-";
             let master = "-";
             if (system.novice.isActive || system.marker) {
-                novice = system.novice.action;
-                expCost += 10;
+                novice = system.novice.action ?? '?';
+                expCost += game.symbaroum.config.expCosts.power['novice'];
             }
             if (system.adept.isActive && !system.marker) { 
-                adept = system.adept.action;
-                expCost += 20;
+                adept = system.adept.action ?? '?';
+                expCost += game.symbaroum.config.expCosts.power['adept'];
             }
             if (system.master.isActive && !system.marker) { 
-                master = system.master.action;
-                expCost += 30;
+                master = system.master.action ?? '?';
+                expCost += game.symbaroum.config.expCosts.power['master'];
+            }
+            if(game.symbaroum.config.expCosts.power['nocost'].includes(system.reference)) {
+                expCost = 0;
             }
 
             if(system.marker) {
@@ -206,7 +207,7 @@ export class SymbaroumItem extends Item {
             let baseDamage = system.baseDamage;
             // game.symbaroum.log("baseDamage["+baseDamage+"]");
             if( baseDamage === null || baseDamage === undefined || baseDamage === "" ) {
-                baseDamage = "1d8";
+                baseDamage = game.symbaroum.config.baseDamage;
             }
             let diceSides = baseDamage.match(/[0-9]d([1-9]+)/)[1];
             // game.symbaroum.log("diceSides["+diceSides+"]");
@@ -238,7 +239,7 @@ export class SymbaroumItem extends Item {
             let protection = system.baseProtection;
             let armorRoll = null;
             if( protection === null || protection === undefined || protection === "" ) {
-                protection = "1d4";
+                protection = game.symbaroum.config.baseProtection;
             }
             if( protection === "0") {
                 protection = "";
