@@ -31,7 +31,7 @@ export class SymbaroumAPI
         if( this[name] == undefined) {
             this[name] = func;
         } else {
-            throw `Symbaroum API Function ${name} is already registered`;
+            game.symbaroum.error(`Symbaroum API Function ${name} is already registered`);
         }
     }
 
@@ -42,7 +42,7 @@ export class SymbaroumAPI
      */
     unregisterFunction(name) {
         if( this[name] == undefined) {
-            throw `Function ${name} is already deregistered`;
+            game.symbaroum.error(`Function ${name} is already deregistered`);
         } else {
             delete this[name];
         }
@@ -76,7 +76,7 @@ export class SymbaroumAPI
         const funcName = this._getItemModifierFunctionName(name)
 
         if( CONFIG.Item.documentClass.prototype[funcName] != undefined) {
-            throw `ItemModifier ${name} is already registered`
+            game.symbaroum.error(`ItemModifier ${name} is already registered`);
         } else {
             CONFIG.Item.documentClass.prototype[funcName] = func;
         }        
@@ -91,7 +91,7 @@ export class SymbaroumAPI
         const funcName = this._getItemModifierFunctionName(name)
 
         if( CONFIG.Item.documentClass.prototype[funcName] == undefined) {
-            throw `ItemModifier ${name} is already unregistered`
+            game.symbaroum.error(`ItemModifier ${name} is already unregistered`);
         } else {
             delete CONFIG.Item.documentClass.prototype[funcName];
         }        
@@ -107,7 +107,7 @@ export class SymbaroumAPI
         const funcName = this._getAbilityFunctionName(name)
 
         if( CONFIG.Item.documentClass.prototype[funcName] != undefined) {
-            throw `Ability ${name} is already registered`
+            game.symbaroum.error(`Ability ${name} is already registered`);
         } else {
             CONFIG.Item.documentClass.prototype[funcName] = func;
         }        
@@ -122,7 +122,7 @@ export class SymbaroumAPI
         const funcName = this._getAbilityFunctionName(name)
 
         if( CONFIG.Item.documentClass.prototype[funcName] == undefined) {
-            throw `Ability ${name} is already unregistered`
+            game.symbaroum.error(`Ability ${name} is already unregistered`);
         } else {
             delete CONFIG.Item.documentClass.prototype[funcName];
         }        
