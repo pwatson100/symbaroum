@@ -2616,6 +2616,26 @@ Monster Codex Stuff
   margin-right: 5px;
 }
 
+.symbaroum.sheet.actor .gear .armors tr.armor.item nav#context-menu.expand-down.expand-up,
+.symbaroum.sheet.actor .gear .weapons tr.weapon.item nav#context-menu.expand-down.expand-up,
+.symbaroum.sheet.actor .gear .armors tr.armor.item nav#context-menu.expand-down,
+.symbaroum.sheet.actor .gear .weapons tr.weapon.item nav#context-menu.expand-down,
+.symbaroum.sheet.actor .gear .armors tr.armor.item nav#context-menu.expand-up,
+.symbaroum.sheet.actor .gear .weapons tr.weapon.item nav#context-menu.expand-up {
+  position: fixed;
+  left: auto;
+  margin-top: 10px;
+  top: unset;
+  font-family: var(--font-text);
+  font-size: 14px;
+  color: var(--color-label);
+  text-align: left;
+  max-width: 10em;
+  border-color: grey;
+  border-width: 3px;
+  background: var(--title-color) repeat;
+}
+
 .symbaroum.sheet.actor .player .gear .wrapper-left .armors th.addbutton .fas,
 .symbaroum.sheet.actor .player .gear .wrapper-left .weapons th.addbutton .fas,
 .symbaroum.sheet.actor .player .gear .wrapper-left .artifacts th.addbutton .fas,
@@ -3288,7 +3308,9 @@ Monster Codex Stuff
   height: 120px;
 }
 
+.symbaroum.sheet.actor .player .main .combat .armor nav#context-menu.expand-up,
 .symbaroum.sheet.actor .player .main .combat .armor nav#context-menu.expand-down,
+.symbaroum.sheet.actor .weapons .weapon nav#context-menu.expand-up,
 .symbaroum.sheet.actor .weapons .weapon nav#context-menu.expand-down {
   position: fixed;
   left: auto;
@@ -3296,7 +3318,7 @@ Monster Codex Stuff
   top: unset;
   font-family: var(--font-text);
   font-size: 14px;
-  color: white;
+  color: var(--color-label);
   text-align: left;
   max-width: 10em;
   border-color: grey;
@@ -3406,10 +3428,11 @@ Monster Codex Stuff
   height: 38px;
 }
 
-.symbaroum.sheet.actor .player .main .abilities-powers .traits .trait nav#context-menu.expand-down {
+.symbaroum.sheet.actor .player .main .abilities-powers .traits .trait nav#context-menu.expand-down,
+.symbaroum.sheet.actor .player .main .abilities-powers .traits .trait nav#context-menu.expand-up {
   font-family: var(--font-text);
   font-size: 14px;
-  color: white;
+  color: var(--color-label);
   text-align: left;
   max-width: 10em;
   border-color: grey;
@@ -3418,7 +3441,7 @@ Monster Codex Stuff
 }
 
 .symbaroum.sheet.actor .player .main .abilities-powers .traits .trait .context-menu .fas {
-  color: white;
+  color: var(--color-label);
 }
 
 .symbaroum.sheet.actor .player .main .abilities-powers .traits .trait .name {

@@ -331,7 +331,9 @@
   height: 120px;
 }
 
+.symbaroum.sheet.actor .player .main .combat .armor nav#context-menu.expand-up,
 .symbaroum.sheet.actor .player .main .combat .armor nav#context-menu.expand-down,
+.symbaroum.sheet.actor .weapons .weapon nav#context-menu.expand-up,
 .symbaroum.sheet.actor .weapons .weapon nav#context-menu.expand-down {  
   position: fixed;
   left: auto;
@@ -339,7 +341,7 @@
   top: unset;
   font-family: var(--font-text);
   font-size: 14px;
-  color:white;
+  color: var(--color-label);
   text-align: left;
   max-width: 10em;
   border-color: grey;
@@ -415,10 +417,11 @@
   height: 38px;
 }
 
-.symbaroum.sheet.actor .player .main .abilities-powers .traits .trait nav#context-menu.expand-down {
+.symbaroum.sheet.actor .player .main .abilities-powers .traits .trait nav#context-menu.expand-down,
+.symbaroum.sheet.actor .player .main .abilities-powers .traits .trait nav#context-menu.expand-up {
   font-family: var(--font-text);
   font-size: 14px;
-  color:white;
+  color: var(--color-label);;
   text-align: left;
   max-width: 10em;
   border-color: grey;
@@ -427,7 +430,7 @@
 }
 
 .symbaroum.sheet.actor .player .main .abilities-powers .traits .trait .context-menu .fas {
-  color:white;
+  color: var(--color-label);;
 }
 
 .symbaroum.sheet.actor .player .main .abilities-powers .traits .trait .name {
