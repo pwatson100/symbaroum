@@ -464,6 +464,8 @@ SYMBAROUM.systemTraits = [
     "thoroughlycorrupt"
 ]
 
+SYMBAROUM.noArmorID = "NoArmorID";
+
 SYMBAROUM.abilityArmor = [
     "armored"
 ]

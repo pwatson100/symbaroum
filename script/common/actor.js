@@ -11,7 +11,7 @@ export class SymbaroumActor extends Actor {
         this._initializeData(this.system);
         // console.log("Init data - complete");
         this.system.numRituals = 0;
-        system["is"+this.type.capitalize()] = true;
+        this.system["is"+this.type.capitalize()] = true;
 
         // console.log("Compute items");
         // game.symbaroum.log("original items",this.items);
@@ -697,7 +697,7 @@ export class SymbaroumActor extends Actor {
         noArmor.system = {};
         noArmor.system = foundry.utils.deepClone(game.system.model.Item.armor);
 
-        noArmor.id = "NoArmorID";
+        noArmor.id = game.symbaroum.config.noArmorID;
         noArmor.name = game.i18n.localize("ARMOR.NOARMOR_NAME");
         noArmor.type = noArmor.type = "armor";
         noArmor.img = "icons/equipment/chest/shirt-simple-white.webp";

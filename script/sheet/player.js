@@ -6,7 +6,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             classes: ["symbaroum", "sheet", "actor", "player"],
-            template: "systems/symbaroum/template/sheet/player.html",
+            template: "systems/symbaroum/template/sheet/player.hbs",
             width: 800,
             height: "auto",
             resizable: true,
@@ -80,12 +80,86 @@ export class PlayerSheet extends SymbaroumActorSheet {
 
     activateListeners(html) {
         super.activateListeners(html);
-        // console.log(this.actor);
 
         html.find(".roll-attribute").click(async ev => await this._prepareRollAttribute(ev));
-        html.find(".roll-armor").click(async ev => await this._prepareRollArmor(ev));
-        html.find(".roll-weapon").click(async ev => await this._prepareRollWeapon(ev));
+        html.find(".roll-armor").click(async ev => await this._onPrepareRollArmor(ev));
+        html.find(".roll-weapon").click(async ev => await this._onPrepareRollWeapon(ev));
         html.find(".modify-attributes").click(async ev => await this._modifyAttributes(ev));
+
+        const symbaroumContextMenu = [{
+            name: `TOOLTIP.USE_ABILITY`,
+            icon: `<i class="fa-solid fa-bolt-lightning"></i>`,
+            isVisible: (elem) => {
+                if(elem.system?.hasScript && elem.system?.isPower)
+                    return true;
+                return false;
+            },
+            callback: (elem) => this._prepareActivateAbility(elem)
+        },{
+            name: "TOOLTIP.USE_WEAPON",
+            icon: `<i class="fa-solid fa-hand-fist"></i>`,
+            isVisible: (elem) => { 
+                return elem.system?.isWeapon && elem.system?.isActive;
+            },
+            callback: (elem, event) => {
+                this._prepareRollWeapon(elem);
+            }
+        },{
+            name: "TOOLTIP.USE_ARMOR",
+            icon: `<i class="fa-solid fa-shield"></i>`,
+            isVisible: (elem) => { 
+                return elem == game.symbaroum.config.noArmorID || elem.system.isArmor && elem.system.isActive;
+            },
+            callback: (elem, event) => {
+                this._prepareRollArmor(elem);
+            }
+        },{
+            name: "TOOLTIP.VIEW_ITEM",
+            icon: `<i class="fa-regular fa-eye"></i>`,
+            isVisible: (elem) => { 
+                return elem != game.symbaroum.config.noArmorID;
+            },
+            callback: (elem, event) => {
+                this._itemEdit(elem);
+            }
+        },{
+            name: `TOOLTIP.DELETE_ITEM`,
+            icon: `<i class='fas fa-trash'></i>`,
+            isVisible: (elem) => { 
+                return elem != game.symbaroum.config.noArmorID;
+            },
+            callback: (elem) => this._itemDelete(elem)
+        }];
+        class CMPowerMenu extends ContextMenu {      
+    
+            constructor(html, selector, menuItems, {eventName="contextmenu", onOpen, onClose, parent}={}) {
+                super(html, selector, menuItems, {eventName:eventName, onOpen:onOpen, onClose:onClose});
+                this.myParent = parent;
+                this.originalMenuItems = [...menuItems];
+            }
+        
+            render(...args) {
+                let item = null;
+                if( args[0].data('itemId') == game.symbaroum.config.noArmorID ) {
+                    // special case
+                    item = args[0].data('itemId');
+                } else { 
+                    item = this.myParent?.actor.items.get(args[0].data('itemId'));
+                }
+                if( item ) {
+                    this.menuItems = this.originalMenuItems.filter(elem => { 
+                        return elem.isVisible(item); 
+                    });
+                } else {
+                    this.menuItems = this.originalMenuItems;
+                }
+                super.render(...args);
+            }
+        };
+    
+        new CMPowerMenu(html, ".abilities-powers .trait", symbaroumContextMenu, { parent:this });
+        new CMPowerMenu(html, ".weapons div.weapon", symbaroumContextMenu, { parent:this });
+        new CMPowerMenu(html, ".armor div.item-row.item", symbaroumContextMenu, { parent:this });
     }
 
     _getHeaderButtons() {
@@ -121,14 +195,21 @@ export class PlayerSheet extends SymbaroumActorSheet {
         await prepareRollAttribute(this.actor, attributeName, null, null);
     }
 
-    async _prepareRollArmor(event) {
+    async _onPrepareRollArmor(event) {
         event.preventDefault();
         await this.actor.rollArmor();
     }
+    async _prepareRollArmor(elem) {
+        await this.actor.rollArmor();
+    }
 
-    async _prepareRollWeapon(event) {
+    async _onPrepareRollWeapon(event) {
         event.preventDefault();
         const div = $(event.currentTarget).parents(".item");
+        this._prepareRollWeapon(div);
+    }
+    async _prepareRollWeapon(div)
+    {
         const weapon = this.actor.system.weapons.filter(item => item.id == div.data("itemId"))[0];
         await this.actor.rollWeapon(weapon);
     }
@@ -138,7 +219,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
         let system = foundry.utils.deepClone(this.actor.system);
         system.id = this.actor.id;
 
-        const html = await renderTemplate('systems/symbaroum/template/sheet/attributes.html', {
+        const html = await renderTemplate('systems/symbaroum/template/sheet/attributes.hbs', {
             id: this.actor.id,
             system: system
         });

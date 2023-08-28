@@ -4,7 +4,7 @@ export class TraitSheet extends SymbaroumItemSheet {
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             classes: ["symbaroum", "sheet", "item"],
-            template: "systems/symbaroum/template/sheet/trait.html",
+            template: "systems/symbaroum/template/sheet/trait.hbs",
             width: 700,
             height: 600,
             resizable: false,

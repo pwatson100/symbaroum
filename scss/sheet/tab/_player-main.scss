@@ -331,6 +331,26 @@
   height: 120px;
 }
 
+.symbaroum.sheet.actor .player .main .combat .armor nav#context-menu.expand-down,
+.symbaroum.sheet.actor .weapons .weapon nav#context-menu.expand-down {  
+  position: fixed;
+  left: auto;
+  margin-top:10px;
+  top: unset;
+  font-family: var(--font-text);
+  font-size: 14px;
+  color:white;
+  text-align: left;
+  max-width: 10em;
+  border-color: grey;
+  border-width: 3px;
+  background: var(--title-color) repeat;
+}
+.symbaroum.sheet.actor .player .main .combat .armor nav#context-menu i.fas.fa-trash.fa-fw,
+.symbaroum.sheet.actor .weapons .weapon nav#context-menu i.fas.fa-trash.fa-fw {
+  color: var(--color-label);
+}
+
 .symbaroum.sheet.actor .player .main .combat .armor .item-list .name,
 .symbaroum.sheet.actor .player .main .combat .weapons .item-list .name {
   display: flex;
@@ -395,13 +415,28 @@
   height: 38px;
 }
 
+.symbaroum.sheet.actor .player .main .abilities-powers .traits .trait nav#context-menu.expand-down {
+  font-family: var(--font-text);
+  font-size: 14px;
+  color:white;
+  text-align: left;
+  max-width: 10em;
+  border-color: grey;
+  border-width: 3px;
+  background: var(--title-color) repeat;
+}
+
+.symbaroum.sheet.actor .player .main .abilities-powers .traits .trait .context-menu .fas {
+  color:white;
+}
+
 .symbaroum.sheet.actor .player .main .abilities-powers .traits .trait .name {
   display: flex;
-  flex-basis: 75%;
+  flex-basis: 80%;
 }
 
 .symbaroum.sheet.actor .player .main .abilities-powers .traits .trait .actions {
-  flex-basis: 15%;
+  flex-basis: 20%;
   color: var(--color-text);
   background: var(--box-non-editable) repeat;
   text-align: center;

@@ -469,7 +469,6 @@ export class SymbaroumMacros {
 		}
 		const allNames = await response.json();
 		let keys = Object.keys(allNames);
-		console.log(keys);
 		let allKeys = "";
 		keys.forEach(t => {
 			allKeys = allKeys.concat(`<option value="${t}">${t}`);
