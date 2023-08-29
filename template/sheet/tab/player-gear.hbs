@@ -1,65 +1,43 @@
 <div class="gear">
     <div class="wrapper-left">
         <div class="armors foreground">
-            <h1>{{localize "TITLE.ARMORS"}}</h1>
+            <h1>{{localize "TITLE.ARMORS"}} <a class="symbaroum-add item-create" data-tooltip="{{localize "ARMOR.ADDBUTTON"}}" data-type="armor"><i class="fas fa-plus"></i></a></h1>
             <div class="scrollable item-list">
-                <table>
-                    <thead>
-                        <tr class="item-header">
-                            <th class="name">{{localize "ARMOR.NAME"}}
-                            </th>
-                            <th class="protection">{{localize "ARMOR.PROTECTION_SHORT"}}
-                            </th>
-                            <th class="impeding">{{localizeabbr "ARMOR.IMPEDING"}}
-                            </th>
-                            <th class="state">{{localize "GEAR.STATE"}}</th>
-                            <th class="addbutton">
-                                <a class="item-create" data-tooltip="{{localize "ARMOR.ADDBUTTON"}}" data-type="armor"><i class="fas fa-plus"></i></a>
-                            </td>
-                        </tr>
-                    </thead>
-                    </tbody>
-                    {{#each actor.system.armors as |item|}}   
-                        <tr class="armor item" data-item-id="{{item.id}}" >
-                            <td>
-                                <div class="cell">
-                                <div class="namefield">
-                                        <div class="image-container">
-                                            <div class="image" style="background-image: url('{{item.img}}')"></div>
-                                        </div>
-                                        <button class="item-edit ellipsis armorname">{{item.name}}</button>
-                                </div>
-                                </div>
-                            </td>
-                            <td class="protection">
-                                <div style="padding-left: 3px;" {{#ife ../actor.type "player"}}data-tooltip="{{item.displayText}}"{{/ife}} class="playergear protection ellipsis">
-                                {{item.displayTextShort}}
-                                </div>
-                            </td>
-                            <td class="impeding" data-tooltip="{{localize "ARMOR.IMPEDING"}} {{item.impeding}}"><div class="impeding">{{item.impeding}}</div>
-                            </td>
-                            <td class="state">
-                                {{#if item.isNoArmor }}
-                                    <i class="fas fa-tshirt"></i>
-                                {{else}}
-                                    {{#if item.isActive}}
-                                        <a class="item-state" data-tooltip="{{localize 'GEAR.ACTIVE'}}"><i class="fas fa-tshirt"></i></a>
-                                    {{else if item.isEquipped}}
-                                        <a class="item-state" data-tooltip="{{localize 'GEAR.EQUIPPED'}}"><i class="fas fa-suitcase"></i></a>
-                                    {{else}}
-                                        <a class="item-state" data-tooltip="{{localize 'GEAR.OTHER'}}"><i class="fas fa-warehouse"></i></a>
-                                    {{/if}}
-                                {{/if}}
-                            </td>
-                            <td class="button">
-                                {{#if item.isNoArmor }} {{else}}
-                                <a class="item-control item-delete" data-tooltip="{{localize "ARMOR.DELETEBUTTON"}}"><i class="fas fa-trash"></i></a>
-                                {{/if}}
-                            </td>                            
-                        </tr>
-                    {{/each}}         
-                    </tbody>
-                </table>
+                <ol>
+                <li class="armor item-header">
+                    <div class="name">{{localize "ARMOR.NAME"}}</div>
+                    <div class="protection">{{localize "ARMOR.PROTECTION_SHORT"}}</div>
+                    <div class="impeding">{{localizeabbr "ARMOR.IMPEDING"}}</div>
+                    <div class="state">{{localize "GEAR.STATE"}}</div>
+                </li>
+
+                {{#each actor.system.armors as |item|}}
+                <li class="symbaroum-contextmenu armor item-row item" data-item-id="{{item.id}}">
+                    <div class="name">
+                        <div class="image-container">
+                            <div class="image" style="background-image: url('{{item.img}}')"></div>
+                        </div>
+                        <button class="item-edit ellipsis armorname">{{item.name}}</button>
+                    </div>
+                    <div class="protection" {{#ife ../actor.type "player"}}data-tooltip="{{item.displayText}}"{{/ife}} >
+                        {{item.displayTextShort}}
+                    </div>
+                    <div class="impeding" data-tooltip="{{localize 'ARMOR.IMPEDING'}}">{{item.impeding}}</div>
+                    <div class="state">
+                        {{#if item.isNoArmor }}
+                            <i class="fas fa-tshirt"></i>
+                        {{else}}
+                            {{#if item.isActive}}
+                                <a class="item-state" data-tooltip="{{localize 'GEAR.ACTIVE'}}"><i class="fas fa-tshirt"></i></a>
+                            {{else if item.isEquipped}}
+                                <a class="item-state" data-tooltip="{{localize 'GEAR.EQUIPPED'}}"><i class="fas fa-suitcase"></i></a>
+                            {{else}}
+                                <a class="item-state" data-tooltip="{{localize 'GEAR.OTHER'}}"><i class="fas fa-warehouse"></i></a>
+                            {{/if}}
+                        {{/if}}
+                    </div>
+                </li>
+                {{/each}}
             </div>
         </div>
         <div class="weapons foreground">

@@ -138,7 +138,7 @@
                             <div class="item-header">
                                 <b class="name">{{localize "ITEM.ARMOR"}}</b>
                             </div>
-                            <div class="item-row item" data-item-id="{{system.combat.id}}">
+                            <div class="symbaroum-contextmenu item-row item" data-item-id="{{system.combat.id}}">
                                 <div class="image-container">
                                     <div class="image" style="background-image: url(' {{system.combat.img}}')">
                                 </div>
@@ -166,7 +166,7 @@
                         <div class="items">
                             {{#each actor.system.weapons as |item|}}
                                 {{#if item.isActive}}
-                                    <div class="weapon item" data-item-id="{{item.id}}">
+                                    <div class="symbaroum-contextmenu weapon item" data-item-id="{{item.id}}">
                                         <div class="name">
                                             <div class="image-container">
                                                 <div class="image" style="background-image: url('{{item.img}}')"></div>
@@ -200,7 +200,7 @@
     <div class="traits item-list">
         {{#each items as |item key|}}
             {{#if item.system.isPower}}
-                <div class="trait item" data-item-id="{{item.id}}">
+                <div class="symbaroum-contextmenu trait item" data-item-id="{{item.id}}">
                     <div class="name">
                         <!-- <div class="image-container"> -->
                         <button class="activate-ability {{#if item.system.hasScript}}isScripted{{else}}notScripted{{/if}}" style="background-image: url('{{item.img}}'); "></button>

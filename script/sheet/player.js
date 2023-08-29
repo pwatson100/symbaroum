@@ -137,12 +137,19 @@ export class PlayerSheet extends SymbaroumActorSheet {
                 this.myParent = parent;
                 this.originalMenuItems = [...menuItems];
             }
+
+            activateListeners(html) {
+                super.activateListeners(html);
+                this.menu.css('top', this.menu.parent().position().top);
+                this.menu.css('left',this.menu.parent().get(0).getBoundingClientRect().x);
+                
+            }
         
             render(...args) {
                 let item = null;
                 if( args[0].data('itemId') == game.symbaroum.config.noArmorID ) {
                     // special case
-                    item = args[0].data('itemId');
+                    item = game.symbaroum.config.noArmorID;
                 } else { 
                     item = this.myParent?.actor.items.get(args[0].data('itemId'));
                 }
@@ -154,12 +161,16 @@ export class PlayerSheet extends SymbaroumActorSheet {
                     this.menuItems = this.originalMenuItems;
                 }
                 super.render(...args);
+                // console.log($(args).find('nav#context-menu'));
             }
         };
     
-        new CMPowerMenu(html, ".abilities-powers .trait", symbaroumContextMenu, { parent:this });
+        new CMPowerMenu(html, ".symbaroum-contextmenu", symbaroumContextMenu, {  parent:this });
+        /*
         new CMPowerMenu(html, ".weapons div.weapon", symbaroumContextMenu, { parent:this });
-        new CMPowerMenu(html, ".armor div.item-row.item", symbaroumContextMenu, { parent:this });
+        new CMPowerMenu(html, ".armor div.item-row", symbaroumContextMenu, { parent:this });
+        new CMPowerMenu(html, ".armor.item-row", symbaroumContextMenu, { parent:this });
+        */
     }
 
     _getHeaderButtons() {
