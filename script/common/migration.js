@@ -63,19 +63,19 @@ export const migrateWorld = async () => {
         }
 
         // Migrate Scenes
-        // for (let scene of game.scenes.contents) {
-        //     try {
-        //         const updateData = migrateSceneData(scene, worldSystemVersion);
-        //         if (!foundry.utils.isEmpty(updateData)) {
-        //             await scene.update(updateData, {enforceTypes: false});
-        //             scene.tokens.forEach(t => t._actor = null);
-
-        //         }
-        //     } catch (err) {
-        //         err.message = `Failed migration for Scene ${scene.name}: ${err.message}`;          
-        //         game.symbaroum.error(err);
-        //     }
-        // }
+        /*
+        for (let scene of game.scenes.contents) {
+            try {
+                const updateData = migrateSceneData(scene, worldSystemVersion);
+                if (!foundry.utils.isEmpty(updateData)) {
+                    await scene.update(updateData, {enforceTypes: false});                    
+                }
+            } catch (err) {
+                err.message = `Failed migration for Scene ${scene.name}: ${err.message}`;          
+                game.symbaroum.error(err);
+            }
+        }
+        */
 
         // Migrate Compendiums
         // for (let pack of game.packs.filter((p) => p.metadata.package === "world" && ["Actor", "Item", "Scene"].includes(p.metadata.entity))) {
@@ -112,23 +112,26 @@ const migrateActorData = (actor, worldSystemVersion) => {
 
 const migrateItemData = (item, worldSystemVersion) => {
     let update = {};
-    if (item.type === 'weapon' && item.system.reference === 'shield' && item.system.bonus.defense === 1) {
-        update[`system.bonus.defense`] = '0';
-        console.log(`updating Item ${item.name}`);
+    if (item.type === 'weapon' && item.system.reference === 'shield') {
+        let shieldbonus = parseInt(item.system.bonus.defense) || 0;
+        if(shieldbonus > 0) {
+            update[`system.bonus.defense`] = (shieldbonus-1);
+            console.log(`updating Item ${item.name}[${item._id}]`);
+        }
     }
     return update;
 };
 
 export const migrateSceneData = function (scene) {
     const tokens = scene.tokens.map(token => {
-        const t = token.toJSON();
+        const t = duplicate(token.document);
         if (!t.actorId || t.actorLink) {
             t.actorData = {};
         } else if (!game.actors.has(t.actorId)) {
             t.actorId = null;
             t.actorData = {};
         } else if (!t.actorLink) {
-            const actorData = duplicate(t.actorData);
+            const actorData = duplicate(t.actorData ?? t.delta);
             actorData.type = token.actor?.type;
             const update = migrateActorData(actorData);
             ['items', 'effects'].forEach(embeddedName => {
@@ -141,7 +144,7 @@ export const migrateSceneData = function (scene) {
                 delete update[embeddedName];
             });
 
-            mergeObject(t.actorData, update);
+            mergeObject(t.actorData ?? t.delta, update);
         }
         return t;
     });
