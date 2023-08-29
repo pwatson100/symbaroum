@@ -207,12 +207,12 @@
                         <div class="smallbackground">
                             <!-- has some automation condition goes here -->
                             {{#if item.system.hasScript}}
-                            <span class="automatic"></span>
+                            <span class="automatic" data-tooltip="{{localize "TOOLTIP.DIALOG.HASSCRIPT"}}"></span>
                             {{/if}}
                             <!-- End of Some Automation -->
                             <!-- has Full automation condition goes here -->
                             {{#if item.system.isIntegrated}}
-                            <span class="automatic1"></span>
+                            <span class="automatic1" data-tooltip="{{localize "TOOLTIP.DIALOG.ISINTERGRATED"}}"></span>
                             {{/if}}
                             <!-- End of Full Automation -->
                         </div>
