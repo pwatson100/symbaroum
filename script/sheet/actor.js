@@ -97,6 +97,8 @@ export class SymbaroumActorSheet extends ActorSheet {
         }
         
     });
+    b.options.width = 100;
+    b.position.width = 100;
     b.render(true);
   }
 

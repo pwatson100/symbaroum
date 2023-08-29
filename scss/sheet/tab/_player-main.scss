@@ -331,10 +331,9 @@
   height: 120px;
 }
 
-.symbaroum.sheet.actor .player .main .combat .armor nav#context-menu.expand-up,
-.symbaroum.sheet.actor .player .main .combat .armor nav#context-menu.expand-down,
-.symbaroum.sheet.actor .weapons .weapon nav#context-menu.expand-up,
-.symbaroum.sheet.actor .weapons .weapon nav#context-menu.expand-down {  
+.symbaroum.sheet.actor .player nav#context-menu.expand-up,
+.symbaroum.sheet.actor .player nav#context-menu.expand-down
+{
   position: fixed;
   left: auto;
   margin-top:10px;
@@ -346,10 +345,20 @@
   max-width: 10em;
   border-color: grey;
   border-width: 3px;
-  background: var(--title-color) repeat;
+  background: var(--title-color) repeat;  
 }
+
+.symbaroum.sheet.actor .player nav#context-menu.expand-up li.context-item:hover,
+.symbaroum.sheet.actor .player nav#context-menu.expand-down li.context-item:hover
+{
+  -moz-box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.3);
+  -webkit-box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.3);
+  box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.3);  
+}
+
 .symbaroum.sheet.actor .player .main .combat .armor nav#context-menu i.fas.fa-trash.fa-fw,
-.symbaroum.sheet.actor .weapons .weapon nav#context-menu i.fas.fa-trash.fa-fw {
+.symbaroum.sheet.actor .weapons .weapon nav#context-menu i.fas.fa-trash.fa-fw,
+.symbaroum.sheet.actor .player .main .abilities-powers .traits .trait i.fas.fa-trash.fa-fw {
   color: var(--color-label);
 }
 
@@ -415,18 +424,6 @@
   width: calc(50% - 10px);
   margin: 5px; /* changing any of the following two affects '.trait .actions' */
   height: 38px;
-}
-
-.symbaroum.sheet.actor .player .main .abilities-powers .traits .trait nav#context-menu.expand-down,
-.symbaroum.sheet.actor .player .main .abilities-powers .traits .trait nav#context-menu.expand-up {
-  font-family: var(--font-text);
-  font-size: 14px;
-  color: var(--color-label);;
-  text-align: left;
-  max-width: 10em;
-  border-color: grey;
-  border-width: 3px;
-  background: var(--title-color) repeat;
 }
 
 .symbaroum.sheet.actor .player .main .abilities-powers .traits .trait .context-menu .fas {
