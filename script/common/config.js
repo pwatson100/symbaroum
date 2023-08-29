@@ -461,6 +461,10 @@ SYMBAROUM.systemTraits = [
     "thoroughlycorrupt"
 ]
 
+SYMBAROUM.abilityArmor = [
+    "armored"
+]
+
 //combat mod types
 SYMBAROUM.TYPE_ALTERNATIVE_DAMAGE = "alternative_damage";
 SYMBAROUM.TYPE_FAVOUR = "favour";

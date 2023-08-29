@@ -1262,9 +1262,10 @@ export class SymbaroumItem extends Item {
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
+        let hasArmored = this.actor.items.filter( armored => { return game.symbaroum.config.abilityArmor.includes(armored.system.reference) });
         for(let i = 0; i < armors.length; i++)
         {
-            if( armors[i].isNoArmor || armors[i].system.isStackableArmor) {
+            if( hasArmored.length == 0 && armors[i].isNoArmor || armors[i].system.isStackableArmor) {
                 continue;
             }
             let base = this._getBaseFormat();

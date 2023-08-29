@@ -1,5 +1,5 @@
 {
-  "ABILITY.HEADER": "Ability",
+  "ABILITY.HEADER": "Förmåga",
   "ABILITY.NAME": "Namn",
   "ABILITY.REFERENCE": "Referens",
   "ABILITY.ACTIVE": "Aktiv",
@@ -426,7 +426,7 @@
   "HEALTH.CORRUPTION_THRESHOLD": "Tröskel",
   "HEALTH.CORRUPTION_THRESHOLD_MAX": "Korruptionströskel",
   "HEALTH.CORRUPTION_MAX": "Förstyggelse",
-  "HEALTH.CORRUPTION_THROUGHLY": "thoroughly corrupt",
+  "HEALTH.CORRUPTION_THROUGHLY": "Genomkorrumperad",
 
   "INITIATIVE.TITLE": "Initiativ",
   "INITIATIVE.EXPLANATION": "Initiativ visas som [initiativ-karaktärsdrag.vaksam]",
@@ -622,10 +622,10 @@
   "POWER_TORMENTINGSPIRITS.CHAT_SUCCESS": "{actorname} åkallar andar kring {targetname}.",
   "POWER_TORMENTINGSPIRITS.CHAT_FAILURE": "{actorname} misslyckas med sin andeåkallan.",
 
-  "POWER_WITCHHAMMER.CHAT_ACTIVATE": "{actorname}'s vapen flammar upp med helig eld .",
-  "POWER_WITCHHAMMER.CHAT_DESACTIVATE": "{actorname}'s vapen slutar brinna.",
+  "POWER_WITCHHAMMER.CHAT_ACTIVATE": "{actorname}s vapen flammar upp med helig eld .",
+  "POWER_WITCHHAMMER.CHAT_DESACTIVATE": "{actorname}s vapen slutar brinna.",
   "POWER_WITCHHAMMER.CHAT_RESULT_DESACTIVATE": "Vapenegenskaper återgår till normala.",
-  "POWER_WITCHHAMMER.CHAT_RESULT": "Bonusskada för Häxhammare kommer vara tillgängliga i stridsdialogfönstret.",
+  "POWER_WITCHHAMMER.CHAT_RESULT": "Bonusskada för Häxhammare kommer vara tillgänglig i stridsdialogfönstret.",
 
   "QUALITY.AREAMRR": "Ytverkande - Närstidsradie",
   "QUALITY.AREASRR": "Ytverkande - Kort radie",
@@ -638,7 +638,7 @@
   "QUALITY.CUMBERSOME": "Otympligt",
   "QUALITY.DEEPIMPACT": "Djupverkande",
   "QUALITY.ENSNARING": "Snärjande",
-  "QUALITY.FLEXIBLE": "Flexibelt",
+  "QUALITY.FLEXIBLE": "Smidig",
   "QUALITY.IMPEDING": "Begränsande",
   "QUALITY.JOINTED": "Ledat",
   "QUALITY.LONG": "Långt",
@@ -703,7 +703,7 @@
   "TITLE.SPECIALQUALITIES": "KOMPATIBILITET FÖRMÅGOR",
 
   "TOOLTIP.BONUS_TOTAL": "Totalt",
-  "TOOLTIP.DEATH_SKULLS": "Death is reached at 3 skulls",
+  "TOOLTIP.DEATH_SKULLS": "Döden inträffar vid tre dödskallar",
 
   "TOOLTIP.EXPERIENCE_CURRENT": "Tillgängliga erfarenhetspoäng",
   "TOOLTIP.EXPERIENCE_TOTAL": "Alla intjänade erfarenhetspoäng",
@@ -731,7 +731,7 @@
 
   "TOOLTIP.DIALOG.ROLLONTABLE": "ctrl+click to add modifier",
 
-  "TRAIT.HEADER": "Traits",
+  "TRAIT.HEADER": "Särdrag",
   "TRAIT.NAME": "Namn",
   "TRAIT.ACTIVE": "Aktiv",
   "TRAIT.ACTION": "Handling",
@@ -852,8 +852,8 @@
   "SYMBAROUM.OPTIONAL_NPC_MODIFIERS_HINT": "Välj för att visa NPC-modifikationer (-5 till +5) istället för karaktärsdragens värden för NPCs på rollformuläret",
   "SYMBAROUM.OPTIONAL_INIATITIVEROLLS": "Dölj Initiativ-slag",
   "SYMBAROUM.OPTIONAL_INIATITIVEROLLS_HINT": "Välj för att dölja Initiativ-slag i chatten",
-  "SYMBAROUM.OPTIONAL_AUTOROLLINITIATIVE": "Automatically roll initiative at start of combat",
-  "SYMBAROUM.OPTIONAL_AUTOROLLINITIATIVE_HINT": "Check to enable automatic initiative at start of combat",
+  "SYMBAROUM.OPTIONAL_AUTOROLLINITIATIVE": "Slå initiativslag automatiskt vid stridens start",
+  "SYMBAROUM.OPTIONAL_AUTOROLLINITIATIVE_HINT": "Kryssa i för att aktivera automatiska initiativslag vid striders start",
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Tillåt referensmodifikation",
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Varning - enbart SL - tillåt att manuellt justera referensimplementation för förmågor, särdrag och mystiska krafter. Kräver omladdning (refresh).",
   "SYMBAROUM.OPTIONAL_INIT_MANUAL": "Välj karaktärsdrag för Initiativ manuellt",
