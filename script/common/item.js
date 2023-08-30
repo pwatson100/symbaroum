@@ -750,7 +750,6 @@ export class SymbaroumItem extends Item {
     getItemModifierArmored(combatMods, armors, weapons, abilities)
     {
         let lvl = this.getLevel();
-        if(lvl.level == 0) return;
         // Many headed penalties
         let hasManyHeaded = this.actor.items.filter( manyheaded => { return game.symbaroum.config.traitManyHeaded == manyheaded.system.reference });
         if(hasManyHeaded.length > 0 && hasManyHeaded[0].getLevel().level > 1) {
@@ -759,6 +758,9 @@ export class SymbaroumItem extends Item {
             this.system.isIntegrated = true;
 
         }
+
+        if(lvl.level == 0) return;
+
         for(let i = 0; i < armors.length; i++)
         {
             if(armors[i].system.isStackableArmor) {
@@ -1484,7 +1486,6 @@ export class SymbaroumItem extends Item {
 
     getItemModifierRobust(combatMods, armors, weapons, abilities) {
         let lvl = this.getLevel();
-        if(lvl.level == 0) return;
 
         // Many headed penalties
         let hasManyHeaded = this.actor.items.filter( manyheaded => { return game.symbaroum.config.traitManyHeaded == manyheaded.system.reference });
@@ -1495,6 +1496,7 @@ export class SymbaroumItem extends Item {
 
         }
 
+        if(lvl.level == 0) return;
 
         for(let i = 0; i < armors.length; i++) {
             if(armors[i].system.isStackableArmor) {
