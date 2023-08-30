@@ -470,6 +470,9 @@ SYMBAROUM.abilityArmor = [
     "armored"
 ]
 
+SYMBAROUM.traitManyHeaded = 'many-headed';
+
+
 SYMBAROUM.expCosts = {
     "ritual": { 
         "free":6,
