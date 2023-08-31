@@ -114,6 +114,50 @@ export class PlayerSheet extends SymbaroumActorSheet {
                 this._prepareRollArmor(elem);
             }
         },{
+            name: "TOOLTIP.INCREASE_COUNT",
+            icon: `<i class="fa-regular fa-square-plus"></i>`,
+            isVisible: (elem) => { 
+                return elem.system?.isEquipment;
+            },
+            callback: (elem, event) => {
+                this._itemQuantityUpdate(elem, true, false);
+            }
+        },{
+            name: game.i18n.format("TOOLTIP.INCREASE_COUNT_DEFAULT", {
+                quantity: game.user.getFlag(game.system.id,game.symbaroum.config.CONTEXT_MENU.equipmentAddRemoveFlag),
+                sign: '+'
+            }),
+            icon: `<i class="fa-regular fa-square-plus"></i>`,
+            isVisible: (elem) => { 
+                let quantity = game.user.getFlag(game.system.id,game.symbaroum.config.CONTEXT_MENU.equipmentAddRemoveFlag);
+                return elem.system?.isEquipment && quantity;
+            },
+            callback: (elem, event) => {
+                this._itemQuantityUpdate(elem, true, true);
+            }
+        },{
+            name: "TOOLTIP.DECREASE_COUNT",
+            icon: `<i class="fa-regular fa-square-minus"></i>`,
+            isVisible: (elem) => { 
+                return elem.system?.isEquipment && elem.system?.number > 0;
+            },
+            callback: (elem, event) => {
+                this._itemQuantityUpdate(elem, false, false);
+            }
+        },{
+            name: game.i18n.format("TOOLTIP.DECREASE_COUNT_DEFAULT", {
+                quantity: game.user.getFlag(game.system.id,game.symbaroum.config.CONTEXT_MENU.equipmentAddRemoveFlag),
+                sign: '-'
+            }),
+            icon: `<i class="fa-regular fa-square-minus"></i>`,
+            isVisible: (elem) => { 
+                let quantity = game.user.getFlag(game.system.id,game.symbaroum.config.CONTEXT_MENU.equipmentAddRemoveFlag);
+                return elem.system?.isEquipment && quantity && quantity <= elem.system?.number;
+            },
+            callback: (elem, event) => {
+                this._itemQuantityUpdate(elem, false, true);
+            }
+        },{
             name: "TOOLTIP.VIEW_ITEM",
             icon: `<i class="fa-regular fa-eye"></i>`,
             isVisible: (elem) => { 
@@ -140,8 +184,18 @@ export class PlayerSheet extends SymbaroumActorSheet {
 
             activateListeners(html) {
                 super.activateListeners(html);
-                this.menu.css('top', this.menu.parent().position().top);
-                this.menu.css('left',this.menu.parent().get(0).getBoundingClientRect().x);
+                const parentContainer = this.menu.parent();
+                const closestWindow = parentContainer.closest('.app.window-app.symbaroum.sheet');
+                /*
+                console.log('parentContainer', parentContainer);
+                console.log('parentContainer.position()', parentContainer.position());
+                console.log('parentContainer.get(0).getBoundingClientRect()', parentContainer.get(0).getBoundingClientRect());
+                console.log('closestWindow', closestWindow);
+                console.log('closestWindow.position()', closestWindow.position());
+                console.log('closestWindow.get(0).getBoundingClientRect()', closestWindow.get(0).getBoundingClientRect());
+                */
+                this.menu.css('top', parentContainer.position().top + closestWindow.position().top);
+                this.menu.css('left',parentContainer.get(0).getBoundingClientRect().x + closestWindow.get(0).getBoundingClientRect());
                 
             }
         
@@ -166,11 +220,6 @@ export class PlayerSheet extends SymbaroumActorSheet {
         };
     
         new CMPowerMenu(html, ".symbaroum-contextmenu", symbaroumContextMenu, {  parent:this });
-        /*
-        new CMPowerMenu(html, ".weapons div.weapon", symbaroumContextMenu, { parent:this });
-        new CMPowerMenu(html, ".armor div.item-row", symbaroumContextMenu, { parent:this });
-        new CMPowerMenu(html, ".armor.item-row", symbaroumContextMenu, { parent:this });
-        */
     }
 
     _getHeaderButtons() {

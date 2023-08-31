@@ -747,6 +747,14 @@
   "TOOLTIP.UNACTIVATE_ARMOR":"Make armor non-active (other)",
   "TOOLTIP.ACTIVATE_ARMOR":"Make armor active",
 
+  "TOOLTIP.INCREASE_COUNT_DEFAULT": "Add [{sign}{quantity}] quantity",
+  "TOOLTIP.INCREASE_COUNT": "Add ... quantity",
+  "TOOLTIP.DECREASE_COUNT_DEFAULT": "Remove [{sign}{quantity}] quantity",
+  "TOOLTIP.DECREASE_COUNT": "Remove ... quantity",
+  "TOOLTIP.INCREASE_COUNT_TITLE": "Add quantity",
+  "TOOLTIP.DECREASE_COUNT_TITLE": "Remove quantity",  
+  "TOOLTIP.QUANTITY_SETDEFAULT": "Set as default quantity change",
+
   "TOOLTIP.DIALOG.ROLLONTABLE": "ctrl+click to add modifier",
 
   "TOOLTIP.DIALOG.HASSCRIPT": "Can be clicked on the icon or right click and select USE to roll",
