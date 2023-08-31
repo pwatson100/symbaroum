@@ -584,3 +584,7 @@ SYMBAROUM.SYSTEM_MACRO_FOLDER = "Symbaroum System Macros";
 SYMBAROUM.HOOKS = {
     symbaroumItemModifiersSetup: "symbaroumItemModifiersSetup"
 }
+
+SYMBAROUM.CONTEXT_MENU = {
+    equipmentAddRemoveFlag: "equipmentAddRemove"
+}

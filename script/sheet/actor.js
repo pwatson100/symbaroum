@@ -136,6 +136,67 @@ export class SymbaroumActorSheet extends ActorSheet {
     this.actor.updateEmbeddedDocuments("Item", [data]); // Used to have render:false    
   }
 
+  async _itemQuantityUpdate(div, increase, useDefault)
+  {
+    const item = this.actor.items.get(div.data('itemId'));
+
+    if (item === null || item === undefined || !item.system.isEquipment) {
+      return;
+    }
+    if(useDefault) {
+      let quantity = game.user.getFlag(game.system.id,game.symbaroum.config.CONTEXT_MENU.equipmentAddRemoveFlag);
+      if (isNaN(quantity) ) {
+        ui.notifications.error(
+          game.i18n.localize("MACRO.ADDEXP_NUMBER")
+        );
+      }
+      item.update({ "system.number": Math.max(0, item.system.number + quantity * (increase?1:-1) )} );
+    } else {
+      let dialog_content = `  
+      <div class="form-group">
+      <div style="flex-basis: auto;flex-direction: row;display: flex;">
+        <div style="width:10em;min-width:10em;"><label for="${item.id}-changeQuantity" style="width:10em;min-width:10em">${game.i18n.localize( (increase?"TOOLTIP.INCREASE_COUNT_TITLE":"TOOLTIP.DECREASE_COUNT_TITLE"))}</label></div><div><input id="${item.id}-changeQuantity" type="text" name="changeQuantity" value="1" style="width:5em"></div>
+      </div>
+      <div style="flex-basis: auto;flex-direction: row;display: flex;">
+        <div style="width:10em;min-width:10em;"><label for="${item.id}-setDefault" style="width:10em;min-width:10em">${game.i18n.localize("TOOLTIP.QUANTITY_SETDEFAULT")}</label></div><div><input id="${item.id}-setDefault" class='checkbox' type='checkbox' name='setDefault'></div>
+      </div>      
+      <br/>
+      </div>`;
+      let x = new Dialog({
+        title: game.i18n.localize( (increase?"TOOLTIP.INCREASE_COUNT_TITLE":"TOOLTIP.DECREASE_COUNT_TITLE")),
+        content: dialog_content,
+        buttons: {
+          Ok: {
+            label: game.i18n.localize("DIALOG.OK"),
+            callback: async (html) => {
+              let quantity = parseInt(
+                html.find("input[name='changeQuantity'")[0].value
+              );
+              if (isNaN(quantity) ) {
+                ui.notifications.error(
+                  game.i18n.localize("MACRO.ADDEXP_NUMBER")
+                );
+                return;
+              }              
+              if(html.find("input[name='setDefault']")[0].checked && quantity > 0) {
+                await game.user.setFlag(game.system.id,game.symbaroum.config.CONTEXT_MENU.equipmentAddRemoveFlag, quantity);
+              }
+              item.update({ "system.number": Math.max(0, item.system.number + quantity * (increase?1:-1) )} );
+            },
+          },
+          Cancel: { label: game.i18n.localize("DIALOG.CANCEL") },
+        },
+      });
+  
+      x.options.width = 200;
+      x.position.width = 300;
+  
+      x.render(true);
+
+    }
+  }
+
+
   async _onPrepareActivateAbility(event) {
     event.preventDefault();
     const div = $(event.currentTarget).parents('.item');

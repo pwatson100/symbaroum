@@ -38,167 +38,120 @@
                     </div>
                 </li>
                 {{/each}}
+                </ol>
             </div>
         </div>
         <div class="weapons foreground">
-        <h1>{{localize "TITLE.WEAPONS"}}</h1>
-        <div class="scrollable item-list">
-            <table>
-                <thead>
-                    <tr class="item-header">
-                        <th class="name">{{localize "WEAPON.NAME"}}</th>
-                        <th class="damage" data-tooltip="{{localize "WEAPON.DAMAGE"}}">{{localizeabbr "WEAPON.DAMAGE"}}</th>
-                        <th class="attribute" data-tooltip="{{localize "WEAPON.ATTRIBUTE"}}">{{localizeabbr "WEAPON.ATTRIBUTE"}}</th>
-                        <th class="state">{{localize "GEAR.STATE"}}</th>
-                        <th class="addbutton">
-                            <a class="item-create" data-tooltip="{{localize "WEAPON.ADDBUTTON"}}" data-type="weapon"><i class="fas fa-plus"></i></a>
-                        </td>
-                    </tr>
-                </thead>
-                <tbody>
+            <h1>{{localize "TITLE.WEAPONS"}} <a class="symbaroum-add item-create" data-tooltip="{{localize "WEAPON.ADDBUTTON"}}" data-type="weapon"><i class="fas fa-plus"></i></a></h1>
+            <div class="scrollable item-list">
+            <ol>
+                <li class="weapon item-header">
+                    <div class="name">{{localize "WEAPON.NAME"}}</div>
+                    <div class="damage">{{localize "WEAPON.DAMAGE"}}</div>
+                    <div class="attribute">{{localizeabbr "WEAPON.ATTRIBUTE"}}</div>
+                    <div class="state">{{localize "GEAR.STATE"}}</div>
+                </li>
                 {{#each actor.system.weapons as |item|}}
-                    <tr class="weapon item" data-item-id="{{item.id}}" >
-                        <td>
-                            <div class="cell">
-                            <div class="namefield">
-                                    <div class="image-container">
-                                        <div class="image" style="background-image: url('{{item.img}}')"></div>
-                                    </div>
-                                    <button class="item-edit ellipsis weaponname">{{item.name}}</button>
+                <li class="symbaroum-contextmenu weapon item-row item" data-item-id="{{item.id}}">
+                    <div class="name">
+                        <div class="image-container">
+                            <div class="image" style="background-image: url('{{item.img}}')"></div>
+                        </div>
+                        <button class="item-edit ellipsis weaponname">{{item.name}}</button>
+                    </div>
+                    <div class="damage" {{#ife ../actor.type "player"}}data-tooltip="{{item.damage.displayText}}"{{/ife}} class="playergear damage ellipsis">{{item.damage.displayTextShort}}</div>
+                    <div class="attribute" data-tooltip='{{localize "WEAPON.ATTRIBUTE"}} {{localize item.attributeLabel}}'>{{localizeabbr item.attributeLabel}}</div>
+                    <div class="state">
+                        {{#if item.isActive}}
+                            <a class="item-state" data-tooltip="{{localize 'GEAR.ACTIVE'}}"><i class="fas fa-tshirt"></i></a>
+                        {{else if item.isEquipped}}
+                            <a class="item-state" data-tooltip="{{localize 'GEAR.EQUIPPED'}}"><i class="fas fa-suitcase"></i></a>
+                        {{else}}
+                            <a class="item-state" data-tooltip="{{localize 'GEAR.OTHER'}}"><i class="fas fa-warehouse"></i></a>
+                        {{/if}}
+                    </div>
+                </li>
+                {{/each}}
+            </ol>
+            </div>
+        </div>
+        <div class="artifacts foreground">
+            <h1>{{localize "TITLE.ARTIFACTS"}}</h1>
+            <div class="scrollable item-list">
+                <ol>
+                    <li class="artifact item-header">
+                        <div class="name">{{localize "ARTIFACT.NAME"}}</div>
+                        <div class="action">{{localize "ARTIFACT.ACTION"}}</div>
+                        <div class="corruption">{{localizeabbr "ARTIFACT.CORRUPTION"}}</div>
+                        <div class="state">{{localize "GEAR.STATE"}}</div>
+                    </li>
+                    {{#each items as |item|}}
+                        {{#if item.system.isArtifact}}                        
+                    <li class="symbaroum-contextmenu artifact item-row item" data-item-id="{{item.id}}">
+                        <div class="name">
+                            <div class="image-container">
+                                <div class="image" style="background-image: url('{{item.img}}')"></div>
                             </div>
-                            </div>
-                        </td>
-                        <td class="damage">
-                            <div style="padding-left: 3px;" {{#ife ../actor.type "player"}}data-tooltip="{{item.damage.displayText}}"{{/ife}} class="playergear damage ellipsis">
-                            {{item.damage.displayTextShort}}
-                            </div>
-                        </td>
-                        <td class="attribute" data-tooltip="{{localize "WEAPON.ATTRIBUTE"}} {{localize item.attributeLabel}}"><div class="attribute">{{localizeabbr item.attributeLabel}}</div>
-                        </td>
-                        <td class="state">
-                            {{#if item.isActive}}
+                            <button class="item-edit ellipsis artifactname">{{item.name}}</button>
+                        </div>
+                        <div class="action" data-tooltip="{{item.getArtifactActions}}">
+                            <div class="action ellipsis">{{item.getArtifactActions}}</div>
+                        </div>
+                        <div class="corruption" data-tooltip="{{item.getArtifactCorruptions}}">
+                            <div class="corruption ellipsis">{{item.getArtifactCorruptions}}</div>
+                        </div>
+                        <div class="state">
+                            {{#if item.system.isActive}}
                                 <a class="item-state" data-tooltip="{{localize 'GEAR.ACTIVE'}}"><i class="fas fa-tshirt"></i></a>
-                            {{else if item.isEquipped}}
+                            {{else if item.system.isEquipped}}
                                 <a class="item-state" data-tooltip="{{localize 'GEAR.EQUIPPED'}}"><i class="fas fa-suitcase"></i></a>
                             {{else}}
                                 <a class="item-state" data-tooltip="{{localize 'GEAR.OTHER'}}"><i class="fas fa-warehouse"></i></a>
                             {{/if}}
                         </td>
-                        <td class="button">
-                            <a class="item-control item-delete" data-tooltip="{{localize "WEAPON.DELETEBUTTON"}}"><i class="fas fa-trash"></i></a>
-                        </td>
-                    </tr>  
-                {{/each}}
-                </tbody>
-            </table>
-            </div>
-        </div>
-        <div class="artifacts foreground">
-            <h1>{{localize "TITLE.ARTIFACTS"}}</h1>
-            <div class="scrollable">
-                <table>
-                    <thead>
-                        <tr class="item-header">
-                            <th class="name">{{localize "ARTIFACT.NAME"}}</th>
-                            <th class="action">{{localize "ARTIFACT.ACTION"}}</th>
-                            <th class="corruption">{{localizeabbr "ARTIFACT.CORRUPTION"}}</th>
-                            <th class="state">{{localize "GEAR.STATE"}}</th>
-                            <th class="addbutton">
-                                <!-- <a class="item-create" data-tooltip="{{localize "ARTIFACT.ADDBUTTON"}}" data-type="artifact"><i class="fas fa-plus"></i></a> -->
-                            </td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{#each items as |item|}}
-                        {{#if item.system.isArtifact}}                        
-                        <tr class="artifact item" data-item-id="{{item.id}}">
-                            <td class="name">
-                                <div class="cell">
-                                <div class="namefield">
-                                    <div class="image-container">
-                                        <div class="image" style="background-image: url('{{item.img}}')"></div>
-                                    </div>
-                                    <button class="item-edit ellipsis artifactname">{{item.name}}</button>
-                                </div>
-                                </div>
-                            </td>
-                            <td class="action" data-tooltip="{{item.getArtifactActions}}">
-                                <div class="action ellipsis">{{item.getArtifactActions}}</div>
-                            </td>
-                            <td class="corruption" data-tooltip="{{item.getArtifactCorruptions}}">
-                                <div class="corruption ellipsis">{{item.getArtifactCorruptions}}</div>
-                            </td>
-                            <td class="state">
-                                {{#if item.system.isActive}}
-                                    <a class="item-state" data-tooltip="{{localize 'GEAR.ACTIVE'}}"><i class="fas fa-tshirt"></i></a>
-                                {{else if item.system.isEquipped}}
-                                    <a class="item-state" data-tooltip="{{localize 'GEAR.EQUIPPED'}}"><i class="fas fa-suitcase"></i></a>
-                                {{else}}
-                                    <a class="item-state" data-tooltip="{{localize 'GEAR.OTHER'}}"><i class="fas fa-warehouse"></i></a>
-                                {{/if}}
-                            </td>
-                            <td class="button">
-                                {{#if item.system.isArtifact}}
-                                <a class="item-control item-delete" data-tooltip="{{localize "ARTIFACT.DELETEBUTTON"}}"><i class="fas fa-trash"></i></a>
-                                {{/if}}
-                            </td>                            
-                        </tr>
+                    </li>
                         {{/if}}
-                        {{/each}}
-                    </tbody>
-                </table>
+                    {{/each}}
+                </ol>
             </div>
         </div>
     </div>
     <div class="wrapper-right">
         <div class="equipments foreground">
-            <h1>{{localize "TITLE.EQUIPMENTS"}}</h1>
+            <h1>{{localize "TITLE.EQUIPMENTS"}} <a class="symbaroum-add item-create" data-tooltip="{{localize "EQUIPMENT.ADDBUTTON"}}" data-type="equipment"><i class="fas fa-plus"></i></a>
+</h1>
             <div class="scrollable item-list">
-                <table>
-                    <thead>
-                        <tr class="item-header">
-                            <th class="name">{{localize "EQUIPMENT.NAME"}}</th>
-                            <th class="quantity">{{localize "EQUIPMENT.QUANTITY_SHORT"}}</th>
-                            <th class="state">{{localize "GEAR.STATE"}}</th>
-                            <th class="addbutton">
-                                <a class="item-create" data-tooltip="{{localize "EQUIPMENT.ADDBUTTON"}}" data-type="equipment"><i class="fas fa-plus"></i></a>
-                            </td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{#each items as |item|}}
-                        {{#if item.system.isEquipment}}                       
-                        <tr class="equipment item" data-item-id="{{item.id}}">
-                            <td class="name" data-tooltip="{{item.name}}">
-                                <div class="cell">
-                                <div class="namefield">
-                                    <div class="image-container">
-                                        <div class="image" style="background-image: url('{{item.img}}')"></div>
-                                    </div>                                
-                                    <button class="item-edit ellipsis equipmentname">{{item.name}}</button>
-                                </div>
-                                </div>
-                            </td>
-                            <td class="quantity">
-                                <div class="quantity">{{item.system.number}}</div>
-                            </td>
-                            <td class="state">
-                                {{#if item.system.isActive}}
-                                    <a class="item-state" data-tooltip="{{localize 'GEAR.ACTIVE'}}"><i class="fas fa-tshirt"></i></a>
-                                {{else if item.system.isEquipped}}
-                                    <a class="item-state" data-tooltip="{{localize 'GEAR.EQUIPPED'}}"><i class="fas fa-suitcase"></i></a>
-                                {{else}}
-                                    <a class="item-state" data-tooltip="{{localize 'GEAR.OTHER'}}"><i class="fas fa-warehouse"></i></a>
-                                {{/if}}
-                            </td>
-                            <td class="button">
-                                <a class="item-control item-delete" data-tooltip="{{localize "EQUIPMENT.DELETEBUTTON"}}"><i class="fas fa-trash"></i></a>
-                            </td>                            
-                        </tr>
-                        {{/if}}
-                        {{/each}}
-                    </tbody>
-                </table>
+                <ol>
+                    <li class="equipment item-header">
+                        <div class="name">{{localize "EQUIPMENT.NAME"}}</div>
+                        <div class="quantity">{{localize "EQUIPMENT.QUANTITY_SHORT"}}</div>
+                        <div class="state">{{localize "GEAR.STATE"}}</div>
+                    </tr>
+                    {{#each items as |item|}}
+                    {{#if item.system.isEquipment}}                       
+                    <li class="symbaroum-contextmenu equipment item-row item" data-item-id="{{item.id}}">
+                        <div class="name" data-tooltip="{{item.name}}">
+                            <div class="image-container">
+                                <div class="image" style="background-image: url('{{item.img}}')"></div>
+                            </div>                                
+                            <button class="item-edit ellipsis equipmentname">{{item.name}}</button>
+                        </div>
+                        <div class="quantity">
+                            {{item.system.number}}
+                        </div>
+                        <div class="state">
+                            {{#if item.system.isActive}}
+                                <a class="item-state" data-tooltip="{{localize 'GEAR.ACTIVE'}}"><i class="fas fa-tshirt"></i></a>
+                            {{else if item.system.isEquipped}}
+                                <a class="item-state" data-tooltip="{{localize 'GEAR.EQUIPPED'}}"><i class="fas fa-suitcase"></i></a>
+                            {{else}}
+                                <a class="item-state" data-tooltip="{{localize 'GEAR.OTHER'}}"><i class="fas fa-warehouse"></i></a>
+                            {{/if}}
+                        </div>
+                    </li>
+                    {{/if}}
+                    {{/each}}
+                </ol>
             </div>
         </div>
         <div class="money foreground">
