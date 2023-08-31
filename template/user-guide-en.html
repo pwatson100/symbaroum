@@ -16,17 +16,27 @@
         It is assumed that the people using this system for Foundry VTT are in possession of the Symbaroum rulebooks or purchased the Free League foundry modules.
     </p>
     <br>
-    <h1>Change history since v4.2</h1>
+    <h1>Change history since last release</h1>
     <p>
         <ul>
-            <li>Support for auto roll initiative at combat start</li>
-            <li>Auto delete of blessed shield when changing the status icon</li>
-            <li>Added Limited View of character sheets</li>
-            <li>Fixed issue API additions, including roll-returns give a promise</li>
-            <li>Table rolling text enrichers for journals</li>
-            <li>Fixed issue #600</li>
-            <li>Fixed issue #601</li>
-            <li>Made compatible with v10 & v11</li>
+            <li>Added functionality for visibility if ability/trait is integrated</li>
+            <li>Amended functionality for displaying which ability/trait can be activated</li>
+            <li>Added (self configuring) context menu for items</li>
+            <li>Added quantity changes for equipment to context menu</li>
+            <li>Added ability use to context menu</li>
+            <li>Added attack/defense use to context menu (this means you can do these from the gear page now)</li>
+            <li>Removed trashcans - this is now on context menu (right click)</li>
+            <li>Fix for man-at-arms and armor #617</li>
+            <li>Removed the use of html table elements from the character sheets</li>
+            <li>Automation of Armored/Robust with Many headed #623</li>
+            <li>Shield calculations are now automated #528
+            <li>Added migration for shields <b>Existing scenes with non-linked tokens are not migrated and might have too much defense</b></li>
+            <li>Added API configurations for exp and rituals</li>
+            <li>API change to not throwing when registring/un-registering combat modifers/abilities/etc that already exists/does not exist</li>
+            <li>Renamed all templates from html to hbs (handlebar templates)</li>
+            <li>Fixed bug with using "data" when "system" should be used for applying certain effects from chat</li>
+            <li>Removed old console.log elements</li>
+            <li>Fixed bug with fas enricher</li>
         </ul>
     </p>
 
@@ -79,7 +89,7 @@
         <br>
         &nbsp;<span class="img03">&nbsp;</span>&nbsp;
         <br>
-        The character sheet also shows a summary with a clickable icon, the name of the ability and what actions (Active, Passive, etc) the player can use with the ability or trait. If the icon of the trait has a green border when hovered over, the ability or trait can be activated by just clicking.
+        The character sheet also shows a summary with a clickable icon, the name of the ability and what actions (Active, Passive, etc) the player can use with the ability or trait. It uses two smaller golden pictures, where the shield with bolts, see acrobatics / berserker example in the picture, indicates that the ability can be activated by clicking the icon. If it has a person with a shield, see polearm master & berserker in the picture below, all (or in a few cases most) of the ability has been integrated into the stat block for the character.
         <br>
         &nbsp;<span class="img04">&nbsp;</span>&nbsp;
     </p>
@@ -89,11 +99,11 @@
     <p>
         Pre-configured weapons and armors are available in the Adventure compendiums. We recommand you use them. Just find the adventure corresponding to your language in the Adventure compendium tab, and select "import".
         <br>
-        To create an armor or weapon, select the tab&nbsp;<em>GEAR</em>&nbsp;on the character sheet.
-        There is a&nbsp;<strong>+</strong>&nbsp;at the end of the tables for armor and weapons which when clicked, will create new armor or weapon and details about can be filled in.
+        To give a character any item, you can drag it from the sidebar to the character sheet. You can also create an armor or weapon directly from the tab <em>GEAR</em> on the character sheet.
+        On this tab, there is a <strong>+</strong> at the of the header of the tables for armor and weapons which when clicked, will create new armor or weapon and details about can be filled in.
         <br>
     </p>
-    &nbsp;<span class="img05">&nbsp;</span>&nbsp;
+    <span class="img05">&nbsp;</span>
     <h2>Weapons</h2>
     <p>
         Weapons have a class : One-handed (default), heavy, unarmed, short, long, ranged, thrown, and shield.
@@ -169,7 +179,7 @@
     <h2>Performing a Versus Attribute Test</h2>
     <p>If the test is to be performed against a token on the player field, then the player making the test, selects the token as a target.&nbsp;
         To select a target, right click on it and tick the "target icon".
-        The&nbsp; selected target will then have arrows pointing at it, to show that it is now a target for the player.
+        The selected target will then have arrows pointing at it, to show that it is now a target for the player.
         <br>
         &nbsp;<span class="img07">&nbsp;</span>&nbsp;
         <br>
@@ -184,9 +194,9 @@
         The roll dialogue is dynamic and shows elements that are relevant for the test.
         In the majority of the attribute tests, there are three elements.
         The versus attribute, which is the attribute from the selected target token that is used to resist the attribute that the player is rolling.
-        For example, a player has to make a&nbsp;<em>[Persuasive&larr;Resolute]</em>&nbsp;test against a token on the field.
-        They've selected the token as the target and clicked their&nbsp;<em>Persuasive&nbsp;</em>attribute.
-        In the dialogue, the selected is seen in the title of the window,&nbsp;<em>Persusasive</em>.
+        For example, a player has to make a <em>[Persuasive&larr;Resolute]</em> test against a token on the field.
+        They've selected the token as the target and clicked their <em>Persuasive </em>attribute.
+        In the dialogue, the selected is seen in the title of the window, <em>Persusasive</em>.
         <br>
         &nbsp;<span class="img08">&nbsp;</span>&nbsp;
         <br>
@@ -248,7 +258,7 @@
 
     <h1>Using Powers</h1>
     <p>
-        Powers can be activated by clicking on the icon with a green border on the character sheet (see <i>Adding Abilities, Traits, Boons and Burdens</i>), or opening the power and clicking on the orange dice of the item sheet (shown below).
+        Powers can be activated by clicking on the icon for the power on the character sheet (see <i>Adding Abilities, Traits, Boons and Burdens</i>), or opening the power and clicking on the orange dice of the item sheet (shown below).
         <br>
         &nbsp;<span class="img11">&nbsp;</span>&nbsp;
         <br>
@@ -327,7 +337,7 @@
         The attack is set when you add a weapon to a character, as different weapons can use different attributes.
         <br>
     <h3><strong>Make an Attack</strong></h3>
-    To make an attack with a weapon, the player clicks the weilded weapon on their character sheet under the main tab.
+    To make an attack with a weapon, the player clicks the weilded weapon on their character sheet under the main tab, or right click an active weapon and select "Attack".
     <br>
     &nbsp;<span class="img16">&nbsp;</span>&nbsp;
     <br>
@@ -341,7 +351,7 @@
     &nbsp;<span class="img18">&nbsp;</span>&nbsp;
     <br>
     <h3><strong>Defend against an attack</strong></h3>
-    To make a defense test against an attack, the player clicks on the equipped armor, which then opens the attribute test dialogue.
+    To make a defense test against an attack, the player clicks on the equipped armor on the main tab of the character sheet or right click an active armor and select 'Defend', which then opens the attribute test dialogue. 
     This dialogue has a subtle difference that it also has a checkmark if the people attacking the player have&nbsp;<em>Advantage</em>, i.e. the player is at&nbsp;<em>Disadvantage</em>.
     <br>
     &nbsp;<span class="img19">&nbsp;</span>&nbsp;
@@ -446,9 +456,10 @@
     </p>
     <h1>Text Enrichers</h1>
     <p>
-        Two text enrichers exists within the system, @Tour and @SymbaroumActor. 
+        Three text enrichers exists within the system, @Tour, @SymbaroumActor and @fas. 
         <br>The Tour command requires a tourId in brackets [] followed by display name in curly brackets {}.
         <br>The SymbaroumActor command requires an actor-name in [] and optional display name in {} and optional comma separated list of integrated abilities</br>
+        <br>The @fas can be used to embed Awesome Font icons into a journal or character sheet.
     </p>
     <h1>System settings</h1>
     <p>

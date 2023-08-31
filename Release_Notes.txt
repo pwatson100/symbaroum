@@ -1,3 +1,23 @@
+Version 4.3
+Added functionality for visibility if ability/trait is integrated
+Amended functionality for displaying which ability/trait can be activated
+Added (self configuring) context menu for items
+Added quantity changes for equipment to context menu
+Added ability use to context menu
+Added attack/defense use to context menu (this means you can do these from the gear page now)
+Removed trashcans - this is now on context menu (right click)
+Fix for man-at-arms and armor #617
+Removed the use of html table elements from the character sheets
+Automation of Armored/Robust with Many headed #623
+Shield calculations are now automated #528
+Added migration for shields <b>Existing scenes with non-linked tokens are not migrated and might have too much defense</b>
+Added API configurations for exp and rituals
+API change to not throwing when registring/un-registering combat modifers/abilities/etc that already exists/does not exist
+Renamed all templates from html to hbs (handlebar templates)
+Fixed bug with using "data" when "system" should be used for applying certain effects from chat
+Removed old console.log elements
+Fixed bug with fas enricher
+
 Version 2.10.1
 Re Release of the system. 
 
