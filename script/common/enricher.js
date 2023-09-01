@@ -20,7 +20,7 @@ export function enrichTextEditors() {
     };
 
 
-    CONFIG.TextEditor.enrichers = CONFIG.TextEditor.enrichers.concat([
+    CONFIG.TextEditor.enrichers.push(...[
         {
             pattern: /@RAW\[(.+?)\]/gm,
             enricher: async (match, options) => {
@@ -39,10 +39,8 @@ export function enrichTextEditors() {
         }, {
             pattern: /@fas\[(.+?)\]/gm,
             enricher: async (match, options) => {
-                const doc = document.createElement("i");
-                doc.style.textIndent = 0;
-                doc.classList.add('fas');
-                doc.classList.add(match[1]);
+                const doc = document.createElement("span");                
+                doc.innerHTML = `<i class="fas ${match[1]}"></i>`;
                 return doc;
             }
         }, {

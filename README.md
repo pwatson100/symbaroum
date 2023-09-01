@@ -59,7 +59,11 @@
   Save the effort of inputting all the data from the books by purchasing the official modules from Free League: <br />
 
 
-<a href="https://freeleaguepublishing.com/en/store/?collection_id=79768780848">Symbaroum RPG Core Rules</a> <br /> <a href="https://freeleaguepublishing.com/en/store/?collection_id=79768780848">Symbaroum RPG Starter Set</a> <br />
+<a href="https://freeleaguepublishing.com/en/store/?collection_id=79768780848">Symbaroum RPG Core Rules</a> <br /> 
+<a href="https://freeleaguepublishing.com/en/store/?collection_id=79768780848">Symbaroum RPG Starter Set</a> <br />
+<a href="https://freeleaguepublishing.com/en/store/?product_id=7458614968578">Symbaroum Adventure Collection</a> <br />
+<a href="https://freeleaguepublishing.com/en/store/?product_id=7715017916674">Symbaroum Game Master's Guide</a> <br />
+<a href="https://freeleaguepublishing.com/en/store/?product_id=7944904179970">The Throne of Thorns (Bundle)</a> <br />
 
 
 </p>

@@ -3,32 +3,32 @@ export const migrateWorld = async () => {
     After that, we use worldSystemVersion
     Worlds created after 0.8 should have WorldTemplateVersion = 0, so should older worlds that have been properly updated. */
     let worldTemplateVersion;
-    try{
+    try {
         worldTemplateVersion = Number(game.settings.get("symbaroum", "worldTemplateVersion"));
         game.symbaroum.info(`Detected worldTemplateVersion: ${worldTemplateVersion}`);
     }
-    catch(e){
+    catch (e) {
         game.symbaroum.error(e);
         worldTemplateVersion = 1;
         game.symbaroum.info("No template version detected... Default to 1")
     }
     let systemVersion = game.system.version;
     let worldSystemVersion;
-    try{
+    try {
         worldSystemVersion = game.settings.get('symbaroum', 'systemMigrationVersion');
-    }catch (e) {
+    } catch (e) {
         game.symbaroum.error(e);
         worldSystemVersion = '0';
     }
     game.symbaroum.info(`Last migration on this world: ${worldSystemVersion}`);
     // the NEEDS_MIGRATION_VERSION have to be increased for migration to happen
-    const NEEDS_MIGRATION_VERSION = '3.0.8';
+    const NEEDS_MIGRATION_VERSION = '4.2.0';
     const COMPATIBLE_MIGRATION_VERSION = '0' || isNaN('NaN');
     let needMigration = foundry.utils.isNewerVersion(NEEDS_MIGRATION_VERSION, worldSystemVersion);
     game.symbaroum.info('needMigration', needMigration, systemVersion);
 
-    if(needMigration && game.user.isGM){
-    // Perform the migration
+    if (needMigration && game.user.isGM) {
+        // Perform the migration
         if (worldSystemVersion && worldSystemVersion < COMPATIBLE_MIGRATION_VERSION) {
             ui.notifications.error(
                 `Your Symbaroum system data is from too old a Foundry version and cannot be reliably migrated to the latest version. The process will be attempted, but errors may occur.`,
@@ -37,46 +37,50 @@ export const migrateWorld = async () => {
         }
 
         ui.notifications.info("New system version upgrades the world, please wait...");
-        for (let actor of game.actors) {
+        for (let actor of game.actors.contents) {
             try {
                 const updateData = migrateActorData(actor.toObject(), worldSystemVersion);
-                if (!foundry.utils.isObjectEmpty(updateData)) {
-                    game.symbaroum.info(`Migrating Actor entity ${actor.name}`);            
-                    await actor.update(updateData, {enforceTypes: false});
+                if (!foundry.utils.isEmpty(updateData)) {
+                    game.symbaroum.info(`Migrating Actor entity ${actor.name}`);
+                    await actor.update(updateData, { enforceTypes: false });
                 }
             } catch (e) {
                 e.message = `Failed migration for Actor ${actor.name}: ${e.message}`;
                 game.symbaroum.error(e);
             }
         }
-        for (let item of game.items) {
+        for (let item of game.items.contents) {
             try {
                 const updateData = migrateItemData(item.toObject(), worldSystemVersion);
-                if (!foundry.utils.isObjectEmpty(updateData)) {
-                    game.symbaroum.info(`Migrating Item entity ${item.name}`);  
-                    await item.update(updateData, {enforceTypes: false});
+                if (!foundry.utils.isEmpty(updateData)) {
+                    game.symbaroum.info(`Migrating Item entity ${item.name}`);
+                    await item.update(updateData, { enforceTypes: false });
                 }
             } catch (e) {
                 e.message = `Failed migration for Item ${item.name}: ${e.message}`;
                 game.symbaroum.error(e);
             }
         }
-        for (let scene of game.scenes) {
+
+        // Migrate Scenes
+        /*
+        for (let scene of game.scenes.contents) {
             try {
                 const updateData = migrateSceneData(scene, worldSystemVersion);
-                if (!foundry.utils.isObjectEmpty(updateData)) {
-                    await scene.update(updateData, {enforceTypes: false});
-                    scene.tokens.forEach(t => t._actor = null);
-
+                if (!foundry.utils.isEmpty(updateData)) {
+                    await scene.update(updateData, {enforceTypes: false});                    
                 }
             } catch (err) {
                 err.message = `Failed migration for Scene ${scene.name}: ${err.message}`;          
                 game.symbaroum.error(err);
             }
         }
-        for (let pack of game.packs.filter((p) => p.metadata.package === "world" && ["Actor", "Item", "Scene"].includes(p.metadata.entity))) {
-            await migrateCompendium(pack, worldSystemVersion);
-        }
+        */
+
+        // Migrate Compendiums
+        // for (let pack of game.packs.filter((p) => p.metadata.package === "world" && ["Actor", "Item", "Scene"].includes(p.metadata.entity))) {
+        //     await migrateCompendium(pack, worldSystemVersion);
+        // }
         game.settings.set("symbaroum", "systemMigrationVersion", systemVersion);
         ui.notifications.info("Upgrade complete!");
     }
@@ -96,34 +100,38 @@ const migrateActorData = (actor, worldSystemVersion) => {
         // Migrate the Owned Item
         const itemData = i instanceof CONFIG.Item.documentClass ? i.toObject() : i;
         let itemUpdate = migrateItemData(itemData);
-        if ( !isObjectEmpty(itemUpdate) ) {
+        if (!foundry.utils.isEmpty(itemUpdate)) {
             itemUpdate._id = itemData._id;
             arr.push(expandObject(itemUpdate));
         }
         return arr;
     }, []);
-    if ( items.length > 0 ) updateData.items = items;
+    if (items.length > 0) updateData.items = items;
     return updateData;
 }
 
 const migrateItemData = (item, worldSystemVersion) => {
     let update = {};
-    // if (!isObjectEmpty(update)) {
-    //     update._id = item.data.id;
-    // }
+    if (item.type === 'weapon' && item.system.reference === 'shield') {
+        let shieldbonus = parseInt(item.system.bonus.defense) || 0;
+        if(shieldbonus > 0) {
+            update[`system.bonus.defense`] = (shieldbonus-1);
+            console.log(`updating Item ${item.name}[${item._id}]`);
+        }
+    }
     return update;
 };
 
-export const migrateSceneData = function(scene) {
+export const migrateSceneData = function (scene) {
     const tokens = scene.tokens.map(token => {
-        const t = token.toJSON(); 
+        const t = duplicate(token.document);
         if (!t.actorId || t.actorLink) {
             t.actorData = {};
-        } else if (!game.actors.has(t.actorId)){
+        } else if (!game.actors.has(t.actorId)) {
             t.actorId = null;
             t.actorData = {};
         } else if (!t.actorLink) {
-            const actorData = duplicate(t.actorData);
+            const actorData = duplicate(t.actorData ?? t.delta);
             actorData.type = token.actor?.type;
             const update = migrateActorData(actorData);
             ['items', 'effects'].forEach(embeddedName => {
@@ -136,19 +144,19 @@ export const migrateSceneData = function(scene) {
                 delete update[embeddedName];
             });
 
-            mergeObject(t.actorData, update);
+            mergeObject(t.actorData ?? t.delta, update);
         }
         return t;
     });
-    return {tokens};
+    return { tokens };
 };
 
 export const migrateCompendium = async function (pack, worldSystemVersion) {
     const entity = pack.metadata.entity;
-    if ( !["Actor", "Item", "Scene"].includes(entity) ) return;
+    if (!["Actor", "Item", "Scene"].includes(entity)) return;
     // Unlock the pack for editing
     const wasLocked = pack.locked;
-    await pack.configure({locked: false});
+    await pack.configure({ locked: false });
 
     await pack.migrate();
     const content = await pack.getDocuments();
@@ -164,12 +172,12 @@ export const migrateCompendium = async function (pack, worldSystemVersion) {
                 updateData = migrateSceneData(ent, worldSystemVersion);
             }
 
-                // Save the entry, if data was changed
-            if ( foundry.utils.isObjectEmpty(updateData) ) continue;
+            // Save the entry, if data was changed
+            if (foundry.utils.isObjectEmpty(updateData)) continue;
             await ent.update(updateData);
             game.symbaroum.info(`Migrated ${entity} entity ${ent.name} in Compendium ${pack.collection}`);
         }
-        catch(err) {
+        catch (err) {
             err.message = `Failed system migration for entity ${ent.name} in pack ${pack.collection}: ${err.message}`;
             game.symbaroum.error(err);
         }
@@ -178,7 +186,7 @@ export const migrateCompendium = async function (pack, worldSystemVersion) {
 
 
 const setValueIfNotExists = (update, object, property, newValue) => {
-    if (typeof(getProperty(object,property)) === 'undefined'){
+    if (typeof (getProperty(object, property)) === 'undefined') {
         update[property] = newValue;
     }
     return update;

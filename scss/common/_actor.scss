@@ -58,6 +58,7 @@
   border: none;
   border-radius: 0;
   margin: 0;
+  box-shadow: none;
 }
 
 .symbaroum.sheet.actor button:hover {
@@ -156,23 +157,15 @@
 
 // Is Scripted css
 .symbaroum.sheet.actor .isScripted {
-  box-shadow: -1.5px 1.5px 1.5px 1.5px hsl(0, 0%, 53%);
   cursor: pointer;
-  border: solid 1px;
-  border-color: hsl(0, 6%, 75%);
   margin: 0;
   background-repeat: no-repeat;
-  height: 43px;
-  width: 50px;
-  background-size: 43px;
-}
-
-.symbaroum.sheet.actor .isScripted:hover {
-  box-shadow: -2px 2px 2px 2px hsl(71, 93%, 22%);
+  height: 45px;
+  width: 47px;
+  background-size: 45px;
 }
 
 .symbaroum.sheet.actor .notScripted {
-  opacity: 0.8;
   cursor: not-allowed;
   background-repeat: no-repeat;
   height: 45px;
@@ -187,6 +180,11 @@
   height: 26px;
   width: 26px;
 }
+
+.symbaroum.sheet.actor .trait.item.context i.fas.fa-trash.fa-fw{
+  color:var(--color-label);
+}
+
 
 .symbaroum.sheet.actor .window-content .fas {
   color: var(--color-text);
@@ -203,4 +201,31 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+
+.symbaroum.sheet.actor .automatic {
+  display: inline-block;
+  height: 46%;
+  width: 20px;
+  // vertical-align: middle;
+  background-size: 20px;
+  border: 0;
+  background-image: url('../asset/image/bolt-shield.webp');
+  background-color: rgb(0, 0, 0, 1);
+}
+.symbaroum.sheet.actor .automatic1 {
+  display: inline-block;
+  height: 46%;
+  width: 20px;
+  // vertical-align: middle;
+  background-size: 20px;
+  border: 0;
+  background-image: url('../asset/image/surrounded-shield.webp');
+  background-color: rgb(0, 0, 0, 1);
+}
+
+.smallbackground {
+  background: var(--title-color) repeat;
+  width: 20px;
+  height: 45px;
 }

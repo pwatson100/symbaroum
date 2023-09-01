@@ -730,6 +730,9 @@
 
   "TOOLTIP.DIALOG.ROLLONTABLE": "ctrl+click to add modifier",
 
+  "TOOLTIP.DIALOG.HASSCRIPT": "Can be clicked on the icon or right click and select USE to roll",
+  "TOOLTIP.DIALOG.ISINTERGRATED": "Effects automatically applied to character",
+
   "TRAIT.HEADER": "Traits",
   "TRAIT.NAME": "Nom",
   "TRAIT.ACTIVE": "Acquis",

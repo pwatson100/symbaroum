@@ -33,7 +33,7 @@ export class SymbaroumConfig extends FormApplication {
       title: game.i18n.localize('SYMBAROUM.OPTIONAL_CONFIG_MENULABEL'),
       id: 'symbaroumSettings',
       icon: 'fas fa-cogs',
-      template: 'systems/symbaroum/template/symbaroumSettings.html',
+      template: 'systems/symbaroum/template/symbaroumSettings.hbs',
       width: 700,
       closeOnSubmit: true,
     });

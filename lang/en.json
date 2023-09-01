@@ -732,10 +732,33 @@
   "TOOLTIP.COMBAT.INITIATIVE": "The attribute that your initiative is based on",
   "TOOLTIP.COMBAT.DEFENSE": "The attribute that your defense is based on",
 
-  "TOOLTIP.DELETE_ABILITY": "Delete ability",
   "TOOLTIP.POWER_ACTIONS": "Type of activation (A - active, P - passive, S - special, etc)",
 
+  "TOOLTIP.DELETE_ITEM": "Delete",
+  "TOOLTIP.VIEW_ITEM":"View/edit",
+
+  "TOOLTIP.USE_ABILITY": "Use",
+  
+  "TOOLTIP.USE_WEAPON": "Attack",
+  "TOOLTIP.UNACTIVATE_WEAPON":"Make weapon non-active (other)",
+  "TOOLTIP.ACTIVATE_WEAPON":"Make weapon active",
+
+  "TOOLTIP.USE_ARMOR": "Defend",
+  "TOOLTIP.UNACTIVATE_ARMOR":"Make armor non-active (other)",
+  "TOOLTIP.ACTIVATE_ARMOR":"Make armor active",
+
+  "TOOLTIP.INCREASE_COUNT_DEFAULT": "Add [{sign}{quantity}] quantity",
+  "TOOLTIP.INCREASE_COUNT": "Add ... quantity",
+  "TOOLTIP.DECREASE_COUNT_DEFAULT": "Remove [{sign}{quantity}] quantity",
+  "TOOLTIP.DECREASE_COUNT": "Remove ... quantity",
+  "TOOLTIP.INCREASE_COUNT_TITLE": "Add quantity",
+  "TOOLTIP.DECREASE_COUNT_TITLE": "Remove quantity",  
+  "TOOLTIP.QUANTITY_SETDEFAULT": "Set as default quantity change",
+
   "TOOLTIP.DIALOG.ROLLONTABLE": "ctrl+click to add modifier",
+
+  "TOOLTIP.DIALOG.HASSCRIPT": "Can be clicked on the icon or right click and select USE to roll",
+  "TOOLTIP.DIALOG.ISINTERGRATED": "Effects automatically applied to character",
 
   "TRAIT.HEADER": "Traits",
   "TRAIT.NAME": "Name",

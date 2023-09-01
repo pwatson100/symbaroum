@@ -1,16 +1,16 @@
 <form class="{{cssClass}}" autocomplete="off">
-    <div class="boon">
+    <div class="burden">
         <div class="sheet-header foreground border">
             <div class="avatar">
                 <img class="profile-img" src="{{item.img}}" data-edit="img" data-tooltip="{{item.name}}"/>
             </div>
             <div class="wrapper-column">
                 <div class="name">
-                    <label for="{{id}}-name">{{localize "BOON.NAME"}}</label>
+                    <label for="{{id}}-name">{{localize "BURDEN.NAME"}}</label>
                     <input id="{{id}}-name" name="name" type="text" value="{{item.name}}"/>
                 </div>
                 <div class="level">
-                    <label for="{{id}}-system.level">{{localize "BOON.LEVEL"}}</label>
+                    <label for="{{id}}-system.level">{{localize "BURDEN.LEVEL"}}</label>
                     <input id="{{id}}-system.level" name="system.level" type="text" value="{{system.level}}" data-dtype="Number"/>
                 </div>
                 {{#ifat symbaroumOptions.isGM symbaroumOptions.allowShowReference }}
@@ -19,7 +19,7 @@
                     <input id="{{id}}-system.reference" name="system.reference" type="text" value="{{system.reference}}"/>
                 </div>
                 {{/ifat}}
-            </div>
+            </div>                
         </div>
 
         <div class="sheet-tabs tabs" data-group="primary">
@@ -35,7 +35,7 @@
                 </div>
             </div>
             <div class="tab" data-group="primary" data-tab="bonus">
-                {{> systems/symbaroum/template/sheet/tab/bonus.html}}
+                {{> systems/symbaroum/template/sheet/tab/bonus.hbs}}
             </div>
         </div>
     </div>

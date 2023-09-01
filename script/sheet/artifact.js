@@ -4,7 +4,7 @@ export class ArtifactSheet extends SymbaroumItemSheet {
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             classes: ["symbaroum", "sheet", "item"],
-            template: "systems/symbaroum/template/sheet/artifact.html",
+            template: "systems/symbaroum/template/sheet/artifact.hbs",
             width: 500,
             height: 472,
             resizable: false,

@@ -3,7 +3,7 @@
   "id": "symbaroum",
   "title": "Symbaroum",
   "description": "Twilight falls. Davokar darkens.",
-  "version": "4.1.2",
+  "version": "4.2.1",
   "minimumCoreVersion": "10",
   "compatibleCoreVersion": "10",
   "compatibility": {
@@ -73,10 +73,12 @@
   "secondaryTokenAttribute": "health.corruption",
   "initiative": "1d20[tiebreaker]/100000 + @initiative.value",
   "socket": true,
-	"media": [{
+  "media": [
+    {
       "type": "cover",
       "url": "https://raw.githubusercontent.com/pwatson100/symbaroum/master/asset/image/symbaroum-banner.webp"
-    },{
+    },
+    {
       "type": "setup",
       "thumbnail": "systems/symbaroum/asset/image/symbaroum-cover.webp"
     }

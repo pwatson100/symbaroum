@@ -1,20 +1,20 @@
 <form class="{{cssClass}}" autocomplete="off">
-    <div class="mystical-power">
+    <div class="ability">
         <div class="sheet-header foreground border">
             <div class="avatar">
                 <img class="profile-img" src="{{item.img}}" data-edit="img" data-tooltip="{{item.name}}"/>
             </div>
             <div class="wrapper-column">
                 <div class="name">
-                <label for="{{id}}-name" >{{localize "MYSTICAL_POWER.NAME"}}</label>
+                    <label for="{{id}}-name">{{localize "ABILITY.NAME"}}</label>
                     <input id="{{id}}-name" name="name" type="text" value="{{item.name}}"/>
                 </div>
                 {{#ifat symbaroumOptions.isGM symbaroumOptions.allowShowReference }}
                 <div class="name">
-                    <label for="{{id}}-system.reference" >{{localize "ABILITY.REFERENCE"}}</label>
+                    <label for="{{id}}-system.reference">{{localize "ABILITY.REFERENCE"}}</label>
                     <input id="{{id}}-system.reference" name="system.reference" type="text" value="{{system.reference}}"/>
                 </div>
-                {{/ifat}}                
+                {{/ifat}}
             </div>
             <div class="avatar">
                     <button class="activate-ability" ><img src="icons/vtt-512.png" /></button>
@@ -33,10 +33,6 @@
             <div class="tab" data-group="primary" data-tab="description">
                 <div class="description foreground border">
                     <h1>{{localize "TITLE.DESCRIPTION"}}</h1>
-                    <div class="material">
-                        <label for="{{id}}-system.material">{{localize "MYSTICAL_POWER.MATERIAL"}}</label>
-                        <input id="{{id}}-system.material" name="system.material" type="text" value="{{system.material}}"/>
-                    </div>
                     {{editor system.description target="system.description" button=true owner=owner editable=true}}
                 </div>
             </div>
@@ -44,7 +40,7 @@
                 <div class="novice foreground border">
                     <h1>{{localize "TITLE.NOVICE"}}</h1>
                     <div class="action">
-                        <label for="{{id}}-system.novice.action" >{{localize "MYSTICAL_POWER.ACTION"}}</label>
+                        <label for="{{id}}-system.novice.action">{{localize "ABILITY.ACTION"}}</label>
                         <select id="{{id}}-system.novice.action" name="system.novice.action">
                             {{#select system.novice.action}}
                             <option value="A">{{localize "ACTION.ACTIVE"}}</option>
@@ -59,7 +55,7 @@
                     </div>
                     {{#if isOwned}}
                     <div class="active">
-                        <label for="{{id}}-system.novice.isActive">{{localize "MYSTICAL_POWER.ACTIVE"}}</label>
+                        <label for="{{id}}-system.novice.isActive">{{localize "ABILITY.ACTIVE"}}</label>
                         <input id="{{id}}-system.novice.isActive" name="system.novice.isActive" type="checkbox" value="active" {{checked system.novice.isActive}}/>
                     </div>
                     {{/if}}
@@ -70,7 +66,7 @@
                 <div class="adept foreground border">
                     <h1>{{localize "TITLE.ADEPT"}}</h1>
                     <div class="action">
-                        <label for="{{id}}-system.adept.action">{{localize "MYSTICAL_POWER.ACTION"}}</label>
+                        <label for="{{id}}-system.adept.action">{{localize "ABILITY.ACTION"}}</label>
                         <select id="{{id}}-system.adept.action" name="system.adept.action">
                             {{#select system.adept.action}}
                             <option value="A">{{localize "ACTION.ACTIVE"}}</option>
@@ -85,10 +81,10 @@
                     </div>
                     {{#if isOwned}}
                     <div class="active">
-                        <label for="{{id}}-system.adept.isActive">{{localize "MYSTICAL_POWER.ACTIVE"}}</label>
+                        <label for="{{id}}-system.adept.isActive">{{localize "ABILITY.ACTIVE"}}</label>
                         <input id="{{id}}-system.adept.isActive" name="system.adept.isActive" type="checkbox" value="active" {{checked system.adept.isActive}}/>
                     </div>
-                    {{/if}}    
+                    {{/if}}
                     {{editor system.adept.description target="system.adept.description" button=true owner=owner editable=true}}
                 </div>
             </div>
@@ -96,7 +92,7 @@
                 <div class="master foreground border">
                     <h1>{{localize "TITLE.MASTER"}}</h1>
                     <div class="action">
-                        <label for="{{id}}-system.master.action">{{localize "MYSTICAL_POWER.ACTION"}}</label>
+                        <label for="{{id}}-system.master.action">{{localize "ABILITY.ACTION"}}</label>
                         <select id="{{id}}-system.master.action" name="system.master.action">
                             {{#select system.master.action}}
                             <option value="A">{{localize "ACTION.ACTIVE"}}</option>
@@ -111,7 +107,7 @@
                     </div>
                     {{#if isOwned}}
                     <div class="active">
-                        <label for="{{id}}-system.master.isActive">{{localize "MYSTICAL_POWER.ACTIVE"}}</label>
+                        <label for="{{id}}-system.master.isActive">{{localize "ABILITY.ACTIVE"}}</label>
                         <input id="{{id}}-system.master.isActive" name="system.master.isActive" type="checkbox" value="active" {{checked system.master.isActive}}/>
                     </div>
                     {{/if}}
@@ -119,7 +115,7 @@
                 </div>
             </div>
             <div class="tab" data-group="primary" data-tab="bonus">
-                {{> systems/symbaroum/template/sheet/tab/bonus.html}}
+                {{> systems/symbaroum/template/sheet/tab/bonus.hbs}}
             </div>
         </div>
     </div>
