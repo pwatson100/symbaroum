@@ -2614,7 +2614,7 @@ Monster Codex Stuff
 
 .symbaroum.sheet.actor .gear .wrapper-left .armors .item-list nav#context-menu i.fas.fa-trash.fa-fw,
 .symbaroum.sheet.actor .gear .wrapper-left .weapons .item-list nav#context-menu i.fas.fa-trash.fa-fw,
-.symbaroum.sheet.actor .gear .wrapper-right .artifacts .item-list nav#context-menu i.fas.fa-trash.fa-fw,
+.symbaroum.sheet.actor .gear .wrapper-left .artifacts .item-list nav#context-menu i.fas.fa-trash.fa-fw,
 .symbaroum.sheet.actor .gear .wrapper-right .equipments .item-list nav#context-menu i.fas.fa-trash.fa-fw {
   color: var(--color-label);
 }
