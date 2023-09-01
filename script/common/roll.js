@@ -88,7 +88,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
     critSuccess: rollResults.critSuccess,
     critFail: rollResults.critFail
   };
-  const html = await renderTemplate('systems/symbaroum/template/chat/roll.html', rollData);
+  const html = await renderTemplate('systems/symbaroum/template/chat/roll.hbs', rollData);
 
   // Once we go to non-API version of DsN, then set this in chatData: type: CONST.CHAT_MESSAGE_TYPES.ROLL,
   let chatData = {
@@ -173,7 +173,7 @@ export async function rollDeathTest(actor, withFavour, modifier) {
     nbrOfFailure: nbrOfFailedDeathRoll,
     diceBreakdown: diceBreakdown
   };
-  const html = await renderTemplate('systems/symbaroum/template/chat/death.html', rollData);
+  const html = await renderTemplate('systems/symbaroum/template/chat/death.hbs', rollData);
   let chatData = {
     user: game.user.id,
     speaker: {
@@ -375,7 +375,7 @@ export async function createModifyTokenChatButton(actionsDataArray){
 
 export async function createResistRollChatButton(functionStuff){
   //inform the GM
-  const html = await renderTemplate("systems/symbaroum/template/chat/chatInfoMessage.html", {
+  const html = await renderTemplate("systems/symbaroum/template/chat/chatInfoMessage.hbs", {
     infoText: functionStuff.targetUserName + game.i18n.localize("CHAT.GM_INFO_RESIST")
   });
   const chatData = {

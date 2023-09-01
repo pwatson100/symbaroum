@@ -129,7 +129,7 @@ export class SymbaroumItemSheet extends ItemSheet {
     await this.enrichAllFields(itemData);
     await this._enrichTextFields(itemData,["enrichedName"]);
 
-    const html = await renderTemplate("systems/symbaroum/template/chat/item.html", itemData);
+    const html = await renderTemplate("systems/symbaroum/template/chat/item.hbs", itemData);
     const chatData = {
         user: game.user.id,
         speaker: ChatMessage.getSpeaker({ 

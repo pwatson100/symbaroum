@@ -481,7 +481,6 @@ Hooks.once('diceSoNiceReady', (dice3d) => {
 
 Hooks.on('combatStart', async (combat, ...args) => {
   // let isFirstRound = combat.active && combat.current.round == 1 && combat.current.turn == 0 && combat.previous.turn == null;
-  console.log(combat, ...args);
   if(game.user.isGM &&  game.settings.get('symbaroum', 'autoRollInitiative') )
   {
     await combat.rollAll();
@@ -524,16 +523,16 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
           if (actor !== undefined) {
             if (flagData.toughnessChange) {
               let newToughness = Math.max(0, Math.min(actor.system.health.toughness.max, actor.system.health.toughness.value + flagData.toughnessChange));
-              await actor.update({ 'data.health.toughness.value': newToughness });
+              await actor.update({ 'system.health.toughness.value': newToughness });
             }
             if (flagData.attributeChange) {
               let newMod = actor.system.attributes[flagData.attributeName].temporaryMod + flagData.attributeChange;
-              let linkMod = 'data.attributes.' + flagData.attributeName + '.temporaryMod';
+              let linkMod = 'system.attributes.' + flagData.attributeName + '.temporaryMod';
               await actor.update({ [linkMod]: newMod });
             }
             if (flagData.corruptionChange) {
               let newCorruption = actor.system.health.corruption.temporary + flagData.corruptionChange;
-              await actor.update({ 'data.health.corruption.temporary': newCorruption });
+              await actor.update({ 'system.health.corruption.temporary': newCorruption });
             }
             if (flagData.addObject) {
               if (flagData.addObject == 'blessedshield') {

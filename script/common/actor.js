@@ -11,6 +11,8 @@ export class SymbaroumActor extends Actor {
         this._initializeData(this.system);
         // console.log("Init data - complete");
         this.system.numRituals = 0;
+        this.system["is"+this.type.capitalize()] = true;
+
         // console.log("Compute items");
         // game.symbaroum.log("original items",this.items);
         let items = this.items.contents.sort((a, b) => {
@@ -71,7 +73,7 @@ export class SymbaroumActor extends Actor {
 
             system.attributes[aKey].total = system.attributes[aKey].value + system.attributes[aKey].bonus + system.attributes[aKey].temporaryMod;
             system.attributes[aKey].modifier = 10 - system.attributes[aKey].total;
-            if (this.type === "monster") {
+            if (this.system.isMonster) {
                 let modSign = "";
                 if (system.attributes[aKey].modifier > 0) {
                     modSign = "+";
@@ -221,7 +223,7 @@ export class SymbaroumActor extends Actor {
 
         let rrAbility = this.items.filter(item => item.system.reference === "rapidreflexes");
         if (rrAbility.length != 0) {
-            if (rrAbility[0].system.master.isActive) system.initiative.value += 20;
+            if (rrAbility[0].system.master.isActive) system.initiative.value +=  game.symbaroum.config.RAPIREFLEXINIBONUS;
         }
         // Hook - symbaroumSecondary
     }
@@ -230,9 +232,9 @@ export class SymbaroumActor extends Actor {
         if (item.system.isRitual) {
             item.system.actions = "Ritual";
             this.system.numRituals = this.system.numRituals + 1;
-            if (this.system.numRituals > 6) {
+            if ( this.system.numRituals > game.symbaroum.config.expCosts.ritual['free']) {
                 // This needs to check if running with alternative rules for additional rituals, APG p.102                
-                item.system.bonus.experience.cost = game.settings.get('symbaroum', 'optionalMoreRituals') ? 10 : 0;
+                item.system.bonus.experience.cost = game.settings.get('symbaroum', 'optionalMoreRituals') ? game.symbaroum.config.expCosts.ritual['cost'] : 0;
             }
         }
 
@@ -379,13 +381,13 @@ export class SymbaroumActor extends Actor {
             let diceRoller = "";
             if ((item.isNoArmor || item.system.isSkin) && diceSides === 0) {
                 // allDefenseProtNPC contains a 0 if npc
-                diceRoller = (this.type == "player" ? "0" : "");
+                diceRoller = (this.system.isPlayer ? "0" : "");
             }
             else if (!item.system.isStackableArmor) {
-                diceRoller = this.type == "player" ? `1d${diceSides}` : (diceSides / 2);
+                diceRoller = this.system.isPlayer ? `1d${diceSides}` : (diceSides / 2);
                 unfavourPcProt = `2d${diceSides}kl${allDefenseProt}`;
             }
-            let finalProtText = (diceRoller + (this.type == "player" ? allDefenseProt : allDefenseProtNPC)) + "";
+            let finalProtText = (diceRoller + (this.system.isPlayer ? allDefenseProt : allDefenseProtNPC)) + "";
 
 
             if (isNaN(totDefense)) {
@@ -566,7 +568,7 @@ export class SymbaroumActor extends Actor {
             }
             pcDamage = baseDamage + allAttacks;
 
-            if (this.type == "player") {
+            if (this.system.isPlayer) {
                 displayText = baseDamage + firstAttack + allAttacks;
             } else {
                 displayText = singleText + displayText;
@@ -695,7 +697,7 @@ export class SymbaroumActor extends Actor {
         noArmor.system = {};
         noArmor.system = foundry.utils.deepClone(game.system.model.Item.armor);
 
-        noArmor.id = "NoArmorID";
+        noArmor.id = game.symbaroum.config.noArmorID;
         noArmor.name = game.i18n.localize("ARMOR.NOARMOR_NAME");
         noArmor.type = noArmor.type = "armor";
         noArmor.img = "icons/equipment/chest/shirt-simple-white.webp";
@@ -910,7 +912,7 @@ export class SymbaroumActor extends Actor {
             askCastingAttribute: false,
             askPoison: false,
             numberofAttacks: 1,
-            attackFromPC: this.type !== "monster",
+            attackFromPC: this.system.isMonster,
             autoParams: "",
             checkMaintain: false,
             combat: true,

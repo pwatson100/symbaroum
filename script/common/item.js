@@ -8,7 +8,7 @@ export class SymbaroumItem extends Item {
   /*  Importing and Exporting                     */
   /* -------------------------------------------- */
 
-  /**
+/**
    * Present a Dialog form to create a new Document of this type.
    * Choose a name and a type from a select menu of types.
    * @param {object} data              Initial data with which to populate the creation form
@@ -17,7 +17,7 @@ export class SymbaroumItem extends Item {
    *                                   closed.
    * @memberof ClientDocumentMixin
    */
-   static async createDialog(data={}, {parent=null, pack=null, ...options}={}) {
+    static async createDialog(data={}, {parent=null, pack=null, ...options}={}) {
 
         // Collect data
         const documentName = this.metadata.name;
@@ -27,7 +27,7 @@ export class SymbaroumItem extends Item {
         const title = game.i18n.format("DOCUMENT.Create", {type: label});
 
         // Render the document creation form
-        const html = await renderTemplate("templates/sidebar/document-create.html", {
+        const html = await renderTemplate("templates/sidebar/document-create.hbs", {
         name: data.name || game.i18n.format("DOCUMENT.New", {type: label}),
         folder: data.folder,
         folders: folders,
@@ -89,7 +89,6 @@ export class SymbaroumItem extends Item {
             S:"ACTION.SPECIAL"
         }
 
-        system["type"+this.type.capitalize()] = true;
         system["is"+this.type.capitalize()] = true;
         
         system.isPower = system.isTrait || system.isAbility || system.isMysticalPower || system.isRitual || system.isBurden || system.isBoon;
@@ -164,29 +163,31 @@ export class SymbaroumItem extends Item {
 
         if (system.isRitual) {
             system.actions = "Ritual";
-        }
-        else if (system.isBurden) {
+        } else if (system.isBurden) {
             system.actions = "Burden";
-            expCost = -5 * system.level;
+            expCost = game.symbaroum.config.expCosts.burden['cost'] * system.level;
         } else if (system.isBoon) {
             system.actions = "Boon";
-            expCost = 5 * system.level;
+            expCost = game.symbaroum.config.expCosts.boon['cost'] * system.level;
         } else if (system.isPower) {
 			
             let novice = "-";
             let adept = "-";
             let master = "-";
             if (system.novice.isActive || system.marker) {
-                novice = system.novice.action;
-                expCost += 10;
+                novice = system.novice.action ?? '?';
+                expCost += game.symbaroum.config.expCosts.power['novice'];
             }
             if (system.adept.isActive && !system.marker) { 
-                adept = system.adept.action;
-                expCost += 20;
+                adept = system.adept.action ?? '?';
+                expCost += game.symbaroum.config.expCosts.power['adept'];
             }
             if (system.master.isActive && !system.marker) { 
-                master = system.master.action;
-                expCost += 30;
+                master = system.master.action ?? '?';
+                expCost += game.symbaroum.config.expCosts.power['master'];
+            }
+            if(game.symbaroum.config.expCosts.power['nocost'].includes(system.reference)) {
+                expCost = 0;
             }
 
             if(system.marker) {
@@ -206,7 +207,7 @@ export class SymbaroumItem extends Item {
             let baseDamage = system.baseDamage;
             // game.symbaroum.log("baseDamage["+baseDamage+"]");
             if( baseDamage === null || baseDamage === undefined || baseDamage === "" ) {
-                baseDamage = "1d8";
+                baseDamage = game.symbaroum.config.baseDamage;
             }
             let diceSides = baseDamage.match(/[0-9]d([1-9]+)/)[1];
             // game.symbaroum.log("diceSides["+diceSides+"]");
@@ -238,7 +239,7 @@ export class SymbaroumItem extends Item {
             let protection = system.baseProtection;
             let armorRoll = null;
             if( protection === null || protection === undefined || protection === "" ) {
-                protection = "1d4";
+                protection = game.symbaroum.config.baseProtection;
             }
             if( protection === "0") {
                 protection = "";
@@ -381,6 +382,7 @@ export class SymbaroumItem extends Item {
             this["getItemModifier"+ref](combatMods, armors, weapons, abilities)
         }
     }
+
     
     getAbilitiesConfig(){
         let base= {
@@ -606,6 +608,7 @@ export class SymbaroumItem extends Item {
                     damageModNPC: npcDam,
                     displayMod: plus+this.system.bonusDamage
                 }];
+                this.system.isIntegrated = true;
                 combatMods.weapons[weapons[i].id].package[0].member.push(base);
             }
             if(this.system.qualities.deepImpact) {
@@ -618,6 +621,7 @@ export class SymbaroumItem extends Item {
                     damageMod: "+1d1",
                     damageModNPC: 1,
                 }];
+                this.system.isIntegrated = true;
                 combatMods.weapons[weapons[i].id].package[0].member.push(base);           
             }
             if(this.system.qualities.precise) {
@@ -627,6 +631,7 @@ export class SymbaroumItem extends Item {
                 base.type = game.symbaroum.config.TYPE_ROLL_MOD;
                 base.modifier = 1;
                 base.value = "1";
+                this.system.isIntegrated = true;
                 combatMods.weapons[weapons[i].id].package[0].member.push(base);
             }
             if(this.system.qualities.flaming){
@@ -639,6 +644,7 @@ export class SymbaroumItem extends Item {
                 base.duration= "1d4";
                 base.durationNPC= 2;
                 base.effectIcon = CONFIG.statusEffects.find(e => e.id === "burning");
+                this.system.isIntegrated = true;
                 combatMods.weapons[weapons[i].id].package[0].member.push(base);
             }
             if(this.system.qualities.massive) {
@@ -646,6 +652,7 @@ export class SymbaroumItem extends Item {
                 base.label = game.i18n.localize("QUALITY.MASSIVE");
                 base.value = game.i18n.localize("DIALOG.FAVOUR_FAVOUR");
                 base.type = game.symbaroum.config.DAM_FAVOUR;
+                this.system.isIntegrated = true;
                 combatMods.weapons[weapons[i].id].package[0].member.push(base);
                 combatMods.weapons[weapons[i].id].specialEffects.push(game.symbaroum.config.DAM_FAVOUR);
             }
@@ -655,6 +662,7 @@ export class SymbaroumItem extends Item {
                 base.type = game.symbaroum.config.TYPE_ALTERNATIVE_DAMAGE;
                 base.AltDmgAttribute = this.system.alternativeDamage;
                 base.value = this.system.alternativeDamage;
+                this.system.isIntegrated = true;
                 combatMods.weapons[weapons[i].id].package[0].member.push(base);
             }
             if( this.system.isActive && this.system.qualities.balanced)
@@ -667,6 +675,7 @@ export class SymbaroumItem extends Item {
                     let base = this._getBaseFormat();
                     base.label = `${this.name} ${game.i18n.localize("QUALITY.BALANCED")}`;
                     base.modifier = 1;
+                    this.system.isIntegrated = true;
                     combatMods.armors[armors[i].id].defenseModifiers.push(base);            
                 }
             }
@@ -692,7 +701,6 @@ export class SymbaroumItem extends Item {
         {
             return;
         }
-        /* - to be added later
         for(let i = 0; i < weapons.length; i++)
         {
             if(weapons[i].id != this.id) {
@@ -708,8 +716,8 @@ export class SymbaroumItem extends Item {
                 combatMods.armors[armors[i].id].defenseModifiers.push(base);            
             }
         }
-        */
     }
+    
     getItemModifierHeavy(combatMods, armors, weapons, abilities) {
         this._getOwnWeaponBonuses(combatMods, armors, weapons, abilities);
     }
@@ -735,13 +743,24 @@ export class SymbaroumItem extends Item {
             let base = this._getBaseFormat();
             base.type = base.type = game.symbaroum.config.DAM_DICEUPGRADE;
             base.diceUpgrade = 2 * lvl.level;
+            this.system.isIntegrated = true;
             combatMods.weapons[weapons[i].id].package[0].member.push(base);
         }
     }
     getItemModifierArmored(combatMods, armors, weapons, abilities)
     {
         let lvl = this.getLevel();
+        // Many headed penalties
+        let hasManyHeaded = this.actor.items.filter( manyheaded => { return game.symbaroum.config.traitManyHeaded == manyheaded.system.reference });
+        if(hasManyHeaded.length > 0 && hasManyHeaded[0].getLevel().level > 1) {
+            lvl.level = Math.max(0, lvl.level - hasManyHeaded[0].getLevel().level +1);
+            hasManyHeaded[0].system.isIntegrated = true;
+            this.system.isIntegrated = true;
+
+        }
+
         if(lvl.level == 0) return;
+
         for(let i = 0; i < armors.length; i++)
         {
             if(armors[i].system.isStackableArmor) {
@@ -755,6 +774,7 @@ export class SymbaroumItem extends Item {
             }
             base.type = base.type = game.symbaroum.config.DAM_DICEUPGRADE;
             base.diceUpgrade = modifier + 2 * (lvl.level - 1); // Exclude novice - it is accounted for either in the noArmor check, or by the armor itself
+            this.system.isIntegrated = true;
             combatMods.armors[armors[i].id].protectionChoices.push(base);
         }
     }        
@@ -773,6 +793,7 @@ export class SymbaroumItem extends Item {
             {
                 let base = this._getBaseFormat();
                 base.modifierMagic = armors[i].system.impeding; // Reduce with up to current impeding
+                this.system.isIntegrated = true;
                 combatMods.armors[armors[i].id].impedingModifiers.push(base);
             }
             if(lvl.level > 2) {
@@ -783,6 +804,7 @@ export class SymbaroumItem extends Item {
                     protectionModNPC: 2,
                     displayMod: "+1d4"
                 }];
+                this.system.isIntegrated = true;
                 combatMods.armors[armors[i].id].protectionChoices.push(base);
             }
         }
@@ -838,6 +860,7 @@ export class SymbaroumItem extends Item {
                 }
                 pack.member.push(baseBleed);
             }
+            this.system.isIntegrated = true;
             combatMods.weapons[weapons[i].id].package.push(pack);
         }
     }
@@ -861,6 +884,7 @@ export class SymbaroumItem extends Item {
                 damageModNPC: (lvl.level)
             }];
             pack.member.push(base);
+            this.system.isIntegrated = true;
             combatMods.weapons[weapons[i].id].package.push(pack);
         }
         for(let i = 0; i < abilities.length; i++)
@@ -876,6 +900,7 @@ export class SymbaroumItem extends Item {
                     damageModNPC: (lvl.level)
                 }];
                 pack.member.push(base);
+                this.system.isIntegrated = true;
                 combatMods.abilities[abilities[i].id].package.push(pack);
             }
         }
@@ -902,9 +927,11 @@ export class SymbaroumItem extends Item {
                     protectionModNPC: 2,
                     displayMod: "+1d4"
                 }];
+                this.system.isIntegrated = true;
                 combatMods.armors[armors[i].id].protectionChoices.push(base);
             }
             if(lvl.level < 3) {
+                this.system.isIntegrated = true;
                 combatMods.armors[armors[i].id].specialEffects.push(game.symbaroum.config.SPECIAL_MIN_DEFENSE);
             }
         }
@@ -920,6 +947,7 @@ export class SymbaroumItem extends Item {
                 damageMod: "+1d6",
                 damageModNPC: 3,
             }];
+            this.system.isIntegrated = true;
             combatMods.weapons[weapons[i].id].package[0].member.push(base);
         }
     }
@@ -945,6 +973,7 @@ export class SymbaroumItem extends Item {
                             damageModNPC: 2
                         }];
                         pack.member.push(base);
+                        this.system.isIntegrated = true;
                         combatMods.abilities[abilities[i].id].package.push(pack);
                     }
                 }
@@ -952,7 +981,8 @@ export class SymbaroumItem extends Item {
         };
         let base = this._getBaseFormat();
         base.value = game.symbaroum.config.TRAD_BLESSINGS;
-        base.level = lvl.level
+        base.level = lvl.level;
+        this.system.isIntegrated = true;
         combatMods.traditions.push(base);
     }
 
@@ -963,6 +993,7 @@ export class SymbaroumItem extends Item {
         if(lvl.level > 1){
             let base = this._getBaseFormat();
             base.type = game.symbaroum.config.TEMPCORRUPTION_FAVOUR;
+            this.system.isIntegrated = true;
             combatMods.corruption.push(base);
         }
     }
@@ -979,8 +1010,8 @@ export class SymbaroumItem extends Item {
                 }
                 let base = this._getBaseFormat();
                 base.normal = 0;
-                combatMods.armors[armors[i].id].damageReductions.push(base);            
-    
+                this.system.isIntegrated = true;
+                combatMods.armors[armors[i].id].damageReductions.push(base);
             }
         }
         for(let i = 0; i < weapons.length; i++)
@@ -991,6 +1022,7 @@ export class SymbaroumItem extends Item {
             let base = this._getBaseFormat();
             base.label = game.i18n.localize("QUALITY.MASSIVE");
             base.type = game.symbaroum.config.DAM_FAVOUR;
+            this.system.isIntegrated = true;
             combatMods.weapons[weapons[i].id].package[0].member.push(base);
             combatMods.weapons[weapons[i].id].specialEffects.push(game.symbaroum.config.DAM_FAVOUR);
             if(lvl.level>1){
@@ -998,6 +1030,7 @@ export class SymbaroumItem extends Item {
                 base2.type= game.symbaroum.config.TYPE_FAVOUR;
                 base2.value= game.i18n.localize("DIALOG.FAVOUR_FAVOUR");
                 base2.favourMod= 1;
+                this.system.isIntegrated = true;
                 combatMods.weapons[weapons[i].id].package[0].member.push(base2);
             }
         }
@@ -1018,6 +1051,7 @@ export class SymbaroumItem extends Item {
             base.damage = "1d" + ((1+lvl.level)*2).toString();
             base.damageNPC = 1+lvl.level;
             base.value = base.damage;
+            this.system.isIntegrated = true;
             combatMods.weapons[weapons[i].id].package[0].member.push(base);
         }
     }
@@ -1033,6 +1067,7 @@ export class SymbaroumItem extends Item {
             }
             let base = this._getBaseFormat();
             base.attribute = "resolute";  
+            this.system.isIntegrated = true;
             combatMods.armors[armors[i].id].attributes.push(base);            
         }        
         for(let i = 0; i < weapons.length; i++)
@@ -1043,6 +1078,7 @@ export class SymbaroumItem extends Item {
             let base = this._getBaseFormat();
             base.type = game.symbaroum.config.TYPE_ATTRIBUTE;
             base.attribute = "resolute";
+            this.system.isIntegrated = true;
             combatMods.weapons[weapons[i].id].package[0].member.push(base);
         }        
     }    
@@ -1058,6 +1094,7 @@ export class SymbaroumItem extends Item {
             let base = this._getBaseFormat();
             base.type = game.symbaroum.config.TYPE_ATTRIBUTE;
             base.attribute = "persuasive";
+            this.system.isIntegrated = true;
             combatMods.weapons[weapons[i].id].package[0].member.push(base);
         }        
     }
@@ -1079,6 +1116,7 @@ export class SymbaroumItem extends Item {
                     damageMod: "+1d4",
                     damageModNPC: 2,
                 }];
+                this.system.isIntegrated = true;
                 combatMods.weapons[weapons[i].id].package[0].member.push(base);
             }
             if(lvl.level > 1 && this.actor.system.health.toughness.value <= (this.actor.system.health.toughness.max/2)){
@@ -1087,12 +1125,14 @@ export class SymbaroumItem extends Item {
                 base2.condition = "conditionFeatofStrength";
                 base2.value= game.i18n.localize("DIALOG.FAVOUR_FAVOUR");
                 base2.favourMod = 1;
+                this.system.isIntegrated = true;
                 combatMods.weapons[weapons[i].id].package[0].member.push(base2);
             }
         };
         let base3 = this._getBaseFormat();
         base3.type = game.symbaroum.config.SEC_ATT_BONUS;
         base3.value=5;
+        this.system.isIntegrated = true;
         combatMods.toughness.push(base3);
     }
 
@@ -1112,6 +1152,7 @@ export class SymbaroumItem extends Item {
                 }
                 let base = this._getBaseFormat();
                 base.attribute = "discreet";
+                this.system.isIntegrated = true;
                 combatMods.armors[armors[i].id].attributes.push(base);
             }
         }
@@ -1123,6 +1164,7 @@ export class SymbaroumItem extends Item {
             let base = this._getBaseFormat();
             base.attribute = "discreet";
             base.type = game.symbaroum.config.TYPE_ATTRIBUTE;
+            this.system.isIntegrated = true;
             combatMods.weapons[weapons[i].id].package[0].member.push(base);
         }        
     }
@@ -1151,6 +1193,7 @@ export class SymbaroumItem extends Item {
                 }];
                 pack.member.push(baseDmg);
             }
+            this.system.isIntegrated = true;
             combatMods.weapons[weapons[i].id].package.push(pack);       
         }
     }
@@ -1168,6 +1211,7 @@ export class SymbaroumItem extends Item {
                 let base = this._getBaseFormat();
                 base.type = game.symbaroum.config.TYPE_ATTRIBUTE;
                 base.attribute = "strong";
+                this.system.isIntegrated = true;
                 combatMods.weapons[weapons[i].id].package[0].member.push(base);
             }
             if( lvl.level == 2) {
@@ -1178,6 +1222,7 @@ export class SymbaroumItem extends Item {
                     damageMod: "+1d4",
                     damageModNPC: 2,
                 }];
+                this.system.isIntegrated = true;
                 combatMods.weapons[weapons[i].id].package[0].member.push(base);
             }
             if( lvl.level == 3) {
@@ -1206,6 +1251,7 @@ export class SymbaroumItem extends Item {
                     }
                 ];
                 pack.member.push(base);
+                this.system.isIntegrated = true;
                 combatMods.weapons[weapons[i].id].package.push(pack);  
             }
         }
@@ -1227,6 +1273,7 @@ export class SymbaroumItem extends Item {
                 let base2 = this._getBaseFormat();
                 base2.type = game.symbaroum.config.TYPE_ATTACKINCREASE;
                 base2.modifier = 1;
+                this.system.isIntegrated = true;
                 combatMods.weapons[weapons[i].id].package[0].member.push(base2);
                 combatMods.weapons[weapons[i].id].maxAttackNb += 1;
             }
@@ -1242,6 +1289,7 @@ export class SymbaroumItem extends Item {
                 let base = this._getBaseFormat();
                 base.attribute = "persuasive"; 
                 base.type = game.symbaroum.config.TYPE_ATTRIBUTE; 
+                this.system.isIntegrated = true;
                 combatMods.abilities[abilities[i].id].attributes.push(base);
             }
         };
@@ -1254,6 +1302,7 @@ export class SymbaroumItem extends Item {
             base.lvl = lvl;
             base.type= game.symbaroum.config.TYPE_ALT_RESIST_ATTR_RESOLUTE;
             base.attribute = "persuasive";
+            this.system.isIntegrated = true;
             combatMods.armors[armors[i].id].damageReductions.push(base);            
         }
     }
@@ -1271,10 +1320,12 @@ export class SymbaroumItem extends Item {
             let base = this._getBaseFormat();
             base.type = base.type = game.symbaroum.config.DAM_DICEUPGRADE;
             base.diceUpgrade = 2;
+            this.system.isIntegrated = true;
             combatMods.armors[armors[i].id].protectionChoices.push(base);
             if(lvl.level > 1) {
                 base = this._getBaseFormat();
                 base.modifier = armors[i].system.impeding; // Reduce with up to current impeding
+                this.system.isIntegrated = true;
                 combatMods.armors[armors[i].id].impedingModifiers.push(base);
             }
         }
@@ -1292,6 +1343,7 @@ export class SymbaroumItem extends Item {
             let base = this._getBaseFormat();
             base.type = base.type = game.symbaroum.config.DAM_DICEUPGRADE;
             base.diceUpgrade = 2;
+            this.system.isIntegrated = true;
             combatMods.weapons[weapons[i].id].package[0].member.push(base);
         }
     }
@@ -1309,12 +1361,14 @@ export class SymbaroumItem extends Item {
                 let base = this._getBaseFormat();
                 base.type = base.type = game.symbaroum.config.DAM_DICEUPGRADE;
                 base.diceUpgrade = 2;
+                this.system.isIntegrated = true;
                 combatMods.weapons[weapons[i].id].package[0].member.push(base);
             }
             if( lvl.level > 1) {
                 let base = this._getBaseFormat();
                 base.type = game.symbaroum.config.TYPE_ATTACKINCREASE;
                 base.modifier = 1;
+                this.system.isIntegrated = true;
                 combatMods.weapons[weapons[i].id].package[0].member.push(base);
                 combatMods.weapons[weapons[i].id].maxAttackNb += 1;
             }
@@ -1326,6 +1380,7 @@ export class SymbaroumItem extends Item {
                     damageMod: "+1d6",
                     damageModNPC: 3
                 }];
+                this.system.isIntegrated = true;
                 combatMods.weapons[weapons[i].id].package[0].member.push(base);
             }
         }
@@ -1343,6 +1398,7 @@ export class SymbaroumItem extends Item {
             let base = this._getBaseFormat();
             base.type = base.type = game.symbaroum.config.DAM_DICEUPGRADE;
             base.diceUpgrade = 2 * lvl.level;
+            this.system.isIntegrated = true;
             combatMods.weapons[weapons[i].id].package[0].member.push(base);
         }
     }
@@ -1350,6 +1406,7 @@ export class SymbaroumItem extends Item {
     getItemModifierNopainthreshold(combatMods, armors, weapons, abilities) {
         let base = this._getBaseFormat();
         base.type = game.symbaroum.config.NO_TRESHOLD;
+        this.system.isIntegrated = true;
         combatMods.toughness.push(base);
     }
 
@@ -1368,6 +1425,7 @@ export class SymbaroumItem extends Item {
             base.modifier = boonLevel;
             base.value = boonLevel.toString();
             base.powers = ["poisoner", "poisonous"];
+            this.system.isIntegrated = true;
             combatMods.armors[armors[i].id].damageReductions.push(base);            
         }
     }
@@ -1385,6 +1443,7 @@ export class SymbaroumItem extends Item {
             let base = this._getBaseFormat();
             base.type = game.symbaroum.config.DAM_DICEUPGRADE;
             base.diceUpgrade = 2;
+            this.system.isIntegrated = true;
             combatMods.weapons[weapons[i].id].package[0].member.push(base);
         }
     }
@@ -1401,6 +1460,7 @@ export class SymbaroumItem extends Item {
             let base = this._getBaseFormat();
             base.type = game.symbaroum.config.TYPE_ATTACKINCREASE;
             base.modifier = attackNb;
+            this.system.isIntegrated = true;
             combatMods.weapons[weapons[i].id].package[0].member.push(base);
             combatMods.weapons[weapons[i].id].maxAttackNb += attackNb;
         }
@@ -1419,13 +1479,25 @@ export class SymbaroumItem extends Item {
             base.lvl = lvl;
             base.type= game.symbaroum.config.TYPE_DMG_AVOIDING;
             base.powers = game.symbaroum.config.rapidReflexesResistList;
+            this.system.isIntegrated = true;
             combatMods.armors[armors[i].id].damageReductions.push(base);            
         }
     }
 
     getItemModifierRobust(combatMods, armors, weapons, abilities) {
         let lvl = this.getLevel();
+
+        // Many headed penalties
+        let hasManyHeaded = this.actor.items.filter( manyheaded => { return game.symbaroum.config.traitManyHeaded == manyheaded.system.reference });
+        if(hasManyHeaded.length > 0 && hasManyHeaded[0].getLevel().level > 1) {
+            lvl.level = Math.max(0, lvl.level - hasManyHeaded[0].getLevel().level +1);
+            hasManyHeaded[0].system.isIntegrated = true;
+            this.system.isIntegrated = true;
+
+        }
+
         if(lvl.level == 0) return;
+
         for(let i = 0; i < armors.length; i++) {
             if(armors[i].system.isStackableArmor) {
                 continue;
@@ -1436,6 +1508,7 @@ export class SymbaroumItem extends Item {
                 protectionMod: "+1d"+(2+lvl.level*2),
                 protectionModNPC: (1+lvl.level)
             }];
+            this.system.isIntegrated = true;
             combatMods.armors[armors[i].id].protectionChoices.push(base);
             base = this._getBaseFormat();
             base.modifier = -1 * lvl.level - 1; // Reduce with up to current impeding
@@ -1456,6 +1529,7 @@ export class SymbaroumItem extends Item {
                 restrictions: [game.symbaroum.config.DAM_1STATTACK]
             }];
             pack.member.push(base);
+            this.system.isIntegrated = true;
             combatMods.weapons[weapons[i].id].package.push(pack);
         }
     }
@@ -1477,6 +1551,7 @@ export class SymbaroumItem extends Item {
             }                
             let base = this._getBaseFormat();
             base.modifier = 1;
+            this.system.isIntegrated = true;
             combatMods.armors[armors[i].id].defenseModifiers.push(base); 
         }
         for(let i = 0; i < weapons.length; i++)
@@ -1492,12 +1567,14 @@ export class SymbaroumItem extends Item {
                 let base = this._getBaseFormat();
                 base.type = game.symbaroum.config.DAM_DICEUPGRADE;
                 base.diceUpgrade = 2;
+                this.system.isIntegrated = true;
                 combatMods.weapons[weapons[i].id].package[0].member.push(base);
 
             } else if( weapons[i].system.reference === "shield" && lvl.level > 2) {
                 let base = this._getBaseFormat();
                 base.type = game.symbaroum.config.DAM_DICEUPGRADE;
                 base.diceUpgrade = 4;
+                this.system.isIntegrated = true;
                 combatMods.weapons[weapons[i].id].package[0].member.push(base);
             }
         }
@@ -1512,6 +1589,7 @@ export class SymbaroumItem extends Item {
             let base = this._getBaseFormat();
             base.type = game.symbaroum.config.TYPE_INITIATIVE;
             base.attribute = "vigilant";
+            this.system.isIntegrated = true;
             combatMods.initiative.push(base);
         }
         if(lvl.level > 1) {
@@ -1524,6 +1602,7 @@ export class SymbaroumItem extends Item {
                 let base = this._getBaseFormat();
                 base.attribute = "vigilant"; 
                 base.type = game.symbaroum.config.TYPE_ATTRIBUTE; 
+                this.system.isIntegrated = true;
                 combatMods.armors[armors[i].id].attributes.push(base);
             }
         }
@@ -1536,6 +1615,7 @@ export class SymbaroumItem extends Item {
             let base = this._getBaseFormat();
             base.attribute = "vigilant";
             base.type = game.symbaroum.config.TYPE_ATTRIBUTE;
+            this.system.isIntegrated = true;
             combatMods.weapons[weapons[i].id].package[0].member.push(base);
         }
     }
@@ -1556,6 +1636,7 @@ export class SymbaroumItem extends Item {
         let base = this._getBaseFormat();
         base.value = game.symbaroum.config.TRAD_SORCERY;
         base.level = lvl.level
+        this.system.isIntegrated = true;
         combatMods.traditions.push(base);
     }
 
@@ -1583,6 +1664,7 @@ export class SymbaroumItem extends Item {
                 base.normal = 0;
                 base.elemental = 0;
             }
+            this.system.isIntegrated = true;
             combatMods.armors[armors[i].id].damageReductions.push(base);            
         }
     }    
@@ -1603,6 +1685,7 @@ export class SymbaroumItem extends Item {
                 }
                 let base = this._getBaseFormat();
                 base.modifier = mod;
+                this.system.isIntegrated = true;
                 combatMods.armors[armors[i].id].defenseModifiers.push(base); 
             }
         }
@@ -1616,14 +1699,15 @@ export class SymbaroumItem extends Item {
         {
             if(weapons[i].system.isMelee && ["long"].includes(weapons[i].system.reference)) 
             {
-            let base = this._getBaseFormat();
-            base.type = game.symbaroum.config.DAM_MOD;
-            base.value = "+1d4";
-            base.alternatives = [{
-                damageMod: "+1d4",
-                damageModNPC: 2,
-            }];
-            combatMods.weapons[weapons[i].id].package[0].member.push(base);
+                let base = this._getBaseFormat();
+                base.type = game.symbaroum.config.DAM_MOD;
+                base.value = "+1d4";
+                base.alternatives = [{
+                    damageMod: "+1d4",
+                    damageModNPC: 2,
+                }];
+                this.system.isIntegrated = true;
+                combatMods.weapons[weapons[i].id].package[0].member.push(base);
             }
         };
         if(lvl.level > 1){
@@ -1638,6 +1722,7 @@ export class SymbaroumItem extends Item {
         let base = this._getBaseFormat();
         base.value = game.symbaroum.config.TRAD_STAFFM;
         base.level = lvl.level
+        this.system.isIntegrated = true;
         combatMods.traditions.push(base);
     }
 
@@ -1660,6 +1745,7 @@ export class SymbaroumItem extends Item {
             if(lvl.level > 1){
                 base.powers = base.powers.concat(game.symbaroum.config.steadFastAdeptResistList);
             }
+            this.system.isIntegrated = true;
             combatMods.armors[armors[i].id].damageReductions.push(base);            
         }
     }
@@ -1676,6 +1762,7 @@ export class SymbaroumItem extends Item {
             let base = this._getBaseFormat();
             base.type = base.type = game.symbaroum.config.DAM_DICEUPGRADE;
             base.diceUpgrade = 2;
+            this.system.isIntegrated = true;
             combatMods.weapons[weapons[i].id].package[0].member.push(base);
             if(lvl.level > 1){
                 let attackNb = 1;
@@ -1699,6 +1786,7 @@ export class SymbaroumItem extends Item {
         let base2 = this._getBaseFormat();
         base2.type = game.symbaroum.config.THRESHOLD_MULTIPLIER;
         base2.value = 1;
+        this.system.isIntegrated = true;
         combatMods.corruption.push(base2);
     }
 
@@ -1709,6 +1797,7 @@ export class SymbaroumItem extends Item {
         base.type = game.symbaroum.config.SEC_ATT_MULTIPLIER;
         if(lvl.level == 1)  base.value = 1.5;
         else base.value = lvl.level;
+        this.system.isIntegrated = true;
         combatMods.toughness.push(base);
     }
 
@@ -1729,6 +1818,7 @@ export class SymbaroumItem extends Item {
                 protectionModNPC: 2,
                 displayMod: "+1d4"
             }];
+            this.system.isIntegrated = true;
             combatMods.armors[armors[i].id].protectionChoices.push(base);
         }
     }
@@ -1759,6 +1849,7 @@ export class SymbaroumItem extends Item {
                 base.holy = 0.25;
                 base.mysticalWeapon = 0.25
             }
+            this.system.isIntegrated = true;
             combatMods.armors[armors[i].id].damageReductions.push(base);            
         }
     }
@@ -1775,6 +1866,7 @@ export class SymbaroumItem extends Item {
                 let base = this._getBaseFormat();
                 base.type = game.symbaroum.config.DAM_DICEUPGRADE;
                 base.diceUpgrade = lvl.level == 3 ? 4:2;
+                this.system.isIntegrated = true;
                 combatMods.weapons[weapons[i].id].package[0].member.push(base);
             }
         }
@@ -1799,6 +1891,7 @@ export class SymbaroumItem extends Item {
                 base = this._getBaseFormat();
                 base.attribute = "cunning";
                 base.type = game.symbaroum.config.TYPE_ATTRIBUTE;
+                this.system.isIntegrated = true;
                 combatMods.armors[armors[i].id].attributes.push(base);
             }
         }
@@ -1813,6 +1906,7 @@ export class SymbaroumItem extends Item {
                 base = this._getBaseFormat();
                 base.attribute = "cunning";
                 base.type = game.symbaroum.config.TYPE_ATTRIBUTE;
+                this.system.isIntegrated = true;
                 combatMods.weapons[weapons[i].id].package[0].member.push(base);
             }        
         }
@@ -1839,6 +1933,7 @@ export class SymbaroumItem extends Item {
                             damageModNPC: 2
                         }];
                         pack.member.push(base);
+                        this.system.isIntegrated = true;
                         combatMods.abilities[abilities[i].id].package.push(pack);
                     }
                 }
@@ -1846,13 +1941,15 @@ export class SymbaroumItem extends Item {
         };
         let base = this._getBaseFormat();
         base.value = game.symbaroum.config.TRAD_THEURGY;
-        base.level = lvl.level
+        base.level = lvl.level;
+        this.system.isIntegrated = true;
         combatMods.traditions.push(base);
     }
 
     getItemModifierThoroughlycorrupt(combatMods, armors, weapons, abilities) {
         let base = this._getBaseFormat();
         base.type = game.symbaroum.config.NO_TRESHOLD;
+        this.system.isIntegrated = true;
         combatMods.corruption.push(base);
     }
 
@@ -1872,6 +1969,7 @@ export class SymbaroumItem extends Item {
             let base = this._getBaseFormat();
             base.modifier = 1;
             base.type = game.symbaroum.config.TYPE_ATTACKINCREASE;
+            this.system.isIntegrated = true;
             combatMods.weapons[weapons[i].id].package[0].member.push(base);
             if(this.actor.type === "monster") combatMods.weapons[weapons[i].id].maxAttackNb += 1;
 
@@ -1938,6 +2036,7 @@ export class SymbaroumItem extends Item {
             let base = this._getBaseFormat();
             base.type = game.symbaroum.config.DAM_DICEUPGRADE;
             base.diceUpgrade = 2;
+            this.system.isIntegrated = true;
             combatMods.weapons[weapons[i].id].package[0].member.push(base);
         }        
     }
@@ -1963,6 +2062,7 @@ export class SymbaroumItem extends Item {
             if(lvl.level > 2) {
                 base.mysticIgnArm= 0.5;
             }
+            this.system.isIntegrated = true;
             combatMods.armors[armors[i].id].damageReductions.push(base);            
         }
     }
@@ -1982,7 +2082,8 @@ export class SymbaroumItem extends Item {
         };
         let base = this._getBaseFormat();
         base.value = game.symbaroum.config.TRAD_WITCHCRAFT;
-        base.level = lvl.level
+        base.level = lvl.level;
+        this.system.isIntegrated = true;
         combatMods.traditions.push(base);
     }
 
@@ -2021,6 +2122,7 @@ export class SymbaroumItem extends Item {
                 }
             ];
             pack.member.push(base);
+            this.system.isIntegrated = true;
             combatMods.weapons[weapons[i].id].package.push(pack);
         }
     }
@@ -2040,6 +2142,7 @@ export class SymbaroumItem extends Item {
                         base.value= game.i18n.localize("DIALOG.FAVOUR_FAVOUR");
                         base.favourMod= 1;
                         pack.member.push(base);
+                        this.system.isIntegrated = true;
                         combatMods.abilities[abilities[i].id].package.push(pack);
                     }
                 }
@@ -2047,7 +2150,8 @@ export class SymbaroumItem extends Item {
         };
         let base = this._getBaseFormat();
         base.value = game.symbaroum.config.TRAD_WIZARDRY;
-        base.level = lvl.level
+        base.level = lvl.level;
+        this.system.isIntegrated = true;
         combatMods.traditions.push(base);
     }
 
@@ -2773,7 +2877,7 @@ async function checkCorruptionThreshold(actor, corruptionGained){
         corruptionText: ""
     };
 
-    const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
+    const html = await renderTemplate("systems/symbaroum/template/chat/ability.hbs", templateData);
     const chatData = {
         user: game.user.id,
         content: html,
@@ -2862,7 +2966,7 @@ export async function modifierDialog(functionStuff){
         targetAttributeName = functionStuff.targetData.resistAttributeName
     }
     createLineDisplay(functionStuff, functionStuff.attackFromPC);
-    const html = await renderTemplate('systems/symbaroum/template/chat/dialog2.html', {
+    const html = await renderTemplate('systems/symbaroum/template/chat/dialog2.hbs', {
         hasTarget: hasTarget,
         askCastingAttribute: functionStuff.askCastingAttribute,
         askTargetAttribute: functionStuff.askTargetAttribute,
@@ -3437,7 +3541,7 @@ async function attackResult(rollData, functionStuff){
         actorid = functionStuff.targetData?.actor.id;
     }
     // end Maestro support
-    const html = await renderTemplate("systems/symbaroum/template/chat/combat.html", templateData);
+    const html = await renderTemplate("systems/symbaroum/template/chat/combat.hbs", templateData);
     const chatData = {
         user: game.user.id,
         speaker: ChatMessage.getSpeaker({ 
@@ -3894,7 +3998,7 @@ async function standardPowerResult(rollData, functionStuff){
     // End Maestro
 
     // Pick up roll system
-    const html = await renderTemplate("systems/symbaroum/template/chat/ability.html", templateData);
+    const html = await renderTemplate("systems/symbaroum/template/chat/ability.hbs", templateData);
     const chatData = {
         user: game.user.id,
         speaker: ChatMessage.getSpeaker({ 

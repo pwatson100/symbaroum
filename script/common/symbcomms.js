@@ -5,7 +5,7 @@ export class SymbaroumCommsListener
     {
         if(game.user.isGM && comData.type === "GMMessage")
         {
-            const html = await renderTemplate("systems/symbaroum/template/chat/applyEffectsButton.html");
+            const html = await renderTemplate("systems/symbaroum/template/chat/applyEffectsButton.hbs");
             const chatData = {
                 speaker: ChatMessage.getSpeaker({alias:game.i18n.localize("DIALOG.SYSTEM_MESSAGE")}),
                 whisper: [game.user],
@@ -20,7 +20,7 @@ export class SymbaroumCommsListener
                 introText: comData.data.introText,
                 mainText: comData.data.mainText
             }
-            const html = await renderTemplate("systems/symbaroum/template/chat/resistButton.html", templateData);
+            const html = await renderTemplate("systems/symbaroum/template/chat/resistButton.hbs", templateData);
             const chatData = {
                 speaker: ChatMessage.getSpeaker({alias:game.i18n.localize("DIALOG.SYSTEM_MESSAGE")}),
                 whisper: [game.user],
