@@ -18,92 +18,195 @@ Fixed bug with using "data" when "system" should be used for applying certain ef
 Removed old console.log elements
 Fixed bug with fas enricher
 
-Version 2.10.1
-Re Release of the system. 
+Version 4.2
 
-Version 2.13.0
-Updated Spanish Language file. Thanks to @Nerfyon Ban Solo#3091
-Updated Swedish Language file. Thanks to @Sajkiq#5977
-Added optional Critical rolls as a system setting.  This is part of the Optional rules to:
-On Hits - add 1d6 damage of a roll of 1 and display a critical failure message on a roll of 20 (free hit for opponent)
-On Defence - display a critical Success message on a roll of 1 (free hit for character) and display a critical failure message on a roll of 20 (+3 Damage)
-See page 179 of the core rulebook for further details. 
+- Support for auto roll initiative at combat start
+- Auto delete of blessed shield when changing the status icon
+- Added Limited View of character sheets
+- Fixed issue API additions, including roll-returns give a promise
+- Table rolling text enrichers for journals
+- Fixed issue #600
+- Fixed issue #601
+- Made compatible with v10 & v11
 
-Thanks to @khaali#8262: 
-Controlling attributes for Initiative and Defence are now selectable.  
-Added Qualities tab to Weapons with checkboxes for each quality. 
-Currently these do not add modifiers but will enable those changes in the future.   
-The existing Quality text field on the Stats tab still controls what appears on the character sheet. 
+Version 4.1.2
 
-Version 2.13.1
-Corrected issue where Boons were being shown as Bane on the Character sheet.
-Updated Swedish language pack. Thanks to @Sajkiq#5977 
-Chat message adjustments (font size and boldness). Thanks to @Sajkiq#5977
+- Fixed issue #598
 
-Version 2.14.0
-With Thanks to @khaali#8262 :
-Changed artifact sheet. An artifact always has several powers, usually 2 or 3, each with its specific status (active, passive, reactive...) and its specific corruption gain. 
-Added 3 power tabs, with 3 power descriptions, active status, and corruption gain.
-Added a field 'number' on equipment and weapons, in order to keep track of consumables. 
+Version 4.1.1
 
-With thanks to @Bithir#2454 :
-Typo Impending -> Impeding
-Bonus to stats was not taken into consideration when calculating toughness, corruption threshold and abomination, and defence.
+- Fixed issue #595 with the german translation fields
 
-My bit:
-Updated Character and Monster sheets Gear tab to display new Artifact format and the equipment quantity field.
+Version 4.1.0
+- Added support for API calls for Foundry
+- Added support for Hooks - currently only a single event
+- Cleaned up some of the depedencies
+- Fixed prototypeToken configuration
+- Fixed disadvantage for non-EC
+- Removed errorounous bracket in dialogue
+- Witch sight fix
+- Tooltip fixes
+- German Updates (thanks Padraig359)
+- Added enrichers
 
-Version 2.15.0
-Thanks to @Bithir :
-Text alterations to avoid "Is Active" for abilities/traits/mystical abilities as it confuses people with Core book term "Active" - instead use "Learned" (abilities, mystical powers) or "Acquired" (traits)
-Bonus alterations includes:
-Allowance for bonus on max corruption (as is in the case of Strong gift)
-Experience - for rebated abilities/boons/burdens
-Alternative sheet has support for:
-Automatic calculations for experience spend
-Separation of exp gained & spent on re-rolls/artifacts
-Alternate Character sheet shows experience calculations for Traits/Boons/Burden. Currently this is not set by default.
+Version 4.0.3
+- Fixed macro issues for attributes & Abilities
+- Fixed actor links not correctly created on prototype token #570
 
+Version 4.0.1
+- Fixed error with fonts. 
 
-Version 2.1.16
-Great news @Bithir and @khaali have joined the development team and have a lot of great things planned for the future.  
-Bug fix for Monster not registering experience requirements after initial login
-Configurable options:
-- Rare crit
-- No guaranteed success/failure flag
-- Crit/fail for non-combat elements
-- Damage modifiers in roll dialogue
-- Allowance of favour/disfavour in roll dialogue
-- Automated Support for quality Precise & deep impact
-- Hide fields when not in use (no target selected, etc. etc)
+Version 4.0.0
+- Support for Foundry v10 (#493, #494, #495, #502, #505, #506, #513)
+- Added multiple tours - see @Tour[settings-tour]{Symbaroum configuration guide}
+- Refactured the compendiums into adventures for easier management and less busy data
+- General cleanup & css fixes (#505, #451, #531) - thank you yjeroen for some of the css
+- Lessened the abruptness of the death sequence (#546)
+- Minor fixes (#528, #530)
+- The equipment type "Artifact" is now removed. Please use the artifact button instead (#417)
+- Fix to inherit wounds (#499 - thanks Lasenist)
+- Send to chat fixes and homogenising chat output
+- Item sorting order
+- Manifest updates for v10 with v9 support
+- A couple of text enrichers added (@Tour + @SymbaroumActor)
+- Migrated to v10 tooltips (thanks Lasenist for assistance)
+- Extra wide Symbaroum Journal
+- Ability fixes (witchammer, staff fighting, sword saint, knife play)
 
-NOTE: Configuration options are unset by default. 
+Version 3.1.8
+- Fixed a problem with the balanced quality and with shields
+- Fixed screen refresh when deleting abilities/items so that updates the character sheet
+- fixed a bug when applying bleeding, poison or burning icon on token
+- fixed a bug with rare crit option + EC
+- undead are now correctly invulnerable to poison and bleeding
+- added the roll result in death roll chat message
+- added a french macro for hidden Vigilant rolls
+- some modifications for foundry v10 compatibility
+- various translations it, es, de...
 
-Version 2.17.0
-First major update to the Symbaroum system by Bithir and Khaali who have been working hard to improve the GM and user Experience and make the system overall easier to use and more informative.   
-1) Character sheet v2 made as default.  Character sheet 1 will stay, but will be less maintained going forward
-2) Tooltips for various character sheet input fields, including breakdowns if there is bonus or malus applicable
-3) German language additions, a big thank you to @DasTorfu on Symbaroum Discord
-4) Swedish language additions, a big thank you to @Weymyss and @Krister Persson on The Foundry Discord.
-5) Dice breakdowns added on tooltips
-6) Boons and burdens now support levels
-7) Some quality-of-life enhancements for rolling attribute dice
-8) Compendiums in French, German and English for Abilities, Powers and Traits (no descriptions)
-9) Abilities and Powers now have a Roll button which (currently for some of them. More to come.) takes into account all modifiers on the roll and can affect damage, healing, corruption and status icons. This is the first step in automating abilities.
-10) Improved chat messages and effects buttons.
-11) Spanish language additions, a big thank you to kufferino.
-12) Enhanced combat chat and effects on characters and Monsters.
+Version 3.1.7
+- fixed problems with status icons on tokens
+- quick fix for a bug with status counters module - this module isn't used by the system anymore (until bug fixed)
+- when using EC, killed actors are now registered as "defeated" in the combat tracker.
 
-Please see the User Guide in the Symbaroum for FVTT system users guides Compendium for more information.
+Version 3.1.6
+- Fixes for working in 0.9
+- New macro for importing characters from Symbaroum.fr
+- Updated macros
+- Spinner for firefox
+- Massive revamp of the use of mystical powers
+- Bug fixes
 
-Version 2.18.0
-Updated comparability flag.
-Corrected issue where packs were not included in the zip package. 
+Version 3.1.5
+- Added Italian localisation
+- Fixed bug #405 as well as additional defensive code around user input
+- Minor spelling error
 
-Verision 2.19.0
-I had a syntax error in the url for the download. 
+Version  3.1.4
+- Changed from API integration of Dice-so-Nice to their API-less intregration
+- Enhanced death rolling, including allowing modifiers
+- Massive revamp of the use of abilities in the dialogue to enable easier integration in the future
+- Support for modules with their own abilities, traits for Symbaroum
+- Support for Maestro
+- Further enhancements to the "Post to Chat" function for items
+- Font is no longer built-in
 
-Verision 2.21.0
+Version  3.1.3
+- Fixed a number of minor issues 
+
+Version 3.1.2
+- updated readmen compendium as the user guide had vanished. 
+
+Version 3.1.1
+- Chat result text of resisted rolls are now written from player's perspective.
+- Added message for jointed weapons secondary attack in EC.
+- corrected bug when a power or attack was used from the character sheet, while a different token was selected on the screen.
+- Steadfast now correctly works against poison
+- Black bolt now add the "paralysis" status icon to the target
+- Larvaeboils chat now correctly prints the roll
+- Corrected issue #250: bug when some abilities were affected to a character without novice level checked but still had effect
+- Corrected issue #254 : Backstab (master) now implemented
+- Corrected issue #251 : Man-at-Arms (Adept) now modify only impeding for defense and abilities based on quick (and not for using mystic powers)
+- Implemented "Armored Mystic" ability, "Poisoner" ability, "Poisonous" Trait.
+- When quick is used as the resisting attribute (Brimstone cascade...), impeding armor is now correctly included
+- Precise weapon in EC combat: modifier now appear more clearly in dialog window
+- Resist chat button option
+- corrected bug when using Firefox
+- sorting order of items on sheets
+- Code simplification and debuging
+
+Version 3.1.0
+- Bumped version number to solve an issue with the modules import version checking.
+
+Version 3.0.10
+- corrected issues with the sheet configuration dialogue for new worlds and users. 
+
+Version 3.0.9
+- New backgrounds provided by AshesForAshe (AshesForAshe#6498)
+- Many improvements on the character sheets (main page weapons & armors)
+- Monster character sheet can now show +/- instead of values (configurable under options)
+- New configuration settings dialogue for sheet, title backgrounds and editable/non-editable fields (textures or colours).
+-    These are client based setting so can be adjusted by each user.  
+
+Version 3.0.8
+- Weapons can now be configured to do alternative Damage.
+- 2 alternative damage unarmed weapons in EN and FR weapons conpendiums
+- Alternative Damage trait will upgrade alternative damage unarmed weapons
+- In Enhanced Combat, alternate damage will apply directly to relevant attribute.
+- getting close to, or reaching corruption thresholds creates warning in chat (public chat if PC, GM-only chat if NPC)
+- Traits integrated in Enhanced combat: corrupting attack, colossal.
+- Steadfast Adept now works on entangling vines and Anathema
+- Damage of Massive weapons wielded by NPCs is now correctly calculated in Enhanced combat.
+
+Version 3.0.7
+- corrected a bug when using the system on The Forge.
+
+Version 3.0.6
+- Sorted ability list and Items
+- Major artifact changes - obsoleted artifact type of item, made so equipment, weapons and armor can become artifacts
+- Migration fixes
+- Compendium migration fixes
+- Gear page now should look prettier
+- Support for system traits (thoroughly corrupt, ignore pain threshold)
+
+Version 3.0.4
+ - Enhanced combat now support correctly Iron fist and robust.
+ - BeastLore Master, Rapid reflexes Master, Strangler, Medicus scripts upgraded.
+ - Leader and BL damage bonus available on some powers.
+ - Flaming weapon quality added. 
+ - The Icons for Abilities, Traits etc. with active scripts will now show as a button.  
+      Those that have not yet been implemented will show a "no-entry" sign. 
+ - Corrected issue with item text box. 
+ - Swedish language improvements thanks to Weymyss.
+
+Version 3.0.3
+ - Staff Fighter bug fix
+
+Version 3.0.2
+ - Rapid Fire bug fix
+ - Changes to Iron First - it is now only automatically added in Enhanced combat
+ - Fix for #111 - Thanks to @NeV3rKilL for submitting the fix
+ - Fix for #206
+ - Additions of Maltransformation and Prios burning glass integration.
+
+Version 3.0.1
+ - Fixed version number
+
+Version 3.0.0
+
+Main change is compatibility to Foundry v 0.8. New abilities/traits - regeneration, survival instinct has been added to the compendium. Compendiums for weapons and armors added for Swedish (Weymyss).
+System is no longer compatible with 0.7.9 - for the 0.7.9 use release 2.22.0 - https://github.com/pwatson100/symbaroum/releases/tag/2.22.0
+
+A few macros have been added as documented in the user guide.
+
+Fixes:
+ - #180 Compendium SV-Powers SV-Trais still has multiple languages and translations are missing (@Weymyss)
+
+Version 2.22.0
+
+Fix to yml error not including css folder.
+
+Version 2.21.0
 Minor error in the spanish translation file, preventing spanish character sheet from showing.
 Language fixes for German (DasTorfu) & Swedish (Weymyss).
 Sheet changes
@@ -130,191 +233,86 @@ Fixes for
  - #112 Weapon image in chatroll message-content is not showing up due to trailing /
  - #117 Flexible quality was lowercase in English
 
-Version 2.22.0
+Version 2.19.0
+I had a syntax error in the url for the download. 
 
-Fix to yml error not including css folder.
+Version 2.18.0
+Updated comparability flag.
+Corrected issue where packs were not included in the zip package. 
 
-Version 3.0.0
+Version 2.17.0
+First major update to the Symbaroum system by Bithir and Khaali who have been working hard to improve the GM and user Experience and make the system overall easier to use and more informative.   
+1) Character sheet v2 made as default.  Character sheet 1 will stay, but will be less maintained going forward
+2) Tooltips for various character sheet input fields, including breakdowns if there is bonus or malus applicable
+3) German language additions, a big thank you to @DasTorfu on Symbaroum Discord
+4) Swedish language additions, a big thank you to @Weymyss and @Krister Persson on The Foundry Discord.
+5) Dice breakdowns added on tooltips
+6) Boons and burdens now support levels
+7) Some quality-of-life enhancements for rolling attribute dice
+8) Compendiums in French, German and English for Abilities, Powers and Traits (no descriptions)
+9) Abilities and Powers now have a Roll button which (currently for some of them. More to come.) takes into account all modifiers on the roll and can affect damage, healing, corruption and status icons. This is the first step in automating abilities.
+10) Improved chat messages and effects buttons.
+11) Spanish language additions, a big thank you to kufferino.
+12) Enhanced combat chat and effects on characters and Monsters.
 
-Main change is compatibility to Foundry v 0.8. New abilities/traits - regeneration, survival instinct has been added to the compendium. Compendiums for weapons and armors added for Swedish (Weymyss).
-System is no longer compatible with 0.7.9 - for the 0.7.9 use release 2.22.0 - https://github.com/pwatson100/symbaroum/releases/tag/2.22.0
+Please see the User Guide in the Symbaroum for FVTT system users guides Compendium for more information.
 
-A few macros have been added as documented in the user guide.
+Version 2.1.16
+Great news @Bithir and @khaali have joined the development team and have a lot of great things planned for the future.  
+Bug fix for Monster not registering experience requirements after initial login
+Configurable options:
+- Rare crit
+- No guaranteed success/failure flag
+- Crit/fail for non-combat elements
+- Damage modifiers in roll dialogue
+- Allowance of favour/disfavour in roll dialogue
+- Automated Support for quality Precise & deep impact
+- Hide fields when not in use (no target selected, etc. etc)
 
-Fixes:
- - #180 Compendium SV-Powers SV-Trais still has multiple languages and translations are missing (@Weymyss)
+NOTE: Configuration options are unset by default. 
 
-Version 3.0.1
- - Fixed version number
+Version 2.15.0
+Thanks to @Bithir :
+Text alterations to avoid "Is Active" for abilities/traits/mystical abilities as it confuses people with Core book term "Active" - instead use "Learned" (abilities, mystical powers) or "Acquired" (traits)
+Bonus alterations includes:
+Allowance for bonus on max corruption (as is in the case of Strong gift)
+Experience - for rebated abilities/boons/burdens
+Alternative sheet has support for:
+Automatic calculations for experience spend
+Separation of exp gained & spent on re-rolls/artifacts
+Alternate Character sheet shows experience calculations for Traits/Boons/Burden. Currently this is not set by default.
 
-Version 3.0.2
- - Rapid Fire bug fix
- - Changes to Iron First - it is now only automatically added in Enhanced combat
- - Fix for #111 - Thanks to @NeV3rKilL for submitting the fix
- - Fix for #206
- - Additions of Maltransformation and Prios burning glass integration.
+Version 2.14.0
+With Thanks to @khaali#8262 :
+Changed artifact sheet. An artifact always has several powers, usually 2 or 3, each with its specific status (active, passive, reactive...) and its specific corruption gain. 
+Added 3 power tabs, with 3 power descriptions, active status, and corruption gain.
+Added a field 'number' on equipment and weapons, in order to keep track of consumables. 
 
-Version 3.0.3
- - Staff Fighter bug fix
+With thanks to @Bithir#2454 :
+Typo Impending -> Impeding
+Bonus to stats was not taken into consideration when calculating toughness, corruption threshold and abomination, and defence.
 
-Version 3.0.4
- - Enhanced combat now support correctly Iron fist and robust.
- - BeastLore Master, Rapid reflexes Master, Strangler, Medicus scripts upgraded.
- - Leader and BL damage bonus available on some powers.
- - Flaming weapon quality added. 
- - The Icons for Abilities, Traits etc. with active scripts will now show as a button.  
-      Those that have not yet been implemented will show a "no-entry" sign. 
- - Corrected issue with item text box. 
- - Swedish language improvements thanks to Weymyss.
+My bit:
+Updated Character and Monster sheets Gear tab to display new Artifact format and the equipment quantity field.
 
-Version 3.0.6
-- Sorted ability list and Items
-- Major artifact changes - obsoleted artifact type of item, made so equipment, weapons and armor can become artifacts
-- Migration fixes
-- Compendium migration fixes
-- Gear page now should look prettier
-- Support for system traits (thoroughly corrupt, ignore pain threshold)
+Version 2.13.1
+Corrected issue where Boons were being shown as Bane on the Character sheet.
+Updated Swedish language pack. Thanks to @Sajkiq#5977 
+Chat message adjustments (font size and boldness). Thanks to @Sajkiq#5977
 
-Version 3.0.7
-- corrected a bug when using the system on The Forge.
+Version 2.13.0
+Updated Spanish Language file. Thanks to @Nerfyon Ban Solo#3091
+Updated Swedish Language file. Thanks to @Sajkiq#5977
+Added optional Critical rolls as a system setting.  This is part of the Optional rules to:
+On Hits - add 1d6 damage of a roll of 1 and display a critical failure message on a roll of 20 (free hit for opponent)
+On Defence - display a critical Success message on a roll of 1 (free hit for character) and display a critical failure message on a roll of 20 (+3 Damage)
+See page 179 of the core rulebook for further details. 
 
-Version 3.0.8
-- Weapons can now be configured to do alternative Damage.
-- 2 alternative damage unarmed weapons in EN and FR weapons conpendiums
-- Alternative Damage trait will upgrade alternative damage unarmed weapons
-- In Enhanced Combat, alternate damage will apply directly to relevant attribute.
-- getting close to, or reaching corruption thresholds creates warning in chat (public chat if PC, GM-only chat if NPC)
-- Traits integrated in Enhanced combat: corrupting attack, colossal.
-- Steadfast Adept now works on entangling vines and Anathema
-- Damage of Massive weapons wielded by NPCs is now correctly calculated in Enhanced combat.
+Thanks to @khaali#8262: 
+Controlling attributes for Initiative and Defence are now selectable.  
+Added Qualities tab to Weapons with checkboxes for each quality. 
+Currently these do not add modifiers but will enable those changes in the future.   
+The existing Quality text field on the Stats tab still controls what appears on the character sheet. 
 
-Version 3.0.9
-- New backgrounds provided by AshesForAshe (AshesForAshe#6498)
-- Many improvements on the character sheets (main page weapons & armors)
-- Monster character sheet can now show +/- instead of values (configurable under options)
-- New configuration settings dialogue for sheet, title backgrounds and editable/non-editable fields (textures or colours).
--    These are client based setting so can be adjusted by each user.  
-
-Version 3.0.10
-- corrected issues with the sheet configuration dialogue for new worlds and users. 
-
-Version 3.1.0
-- Bumped version number to solve an issue with the modules import version checking.
-
-Version 3.1.1
-- Chat result text of resisted rolls are now written from player's perspective.
-- Added message for jointed weapons secondary attack in EC.
-- corrected bug when a power or attack was used from the character sheet, while a different token was selected on the screen.
-- Steadfast now correctly works against poison
-- Black bolt now add the "paralysis" status icon to the target
-- Larvaeboils chat now correctly prints the roll
-- Corrected issue #250: bug when some abilities were affected to a character without novice level checked but still had effect
-- Corrected issue #254 : Backstab (master) now implemented
-- Corrected issue #251 : Man-at-Arms (Adept) now modify only impeding for defense and abilities based on quick (and not for using mystic powers)
-- Implemented "Armored Mystic" ability, "Poisoner" ability, "Poisonous" Trait.
-- When quick is used as the resisting attribute (Brimstone cascade...), impeding armor is now correctly included
-- Precise weapon in EC combat: modifier now appear more clearly in dialog window
-- Resist chat button option
-- corrected bug when using Firefox
-- sorting order of items on sheets
-- Code simplification and debuging
-
-Version 3.1.2
-- updated readmen compendium as the user guide had vanished. 
-
-Version  3.1.3
-- Fixed a number of minor issues 
-
-Version  3.1.4
-- Changed from API integration of Dice-so-Nice to their API-less intregration
-- Enhanced death rolling, including allowing modifiers
-- Massive revamp of the use of abilities in the dialogue to enable easier integration in the future
-- Support for modules with their own abilities, traits for Symbaroum
-- Support for Maestro
-- Further enhancements to the "Post to Chat" function for items
-- Font is no longer built-in
-
-Version 3.1.5
-- Added Italian localisation
-- Fixed bug #405 as well as additional defensive code around user input
-- Minor spelling error
-
-Version 3.1.6
-- Fixes for working in 0.9
-- New macro for importing characters from Symbaroum.fr
-- Updated macros
-- Spinner for firefox
-- Massive revamp of the use of mystical powers
-- Bug fixes
-
-Version 3.1.7
-- fixed problems with status icons on tokens
-- quick fix for a bug with status counters module - this module isn't used by the system anymore (until bug fixed)
-- when using EC, killed actors are now registered as "defeated" in the combat tracker.
-
-Version 3.1.8
-- Fixed a problem with the balanced quality and with shields
-- Fixed screen refresh when deleting abilities/items so that updates the character sheet
-- fixed a bug when applying bleeding, poison or burning icon on token
-- fixed a bug with rare crit option + EC
-- undead are now correctly invulnerable to poison and bleeding
-- added the roll result in death roll chat message
-- added a french macro for hidden Vigilant rolls
-- some modifications for foundry v10 compatibility
-- various translations it, es, de...
-
-Version 4.0.0
-- Support for Foundry v10 (#493, #494, #495, #502, #505, #506, #513)
-- Added multiple tours - see @Tour[settings-tour]{Symbaroum configuration guide}
-- Refactured the compendiums into adventures for easier management and less busy data
-- General cleanup & css fixes (#505, #451, #531) - thank you yjeroen for some of the css
-- Lessened the abruptness of the death sequence (#546)
-- Minor fixes (#528, #530)
-- The equipment type "Artifact" is now removed. Please use the artifact button instead (#417)
-- Fix to inherit wounds (#499 - thanks Lasenist)
-- Send to chat fixes and homogenising chat output
-- Item sorting order
-- Manifest updates for v10 with v9 support
-- A couple of text enrichers added (@Tour + @SymbaroumActor)
-- Migrated to v10 tooltips (thanks Lasenist for assistance)
-- Extra wide Symbaroum Journal
-- Ability fixes (witchammer, staff fighting, sword saint, knife play)
-
-Version 4.0.1
-Fixed error with fonts. 
-
-
-Version 4.0.3
-- Fixed macro issues for attributes & Abilities
-- Fixed actor links not correctly created on prototype token #570
-
-Version 4.1.0
-- Added support for API calls for Foundry
-- Added support for Hooks - currently only a single event
-- Cleaned up some of the depedencies
-- Fixed prototypeToken configuration
-- Fixed disadvantage for non-EC
-- Removed errorounous bracket in dialogue
-- Witch sight fix
-- Tooltip fixes
-- German Updates (thanks Padraig359)
-- Added enrichers
-
-Version 4.1.1
-
-- Fixed issue #595 with the german translation fields
-
-Version 4.1.2
-
-- Fixed issue #598
-
-Version 4.2
-
-- Support for auto roll initiative at combat start
-- Auto delete of blessed shield when changing the status icon
-- Added Limited View of character sheets
-- Fixed issue API additions, including roll-returns give a promise
-- Table rolling text enrichers for journals
-- Fixed issue #600
-- Fixed issue #601
-- Made compatible with v10 & v11
+Version 2.10.1
+Re Release of the system.
