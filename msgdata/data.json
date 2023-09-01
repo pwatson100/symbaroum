@@ -6,7 +6,7 @@
         },
         {
             "version":21,
-            "message":"<h1>Symbaroum updates to 4.3</h1><br /> We've released Symbaroum for Foundry v4.3 <h2>Important note:</h2> If you are on <b>Foundry v9</b> still - make sure you go to Symbaroum release <a href='https://github.com/pwatson100/symbaroum/releases/tag/3.1.8' >3.1.8</a> and load your world and data, before upgrading to Foundry v11.<br/> <br/>This release makes some changes to shields and will migrate your world, but will not update any unlinked actors on the scenes, so you might want to revist them. The change means that shields no longer needs a +1 in the bonus field. <br/> If you have questions and/or need help, ping us on either on #symbaroum-vtt-foundry on Davokar Explorers Discord or the #free-league channel on Foundry discord."
+            "message":"<h1>Symbaroum updates to 4.3</h1><br /> We've released Symbaroum for Foundry v4.3 <h2>Important note:</h2> If you are on <b>Foundry v9</b> still - make sure you go to Symbaroum release <a href='https://github.com/pwatson100/symbaroum/releases/tag/3.1.8' >3.1.8</a> and load your world and data, before upgrading to Foundry v11.<br/> <br/>This release makes some changes to shields and will migrate your world, but will not update any unlinked actors on the scenes, so you might want to revist them. The change means that shields no longer needs a +1 in the bonus field. <h2>Make a backup</h2> See <a href='https://www.youtube.com/watch?v=OmbxMmqNNXU' >Foundry tutorial for backups</a><br /><br/> If you have questions and/or need help, ping us on either on #symbaroum-vtt-foundry on Davokar Explorers Discord or the #free-league channel on Foundry discord."
         }
     ]    
 }
