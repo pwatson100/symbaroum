@@ -1,3 +1,7 @@
+Version 4.3.1
+
+Updated NEEDS_MIGRATION_VERSION so that it actually performs the migration.
+
 Version 4.3
 Added functionality for visibility if ability/trait is integrated
 Amended functionality for displaying which ability/trait can be activated
