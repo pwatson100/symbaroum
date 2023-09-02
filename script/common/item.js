@@ -27,7 +27,7 @@ export class SymbaroumItem extends Item {
         const title = game.i18n.format("DOCUMENT.Create", {type: label});
 
         // Render the document creation form
-        const html = await renderTemplate("templates/sidebar/document-create.hbs", {
+        const html = await renderTemplate("templates/sidebar/document-create.html", {
         name: data.name || game.i18n.format("DOCUMENT.New", {type: label}),
         folder: data.folder,
         folders: folders,
@@ -3216,6 +3216,7 @@ export async function modifierDialog(functionStuff){
 }
 
 export async function buildRolls(functionStuff){
+    console.log('...buildRolls', ...arguments);
     if(functionStuff.casting === game.symbaroum.config.CASTING_NOT && !functionStuff.isMaintained){
         return await standardPowerResult(null, functionStuff);
     }

@@ -246,8 +246,14 @@ export async function getOwnerPlayer(actor){
   {boolean}  critSuccess,
   {boolean}  critFail, */
 export async function baseRoll(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier = 0, resistRoll = false) {
-  if(resistRoll){return(await doBaseRoll(targetActor, targetAttributeName, actor, actingAttributeName, -1*favour, -1*modifier, resistRoll))}
-  else{return(await doBaseRoll(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier, resistRoll))}
+  console.log('...baseroll', ...arguments);
+  
+  if(resistRoll)
+  {
+    return(await doBaseRoll(targetActor, targetAttributeName, actor, actingAttributeName, -1*favour, -1*modifier, resistRoll));
+  } else {
+    return(await doBaseRoll(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier, resistRoll));
+  }
 }
 
 async function doBaseRoll(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier, resistRoll){

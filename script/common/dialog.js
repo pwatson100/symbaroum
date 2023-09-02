@@ -86,13 +86,12 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
     attri_defaults.impeding = ecData.impeding;
     hasTarget = ecData.targetData.hasTarget;
     askPoison = ecData.askPoison;
-  }
-  else{
+  } else {
     askTargetAttribute = targetTokens.length > 0;
   }
   if(weapon !== null) {
     weaponModifiers = foundry.utils.deepClone(actor.system.combat.combatMods.weapons[weapon.id]); // All modifiers needed
-    // Create any radio box alternatives from weaponModifiers
+    // Create any radio box alternatives from weaponModifier
     createLineDisplay(weaponModifiers, attackFromPC);
     weaponDamage = attackFromPC ? weapon.damage.base : weapon.damage.npcBase;
     if(weapon.doAlternativeDamage){
@@ -350,8 +349,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
               if(ecData.attackFromPC || ecData.targetData.actor.type === "monster"){
                   ecData.resistRoll = false;
                   buildRolls(ecData).then(val => resolve(val));
-              }
-              else{
+              } else {
                 ecData.resistRoll = true;
                 ecData.resistRollText = (weapon !== null) ? ecData.targetData.name+game.i18n.localize('COMBAT.DEFENSE_ROLL') : ecData.targetData.name+game.i18n.localize('ABILITY.RESIST_ROLL');
                 let userArray = await getOwnerPlayer(ecData.targetData.actor);
@@ -368,8 +366,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
             else{
                 buildRolls(ecData).then((val)=>resolve(val))
             }
-          }
-          else{
+          } else {            
             game.symbaroum.api.rollAttribute(actor, attributeName, getTarget(), targetAttributeName, favour, modifier, armor, weapon, advantage, damModifier).then((roll) => {resolve(roll)});
           }
         },
@@ -441,7 +438,8 @@ function getVersusModifiers(targetTokens) {
 
 export function createLineDisplay(weaponModifiers, attackFromPC) 
 {
-  // game.symbaroum.log("packages", weaponModifiers)
+  game.symbaroum.log("...createLineDisplay", ...arguments);
+
   if(weaponModifiers.maxAttackNb > 1){
     let radioAttacks = {};
     for(let j = 1; j <= weaponModifiers.maxAttackNb; j++){

@@ -1,3 +1,9 @@
+Version 4.3.2
+
+Fixed bugs introduced in 4.3
+* Could not create items
+* Enhanced Combat rolling damage for NPCs
+
 Version 4.3.1
 
 Updated NEEDS_MIGRATION_VERSION so that it actually performs the migration.
