@@ -246,7 +246,7 @@ export async function getOwnerPlayer(actor){
   {boolean}  critSuccess,
   {boolean}  critFail, */
 export async function baseRoll(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier = 0, resistRoll = false) {
-  console.log('...baseroll', ...arguments);
+  // console.log('...baseroll', ...arguments);
   
   if(resistRoll)
   {

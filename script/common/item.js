@@ -3216,7 +3216,7 @@ export async function modifierDialog(functionStuff){
 }
 
 export async function buildRolls(functionStuff){
-    console.log('...buildRolls', ...arguments);
+    // console.log('...buildRolls', ...arguments);
     if(functionStuff.casting === game.symbaroum.config.CASTING_NOT && !functionStuff.isMaintained){
         return await standardPowerResult(null, functionStuff);
     }
