@@ -139,7 +139,9 @@
   "ACTION.FULL_TURN": "Full Turn",
 
   "ACTOR.TypePlayer": "Player character",
+  "TYPES.Actor.player": "Player character",
   "ACTOR.TypeMonster": "Non-player/monster character",
+  "TYPES.Actor.monster": "Non-player/monster character",
 
   "ARMOR.NAME": "Name",
   "ARMOR.NOARMOR_NAME": "No Armor",
@@ -463,7 +465,7 @@
   "TYPES.Item.armor": "Armor",
   "TYPES.Item.artifact": "Artifact",
   "TYPES.Item.equipment": "Equipment",
-  "TYPES.Item.mysticalpower": "Mystical Power",
+  "TYPES.Item.mysticalPower": "Mystical Power",
   "TYPES.Item.ritual": "Ritual",
   "TYPES.Item.weapon": "Weapon",
   "TYPES.Item.boon": "Boon",

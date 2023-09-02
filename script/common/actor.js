@@ -912,7 +912,7 @@ export class SymbaroumActor extends Actor {
             askCastingAttribute: false,
             askPoison: false,
             numberofAttacks: 1,
-            attackFromPC: this.system.isMonster,
+            attackFromPC: this.system.isPlayer,
             autoParams: "",
             checkMaintain: false,
             combat: true,
