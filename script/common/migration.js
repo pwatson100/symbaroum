@@ -22,7 +22,7 @@ export const migrateWorld = async () => {
     }
     game.symbaroum.info(`Last migration on this world: ${worldSystemVersion}`);
     // the NEEDS_MIGRATION_VERSION have to be increased for migration to happen
-    const NEEDS_MIGRATION_VERSION = '4.2.0';
+    const NEEDS_MIGRATION_VERSION = '4.3.1';
     const COMPATIBLE_MIGRATION_VERSION = '3.1.8' || isNaN('NaN');
     let needMigration = foundry.utils.isNewerVersion(NEEDS_MIGRATION_VERSION, worldSystemVersion);
     game.symbaroum.info('needMigration', needMigration, systemVersion);
