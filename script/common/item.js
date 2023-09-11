@@ -1695,9 +1695,12 @@ export class SymbaroumItem extends Item {
     {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
+
+        let activeStaff = false;
         for(let i = 0; i < weapons.length; i++)
         {
-            if(weapons[i].system.isMelee && ["long"].includes(weapons[i].system.reference)) 
+            if(weapons[i].system.isMelee && ["long"].includes(weapons[i].system.reference) &&
+                weapons[i].system.qualities.staffMagicCompatibility) 
             {
                 let base = this._getBaseFormat();
                 base.type = game.symbaroum.config.DAM_MOD;
@@ -1708,20 +1711,21 @@ export class SymbaroumItem extends Item {
                 }];
                 this.system.isIntegrated = true;
                 combatMods.weapons[weapons[i].id].package[0].member.push(base);
+                activeStaff = weapons[i].system.isActive || activeStaff;
             }
         };
-        if(lvl.level > 1){
-            for(let i = 0; i < abilities.length; i++)
+        if(lvl.level > 1 && activeStaff) {
+            for(let j = 0; j < abilities.length; j++)
             {
-                if(combatMods.abilities[abilities[i].id].type==="mysticalPower" && combatMods.abilities[abilities[i].id].traditions.includes(game.symbaroum.config.TRAD_STAFFM)) 
+                if(combatMods.abilities[abilities[j].id].type==="mysticalPower" && combatMods.abilities[abilities[j].id].traditions.includes(game.symbaroum.config.TRAD_STAFFM)) 
                 {
-                    combatMods.abilities[abilities[i].id].corruption = lvl.level == 2 ? game.symbaroum.config.TEMPCORRUPTION_FAVOUR : game.symbaroum.config.TEMPCORRUPTION_NONE;
+                    combatMods.abilities[abilities[j].id].corruption = lvl.level == 2 ? game.symbaroum.config.TEMPCORRUPTION_FAVOUR : game.symbaroum.config.TEMPCORRUPTION_NONE;
                 }
             };
-        };
+        }
         let base = this._getBaseFormat();
         base.value = game.symbaroum.config.TRAD_STAFFM;
-        base.level = lvl.level
+        base.level = lvl.level;
         this.system.isIntegrated = true;
         combatMods.traditions.push(base);
     }
@@ -2291,6 +2295,7 @@ export class SymbaroumItem extends Item {
         base.flagPresentFSmod = {
             introText: game.i18n.localize('POWER_DANCINGWEAPON.CHAT_DESACTIVATE'),
             resultTextSuccess: game.i18n.localize('POWER_DANCINGWEAPON.CHAT_RESULT_DESACTIVATE'),
+            corruption: game.symbaroum.config.TEMPCORRUPTION_NONE,
             removeCasterEffect: [CONFIG.statusEffects.find(e => e.id === "dancingweapon")]
         };
         base.flagNotPresentFSmod = {

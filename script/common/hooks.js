@@ -736,6 +736,7 @@ async function setupEmit() {
 }
 
 Hooks.on('createToken', async (token, options, userID) => {
+  
   let flagBerserk = token.actor.getFlag(game.system.id, 'berserker');
   if (flagBerserk) {
     modifyEffectOnToken(token._object, CONFIG.statusEffects.find(e => e.id === "berserker"), 1, 1);

@@ -17,4 +17,11 @@ export class WeaponSheet extends SymbaroumItemSheet {
             ]
         });
     }
+
+    async getData() {
+        let data = await super.getData(...arguments);
+        data.qualities = game.symbaroum.config.weaponQualities;
+        data.compatibilities = game.symbaroum.config.weaponCompatibilities;
+        return data;
+    }
 }

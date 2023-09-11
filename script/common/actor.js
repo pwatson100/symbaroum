@@ -779,13 +779,17 @@ export class SymbaroumActor extends Actor {
             if (sorceryRoll.trueActorSucceeded) {
                 return ({ value: 1, tradition: "sorcery", sorceryRoll: sorceryRoll })
             }
+        } else if (functionStuff.corruption === game.symbaroum.config.TEMPCORRUPTION_FAVOUR) {
+            corruptionFormula = "2d4kl";            
         } else {
+            // Is this actually used anywhere?  If it is, should we extend this to allow for all the other options too?
             for (let i = 0; i < this.system.combat.combatMods.corruption.length; i++) {
                 if (this.system.combat.combatMods.corruption[i].type === game.symbaroum.config.TEMPCORRUPTION_FAVOUR) {
                     corruptionFormula = "2d4kl";
                 }
             }
         }
+        game.symbaroum.log('getCorruption', corruptionFormula, functionStuff);
         let corRoll = new Roll(corruptionFormula).evaluate({ async: false });
         return ({ value: corRoll.total, sorceryRoll: sorceryRoll, corruptionRoll: corRoll })
     }

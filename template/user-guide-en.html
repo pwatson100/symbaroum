@@ -19,24 +19,10 @@
     <h1>Change history since last release</h1>
     <p>
         <ul>
-            <li>Added functionality for visibility if ability/trait is integrated</li>
-            <li>Amended functionality for displaying which ability/trait can be activated</li>
-            <li>Added (self configuring) context menu for items</li>
-            <li>Added quantity changes for equipment to context menu</li>
-            <li>Added ability use to context menu</li>
-            <li>Added attack/defense use to context menu (this means you can do these from the gear page now)</li>
-            <li>Removed trashcans - this is now on context menu (right click)</li>
-            <li>Fix for man-at-arms and armor #617</li>
-            <li>Removed the use of html table elements from the character sheets</li>
-            <li>Automation of Armored/Robust with Many headed #623</li>
-            <li>Shield calculations are now automated #528
-            <li>Added migration for shields <b>Existing scenes with non-linked tokens are not migrated and might have too much defense</b></li>
-            <li>Added API configurations for exp and rituals</li>
-            <li>API change to not throwing when registring/un-registering combat modifers/abilities/etc that already exists/does not exist</li>
-            <li>Renamed all templates from html to hbs (handlebar templates)</li>
-            <li>Fixed bug with using "data" when "system" should be used for applying certain effects from chat</li>
-            <li>Removed old console.log elements</li>
-            <li>Fixed bug with fas enricher</li>
+            <li>Added API support for custom Qualities and Compatibilities for Armor & Weapons</li>
+            <li>Added compatibility with Staff Magic - ensure compatibility with staff magic is set on your rune staff, issue #514</li>
+            <li>Enforcing minimum migration version rather than failing</li>
+            <li>Removed corruption cost for maintaining Dancing Weapon</li>
         </ul>
     </p>
 
@@ -250,7 +236,7 @@
     <p>
         When using Enhanced Combat option, having those abilities or traits and using the right weapon type will make specific options available in the attack window.
     </p>
-    <h3><strong>Knife Play, Staff fighting, Sword saint</strong></h3>
+    <h3><strong>Knife Play, Staff fighting, Staff magic, Sword saint</strong></h3>
     <p>
         Those traits activate when the character wields special weapons. In order for the bonuses to appear on the character sheet, the corresponding compatibilities must be checked in the "qualities" tab of the weapon sheet.
     </p>

@@ -470,6 +470,61 @@ SYMBAROUM.abilityArmor = [
     "armored"
 ]
 
+SYMBAROUM.weaponQualities = [
+    "flexible",
+    "bastard",
+    "returning",
+    "blunt",        
+    "short",
+    "unwieldy",
+    "wrecking",
+    "concealed",
+    "balanced",
+    "deepImpact",
+    "jointed",
+    "ensnaring",
+    "long",
+    "massive",
+    "precise",
+    "bloodLetting",
+    "areaMeleeRadius",
+    "areaShortRadius",
+    "areaCone",
+    "acidcoated",
+    "bane",
+    "deathrune",
+    "desecrated",
+    "flaming",
+    "hallowed",
+    "poison",
+    "thundering",
+    "mystical"
+];
+
+SYMBAROUM.weaponCompatibilities = [
+    "staffFightingCompatibility",
+    "swordSaintCompatibility",
+    "knifePlayCompatibility",
+    "staffMagicCompatibility"
+];
+
+SYMBAROUM.armorQualities = [
+    "flexible",
+    "concealed",
+    "cumbersome",
+    "desecrated",
+    "flaming",
+    "hallowed",
+    "mystical"
+];
+
+SYMBAROUM.armorCompatibilities = [];
+
+SYMBAROUM.equipmentQualities = [];
+
+SYMBAROUM.equipmentCompatibilities = [];
+
+
 SYMBAROUM.traitManyHeaded = 'many-headed';
 
 

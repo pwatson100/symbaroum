@@ -125,130 +125,23 @@
             <div class="tab" data-group="primary" data-tab="qualities">
                 <div class="qualities foreground border">
                     <h1>{{localize "TITLE.QUALITIES"}}</h1>
-                    <div class="leftcolumn">
-                        <label for="{{id}}-system.qualities.short">{{localize "QUALITY.SHORT"}}</label>
-                        <input id="{{id}}-system.qualities.short" name="system.qualities.short" type="checkbox" value="short" {{checked system.qualities.short}}/>
+                    {{#each qualities as | quality |}}
+                    <div class="{{#if_even @index}}rightcolumn{{else}}leftcolumn{{/if_even}}">
+                        <label for="{{id}}-system.qualities.{{quality}}">{{qualitylocalize quality}}</label>
+                        <input id="{{id}}-system.qualities.{{quality}}" name="system.qualities.{{quality}}" type="checkbox" value="flexible" {{checked (lookup ../system.qualities quality)}}/>
                     </div>
-                    <div class="rightcolumn">
-                        <label for="{{id}}-system.qualities.long">{{localize "QUALITY.LONG"}}</label>
-                        <input id="{{id}}-system.qualities.long" name="system.qualities.long" type="checkbox" value="long" {{checked system.qualities.long}}/>
-                    </div>
-                    <div class="leftcolumn">
-                        <label for="{{id}}-system.qualities.precise">{{localize "QUALITY.PRECISE"}}</label>
-                        <input id="{{id}}-system.qualities.precise" name="system.qualities.precise" type="checkbox" value="precise" {{checked system.qualities.precise}}/>
-                    </div>
-                    <div class="rightcolumn">
-                        <label for="{{id}}-system.qualities.balanced">{{localize "QUALITY.BALANCED"}}</label>
-                        <input id="{{id}}-system.qualities.balanced" name="system.qualities.balanced" type="checkbox" value="balanced" {{checked system.qualities.balanced}}/>
-                    </div>
-                    <div class="leftcolumn">
-                        <label for="{{id}}-system.qualities.deepImpact">{{localize "QUALITY.DEEPIMPACT"}}</label>
-                        <input id="{{id}}-system.qualities.deepImpact" name="system.qualities.deepImpact" type="checkbox" value="deepImpact" {{checked system.qualities.deepImpact}}/>
-                    </div>
-                    <div class="rightcolumn">
-                        <label for="{{id}}-system.qualities.concealed">{{localize "QUALITY.CONCEALED"}}</label>
-                        <input id="{{id}}-system.qualities.concealed" name="system.qualities.concealed" type="checkbox" value="concealed" {{checked system.qualities.concealed}}/>
-                    </div>
-                    <div class="leftcolumn">
-                        <label for="{{id}}-system.qualities.bastard">{{localize "QUALITY.BASTARD"}}</label>
-                        <input id="{{id}}-system.qualities.bastard" name="system.qualities.bastard" type="checkbox" value="bastard" {{checked system.qualities.bastard}}/>
-                    </div>
-                    <div class="rightcolumn">
-                        <label for="{{id}}-system.qualities.mystical">{{localize "QUALITY.MYSTICAL"}}</label>
-                        <input id="{{id}}-system.qualities.mystical" name="system.qualities.mystical" type="checkbox" value="mystical" {{checked system.qualities.mystical}}/>
-                    </div>
-                    <div class="leftcolumn">
-                        <label for="{{id}}-system.qualities.blunt">{{localize "QUALITY.BLUNT"}}</label>
-                        <input id="{{id}}-system.qualities.blunt" name="system.qualities.blunt" type="checkbox" value="blunt" {{checked system.qualities.blunt}}/>
-                    </div>
-                    <div class="rightcolumn">
-                        <label for="{{id}}-system.qualities.unwieldy">{{localize "QUALITY.UNWIELDY"}}</label>
-                        <input id="{{id}}-system.qualities.unwieldy" name="system.qualities.unwieldy" type="checkbox" value="unwieldy" {{checked system.qualities.unwieldy}}/>
-                    </div>
-                    <div class="leftcolumn">
-                        <label for="{{id}}-system.qualities.wrecking">{{localize "QUALITY.WRECKING"}}</label>
-                        <input id="{{id}}-system.qualities.wrecking" name="system.qualities.wrecking" type="checkbox" value="wrecking" {{checked system.qualities.wrecking}}/>
-                    </div>
-                    <div class="rightcolumn">
-                        <label for="{{id}}-system.qualities.jointed">{{localize "QUALITY.JOINTED"}}</label>
-                        <input id="{{id}}-system.qualities.jointed" name="system.qualities.jointed" type="checkbox" value="jointed" {{checked system.qualities.jointed}}/>
-                    </div>
-                    <div class="leftcolumn">
-                        <label for="{{id}}-system.qualities.ensnaring">{{localize "QUALITY.ENSNARING"}}</label>
-                        <input id="{{id}}-system.qualities.ensnaring" name="system.qualities.ensnaring" type="checkbox" value="ensnaring" {{checked system.qualities.ensnaring}}/>
-                    </div>
-                    <div class="rightcolumn">
-                        <label for="{{id}}-system.qualities.massive">{{localize "QUALITY.MASSIVE"}}</label>
-                        <input id="{{id}}-system.qualities.massive" name="system.qualities.massive" type="checkbox" value="massive" {{checked system.qualities.massive}}/>
-                    </div>
-                    <div class="leftcolumn">
-                        <label for="{{id}}-system.qualities.bloodLetting">{{localize "QUALITY.BLOODLETTING"}}</label>
-                        <input id="{{id}}-system.qualities.bloodLetting" name="system.qualities.bloodLetting" type="checkbox" value="bloodLetting" {{checked system.qualities.bloodLetting}}/>
-                    </div>
-                    <div class="rightcolumn">
-                        <label for="{{id}}-system.qualities.returning">{{localize "QUALITY.RETURNING"}}</label>
-                        <input id="{{id}}-system.qualities.returning" name="system.qualities.returning" type="checkbox" value="returning" {{checked system.qualities.returning}}/>
-                    </div>
-                    <div class="leftcolumn">
-                        <label for="{{id}}-system.qualities.areaCone">{{localize "QUALITY.AREAC"}}</label>
-                        <input id="{{id}}-system.qualities.areaCone" name="system.qualities.areaCone" type="checkbox" value="areaCone" {{checked system.qualities.areaCone}}/>
-                    </div>
-                    <div class="rightcolumn">
-                        <label for="{{id}}-system.qualities.areaMeleeRadius">{{localize "QUALITY.AREAMRR"}}</label>
-                        <input id="{{id}}-system.qualities.areaMeleeRadius" name="system.qualities.areaMeleeRadius" type="checkbox" value="areaMeleeRadius" {{checked system.qualities.areaMeleeRadius}}/>
-                    </div>
-                    <div class="leftcolumn">
-                        <label for="{{id}}-system.qualities.areaShortRadius">{{localize "QUALITY.AREASRR"}}</label>
-                        <input id="{{id}}-system.qualities.areaShortRadius" name="system.qualities.areaShortRadius" type="checkbox" value="areaShortRadius" {{checked system.qualities.areaShortRadius}}/>
-                    </div>
-                    <div class="rightcolumn">
-                        <label for="{{id}}-system.qualities.thundering">{{localize "QUALITY.THUNDERING"}}</label>
-                        <input id="{{id}}-system.qualities.thundering" name="system.qualities.thundering" type="checkbox" value="thundering" {{checked system.qualities.thundering}}/>
-                    </div>
-                    <div class="leftcolumn">
-                        <label for="{{id}}-system.qualities.acidcoated">{{localize "QUALITY.ACIDCOATED"}}</label>
-                        <input id="{{id}}-system.qualities.acidcoated" name="system.qualities.acidcoated" type="checkbox" value="acidcoated" {{checked system.qualities.acidcoated}}/>
-                    </div>
-                    <div class="rightcolumn">
-                        <label for="{{id}}-system.qualities.bane">{{localize "QUALITY.BANE"}}</label>
-                        <input id="{{id}}-system.qualities.bane" name="system.qualities.bane" type="checkbox" value="bane" {{checked system.qualities.bane}}/>
-                    </div>
-                    <div class="leftcolumn">
-                        <label for="{{id}}-system.qualities.deathrune">{{localize "QUALITY.DEATHRUNE"}}</label>
-                        <input id="{{id}}-system.qualities.deathrune" name="system.qualities.deathrune" type="checkbox" value="deathrune" {{checked system.qualities.deathrune}}/>
-                    </div>
-                    <div class="rightcolumn">
-                        <label for="{{id}}-system.qualities.desecrated">{{localize "QUALITY.DESECRATED"}}</label>
-                        <input id="{{id}}-system.qualities.desecrated" name="system.qualities.desecrated" type="checkbox" value="desecrated" {{checked system.qualities.desecrated}}/>
-                    </div>
-                    <div class="leftcolumn">
-                        <label for="{{id}}-system.qualities.flaming">{{localize "QUALITY.FLAMING"}}</label>
-                        <input id="{{id}}-system.qualities.flaming" name="system.qualities.flaming" type="checkbox" value="flaming" {{checked system.qualities.flaming}}/>
-                    </div>
-                    <div class="rightcolumn">
-                        <label for="{{id}}-system.qualities.hallowed">{{localize "QUALITY.HALLOWED"}}</label>
-                        <input id="{{id}}-system.qualities.hallowed" name="system.qualities.hallowed" type="checkbox" value="hallowed" {{checked system.qualities.hallowed}}/>
-                    </div>
-                    <div class="leftcolumn">
-                        <label for="{{id}}-system.qualities.poison">{{localize "QUALITY.POISON"}}</label>
-                        <input id="{{id}}-system.qualities.poison" name="system.qualities.poison" type="checkbox" value="poison" {{checked system.qualities.poison}}/>
-                    </div>
-                </div>
+                    {{/each}}
+                {{#if_nempty compatibilities}}
                 <div class="qualities foreground border">
                     <h1>{{localize "TITLE.SPECIALQUALITIES"}}</h1>
-                    <div class="leftcolumn">
-                        <label for="{{id}}-system.qualities.staffFightingCompatibility">{{localize "QUALITY.STAFFFIGHTING_COMP"}}</label>
-                        <input id="{{id}}-system.qualities.staffFightingCompatibility" name="system.qualities.staffFightingCompatibility" type="checkbox" value="staffFightingCompatibility" {{checked system.qualities.staffFightingCompatibility}}/>
+                    {{#each compatibilities as | compatibility |}}
+                    <div class="{{#if_even @index}}rightcolumn{{else}}leftcolumn{{/if_even}}">
+                        <label for="{{id}}-system.qualities.{{compatibility}}">{{qualitylocalize compatibility}}</label>
+                        <input id="{{id}}-system.qualities.{{compatibility}}" name="system.qualities.{{compatibility}}" type="checkbox" value="flexible" {{checked (lookup ../system.qualities compatibility)}}/>
                     </div>
-                    <div class="rightcolumn">
-                        <label for="{{id}}-system.qualities.swordSaintCompatibility">{{localize "QUALITY.SWORDSAINT_COMP"}}</label>
-                        <input id="{{id}}-system.qualities.swordSaintCompatibility" name="system.qualities.swordSaintCompatibility" type="checkbox" value="swordSaintCompatibility" {{checked system.qualities.swordSaintCompatibility}}/>
-                    </div>
-                    <div class="leftcolumn">
-                        <label for="{{id}}-system.qualities.knifePlayCompatibility">{{localize "QUALITY.KNIFEPLAY_COMP"}}</label>
-                        <input id="{{id}}-system.qualities.knifePlayCompatibility" name="system.qualities.knifePlayCompatibility" type="checkbox" value="knifePlayCompatibility" {{checked system.qualities.knifePlayCompatibility}}/>
-                    </div>
+                    {{/each}}
                 </div>
+                {{/if_nempty}}
             </div>
             <div class="tab" data-group="primary" data-tab="bonus">
                 {{> systems/symbaroum/template/sheet/tab/bonus.hbs}}

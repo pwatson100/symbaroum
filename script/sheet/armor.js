@@ -17,4 +17,11 @@ export class ArmorSheet extends SymbaroumItemSheet {
             ]
         });
     }
+
+    async getData() {
+        let data = await super.getData(...arguments);
+        data.qualities = game.symbaroum.config.armorQualities;
+        data.compatibility = game.symbaroum.config.armorCompatibilities;
+        return data;
+    }
 }

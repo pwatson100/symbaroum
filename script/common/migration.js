@@ -22,15 +22,15 @@ export const migrateWorld = async () => {
     }
     game.symbaroum.info(`Last migration on this world: ${worldSystemVersion}`);
     // the NEEDS_MIGRATION_VERSION have to be increased for migration to happen
-    const NEEDS_MIGRATION_VERSION = '4.3.1';
-    const COMPATIBLE_MIGRATION_VERSION = '0' || isNaN('NaN');
+    const NEEDS_MIGRATION_VERSION = '4.2.0';
+    const COMPATIBLE_MIGRATION_VERSION = '3.1.8' || isNaN('NaN');
     let needMigration = foundry.utils.isNewerVersion(NEEDS_MIGRATION_VERSION, worldSystemVersion);
     game.symbaroum.info('needMigration', needMigration, systemVersion);
 
     if (needMigration && game.user.isGM) {
         // Perform the migration
-        if (worldSystemVersion && worldSystemVersion < COMPATIBLE_MIGRATION_VERSION) {
-            ui.notifications.error(
+        if (worldSystemVersion && foundry.utils.isNewerVersion(worldSystemVersion, COMPATIBLE_MIGRATION_VERSION)) {
+            return ui.notifications.error(
                 `Your Symbaroum system data is from too old a Foundry version and cannot be reliably migrated to the latest version. The process will be attempted, but errors may occur.`,
                 { permanent: true }
             );

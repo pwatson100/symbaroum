@@ -49,6 +49,10 @@ function registerHandlebarsHelpers() {
     return game.i18n.localize(text+"ABBR");
   });
 
+  Handlebars.registerHelper('qualitylocalize', function (text) {  
+    return game.i18n.localize(`QUALITY.${text.toUpperCase()}`);
+  });
+
   // Ifis not equal
   Handlebars.registerHelper('ifne', function (v1, v2, options) {
     if (v1 !== v2) return options.fn(this);
@@ -103,4 +107,34 @@ function registerHandlebarsHelpers() {
     if (v1.getUserLevel(game.user) > CONST.DOCUMENT_OWNERSHIP_LEVELS.LIMITED || game.user.isGM) return options.fn(this);
     else return options.inverse(this);
   });
+
+  Handlebars.registerHelper('if_even', function(conditional, options) {
+    if((conditional % 2) == 0) {
+      return options.fn(this);
+    } else {
+      return options.inverse(this);
+    }
+  });
+
+  Handlebars.registerHelper('if_empty', function(conditional, options) {
+    if(Handlebars.Utils.isEmpty(conditional)) {
+      return options.fn(this);
+    } else {
+      return options.inverse(this);
+    }
+  });  
+
+  Handlebars.registerHelper('if_nempty', function(conditional, options) {
+    if(!Handlebars.Utils.isEmpty(conditional)) {
+      return options.fn(this);
+    } else {
+      return options.inverse(this);
+    }
+  });  
+
+  Handlebars.registerHelper('loud', function (aString) {
+    return aString.toUpperCase();
+  });
+
+
 }
