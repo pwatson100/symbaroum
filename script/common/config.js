@@ -1,7 +1,7 @@
 // Namespace Configuration Values
 export const SYMBAROUM = {};
 
-SYMBAROUM.namespace = 'symbaroum',
+SYMBAROUM.namespace = 'symbaroum';
 
 SYMBAROUM.attributes = [
     "accurate",
@@ -524,6 +524,79 @@ SYMBAROUM.equipmentQualities = [];
 
 SYMBAROUM.equipmentCompatibilities = [];
 
+SYMBAROUM.systemConditionEffects = [{
+	id: "bendwill",
+	label: "POWER_LABEL.BEND_WILL",
+	name: "POWER_LABEL.BEND_WILL",
+	icon: "systems/symbaroum/asset/image/puppet.png"
+},
+{
+	id: "berserker",
+	label: "ABILITY_LABEL.BERSERKER",
+	name: "ABILITY_LABEL.BERSERKER",
+	icon: "systems/symbaroum/asset/image/berserker.svg"
+},
+{
+	id: "confusion",
+	label: "POWER_LABEL.CONFUSION",
+	name: "POWER_LABEL.CONFUSION",
+	icon: "systems/symbaroum/asset/image/unknown-item.png"
+},
+{
+	id: "dancingweapon",
+	label: "POWER_LABEL.DANCING_WEAPON",
+	name: "POWER_LABEL.DANCING_WEAPON",
+	icon: "systems/symbaroum/asset/image/powers/dancingweapon.svg"
+},
+{
+	id: "entanglingvines",
+	label: "POWER_LABEL.ENTANGLING_VINES",
+	name: "POWER_LABEL.ENTANGLING_VINES",
+	icon: "systems/symbaroum/asset/image/vines.png"
+},
+{
+	id: "holyaura",
+	label: "POWER_LABEL.HOLY_AURA",
+	name: "POWER_LABEL.HOLY_AURA",
+	icon: "icons/svg/aura.svg"
+},
+{
+	id: "larvaeboils",
+	label: "POWER_LABEL.LARVAE_BOILS",
+	name: "POWER_LABEL.LARVAE_BOILS",
+	icon: "systems/symbaroum/asset/image/bug.png"
+},
+{
+	id: "maltransformation",
+	label: "POWER_LABEL.MALTRANSFORMATION",
+	name: "POWER_LABEL.MALTRANSFORMATION",
+	icon: "systems/symbaroum/asset/image/frog.png"
+},
+{
+	id: "strangler",
+	label: "ABILITY_LABEL.STRANGLER",
+	name: "ABILITY_LABEL.STRANGLER",
+	icon: "systems/symbaroum/asset/image/lasso.png"
+},
+{
+	id: "tormentingspirits",
+	label: "POWER_LABEL.TORMENTING_SPIRITS",
+	name: "POWER_LABEL.TORMENTING_SPIRITS",
+	icon: "systems/symbaroum/asset/image/ghost.svg"
+},
+{
+	id: "unnoticeable",
+	label: "POWER_LABEL.UNNOTICEABLE",
+	name: "POWER_LABEL.UNNOTICEABLE",
+	icon: "systems/symbaroum/asset/image/invisible.png"
+},
+{
+	id: "witchhammer",
+	label: "POWER_LABEL.WITCH_HAMMER",
+	name: "POWER_LABEL.WITCH_HAMMER",
+	icon: "systems/symbaroum/asset/image/powers/witchhammer.svg"
+}];
+
 
 SYMBAROUM.traitManyHeaded = 'many-headed';
 
@@ -540,7 +613,7 @@ SYMBAROUM.expCosts = {
         "adept":20,
         "master":30,
         "nocost": [ ]
-    },
+    }
 }
 
 //combat mod types
@@ -564,8 +637,7 @@ SYMBAROUM.DAM_RADIO = "radio";
 SYMBAROUM.DAM_FIXED = "fixed";
 SYMBAROUM.PACK_CHECKED = "checkpackage";
 SYMBAROUM.DAM_BUILTIN = "builtin"; // builtin is for those that EC assumes are already calculated
-SYMBAROUM.DAM_BUILTIN_REFERENCES = [
-];
+SYMBAROUM.DAM_BUILTIN_REFERENCES = [];
 SYMBAROUM.DAM_1STATTACK = "1stattack";
 SYMBAROUM.DAM_NOTACTIVE = "not1stattack";
 SYMBAROUM.DAM_ACTIVE = "active";
@@ -638,8 +710,8 @@ SYMBAROUM.SYSTEM_MACRO_FOLDER = "Symbaroum System Macros";
 
 SYMBAROUM.HOOKS = {
     symbaroumItemModifiersSetup: "symbaroumItemModifiersSetup"
-}
+};
 
 SYMBAROUM.CONTEXT_MENU = {
     equipmentAddRemoveFlag: "equipmentAddRemove"
-}
+};

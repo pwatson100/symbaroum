@@ -1,5 +1,4 @@
 import { baseRoll, createRollData, damageRollWithDiceParams, simpleDamageRoll, getAttributeValue, getOwnerPlayer, createModifyTokenChatButton, createResistRollChatButton } from './roll.js';
-import { modifyEffectOnToken } from './hooks.js';
 import { createLineDisplay } from './dialog.js';
 
 export class SymbaroumItem extends Item {
@@ -643,7 +642,7 @@ export class SymbaroumItem extends Item {
                 base.damagePerRoundNPC= 2;
                 base.duration= "1d4";
                 base.durationNPC= 2;
-                base.effectIcon = CONFIG.statusEffects.find(e => e.id === "burning");
+                base.effectIcon = duplicate(CONFIG.statusEffects.find(e => e.id === "burning"));
                 this.system.isIntegrated = true;
                 combatMods.weapons[weapons[i].id].package[0].member.push(base);
             }
@@ -853,7 +852,7 @@ export class SymbaroumItem extends Item {
                 baseBleed.damagePerRoundNPC= 2;
                 baseBleed.duration= "";
                 baseBleed.durationNPC= 0;
-                baseBleed.effectIcon= CONFIG.statusEffects.find(e => e.id === "bleeding");
+                baseBleed.effectIcon= duplicate(CONFIG.statusEffects.find(e => e.id === "bleeding"));
                 if(lvl.level==2)
                 {
                     baseBleed.restrictions= [game.symbaroum.config.DAM_1STATTACK];
@@ -909,7 +908,11 @@ export class SymbaroumItem extends Item {
     getItemModifierBerserker(combatMods, armors, weapons, abilities) {
         let lvl = this.getLevel();
         if(lvl.level == 0) return;
-        if(!this.actor.getFlag(game.system.id, 'berserker')) {
+
+
+        // Make this ActiveEffect - check if this aligns with existing bersker in the modules
+        if(!this.actor.hasCondition('berserker') && !this.actor.getFlag(game.system.id, 'berserker') ) {
+            this.system.isIntegrated = false;
             return;
         }
 
@@ -1058,7 +1061,9 @@ export class SymbaroumItem extends Item {
 
     getItemModifierDancingweapon(combatMods, armors, weapons, abilities) {
         let lvl = this.getLevel();
-        if(lvl.level == 0 || !this.actor.getFlag(game.system.id, 'dancingweapon') ) return;
+        if(lvl.level == 0 || !this.actor.hasCondition('dancingweapon') &&  !this.actor.getFlag(game.system.id, 'dancingweapon')) {
+            return;
+        }
         for(let i = 0; i < armors.length; i++)
         {
             if(armors[i].system.isStackableArmor)
@@ -1072,7 +1077,7 @@ export class SymbaroumItem extends Item {
         }        
         for(let i = 0; i < weapons.length; i++)
         {
-            if(!weapons[i].system.isMelee || !this.actor.getFlag(game.system.id, "dancingweapon")) {
+            if(!weapons[i].system.isMelee ) {
                 continue;
             }
             let base = this._getBaseFormat();
@@ -2093,7 +2098,7 @@ export class SymbaroumItem extends Item {
 
     getItemModifierWitchhammer(combatMods, armors, weapons, abilities) {
         let lvl = this.getLevel();
-        if((lvl.level < 1) || !this.actor.getFlag(game.system.id, 'witchhammer')) {
+        if((lvl.level < 1) || !this.actor.hasCondition('witchhammer') && !this.actor.getFlag(game.system.id, 'witchhammer')) {
             return;
         }
         for(let i = 0; i < weapons.length; i++)
@@ -2207,7 +2212,7 @@ export class SymbaroumItem extends Item {
         base.targetMandatory= true;
         base.casting = game.symbaroum.config.CASTING_RES;
         base.maintain = game.symbaroum.config.MAINTAIN_RES;
-        base.activelyMaintainedTargetEffect= [CONFIG.statusEffects.find(e => e.id === "bendwill")];
+        base.activelyMaintainedTargetEffect= [duplicate(CONFIG.statusEffects.find(e => e.id === "bendwill"))];
         base.introText = game.i18n.localize('POWER_BENDWILL.CHAT_INTRO');
         base.introTextMaintain = game.i18n.localize('POWER_BENDWILL.CHAT_INTRO_M');
         base.resultTextSuccess = game.i18n.localize('POWER_BENDWILL.CHAT_SUCCESS');
@@ -2231,7 +2236,7 @@ export class SymbaroumItem extends Item {
         base.damageType = {
             mystic: true
         };
-        base.addTargetEffect= [CONFIG.statusEffects.find(e => e.id === "paralysis")];
+        base.addTargetEffect= [duplicate(CONFIG.statusEffects.find(e => e.id === "paralysis"))];
         base.ignoreArm=true;
         base.maintain = game.symbaroum.config.MAINTAIN_RES;
         base.casting = game.symbaroum.config.CASTING_RES;
@@ -2243,7 +2248,7 @@ export class SymbaroumItem extends Item {
     mysticPowerSetupBlessedshield(base) {
         base.casting = game.symbaroum.config.CASTING;
         base.traditions = [game.symbaroum.config.TRAD_THEURGY];
-        base.addCasterEffect = [CONFIG.statusEffects.find(e => e.id === "holyShield")];
+        base.addCasterEffect = [duplicate(CONFIG.statusEffects.find(e => e.id === "holyShield"))];
         base.introText = game.i18n.localize('POWER_BLESSEDSHIELD.CHAT_INTRO');
         base.resultTextSuccess = game.i18n.localize('POWER_BLESSEDSHIELD.CHAT_SUCCESS');
         base.resultTextFail = game.i18n.localize('POWER_BLESSEDSHIELD.CHAT_FAILURE');
@@ -2262,7 +2267,7 @@ export class SymbaroumItem extends Item {
         base.maintain = game.symbaroum.config.MAINTAIN_RES;
         base.casting = game.symbaroum.config.CASTING_RES;
         base.confusion =true;
-        base.activelyMaintainedTargetEffect = [CONFIG.statusEffects.find(e => e.id === "confusion")];
+        base.activelyMaintainedTargetEffect = [duplicate(CONFIG.statusEffects.find(e => e.id === "confusion"))];
         return(base);
     }
     
@@ -2279,7 +2284,7 @@ export class SymbaroumItem extends Item {
         base.introTextMaintain= game.i18n.localize('POWER_CURSE.CHAT_INTRO_M');
         base.resultTextSuccess= base.resultText;
         base.resultTextFail= game.i18n.localize('POWER_CURSE.CHAT_FAILURE');
-        base.activelyMaintainedTargetEffect= [CONFIG.statusEffects.find(e => e.id === "curse")];
+        base.activelyMaintainedTargetEffect= [duplicate(CONFIG.statusEffects.find(e => e.id === "curse"))];
         base.rollFailedFSmod = {
             finalText: game.i18n.localize('POWER_CURSE.CHAT_FAIL_FINAL')
         };
@@ -2293,17 +2298,17 @@ export class SymbaroumItem extends Item {
         base.gmOnlyChatResultNPC = true;
         base.flagTest = "dancingweapon";
         base.flagPresentFSmod = {
-            introText: game.i18n.localize('POWER_DANCINGWEAPON.CHAT_DESACTIVATE'),
-            resultTextSuccess: game.i18n.localize('POWER_DANCINGWEAPON.CHAT_RESULT_DESACTIVATE'),
+            introText: game.i18n.localize('POWER_DANCINGWEAPON.CHAT_DEACTIVATE'),
+            resultTextSuccess: game.i18n.localize('POWER_DANCINGWEAPON.CHAT_RESULT_DEACTIVATE'),
             corruption: game.symbaroum.config.TEMPCORRUPTION_NONE,
-            removeCasterEffect: [CONFIG.statusEffects.find(e => e.id === "dancingweapon")]
+            removeCasterEffect: [duplicate(CONFIG.statusEffects.find(e => e.id === "dancingweapon"))]
         };
         base.flagNotPresentFSmod = {
             flagData: base.powerLvl.level,
             introText: game.i18n.localize('POWER_DANCINGWEAPON.CHAT_ACTIVATE'),
             resultTextSuccess: game.i18n.localize('POWER_DANCINGWEAPON.CHAT_RESULT_ACTIVATE'),
-            addCasterEffect: [CONFIG.statusEffects.find(e => e.id === "dancingweapon")]
-        }
+            addCasterEffect: [duplicate(CONFIG.statusEffects.find(e => e.id === "dancingweapon"))]
+        };
         return(base);
     }
     
@@ -2322,7 +2327,7 @@ export class SymbaroumItem extends Item {
         base.introTextMaintain= game.i18n.localize('POWER_ENTANGLINGVINES.CHAT_INTRO_M');
         base.resultTextSuccess= game.i18n.localize('POWER_ENTANGLINGVINES.CHAT_SUCCESS');
         base.resultTextFail= game.i18n.localize('POWER_ENTANGLINGVINES.CHAT_FAILURE');
-        base.activelyMaintainedTargetEffect= [CONFIG.statusEffects.find(e => e.id === "entanglingvines")];
+        base.activelyMaintainedTargetEffect= [duplicate(CONFIG.statusEffects.find(e => e.id === "entanglingvines"))];
         base.ignoreArm=true;
         return(base);
     }
@@ -2342,7 +2347,7 @@ export class SymbaroumItem extends Item {
         base.introTextMaintain= game.i18n.localize('POWER_HOLYAURA.CHAT_INTRO');
         base.resultTextSuccess= game.i18n.localize('POWER_HOLYAURA.CHAT_SUCCESS');
         base.resultTextFail=game.i18n.localize('POWER_HOLYAURA.CHAT_FAILURE');
-        base.activelyMaintaninedCasterEffect= [CONFIG.statusEffects.find(e => e.id === "holyaura")];
+        base.activelyMaintaninedCasterEffect= [duplicate(CONFIG.statusEffects.find(e => e.id === "holyaura"))];
         let auraDamage = "1d6";
         let auraHeal = "1d4";
         if(base.powerLvl.level == 2){auraDamage = "1d8"}
@@ -2388,7 +2393,7 @@ export class SymbaroumItem extends Item {
         base.introTextMaintain= game.i18n.localize('POWER_LARVAEBOILS.CHAT_INTRO_M');
         base.resultTextSuccess= game.i18n.localize('POWER_LARVAEBOILS.CHAT_SUCCESS');
         base.resultTextFail= game.i18n.localize('POWER_LARVAEBOILS.CHAT_FAILURE');
-        base.activelyMaintainedTargetEffect= [CONFIG.statusEffects.find(e => e.id === "larvaeboils")];
+        base.activelyMaintainedTargetEffect= [duplicate(CONFIG.statusEffects.find(e => e.id === "larvaeboils"))];
         base.ignoreArm=true;
         return(base);
     }
@@ -2401,7 +2406,8 @@ export class SymbaroumItem extends Item {
         base.healFormulaSucceed = "1d6";
         if(base.powerLvl.level > 1){
             base.healFormulaSucceed = "1d8";
-            base.removeTargetEffect = [CONFIG.statusEffects.find(e => e.id === "poison"), CONFIG.statusEffects.find(e => e.id === "bleeding")]
+            base.removeTargetEffect = [duplicate(CONFIG.statusEffects.find(e => e.id === "poison")), 
+                duplicate(CONFIG.statusEffects.find(e => e.id === "bleeding"))]
         }
         base.healedToken= game.symbaroum.config.TARGET_TOKEN;
         base.targetText = game.i18n.localize('ABILITY_MEDICUS.CHAT_TARGET');
@@ -2416,12 +2422,12 @@ export class SymbaroumItem extends Item {
         base.casting = game.symbaroum.config.CASTING;
         base.traditions = [game.symbaroum.config.TRAD_WIZARDRY, game.symbaroum.config.TRAD_THEURGY];
         base.maintain = game.symbaroum.config.MAINTAIN;
-        base.addCasterEffect = [CONFIG.statusEffects.find(e => e.id === "fly")];
+        base.addCasterEffect = [duplicate(CONFIG.statusEffects.find(e => e.id === "fly"))];
         if(base.powerLvl.level > 1){
             base.getTarget= true;
             base.targetResistAttribute= "strong";
             base.casting = game.symbaroum.config.CASTING_RES;
-            base.addTargetEffect= [CONFIG.statusEffects.find(e => e.id === "fly")];
+            base.addTargetEffect= [duplicate(CONFIG.statusEffects.find(e => e.id === "fly"))];
         }
         return(base);
     }
@@ -2433,7 +2439,7 @@ export class SymbaroumItem extends Item {
         base.casting = game.symbaroum.config.CASTING_RES;
         base.maintain = game.symbaroum.config.MAINTAIN_RES;
         base.targetResistAttribute= "resolute";
-        base.activelyMaintainedTargetEffect= [CONFIG.statusEffects.find(e => e.id === "maltransformation")];
+        base.activelyMaintainedTargetEffect= [duplicate(CONFIG.statusEffects.find(e => e.id === "maltransformation"))];
         return(base);
     }
     
@@ -2499,7 +2505,7 @@ export class SymbaroumItem extends Item {
         base.introTextMaintain= game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_INTRO_M');
         base.resultTextSuccess= game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_SUCCESS');
         base.resultTextFail= game.i18n.localize('POWER_TORMENTINGSPIRITS.CHAT_FAILURE');
-        base.activelyMaintainedTargetEffect= [CONFIG.statusEffects.find(e => e.id === "tormentingspirits")];
+        base.activelyMaintainedTargetEffect= [duplicate(CONFIG.statusEffects.find(e => e.id === "tormentingspirits"))];
     
         if(base.powerLvl.level >1){
             base.hasDamage= true;
@@ -2516,7 +2522,7 @@ export class SymbaroumItem extends Item {
         base.casting = game.symbaroum.config.CASTING;
         base.traditions = [game.symbaroum.config.TRAD_WIZARDRY, game.symbaroum.config.TRAD_THEURGY];
         base.gmOnlyChatResultNPC = true;
-        base.addCasterEffect = [CONFIG.statusEffects.find(e => e.id === "unnoticeable")];
+        base.addCasterEffect = [duplicate(CONFIG.statusEffects.find(e => e.id === "unnoticeable"))];
         return(base);
     }
 
@@ -2525,16 +2531,16 @@ export class SymbaroumItem extends Item {
         base.gmOnlyChatResultNPC = true;
         base.flagTest = "witchhammer";
         base.flagPresentFSmod = {
-            introText: game.i18n.localize('POWER_WITCHHAMMER.CHAT_DESACTIVATE'),
-            resultTextSuccess: game.i18n.localize('POWER_WITCHHAMMER.CHAT_RESULT_DESACTIVATE'),
+            introText: game.i18n.localize('POWER_WITCHHAMMER.CHAT_DEACTIVATE'),
+            resultTextSuccess: game.i18n.localize('POWER_WITCHHAMMER.CHAT_RESULT_DEACTIVATE'),
             corruption: game.symbaroum.config.TEMPCORRUPTION_NONE,
-            removeCasterEffect: [CONFIG.statusEffects.find(e => e.id === "witchhammer")]
+            removeCasterEffect: [duplicate(CONFIG.statusEffects.find(e => e.id === "witchhammer"))]
         };
         base.flagNotPresentFSmod = {
             flagData: base.powerLvl.level,
             introText: game.i18n.localize('POWER_WITCHHAMMER.CHAT_ACTIVATE'),
-            addCasterEffect: [CONFIG.statusEffects.find(e => e.id === "witchhammer")]
-        }
+            addCasterEffect: [duplicate(CONFIG.statusEffects.find(e => e.id === "witchhammer"))]
+        };
         base.flagNotPresentFSmod.resultTextSuccess = game.i18n.localize('POWER_WITCHHAMMER.CHAT_RESULT');
         return(base);
     }
@@ -2564,15 +2570,15 @@ export class SymbaroumItem extends Item {
         base.gmOnlyChatResultNPC = true;
         base.flagTest = "berserker";
         base.flagPresentFSmod = {
-            introText: game.i18n.localize('ABILITY_BERSERKER.CHAT_DESACTIVATE'),
-            resultTextSuccess: game.i18n.localize('ABILITY_BERSERKER.CHAT_RESULT_DESACTIVATE'),
-            removeCasterEffect: [CONFIG.statusEffects.find(e => e.id === "berserker")]
+            introText: game.i18n.localize('ABILITY_BERSERKER.CHAT_DEACTIVATE'),
+            resultTextSuccess: game.i18n.localize('ABILITY_BERSERKER.CHAT_RESULT_DEACTIVATE'),
+            removeCasterEffect: [duplicate(CONFIG.statusEffects.find(e => e.id === "berserker"))]
         };
         base.flagNotPresentFSmod = {
             flagData: base.powerLvl.level,
             introText: game.i18n.localize('ABILITY_BERSERKER.CHAT_ACTIVATE'),
-            addCasterEffect: [CONFIG.statusEffects.find(e => e.id === "berserker")]
-        }
+            addCasterEffect: [duplicate(CONFIG.statusEffects.find(e => e.id === "berserker"))]
+        };
         if(base.powerLvl.level == 2) base.flagNotPresentFSmod.resultTextSuccess = game.i18n.localize('ABILITY_BERSERKER.CHAT_RESULT_LVL2');
         else if(base.powerLvl.level > 2) base.flagNotPresentFSmod.resultTextSuccess = game.i18n.localize('ABILITY_BERSERKER.CHAT_RESULT_LVL3');
         else base.flagNotPresentFSmod.resultTextSuccess = game.i18n.localize('ABILITY_BERSERKER.CHAT_RESULT_LVL1');
@@ -2593,7 +2599,7 @@ export class SymbaroumItem extends Item {
             base.casting = game.symbaroum.config.CASTING_RES;
             base.castingAttributeName= "persuasive";
             base.targetResistAttribute= "resolute";
-            base.addTargetEffect= [CONFIG.statusEffects.find(e => e.id === "fear")];
+            base.addTargetEffect= [duplicate(CONFIG.statusEffects.find(e => e.id === "fear"))];
         }
         if(base.powerLvl.level == 2){
             base.introText = game.i18n.localize('ABILITY_DOMINATE_ADEPT.CHAT_INTRO');
@@ -2615,7 +2621,7 @@ export class SymbaroumItem extends Item {
             base.targetMandatory= true;
             base.casting = game.symbaroum.config.CASTING_NOT;
             base.resultTextSuccess = game.i18n.localize('ABILITY_LEADER.CHAT_SUCCESS');
-            base.addTargetEffect = [CONFIG.statusEffects.find(e => e.id === "eye")];
+            base.addTargetEffect = [duplicate(CONFIG.statusEffects.find(e => e.id === "eye"))];
         }
         return(base);
     }
@@ -2693,7 +2699,7 @@ export class SymbaroumItem extends Item {
         base.introTextMaintain = game.i18n.localize('ABILITY_STRANGLER.CHAT_INTRO_M');
         base.resultTextSuccess= game.i18n.localize('ABILITY_STRANGLER.CHAT_SUCCESS');
         base.resultTextFail = game.i18n.localize('ABILITY_STRANGLER.CHAT_FAILURE');
-        base.activelyMaintainedTargetEffect= [CONFIG.statusEffects.find(e => e.id === "strangler")];
+        base.activelyMaintainedTargetEffect= [duplicate(CONFIG.statusEffects.find(e => e.id === "strangler"))];
         base.hasDamage= true;
         base.damageDice= "1d6";
         base.newStuffIfMaintain = {
@@ -3221,7 +3227,8 @@ export async function modifierDialog(functionStuff){
 }
 
 export async function buildRolls(functionStuff){
-    // console.log('...buildRolls', ...arguments);
+    game.symbaroum.log("...buildRolls", ...arguments);
+
     if(functionStuff.casting === game.symbaroum.config.CASTING_NOT && !functionStuff.isMaintained){
         return await standardPowerResult(null, functionStuff);
     }
@@ -3416,7 +3423,7 @@ async function attackResult(rollData, functionStuff){
             else{
                 flagDataArray.push({
                     tokenId: functionStuff.targetData.tokenId,
-                    addEffect: CONFIG.statusEffects.find(e => e.id === "dead"),
+                    addEffect: duplicate(CONFIG.statusEffects.find(e => e.id === "dead")),
                     overlay:true,
                     effectDuration: 1
                 });
@@ -3426,7 +3433,7 @@ async function attackResult(rollData, functionStuff){
             damageFinalText = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_PAIN');
             flagDataArray.push({
                 tokenId: functionStuff.targetData.tokenId,
-                addEffect: CONFIG.statusEffects.find(e => e.id === "prone"),
+                addEffect: duplicate(CONFIG.statusEffects.find(e => e.id === "prone")),
                 effectDuration: 1
             })
         }
@@ -3612,48 +3619,26 @@ async function poisonCalc(functionStuff, poisonRoll){
     poisonRes.poisonChatIntro = functionStuff.actingCharName + game.i18n.localize('COMBAT.CHAT_POISON') + functionStuff.targetData.name;
     let poisonDamage = "0";
     let poisonedTimeLeft = 0;
-    const effect = CONFIG.statusEffects.find(e => e.id === "poison");
+    const effect = duplicate(CONFIG.statusEffects.find(e => e.id === "poison"));
     poisonRes.poisonResistRollText = functionStuff.targetData.name+game.i18n.localize('ABILITY.RESIST_ROLL');
         
     if(!poisonRoll.trueActorSucceeded){
         poisonRes.poisonChatResult = game.i18n.localize('COMBAT.CHAT_POISON_FAILURE');     
-    }
-    else{
+    } else {
         if(functionStuff.attackFromPC || functionStuff.targetData.actor.type === "monster"){
             poisonDamage = "1d"+(2*functionStuff.poison +2).toString();
-        }
-        else{
+        } else {
             poisonDamage = (functionStuff.poison +1).toString();
         }
         let PoisonRoundsRoll= new Roll(poisonDamage).evaluate({async:false});
         poisonRes.roll = PoisonRoundsRoll;
 
         let NewPoisonRounds = PoisonRoundsRoll.total;
-        let poisonedEffectCounter = game.symbaroum.api.getEffect(functionStuff.targetData.token, effect);
+        let poisonedEffectCounter = functionStuff.targetData.token.actor?.hasCondition(effect.id);
         if(poisonedEffectCounter){
             //target already poisoned
-            //get the number of rounds left
-            let statusCounterMod = false;
-            if(game.modules.get("statuscounter")?.active){
-                //statusCounterMod = true;  until corrected
-            };
-            if(statusCounterMod){
-                poisonedTimeLeft = await EffectCounter.findCounterValue(functionStuff.targetData.token, effect);  
-                if(NewPoisonRounds > poisonedTimeLeft){
-                    poisonRes.flagData = {
-                        tokenId: functionStuff.targetData.tokenId,
-                        modifyEffectDuration: effect,
-                        effectDuration: NewPoisonRounds
-                    };
-                    poisonRes.poisonChatResult = game.i18n.localize('COMBAT.CHAT_POISON_EXTEND') + NewPoisonRounds.toString();
-                }
-                else{
-                    poisonRes.poisonChatResult = game.i18n.localize('COMBAT.CHAT_POISON_NOTEXTEND');
-                }
-            }
-            else{poisonRes.poisonChatResult = game.i18n.localize('COMBAT.CHAT_POISON_NOTEXTEND')}
-        }
-        else{
+            poisonRes.poisonChatResult = game.i18n.localize('COMBAT.CHAT_POISON_NOTEXTEND');
+        } else {
             //new poisoning  
             poisonRes.flagData ={
                 tokenId: functionStuff.targetData.tokenId,
@@ -3671,6 +3656,7 @@ async function poisonCalc(functionStuff, poisonRoll){
 }
 
 async function standardPowerResult(rollData, functionStuff){
+    game.symbaroum.log("standardPowerResult",...arguments);
     let hasRoll = false;
     let trueActorSucceeded = true; //true by default for powers without rolls
     let rolls = [];
@@ -3691,18 +3677,26 @@ async function standardPowerResult(rollData, functionStuff){
     if(functionStuff.rollFailedFSmod && !trueActorSucceeded){
         functionStuff = Object.assign({}, functionStuff , functionStuff.rollFailedFSmod);
     }
+    let flagData = functionStuff.actor.getFlag(game.system.id, functionStuff.flagTest) ??
+    functionStuff.actor.hasCondition(functionStuff.flagTest)?.getFlag(game.system.id, 'flagData');
 
+    game.symbaroum.log("Flag data",flagData)
+
+    game.symbaroum.log('functionStuff before merge', functionStuff);
     if(functionStuff.flagTest && trueActorSucceeded){
-        let flagData = await functionStuff.actor.getFlag(game.system.id, functionStuff.flagTest);
-        if(flagData){
+        
+        if(flagData) {
             await functionStuff.actor.unsetFlag(game.system.id, functionStuff.flagTest);
+            await functionStuff.actor.removeCondition(functionStuff.flagTest)
             functionStuff = Object.assign({}, functionStuff , functionStuff.flagPresentFSmod);
-        }
-        else{
-            await functionStuff.actor.setFlag(game.system.id, functionStuff.flagTest, functionStuff.flagNotPresentFSmod.flagData);
+        } else {
+            // await functionStuff.actor.setFlag(game.system.id, functionStuff.flagTest, functionStuff.flagNotPresentFSmod.flagData);
+            await functionStuff.actor.addCondition(functionStuff.flagTest, functionStuff.flagNotPresentFSmod.flagData);
             functionStuff = Object.assign({}, functionStuff , functionStuff.flagNotPresentFSmod);
         }
     }
+    game.symbaroum.log('functionStuff after merge', functionStuff);
+
     let flagDataArray = functionStuff.flagDataArray ?? [];
     let haveCorruption = false;
     let corruptionText = "";
@@ -3767,7 +3761,7 @@ async function standardPowerResult(rollData, functionStuff){
 
         if(functionStuff.targets){
             for(let target of functionStuff.targets){
-                let effect = CONFIG.statusEffects.find(e => e.id === "holyShield");
+                let effect = duplicate(CONFIG.statusEffects.find(e => e.id === "holyShield"));
                 flagDataArray.push({
                     tokenId: target.tokenId,
                     addEffect: effect,
@@ -3843,8 +3837,7 @@ async function standardPowerResult(rollData, functionStuff){
         if(damageTot <= 0){
             damageTot = 0;
             damageText = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_NUL');
-        }
-        else{
+        }  else {
             if(damageTot >= targetValue){
                 targetDies = true;
                 damageFinalText = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_DYING');
@@ -3853,11 +3846,10 @@ async function standardPowerResult(rollData, functionStuff){
                         tokenId: functionStuff.targetData.tokenId,
                         defeated: true
                     });
-                }
-                else{
+                } else {
                     flagDataArray.push({
                         tokenId: functionStuff.targetData.tokenId,
-                        addEffect: CONFIG.statusEffects.find(e => e.id === "dead"),
+                        addEffect: duplicate(CONFIG.statusEffects.find(e => e.id === "dead")),
                         overlay:true,
                         effectDuration: 1
                     });
@@ -3867,7 +3859,7 @@ async function standardPowerResult(rollData, functionStuff){
                 damageFinalText = functionStuff.targetData.name + game.i18n.localize('COMBAT.CHAT_DAMAGE_PAIN');
                 flagDataArray.push({
                     tokenId: functionStuff.targetData.tokenId,
-                    addEffect: CONFIG.statusEffects.find(e => e.id === "prone"),
+                    addEffect: duplicate(CONFIG.statusEffects.find(e => e.id === "prone")),
                     effectDuration: 1
                 })
             }
@@ -3949,19 +3941,12 @@ async function standardPowerResult(rollData, functionStuff){
                 });
                 if(functionStuff.powerLvl.level > 1){
                     templateData.finalText += game.i18n.localize('POWER_INHERITWOUND.CHAT_REDIRECT');
-                    const pEffect = CONFIG.statusEffects.find(e => e.id === "poison");
-                    let poisonedEffectCounter = game.symbaroum.api.getEffect(functionStuff.targetData.token, pEffect);
+                    const pEffect = duplicate(CONFIG.statusEffects.find(e => e.id === "poison"));
+                    let poisonedEffectCounter = functionStuff.targetData.token?.actor.hasCondition(pEffect.id);
                     if(poisonedEffectCounter){
                         //target  poisoned
                         //get the number of rounds left
                         let timeLeft = 1;
-                        let statusCounterMod = false;
-                        if(game.modules.get("statuscounter")?.active){
-                            //statusCounterMod = true;  until corrected
-                        };
-                        if(statusCounterMod){
-                            timeLeft = await EffectCounter.findCounterValue(functionStuff.targetData.token, pEffect);
-                        }
                         //set status to caster
                         flagDataArray.push({
                             tokenId: functionStuff.tokenId,
@@ -3972,18 +3957,11 @@ async function standardPowerResult(rollData, functionStuff){
                             removeEffect: pEffect
                         })
                     }
-                    const bEffect = CONFIG.statusEffects.find(e => e.id === "bleeding");
-                    let bleedEffectCounter = game.symbaroum.api.getEffect(functionStuff.targetData.token, bEffect);
+                    const bEffect = duplicate(CONFIG.statusEffects.find(e => e.id === "bleeding"));
+                    let bleedEffectCounter = functionStuff.targetData.token?.actor.hasCondition(bEffect.id);
                     if(bleedEffectCounter){
                         //get the number of rounds left
                         let timeLeft = 1;
-                        let statusCounterMod = false;
-                        if(game.modules.get("statuscounter")?.active){
-                            //statusCounterMod = true;  until corrected
-                        };
-                        if(statusCounterMod){
-                            timeLeft = await EffectCounter.findCounterValue(functionStuff.targetData.token, bEffect);
-                        }
                         //set status to caster
                         flagDataArray.push({
                             tokenId: functionStuff.tokenId,
@@ -4027,7 +4005,7 @@ async function standardPowerResult(rollData, functionStuff){
     let NewMessage = await ChatMessage.create(chatData);
     if(trueActorSucceeded && (functionStuff.addTargetEffect.length >0)){
         for(let effect of functionStuff.addTargetEffect){
-            let effectPresent = game.symbaroum.api.getEffect(functionStuff.targetData.token, effect);
+            let effectPresent = functionStuff.targetData.token?.actor.hasCondition(effect.id);
             if(!effectPresent){
                 flagDataArray.push({
                         tokenId: functionStuff.targetData.tokenId,
@@ -4038,16 +4016,16 @@ async function standardPowerResult(rollData, functionStuff){
         }
     }
     if(trueActorSucceeded && (functionStuff.addCasterEffect.length >0) && functionStuff.tokenId){
-        for(let effect of functionStuff.addCasterEffect){
-            let effectPresent = game.symbaroum.api.getEffect(functionStuff.token, effect);
-            if(!effectPresent){
-                await modifyEffectOnToken(functionStuff.token, effect, 1, 1);
-            }
+        // Add condition to master actor first, that way when we loop through any effects for the token actor
+        // we will not duplicate if it is a token actor - order is important here.
+        await functionStuff.actor.addCondition(functionStuff.flagTest, flagData);
+        for(let effect of functionStuff.addCasterEffect) {
+            await functionStuff.token?.actor.addCondition(effect, flagData);
         }
     }
     if(trueActorSucceeded && (functionStuff.removeTargetEffect.length >0)){
         for(let effect of functionStuff.removeTargetEffect){
-            let effectPresent = game.symbaroum.api.getEffect(functionStuff.targetData.token, effect);
+            let effectPresent = functionStuff.targetData.token?.actor.hasCondition(effect.id);
             if(effectPresent){
                 flagDataArray.push({
                     tokenId: functionStuff.targetData.tokenId,
@@ -4057,16 +4035,14 @@ async function standardPowerResult(rollData, functionStuff){
         }
     }
     if(trueActorSucceeded && (functionStuff.removeCasterEffect.length >0) && functionStuff.tokenId){ 
+        await functionStuff.actor.removeCondition(functionStuff.flagTest);
         for(let effect of functionStuff.removeCasterEffect){
-            let effectPresent = game.symbaroum.api.getEffect(functionStuff.token, effect);
-            if(effectPresent){
-                modifyEffectOnToken(functionStuff.token, effect, 0, 1);
-            }
+            await functionStuff.token?.actor.removeCondition(effect);
         }
     }
     if(trueActorSucceeded && !functionStuff.isMaintained && (functionStuff.activelyMaintainedTargetEffect.length >0)){ 
         for(let effect of functionStuff.activelyMaintainedTargetEffect){
-            let effectPresent = game.symbaroum.api.getEffect(functionStuff.targetData.token, effect);
+            let effectPresent = functionStuff.targetData.token?.actor.hasCondition(effect.id);
             if(!effectPresent){
                 flagDataArray.push({
                     tokenId: functionStuff.targetData.tokenId,
@@ -4078,7 +4054,7 @@ async function standardPowerResult(rollData, functionStuff){
     }
     if(!trueActorSucceeded && functionStuff.isMaintained && (functionStuff.activelyMaintainedTargetEffect.length >0)){ 
         for(let effect of functionStuff.activelyMaintainedTargetEffect){
-            let effectPresent = game.symbaroum.api.getEffect(functionStuff.targetData.token, effect);
+            let effectPresent = functionStuff.targetData.token?.actor.hasCondition(effect.id);
             if(effectPresent){ 
                 flagDataArray.push({
                     tokenId: functionStuff.targetData.tokenId,
@@ -4089,7 +4065,7 @@ async function standardPowerResult(rollData, functionStuff){
     }
     if(trueActorSucceeded && !functionStuff.isMaintained && (functionStuff.activelyMaintaninedCasterEffect.length >0) && functionStuff.tokenId){ 
         for(let effect of functionStuff.activelyMaintaninedCasterEffect){
-            let effectPresent = game.symbaroum.api.getEffect(functionStuff.token, effect);
+            let effectPresent = functionStuff.token?.actor.hasCondition( effect.id );
             if(!effectPresent){
                 flagDataArray.push({
                     tokenId: functionStuff.tokenId,
@@ -4101,7 +4077,7 @@ async function standardPowerResult(rollData, functionStuff){
     }
     if(!trueActorSucceeded && functionStuff.isMaintained && (functionStuff.activelyMaintaninedCasterEffect.length >0) && functionStuff.tokenId){ 
         for(let effect of functionStuff.activelyMaintaninedCasterEffect){
-            let effectPresent = game.symbaroum.api.getEffect(functionStuff.token, effect);
+            let effectPresent = functionStuff.token?.actor.hasCondition(effect.id);
             if(effectPresent){ 
                 flagDataArray.push({
                     tokenId: functionStuff.tokenId,

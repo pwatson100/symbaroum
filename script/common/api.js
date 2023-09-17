@@ -9,14 +9,6 @@ export class SymbaroumAPI
         // Set-up anything else
         this.baseRoll = baseRoll;
         this.rollAttribute = rollAttribute;
-        
-        this.registerFunction("getEffect", function(token, effect) {
-            //check if there is an icon effect on the token
-            if(token.actor.effects.find(e => e.getFlag("core", "statusId") === effect.id) ) {
-                return true;
-            }
-            else return false;
-        });
     }
 
 
@@ -162,6 +154,25 @@ export class SymbaroumAPI
         }
     }
 
+    /**
+     * Gets the best "Token" for an actor - as follows:
+     * - If the actor is a token actor, grab the token for that actor
+     * - If the actor is a non-token actor, select as follows:
+     *   - grab the selected token with matching actorId
+     *   - grab the first token from active tokens of the actor
+     * 
+     * @param {The actor in question} actor 
+     */
+    getActorToken(actor) {
+        if(actor.isToken) {
+            return actor.token;
+        }
+        let token = canvas.tokens.controlled.find( elem => elem.actor.id == actor.id);
+        if(!token) {
+            token = actor.getActiveTokens()[0];
+        }
+        return token;
+    }
     /**
      * Generates names from specific category
      * 

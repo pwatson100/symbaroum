@@ -1,5 +1,6 @@
 
 export async function rollAttribute(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier, armor, weapon, advantage, damModifier) {
+  const api = game.symbaroum.api;
   let dam = "";	
 
   let hasWeapon = weapon != null;
@@ -69,8 +70,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   
   let finalMod = modifier - getAttributeValue(targetActor, targetAttributeName) + 10;
 
-  let tokenList = actor.getActiveTokens();
-  let actingToken = tokenList[0];
+  let actingToken = api.getActorToken(actor);
   let actingCharName= actingToken?.name ?? actor.name;
   let actingCharImg= actingToken?.document.actorLink ? actor.img : actingToken?.document?.texture.src ?? actor.img;
   let rollData = {

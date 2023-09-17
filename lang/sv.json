@@ -85,8 +85,8 @@
   "ABILITY_ERROR.TARGET": "För många eller för få mål",
 
   "ABILITY_BERSERKER.CHAT_ACTIVATE": "{actorname} går bärsärk.",
-  "ABILITY_BERSERKER.CHAT_DESACTIVATE": "{actorname} lugnar ner sig och går inte längre bärsärk.",
-  "ABILITY_BERSERKER.CHAT_RESULT_DESACTIVATE": "Stridsegenskaper återgår till det normala.",
+  "ABILITY_BERSERKER.CHAT_DEACTIVATE": "{actorname} lugnar ner sig och går inte längre bärsärk.",
+  "ABILITY_BERSERKER.CHAT_RESULT_DEACTIVATE": "Stridsegenskaper återgår till det normala.",
   "ABILITY_BERSERKER.CHAT_RESULT_LVL1": "Närstridsskada ökad, bas för Försvar satt till 5.",
   "ABILITY_BERSERKER.CHAT_RESULT_LVL2": "Närstridsskada ökad, bepansringsbonus, bas för Försvar satt till 5.",
   "ABILITY_BERSERKER.CHAT_RESULT_LVL3": "Närstridsskada ökad, bepansringsbonus.",
@@ -580,9 +580,9 @@
   "POWER_CURSE.CHAT_FAIL_FINAL": "Förhäxningen har inte längre någon effekt på {targetname}.",
 
   "POWER_DANCINGWEAPON.CHAT_ACTIVATE": "{actorname} använder sitt dansande vapen.",
-  "POWER_DANCINGWEAPON.CHAT_DESACTIVATE": "{actorname} använder inte dansande vapen längre.",
+  "POWER_DANCINGWEAPON.CHAT_DEACTIVATE": "{actorname} använder inte dansande vapen längre.",
   "POWER_DANCINGWEAPON.CHAT_RESULT_ACTIVATE": "Stridskaraktärsdrag ersätts av Viljestark.",
-  "POWER_DANCINGWEAPON.CHAT_RESULT_DESACTIVATE": "Stridskaraktärsdrag återgår till de normala.",
+  "POWER_DANCINGWEAPON.CHAT_RESULT_DEACTIVATE": "Stridskaraktärsdrag återgår till de normala.",
 
   "POWER_ENTANGLINGVINES.CHAT_INTRO_M": "{targetname} försöker bryta sig loss från rankorna.",
   "POWER_ENTANGLINGVINES.CHAT_SUCCESS": "{targetname} är intrasslad i rankorna.",
@@ -623,8 +623,8 @@
   "POWER_TORMENTINGSPIRITS.CHAT_FAILURE": "{actorname} misslyckas med sin andeåkallan.",
 
   "POWER_WITCHHAMMER.CHAT_ACTIVATE": "{actorname}s vapen flammar upp med helig eld .",
-  "POWER_WITCHHAMMER.CHAT_DESACTIVATE": "{actorname}s vapen slutar brinna.",
-  "POWER_WITCHHAMMER.CHAT_RESULT_DESACTIVATE": "Vapenegenskaper återgår till normala.",
+  "POWER_WITCHHAMMER.CHAT_DEACTIVATE": "{actorname}s vapen slutar brinna.",
+  "POWER_WITCHHAMMER.CHAT_RESULT_DEACTIVATE": "Vapenegenskaper återgår till normala.",
   "POWER_WITCHHAMMER.CHAT_RESULT": "Bonusskada för Häxhammare kommer vara tillgänglig i stridsdialogfönstret.",
 
   "QUALITY.AREAMELEERADIUS": "Ytverkande - Närstidsradie",

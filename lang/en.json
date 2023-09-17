@@ -85,8 +85,8 @@
   "ABILITY_ERROR.TARGET": "Choose one target",
 
   "ABILITY_BERSERKER.CHAT_ACTIVATE": "{actorname} enters Berserker rage.",
-  "ABILITY_BERSERKER.CHAT_DESACTIVATE": "{actorname} calms down and quits berserker rage.",
-  "ABILITY_BERSERKER.CHAT_RESULT_DESACTIVATE": "Combat stats revert to normal.",
+  "ABILITY_BERSERKER.CHAT_DEACTIVATE": "{actorname} calms down and quits berserker rage.",
+  "ABILITY_BERSERKER.CHAT_RESULT_DEACTIVATE": "Combat stats revert to normal.",
   "ABILITY_BERSERKER.CHAT_RESULT_LVL1": "Melee damage increased, base defense set to 5.",
   "ABILITY_BERSERKER.CHAT_RESULT_LVL2": "Melee damage increased, armor bonus, base defense set to 5.",
   "ABILITY_BERSERKER.CHAT_RESULT_LVL3": "Melee damage increased, armor bonus.",
@@ -587,9 +587,9 @@
   "POWER_CURSE.CHAT_FAIL_FINAL": "The curse has no more effect on {targetname}.",
 
   "POWER_DANCINGWEAPON.CHAT_ACTIVATE": "{actorname} is using their dancing weapon.",
-  "POWER_DANCINGWEAPON.CHAT_DESACTIVATE": "{actorname} isn't using dancing weapon anymore.",
+  "POWER_DANCINGWEAPON.CHAT_DEACTIVATE": "{actorname} isn't using dancing weapon anymore.",
   "POWER_DANCINGWEAPON.CHAT_RESULT_ACTIVATE": "Combat stats are replaced by Resolute.",
-  "POWER_DANCINGWEAPON.CHAT_RESULT_DESACTIVATE": "Combat stats revert to normal.",
+  "POWER_DANCINGWEAPON.CHAT_RESULT_DEACTIVATE": "Combat stats revert to normal.",
 
   "POWER_ENTANGLINGVINES.CHAT_INTRO_M": "{targetname} tries to break free from the vines.",
   "POWER_ENTANGLINGVINES.CHAT_SUCCESS": "{targetname} is entangled in the vines.",
@@ -630,8 +630,8 @@
   "POWER_TORMENTINGSPIRITS.CHAT_FAILURE": "{actorname} fails the invokation.",
 
   "POWER_WITCHHAMMER.CHAT_ACTIVATE": "{actorname}'s weapon starts glowing.",
-  "POWER_WITCHHAMMER.CHAT_DESACTIVATE": "{actorname}'s weapon stops glowing.",
-  "POWER_WITCHHAMMER.CHAT_RESULT_DESACTIVATE": "Weapon stats revert to normal.",
+  "POWER_WITCHHAMMER.CHAT_DEACTIVATE": "{actorname}'s weapon stops glowing.",
+  "POWER_WITCHHAMMER.CHAT_RESULT_DEACTIVATE": "Weapon stats revert to normal.",
   "POWER_WITCHHAMMER.CHAT_RESULT": "Witch hammer bonus damage will be available in combat dialog window.",
 
   "QUALITY.AREAMELEERADIUS": "Area Effect - melee range radius",

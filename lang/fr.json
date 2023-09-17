@@ -85,8 +85,8 @@
   "ABILITY_ERROR.TARGET": "Selectionez une cible",
 
   "ABILITY_BERSERKER.CHAT_ACTIVATE": "{actorname} rentre dans une rage berzerk.",
-  "ABILITY_BERSERKER.CHAT_DESACTIVATE": "{actorname} se calme et sort de la rage berzerk.",
-  "ABILITY_BERSERKER.CHAT_RESULT_DESACTIVATE": "Les valeurs de combat redeviennent normales.",
+  "ABILITY_BERSERKER.CHAT_DEACTIVATE": "{actorname} se calme et sort de la rage berzerk.",
+  "ABILITY_BERSERKER.CHAT_RESULT_DEACTIVATE": "Les valeurs de combat redeviennent normales.",
   "ABILITY_BERSERKER.CHAT_RESULT_LVL1": "Dégâts augmentés, défense de base fixée à 5.",
   "ABILITY_BERSERKER.CHAT_RESULT_LVL2": "Dégâts et armure augmentés, défense de base fixée à 5.",
   "ABILITY_BERSERKER.CHAT_RESULT_LVL3": "Dégâts et armure augmentés.",
@@ -587,9 +587,9 @@
   "POWER_CURSE.CHAT_FAIL_FINAL": "La malédiction n'a plus d'effet sur {targetname}.",
 
   "POWER_DANCINGWEAPON.CHAT_ACTIVATE": "{actorname} utilise son arme dansante.",
-  "POWER_DANCINGWEAPON.CHAT_DESACTIVATE": "{actorname} n'utilise plus son arme dansante.",
+  "POWER_DANCINGWEAPON.CHAT_DEACTIVATE": "{actorname} n'utilise plus son arme dansante.",
   "POWER_DANCINGWEAPON.CHAT_RESULT_ACTIVATE": "Les attributs de combat sont remplacés par Volonté.",
-  "POWER_DANCINGWEAPON.CHAT_RESULT_DESACTIVATE": "Les attributs de combat redeviennent normaux.",
+  "POWER_DANCINGWEAPON.CHAT_RESULT_DEACTIVATE": "Les attributs de combat redeviennent normaux.",
 
   "POWER_ENTANGLINGVINES.CHAT_INTRO_M": "{targetname} essaye de briser l'étreinte des plantes.",
   "POWER_ENTANGLINGVINES.CHAT_SUCCESS": "{targetname} est enchevêtré dans la végétation.",
@@ -630,8 +630,8 @@
   "POWER_TORMENTINGSPIRITS.CHAT_FAILURE": "{actorname} échoue son invocation.",
 
   "POWER_WITCHHAMMER.CHAT_ACTIVATE": "L'arme de {actorname} se met à briller.",
-  "POWER_WITCHHAMMER.CHAT_DESACTIVATE": "L'arme de {actorname} ne brille plus.",
-  "POWER_WITCHHAMMER.CHAT_RESULT_DESACTIVATE": "Les dommages de l'arme rediviennent normaux.",
+  "POWER_WITCHHAMMER.CHAT_DEACTIVATE": "L'arme de {actorname} ne brille plus.",
+  "POWER_WITCHHAMMER.CHAT_RESULT_DEACTIVATE": "Les dommages de l'arme rediviennent normaux.",
   "POWER_WITCHHAMMER.CHAT_RESULT": "Les bonus de dégâts de Marteau à sorcière apparaitront dans la fenêtre de dialogue de combat.",
 
   "QUALITY.AREAMELEERADIUS": "Zone d’effet - rayon portée mélée",

@@ -85,8 +85,8 @@
   "ABILITY_ERROR.TARGET": "Du musst ein Ziel auswählen",
 
   "ABILITY_BERSERKER.CHAT_ACTIVATE": "{actorname} wird von der Berserkerwut erfasst.",
-  "ABILITY_BERSERKER.CHAT_DESACTIVATE": "{actorname} beruhigt sich und die Berserkerwut verfliegt .",
-  "ABILITY_BERSERKER.CHAT_RESULT_DESACTIVATE": "Die im Kampf verwendeten Eigenschaften werden zurückgesetzt.",
+  "ABILITY_BERSERKER.CHAT_DEACTIVATE": "{actorname} beruhigt sich und die Berserkerwut verfliegt .",
+  "ABILITY_BERSERKER.CHAT_RESULT_DEACTIVATE": "Die im Kampf verwendeten Eigenschaften werden zurückgesetzt.",
   "ABILITY_BERSERKER.CHAT_RESULT_LVL1": "Der Schaden im Nahkampf ist erhöht, die Basis-Verteidigung beträgt 5.",
   "ABILITY_BERSERKER.CHAT_RESULT_LVL2": "Der Schaden im Nahkampf ist erhöht und ein Rüstungs-Bonus wird gewährt, die Basis-Verteidigung beträgt 5.",
   "ABILITY_BERSERKER.CHAT_RESULT_LVL3": "Der Schaden im Nahkampf ist erhöht und ein Rüstungs-Bonus wird gewährt.",
@@ -586,9 +586,9 @@
   "POWER_CURSE.CHAT_FAIL_FINAL": "Der Fluch hat keinen Effekt mehr auf {targetname}.",
 
   "POWER_DANCINGWEAPON.CHAT_ACTIVATE": "{actorname} wirkt Tanzende Waffe.",
-  "POWER_DANCINGWEAPON.CHAT_DESACTIVATE": "{actorname} beendet Tanzende Waffe.",
+  "POWER_DANCINGWEAPON.CHAT_DEACTIVATE": "{actorname} beendet Tanzende Waffe.",
   "POWER_DANCINGWEAPON.CHAT_RESULT_ACTIVATE": "Präzision (Angr.) und Gewandheit (Vert.) werden im Kampf durch Willenskraft ersetzt.",
-  "POWER_DANCINGWEAPON.CHAT_RESULT_DESACTIVATE": "Die üblichen Eigenschaften werden wieder für den Kampf verwendet.",
+  "POWER_DANCINGWEAPON.CHAT_RESULT_DEACTIVATE": "Die üblichen Eigenschaften werden wieder für den Kampf verwendet.",
 
   "POWER_ENTANGLINGVINES.CHAT_INTRO_M": "{targetname} versucht sich von den Ranken loszureißen.",
   "POWER_ENTANGLINGVINES.CHAT_SUCCESS": "{targetname} ist in Ranken verstrickt.",
@@ -629,8 +629,8 @@
   "POWER_TORMENTINGSPIRITS.CHAT_FAILURE": "Der Ruf von {actorname} bleibt von den Geistern unbeantwortet.",
 
   "POWER_WITCHHAMMER.CHAT_ACTIVATE": "{actorname}'s Waffe wird von heiligem Feuer umhüllt.",
-  "POWER_WITCHHAMMER.CHAT_DESACTIVATE": "Die Waffe von {actorname} ist nicht länger von heiligen Flammen umhüllt.",
-  "POWER_WITCHHAMMER.CHAT_RESULT_DESACTIVATE": "Die zusätzlichen Waffenmerkmale wurden deaktiviert.",
+  "POWER_WITCHHAMMER.CHAT_DEACTIVATE": "Die Waffe von {actorname} ist nicht länger von heiligen Flammen umhüllt.",
+  "POWER_WITCHHAMMER.CHAT_RESULT_DEACTIVATE": "Die zusätzlichen Waffenmerkmale wurden deaktiviert.",
   "POWER_WITCHHAMMER.CHAT_RESULT": "Der Schaden der durch Hexenhammer hervorgerufenen Flammen wird im Kampf über zusätzliche Schaltflächen abgewickelt.",
 
   "QUALITY.AREAMELEERADIUS": "Bereichseffekt – Nahkampf Reichweite",
