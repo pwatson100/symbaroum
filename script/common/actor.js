@@ -900,6 +900,7 @@ export class SymbaroumActor extends Actor {
 			specificStuff.targetFullyCorrupted =
 				specificStuff.targetFullyCorruptedFSmod && specificStuff.targetData.hasTarget && specificStuff.targetData.isCorrupted;
 
+                console.log("specificStuff : ", specificStuff);
 			if (specificStuff.targetImpeding && specificStuff.targetData.hasTarget)
 				specificStuff.targetImpeding = specificStuff.targetData.actor.system.combat.impedingMov;
 

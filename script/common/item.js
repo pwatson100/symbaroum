@@ -2312,6 +2312,22 @@ export class SymbaroumItem extends Item {
         return(base);
     }
     
+    mysticPowerSetupEarthshot(base) {
+        base.casting = game.symbaroum.config.CASTING_RES;
+        base.getTarget= true;
+        base.targetMandatory= true;
+        base.targetResistAttribute= "quick";
+        base.targetImpeding = true;
+        base.maintain = game.symbaroum.config.MAINTAIN_RES;
+        base.traditions = [game.symbaroum.config.TRAD_BLESSINGS];
+        base.hasDamage= true;
+        base.damageDice = "1d8";
+        if(base.powerLvl.level > 2) {
+            base.ignoreArm=true;
+        }
+        return(base);
+    }
+    
     mysticPowerSetupEntanglingvines(base) {
         base.getTarget= true;
         base.targetMandatory= true;
