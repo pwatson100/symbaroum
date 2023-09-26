@@ -31,7 +31,7 @@ export const migrateWorld = async () => {
         return;
     }
     // Perform the migration
-    if (worldSystemVersion && foundry.utils.isNewerVersion(COMPATIBLE_MIGRATION_VERSION, worldSystemVersion)) {
+    if (worldSystemVersion != '0' && foundry.utils.isNewerVersion(COMPATIBLE_MIGRATION_VERSION, worldSystemVersion)) {
         ui.notifications.error(
             `Your Symbaroum system data is from too old a Foundry version and cannot be reliably migrated to the latest version. The process will be attempted, but errors may occur.`,
             { permanent: true }

@@ -21,7 +21,7 @@ export class SymbaroumItem extends Item {
         // Collect data
         const documentName = this.metadata.name;
         const types = game.documentTypes[documentName]?.filter(e => !game.symbaroum.config.itemDeprecated.includes(e));
-        const folders = parent ? [] : game.folders.filter(f => (f.data.type === documentName) && f.displayed);
+        const folders = parent ? [] : game.folders.filter(f => (f.type === documentName) && f.displayed);
         const label = game.i18n.localize(this.metadata.label);
         const title = game.i18n.format("DOCUMENT.Create", {type: label});
 
@@ -271,7 +271,7 @@ export class SymbaroumItem extends Item {
         if(this.type == "artifact") {
             return `${system.power1[field]}/${system.power2[field]}/${system.power3[field]}`;
         } else if(system.isArtifact ) {
-            if( system.power === null || system.power === {}) {
+            if( system.power === null || system.power == {}) {
                 return "";
             }
             let keys = Object.keys(system.power);
