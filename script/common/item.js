@@ -2874,7 +2874,7 @@ export function formatRollResult(rollDataElement){
 async function checkCorruptionThreshold(actor, corruptionGained){
     let img ="icons/magic/air/wind-vortex-swirl-purple.webp";
     let introText = actor.name + game.i18n.localize('CORRUPTION.CHAT_WARNING');
-    let finalText=actor + game.i18n.localize('CORRUPTION.CHAT_WARNING');
+    let finalText= actor.name + game.i18n.localize('CORRUPTION.CHAT_WARNING');
     if(!actor.system.health.corruption.threshold) return;
     else if(actor.system.health.corruption.value < actor.system.health.corruption.threshold){
         if(actor.system.health.corruption.value+corruptionGained >= actor.system.health.corruption.threshold){
