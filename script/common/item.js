@@ -954,7 +954,15 @@ export class SymbaroumItem extends Item {
             combatMods.weapons[weapons[i].id].package[0].member.push(base);
         }
     }
+
+    getItemModifierBlessedshield(combatMods, armors, weapons, abilities) {
+        let lvl = this.getLevel();
+        if(lvl.level == 0) return;
+
+        this.system.isIntegrated = !!this.actor.hasCondition('holyShield');
+    }
     
+
     getItemModifierBlessings(combatMods, armors, weapons, abilities)
     {
         let lvl = this.getLevel();
