@@ -4977,4 +4977,11 @@ Monster Codex Stuff
   text-align: center;
 }
 
+.tah-action-button, .tah-group-button {
+  color: var(--color-title);
+  background: var(--title-color) repeat;
+  font-family: var(--font-text);
+  font-weight: bold;
+}
+
 /* Styles limited to alienrpg sheets *//*# sourceMappingURL=symbaroum.css.map */
