@@ -955,6 +955,7 @@ export class SymbaroumActor extends Actor {
 	}
 
 	async enhancedAttackRoll(weapon) {
+		const api = game.symbaroum.api;
 		let actingToken = api.getActorToken(this);
 		let targetData;
 		try {
