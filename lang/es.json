@@ -215,6 +215,8 @@
   "BIO.TACTICS": "Táctica",
   "BIO.MANNER": "Conducta",
 
+  "BONUS.IMPEDING_REDUCTION":"Impeding reduction",
+
   "BOON.NAME": "Nombre",
   "BOON.DESCRIPTION": "Descr.",
   "BOON.LEVEL": "Nivel",
