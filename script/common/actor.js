@@ -294,7 +294,7 @@ export class SymbaroumActor extends Actor {
 				defMsg: "",
 				attribute: "quick",
 			};
-			let impeding = item.system.impeding;
+			let impeding = item.impeding;
 			let impedingMov = impeding;
 			let impedingMagic = impeding;
 			let tooltip = "";
@@ -310,7 +310,7 @@ export class SymbaroumActor extends Actor {
 				let replacementAttribute = armorModifiers.attributes[i].attribute;
 				if (this.system.attributes[defense.attribute].total < this.system.attributes[replacementAttribute].total) {
 					defense.attribute = replacementAttribute;
-					defense.defMsg = armorModifiers.attributes[i].label;
+					defense.defMsg = game.symbaroum.htmlEscape(armorModifiers.attributes[i].label)+ "DD";
 					totDefense = this.system.attributes[defense.attribute].total;
 				}
 			}
@@ -321,7 +321,8 @@ export class SymbaroumActor extends Actor {
 
 			for (let i = 0; i < armorModifiers.defenseModifiers.length; i++) {
 				totDefense = totDefense + armorModifiers.defenseModifiers[i].modifier;
-				defense.defMsg += ` ${armorModifiers.defenseModifiers[i].label}(${armorModifiers.defenseModifiers[i].modifier})<br/>`;
+
+				defense.defMsg += ` ${game.symbaroum.htmlEscape(armorModifiers.defenseModifiers[i].label)}(${armorModifiers.defenseModifiers[i].modifier})<br/>`;
 			}
 
 			for (let i = 0; i < armorModifiers.protectionChoices.length; i++) {
@@ -343,7 +344,7 @@ export class SymbaroumActor extends Actor {
 			for (let i = 0; i < armorModifiers.impedingModifiers.length; i++) {
 				if (armorModifiers.impedingModifiers[i].modifier !== undefined) {
 					impedingMov = Math.max(0, impedingMov - armorModifiers.impedingModifiers[i].modifier);
-					defense.defMsg += ` ${armorModifiers.impedingModifiers[i].label}<br/>`;
+					defense.defMsg += ` ${game.symbaroum.htmlEscape(armorModifiers.impedingModifiers[i].label)}<br/>`;
 				}
 				if (armorModifiers.impedingModifiers[i].modifierMagic !== undefined) {
 					impedingMagic = Math.max(0, impedingMagic - armorModifiers.impedingModifiers[i].modifierMagic);
@@ -380,6 +381,7 @@ export class SymbaroumActor extends Actor {
 			}
 			if (this.system.bonus.defense) {
 				totDefense = totDefense + this.system.bonus.defense;
+
 				defense.defMsg += game.i18n.localize("ATTRIBUTE.BONUS") + "(" + this.system.bonus.defense.toString() + ")" + `<br/>`;
 			}
 			// game.symbaroum.log(armorModifiers);
@@ -697,6 +699,7 @@ export class SymbaroumActor extends Actor {
 		let noArmor = {};
 		noArmor.system = {};
 		noArmor.system = foundry.utils.deepClone(game.system.model.Item.armor);
+		noArmor.impeding = 0;
 
 		noArmor.id = game.symbaroum.config.noArmorID;
 		noArmor.name = game.i18n.localize("ARMOR.NOARMOR_NAME");
@@ -740,7 +743,7 @@ export class SymbaroumActor extends Actor {
 		}
 		if (itemb[bonusType] != 0) {
 			currentb[bonusType] += itemb[bonusType];
-			currentb[bonusType + "_msg"] += "<br />" + item.name + "(" + itemb[bonusType] + ")";
+			currentb[bonusType + "_msg"] += "<br />" + game.symbaroum.htmlEscape(item.name) + "(" + itemb[bonusType] + ")";
 		}
 	}
 

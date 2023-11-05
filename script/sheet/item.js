@@ -29,6 +29,7 @@ export class SymbaroumItemSheet extends ItemSheet {
     let data = { 
       id:this.item.id,
       item: this.item,
+      bonuses: game.symbaroum.config.BONUS_FIELDS,
       isOwned: this.item.isOwned,
       system: foundry.utils.deepClone(this.item.system),
       cssClass : this.isEditable ? "editable" : "locked",

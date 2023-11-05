@@ -1,60 +1,9 @@
 <div class="bonus foreground border">
     <h1>{{localize "TITLE.ATTRIBUTES"}}</h1>
-
+    {{#each bonuses as | bonus |}}
     <div class="attribute">
-        <label for="{{id}}-system.bonus.defense">{{localize "ARMOR.DEFENSE"}}</label>
-        <input id="{{id}}-system.bonus.defense" name="system.bonus.defense" type="number" value="{{system.bonus.defense}}" data-dtype="Number" />
+        <label for="{{lookup ../item 'id'}}-{{bonus.name}}">{{localize bonus.label}}</label>
+        <input id="{{lookup ../item 'id'}}-{{bonus.name}}" name="{{bonus.name}}" type="number" value="{{getProperty ../item bonus.name}}" data-dtype="Number" />
     </div>
-    <div class="attribute">
-        <label for="{{id}}-system.bonus.accurate">{{localize "ATTRIBUTE.ACCURATE"}}</label>
-        <input id="{{id}}-system.bonus.accurate" name="system.bonus.accurate" type="number" value="{{system.bonus.accurate}}" data-dtype="Number" />
-    </div>
-    <div class="attribute">
-        <label for="{{id}}-system.bonus.cunning">{{localize "ATTRIBUTE.CUNNING"}}</label>
-        <input id="{{id}}-system.bonus.cunning" name="system.bonus.cunning" type="number" value="{{system.bonus.cunning}}" data-dtype="Number" />
-    </div>
-    <div class="attribute">
-        <label for="{{id}}-system.bonus.discreet">{{localize "ATTRIBUTE.DISCREET"}}</label>
-        <input id="{{id}}-system.bonus.discreet" name="system.bonus.discreet" type="number" value="{{system.bonus.discreet}}" data-dtype="Number" />
-    </div>
-    <div class="attribute">
-        <label for="{{id}}-system.bonus.persuasive">{{localize "ATTRIBUTE.PERSUASIVE"}}</label>
-        <input id="{{id}}-system.bonus.persuasive" name="system.bonus.persuasive" type="number" value="{{system.bonus.persuasive}}" data-dtype="Number" />
-    </div>
-    <div class="attribute">
-        <label for="{{id}}-system.bonus.quick">{{localize "ATTRIBUTE.QUICK"}}</label>
-        <input id="{{id}}-system.bonus.quick" name="system.bonus.quick" type="number" value="{{system.bonus.quick}}" data-dtype="Number" />
-    </div>
-    <div class="attribute">
-        <label for="{{id}}-system.bonus.resolute">{{localize "ATTRIBUTE.RESOLUTE"}}</label>
-        <input id="{{id}}-system.bonus.resolute" name="system.bonus.resolute" type="number" value="{{system.bonus.resolute}}" data-dtype="Number" />
-    </div>
-    <div class="attribute">
-        <label for="{{id}}-system.bonus.strong">{{localize "ATTRIBUTE.STRONG"}}</label>
-        <input id="{{id}}-system.bonus.strong" name="system.bonus.strong" type="number" value="{{system.bonus.strong}}" data-dtype="Number" />
-    </div>
-    <div class="attribute">
-        <label for="{{id}}-system.bonus.vigilant">{{localize "ATTRIBUTE.VIGILANT"}}</label>
-        <input id="{{id}}-system.bonus.vigilant" name="system.bonus.vigilant" type="number" value="{{system.bonus.vigilant}}" data-dtype="Number" />
-    </div>
-    <div class="attribute">
-        <label for="{{id}}-system.bonus.toughnes.max">{{localize "HEALTH.TOUGHNESS_MAX"}}</label>
-        <input id="{{id}}-system.bonus.toughness.max" name="system.bonus.toughness.max" type="number" value="{{system.bonus.toughness.max}}" data-dtype="Number" />
-    </div>
-    <div class="attribute">
-        <label for="{{id}}-system.bonus.toughnes.threshold">{{localize "HEALTH.TOUGHNESS_THRESHOLD_MAX"}}</label>
-        <input id="{{id}}-system.bonus.toughness.threshold" name="system.bonus.toughness.threshold" type="number" value="{{system.bonus.toughness.threshold}}" data-dtype="Number" />
-    </div>
-    <div class="attribute">
-        <label for="{{id}}-system.bonus.corruption.threshold">{{localize "HEALTH.CORRUPTION_THRESHOLD_MAX"}}</label>
-        <input id="{{id}}-system.bonus.corruption.threshold" name="system.bonus.corruption.threshold" type="number" value="{{system.bonus.corruption.threshold}}" data-dtype="Number" />
-    </div>
-    <div class="attribute">
-        <label for="{{id}}-system.bonus.corruption.max">{{localize "HEALTH.CORRUPTION_MAX"}}</label>
-        <input id="{{id}}-system.bonus.corruption.max" name="system.bonus.corruption.max" type="number" value="{{system.bonus.corruption.max}}" data-dtype="Number" />
-    </div>        
-    <div class="attribute">
-        <label for="{{id}}-system.bonus.experience.value">{{localize "EXPERIENCE"}}</label>
-        <input id="{{id}}-system.bonus.experience.value" name="system.bonus.experience.value" type="number" value="{{system.bonus.experience.value}}" data-dtype="Number" />
-    </div>
+    {{/each}}
 </div>

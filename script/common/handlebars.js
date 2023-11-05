@@ -53,6 +53,11 @@ function registerHandlebarsHelpers() {
     return game.i18n.localize(`QUALITY.${text.toUpperCase()}`);
   });
 
+
+  Handlebars.registerHelper('getProperty', function (item, prop) {
+    return getProperty(item, prop);
+  });
+
   // Ifis not equal
   Handlebars.registerHelper('ifne', function (v1, v2, options) {
     if (v1 !== v2) return options.fn(this);

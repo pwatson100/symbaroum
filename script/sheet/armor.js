@@ -22,6 +22,7 @@ export class ArmorSheet extends SymbaroumItemSheet {
         let data = await super.getData(...arguments);
         data.qualities = game.symbaroum.config.armorQualities;
         data.compatibility = game.symbaroum.config.armorCompatibilities;
+        data.bonuses = [...data.bonuses, ...game.symbaroum.config.BONUS_FIELDS_ARMOR];
         return data;
     }
 }

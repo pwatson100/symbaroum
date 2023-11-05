@@ -469,6 +469,18 @@ export class SymbaroumItem extends Item {
         }
         else return(base)
     }
+
+    get impeding() {
+        if(this.system.isArmor) {
+            const armorImpeding = game.symbaroum.config.IMPEDING_DEFAULTS[this.system.reference] ?? 0;
+            const armorFlexible = this.system.qualities.flexible ? game.symbaroum.config.IMPEDING_DEFAULTS["flexible"]:0;
+            const armorCumbersome = this.system.qualities.cumbersome ? game.symbaroum.config.IMPEDING_DEFAULTS["cumbersome"]:0;
+            const armorImpedingBonus = (this.system.bonus.impeding ?? 0) * -1;
+            return Math.max(0, armorImpeding + armorFlexible + armorCumbersome + armorImpedingBonus);
+        } else { 
+            return 0;
+        }
+    }
         
     _getPackageFormat(label) {
         return {
@@ -518,7 +530,7 @@ export class SymbaroumItem extends Item {
                 }
                 if(!this.system.isStackableArmor && this.system.qualities.reinforced) {
                     let base = this._getBaseFormat();
-                    base.label = game.i18n.localize("QUALITY.REINFORCED");
+                    base.label = `${this.name}: ${game.i18n.localize("QUALITY.REINFORCED")}`;
                     base.type = game.symbaroum.config.DAM_FIXED;
                     base.alternatives = [{
                         protectionMod: "+1d1",
@@ -526,12 +538,26 @@ export class SymbaroumItem extends Item {
                     }];
                     combatMods.armors[armors[i].id].protectionChoices.push(base);
                 }
-                if(!this.system.isStackableArmor && this.system.qualities.flexible) {
-                    let base = this._getBaseFormat();
-                    base.label = game.i18n.localize("QUALITY.FLEXIBLE");                    
-                    base.modifier = Math.min(armors[i].system.impeding, 2);
-                    combatMods.armors[armors[i].id].impedingModifiers.push(base);
-    
+                if(!this.system.isStackableArmor) { 
+                    if(this.system.qualities.flexible) {
+                        let base = this._getBaseFormat();
+                        base.label = `${this.name}: ${game.i18n.localize("QUALITY.FLEXIBLE")}`;                    
+                        base.modifier = 0; // Already calculated in total
+                        combatMods.armors[armors[i].id].impedingModifiers.push(base);
+                    }
+                    if(this.system.qualities.cumbersome) {
+                        let base = this._getBaseFormat();
+                        base.label = `${this.name}: ${game.i18n.localize("QUALITY.CUMBERSOME")}`;                    
+                        base.modifier = 0; // Already calcualted in total
+                        combatMods.armors[armors[i].id].impedingModifiers.push(base);
+                    }
+                    if(this.system.bonus.impeding) {
+                        let base = this._getBaseFormat();
+                        base.label = `${this.name}: ${game.i18n.localize("BONUS.IMPEDING_REDUCTION")}`;                    
+                        base.modifier = 0; // Already calcualted in total
+                        combatMods.armors[armors[i].id].impedingModifiers.push(base);
+                    }
+
                 }                
             }
             else if( this.system.isStackableArmor && !armors[i].system.isStackableArmor && this.system.isActive ) 
@@ -672,7 +698,7 @@ export class SymbaroumItem extends Item {
                         continue;
                     }
                     let base = this._getBaseFormat();
-                    base.label = `${this.name} ${game.i18n.localize("QUALITY.BALANCED")}`;
+                    base.label = `${this.name}: ${game.i18n.localize("QUALITY.BALANCED")}`;
                     base.modifier = 1;
                     this.system.isIntegrated = true;
                     combatMods.armors[armors[i].id].defenseModifiers.push(base);            
@@ -1337,7 +1363,7 @@ export class SymbaroumItem extends Item {
             combatMods.armors[armors[i].id].protectionChoices.push(base);
             if(lvl.level > 1) {
                 base = this._getBaseFormat();
-                base.modifier = armors[i].system.impeding; // Reduce with up to current impeding
+                base.modifier = armors[i].impeding; // Reduce with up to current impeding
                 this.system.isIntegrated = true;
                 combatMods.armors[armors[i].id].impedingModifiers.push(base);
             }

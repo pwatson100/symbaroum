@@ -616,6 +616,80 @@ SYMBAROUM.expCosts = {
     }
 }
 
+SYMBAROUM.BONUS_FIELDS = [
+	{
+		label: "ARMOR.DEFENSE",
+		name: "system.bonus.defense",
+	},
+	{
+		label: "ATTRIBUTE.ACCURATE",
+		name: "system.bonus.accurate",
+	},
+	{
+		label: "ATTRIBUTE.CUNNING",
+		name: "system.bonus.cunning",
+	},
+	{
+		label: "ATTRIBUTE.DISCREET",
+		name: "system.bonus.discreet",
+	},
+	{
+		label: "ATTRIBUTE.PERSUASIVE",
+		name: "system.bonus.persuasive",
+	},
+	{
+		label: "ATTRIBUTE.QUICK",
+		name: "system.bonus.quick",
+	},
+	{
+		label: "ATTRIBUTE.RESOLUTE",
+		name: "system.bonus.resolute",
+	},
+	{
+		label: "ATTRIBUTE.STRONG",
+		name: "system.bonus.strong",
+	},
+	{
+		label: "ATTRIBUTE.VIGILANT",
+		name: "system.bonus.vigilant",
+	},
+	{
+		label: "HEALTH.TOUGHNESS_MAX",
+		name: "system.bonus.toughness.max",
+	},
+	{
+		label: "HEALTH.TOUGHNESS_THRESHOLD_MAX",
+		name: "system.bonus.toughness.threshold",
+	},
+	{
+		label: "HEALTH.CORRUPTION_THRESHOLD_MAX",
+		name: "system.bonus.corruption.threshold",
+	},
+	{
+		label: "HEALTH.CORRUPTION_MAX",
+		name: "system.bonus.corruption.max",
+	},
+	{
+		label: "EXPERIENCE",
+		name: "system.bonus.experience.value",
+	}
+];
+
+SYMBAROUM.BONUS_FIELDS_WEAPON = [
+];
+
+SYMBAROUM.BONUS_FIELDS_EQUIPMENT = [
+];
+
+
+SYMBAROUM.BONUS_FIELDS_ARMOR = [
+    {
+        label:"BONUS.IMPEDING_REDUCTION",
+        name:"system.bonus.impeding"
+    }
+];
+
+
 //combat mod types
 SYMBAROUM.TYPE_ALTERNATIVE_DAMAGE = "alternative_damage";
 SYMBAROUM.TYPE_FAVOUR = "favour";
@@ -684,6 +758,17 @@ SYMBAROUM.TEMPCORRUPTION_D6 = "corrd6"; // 1d6
 SYMBAROUM.IMPEDING_NOT = "impedingnot"; // no impeding malus (default)
 SYMBAROUM.IMPEDING_MAGIC = "impedingmagic"; // no impeding malus for magic
 SYMBAROUM.IMPEDING_MOVE = "impedingmov"; // impeding malus for movement
+
+SYMBAROUM.IMPEDING_DEFAULTS = {
+    "stackable":0,
+    "skin":0,
+    "cumbersome":1,
+    "flexible":-2,
+    "lightarmor":2,
+    "mediumarmor":3,
+    "heavyarmor":4,
+    "superarmor":4
+}
 
 //1rst round of casting - for maintaining, see "maintain"
 SYMBAROUM.CASTING = "casting";  // (default) the power is cast with castingAttribute, no resistance
