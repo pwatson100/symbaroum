@@ -85,8 +85,8 @@
   "ABILITY_ERROR.TARGET": "Demasiados objetivos",
 
   "ABILITY_BERSERKER.CHAT_ACTIVATE": "{actorname} entra en modo Berserker.",
-  "ABILITY_BERSERKER.CHAT_DESACTIVATE": "{actorname} se calma y su rabia desaparece.",
-  "ABILITY_BERSERKER.CHAT_RESULT_DESACTIVATE": "Los stats de combate vuelven a la normalidad.",
+  "ABILITY_BERSERKER.CHAT_DEACTIVATE": "{actorname} se calma y su rabia desaparece.",
+  "ABILITY_BERSERKER.CHAT_RESULT_DEACTIVATE": "Los stats de combate vuelven a la normalidad.",
   "ABILITY_BERSERKER.CHAT_RESULT_LVL1": "Daño Melee incrementado, defensa base pasa a 5.",
   "ABILITY_BERSERKER.CHAT_RESULT_LVL2": "Daño Melee incrementado, bonus de armadura, defensa base pasa a 5.",
   "ABILITY_BERSERKER.CHAT_RESULT_LVL3": "Daño Melee incrementado, bonus de armadura.",
@@ -214,6 +214,8 @@
   "BIO.STIGMAS": "Estigmas",
   "BIO.TACTICS": "Táctica",
   "BIO.MANNER": "Conducta",
+
+  "BONUS.IMPEDING_REDUCTION":"Impeding reduction",
 
   "BOON.NAME": "Nombre",
   "BOON.DESCRIPTION": "Descr.",
@@ -421,6 +423,7 @@
   "HEALTH.TOUGHNESS_THRESHOLD_MAX": "Umbral Dolor",
   "HEALTH.TOUGHNESS_THRESHOLD_FULL": "Pain Threshold",
   "HEALTH.CORRUPTION": "Corrupción",
+  "HEALTH.CORRUPTION_NA": "N/A",
   "HEALTH.CORRUPTION_CURRENT": "Actual",
   "HEALTH.CORRUPTION_TEMPORARY": "Temporal",
   "HEALTH.CORRUPTION_LONGTERM": "Diario",
@@ -582,9 +585,9 @@
   "POWER_CURSE.CHAT_FAIL_FINAL": "La maldición ya no tiene efecto en {targetname}.",
 
   "POWER_DANCINGWEAPON.CHAT_ACTIVATE": "{actorname} está usando un arma danzante.",
-  "POWER_DANCINGWEAPON.CHAT_DESACTIVATE": "{actorname} ha dejado de usar un arma danzante.",
+  "POWER_DANCINGWEAPON.CHAT_DEACTIVATE": "{actorname} ha dejado de usar un arma danzante.",
   "POWER_DANCINGWEAPON.CHAT_RESULT_ACTIVATE": "Los stats de combate han sido reemplazados por Tenaz.",
-  "POWER_DANCINGWEAPON.CHAT_RESULT_DESACTIVATE": "Los stats de combate han vuelto a la normalidad.",
+  "POWER_DANCINGWEAPON.CHAT_RESULT_DEACTIVATE": "Los stats de combate han vuelto a la normalidad.",
 
   "POWER_ENTANGLINGVINES.CHAT_INTRO_M": "{targetname} intenta liberarse de las enredaderas.",
   "POWER_ENTANGLINGVINES.CHAT_SUCCESS": "{targetname} está atrapado por las enredaderas.",
@@ -625,13 +628,13 @@
   "POWER_TORMENTINGSPIRITS.CHAT_FAILURE": "{actorname} falla la invocación.",
 
   "POWER_WITCHHAMMER.CHAT_ACTIVATE": "El arma de {actorname} comienza a brillar.",
-  "POWER_WITCHHAMMER.CHAT_DESACTIVATE": "El arma de {actorname} deja de brillar.",
-  "POWER_WITCHHAMMER.CHAT_RESULT_DESACTIVATE": "Los stars del arma vuelven a ser normales.",
+  "POWER_WITCHHAMMER.CHAT_DEACTIVATE": "El arma de {actorname} deja de brillar.",
+  "POWER_WITCHHAMMER.CHAT_RESULT_DEACTIVATE": "Los stars del arma vuelven a ser normales.",
   "POWER_WITCHHAMMER.CHAT_RESULT": "El bonus de daño de Martillo de Monstruos estará disponible en la ventana de diálogo de combate.",
 
-  "QUALITY.AREAMRR": "Efecto Área: Rango melee",
-  "QUALITY.AREASRR": "Efecto Área: Rango corto",
-  "QUALITY.AREAC": "Efecto Área: Rango cono",
+  "QUALITY.AREAMELEERADIUS": "Efecto Área: Rango melee",
+  "QUALITY.AREASHORTRADIUS": "Efecto Área: Rango corto",
+  "QUALITY.AREACONE": "Efecto Área: Rango cono",
   "QUALITY.BALANCED": "Equilibrada",
   "QUALITY.BASTARD": "Bastarda",
   "QUALITY.BLOODLETTING": "Sangrante",
@@ -662,9 +665,9 @@
   "QUALITY.POISON": "Veneno",
   "QUALITY.THUNDERING": "Atronadora",
   "QUALITY.RETRIBUTIVE": "Castigadora",
-  "QUALITY.KNIFEPLAY_COMP": "Compatible con Cuchillo rápido",
-  "QUALITY.STAFFFIGHTING_COMP": "Compatible con Combate con Vara",
-  "QUALITY.SWORDSAINT_COMP": "Compatible con Santo de la Espada",
+  "QUALITY.KNIFEPLAYCOMPATIBILITY": "Compatible con Cuchillo rápido",
+  "QUALITY.STAFFFIGHTINGCOMPATIBILITY": "Compatible con Combate con Vara",
+  "QUALITY.SWORDSAINTCOMPATIBILITY": "Compatible con Santo de la Espada",
 
   "RITUAL.TRADITION": "Tradición",
   "RITUAL.DESCRIPTION": "Descr.",

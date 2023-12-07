@@ -449,13 +449,18 @@ Hooks.on("changeSidebarTabA", (app) => {
 });
 
 Hooks.on("preDeleteActiveEffect", (ae) => {
-
-  let ecOn = game.settings.get('symbaroum', 'combatAutomation');
-  if (ecOn && ae.name == "Holy Shield") {
-    let actor = ae.parent;
-    if (undefined != actor) {
+  game.symbaroum.log('preDeleteActiveEffect',ae);
+  let holyShield = false;
+  if (foundry.utils.isNewerVersion('11', game.version) ) {
+    holyShield = ae.getFlag('core','statusId') == 'holyShield';
+  } else {
+    holyShield = ae.statuses.find(e => e == "holyShield") 
+  }
+  let actor = ae.parent;
+  if( actor ) {
+    if (holyShield) {
       const ids = actor.items.filter(i => i.getFlag(game.system.id, "blessedshield")).map(i => i.id);
-      if (undefined != ids && ids.length > 0) {
+      if (ids.length > 0) {
         actor.deleteEmbeddedDocuments("Item", ids);
       }
     }
@@ -501,45 +506,42 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
   
   if (flagDataArray && game.user.isGM) {
     await html.find('#applyEffect').click(async () => {
+      console.log("Applying effects");
       for (let flagData of flagDataArray) {
-        if (flagData.tokenId || flagData.actorId) {
-          let token = flagData.tokenId ? canvas.tokens.objects.children.find((token) => token.id === flagData.tokenId) : null;
-          if (token !== undefined) {
-            if (flagData.addEffect) {
-              await modifyEffectOnToken(token, flagData.addEffect, 1, flagData);
-            }
-            if (flagData.removeEffect) {
-              await modifyEffectOnToken(token, flagData.removeEffect, 0, flagData);
-            }
-            if (flagData.modifyEffectDuration) {
-              await modifyEffectOnToken(token, flagData.modifyEffectDuration, 2, flagData);
-            }
-            if (flagData.defeated && ui.combat.viewed) {
-              let c = ui.combat.viewed.getCombatantByToken(flagData.tokenId);
-              ui.combat._onToggleDefeatedStatus(c);
-            }
-          }
-          let actor = token?.actor ?? game.actors.get(flagData.actorId);
-          if (actor !== undefined) {
-            if (flagData.toughnessChange) {
-              let newToughness = Math.max(0, Math.min(actor.system.health.toughness.max, actor.system.health.toughness.value + flagData.toughnessChange));
-              await actor.update({ 'system.health.toughness.value': newToughness });
-            }
-            if (flagData.attributeChange) {
-              let newMod = actor.system.attributes[flagData.attributeName].temporaryMod + flagData.attributeChange;
-              let linkMod = 'system.attributes.' + flagData.attributeName + '.temporaryMod';
-              await actor.update({ [linkMod]: newMod });
-            }
-            if (flagData.corruptionChange) {
-              let newCorruption = actor.system.health.corruption.temporary + flagData.corruptionChange;
-              await actor.update({ 'system.health.corruption.temporary': newCorruption });
-            }
-            if (flagData.addObject) {
-              if (flagData.addObject == 'blessedshield') {
-                await createBlessedShield(actor, flagData.protection);
-              }
-            }
-          }
+        if (!flagData.tokenId && !flagData.actorId) {
+          continue;
+        }
+        let token = flagData.tokenId ? canvas.tokens.objects.children.find((token) => token.id === flagData.tokenId) : null;
+        let actor = token?.actor ?? game.actors.get(flagData.actorId);
+        if(!actor) {
+          continue;          
+        }
+        if (flagData.addEffect) {
+          await actor.addCondition(flagData.addEffect);
+        }
+        else if (flagData.removeEffect) {
+          await actor.removeCondition(flagData.removeEffect);
+        }
+        if (flagData.defeated && ui.combat.viewed && token) {
+          let effect = duplicate(CONFIG.statusEffects.find((e) => e.id == 'dead'));
+          await token.toggleEffect(effect, { overlay: true, active: true });          
+        }
+
+        if (flagData.toughnessChange) {
+          let newToughness = Math.max(0, Math.min(actor.system.health.toughness.max, actor.system.health.toughness.value + flagData.toughnessChange));
+          await actor.update({ 'system.health.toughness.value': newToughness });
+        } 
+        if (flagData.attributeChange) {
+          let newMod = actor.system.attributes[flagData.attributeName].temporaryMod + flagData.attributeChange;
+          let linkMod = 'system.attributes.' + flagData.attributeName + '.temporaryMod';
+          await actor.update({ [linkMod]: newMod });
+        }
+        if (flagData.corruptionChange) {
+          let newCorruption = actor.system.health.corruption.temporary + flagData.corruptionChange;
+          await actor.update({ 'system.health.corruption.temporary': newCorruption });
+        }
+        if (flagData.addObject == 'blessedshield') {
+            await createBlessedShield(actor, flagData.protection);
         }
       }
       await chatItem.unsetFlag(game.system.id, 'applyEffects');
@@ -598,67 +600,7 @@ async function setupConfigOptions() {
 
 // this add new status effect to the foundry list
 async function setupStatusEffects() {
-  CONFIG.statusEffects.push(
-    {
-      id: "bendwill",
-      label: "POWER_LABEL.BEND_WILL",
-      icon: "systems/symbaroum/asset/image/puppet.png"
-    },
-    {
-      id: "berserker",
-      label: "ABILITY_LABEL.BERSERKER",
-      icon: "systems/symbaroum/asset/image/berserker.svg"
-    },
-    {
-      id: "confusion",
-      label: "POWER_LABEL.CONFUSION",
-      icon: "systems/symbaroum/asset/image/unknown-item.png"
-    },
-    {
-      id: "dancingweapon",
-      label: "POWER_LABEL.DANCING_WEAPON",
-      icon: "systems/symbaroum/asset/image/powers/dancingweapon.svg"
-    },
-    {
-      id: "entanglingvines",
-      label: "POWER_LABEL.ENTANGLING_VINES",
-      icon: "systems/symbaroum/asset/image/vines.png"
-    },
-    {
-      id: "holyaura",
-      label: "POWER_LABEL.HOLY_AURA",
-      icon: "icons/svg/aura.svg"
-    },
-    {
-      id: "larvaeboils",
-      label: "POWER_LABEL.LARVAE_BOILS",
-      icon: "systems/symbaroum/asset/image/bug.png"
-    },
-    {
-      id: "maltransformation",
-      label: "POWER_LABEL.MALTRANSFORMATION",
-      icon: "systems/symbaroum/asset/image/frog.png"
-    },
-    {
-      id: "strangler",
-      label: "ABILITY_LABEL.STRANGLER",
-      icon: "systems/symbaroum/asset/image/lasso.png"
-    },
-    {
-      id: "tormentingspirits",
-      label: "POWER_LABEL.TORMENTING_SPIRITS",
-      icon: "systems/symbaroum/asset/image/ghost.svg"
-    },
-    {
-      id: "unnoticeable",
-      label: "POWER_LABEL.UNNOTICEABLE",
-      icon: "systems/symbaroum/asset/image/invisible.png"
-    },
-    {
-      id: "witchhammer",
-      label: "POWER_LABEL.WITCH_HAMMER",
-      icon: "systems/symbaroum/asset/image/powers/witchhammer.svg"
-    });
+  CONFIG.statusEffects.push( ...game.symbaroum.config.systemConditionEffects);  
 }
 
 async function createBlessedShield(actor, protection = '1d4') {
@@ -734,70 +676,3 @@ async function setupEmit() {
   game.symbaroum.info('Setting up Symbaroum emit system');
   SymbaroumCommsListener.ready();
 }
-
-Hooks.on('createToken', async (token, options, userID) => {
-  let flagBerserk = token.actor.getFlag(game.system.id, 'berserker');
-  if (flagBerserk) {
-    modifyEffectOnToken(token._object, CONFIG.statusEffects.find(e => e.id === "berserker"), 1, 1);
-  }
-  let flagDancingWeapon = token.actor.getFlag(game.system.id, 'dancingweapon');
-  if (flagDancingWeapon) {
-    modifyEffectOnToken(token._object, CONFIG.statusEffects.find(e => e.id === "dancingweapon"), 1, 1);
-  }
-});
-
-/**
- * action = 0 : remove effect
- * action = 1 : add effect
- * action = 2 : modify effect duration 
- */
-export async function modifyEffectOnToken(token, effect, action, options) {
-  let statusCounterMod = false;
-  if (game.modules.get('statuscounter')?.active) {
-    //statusCounterMod = true; //  until problem is fixed
-  }
-  let duration = options.effectDuration ?? 1;
-  if (action == 1) {
-    //add effect
-    if (!game.symbaroum.api.getEffect(token, effect)) {
-      // Currently disabled
-      if (statusCounterMod) {
-        let alreadyHereEffect = await EffectCounter.findCounter(token.document, effect.icon);
-        if (alreadyHereEffect === undefined) {
-          if (options?.effectStuff) {
-            let statusEffect = new EffectCounter(options.effectStuff, effect.icon, token, false);
-            await statusEffect.update();
-          } else if (options.overlay) {
-            token.toggleEffect(effect, { overlay: options.overlay });
-          } else {
-            let statusEffect = new EffectCounter(duration, effect.icon, token, false);
-            await statusEffect.update();
-          }
-        }
-      } else {
-        await token.toggleEffect(effect, { overlay: options.overlay });
-      }
-    }
-  } else if (action == 0) {
-    //remove effect
-    if (game.symbaroum.api.getEffect(token, effect)) {
-      if (statusCounterMod) {
-        let statusEffectCounter = await EffectCounter.findCounter(token, effect).getDisplayValue();
-        if (statusEffectCounter != undefined) {
-          await statusEffectCounter.remove();
-        }
-      } else {
-        token.toggleEffect(effect, { overlay: options.overlay });
-      }
-    }
-  } else {
-    //modify duration - only with Status counter mod
-    if (statusCounterMod) {
-      let statusEffectCounter = await EffectCounter.findCounter(token, effect).getDisplayValue();
-      if (statusEffectCounter != undefined) {
-        await statusEffectCounter.setValue(duration);
-        await statusEffectCounter.update();
-      }
-    }
-  }
-};

@@ -85,8 +85,8 @@
   "ABILITY_ERROR.TARGET": "Scegli un bersaglio",
 
   "ABILITY_BERSERKER.CHAT_ACTIVATE": "{actorname} entra in una rabbia berserker.",
-  "ABILITY_BERSERKER.CHAT_DESACTIVATE": "{actorname} si calma ed esce dalla rabbia berserker.",
-  "ABILITY_BERSERKER.CHAT_RESULT_DESACTIVATE": "Le statistiche di combattimento tornano normali.",
+  "ABILITY_BERSERKER.CHAT_DEACTIVATE": "{actorname} si calma ed esce dalla rabbia berserker.",
+  "ABILITY_BERSERKER.CHAT_RESULT_DEACTIVATE": "Le statistiche di combattimento tornano normali.",
   "ABILITY_BERSERKER.CHAT_RESULT_LVL1": "Danno in mischia aumentato, difesa base settata a 5.",
   "ABILITY_BERSERKER.CHAT_RESULT_LVL2": "Danno in mischia aumentato, bonus armatura, difesa base settata a 5.",
   "ABILITY_BERSERKER.CHAT_RESULT_LVL3": "Danno in mischia aumentato, bonus armatura.",
@@ -214,6 +214,8 @@
   "BIO.STIGMAS": "Stigmate",
   "BIO.TACTICS": "Tattiche",
   "BIO.MANNER": "Atteggiamento",
+
+  "BONUS.IMPEDING_REDUCTION":"Impeding reduction",
 
   "BOON.NAME": "Nome",
   "BOON.DESCRIPTION": "Descrizione",
@@ -583,9 +585,9 @@
   "POWER_CURSE.CHAT_FAIL_FINAL": "La maledione non ha più effetto su {targetname}",
 
   "POWER_DANCINGWEAPON.CHAT_ACTIVATE": "{actorname} sta usando la sua arma danzante.",
-  "POWER_DANCINGWEAPON.CHAT_DESACTIVATE": "{actorname} non sta più usando la sua arma danzante.",
+  "POWER_DANCINGWEAPON.CHAT_DEACTIVATE": "{actorname} non sta più usando la sua arma danzante.",
   "POWER_DANCINGWEAPON.CHAT_RESULT_ACTIVATE": "La statistica di combattimento è sostituita da Tenacia.",
-  "POWER_DANCINGWEAPON.CHAT_RESULT_DESACTIVATE": "La statistica di combattimento torna normale.",
+  "POWER_DANCINGWEAPON.CHAT_RESULT_DEACTIVATE": "La statistica di combattimento torna normale.",
 
   "POWER_ENTANGLINGVINES.CHAT_INTRO_M": "{targetname} cerca di liberarsi dalle radici.",
   "POWER_ENTANGLINGVINES.CHAT_SUCCESS": "{targetname} è impigliato nelle radici.",
@@ -626,13 +628,13 @@
   "POWER_TORMENTINGSPIRITS.CHAT_FAILURE": "{actorname} fallisce l'evocazione.",
 
   "POWER_WITCHHAMMER.CHAT_ACTIVATE": "L'arma di {actorname} inizia a risplendere.",
-  "POWER_WITCHHAMMER.CHAT_DESACTIVATE": "L'arma di {actorname} smette di splendere.",
-  "POWER_WITCHHAMMER.CHAT_RESULT_DESACTIVATE": "Le statistiche dell'arma tornano normali.",
+  "POWER_WITCHHAMMER.CHAT_DEACTIVATE": "L'arma di {actorname} smette di splendere.",
+  "POWER_WITCHHAMMER.CHAT_RESULT_DEACTIVATE": "Le statistiche dell'arma tornano normali.",
   "POWER_WITCHHAMMER.CHAT_RESULT": "I bonus ai danni di Maglio Purificatore appariranno nella finestra di dialogo del combattimento.",
 
-  "QUALITY.AREAMRR": "Effetto ad area - Raggio Corpo a Corpo",
-  "QUALITY.AREASRR": "Effetto ad area - Raggio Corto",
-  "QUALITY.AREAC": "Effetto ad area - Cono",
+  "QUALITY.AREAMELEERADIUS": "Effetto ad area - Raggio Corpo a Corpo",
+  "QUALITY.AREASHORTRADIUS": "Effetto ad area - Raggio Corto",
+  "QUALITY.AREACONE": "Effetto ad area - Cono",
   "QUALITY.BALANCED": "Bilanciata",
   "QUALITY.BASTARD": "Bastarda",
   "QUALITY.BLOODLETTING": "Sanguinaria",
@@ -663,9 +665,9 @@
   "QUALITY.POISON": "Avvelenata",
   "QUALITY.THUNDERING": "Folgorante",
   "QUALITY.RETRIBUTIVE": "Vendicativa",
-  "QUALITY.KNIFEPLAY_COMP": "Knife Play compatible",
-  "QUALITY.STAFFFIGHTING_COMP": "Staff Fighting compatible",
-  "QUALITY.SWORDSAINT_COMP": "Sword saint compatible",
+  "QUALITY.KNIFEPLAYCOMPATIBILITY": "Knife Play compatible",
+  "QUALITY.STAFFFIGHTINGCOMPATIBILITY": "Staff Fighting compatible",
+  "QUALITY.SWORDSAINTCOMPATIBILITY": "Sword saint compatible",
 
   "RITUAL.TRADITION": "Tradizione",
   "RITUAL.DESCRIPTION": "Descrizione",

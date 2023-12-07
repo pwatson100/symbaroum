@@ -23,67 +23,68 @@ export const migrateWorld = async () => {
     game.symbaroum.info(`Last migration on this world: ${worldSystemVersion}`);
     // the NEEDS_MIGRATION_VERSION have to be increased for migration to happen
     const NEEDS_MIGRATION_VERSION = '4.3.1';
-    const COMPATIBLE_MIGRATION_VERSION = '0' || isNaN('NaN');
+    const COMPATIBLE_MIGRATION_VERSION = '3.1.8' || isNaN('NaN');
     let needMigration = foundry.utils.isNewerVersion(NEEDS_MIGRATION_VERSION, worldSystemVersion);
     game.symbaroum.info('needMigration', needMigration, systemVersion);
 
-    if (needMigration && game.user.isGM) {
-        // Perform the migration
-        if (worldSystemVersion && worldSystemVersion < COMPATIBLE_MIGRATION_VERSION) {
-            ui.notifications.error(
-                `Your Symbaroum system data is from too old a Foundry version and cannot be reliably migrated to the latest version. The process will be attempted, but errors may occur.`,
-                { permanent: true }
-            );
-        }
-
-        ui.notifications.info("New system version upgrades the world, please wait...");
-        for (let actor of game.actors.contents) {
-            try {
-                const updateData = migrateActorData(actor.toObject(), worldSystemVersion);
-                if (!foundry.utils.isEmpty(updateData)) {
-                    game.symbaroum.info(`Migrating Actor entity ${actor.name}`);
-                    await actor.update(updateData, { enforceTypes: false });
-                }
-            } catch (e) {
-                e.message = `Failed migration for Actor ${actor.name}: ${e.message}`;
-                game.symbaroum.error(e);
-            }
-        }
-        for (let item of game.items.contents) {
-            try {
-                const updateData = migrateItemData(item.toObject(), worldSystemVersion);
-                if (!foundry.utils.isEmpty(updateData)) {
-                    game.symbaroum.info(`Migrating Item entity ${item.name}`);
-                    await item.update(updateData, { enforceTypes: false });
-                }
-            } catch (e) {
-                e.message = `Failed migration for Item ${item.name}: ${e.message}`;
-                game.symbaroum.error(e);
-            }
-        }
-
-        // Migrate Scenes
-        /*
-        for (let scene of game.scenes.contents) {
-            try {
-                const updateData = migrateSceneData(scene, worldSystemVersion);
-                if (!foundry.utils.isEmpty(updateData)) {
-                    await scene.update(updateData, {enforceTypes: false});                    
-                }
-            } catch (err) {
-                err.message = `Failed migration for Scene ${scene.name}: ${err.message}`;          
-                game.symbaroum.error(err);
-            }
-        }
-        */
-
-        // Migrate Compendiums
-        // for (let pack of game.packs.filter((p) => p.metadata.package === "world" && ["Actor", "Item", "Scene"].includes(p.metadata.entity))) {
-        //     await migrateCompendium(pack, worldSystemVersion);
-        // }
-        game.settings.set("symbaroum", "systemMigrationVersion", systemVersion);
-        ui.notifications.info("Upgrade complete!");
+    if (!needMigration || !game.user.isGM) {
+        return;
     }
+    // Perform the migration
+    if (worldSystemVersion != '0' && foundry.utils.isNewerVersion(COMPATIBLE_MIGRATION_VERSION, worldSystemVersion)) {
+        ui.notifications.error(
+            `Your Symbaroum system data is from too old a Foundry version and cannot be reliably migrated to the latest version. The process will be attempted, but errors may occur.`,
+            { permanent: true }
+        );
+    }
+
+    ui.notifications.info("New system version upgrades the world, please wait...");
+    for (let actor of game.actors.contents) {
+        try {
+            const updateData = migrateActorData(actor.toObject(), worldSystemVersion);
+            if (!foundry.utils.isEmpty(updateData)) {
+                game.symbaroum.info(`Migrating Actor entity ${actor.name}`);
+                await actor.update(updateData, { enforceTypes: false });
+            }
+        } catch (e) {
+            e.message = `Failed migration for Actor ${actor.name}: ${e.message}`;
+            game.symbaroum.error(e);
+        }
+    }
+    for (let item of game.items.contents) {
+        try {
+            const updateData = migrateItemData(item.toObject(), worldSystemVersion);
+            if (!foundry.utils.isEmpty(updateData)) {
+                game.symbaroum.info(`Migrating Item entity ${item.name}`);
+                await item.update(updateData, { enforceTypes: false });
+            }
+        } catch (e) {
+            e.message = `Failed migration for Item ${item.name}: ${e.message}`;
+            game.symbaroum.error(e);
+        }
+    }
+
+    // Migrate Scenes
+    /*
+    for (let scene of game.scenes.contents) {
+        try {
+            const updateData = migrateSceneData(scene, worldSystemVersion);
+            if (!foundry.utils.isEmpty(updateData)) {
+                await scene.update(updateData, {enforceTypes: false});                    
+            }
+        } catch (err) {
+            err.message = `Failed migration for Scene ${scene.name}: ${err.message}`;          
+            game.symbaroum.error(err);
+        }
+    }
+    */
+
+    // Migrate Compendiums
+    // for (let pack of game.packs.filter((p) => p.metadata.package === "world" && ["Actor", "Item", "Scene"].includes(p.metadata.entity))) {
+    //     await migrateCompendium(pack, worldSystemVersion);
+    // }
+    game.settings.set("symbaroum", "systemMigrationVersion", systemVersion);
+    ui.notifications.info("Upgrade complete!");
 };
 
 

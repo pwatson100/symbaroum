@@ -1,6 +1,7 @@
 {
   "ABILITY.HEADER": "Ability",
   "ABILITY.NAME": "Name",
+  "ABILITY.REFERENCE": "Referenz",
   "ABILITY.ACTIVE": "Erlernt",
   "ABILITY.ACTION": "Aktion",
   "ABILITY.DESCRIPTION": "Beschreibung",
@@ -83,6 +84,18 @@
 
   "ABILITY_ERROR.TARGET": "Du musst ein Ziel auswählen",
 
+  "ABILITY_BERSERKER.CHAT_ACTIVATE": "{actorname} wird von der Berserkerwut erfasst.",
+  "ABILITY_BERSERKER.CHAT_DEACTIVATE": "{actorname} beruhigt sich und die Berserkerwut verfliegt .",
+  "ABILITY_BERSERKER.CHAT_RESULT_DEACTIVATE": "Die im Kampf verwendeten Eigenschaften werden zurückgesetzt.",
+  "ABILITY_BERSERKER.CHAT_RESULT_LVL1": "Der Schaden im Nahkampf ist erhöht, die Basis-Verteidigung beträgt 5.",
+  "ABILITY_BERSERKER.CHAT_RESULT_LVL2": "Der Schaden im Nahkampf ist erhöht und ein Rüstungs-Bonus wird gewährt, die Basis-Verteidigung beträgt 5.",
+  "ABILITY_BERSERKER.CHAT_RESULT_LVL3": "Der Schaden im Nahkampf ist erhöht und ein Rüstungs-Bonus wird gewährt.",
+
+  "ABILITY_DOMINATE_ADEPT.CHAT_INTRO": "{actorname} versucht das Ziel einzuschüchtern.",
+  "ABILITY_DOMINATE_MASTER.CHAT_INTRO": "{actorname} versucht das Ziel zu unterwerfen.",
+  "ABILITY_DOMINATE_ADEPT.CHAT_SUCCESS": "{actorname} lässt das Ziel zaudern.",
+  "ABILITY_DOMINATE_MASTER.CHAT_SUCCESS": "{actorname} unterwirft das Ziel.",
+
   "ABILITY_LEADER.CHAT_SUCCESS": "Verbündete verursachen +1W4 Schaden gegen {targetname}",
   "ABILITY_LOREMASTER.CHAT_INTRO": "{actorname} weiß vielleicht etwas darüber.",
   "ABILITY_LOREMASTER.CHAT_SUCCESS": "{actorname} weiß etwas darüber.",
@@ -146,7 +159,8 @@
   "ARMOR.COST": "Kosten",
   "ARMOR.QUALITY": "Qualität",
   "ARMOR.DESCRIPTION": "Beschreibung",
-  "ARMOR.DEFENCE_ATTRIBUTE": "verteidigt sich mit ",
+  "ARMOR.BONUS_ONLY": "zusätzliche Schutzwirkung",
+  "ARMOR.DEFENCE_ATTRIBUTE": "verteidigt sich mit",
   "ARMOR.ADDBUTTON": "Rüstung hinzufügen",
   "ARMOR.DELETEBUTTON": "Rüstung entfernen",
 
@@ -169,7 +183,6 @@
   "ATTRIBUTE.RESOLUTE": "Willenskraft",
   "ATTRIBUTE.STRONG": "Stärke",
   "ATTRIBUTE.VIGILANT": "Aufmerksam.",
-  "ATTRIBUTE.CUSTOM": "Variabel",
 
   "ATTRIBUTE.ACCURATEABBR": "PRÄ",
   "ATTRIBUTE.CUNNINGABBR": "SCH",
@@ -179,6 +192,12 @@
   "ATTRIBUTE.RESOLUTEABBR": "WIL",
   "ATTRIBUTE.STRONGABBR": "STÄ",
   "ATTRIBUTE.VIGILANTABBR": "AUF",
+
+  "ATTRIBUTE.CUSTOM": "Variabel",
+  "ATTRIBUTE.BASE": "Basis",
+  "ATTRIBUTE.MODIFIER": "Mod.",
+  "ATTRIBUTE.BONUS": "Bonus",
+  "ATTRIBUTE.MODIFY": "Modifizieren",
 
   "BIO.NAME": "Name",
   "BIO.RACE": "Volk",
@@ -195,6 +214,8 @@
   "BIO.STIGMAS": "Stigmata",
   "BIO.TACTICS": "Taktik",
   "BIO.MANNER": "Verhalten",
+
+  "BONUS.IMPEDING_REDUCTION":"Impeding reduction",
 
   "BOON.NAME": "Name",
   "BOON.DESCRIPTION": "Beschreibung",
@@ -271,8 +292,9 @@
   "BUTTON.DEATH": "Tod",
   "BUTTON.RECOVER": "Erholung",
   "BUTTON.POST_ITEM": "Sende Item",
-  "BUTTON.ROLL": "Würfel",
+  "BUTTON.ROLL": "Würfeln",
   "BUTTON.CANCEL": "Abbruch",
+  "BUTTON.CONFIRM": "Bestätigen",
 
   "CHAT.GMTEXT_BUTTON": "Dieser Knopf ist nur für die Spielleitung und fügt dem Token den Effekt hinzu.",
   "CHAT.APPLY_BUTTON": "Wenden Sie die Ergebnisse auf den Token an",
@@ -293,8 +315,10 @@
   "CHAT.TOUGHNESS": "Zähigkeit",
   "CHAT.STAY_ALIVE": "Du bleibst vorerst am Leben!",
   "CHAT.NEAR_DEATH": "Der Tod ist nahe :",
-  "CHAT.DEAD": "Du stirbst!",
+  "CHAT.DEAD": "{name} tut den letzten Atemzug.",
 
+  "COMBAT.DAMAGE": "Verursachter Schaden: ",
+  "COMBAT.BLEED": "Blutung",
   "COMBAT.CHAT_INTRO": " greift an mit ",
   "COMBAT.CHAT_SUCCESS": " trifft",
   "COMBAT.CHAT_FAILURE": " verfehlt.",
@@ -325,8 +349,6 @@
   "COMBAT.CHAT_JOINTED_SECONDARY": "Die Verteidigung gelingt, aber der Kopf der gelenkigen Waffe trifft.",
   "COMBAT.DEFENSE_ROLL": " versucht den Angriff zu parieren.",
   "COMBAT.PARAMS_PRECISE": "Präzise Waffe, ",
-  "COMBAT.DAMAGE": " Verursachter Schaden: ",
-  "COMBAT.BLEED": "Blutung",
 
   "CORRUPTION.CHAT_INTRO": " wird korrumpiert.",
   "CORRUPTION.CHAT_THRESHOLD": " wird von der Befleckung gezeichnet (Schwelle erreicht).",
@@ -348,6 +370,7 @@
   "DIALOG.STRONG_POISON": "Starkes Gift",
   "DIALOG.IGNORE_ARMOR": "Rüstung ignorieren?",
   "DIALOG.DAMAGE_IF_MODIFIER": "Eisenfaust Schadensbonus",
+  "DIALOG.ATTACK": "Angriff",
   "DIALOG.2ATTACKS": "Zweifach angreifen?",
   "DIALOG.3ATTACKS": "Dreifach angreifen?",
   "DIALOG.FEAT_STRENGTH_DAMAGE": "Heldenhafte Stärke",
@@ -365,7 +388,8 @@
   "DIALOG.FAVOUR_NORMAL": "Normal",
   "DIALOG.FAVOUR_FAVOUR": "Gunst",
   "DIALOG.FAVOUR_DISFAVOUR": "Missgunst",
-  "DIALOG.DAMAGE_MODIFIER": "Sch. mod.",
+  "DIALOG.DAMAGE_MODIFIER": "Schadensmodifikator",
+  "DIALOG.WEAPON_DAMAGE": "Effektwurf",
   "DIALOG.CASTING": "Erster Zauber",
   "DIALOG.IMPEDING": "Zuzüglich Behinderungsmalus?",
   "DIALOG.MAINTAINING": "Benötigte Eigenschaft",
@@ -397,8 +421,10 @@
   "HEALTH.TOUGHNESS_TOTAL": "Gesamt",
   "HEALTH.TOUGHNESS_THRESHOLD": "Schmerzgr.",
   "HEALTH.TOUGHNESS_THRESHOLD_MAX": "Zäh. Schmerzgr.",
+  "HEALTH.TOUGHNESS_THRESHOLD_NA": "N/A",
   "HEALTH.TOUGHNESS_THRESHOLD_FULL": "Schmerzgrenze",
   "HEALTH.CORRUPTION": "Korruption",
+  "HEALTH.CORRUPTION_NA": "N/A",
   "HEALTH.CORRUPTION_CURRENT": "Aktuell",
   "HEALTH.CORRUPTION_TEMPORARY": "Temporär",
   "HEALTH.CORRUPTION_LONGTERM": "Täglich",
@@ -410,6 +436,8 @@
 
   "INITIATIVE.TITLE": "Initiative",
   "INITIATIVE.EXPLANATION": "Initiative angezeigt als [initiative attribute.vigilant]",
+
+  "ENRICHER.INTEGRATED_HEADER": "integriert",
 
   "ITEM.TRAIT": "Merkmale",
   "ITEM.ABILITY": "Fähigkeit",
@@ -537,6 +565,11 @@
   "POWER_BLACKBOLT.CHAT_SUCCESS": "{targetname} ist von einer Seelengeissel getroffen und festgesetzt.",
   "POWER_BLACKBOLT.CHAT_FAILURE": "{targetname} weicht der Seelengeissel aus.",
 
+  "POWER_BLESSEDSHIELD.CHAT_INTRO": "{actorname} erbittet Prios' Schutz.",
+  "POWER_BLESSEDSHIELD.CHAT_SUCCESS": "{actorname} ist von einem heiligen Schild umgeben.",
+  "POWER_BLESSEDSHIELD.CHAT_FAILURE": "{actorname} verbleibt in der Dunkelheit.",
+  "POWER_BLESSEDSHIELD.PROTECTED": "{actorname} ist geschützt.",
+
   "POWER_BRIMSTONECASC.CHAT_INTRO": "{actorname} entfesselt eine tobende Flammenwelle.",
   "POWER_BRIMSTONECASC.CHAT_SUCCESS": "{targetname} fängt Feuer.",
   "POWER_BRIMSTONECASC.CHAT_FAILURE": "{targetname} vermeidet einen Teil des Schadens.",
@@ -555,9 +588,9 @@
   "POWER_CURSE.CHAT_FAIL_FINAL": "Der Fluch hat keinen Effekt mehr auf {targetname}.",
 
   "POWER_DANCINGWEAPON.CHAT_ACTIVATE": "{actorname} wirkt Tanzende Waffe.",
-  "POWER_DANCINGWEAPON.CHAT_DESACTIVATE": "{actorname} beendet Tanzende Waffe.",
+  "POWER_DANCINGWEAPON.CHAT_DEACTIVATE": "{actorname} beendet Tanzende Waffe.",
   "POWER_DANCINGWEAPON.CHAT_RESULT_ACTIVATE": "Präzision (Angr.) und Gewandheit (Vert.) werden im Kampf durch Willenskraft ersetzt.",
-  "POWER_DANCINGWEAPON.CHAT_RESULT_DESACTIVATE": "Die üblichen Eigenschaften werden wieder für den Kampf verwendet.",
+  "POWER_DANCINGWEAPON.CHAT_RESULT_DEACTIVATE": "Die üblichen Eigenschaften werden wieder für den Kampf verwendet.",
 
   "POWER_ENTANGLINGVINES.CHAT_INTRO_M": "{targetname} versucht sich von den Ranken loszureißen.",
   "POWER_ENTANGLINGVINES.CHAT_SUCCESS": "{targetname} ist in Ranken verstrickt.",
@@ -598,13 +631,13 @@
   "POWER_TORMENTINGSPIRITS.CHAT_FAILURE": "Der Ruf von {actorname} bleibt von den Geistern unbeantwortet.",
 
   "POWER_WITCHHAMMER.CHAT_ACTIVATE": "{actorname}'s Waffe wird von heiligem Feuer umhüllt.",
-  "POWER_WITCHHAMMER.CHAT_DESACTIVATE": "Die Waffe von {actorname} ist nicht länger von heiligen Flammen umhüllt.",
-  "POWER_WITCHHAMMER.CHAT_RESULT_DESACTIVATE": "Die zusätzlichen Waffenmerkmale wurden deaktiviert.",
+  "POWER_WITCHHAMMER.CHAT_DEACTIVATE": "Die Waffe von {actorname} ist nicht länger von heiligen Flammen umhüllt.",
+  "POWER_WITCHHAMMER.CHAT_RESULT_DEACTIVATE": "Die zusätzlichen Waffenmerkmale wurden deaktiviert.",
   "POWER_WITCHHAMMER.CHAT_RESULT": "Der Schaden der durch Hexenhammer hervorgerufenen Flammen wird im Kampf über zusätzliche Schaltflächen abgewickelt.",
 
-  "QUALITY.AREAMRR": "Bereichseffekt – Nahkampf Reichweite",
-  "QUALITY.AREASRR": " Bereichseffekt – Kurze Reichweite",
-  "QUALITY.AREAC": "Bereichseffekt - Umgebung",
+  "QUALITY.AREAMELEERADIUS": "Bereichseffekt – Nahkampf Reichweite",
+  "QUALITY.AREASHORTRADIUS": " Bereichseffekt – Kurze Reichweite",
+  "QUALITY.AREACONE": "Bereichseffekt - Umgebung",
   "QUALITY.BALANCED": "Ausgewogen",
   "QUALITY.BASTARD": "Bastardwaffe",
   "QUALITY.BLOODLETTING": "Aderlass",
@@ -617,7 +650,8 @@
   "QUALITY.IMPEDING": "Behinderung",
   "QUALITY.JOINTED": "Gelenkig",
   "QUALITY.LONG": "Lang",
-  "QUALITY.MASSIVE": "Robust",
+  "QUALITY.MASSIVE": "Massiv",
+  "QUALITY.MYSTICAL": "Mystisch",
   "QUALITY.PRECISE": "Präzise",
   "QUALITY.REINFORCED": "Verstärkt",
   "QUALITY.RETURNING": "Wiederkehrend",
@@ -634,15 +668,15 @@
   "QUALITY.POISON": "Giftbeschichtet",
   "QUALITY.THUNDERING": "Donnernd",
   "QUALITY.RETRIBUTIVE": "Vergeltend",
-  "QUALITY.KNIFEPLAY_COMP": "geeignet für Messerspiel",
-  "QUALITY.STAFFFIGHTING_COMP": "geeignet für Stabwaffenkampf",
-  "QUALITY.SWORDSAINT_COMP": "geeignet für Schwertheilige",
+  "QUALITY.KNIFEPLAYCOMPATIBILITY": "geeignet für Messerspiel",
+  "QUALITY.STAFFFIGHTINGCOMPATIBILITY": "geeignet für Stabwaffenkampf",
+  "QUALITY.SWORDSAINTCOMPATIBILITY": "geeignet für Schwertheilige",
 
   "RITUAL.TRADITION": "Tradition",
   "RITUAL.DESCRIPTION": "Beschreibung",
 
-  "ROLL.CRITSHORT": "crit",
-  "ROLL.ADVANTAGESHORT": "adv",
+  "ROLL.CRITSHORT": "Krit.",
+  "ROLL.ADVANTAGESHORT": "Vorteil",
 
   "TAB.MAIN": "MAIN",
   "TAB.GEAR": "Ausrüstung",
@@ -677,8 +711,8 @@
   "TITLE.SPECIALQUALITIES": "ABILITIES COMPATIBILITY",
 
   "TOOLTIP.BONUS_TOTAL": "Total",
-  "TOOLTIP.DEATH_SKULLS": "Der Tod des Charakters tritt beim 3. Schädel ein.",
 
+  "TOOLTIP.DEATH_SKULLS": "Der Tod des Charakters tritt beim 3. Schädel ein.",
   "TOOLTIP.EXPERIENCE_CURRENT": "Deine verfügbaren (nicht ausgegebenen) Erfahrungspunkte",
   "TOOLTIP.EXPERIENCE_TOTAL": "Deine ingesamt erworbenen Erfahrungspunkte",
   "TOOLTIP.EXPERIENCE_ARTIFACTRR": "Für Artefakte und Würfelwürfe ausgegebenen Erfahrungspunkte",
@@ -700,13 +734,25 @@
   "TOOLTIP.COMBAT.INITIATIVE": "Die Eigenschaft auf der deine Initiative basiert",
   "TOOLTIP.COMBAT.DEFENSE": "Die Eigenschaft auf der deine Verteidigung basiert",
 
-  "TOOLTIP.DELETE_ABILITY": "Fähigkeit löschen",
   "TOOLTIP.POWER_ACTIONS": "Art der Aktivierung (A - Aktiv, P - Passiv, S - Speziell, usw.)",
 
-  "TOOLTIP.DIALOG.ROLLONTABLE": "ctrl+click to add modifier",
+  "TOOLTIP.DELETE_ITEM": "löschen",
+  "TOOLTIP.VIEW_ITEM":"ansehen|ändern",
 
-  "TOOLTIP.DIALOG.HASSCRIPT": "Can be clicked on the icon or right click and select USE to roll",
-  "TOOLTIP.DIALOG.ISINTERGRATED": "Effects automatically applied to character",
+  "TOOLTIP.USE_ABILITY": "benutzen",
+
+  "TOOLTIP.USE_WEAPON": "Angreifen",
+  "TOOLTIP.UNACTIVATE_WEAPON":"Waffe inaktiv setzen",
+  "TOOLTIP.ACTIVATE_WEAPON":"Waffe aktiv setzen",
+
+  "TOOLTIP.USE_ARMOR": "Verteidigen",
+  "TOOLTIP.UNACTIVATE_ARMOR":"Rüstung inaktiv setzen",
+  "TOOLTIP.ACTIVATE_ARMOR":"Rüstung aktiv setzen",
+
+  "TOOLTIP.DIALOG.ROLLONTABLE": "Strg&Linksklick, um den Modifikator hinzuzufügen",
+
+  "TOOLTIP.DIALOG.HASSCRIPT": "Mit einem Linksklick auf das Icon oder über das Kontextmenü nach einem Rechtsklick kann eine vorkonfigurierte Probe abgelegt werden.",
+  "TOOLTIP.DIALOG.ISINTERGRATED": "Bei Verwendung werden assoziierte Effekte automatisch auf den Charakter angewandt.",
 
   "TRAIT.HEADER": "Merkmal",
   "TRAIT.NAME": "Name",
@@ -786,6 +832,8 @@
   "WEAPON.DAMAGE_SHORT": "Sch.",
   "WEAPON.BASE_DAMAGE": "Basis-Schaden",
   "WEAPON.BONUS_DAMAGE": "Bonus-Schaden",
+  "WEAPON.PC_DAMAGE": "SC Schaden",
+  "WEAPON.NPC_DAMAGE": "NSC Schaden",
   "WEAPON.NONE": "keine",
   "WEAPON.NUMBER": "Nummer",
   "WEAPON.QUALITY": "Qualität",
@@ -793,8 +841,19 @@
   "WEAPON.ATTRIBUTE": "Eigenschaft",
   "WEAPON.ATTRIBUTEABBR": "Eig.",
   "WEAPON.DESCRIPTION": "Beschreibung",
+  "WEAPON.ATTACK_ATTRIBUTE": "Angriffsprobe mit",
   "WEAPON.ADDBUTTON": "Waffe hinzufügen",
   "WEAPON.DELETEBUTTON": "Waffe löschen",
+
+  "WEAPON_CLASS.LABEL": "Waffenart",
+  "WEAPON_CLASS.1HANDED": "Einhandwaffe",
+  "WEAPON_CLASS.SHORT": "Kurzwaffe",
+  "WEAPON_CLASS.LONG": "Langwaffe",
+  "WEAPON_CLASS.UNARMED": "Unbewaffneter Angriff",
+  "WEAPON_CLASS.HEAVY": "Schwere Waffe",
+  "WEAPON_CLASS.RANGED": "Schusswaffe",
+  "WEAPON_CLASS.SHIELD": "Schild",
+  "WEAPON_CLASS.THROWN": "Wurfwaffe",
 
   "SYMBAROUM.OPTIONAL_CRIT": "Optional Kritischer Wurf",
   "SYMBAROUM.OPTIONAL_CRIT_HINT": "Aktiviere Angrifsboni und Verteidigungspatzer bei Würfen von   1 und 20 wie sie im Grundregelwerk auf Seite 195 beschrieben werden.",
@@ -820,7 +879,7 @@
   "SYMBAROUM.OPTIONAL_INIATITIVEROLLS_HINT": "QoL Option, um die Flut von Initiative-Würfen zum Kampfbeginn nicht im Chat anzuzeigen.",
   "SYMBAROUM.OPTIONAL_AUTOROLLINITIATIVE": "Automatically roll initiative at start of combat",
   "SYMBAROUM.OPTIONAL_AUTOROLLINITIATIVE_HINT": "Check to enable automatic initiative at start of combat",
-  "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Erlaube Beispiel Modifizierungen",
+  "SYMBAROUM.OPTIONAL_SHOWREFERENCE": "Erlaube Referenz Modifizierungen",
   "SYMBAROUM.OPTIONAL_SHOWREFERENCE_HINT": "Warnung - NUR FÜR DEN SL - Erlaube die manuelle Einstellung für Referenz Fähigkeiten, Merkmalen und Mystischen Fähigkeiten. Benötigt einen Reload.",
   "SYMBAROUM.OPTIONAL_INIT_MANUAL": "Manuelle Auswahl der Eigenschaft für Initiative",
   "SYMBAROUM.OPTIONAL_INIT_MANUAL_HINT": "Deaktivieren, um die Eigenschaft für die Ermittlung von Initiative auswählen zu können anstatt automatisch Gewandtheit anzuwenden.",
@@ -848,13 +907,16 @@
   "SYMBAROUM.OPTIONAL_EDITABLE_BG_IMGS": "Editable Field Background Images",
   "SYMBAROUM.OPTIONAL_NON_EDITABLE_COLOUR_SELECTOR": "Select Non-Editable Field Color",
   "SYMBAROUM.OPTIONAL_NON_EDITABLE_BG_IMGS": "Non-Editable Field Background Images",
+  "SYMBAROUM.OPTIONAL_FOUNDRY_DEFAULT": "Default Foundry chat background",
+  "SYMBAROUM.OPTIONAL_CHAT_BG_IMGS": "Chat background image",
+  "SYMBAROUM.OPTIONAL_CHAT_COLOUR_SELECTOR": "Select chat background color",
   "SYMBAROUM.OPTIONAL_RESET_NON_EDITABLE_BUTTON": "Reset Non-Editable Field",
-  "SYMBAROUM.OPTIONAL_RESET_ALL_BUTTON": "Alle Einstellungen auf die Voreinstellung zurücksetzen",
+  "SYMBAROUM.OPTIONAL_RESET_ALL_BUTTON": "Reset all settings to defaults",
   "SYMBAROUM.OPTIONAL_PLAYER_RESIST": "Schaltfläche für Resistenzproben",
   "SYMBAROUM.OPTIONAL_PLAYER_RESIST_HINT": "Wenn ein NSC eine Fähigkeit einsetzt, der widerstanden werden kann oder einen Angriff ausführt, gegen den sich ein SC verteidigen kann, erscheint eine Aufforderung zum Würfeln anstatt dies automatisch abzuwickeln.",
   "SYMBAROUM.OPTIONAL_NPC_ATTACKS": "Zeige in der Chat-Box zu Angriffen von NSCs mit mehreren Angriffen alle in einer Box",
   "SYMBAROUM.OPTIONAL_NPC_ATTACKS_HINT": "Warnung: Das System kann die Berechnungen bei komplexen Kombinationen von Merkmalen eventuell nicht fehlerfrei darstellen.",
-  "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS": "Boni/Mali auf Todesproben wirken sich auf den kritischen Erfolg aus.",
+  "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS": "Bonusse/Malusse auf Todesproben wirken sich auf den kritischen Erfolg aus.",
   "SYMBAROUM.OPTIONAL_ENHANCEDDEATHSAVEBONUS_HINT": "Das System erkennt bei Aktivierung dieser Option auch dann das maximale/minimale Würfelergebnis an, wenn das Würfelergebnis durch statische Modifikatoren, z.B. +1, beeinflusst wurde.",
   "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE": "Dice so Nice Modul animiert alle Würfe",
   "SYMBAROUM.OPTIONAL_ALLROLLSDICESONICE_HINT": "Wenn das Dice so Nice Modul aktiviert wurde, werden mit dieser Option nicht nur Proben mit dem W20, sondern auch alle Proben und Schadenswürfel in 3D animiert.",
@@ -863,5 +925,6 @@
   "SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS": "Zeige das englischsprachige Kompendium an",
   "SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS_HINT": "Neben den deutschsprachigen Kompendien werden auch die englischsprachigen Kompendien des Systems eingeblendet.",
   "SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS": "Blende das Makro&System-Kompendium aus",
-  "SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS_HINT": "Blende das englischsprachige Makro&System-Kompendium aus."
+  "SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS_HINT": "Blende das englischsprachige Makro&System-Kompendium aus.",
+  "SYMBAROUM.OPTIONAL_CUSTOMSHEETJOURNAL": "Symbaroum Wide Journal"
 }

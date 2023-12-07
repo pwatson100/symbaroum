@@ -1,7 +1,7 @@
 // Namespace Configuration Values
 export const SYMBAROUM = {};
 
-SYMBAROUM.namespace = 'symbaroum',
+SYMBAROUM.namespace = 'symbaroum';
 
 SYMBAROUM.attributes = [
     "accurate",
@@ -415,7 +415,7 @@ SYMBAROUM.scriptedAbilities =
 ["alchemy", "acrobatics", "artifactcrafting", "beastlore", "berserker", "blacksmith", "dominate", "leader", "loremaster",
  "medicus", "poisoner", "quickdraw", "recovery", "strangler", "witchsight",
  "anathema", "brimstonecascade", "bendwill", "blackbolt", "blessedshield",
- "confusion", "curse", "dancingweapon", "entanglingvines", "flamewall", "holyaura", "inheritwound", "larvaeboils", "layonhands",
+ "confusion", "curse", "dancingweapon", "earthshot", "entanglingvines", "flamewall", "holyaura", "inheritwound", "larvaeboils", "layonhands",
  "levitate", "maltransformation", "mindthrow", "priosburningglass", "tormentingspirits", "unnoticeable",
  "poisonous", "regeneration", "shapeshifter", "wisdomages", "witchhammer"];
 
@@ -470,6 +470,134 @@ SYMBAROUM.abilityArmor = [
     "armored"
 ]
 
+SYMBAROUM.weaponQualities = [
+    "flexible",
+    "bastard",
+    "returning",
+    "blunt",        
+    "short",
+    "unwieldy",
+    "wrecking",
+    "concealed",
+    "balanced",
+    "deepImpact",
+    "jointed",
+    "ensnaring",
+    "long",
+    "massive",
+    "precise",
+    "bloodLetting",
+    "areaMeleeRadius",
+    "areaShortRadius",
+    "areaCone",
+    "acidcoated",
+    "bane",
+    "deathrune",
+    "desecrated",
+    "flaming",
+    "hallowed",
+    "poison",
+    "thundering",
+    "mystical"
+];
+
+SYMBAROUM.weaponCompatibilities = [
+    "staffFightingCompatibility",
+    "swordSaintCompatibility",
+    "knifePlayCompatibility",
+    "staffMagicCompatibility"
+];
+
+SYMBAROUM.armorQualities = [
+    "flexible",
+    "concealed",
+    "cumbersome",
+    "desecrated",
+    "flaming",
+    "hallowed",
+    "mystical"
+];
+
+SYMBAROUM.armorCompatibilities = [];
+
+SYMBAROUM.equipmentQualities = [];
+
+SYMBAROUM.equipmentCompatibilities = [];
+
+SYMBAROUM.systemConditionEffects = [{
+	id: "bendwill",
+	label: "POWER_LABEL.BEND_WILL",
+	name: "POWER_LABEL.BEND_WILL",
+	icon: "systems/symbaroum/asset/image/puppet.png"
+},
+{
+	id: "berserker",
+	label: "ABILITY_LABEL.BERSERKER",
+	name: "ABILITY_LABEL.BERSERKER",
+	icon: "systems/symbaroum/asset/image/berserker.svg"
+},
+{
+	id: "confusion",
+	label: "POWER_LABEL.CONFUSION",
+	name: "POWER_LABEL.CONFUSION",
+	icon: "systems/symbaroum/asset/image/unknown-item.png"
+},
+{
+	id: "dancingweapon",
+	label: "POWER_LABEL.DANCING_WEAPON",
+	name: "POWER_LABEL.DANCING_WEAPON",
+	icon: "systems/symbaroum/asset/image/powers/dancingweapon.svg"
+},
+{
+	id: "entanglingvines",
+	label: "POWER_LABEL.ENTANGLING_VINES",
+	name: "POWER_LABEL.ENTANGLING_VINES",
+	icon: "systems/symbaroum/asset/image/vines.png"
+},
+{
+	id: "holyaura",
+	label: "POWER_LABEL.HOLY_AURA",
+	name: "POWER_LABEL.HOLY_AURA",
+	icon: "icons/svg/aura.svg"
+},
+{
+	id: "larvaeboils",
+	label: "POWER_LABEL.LARVAE_BOILS",
+	name: "POWER_LABEL.LARVAE_BOILS",
+	icon: "systems/symbaroum/asset/image/bug.png"
+},
+{
+	id: "maltransformation",
+	label: "POWER_LABEL.MALTRANSFORMATION",
+	name: "POWER_LABEL.MALTRANSFORMATION",
+	icon: "systems/symbaroum/asset/image/frog.png"
+},
+{
+	id: "strangler",
+	label: "ABILITY_LABEL.STRANGLER",
+	name: "ABILITY_LABEL.STRANGLER",
+	icon: "systems/symbaroum/asset/image/lasso.png"
+},
+{
+	id: "tormentingspirits",
+	label: "POWER_LABEL.TORMENTING_SPIRITS",
+	name: "POWER_LABEL.TORMENTING_SPIRITS",
+	icon: "systems/symbaroum/asset/image/ghost.svg"
+},
+{
+	id: "unnoticeable",
+	label: "POWER_LABEL.UNNOTICEABLE",
+	name: "POWER_LABEL.UNNOTICEABLE",
+	icon: "systems/symbaroum/asset/image/invisible.png"
+},
+{
+	id: "witchhammer",
+	label: "POWER_LABEL.WITCH_HAMMER",
+	name: "POWER_LABEL.WITCH_HAMMER",
+	icon: "systems/symbaroum/asset/image/powers/witchhammer.svg"
+}];
+
+
 SYMBAROUM.traitManyHeaded = 'many-headed';
 
 
@@ -485,8 +613,82 @@ SYMBAROUM.expCosts = {
         "adept":20,
         "master":30,
         "nocost": [ ]
-    },
+    }
 }
+
+SYMBAROUM.BONUS_FIELDS = [
+	{
+		label: "ARMOR.DEFENSE",
+		name: "system.bonus.defense",
+	},
+	{
+		label: "ATTRIBUTE.ACCURATE",
+		name: "system.bonus.accurate",
+	},
+	{
+		label: "ATTRIBUTE.CUNNING",
+		name: "system.bonus.cunning",
+	},
+	{
+		label: "ATTRIBUTE.DISCREET",
+		name: "system.bonus.discreet",
+	},
+	{
+		label: "ATTRIBUTE.PERSUASIVE",
+		name: "system.bonus.persuasive",
+	},
+	{
+		label: "ATTRIBUTE.QUICK",
+		name: "system.bonus.quick",
+	},
+	{
+		label: "ATTRIBUTE.RESOLUTE",
+		name: "system.bonus.resolute",
+	},
+	{
+		label: "ATTRIBUTE.STRONG",
+		name: "system.bonus.strong",
+	},
+	{
+		label: "ATTRIBUTE.VIGILANT",
+		name: "system.bonus.vigilant",
+	},
+	{
+		label: "HEALTH.TOUGHNESS_MAX",
+		name: "system.bonus.toughness.max",
+	},
+	{
+		label: "HEALTH.TOUGHNESS_THRESHOLD_MAX",
+		name: "system.bonus.toughness.threshold",
+	},
+	{
+		label: "HEALTH.CORRUPTION_THRESHOLD_MAX",
+		name: "system.bonus.corruption.threshold",
+	},
+	{
+		label: "HEALTH.CORRUPTION_MAX",
+		name: "system.bonus.corruption.max",
+	},
+	{
+		label: "EXPERIENCE",
+		name: "system.bonus.experience.value",
+	}
+];
+
+SYMBAROUM.BONUS_FIELDS_WEAPON = [
+];
+
+SYMBAROUM.BONUS_FIELDS_EQUIPMENT = [
+];
+
+
+SYMBAROUM.BONUS_FIELDS_ARMOR = [
+    {
+        label:"BONUS.IMPEDING_REDUCTION",
+        name:"system.bonus.impeding"
+    }
+];
+
 
 //combat mod types
 SYMBAROUM.TYPE_ALTERNATIVE_DAMAGE = "alternative_damage";
@@ -509,8 +711,7 @@ SYMBAROUM.DAM_RADIO = "radio";
 SYMBAROUM.DAM_FIXED = "fixed";
 SYMBAROUM.PACK_CHECKED = "checkpackage";
 SYMBAROUM.DAM_BUILTIN = "builtin"; // builtin is for those that EC assumes are already calculated
-SYMBAROUM.DAM_BUILTIN_REFERENCES = [
-];
+SYMBAROUM.DAM_BUILTIN_REFERENCES = [];
 SYMBAROUM.DAM_1STATTACK = "1stattack";
 SYMBAROUM.DAM_NOTACTIVE = "not1stattack";
 SYMBAROUM.DAM_ACTIVE = "active";
@@ -558,6 +759,17 @@ SYMBAROUM.IMPEDING_NOT = "impedingnot"; // no impeding malus (default)
 SYMBAROUM.IMPEDING_MAGIC = "impedingmagic"; // no impeding malus for magic
 SYMBAROUM.IMPEDING_MOVE = "impedingmov"; // impeding malus for movement
 
+SYMBAROUM.IMPEDING_DEFAULTS = {
+    "stackable":0,
+    "skin":0,
+    "cumbersome":1,
+    "flexible":-2,
+    "lightarmor":2,
+    "mediumarmor":3,
+    "heavyarmor":4,
+    "superarmor":4
+}
+
 //1rst round of casting - for maintaining, see "maintain"
 SYMBAROUM.CASTING = "casting";  // (default) the power is cast with castingAttribute, no resistance
 SYMBAROUM.CASTING_NOT = "castingnot";  // the power success is automatic
@@ -583,8 +795,8 @@ SYMBAROUM.SYSTEM_MACRO_FOLDER = "Symbaroum System Macros";
 
 SYMBAROUM.HOOKS = {
     symbaroumItemModifiersSetup: "symbaroumItemModifiersSetup"
-}
+};
 
 SYMBAROUM.CONTEXT_MENU = {
     equipmentAddRemoveFlag: "equipmentAddRemove"
-}
+};
