@@ -380,6 +380,7 @@ Hooks.once('init', () => {
   };
 
   enrichTextEditors();
+  // MOVE TO READY?!
   setupStatusEffects();
 });
 
@@ -505,7 +506,7 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
   const flagDataArray = await chatItem.getFlag(game.system.id, 'applyEffects');
   
   if (flagDataArray && game.user.isGM) {
-    await html.find('#applyEffect').click(async () => {
+    html.find('#applyEffect').click(async () => {
       console.log("Applying effects");
       for (let flagData of flagDataArray) {
         if (!flagData.tokenId && !flagData.actorId) {
@@ -551,7 +552,7 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
   }
   const functionStuff = await chatItem.getFlag(game.system.id, 'resistRoll');
   if (functionStuff) {
-    await html.find('#applyEffect').click(async () => {
+    html.find('#applyEffect').click(async () => {
       let tok = canvas.tokens.objects.children.find((token) => token.id === functionStuff.tokenId);
       let targetToken = canvas.tokens.objects.children.find((token) => token.id === functionStuff.targetData.tokenId);
       if (tok === undefined || targetToken === undefined) {

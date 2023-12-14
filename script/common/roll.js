@@ -72,7 +72,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
 
   let actingToken = api.getActorToken(actor);
   let actingCharName= actingToken?.name ?? actor.name;
-  let actingCharImg= actingToken?.document.actorLink ? actor.img : actingToken?.document?.texture.src ?? actor.img;
+  let actingCharImg= actingToken?.document?.actorLink ? actor.img : actingToken?.document?.texture.src ?? actor.img;
   let rollData = {
     subImg: actingCharImg,
     name: `${game.symbaroum.api.getAttributeLabel(actor, actingAttributeName) } (${ getAttributeValue(actor, actingAttributeName) }) ⬅ ${game.symbaroum.api.getAttributeLabel(targetActor, targetAttributeName)} (${finalMod})`,
