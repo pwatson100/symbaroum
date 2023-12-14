@@ -1,6 +1,7 @@
 Version 4.4.1
 
 * Fixed poor handling of token document for targets (resolves rolling for monsters in non-EC)
+* German language updates
 
 Version 4.4
 
