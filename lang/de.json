@@ -937,7 +937,7 @@
   "SYMBAROUM.OPTIONAL_SHOWENGLISHPACKS_HINT": "Neben den deutschsprachigen Kompendien werden auch die englischsprachigen Kompendien des Systems eingeblendet.",
   "SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS": "Blende das Makro&System-Kompendium aus",
   "SYMBAROUM.OPTIONAL_HIDEENGLISHMACROS_HINT": "Blende das englischsprachige Makro&System-Kompendium aus.",
-  "SYMBAROUM.OPTIONAL_CUSTOMSHEETJOURNAL": "Symbaroum Wide Journal"
+  "SYMBAROUM.OPTIONAL_CUSTOMSHEETJOURNAL": "Symbaroum Wide Journal",
 
   "SYMBAROUM.TOUR_CONFIG_TITLE": "Guide to Symbaroum system configuration (GM)",
   "SYMBAROUM.TOUR_CONFIG_SETTINGS": "The game settings",
