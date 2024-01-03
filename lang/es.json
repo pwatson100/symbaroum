@@ -622,6 +622,11 @@
   "POWER_PRIOSBURNINGGLASS.CHAT_INTRO": "{actorname} intenta canalizar la Luz de Prios en el objetivo.",
   "POWER_PRIOSBURNINGGLASS.CHAT_EXTRA": "{targetname} puede quedar atontado, prueba [Tenaz <-- Tenaz].",
 
+  "POWER_REVENANTSTRIKE.CHAT_ACTIVATE": "{actorname}'s weapon gets darker.",
+  "POWER_REVENANTSTRIKE.CHAT_DEACTIVATE": "{actorname}'s weapon stops glowing.",
+  "POWER_REVENANTSTRIKE.CHAT_RESULT_DEACTIVATE": "Weapon stats revert to normal.",
+  "POWER_REVENANTSTRIKE.CHAT_RESULT": "Revenant strike bonus damage will be apply.",
+
   "POWER_TORMENTINGSPIRITS.CHAT_INTRO": "{actorname} intenta invocar Espíritus Atormentadores.",
   "POWER_TORMENTINGSPIRITS.CHAT_INTRO_M": "{actorname} intenta mantener a los Espíritus Atormentadores.",
   "POWER_TORMENTINGSPIRITS.CHAT_SUCCESS": "{actorname} invoca a los espíritus alrededor {targetname}.",

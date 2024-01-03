@@ -627,6 +627,11 @@
   "POWER_PRIOSBURNINGGLASS.CHAT_INTRO": "{actorname} tries to channel the Light of Prios at a target.",
   "POWER_PRIOSBURNINGGLASS.CHAT_EXTRA": "{targetname} might be stunned, test [resolute <-- resolute].",
 
+  "POWER_REVENANTSTRIKE.CHAT_ACTIVATE": "{actorname}'s weapon gets darker.",
+  "POWER_REVENANTSTRIKE.CHAT_DEACTIVATE": "{actorname}'s weapon stops glowing.",
+  "POWER_REVENANTSTRIKE.CHAT_RESULT_DEACTIVATE": "Weapon stats revert to normal.",
+  "POWER_REVENANTSTRIKE.CHAT_RESULT": "Revenant strike bonus damage will be apply.",
+
   "POWER_TORMENTINGSPIRITS.CHAT_INTRO": "{actorname} tries to invoke tormenting spirits.",
   "POWER_TORMENTINGSPIRITS.CHAT_INTRO_M": "{actorname} tries to maintain the tormenting spirits.",
   "POWER_TORMENTINGSPIRITS.CHAT_SUCCESS": "{actorname} invokes spirits around {targetname}.",
