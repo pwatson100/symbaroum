@@ -2698,6 +2698,7 @@ export class SymbaroumItem extends Item {
     base.resultTextFail = game.i18n.localize("ABILITY_STRANGLER.CHAT_FAILURE");
     base.activelyMaintainedTargetEffect = [duplicate(CONFIG.statusEffects.find((e) => e.id === "strangler"))];
     base.hasDamage = true;
+    base.ignoreArm = true;
     base.damageDice = "1d6";
     base.newStuffIfMaintain = {
       castingAttributeName: "cunning",
