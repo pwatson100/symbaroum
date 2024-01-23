@@ -2690,7 +2690,7 @@ export class SymbaroumItem extends Item {
     base.maintain = game.symbaroum.config.MAINTAIN_RES;
     base.castingAttributeName = "cunning";
     base.targetResistAttribute = "cunning";
-    base.askCastingAttribute = true;
+    base.askCastingAttribute = false;
     base.impeding = game.symbaroum.config.IMPEDING_MOVE;
     base.introText = game.i18n.localize("ABILITY_STRANGLER.CHAT_INTRO");
     base.introTextMaintain = game.i18n.localize("ABILITY_STRANGLER.CHAT_INTRO_M");
@@ -2703,6 +2703,7 @@ export class SymbaroumItem extends Item {
     base.newStuffIfMaintain = {
       castingAttributeName: "cunning",
       targetResistAttribute: "cunning",
+      askCastingAttribute: false
     };
     return base;
   }
