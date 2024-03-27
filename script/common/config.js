@@ -181,7 +181,7 @@ SYMBAROUM.powersList = {
     "psychicthrust": 'POWER_LABEL.PSYCHIC_THRUST', 
     "purgatory": 'POWER_LABEL.PURGATORY', 
     "retribution": 'POWER_LABEL.RETRIBUTION', 
-    "revenantstrike": 'POWER_LABEL.REVENANT_STRIKE', 
+    "revenantstrike": 'POWER_LABEL.REVENANT_STRIKE',
     "shapeshift": 'POWER_LABEL.SHAPESHIFT', 
     "sphere": 'POWER_LABEL.SPHERE', 
     "spiritwalk": 'POWER_LABEL.SPIRIT_WALK', 
@@ -416,7 +416,7 @@ SYMBAROUM.scriptedAbilities =
  "medicus", "poisoner", "quickdraw", "recovery", "strangler", "witchsight",
  "anathema", "brimstonecascade", "bendwill", "blackbolt", "blessedshield",
  "confusion", "curse", "dancingweapon", "earthshot", "entanglingvines", "flamewall", "holyaura", "inheritwound", "larvaeboils", "layonhands",
- "levitate", "maltransformation", "mindthrow", "priosburningglass", "tormentingspirits", "unnoticeable",
+ "levitate", "maltransformation", "mindthrow", "priosburningglass", "revenantstrike", "tormentingspirits", "unnoticeable",
  "poisonous", "regeneration", "shapeshifter", "wisdomages", "witchhammer"];
 
 SYMBAROUM.steadFastNovResistList = [
@@ -571,6 +571,12 @@ SYMBAROUM.systemConditionEffects = [{
 	label: "POWER_LABEL.MALTRANSFORMATION",
 	name: "POWER_LABEL.MALTRANSFORMATION",
 	icon: "systems/symbaroum/asset/image/frog.png"
+},
+{
+	id: "revenantstrike",
+	label: "POWER_LABEL.REVENANT_STRIKE",
+	name: "POWER_LABEL.REVENANT_STRIKE",
+	icon: "systems/symbaroum/asset/image/powers/revenantstrike.svg"
 },
 {
 	id: "strangler",

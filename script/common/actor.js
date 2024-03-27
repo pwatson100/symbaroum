@@ -687,7 +687,7 @@ export class SymbaroumActor extends Actor {
 			this.system.health.corruption.threshold = 0;
 			this.system.health.corruption.max = 0;
 		} else {
-			this.system.health.corruption.threshold = corruptionThreshold + this.system.bonus.toughness.threshold;
+			this.system.health.corruption.threshold = corruptionThreshold + this.system.bonus.corruption.threshold;
 			this.system.health.corruption.max = corruptionMax + corruptionBonus;
 		}
 		let corr = this.system.health.corruption;

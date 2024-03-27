@@ -1,3 +1,9 @@
+Version 4.5
+
+* Updated corruption threshold bonus bug #652
+* Bug with strangler ability corrected #649
+* Revenant's Strike Mystic Power support added
+
 Version 4.4.2
 
 * Missed out a comma in the German language update

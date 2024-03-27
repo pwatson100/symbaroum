@@ -622,6 +622,11 @@
   "POWER_PRIOSBURNINGGLASS.CHAT_INTRO": "{actorname} cerca di incanalare la Luce di Prios su un bersaglio.",
   "POWER_PRIOSBURNINGGLASS.CHAT_EXTRA": "{targetname} potrebbe essere stordito, prova [tenacia <-- tenacia].",
 
+  "POWER_REVENANTSTRIKE.CHAT_ACTIVATE": "{actorname}'s weapon gets darker.",
+  "POWER_REVENANTSTRIKE.CHAT_DEACTIVATE": "{actorname}'s weapon stops glowing.",
+  "POWER_REVENANTSTRIKE.CHAT_RESULT_DEACTIVATE": "Weapon stats revert to normal.",
+  "POWER_REVENANTSTRIKE.CHAT_RESULT": "Revenant strike bonus damage will be apply.",
+
   "POWER_TORMENTINGSPIRITS.CHAT_INTRO": "{actorname} cerca di invocare gli spiriti tormentatori.",
   "POWER_TORMENTINGSPIRITS.CHAT_INTRO_M": "{actorname} cerca di mantenere gli spiriti tormentatori.",
   "POWER_TORMENTINGSPIRITS.CHAT_SUCCESS": "{actorname} invoca gli spiriti intorno {targetname}.",
