@@ -31,13 +31,13 @@ export class SymbaroumActor extends Actor {
 	}
 
 	_initializeData(system) {
-		let armorData = foundry.utils.deepClone(game.model?.Item.armor ?? game.system.model.Item.armor);
+		let armorData = foundry.utils.deepClone(game.model.Item.armor);
 		armorData.baseProtection = "0";
 		armorData.id = null;
 		armorData.name = game.i18n.localize("ITEM.TypeArmor");
 		system.combat = armorData;
 
-		let bonus = foundry.utils.deepClone(game.model?.Item.armor.bonus ?? game.system.model.Item.armor.bonus);
+		let bonus = foundry.utils.deepClone(game.model.Item.armor.bonus);
 		system.bonus = bonus;
 	}
 
@@ -702,7 +702,7 @@ export class SymbaroumActor extends Actor {
 		// create noArmor
 		let noArmor = {};
 		noArmor.system = {};
-		noArmor.system = foundry.utils.deepClone(game.model?.Item.armor ?? game.system.model.Item.armor);
+		noArmor.system = foundry.utils.deepClone(game.model.Item.armor);
 		noArmor.impeding = 0;
 
 		noArmor.id = game.symbaroum.config.noArmorID;

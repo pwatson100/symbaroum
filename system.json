@@ -4,12 +4,12 @@
   "title": "Symbaroum",
   "description": "Twilight falls. Davokar darkens.",
   "version": "4.5",
-  "minimumCoreVersion": "10",
-  "compatibleCoreVersion": "10",
+  "minimumCoreVersion": "12",
+  "compatibleCoreVersion": "12",
   "compatibility": {
-    "minimum": 10,
-    "verified": 11,
-    "maximum": 11
+    "minimum": 12,
+    "verified": 12,
+    "maximum": 12
   },
   "authors": [{ "name": "Paul Watson" }, { "name": "Bithir" }, { "name": "Khaali" }],
   "scripts": [],
