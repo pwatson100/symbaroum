@@ -55,7 +55,7 @@ function registerHandlebarsHelpers() {
 
 
   Handlebars.registerHelper('getProperty', function (item, prop) {
-    return getProperty(item, prop);
+    return foundry.utils.getProperty(item, prop);
   });
 
   // Ifis not equal

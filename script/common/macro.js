@@ -368,7 +368,7 @@ export class SymbaroumMacros {
 				let tot =
 					actor.system.attributes[type].temporaryMod + calcDam;
 				let modification = {};
-				setProperty(
+				foundry.utils.setProperty(
 					modification,
 					`system.attributes.${type}.temporaryMod`,
 					tot

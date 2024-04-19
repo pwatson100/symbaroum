@@ -188,7 +188,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
 
               try {
                 // Validate string as valid roll object              
-                let r = new Roll(damModifier,{}).evaluate({async:false});
+                let r = new Roll(damModifier,{}).evaluateSync({async:false});
               } catch (err) {
                   ui.notifications.error(`The ${game.i18n.localize("DIALOG.DAMAGE_MODIFIER")} can't be used for rolling damage ${err}`);
                   reject("invalid");

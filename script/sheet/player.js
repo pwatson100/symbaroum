@@ -3,7 +3,7 @@ import { prepareRollAttribute, prepareRollDeathTest } from "../common/dialog.js"
 
 export class PlayerSheet extends SymbaroumActorSheet {
 	static get defaultOptions() {
-		return mergeObject(super.defaultOptions, {
+		return foundry.utils.mergeObject(super.defaultOptions, {
 			classes: ["symbaroum", "sheet", "actor", "player"],
 			template: "systems/symbaroum/template/sheet/player.hbs",
 			width: 800,

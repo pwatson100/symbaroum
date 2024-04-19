@@ -2,7 +2,7 @@ import { SymbaroumItemSheet } from "./item.js";
 
 export class MysticalPowerSheet extends SymbaroumItemSheet {
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             classes: ["symbaroum", "sheet", "item"],
             template: "systems/symbaroum/template/sheet/mystical-power.hbs",
             width: 700,

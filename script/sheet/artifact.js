@@ -2,7 +2,7 @@ import { SymbaroumItemSheet } from "./item.js";
 
 export class ArtifactSheet extends SymbaroumItemSheet {
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             classes: ["symbaroum", "sheet", "item"],
             template: "systems/symbaroum/template/sheet/artifact.hbs",
             width: 500,

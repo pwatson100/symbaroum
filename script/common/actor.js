@@ -31,13 +31,13 @@ export class SymbaroumActor extends Actor {
 	}
 
 	_initializeData(system) {
-		let armorData = foundry.utils.deepClone(game.system.model.Item.armor);
+		let armorData = foundry.utils.deepClone(game.model?.Item.armor ?? game.system.model.Item.armor);
 		armorData.baseProtection = "0";
 		armorData.id = null;
 		armorData.name = game.i18n.localize("ITEM.TypeArmor");
 		system.combat = armorData;
 
-		let bonus = foundry.utils.deepClone(game.system.model.Item.armor.bonus);
+		let bonus = foundry.utils.deepClone(game.model?.Item.armor.bonus ?? game.system.model.Item.armor.bonus);
 		system.bonus = bonus;
 	}
 
@@ -225,6 +225,10 @@ export class SymbaroumActor extends Actor {
 		}
 
 		let attributeInit = system.initiative.attribute.toLowerCase();
+		// Primary attribute
+		// Secondary attribute / 10
+		// Bonus
+		// Skill bonus
 		system.initiative.value = system.attributes[attributeInit].total + system.attributes.vigilant.total / 100;
 		system.initiative.label = system.attributes[attributeInit].label;
 
@@ -698,7 +702,7 @@ export class SymbaroumActor extends Actor {
 		// create noArmor
 		let noArmor = {};
 		noArmor.system = {};
-		noArmor.system = foundry.utils.deepClone(game.system.model.Item.armor);
+		noArmor.system = foundry.utils.deepClone(game.model?.Item.armor ?? game.system.model.Item.armor);
 		noArmor.impeding = 0;
 
 		noArmor.id = game.symbaroum.config.noArmorID;
@@ -773,7 +777,7 @@ export class SymbaroumActor extends Actor {
 
 	async addCondition(effect, flagData) {
 		if (typeof effect === "string") {
-			effect = duplicate(CONFIG.statusEffects.find((e) => e.id == effect));
+			effect = foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id == effect));
 		}
 		if (!effect) return "No Effect Found";
 		if (!effect.id) return "Conditions require an id field";
@@ -796,7 +800,7 @@ export class SymbaroumActor extends Actor {
 	}
 
 	async removeCondition(effect) {
-		if (typeof effect === "string") effect = duplicate(CONFIG.statusEffects.find((e) => e.id == effect));
+		if (typeof effect === "string") effect = foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id == effect));
 		if (!effect) return "No Effect Found";
 		if (!effect.id) return "Conditions require an id field";
 		let existing = this.hasCondition(effect.id);
@@ -840,7 +844,7 @@ export class SymbaroumActor extends Actor {
 			}
 		}
 		game.symbaroum.log("getCorruption", corruptionFormula, functionStuff);
-		let corRoll = new Roll(corruptionFormula).evaluate({ async: false });
+		let corRoll = new Roll(corruptionFormula).evaluateSync({ async: false });
 		return { value: corRoll.total, sorceryRoll: sorceryRoll, corruptionRoll: corRoll };
 	}
 

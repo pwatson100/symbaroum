@@ -30,7 +30,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   if (hasArmor && !rollResults.hasSucceed) {
     if (armor.protectionPc !== '') {
       let prot = armor.protectionPc;
-      let armorRoll = new Roll(prot, {}).evaluate({async:false});
+      let armorRoll = await new Roll(prot, {}).evaluate({async:false});
       rolls.push(armorRoll);
     
       armorResults.id = armor.id;
@@ -49,7 +49,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
       if( damModifier !== '') { dam = dam+"+"+damModifier; }
       
 
-      let weaponRoll = new Roll(dam, {}).evaluate({async:false});
+      let weaponRoll = await new Roll(dam, {}).evaluate();
       rolls.push(weaponRoll);
       
       let tooltip = await weaponRoll.getTooltip();
@@ -147,7 +147,7 @@ export async function rollDeathTest(actor, withFavour, modifier) {
     dicesResult= [death.terms[0].results[0].result, death.terms[0].results[1].result];
   }
 
-  death.evaluate({async:false});
+  await death.evaluate();
   rolls.push(death);
   let hasSucceed = death.total <= 10+modifier;
   let finalMod = game.settings.get('symbaroum', 'enhancedDeathSaveBonus') ? modifier:0;
@@ -158,7 +158,7 @@ export async function rollDeathTest(actor, withFavour, modifier) {
   if (!hasSucceed) nbrOfFailedDeathRoll = Math.min(3, nbrOfFailedDeathRoll+1);
   if (isCriticalSuccess) {
     nbrOfFailedDeathRoll = 0;
-    heal = new Roll('1d4', {}).evaluate({async:false});
+    heal = await new Roll('1d4', {}).evaluate();
     rolls.push(heal);
   }
   let diceBreakdown = formatDice(death.terms,"+");
@@ -268,7 +268,7 @@ async function doBaseRoll(actor, actingAttributeName, targetActor, targetAttribu
 	if(favour > 0) d20str="2d20kl";
 	else if(favour < 0) d20str="2d20kh";
   
-  let attributeRoll = new Roll(d20str).evaluate({async:false});
+  let attributeRoll = await new Roll(d20str).evaluate();
   rolls.push(attributeRoll); // add the first attribute roll
   let dicesResult;
   if(favour != 0){ 
@@ -315,7 +315,7 @@ async function doBaseRoll(actor, actingAttributeName, targetActor, targetAttribu
       }    
       if( game.settings.get('symbaroum', 'optionalRareCrit') ) {
         //optional rare crit do a second roll.
-        let secondRoll = new Roll("1d20").evaluate({async:false});
+        let secondRoll = await new Roll("1d20").evaluate();
         rolls.push(secondRoll);
         secondRollResult = secondRoll.total;
         //critGood and critBad below are again from the attacker perspective.
@@ -507,7 +507,7 @@ export async function damageRollWithDiceParams(functionStuff, critSuccess, attac
     }
     // final damage
     //console.log(newRollDmgString);
-    let dmgRoll= new Roll(newRollDmgString).evaluate({async:false});
+    let dmgRoll= await new Roll(newRollDmgString).evaluate();
 
     return{
     roll : dmgRoll,
@@ -539,7 +539,7 @@ export async function simpleDamageRoll(functionStuff, damageFormula){
   }
   else{
     // If the attack is made by a NPC, evaluate static value for damage (=max damage/2) then roll armor and substract
-    let weaponRoll= new Roll(damageFormula).evaluate({maximize: true, async:false});
+    let weaponRoll= await new Roll(damageFormula).evaluate({maximize: true});
     let weaponDmgValue = Math.ceil(weaponRoll.total/2);
 
    //build roll string
@@ -549,7 +549,7 @@ export async function simpleDamageRoll(functionStuff, damageFormula){
     }
   }
   // final damage
-  let dmgRoll= new Roll(newRollDmgString).evaluate({async:false});
+  let dmgRoll= await new Roll(newRollDmgString).evaluate();
 
   return{
     roll : dmgRoll,

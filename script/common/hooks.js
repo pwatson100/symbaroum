@@ -425,7 +425,7 @@ Hooks.once('renderSettings', () => {
 
 Hooks.on('preCreateActor', (doc, createData, options, userid) => {
   let createChanges = {};
-  mergeObject(createChanges, {
+  foundry.utils.mergeObject(createChanges, {
     'prototypeToken.displayName': CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,
     'prototypeToken.displayBars': CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,
     'prototypeToken.disposition': CONST.TOKEN_DISPOSITIONS.NEUTRAL,
@@ -495,7 +495,7 @@ Hooks.on('combatStart', async (combat, ...args) => {
 
 Hooks.on('preCreateChatMessage', (doc, message, options, userid) => {
   if (message.flags !== undefined) {
-    if (getProperty(message.flags, 'core.initiativeRoll') && game.settings.get('symbaroum', 'hideIniativeRolls')) {
+    if (foundry.utils.getProperty(message.flags, 'core.initiativeRoll') && game.settings.get('symbaroum', 'hideIniativeRolls')) {
       return false;
     }
   }
@@ -524,7 +524,7 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
           await actor.removeCondition(flagData.removeEffect);
         }
         if (flagData.defeated && ui.combat.viewed && token) {
-          let effect = duplicate(CONFIG.statusEffects.find((e) => e.id == 'dead'));
+          let effect = foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id == 'dead'));
           await token.toggleEffect(effect, { overlay: true, active: true });          
         }
 
