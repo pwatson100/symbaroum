@@ -1,6 +1,5 @@
 import { getOwnerPlayer, createResistRollChatButton, rollDeathTest } from './roll.js';
 import { buildRolls } from './item.js';
-import { forEach } from 'lodash';
 
 let roll_defaults = {};
 
@@ -106,12 +105,12 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
       askAttackNb = weaponModifiers.maxAttackNb > 1;
     }
   }
-  let targetAttribute_selection = duplicate(game.symbaroum.config.ATTRIBUTE_SELECTION);
+  let targetAttribute_selection = foundry.utils.duplicate(game.symbaroum.config.ATTRIBUTE_SELECTION);
   targetAttribute_selection.defense = {
     id: "defense",
     label: game.i18n.localize(`ARMOR.DEFENSE`),
   };
-  if(attri_mods.show){
+  if(attri_mods?.show){
     for (const [key, value] of Object.entries(targetAttribute_selection)) {
       targetAttribute_selection[key].label = targetAttribute_selection[key].label +" "+attri_mods[key];
     }

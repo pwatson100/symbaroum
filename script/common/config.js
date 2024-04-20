@@ -780,31 +780,31 @@ SYMBAROUM.ACTION_TYPES = {
   },
   A: {
     id: "A",
-    label: "SYMBAROUM.ACTION.ACTIVE",
+    label: "ACTION.ACTIVE",
   },
   M: {
     id: "M",
-    label: "SYMBAROUM.ACTION.MOVEMENT",
+    label: "ACTION.MOVEMENT",
   },
   T: {
     id: "T",
-    label: "SYMBAROUM.ACTION.FULL_TURN",
+    label: "ACTION.FULL_TURN",
   },
   F: {
     id: "F",
-    label: "SYMBAROUM.ACTION.FREE",
+    label: "ACTION.FREE",
   },
   P: {
     id: "P",
-    label: "SYMBAROUM.ACTION.PASSIVE",
+    label: "ACTION.PASSIVE",
   },
   R: {
     id: "R",
-    label: "SYMBAROUM.ACTION.REACTION",
+    label: "ACTION.REACTION",
   },
   S: {
     id: "S",
-    label: "SYMBAROUM.ACTION.SPECIAL",
+    label: "ACTION.SPECIAL",
   },
 };
 

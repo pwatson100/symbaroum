@@ -3583,7 +3583,6 @@ async function attackResult(rollData, functionStuff) {
       actor: actorid,
     }),
     content: html,
-    type: CONST.CHAT_MESSAGE_TYPES.ROLL,
     roll: JSON.stringify(createRollData(rolls)),
     rollMode: game.settings.get("core", "rollMode"),
   };

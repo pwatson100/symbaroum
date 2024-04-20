@@ -90,14 +90,14 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   };
   const html = await renderTemplate('systems/symbaroum/template/chat/roll.hbs', rollData);
 
-  // Once we go to non-API version of DsN, then set this in chatData: type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+  // Once we go to non-API version of DsN, then set this in chatData: type: CONST.CHAT_MESSAGE_STYLES.ROLL,
   let chatData = {
     user: game.user.id,
     speaker: ChatMessage.getSpeaker({ 
       alias: actingCharName,
       actor: actor.id
     }),
-    type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+    type: CONST.CHAT_MESSAGE_STYLES.ROLL,
     roll: JSON.stringify(createRollData(rolls)),
     rollMode: game.settings.get('core', 'rollMode'),
     content: html,
@@ -127,7 +127,7 @@ export function createRollData(rolls)
     finalRolls.push(rolls[i]);  
     rollCount++;
   }
-  let pool = PoolTerm.fromRolls(finalRolls);
+  let pool = foundry.dice.terms.PoolTerm.fromRolls(finalRolls);
   // game.symbaroum.log(pool); // TODO
   return Roll.fromTerms([pool]);
 }
@@ -415,9 +415,9 @@ function formatDice(diceResult, separator, css = "normal") {
 	for( let dd of diceResult ) {
     if (typeof dd === 'string' || Number.isInteger(dd) ) {
 			rolls += dd;
-    } else if( dd instanceof OperatorTerm) {
+    } else if( dd instanceof foundry.dice.terms.OperatorTerm) {
         rolls += dd.operator;
-    } else if( dd instanceof NumericTerm) {
+    } else if( dd instanceof foundry.dice.terms.NumericTerm) {
         rolls += dd.number;
 		} else {
       if( dd.modifiers === undefined || dd.modifiers === null ) {
