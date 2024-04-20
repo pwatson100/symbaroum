@@ -40,6 +40,7 @@ export class SymbaroumItemSheet extends ItemSheet {
       isGM: game.user.isGM,
       allowShowReference:  game.settings.get('symbaroum', 'allowShowReference')
     };
+    data.action_types = game.symbaroum.config.ACTION_TYPES;
     return data;
   }
 

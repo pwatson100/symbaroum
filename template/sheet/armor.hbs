@@ -44,14 +44,7 @@
                     <div class="protection">
                         <label for="{{id}}-system.baseProtection">{{localize "ARMOR.BASE_PROT"}}</label>
                         <select for="{{id}}-system.baseProtection" name="system.baseProtection">
-                            {{#select system.baseProtection}}
-                            <option value="1d4">1d4</option>
-                            <option value="1d6">1d6</option>
-                            <option value="1d8">1d8</option>
-                            <option value="1d10">1d10</option>
-                            <option value="0">{{localize "ARMOR.BONUS_ONLY"}}</option>
-                            <option value="1d0">{{localize "ARMOR.SKIN"}}</option>
-                            {{/select}}
+                            {{selectOptions protection_selection selected=system.baseProtection labelAttr="label"}}
                         </select>
                     </div>
                     <div class="protection">

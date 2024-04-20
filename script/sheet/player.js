@@ -56,6 +56,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
 			isNPC: this.actor.type === "monster",
 			showNpcModifiers: game.settings.get("symbaroum", "showNpcModifiers"),
 		};
+        data.attribute_selection = game.symbaroum.config.ATTRIBUTE_SELECTION;
 		return data;
 	}
 

@@ -119,16 +119,7 @@
                         <div class="initiative" data-tooltip="{{localize "TOOLTIP.COMBAT.INITIATIVE"}}">
                             <label for="{{id}}-system.initiative.attribute">{{localize "INITIATIVE.TITLE"}}</label>
                             <select id="{{id}}-system.initiative.attribute" name="system.initiative.attribute" class="attribute">
-                                {{#select system.initiative.attribute}}
-                                    <option value="quick">{{localize "ATTRIBUTE.QUICK"}}</option>
-                                    <option value="accurate">{{localize "ATTRIBUTE.ACCURATE"}}</option>
-                                    <option value="cunning">{{localize "ATTRIBUTE.CUNNING"}}</option>
-                                    <option value="discreet">{{localize "ATTRIBUTE.DISCREET"}}</option>
-                                    <option value="persuasive">{{localize "ATTRIBUTE.PERSUASIVE"}}</option>
-                                    <option value="resolute">{{localize "ATTRIBUTE.RESOLUTE"}}</option>
-                                    <option value="strong">{{localize "ATTRIBUTE.STRONG"}}</option>
-                                    <option value="vigilant">{{localize "ATTRIBUTE.VIGILANT"}}</option>
-                                {{/select}}
+                                {{selectOptions attribute_selection selected=system.initiative.attribute labelAttr="label"}}
                             </select>
                         </div>
                     </div>

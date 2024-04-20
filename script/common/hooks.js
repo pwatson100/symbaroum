@@ -677,3 +677,24 @@ async function setupEmit() {
   game.symbaroum.info('Setting up Symbaroum emit system');
   SymbaroumCommsListener.ready();
 }
+
+Hooks.once("i18nInit", function () {
+  // Prlocalization of system objects
+  preLocalizeConfig();
+});
+
+function preLocalizeConfig() {
+  const localizeConfigObject = (obj, keys) => {
+    for (let o of Object.values(obj)) {
+      for (let k of keys) {
+        o[k] = game.i18n.localize(o[k]);
+      }
+    }
+  };
+
+  localizeConfigObject(game.symbaroum.config.ACTION_TYPES, ["label"]);
+  localizeConfigObject(game.symbaroum.config.ARMOR_PROTECTION_SELECTION, ["label"]);
+  localizeConfigObject(game.symbaroum.config.ATTRIBUTE_SELECTION, ["label"]);
+  localizeConfigObject(game.symbaroum.config.WEAPON_TYPE_SELECTION, ["label"]);
+}
+
