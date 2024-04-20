@@ -105,6 +105,20 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
       askAttackNb = weaponModifiers.maxAttackNb > 1;
     }
   }
+  let targetAttribute_selection = duplicate(game.symbaroum.config.ATTRIBUTE_SELECTION);
+  targetAttribute_selection.defense = {
+    id: "defense",
+    label: game.i18n.localize(`ARMOR.DEFENSE`),
+  };
+  if(attri_mods.show){
+    for (const [key, value] of Object.entries(targetAttribute_selection)) {
+      targetAttribute_selection[key].label = targetAttribute_selection[key].label +" "+attri_mods[key];
+    }
+  }
+  targetAttribute_selection.custom = {
+    id: "custom",
+    label: game.i18n.localize(`WEAPON.NONE`),
+  };
   const html = await renderTemplate('systems/symbaroum/template/chat/dialog.hbs', {
     "askTargetAttribute": askTargetAttribute,
     "askPoison": askPoison,
@@ -120,7 +134,8 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
     "attri_mods" : attri_mods,
     "roll_defaults": attri_defaults,
     "askAttackNb": askAttackNb,
-    "attNbRadio": "attNbRadio"
+    "attNbRadio": "attNbRadio",
+    "targetAttribute_selection":targetAttribute_selection
   });
 
   let dialog = new CombatDialog({
