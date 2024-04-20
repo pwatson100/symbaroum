@@ -110,7 +110,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
     id: "defense",
     label: game.i18n.localize(`ARMOR.DEFENSE`),
   };
-  if(attri_mods.show){
+  if(attri_mods?.show){
     for (const [key, value] of Object.entries(targetAttribute_selection)) {
       targetAttribute_selection[key].label = targetAttribute_selection[key].label +" "+attri_mods[key];
     }
