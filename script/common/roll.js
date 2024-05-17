@@ -90,14 +90,12 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   };
   const html = await renderTemplate('systems/symbaroum/template/chat/roll.hbs', rollData);
 
-  // Once we go to non-API version of DsN, then set this in chatData: type: CONST.CHAT_MESSAGE_STYLES.ROLL,
   let chatData = {
     user: game.user.id,
     speaker: ChatMessage.getSpeaker({ 
       alias: actingCharName,
       actor: actor.id
     }),
-    type: CONST.CHAT_MESSAGE_STYLES.ROLL,
     roll: JSON.stringify(createRollData(rolls)),
     rollMode: game.settings.get('core', 'rollMode'),
     content: html,
@@ -179,7 +177,6 @@ export async function rollDeathTest(actor, withFavour, modifier) {
     speaker: {
 			actor: actor.id
     },
-    type: CONST.CHAT_MESSAGE_TYPES.ROLL, // TODO - change to v12 version
     roll: JSON.stringify(createRollData(rolls)),
     rollMode: game.settings.get('core', 'rollMode'),
     content: html,

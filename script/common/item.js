@@ -4035,8 +4035,7 @@ async function standardPowerResult(rollData, functionStuff) {
       chatData.whisper = gmList;
     }
   } else if (rolls.length > 0) {
-    // Only shows rolls if they are displayed to everyone
-    chatData.type = CONST.CHAT_MESSAGE_TYPES.ROLL; // TODO change to v12 version
+    // Only shows rolls if they are displayed to  
     chatData.roll = JSON.stringify(createRollData(rolls));
   }
   let NewMessage = await ChatMessage.create(chatData);
