@@ -73,8 +73,12 @@ export class SymbaroumItem extends Item {
     return super.create(data, options);
   }
 
-  prepareData() {
-    super.prepareData();
+  prepareBaseData() {
+    // We do nothing for now
+  }
+
+  prepareDerivedData()
+	{
     this._initializeData(this);
     this._computeCombatData(this.system);
   }
@@ -91,7 +95,7 @@ export class SymbaroumItem extends Item {
       S: "ACTION.SPECIAL",
     };
 
-    system["is" + this.type.capitalize()] = true;
+    system[`is${this.type.capitalize()}`] = true;
 
     system.isPower = system.isTrait || system.isAbility || system.isMysticalPower || system.isRitual || system.isBurden || system.isBoon;
     system.hasLevels = system.isTrait || system.isAbility || system.isMysticalPower;
@@ -4032,7 +4036,7 @@ async function standardPowerResult(rollData, functionStuff) {
     }
   } else if (rolls.length > 0) {
     // Only shows rolls if they are displayed to everyone
-    chatData.type = CONST.CHAT_MESSAGE_TYPES.ROLL;
+    chatData.type = CONST.CHAT_MESSAGE_TYPES.ROLL; // TODO change to v12 version
     chatData.roll = JSON.stringify(createRollData(rolls));
   }
   let NewMessage = await ChatMessage.create(chatData);

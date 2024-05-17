@@ -63,6 +63,7 @@ Hooks.once('init', () => {
     api: new SymbaroumAPI()
   };
 
+  CONFIG.symbaroum = game.symbaroum.config;
 
   game.settings.register('symbaroum', 'worldTemplateVersion', {
     // worldTemplateVersion is deprecated - not to use anymore

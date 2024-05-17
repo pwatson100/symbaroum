@@ -179,7 +179,7 @@ export async function rollDeathTest(actor, withFavour, modifier) {
     speaker: {
 			actor: actor.id
     },
-    type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+    type: CONST.CHAT_MESSAGE_TYPES.ROLL, // TODO - change to v12 version
     roll: JSON.stringify(createRollData(rolls)),
     rollMode: game.settings.get('core', 'rollMode'),
     content: html,

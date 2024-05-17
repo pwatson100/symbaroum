@@ -476,14 +476,14 @@ export function createLineDisplay(weaponModifiers, attackFromPC)
         }
         else if(member.type == game.symbaroum.config.STATUS_DOT) {
           let damageV= attackFromPC ? member.damagePerRound.replace(/d1$/,'') : member.damagePerRoundNPC.toString();
-          member.value += " ("+ damageV + ")";
+          member.value += ` (${damageV})`;
         }
         else if(member.type == game.symbaroum.config.CORRUPTION_DAMAGE) {
           if(!attackFromPC) {
             member.value = member.damageNPC.toString();
           }
         } else if(member.type == game.symbaroum.config.TYPE_ATTRIBUTE) {
-          member.value = " "+game.i18n.localize(game.symbaroum.config.attributeLabels[member.attribute]);
+          member.value = `${game.i18n.localize(game.symbaroum.config.attributeLabels[member.attribute])}`;
         }
       });
       if(pack.type === game.symbaroum.config.PACK_CHECK)
