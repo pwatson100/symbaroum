@@ -388,27 +388,15 @@ Hooks.once('init', () => {
 
 Hooks.once('ready', () => {
   game.symbaroum.macros.macroReady();
-  let originalVersion = game.settings.get('symbaroum', 'systemMigrationVersion');
+  const originalVersion = game.settings.get('symbaroum', 'systemMigrationVersion');  
   migrateWorld();
   sendDevMessage();
-  showReleaseNotes();
+  showReleaseNotes(originalVersion);
   setupConfigOptions();
   setupEmit();
   setup3PartySettings();
   // enrichTextEditors();
   tourSetup();
-  if(originalVersion === '0' && game.user.isGM) {
-    let message = `<h1>Welcome to your new Symbaroum world</h1>
-    If you are new to the system, recommend that you check out the @UUID[JournalEntry.sSZzEbMgSLEclyBL]{system guide} in the journals.
-    <br/>We also have a set of tours to help you get started, for @Tour[settings-tour]{settings} and @Tour[acompendium-tour]{compendiums}. `;
-    ChatMessage.create(
-      {
-          speaker: ChatMessage.getSpeaker({alias: "Symbaroum"}),
-             // ChatMessage.getWhisperRecipients('GM'),
-          content: message
-      }); 
-  }
-
 });
 
 Hooks.on("preDocumentSheetRegistrarInit", (settings) => {
@@ -620,58 +608,70 @@ async function createBlessedShield(actor, protection = '1d4') {
   await Item.create(blessedShield, { parent: actor }, { renderSheet: false });
 }
 
-async function showReleaseNotes() {
-  if (game.user.isGM) {
-    try {
-      const newVer = game.system.version;
-      const releaseNoteName = 'Symbaroum System guide EN';
-      const releasePackLabel = 'Symbaroum for FVTT system user guides';
+async function showReleaseNotes(originalVersion) {
+  if (!game.user.isGM) {
+    return;
+  }
+  try {
+    const newVer = game.system.version;
+    const releaseNoteName = 'Symbaroum System guide EN';
+    const releasePackLabel = 'Symbaroum for FVTT system user guides';
 
-      let currentVer = '0';
-      let oldReleaseNotes = game.journal.getName(releaseNoteName);
-      if (oldReleaseNotes !== undefined && oldReleaseNotes !== null && oldReleaseNotes.getFlag('symbaroum', 'ver') !== undefined) {
-        currentVer = oldReleaseNotes.getFlag('symbaroum', 'ver');
-      }
-      if (newVer === currentVer) {
-        // Up to date
-        return;
-      }
+    let currentVer = '0';
+    let oldReleaseNotes = game.journal.getName(releaseNoteName);
+    if (oldReleaseNotes !== undefined && oldReleaseNotes !== null && oldReleaseNotes.getFlag('symbaroum', 'ver') !== undefined) {
+      currentVer = oldReleaseNotes.getFlag('symbaroum', 'ver');
+    }
+    if (newVer === currentVer) {
+      // Up to date
+      return;
+    }
 
-      let newReleasePack = game.packs.find((p) => p.metadata.label === releasePackLabel);
-      if (newReleasePack === null || newReleasePack === undefined) {
-        let err = 'No pack found for the system guide in this release';
-        game.symbaroum.error(err);
-        ui.notifications.error(err);
-        // This is bad - the symbaroum pack does not exist in the system packages
-        return;
-      }
-      await newReleasePack.getIndex();
+    let newReleasePack = game.packs.find((p) => p.metadata.label === releasePackLabel);
+    if (newReleasePack === null || newReleasePack === undefined) {
+      let err = 'No pack found for the system guide in this release';
+      game.symbaroum.error(err);
+      ui.notifications.error(err);
+      // This is bad - the symbaroum pack does not exist in the system packages
+      return;
+    }
+    await newReleasePack.getIndex();
 
-      let newReleaseNotes = newReleasePack.index.find((j) => j.name === releaseNoteName);
-      // game.symbaroum.log("Found new release notes in the compendium pack");
-      if (newReleaseNotes === undefined || newReleaseNotes === null) {
-        let err = 'No system guide found in this release';
-        game.symbaroum.error(err);
-        ui.notifications.error(err);
-        return;
-      }
+    let newReleaseNotes = newReleasePack.index.find((j) => j.name === releaseNoteName);
+    // game.symbaroum.log("Found new release notes in the compendium pack");
+    if (newReleaseNotes === undefined || newReleaseNotes === null) {
+      let err = 'No system guide found in this release';
+      game.symbaroum.error(err);
+      ui.notifications.error(err);
+      return;
+    }
 
-      // Don't delete until we have new release Pack
-      if (oldReleaseNotes !== null && oldReleaseNotes !== undefined) {
-        await oldReleaseNotes.delete();
-      }
+    // Don't delete until we have new release Pack
+    if (oldReleaseNotes !== null && oldReleaseNotes !== undefined) {
+      await oldReleaseNotes.delete();
+    }
 
-      await game.journal.importFromCompendium(newReleasePack, newReleaseNotes._id,{}, { keepId: true });
-      let newReleaseJournal = game.journal.getName(newReleaseNotes.name);
+    await game.journal.importFromCompendium(newReleasePack, newReleaseNotes._id,{}, { keepId: true });
+    let newReleaseJournal = game.journal.getName(newReleaseNotes.name);
 
-      await newReleaseJournal.setFlag('symbaroum', 'ver', newVer);
+    await newReleaseJournal.setFlag('symbaroum', 'ver', newVer);
 
-      // Show journal
-      await newReleaseJournal.sheet.render(true, { sheetMode: 'text' });
-    } catch (error) {
-      game.symbaroum.error(error);
-    } // end of try
-  } // end of if(isgm)
+    // Show journal
+    return newReleaseJournal.sheet.render(true, { sheetMode: 'text' });
+    if(originalVersion === '0') {
+      // TODO - move to hbs templat or other means for translating
+      const message = `<h1>Welcome to your new Symbaroum world</h1>
+      If you are new to the system, recommend that you check out the @UUID[JournalEntry.sSZzEbMgSLEclyBL]{system guide} in the journals.
+      <br/>We also have a set of tours to help you get started, for @Tour[settings-tour]{settings} and @Tour[acompendium-tour]{compendiums}. `;
+      ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({alias: "Symbaroum"}),
+        content: message
+      }); 
+    }
+  
+  } catch (error) {
+    game.symbaroum.error(error);
+  } // end of try
 } // end of function
 
 async function setupEmit() {

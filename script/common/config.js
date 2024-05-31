@@ -45,8 +45,8 @@ SYMBAROUM.itemImages = {
 };
 
 // Deprecated item types
-SYMBAROUM.itemDeprecated = ["artifact", "base"];
-
+SYMBAROUM.itemDeprecated = ["artifact"];
+SYMBAROUM.itemValid = [ "ability", "armor", "boon", "burden", "equipment", "mysticalPower", "ritual", "trait", "weapon" ];
 // Ability definitions
 SYMBAROUM.abilitiesList = {
   none: "ABILITY_LABEL.DEFAULT",

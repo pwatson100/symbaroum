@@ -6,13 +6,14 @@ export class SymbaroumCommsListener
         if(game.user.isGM && comData.type === "GMMessage")
         {
             const html = await renderTemplate("systems/symbaroum/template/chat/applyEffectsButton.hbs");
+            const flagKey = `flags.${game.system.id}.applyEffects`;
             const chatData = {
                 speaker: ChatMessage.getSpeaker({alias:game.i18n.localize("DIALOG.SYSTEM_MESSAGE")}),
                 whisper: [game.user],
-                content: html
+                content: html             
             };
-            let newMessage = await ChatMessage.create(chatData);
-            await newMessage.setFlag(game.system.id, 'applyEffects', comData.data);
+            chatData[flagKey] = comData.data;
+            return ChatMessage.create(chatData);            
         }
         else if(comData.type === "ResistRoll" && comData.data.targetUserId === game.userId)
         {
@@ -21,13 +22,14 @@ export class SymbaroumCommsListener
                 mainText: comData.data.mainText
             }
             const html = await renderTemplate("systems/symbaroum/template/chat/resistButton.hbs", templateData);
+            const flagKey = `flags.${game.system.id}.resistRoll`;
             const chatData = {
                 speaker: ChatMessage.getSpeaker({alias:game.i18n.localize("DIALOG.SYSTEM_MESSAGE")}),
                 whisper: [game.user],
                 content: html
             };
-            let newMessage = await ChatMessage.create(chatData);
-            await newMessage.setFlag(game.system.id, 'resistRoll', comData.data);
+            chatData[flagKey] = comData.data;
+            return ChatMessage.create(chatData);        
         }
     }
 
