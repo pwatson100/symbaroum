@@ -67,8 +67,10 @@
       "path": "lang/it.json"
     }
   ],
-  "gridDistance": 1,
-  "gridUnits": "m",
+  "grid": {
+    "distance": 1,
+    "units": "m"
+  },
   "primaryTokenAttribute": "health.toughness",
   "secondaryTokenAttribute": "health.corruption",
   "initiative": "1d20[tiebreaker]/100000 + @initiative.value",

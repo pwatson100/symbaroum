@@ -189,7 +189,7 @@ export class SymbaroumItem extends Item {
         system.pcDamage += "+1";
       }
       try {
-        let weaponRoll = new Roll(baseDamage).evaluateSync({ maximize: true, async: false });
+        let weaponRoll = new Roll(baseDamage).evaluateSync({ maximize: true });
         system.npcDamage = Math.ceil(weaponRoll.total / 2);
       } catch (err) {
         system.npcDamage = 0;
@@ -222,7 +222,7 @@ export class SymbaroumItem extends Item {
 
       system.npcProtection = 0;
       if (protection !== "" && Roll.validate(protection)) {
-        system.npcProtection = Math.ceil(new Roll(protection).evaluateSync({ maximize: true, async: false }).total / 2);
+        system.npcProtection = Math.ceil(new Roll(protection).evaluateSync({ maximize: true }).total / 2);
       }
       if (system.qualities?.reinforced) {
         system.npcProtection += 1;
@@ -462,7 +462,7 @@ export class SymbaroumItem extends Item {
           // NPC - cant get away from this
           let npcProt = 0;
           try {
-            npcProt = Math.ceil(new Roll(this.system.bonusProtection).evaluateSync({ async: false, maximize: true }).total / 2);
+            npcProt = Math.ceil(new Roll(this.system.bonusProtection).evaluateSync({ maximize: true }).total / 2);
           } catch (err) {
             ui.notifications?.error(`Could not evaulate armor bonus protection for ${this.name} - check bonus damage fields -` + err);
           }
@@ -515,7 +515,7 @@ export class SymbaroumItem extends Item {
           let plus = "+";
           let npcProt = 0;
           try {
-            npcProt = Math.ceil(new Roll(this.system.bonusProtection).evaluateSync({ async: false, maximize: true }).total / 2);
+            npcProt = Math.ceil(new Roll(this.system.bonusProtection).evaluateSync({ maximize: true }).total / 2);
           } catch (err) {
             ui.notifications?.error(`Could not evaluate armor bonus protection for ${this.name} - check bonus damage fields -` + err);
           }
@@ -570,7 +570,7 @@ export class SymbaroumItem extends Item {
         // NPC - cant get away from this
         let npcDam = 0;
         try {
-          npcDam = Math.ceil(new Roll(this.system.bonusDamage).evaluateSync({ async: false, maximize: true }).total / 2);
+          npcDam = Math.ceil(new Roll(this.system.bonusDamage).evaluateSync({ maximize: true }).total / 2);
         } catch (err) {
           ui.notifications?.error(`Could not evaluate weapon bonus for ${this.name} - check bonus damage fields - ` + err);
         }

@@ -840,7 +840,7 @@ export class SymbaroumActor extends Actor {
 			}
 		}
 		game.symbaroum.log("getCorruption", corruptionFormula, functionStuff);
-		let corRoll = new Roll(corruptionFormula).evaluateSync({ async: false });
+		let corRoll = await (new Roll(corruptionFormula)).evaluate();
 		return { value: corRoll.total, sorceryRoll: sorceryRoll, corruptionRoll: corRoll };
 	}
 

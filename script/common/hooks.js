@@ -595,7 +595,7 @@ async function setupStatusEffects() {
 
 async function createBlessedShield(actor, protection = '1d4') {
   let blessedShield = {};
-  blessedShield.system = foundry.utils.deepClone(game.system.model.Item.armor);
+  blessedShield.system = foundry.utils.deepClone(game.model.Item.armor);
 
   blessedShield.name = game.i18n.localize('POWER_LABEL.BLESSED_SHIELD');
   blessedShield.type = "armor";
