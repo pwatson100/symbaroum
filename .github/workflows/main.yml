@@ -25,7 +25,7 @@ jobs:
         # 4. Configure the datapath as the github workspace variable.
       - run: fvtt configure set "dataPath" ${GITHUB_WORKSPACE}
         # 5. Tell the FVTT CLI that we are working on a "system" package.
-      - run: fvtt package workon fvtt package workon "alienrpg" --type "System"
+      - run: fvtt package workon fvtt package workon "symbaroum" --type "System"
         # 6-11. Package each folder of source json files into the appropriate LevelDB pack.
       - run: fvtt package pack "symbaroum" --in "src/packs/symbaroum" --out "packs"
       - run: fvtt package pack "systemuserguides" --in "src/packs/systemuserguides" --out "packs"
