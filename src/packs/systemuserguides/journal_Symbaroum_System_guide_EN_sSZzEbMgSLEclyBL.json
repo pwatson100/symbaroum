@@ -1,0 +1,73 @@
+{
+	"_id": "sSZzEbMgSLEclyBL",
+	"name": "Symbaroum System guide EN",
+	"folder": null,
+	"sort": 0,
+	"flags": {
+		"core": {
+			"sourceId": "JournalEntry.WGo6jbcbdCmTy0su",
+			"sheetClass": "symbaroum.SymbaroumWide"
+		},
+		"symbaroum": {
+			"ver": "4.0.1"
+		}
+	},
+	"pages": [
+		{
+			"name": "Symbaroum System guide EN",
+			"type": "text",
+			"title": {
+				"show": false,
+				"level": 1
+			},
+			"text": {
+				"format": 1,
+				"content": "<p>@RAW[/systems/symbaroum/template/user-guide-en.html]</p>",
+				"markdown": ""
+			},
+			"_id": "umdXR1sEdBrsqwkJ",
+			"image": {},
+			"video": {
+				"controls": true,
+				"volume": 0.5
+			},
+			"src": null,
+			"system": {},
+			"sort": 0,
+			"ownership": {
+				"default": -1
+			},
+			"flags": {
+				"core": {
+					"sheetClass": "core.JournalTextTinyMCESheet"
+				}
+			},
+			"_stats": {
+				"coreVersion": "12.325",
+				"systemId": null,
+				"systemVersion": null,
+				"createdTime": null,
+				"modifiedTime": null,
+				"lastModifiedBy": null,
+				"compendiumSource": null,
+				"duplicateSource": null
+			},
+			"_key": "!journal.pages!sSZzEbMgSLEclyBL.umdXR1sEdBrsqwkJ"
+		}
+	],
+	"ownership": {
+		"default": 0,
+		"BeO6RfjvXSEd7PoV": 3
+	},
+	"_stats": {
+		"systemId": "symbaroum",
+		"systemVersion": "4.0.1",
+		"coreVersion": "12.325",
+		"createdTime": 1665404326177,
+		"modifiedTime": 1667738222388,
+		"lastModifiedBy": "EXOzwtPZWRz2Nge1",
+		"compendiumSource": "JournalEntry.WGo6jbcbdCmTy0su",
+		"duplicateSource": null
+	},
+	"_key": "!journal!sSZzEbMgSLEclyBL"
+}
