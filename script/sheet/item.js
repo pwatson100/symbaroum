@@ -15,7 +15,7 @@ export class SymbaroumItemSheet extends ItemSheet {
         "system.master.description",
     ];
 
-    if(hasProperty(data,"system.power")) {
+    if(foundry.utils.hasProperty(data,"system.power")) {
       for(let key in data.system.power) {
         enrichedFields.push(`system.power.${key}.description`);
       }
@@ -40,6 +40,7 @@ export class SymbaroumItemSheet extends ItemSheet {
       isGM: game.user.isGM,
       allowShowReference:  game.settings.get('symbaroum', 'allowShowReference')
     };
+    data.action_types = game.symbaroum.config.ACTION_TYPES;
     return data;
   }
 
@@ -63,7 +64,7 @@ export class SymbaroumItemSheet extends ItemSheet {
     const editors = Object.values(this.editors).filter((editor) => editor.active);
     for (const editor of editors) {
       if(editor.mce)
-        setProperty(upDate, editor.target, editor.mce.getContent());
+      foundry.utils.setProperty(upDate, editor.target, editor.mce.getContent());
     }    
   }
 
@@ -119,7 +120,7 @@ export class SymbaroumItemSheet extends ItemSheet {
 
   async sendToChat() {
     const itemData = {};
-    itemData.system = duplicate(this.item.system);
+    itemData.system = foundry.utils.duplicate(this.item.system);
     game.symbaroum.log("sendToChat data:",itemData);
     itemData.img = this.item.img;
     itemData.name = this.item.name;
@@ -152,8 +153,8 @@ export class SymbaroumItemSheet extends ItemSheet {
   async _enrichTextFields(data, fieldNameArr) {
     for(let t = 0; t < fieldNameArr.length; t++ ) 
     {
-      if(hasProperty(data,fieldNameArr[t])) {
-        setProperty(data, fieldNameArr[t], await TextEditor.enrichHTML(getProperty(data,fieldNameArr[t]), { async:true}) );
+      if(foundry.utils.hasProperty(data,fieldNameArr[t])) {
+        foundry.utils.setProperty(data, fieldNameArr[t], await TextEditor.enrichHTML(foundry.utils.getProperty(data,fieldNameArr[t]), { async:true}) );
       }
     };
   }

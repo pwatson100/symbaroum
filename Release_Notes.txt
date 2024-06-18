@@ -1,3 +1,6 @@
+Version 5.0
+* Updated for Foundry vtt version 12
+
 Version 4.5
 
 * Updated corruption threshold bonus bug #652

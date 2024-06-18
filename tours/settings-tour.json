@@ -51,7 +51,7 @@
         },
         {
             "id": "goto-settingall",
-            "selector": "div.scrollable",
+            "selector": "form.categories div.scrollable",
             "title": "SYMBAROUM.TOUR_CONFIG_SYMBSETTINGS_ALL",
             "content": "SYMBAROUM.TOUR_CONFIG_SYMBSETTINGS_ALL_CONTENT",
             "action": "scrollIntoView"

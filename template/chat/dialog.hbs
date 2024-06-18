@@ -3,18 +3,7 @@
     <div class="attribute">
         <label for="targetAttribute">{{localize "DIALOG.VERSUS"}}</label>
         <select id="targetAttribute">
-            {{#select roll_defaults.targetAttributeName}}
-            <option value="custom">{{localize "ATTRIBUTE.CUSTOM"}}</option>
-            <option value="defense">{{localize "ARMOR.DEFENSE"}} {{#if attri_mods.show}}({{attri_mods.defense}}){{/if}}</option>
-            <option value="accurate">{{localize "ATTRIBUTE.ACCURATE"}} {{#if attri_mods.show}}({{attri_mods.accurate}}){{/if}}</option>
-            <option value="cunning">{{localize "ATTRIBUTE.CUNNING"}} {{#if attri_mods.show}}({{attri_mods.cunning}}){{/if}}</option>
-            <option value="discreet">{{localize "ATTRIBUTE.DISCREET"}} {{#if attri_mods.show}}({{attri_mods.discreet}}){{/if}}</option>
-            <option value="persuasive">{{localize "ATTRIBUTE.PERSUASIVE"}} {{#if attri_mods.show}}({{attri_mods.persuasive}}){{/if}}</option>
-            <option value="quick">{{localize "ATTRIBUTE.QUICK"}} {{#if attri_mods.show}}({{attri_mods.quick}}){{/if}}</option>
-            <option value="resolute">{{localize "ATTRIBUTE.RESOLUTE"}} {{#if attri_mods.show}}({{attri_mods.resolute}}){{/if}}</option>
-            <option value="strong">{{localize "ATTRIBUTE.STRONG"}} {{#if attri_mods.show}}({{attri_mods.strong}}){{/if}}</option>
-            <option value="vigilant">{{localize "ATTRIBUTE.VIGILANT"}} {{#if attri_mods.show}}({{attri_mods.vigilant}}){{/if}}</option>
-            {{/select}}
+          {{selectOptions targetAttribute_selection selected=roll_defaults.targetAttributeName labelAttr="label"}}
         </select>
     </div>
   {{/if}}

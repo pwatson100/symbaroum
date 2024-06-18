@@ -63,6 +63,7 @@ Hooks.once('init', () => {
     api: new SymbaroumAPI()
   };
 
+  CONFIG.symbaroum = game.symbaroum.config;
 
   game.settings.register('symbaroum', 'worldTemplateVersion', {
     // worldTemplateVersion is deprecated - not to use anymore
@@ -387,27 +388,15 @@ Hooks.once('init', () => {
 
 Hooks.once('ready', () => {
   game.symbaroum.macros.macroReady();
-  let originalVersion = game.settings.get('symbaroum', 'systemMigrationVersion');
+  const originalVersion = game.settings.get('symbaroum', 'systemMigrationVersion');  
   migrateWorld();
   sendDevMessage();
-  showReleaseNotes();
+  showReleaseNotes(originalVersion);
   setupConfigOptions();
   setupEmit();
   setup3PartySettings();
   // enrichTextEditors();
   tourSetup();
-  if(originalVersion === '0' && game.user.isGM) {
-    let message = `<h1>Welcome to your new Symbaroum world</h1>
-    If you are new to the system, recommend that you check out the @UUID[JournalEntry.sSZzEbMgSLEclyBL]{system guide} in the journals.
-    <br/>We also have a set of tours to help you get started, for @Tour[settings-tour]{settings} and @Tour[acompendium-tour]{compendiums}. `;
-    ChatMessage.create(
-      {
-          speaker: ChatMessage.getSpeaker({alias: "Symbaroum"}),
-             // ChatMessage.getWhisperRecipients('GM'),
-          content: message
-      }); 
-  }
-
 });
 
 Hooks.on("preDocumentSheetRegistrarInit", (settings) => {
@@ -425,7 +414,7 @@ Hooks.once('renderSettings', () => {
 
 Hooks.on('preCreateActor', (doc, createData, options, userid) => {
   let createChanges = {};
-  mergeObject(createChanges, {
+  foundry.utils.mergeObject(createChanges, {
     'prototypeToken.displayName': CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,
     'prototypeToken.displayBars': CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,
     'prototypeToken.disposition': CONST.TOKEN_DISPOSITIONS.NEUTRAL,
@@ -495,7 +484,7 @@ Hooks.on('combatStart', async (combat, ...args) => {
 
 Hooks.on('preCreateChatMessage', (doc, message, options, userid) => {
   if (message.flags !== undefined) {
-    if (getProperty(message.flags, 'core.initiativeRoll') && game.settings.get('symbaroum', 'hideIniativeRolls')) {
+    if (foundry.utils.getProperty(message.flags, 'core.initiativeRoll') && game.settings.get('symbaroum', 'hideIniativeRolls')) {
       return false;
     }
   }
@@ -524,7 +513,7 @@ Hooks.on('renderChatMessage', async (chatItem, html, data) => {
           await actor.removeCondition(flagData.removeEffect);
         }
         if (flagData.defeated && ui.combat.viewed && token) {
-          let effect = duplicate(CONFIG.statusEffects.find((e) => e.id == 'dead'));
+          let effect = foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id == 'dead'));
           await token.toggleEffect(effect, { overlay: true, active: true });          
         }
 
@@ -606,7 +595,7 @@ async function setupStatusEffects() {
 
 async function createBlessedShield(actor, protection = '1d4') {
   let blessedShield = {};
-  blessedShield.system = foundry.utils.deepClone(game.system.model.Item.armor);
+  blessedShield.system = foundry.utils.deepClone(game.model.Item.armor);
 
   blessedShield.name = game.i18n.localize('POWER_LABEL.BLESSED_SHIELD');
   blessedShield.type = "armor";
@@ -619,61 +608,95 @@ async function createBlessedShield(actor, protection = '1d4') {
   await Item.create(blessedShield, { parent: actor }, { renderSheet: false });
 }
 
-async function showReleaseNotes() {
-  if (game.user.isGM) {
-    try {
-      const newVer = game.system.version;
-      const releaseNoteName = 'Symbaroum System guide EN';
-      const releasePackLabel = 'Symbaroum for FVTT system user guides';
+async function showReleaseNotes(originalVersion) {
+  if (!game.user.isGM) {
+    return;
+  }
+  try {
+    const newVer = game.system.version;
+    const releaseNoteName = 'Symbaroum System guide EN';
+    const releasePackLabel = 'Symbaroum for FVTT system user guides';
 
-      let currentVer = '0';
-      let oldReleaseNotes = game.journal.getName(releaseNoteName);
-      if (oldReleaseNotes !== undefined && oldReleaseNotes !== null && oldReleaseNotes.getFlag('symbaroum', 'ver') !== undefined) {
-        currentVer = oldReleaseNotes.getFlag('symbaroum', 'ver');
-      }
-      if (newVer === currentVer) {
-        // Up to date
-        return;
-      }
+    let currentVer = '0';
+    let oldReleaseNotes = game.journal.getName(releaseNoteName);
+    if (oldReleaseNotes !== undefined && oldReleaseNotes !== null && oldReleaseNotes.getFlag('symbaroum', 'ver') !== undefined) {
+      currentVer = oldReleaseNotes.getFlag('symbaroum', 'ver');
+    }
+    if (newVer === currentVer) {
+      // Up to date
+      return;
+    }
 
-      let newReleasePack = game.packs.find((p) => p.metadata.label === releasePackLabel);
-      if (newReleasePack === null || newReleasePack === undefined) {
-        let err = 'No pack found for the system guide in this release';
-        game.symbaroum.error(err);
-        ui.notifications.error(err);
-        // This is bad - the symbaroum pack does not exist in the system packages
-        return;
-      }
-      await newReleasePack.getIndex();
+    let newReleasePack = game.packs.find((p) => p.metadata.label === releasePackLabel);
+    if (newReleasePack === null || newReleasePack === undefined) {
+      let err = 'No pack found for the system guide in this release';
+      game.symbaroum.error(err);
+      ui.notifications.error(err);
+      // This is bad - the symbaroum pack does not exist in the system packages
+      return;
+    }
+    await newReleasePack.getIndex();
 
-      let newReleaseNotes = newReleasePack.index.find((j) => j.name === releaseNoteName);
-      // game.symbaroum.log("Found new release notes in the compendium pack");
-      if (newReleaseNotes === undefined || newReleaseNotes === null) {
-        let err = 'No system guide found in this release';
-        game.symbaroum.error(err);
-        ui.notifications.error(err);
-        return;
-      }
+    let newReleaseNotes = newReleasePack.index.find((j) => j.name === releaseNoteName);
+    // game.symbaroum.log("Found new release notes in the compendium pack");
+    if (newReleaseNotes === undefined || newReleaseNotes === null) {
+      let err = 'No system guide found in this release';
+      game.symbaroum.error(err);
+      ui.notifications.error(err);
+      return;
+    }
 
-      // Don't delete until we have new release Pack
-      if (oldReleaseNotes !== null && oldReleaseNotes !== undefined) {
-        await oldReleaseNotes.delete();
-      }
+    // Don't delete until we have new release Pack
+    if (oldReleaseNotes !== null && oldReleaseNotes !== undefined) {
+      await oldReleaseNotes.delete();
+    }
 
-      await game.journal.importFromCompendium(newReleasePack, newReleaseNotes._id,{}, { keepId: true });
-      let newReleaseJournal = game.journal.getName(newReleaseNotes.name);
+    await game.journal.importFromCompendium(newReleasePack, newReleaseNotes._id,{}, { keepId: true });
+    let newReleaseJournal = game.journal.getName(newReleaseNotes.name);
 
-      await newReleaseJournal.setFlag('symbaroum', 'ver', newVer);
+    await newReleaseJournal.setFlag('symbaroum', 'ver', newVer);
 
-      // Show journal
-      await newReleaseJournal.sheet.render(true, { sheetMode: 'text' });
-    } catch (error) {
-      game.symbaroum.error(error);
-    } // end of try
-  } // end of if(isgm)
+    // Show journal
+    return newReleaseJournal.sheet.render(true, { sheetMode: 'text' });
+    if(originalVersion === '0') {
+      // TODO - move to hbs templat or other means for translating
+      const message = `<h1>Welcome to your new Symbaroum world</h1>
+      If you are new to the system, recommend that you check out the @UUID[JournalEntry.sSZzEbMgSLEclyBL]{system guide} in the journals.
+      <br/>We also have a set of tours to help you get started, for @Tour[settings-tour]{settings} and @Tour[acompendium-tour]{compendiums}. `;
+      ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({alias: "Symbaroum"}),
+        content: message
+      }); 
+    }
+  
+  } catch (error) {
+    game.symbaroum.error(error);
+  } // end of try
 } // end of function
 
 async function setupEmit() {
   game.symbaroum.info('Setting up Symbaroum emit system');
   SymbaroumCommsListener.ready();
 }
+
+Hooks.once("i18nInit", function () {
+  // Prlocalization of system objects
+  preLocalizeConfig();
+});
+
+function preLocalizeConfig() {
+  const localizeConfigObject = (obj, keys) => {
+    for (let o of Object.values(obj)) {
+      for (let k of keys) {
+        o[k] = game.i18n.localize(o[k]);
+        console.log(o[k])
+      }
+    }
+  };
+  localizeConfigObject(game.symbaroum.config.ACTION_TYPES, ["label"]);
+  localizeConfigObject(game.symbaroum.config.ARMOR_PROTECTION_SELECTION, ["label"]);
+  localizeConfigObject(game.symbaroum.config.ATTRIBUTE_SELECTION, ["label"]);
+  localizeConfigObject(game.symbaroum.config.WEAPON_TYPE_SELECTION, ["label"]);
+
+}
+

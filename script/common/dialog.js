@@ -105,6 +105,20 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
       askAttackNb = weaponModifiers.maxAttackNb > 1;
     }
   }
+  let targetAttribute_selection = foundry.utils.duplicate(game.symbaroum.config.ATTRIBUTE_SELECTION);
+  targetAttribute_selection.defense = {
+    id: "defense",
+    label: game.i18n.localize(`ARMOR.DEFENSE`),
+  };
+  if(attri_mods?.show){
+    for (const [key, value] of Object.entries(targetAttribute_selection)) {
+      targetAttribute_selection[key].label = targetAttribute_selection[key].label +" "+attri_mods[key];
+    }
+  }
+  targetAttribute_selection.custom = {
+    id: "custom",
+    label: game.i18n.localize(`WEAPON.NONE`),
+  };
   const html = await renderTemplate('systems/symbaroum/template/chat/dialog.hbs', {
     "askTargetAttribute": askTargetAttribute,
     "askPoison": askPoison,
@@ -120,7 +134,8 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
     "attri_mods" : attri_mods,
     "roll_defaults": attri_defaults,
     "askAttackNb": askAttackNb,
-    "attNbRadio": "attNbRadio"
+    "attNbRadio": "attNbRadio",
+    "targetAttribute_selection":targetAttribute_selection
   });
 
   let dialog = new CombatDialog({
@@ -188,7 +203,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
 
               try {
                 // Validate string as valid roll object              
-                let r = new Roll(damModifier,{}).evaluate({async:false});
+                let r = await (new Roll(damModifier,{})).evaluate();
               } catch (err) {
                   ui.notifications.error(`The ${game.i18n.localize("DIALOG.DAMAGE_MODIFIER")} can't be used for rolling damage ${err}`);
                   reject("invalid");
@@ -461,14 +476,14 @@ export function createLineDisplay(weaponModifiers, attackFromPC)
         }
         else if(member.type == game.symbaroum.config.STATUS_DOT) {
           let damageV= attackFromPC ? member.damagePerRound.replace(/d1$/,'') : member.damagePerRoundNPC.toString();
-          member.value += " ("+ damageV + ")";
+          member.value += ` (${damageV})`;
         }
         else if(member.type == game.symbaroum.config.CORRUPTION_DAMAGE) {
           if(!attackFromPC) {
             member.value = member.damageNPC.toString();
           }
         } else if(member.type == game.symbaroum.config.TYPE_ATTRIBUTE) {
-          member.value = " "+game.i18n.localize(game.symbaroum.config.attributeLabels[member.attribute]);
+          member.value = `${game.i18n.localize(game.symbaroum.config.attributeLabels[member.attribute])}`;
         }
       });
       if(pack.type === game.symbaroum.config.PACK_CHECK)

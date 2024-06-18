@@ -1,90 +1,87 @@
 {
-  "name": "symbaroum",
-  "id": "symbaroum",
-  "title": "Symbaroum",
-  "description": "Twilight falls. Davokar darkens.",
-  "version": "4.5",
-  "minimumCoreVersion": "10",
-  "compatibleCoreVersion": "10",
-  "compatibility": {
-    "minimum": 10,
-    "verified": 11,
-    "maximum": 11
-  },
-  "authors": [{ "name": "Paul Watson" }, { "name": "Bithir" }, { "name": "Khaali" }],
-  "scripts": [],
-  "esmodules": ["script/common/hooks.js"],
-  "styles": ["css/symbaroum.css"],
-  "packs": [
-    {
-      "name": "systemuserguides",
-      "label": "Symbaroum for FVTT system user guides",
-      "system": "symbaroum",
-      "path": "./packs/systemuserguides.db",
-      "module": "symbaroum",
-      "type": "JournalEntry",
-      "banner": "systems/symbaroum/asset/image/symbaroum-compendium-banner.webp"
-    },
-    {
-      "name": "symbaroum",
-      "label": "Symbaroum System",
-      "system": "symbaroum",
-      "path": "./packs/symbaroum.db",
-      "module": "symbaroum",
-      "type": "Adventure",
-      "banner": "systems/symbaroum/asset/image/symbaroum-compendium-banner.webp"
-    }
-  ],
-  "languages": [
-    {
-      "lang": "en",
-      "name": "English",
-      "path": "lang/en.json"
-    },
-    {
-      "lang": "fr",
-      "name": "Français",
-      "path": "lang/fr.json"
-    },
-    {
-      "lang": "es",
-      "name": "Español",
-      "path": "lang/es.json"
-    },
-    {
-      "lang": "sv",
-      "name": "Svenska ",
-      "path": "lang/sv.json"
-    },
-    {
-      "lang": "de",
-      "name": "Deutsche ",
-      "path": "lang/de.json"
-    },
-    {
-      "lang": "it",
-      "name": "Italiano",
-      "path": "lang/it.json"
-    }
-  ],
-  "gridDistance": 1,
-  "gridUnits": "m",
-  "primaryTokenAttribute": "health.toughness",
-  "secondaryTokenAttribute": "health.corruption",
-  "initiative": "1d20[tiebreaker]/100000 + @initiative.value",
-  "socket": true,
-  "media": [
-    {
-      "type": "cover",
-      "url": "https://raw.githubusercontent.com/pwatson100/symbaroum/master/asset/image/symbaroum-banner.webp"
-    },
-    {
-      "type": "setup",
-      "thumbnail": "systems/symbaroum/asset/image/symbaroum-cover.webp"
-    }
-  ],
-  "url": "https://github.com/pwatson100/symbaroum",
-  "manifest": "https://github.com/pwatson100/symbaroum/releases/latest/download/system.json",
-  "download": "https://github.com/pwatson100/symbaroum/releases/latest/download/master.zip",
-  "license": "LICENSE.txt"
+	"id": "symbaroum",
+	"title": "Symbaroum",
+	"description": "Twilight falls. Davokar darkens.",
+	"version": "5.0.0",
+	"compatibility": {
+		"minimum": 12,
+		"verified": 12,
+		"maximum": 12
+	},
+	"authors": [{ "name": "Paul Watson" }, { "name": "Bithir" }, { "name": "Khaali" }],
+	"scripts": [],
+	"esmodules": ["script/common/hooks.js"],
+	"styles": ["css/symbaroum.css"],
+	"packs": [
+		{
+			"name": "systemuserguides",
+			"label": "Symbaroum for FVTT system user guides",
+			"system": "symbaroum",
+			"module": "symbaroum",
+			"type": "JournalEntry",
+			"banner": "systems/symbaroum/asset/image/symbaroum-compendium-banner.webp"
+		},
+		{
+			"name": "symbaroum",
+			"label": "Symbaroum System",
+			"system": "symbaroum",
+			"module": "symbaroum",
+			"type": "Adventure",
+			"banner": "systems/symbaroum/asset/image/symbaroum-compendium-banner.webp"
+		}
+	],
+	"languages": [
+		{
+			"lang": "en",
+			"name": "English",
+			"path": "lang/en.json"
+		},
+		{
+			"lang": "fr",
+			"name": "Français",
+			"path": "lang/fr.json"
+		},
+		{
+			"lang": "es",
+			"name": "Español",
+			"path": "lang/es.json"
+		},
+		{
+			"lang": "sv",
+			"name": "Svenska ",
+			"path": "lang/sv.json"
+		},
+		{
+			"lang": "de",
+			"name": "Deutsche ",
+			"path": "lang/de.json"
+		},
+		{
+			"lang": "it",
+			"name": "Italiano",
+			"path": "lang/it.json"
+		}
+	],
+	"grid": {
+		"distance": 1,
+		"units": "m"
+	},
+	"primaryTokenAttribute": "health.toughness",
+	"secondaryTokenAttribute": "health.corruption",
+	"initiative": "1d20[tiebreaker]/100000 + @initiative.value",
+	"socket": true,
+	"media": [
+		{
+			"type": "cover",
+			"url": "https://raw.githubusercontent.com/pwatson100/symbaroum/master/asset/image/symbaroum-banner.webp"
+		},
+		{
+			"type": "setup",
+			"thumbnail": "systems/symbaroum/asset/image/symbaroum-cover.webp"
+		}
+	],
+	"url": "https://github.com/pwatson100/symbaroum",
+	"manifest": "https://github.com/pwatson100/symbaroum/releases/latest/download/system.json",
+	"download": "https://github.com/pwatson100/symbaroum/releases/latest/download/master.zip",
+	"license": "LICENSE.txt"
 }

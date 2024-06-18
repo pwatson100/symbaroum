@@ -44,44 +44,19 @@
                     <div class="attribute">
                         <label for="{{id}}-system.attribute">{{localize "WEAPON.ATTRIBUTE"}}</label>
                         <select id="{{id}}-system.attribute" name="system.attribute">
-                            {{#select system.attribute}}
-                            <option value="accurate">{{localize "ATTRIBUTE.ACCURATE"}}</option>
-                            <option value="cunning">{{localize "ATTRIBUTE.CUNNING"}}</option>
-                            <option value="discreet">{{localize "ATTRIBUTE.DISCREET"}}</option>
-                            <option value="persuasive">{{localize "ATTRIBUTE.PERSUASIVE"}}</option>
-                            <option value="quick">{{localize "ATTRIBUTE.QUICK"}}</option>
-                            <option value="resolute">{{localize "ATTRIBUTE.RESOLUTE"}}</option>
-                            <option value="strong">{{localize "ATTRIBUTE.STRONG"}}</option>
-                            <option value="vigilant">{{localize "ATTRIBUTE.VIGILANT"}}</option>
-                            {{/select}}
+                            {{selectOptions attribute_selection selected=system.attribute labelAttr="label"}}
                         </select>
                     </div>
                     <div class="reference">
                         <label for="{{id}}-system.reference">{{localize "WEAPON_CLASS.LABEL"}}</label>
                         <select id="{{id}}-system.reference" name="system.reference">
-                            {{#select system.reference}}
-                            <option value="1handed">{{localize "WEAPON_CLASS.1HANDED"}}</option>
-                            <option value="short">{{localize "WEAPON_CLASS.SHORT"}}</option>
-                            <option value="long">{{localize "WEAPON_CLASS.LONG"}}</option>
-                            <option value="unarmed">{{localize "WEAPON_CLASS.UNARMED"}}</option>
-                            <option value="heavy">{{localize "WEAPON_CLASS.HEAVY"}}</option>
-                            <option value="ranged">{{localize "WEAPON_CLASS.RANGED"}}</option>
-                            <option value="thrown">{{localize "WEAPON_CLASS.THROWN"}}</option>
-                            <option value="shield">{{localize "WEAPON_CLASS.SHIELD"}}</option>
-                            <option value="other">{{localize "GEAR.OTHER"}}</option>
-                            {{/select}}
+                            {{selectOptions weapon_type_selection selected=system.reference labelAttr="label"}}
                         </select>
                     </div>
                     <div class="damage">
                         <label for="{{id}}-system.baseDamage">{{localize "WEAPON.BASE_DAMAGE"}}</label>
                         <select id="{{id}}-system.baseDamage" name="system.baseDamage">
-                            {{#select system.baseDamage}}
-                            <option value="1d4">1d4</option>
-                            <option value="1d6">1d6</option>
-                            <option value="1d8">1d8</option>
-                            <option value="1d10">1d10</option>
-                            <option value="1d12">1d12</option>
-                            {{/select}}
+                            {{selectOptions weapon_damage_selection selected=system.baseDamage labelAttr="label"}}
                         </select>
                     </div>
                     <div class="damage">
@@ -91,17 +66,7 @@
                     <div class="attribute">
                         <label for="{{id}}-system.alternativeDamage">{{localize "TRAIT_LABEL.ALTERNATIVEDAMAGE"}}</label>
                         <select id="{{id}}-system.alternativeDamage" name="system.alternativeDamage">
-                            {{#select system.alternativeDamage}}
-                            <option value="none">{{localize "WEAPON.NONE"}}</option>
-                            <option value="resolute">{{localize "ATTRIBUTE.RESOLUTE"}}</option>
-                            <option value="strong">{{localize "ATTRIBUTE.STRONG"}}</option>
-                            <option value="accurate">{{localize "ATTRIBUTE.ACCURATE"}}</option>
-                            <option value="cunning">{{localize "ATTRIBUTE.CUNNING"}}</option>
-                            <option value="discreet">{{localize "ATTRIBUTE.DISCREET"}}</option>
-                            <option value="persuasive">{{localize "ATTRIBUTE.PERSUASIVE"}}</option>
-                            <option value="quick">{{localize "ATTRIBUTE.QUICK"}}</option>
-                            <option value="vigilant">{{localize "ATTRIBUTE.VIGILANT"}}</option>
-                            {{/select}}
+                            {{selectOptions alternative_selection selected=system.alternativeDamage labelAttr="label"}}
                         </select>
                     </div>
                     <div class="cost">

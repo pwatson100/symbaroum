@@ -5,6 +5,7 @@
     "canBeResumed": false,
     "display": true,
     "steps": [
+
         {
             "id": "goto-actortab",
             "selector": "[data-tab='actors']",
@@ -29,7 +30,9 @@
             "id": "goto-actorsheet-sheettabs",
             "selector": "div.sheet-tabs",
             "title": "SYMBAROUM.TOUR_CHARACTER_TABS",
-            "content": "SYMBAROUM.TOUR_CHARACTER_TABS_CONTENT"
+            "content": "SYMBAROUM.TOUR_CHARACTER_TABS_CONTENT",
+            "target": "b[data-tab='main']",
+            "action" : "click"
         },
         {
             "id": "goto-actorsheet-sheetattributes",
@@ -75,19 +78,19 @@
         },
         {
             "id": "goto-actorsheet-sheetgear-armor",
-            "selector": "tr.armor",
+            "selector": "li.armor",
             "title": "SYMBAROUM.TOUR_CHARACTER_GEAR_ARMOR",
             "content": "SYMBAROUM.TOUR_CHARACTER_GEAR_ARMOR_CONTENT"
         },
         {
             "id": "goto-actorsheet-sheetgear-armor-equip",
-            "selector": "tr.armor a.item-state",
+            "selector": "li.armor a.item-state",
             "title": "SYMBAROUM.TOUR_CHARACTER_GEAR_ARMOR_EQUIP",
             "content": "SYMBAROUM.TOUR_CHARACTER_GEAR_ARMOR_EQUIP_CONTENT"
         },
         {
-            "id": "goto-actorsheet-sheetgear-name",
-            "selector": "tr.armor div.namefield",
+            "id": "goto-actorsheet-sheetgear-armor-name",
+            "selector": "li.armor.item-row div.name",
             "title": "SYMBAROUM.TOUR_CHARACTER_GEAR_ARMOR_NAME",
             "content": "SYMBAROUM.TOUR_CHARACTER_GEAR_ARMOR_NAME_CONTENT"
         },
@@ -118,7 +121,7 @@
             "content": "SYMBAROUM.TOUR_CHARACTER_NOTES_FIELD_CONTENT"
         },
         {
-            "id": "goto-actorsheet-final",
+            "id": "goto-actor-cleanup",
             "selector": "section.actors-sidebar ol.directory-list",
             "title": "SYMBAROUM.TOUR_CHARACTER_OVERVIEW",
             "content": "SYMBAROUM.TOUR_CHARACTER_OVERVIEW_CONTENT"

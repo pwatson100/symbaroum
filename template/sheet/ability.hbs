@@ -42,15 +42,7 @@
                     <div class="action">
                         <label for="{{id}}-system.novice.action">{{localize "ABILITY.ACTION"}}</label>
                         <select id="{{id}}-system.novice.action" name="system.novice.action">
-                            {{#select system.novice.action}}
-                            <option value="A">{{localize "ACTION.ACTIVE"}}</option>
-                            <option value="M">{{localize "ACTION.MOVEMENT"}}</option>
-                            <option value="T">{{localize "ACTION.FULL_TURN"}}</option>
-                            <option value="F">{{localize "ACTION.FREE"}}</option>
-                            <option value="P">{{localize "ACTION.PASSIVE"}}</option>
-                            <option value="R">{{localize "ACTION.REACTION"}}</option>
-                            <option value="S">{{localize "ACTION.SPECIAL"}}</option>
-                            {{/select}}
+                            {{selectOptions action_types selected=system.novice.action labelAttr="label"}}
                         </select>
                     </div>
                     {{#if isOwned}}
@@ -68,15 +60,7 @@
                     <div class="action">
                         <label for="{{id}}-system.adept.action">{{localize "ABILITY.ACTION"}}</label>
                         <select id="{{id}}-system.adept.action" name="system.adept.action">
-                            {{#select system.adept.action}}
-                            <option value="A">{{localize "ACTION.ACTIVE"}}</option>
-                            <option value="M">{{localize "ACTION.MOVEMENT"}}</option>
-                            <option value="T">{{localize "ACTION.FULL_TURN"}}</option>
-                            <option value="F">{{localize "ACTION.FREE"}}</option>
-                            <option value="P">{{localize "ACTION.PASSIVE"}}</option>
-                            <option value="R">{{localize "ACTION.REACTION"}}</option>
-                            <option value="S">{{localize "ACTION.SPECIAL"}}</option>
-                            {{/select}}
+                            {{selectOptions action_types selected=system.adept.action labelAttr="label"}}
                         </select>
                     </div>
                     {{#if isOwned}}
@@ -94,15 +78,7 @@
                     <div class="action">
                         <label for="{{id}}-system.master.action">{{localize "ABILITY.ACTION"}}</label>
                         <select id="{{id}}-system.master.action" name="system.master.action">
-                            {{#select system.master.action}}
-                            <option value="A">{{localize "ACTION.ACTIVE"}}</option>
-                            <option value="M">{{localize "ACTION.MOVEMENT"}}</option>
-                            <option value="T">{{localize "ACTION.FULL_TURN"}}</option>
-                            <option value="F">{{localize "ACTION.FREE"}}</option>
-                            <option value="P">{{localize "ACTION.PASSIVE"}}</option>
-                            <option value="R">{{localize "ACTION.REACTION"}}</option>
-                            <option value="S">{{localize "ACTION.SPECIAL"}}</option>
-                            {{/select}}
+                            {{selectOptions action_types selected=system.master.action labelAttr="label"}}
                         </select>
                     </div>
                     {{#if isOwned}}

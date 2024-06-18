@@ -36,7 +36,7 @@ export class SymbaroumActorSheet extends ActorSheet {
   _onItemCreate(event) {
     event.preventDefault();
     let header = event.currentTarget;
-    let data = duplicate(header.dataset);
+    let data = foundry.utils.duplicate(header.dataset);
     data['name'] = `New ${data.type.capitalize()}`;
     if(data.type in game.symbaroum.config.itemImages)
       data.img = game.i18n.format(game.symbaroum.config.imageRef, {"filename":game.symbaroum.config.itemImages[data.type]});
@@ -224,8 +224,8 @@ export class SymbaroumActorSheet extends ActorSheet {
   async _enrichTextFields(data, fieldNameArr) {
     for(let t = 0; t < fieldNameArr.length; t++ ) 
     {
-      if(hasProperty(data,fieldNameArr[t])) {
-        setProperty(data, fieldNameArr[t], await TextEditor.enrichHTML(getProperty(data,fieldNameArr[t]), { async:true}) );
+      if(foundry.utils.hasProperty(data,fieldNameArr[t])) {
+        foundry.utils.setProperty(data, fieldNameArr[t], await TextEditor.enrichHTML(foundry.utils.getProperty(data,fieldNameArr[t]), { async:true}) );
       }
     }
   }

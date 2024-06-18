@@ -125,14 +125,14 @@ const migrateItemData = (item, worldSystemVersion) => {
 
 export const migrateSceneData = function (scene) {
     const tokens = scene.tokens.map(token => {
-        const t = duplicate(token.document);
+        const t = foundry.utils.duplicate(token.document);
         if (!t.actorId || t.actorLink) {
             t.actorData = {};
         } else if (!game.actors.has(t.actorId)) {
             t.actorId = null;
             t.actorData = {};
         } else if (!t.actorLink) {
-            const actorData = duplicate(t.actorData ?? t.delta);
+            const actorData = foundry.utils.duplicate(t.actorData ?? t.delta);
             actorData.type = token.actor?.type;
             const update = migrateActorData(actorData);
             ['items', 'effects'].forEach(embeddedName => {
@@ -140,12 +140,12 @@ export const migrateSceneData = function (scene) {
                 const updates = new Map(update[embeddedName].map(u => [u._id, u]));
                 t.actorData[embeddedName].forEach(original => {
                     const update = updates.get(original._id);
-                    if (update) mergeObject(original, update);
+                    if (update) foundry.utils.mergeObject(original, update);
                 });
                 delete update[embeddedName];
             });
 
-            mergeObject(t.actorData ?? t.delta, update);
+            foundry.utils.mergeObject(t.actorData ?? t.delta, update);
         }
         return t;
     });
@@ -187,7 +187,7 @@ export const migrateCompendium = async function (pack, worldSystemVersion) {
 
 
 const setValueIfNotExists = (update, object, property, newValue) => {
-    if (typeof (getProperty(object, property)) === 'undefined') {
+    if (typeof (foundry.utils.getProperty(object, property)) === 'undefined') {
         update[property] = newValue;
     }
     return update;

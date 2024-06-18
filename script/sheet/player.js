@@ -3,7 +3,7 @@ import { prepareRollAttribute, prepareRollDeathTest } from "../common/dialog.js"
 
 export class PlayerSheet extends SymbaroumActorSheet {
 	static get defaultOptions() {
-		return mergeObject(super.defaultOptions, {
+		return foundry.utils.mergeObject(super.defaultOptions, {
 			classes: ["symbaroum", "sheet", "actor", "player"],
 			template: "systems/symbaroum/template/sheet/player.hbs",
 			width: 800,
@@ -56,6 +56,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
 			isNPC: this.actor.type === "monster",
 			showNpcModifiers: game.settings.get("symbaroum", "showNpcModifiers"),
 		};
+        data.attribute_selection = game.symbaroum.config.ATTRIBUTE_SELECTION;
 		return data;
 	}
 

@@ -32,16 +32,7 @@
                     <div class="action">
                         <label>{{localize "ARTIFACT.ACTION"}}</label>
                         <select name="system.power1.action">
-                            {{#select system.power1.action}}
-                                <option value="-">-</option>
-                                <option value="A">{{localize "ACTION.ACTIVE"}}</option>
-                                <option value="M">{{localize "ACTION.MOVEMENT"}}</option>
-                                <option value="T">{{localize "ACTION.FULL_TURN"}}</option>
-                                <option value="F">{{localize "ACTION.FREE"}}</option>
-                                <option value="P">{{localize "ACTION.PASSIVE"}}</option>
-                                <option value="R">{{localize "ACTION.REACTION"}}</option>
-                                <option value="S">{{localize "ACTION.SPECIAL"}}</option>
-                            {{/select}}
+                            {{selectOptions action_types selected=system.power1.action labelAttr="label"}}
                         </select>
                     </div>
                     <div class="corruption">
@@ -57,16 +48,7 @@
                     <div class="action">
                         <label>{{localize "ARTIFACT.ACTION"}}</label>
                         <select name="system.power2.action">
-                            {{#select system.power2.action}}
-                                <option value="-">-</option>
-                                <option value="A">{{localize "ACTION.ACTIVE"}}</option>
-                                <option value="M">{{localize "ACTION.MOVEMENT"}}</option>
-                                <option value="T">{{localize "ACTION.FULL_TURN"}}</option>
-                                <option value="F">{{localize "ACTION.FREE"}}</option>
-                                <option value="P">{{localize "ACTION.PASSIVE"}}</option>
-                                <option value="R">{{localize "ACTION.REACTION"}}</option>
-                                <option value="S">{{localize "ACTION.SPECIAL"}}</option>
-                            {{/select}}
+                            {{selectOptions action_types selected=system.power2.action labelAttr="label"}}
                         </select>
                     </div>
                     <div class="corruption">
@@ -82,16 +64,7 @@
                     <div class="action">
                         <label>{{localize "ARTIFACT.ACTION"}}</label>
                         <select name="system.power3.action">
-                            {{#select system.power3.action}}
-                                <option value="-">-</option>
-                                <option value="A">{{localize "ACTION.ACTIVE"}}</option>
-                                <option value="M">{{localize "ACTION.MOVEMENT"}}</option>
-                                <option value="T">{{localize "ACTION.FULL_TURN"}}</option>
-                                <option value="F">{{localize "ACTION.FREE"}}</option>
-                                <option value="P">{{localize "ACTION.PASSIVE"}}</option>
-                                <option value="R">{{localize "ACTION.REACTION"}}</option>
-                                <option value="S">{{localize "ACTION.SPECIAL"}}</option>
-                            {{/select}}
+                            {{selectOptions action_types selected=system.power3.action labelAttr="label"}}
                         </select>
                     </div>
                     <div class="corruption">

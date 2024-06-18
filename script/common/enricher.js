@@ -110,7 +110,7 @@ export function enrichTextEditors() {
                 // Abilities
                 const abilities = actor.items.filter(ability => { return !isTrait(ability) && ability.system.isPower && !ability.system.isRitual && integrated.indexOf(ability) == -1 });
 
-
+                // TODO - change this to hbs
                 const htmlFormat =
                     `<h5 style="margin-left: 25%;">${name}, ${actor.system.bio.race} <a class="content-link" draggable="false" data-type="Macro" data-uuid="Actor.${actor.id}">${name}</a></h5>
 <p class="pblock" style="margin-left: auto; margin-right: auto; width: 50%;"><em>${monster ? actor.system.bio.manner : actor.system.bio.quote}</em></p>
