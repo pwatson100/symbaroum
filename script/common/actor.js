@@ -773,14 +773,15 @@ export class SymbaroumActor extends Actor {
 
 	async addCondition(effect, flagData) {
 		if (typeof effect === "string") {
-			effect = foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id == effect));
+			effect = CONFIG.statusEffects.find((e) => e.id == effect);
 		}
 		if (!effect) return "No Effect Found";
 		if (!effect.id) return "Conditions require an id field";
 
 		let existing = this.hasCondition(effect.id);
 
-		if (!existing) {			
+		if (!existing) {
+			effect = foundry.utils.duplicate(effect);
 			effect.label = game.i18n.localize(effect.label)?.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase());
 			effect.name = game.i18n.localize(effect.name)?.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase());
 			if (foundry.utils.isNewerVersion('11', game.version) ) {
@@ -796,7 +797,7 @@ export class SymbaroumActor extends Actor {
 	}
 
 	async removeCondition(effect) {
-		if (typeof effect === "string") effect = foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id == effect));
+		if (typeof effect === "string") effect = CONFIG.statusEffects.find((e) => e.id == effect);
 		if (!effect) return "No Effect Found";
 		if (!effect.id) return "Conditions require an id field";
 		let existing = this.hasCondition(effect.id);

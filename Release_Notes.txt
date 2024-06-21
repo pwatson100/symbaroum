@@ -1,3 +1,7 @@
+Version 5.1
+
+* Fix for #656 removeCondition errors when a condition does not exist in statusEffects 
+
 Version 5.0
 * Updated for Foundry vtt version 12
 
