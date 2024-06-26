@@ -992,7 +992,7 @@ export class SymbaroumActor extends Actor {
 			favour: 0,
 			modifier: 0,
 			poison: 0,
-			isMystical: weapon.qualities.mystical,
+			isMystical: weapon.qualities.mystical || weapon.system.isArtifact,
 			isAlternativeDamage: false,
 			alternativeDamageAttribute: "none",
 			introText: actingCharName + game.i18n.localize("COMBAT.CHAT_INTRO") + weapon.name,
