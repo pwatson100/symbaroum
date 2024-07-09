@@ -96,7 +96,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
       alias: actingCharName,
       actor: actor.id
     }),
-    roll: JSON.stringify(createRollData(rolls)),
+    rolls: [createRollData(rolls)],
     rollMode: game.settings.get('core', 'rollMode'),
     content: html,
   };
@@ -105,6 +105,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   } else if (chatData.rollMode === 'selfroll') {
     chatData.whisper = [game.user];
   }
+  ChatMessage.applyRollMode(chatData, "roll");
   ChatMessage.create(chatData);
   return(rollData);
 }
@@ -177,7 +178,7 @@ export async function rollDeathTest(actor, withFavour, modifier) {
     speaker: {
 			actor: actor.id
     },
-    roll: JSON.stringify(createRollData(rolls)),
+    rolls: createRollData(rolls),
     rollMode: game.settings.get('core', 'rollMode'),
     content: html,
   };
@@ -186,6 +187,7 @@ export async function rollDeathTest(actor, withFavour, modifier) {
   } else if (chatData.rollMode === 'selfroll') {
     chatData.whisper = [game.user];
   }
+  ChatMessage.applyRollMode(chatData, "roll");
   ChatMessage.create(chatData);
   if(actor.system.nbrOfFailedDeathRoll != nbrOfFailedDeathRoll) {
     await actor.update({"system.nbrOfFailedDeathRoll":nbrOfFailedDeathRoll });

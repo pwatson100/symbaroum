@@ -3553,9 +3553,10 @@ async function attackResult(rollData, functionStuff) {
       actor: actorid,
     }),
     content: html,
-    roll: JSON.stringify(createRollData(rolls)),
+    rolls: [createRollData(rolls)],
     rollMode: game.settings.get("core", "rollMode"),
   };
+  ChatMessage.applyRollMode(chatData, "roll");
   let NewMessage = await ChatMessage.create(chatData);
   if (flagDataArray.length > 0) {
     await createModifyTokenChatButton(flagDataArray);
@@ -4002,8 +4003,9 @@ async function standardPowerResult(rollData, functionStuff) {
     }
   } else if (rolls.length > 0) {
     // Only shows rolls if they are displayed to  
-    chatData.roll = JSON.stringify(createRollData(rolls));
+    chatData.rolls = [createRollData(rolls)];
   }
+  ChatMessage.applyRollMode(chatData, "roll");
   let NewMessage = await ChatMessage.create(chatData);
   if (trueActorSucceeded && functionStuff.addTargetEffect.length > 0) {
     for (let effect of functionStuff.addTargetEffect) {

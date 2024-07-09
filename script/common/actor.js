@@ -594,6 +594,7 @@ export class SymbaroumActor extends Actor {
 				reference: item.system.reference,
 				isMelee: item.system.isMelee,
 				isDistance: item.system.isDistance,
+				isArtifact: item.system.isArtifact,
 				doAlternativeDamage: doAlternativeDamage,
 				qualities: item.system.qualities,
 				damage: {
@@ -992,7 +993,7 @@ export class SymbaroumActor extends Actor {
 			favour: 0,
 			modifier: 0,
 			poison: 0,
-			isMystical: weapon.qualities.mystical || weapon.system.isArtifact,
+			isMystical: weapon.qualities.mystical || weapon.isArtifact,
 			isAlternativeDamage: false,
 			alternativeDamageAttribute: "none",
 			introText: actingCharName + game.i18n.localize("COMBAT.CHAT_INTRO") + weapon.name,

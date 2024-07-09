@@ -186,13 +186,8 @@ export class SymbaroumMacros {
 		} else return;
 	}
 
-    /**********************************************
-     * Macro: addExp
-     */
 
-    // Built-in macros
-	async addExp() {
-		let defaultCheck = "checked"; // set to unchecked
+	getPlayerList() {
 		let actorslist = [];
 
 		if (canvas.tokens.controlled.length > 0) {
@@ -216,8 +211,26 @@ export class SymbaroumMacros {
 			});
 			Array.prototype.push.apply(actorslist, gameacts);
 		}
+		return actorslist;
+	}
+
+    /**********************************************
+     * Macro: addExp
+     */
+
+    // Built-in macros
+	async addExp() {
+		let defaultCheck = "checked"; // set to unchecked
 
 		let allKeys = "";
+		const actorslist = this.getPlayerList();
+
+		if(actorslist.length === 0) {
+			ui.notifications.info(`No actor available for you to add exp to`);
+			return;
+		} else if(actorslist.length === 1) {
+			defaultCheck = "checked";
+		}
 		actorslist.forEach((t) => {
 			allKeys =
 				allKeys.concat(`<div style="flex-basis: auto;flex-direction: row;display: flex;">
@@ -383,21 +396,7 @@ export class SymbaroumMacros {
      */
     async rollAnyAttribute() {
         let defaultCheck = "unchecked"; // set to unchecked
-        let actorslist = [];
-    
-        if(canvas.tokens.controlled.length > 0) {
-            // If no actor selected
-            // Time to get busy
-            canvas.tokens.controlled.map(e => { 
-                if(game.user.isGM || e.actor.owner && e.actor.type === "player" && e.hasPlayerOwner) {
-					actorslist.push(e.actor);
-                }
-            });
-        } else {     
-            // if there are no controlled tokens on the map, select all player actors in the actor catalogue
-            let gameacts = game.actors.filter(e => { if( (game.user.isGM || e.owner) && e.type === "player" && e.hasPlayerOwner) { return e; } });
-            Array.prototype.push.apply(actorslist, gameacts);
-        }
+        let actorslist = this.getPlayerList();
     
         if(actorslist.length === 0) {
             ui.notifications.info(`No actor available for you to do an attribute test`);
