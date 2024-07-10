@@ -1,3 +1,10 @@
+Version 5.1
+
+* Fix for #656 removeCondition errors when a condition does not exist in statusEffects 
+* Fix for #662 Artifacts are not seen as mythical
+* Fix for #664 No dice sound or animation in attribute or attack rolls
+* Fix for #655 Setting for Multiple attacks needs bounce when set or unset
+
 Version 5.0
 * Updated for Foundry vtt version 12
 

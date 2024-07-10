@@ -72,7 +72,7 @@ Hooks.once('init', () => {
     scope: 'world',
     config: false,
     default: 0,
-    type: Number,
+    type: Number
   });
 
   game.settings.register('symbaroum', 'systemMigrationVersion', {
@@ -81,7 +81,7 @@ Hooks.once('init', () => {
     scope: 'world',
     config: false,
     default: '0',
-    type: String,
+    type: String
   });
 
   game.settings.register('symbaroum', 'symbaroumDevMessageVersionNumber', {
@@ -90,7 +90,7 @@ Hooks.once('init', () => {
     scope: 'world',
     config: false,
     default: 0,
-    type: Number,
+    type: Number
   });
 
   game.settings.register('symbaroum', 'combatAutomation', {
@@ -99,7 +99,7 @@ Hooks.once('init', () => {
     scope: 'world',
     type: Boolean,
     default: false,
-    config: true,
+    config: true
   });
 
   game.settings.register('symbaroum', 'playerResistButton', {
@@ -108,7 +108,7 @@ Hooks.once('init', () => {
     scope: 'world',
     type: Boolean,
     default: false,
-    config: true,
+    config: true
   });
 
   game.settings.register('symbaroum', 'alwaysSucceedOnOne', {
@@ -117,7 +117,7 @@ Hooks.once('init', () => {
     scope: 'world',
     type: Boolean,
     default: false,
-    config: true,
+    config: true
   });
 
   game.settings.register('symbaroum', 'optionalCrit', {
@@ -126,7 +126,7 @@ Hooks.once('init', () => {
     scope: 'world',
     type: Boolean,
     default: false,
-    config: true,
+    config: true
   });
 
   game.settings.register('symbaroum', 'optionalRareCrit', {
@@ -135,7 +135,7 @@ Hooks.once('init', () => {
     scope: 'world',
     type: Boolean,
     default: false,
-    config: true,
+    config: true
   });
 
   game.settings.register('symbaroum', 'critsApplyToAllTests', {
@@ -144,7 +144,7 @@ Hooks.once('init', () => {
     scope: 'world',
     type: Boolean,
     default: false,
-    config: true,
+    config: true
   });
 
   game.settings.register('symbaroum', 'optionalMoreRituals', {
@@ -153,7 +153,7 @@ Hooks.once('init', () => {
     scope: 'world',
     type: Boolean,
     default: false,
-    config: true,
+    config: true
   });
 
   game.settings.register('symbaroum', 'saveCombatRoll', {
@@ -162,7 +162,7 @@ Hooks.once('init', () => {
     scope: 'world',
     type: Boolean,
     default: false,
-    config: true,
+    config: true
   });
   game.settings.register('symbaroum', 'saveAttributeRoll', {
     name: 'SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL',
@@ -170,7 +170,7 @@ Hooks.once('init', () => {
     scope: 'world',
     type: Boolean,
     default: false,
-    config: true,
+    config: true
   });
   game.settings.register('symbaroum', 'showModifiersInDialogue', {
     name: 'SYMBAROUM.OPTIONAL_SHOWMODIFIERSINDIALOGUE',
@@ -178,7 +178,7 @@ Hooks.once('init', () => {
     scope: 'world',
     type: Boolean,
     default: false,
-    config: true,
+    config: true
   });
   game.settings.register('symbaroum', 'showNpcModifiers', {
     name: 'SYMBAROUM.OPTIONAL_NPC_MODIFIERS',
@@ -186,7 +186,7 @@ Hooks.once('init', () => {
     scope: 'world',
     type: Boolean,
     default: false,
-    config: true,
+    config: true
   });
   game.settings.register('symbaroum', 'showNpcAttacks', {
     name: 'SYMBAROUM.OPTIONAL_NPC_ATTACKS',
@@ -194,7 +194,8 @@ Hooks.once('init', () => {
     scope: 'world',
     type: Boolean,
     default: false,
-    config: true,
+    requiresReload: true,    
+    config: true
   });
   game.settings.register('symbaroum', 'allowShowReference', {
     name: 'SYMBAROUM.OPTIONAL_SHOWREFERENCE',
@@ -202,7 +203,7 @@ Hooks.once('init', () => {
     scope: 'world',
     type: Boolean,
     default: false,
-    config: true,
+    config: true
   });
 
   game.settings.register('symbaroum', 'hideIniativeRolls', {
@@ -211,7 +212,7 @@ Hooks.once('init', () => {
     scope: 'world',
     type: Boolean,
     default: false,
-    config: true,
+    config: true
   });
   game.settings.register('symbaroum', 'autoRollInitiative', {
     name: 'SYMBAROUM.OPTIONAL_AUTOROLLINITIATIVE',
@@ -219,7 +220,7 @@ Hooks.once('init', () => {
     scope: 'world',
     type: Boolean,
     default: false,
-    config: true,
+    config: true
   });
   
   game.settings.register('symbaroum', 'enhancedDeathSaveBonus', {
@@ -228,7 +229,7 @@ Hooks.once('init', () => {
     scope: 'world',
     type: Boolean,
     default: false,
-    config: true,
+    config: true
   });
 
   game.settings.register('symbaroum', 'manualInitValue', {
@@ -237,7 +238,7 @@ Hooks.once('init', () => {
     scope: 'world',
     type: Boolean,
     default: false,
-    config: true,
+    config: true
   });
 
   game.settings.register('symbaroum', 'charBGChoice', {
@@ -245,35 +246,35 @@ Hooks.once('init', () => {
     type: String,
     config: false,
     scope: 'client',
-    default: 'url(../asset/image/background/green_flower_light.webp) repeat',
+    default: 'url(../asset/image/background/green_flower_light.webp) repeat'
   });
   game.settings.register('symbaroum', 'npcBGChoice', {
     restricted: false,
     type: String,
     config: false,
     scope: 'client',
-    default: 'url(../asset/image/background/purple_flower_light.webp) repeat',
+    default: 'url(../asset/image/background/purple_flower_light.webp) repeat'
   });
   game.settings.register('symbaroum', 'titleBGChoice', {
     restricted: false,
     type: String,
     config: false,
     scope: 'client',
-    default: 'url(../asset/image/background/title.webp)',
+    default: 'url(../asset/image/background/title.webp)'
   });
   game.settings.register('symbaroum', 'editableChoice', {
     restricted: false,
     type: String,
     config: false,
     scope: 'client',
-    default: 'url(../asset/image/background/editable.webp)',
+    default: 'url(../asset/image/background/editable.webp)'
   });
   game.settings.register('symbaroum', 'nonEditableChoice', {
     restricted: false,
     type: String,
     config: false,
     scope: 'client',
-    default: 'url(../asset/image/background/not-editable.webp)',
+    default: 'url(../asset/image/background/not-editable.webp)'
   });
 
   game.settings.register('symbaroum', 'switchCharBGColour', {
@@ -282,7 +283,7 @@ Hooks.once('init', () => {
     type: String,
     config: false,
     scope: 'client',
-    default: 'url(../asset/image/background/green_flower_light.webp) repeat',
+    default: 'url(../asset/image/background/green_flower_light.webp) repeat'
   });
   game.settings.register('symbaroum', 'switchNpcBGColour', {
     name: 'SYMBAROUM.OPTIONAL_NPC_COLOUR_SELECTOR',
@@ -290,7 +291,7 @@ Hooks.once('init', () => {
     type: String,
     config: false,
     scope: 'client',
-    default: 'url(../asset/image/background/purple_flower_light.webp) repeat',
+    default: 'url(../asset/image/background/purple_flower_light.webp) repeat'
   });
   game.settings.register('symbaroum', 'switchTitleColour', {
     name: 'SYMBAROUM.OPTIONAL_TITLE_COLOUR_SELECTOR',
@@ -298,7 +299,7 @@ Hooks.once('init', () => {
     type: String,
     config: false,
     scope: 'client',
-    default: 'url(../asset/image/background/title.webp)',
+    default: 'url(../asset/image/background/title.webp)'
   });
   game.settings.register('symbaroum', 'switchEditableColour', {
     name: 'SYMBAROUM.OPTIONAL_EDITABLE_COLOUR_SELECTOR',
@@ -306,7 +307,7 @@ Hooks.once('init', () => {
     type: String,
     config: false,
     scope: 'client',
-    default: 'url(../asset/image/background/editable.webp)',
+    default: 'url(../asset/image/background/editable.webp)'
   });
   game.settings.register('symbaroum', 'switchNoNEditableColour', {
     name: 'SYMBAROUM.OPTIONAL_EDITABLE_COLOUR_SELECTOR',
@@ -314,21 +315,21 @@ Hooks.once('init', () => {
     type: String,
     config: false,
     scope: 'client',
-    default: 'url(../asset/image/background/not-editable.webp)',
+    default: 'url(../asset/image/background/not-editable.webp)'
   });
   game.settings.register('symbaroum', 'chatBGChoice', {
     restricted: false,
     type: String,
     config: false,
     scope: 'client',
-    default: 'url(../asset/image/background/editable.webp)',
+    default: 'url(../asset/image/background/editable.webp)'
   });
   game.settings.register('symbaroum', 'switchChatBGColour', {
     restricted: false,
     type: String,
     config: false,
     scope: 'client',
-    default: 'url(../asset/image/background/green_flower_light.webp) repeat',
+    default: 'url(../asset/image/background/green_flower_light.webp) repeat'
   });  
 
   game.settings.registerMenu('symbaroum', 'symbaroumSettings', {
@@ -337,7 +338,7 @@ Hooks.once('init', () => {
     hint: 'SYMBAROUM.OPTIONAL_CONFIG_MENUHINT',
     icon: 'fas fa-palette',
     type: SymbaroumConfig,
-    restricted: false,
+    restricted: false
   });
 
   // register setting for add/remove menu button
@@ -350,7 +351,7 @@ Hooks.once('init', () => {
     type: Boolean,
     onChange: (enabled) => {
       SymbaroumConfig.toggleConfigButton(enabled);
-    },
+    }
   });
 
   game.settings.register('symbaroum', 'symSemaphore', {
@@ -359,7 +360,7 @@ Hooks.once('init', () => {
     scope: 'world',
     type: String,
     config: false,
-    default: '',
+    default: ''
   });
 
   game.symbaroum.macros = new SymbaroumMacros();
