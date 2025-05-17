@@ -60,6 +60,11 @@
 			"lang": "it",
 			"name": "Italiano",
 			"path": "lang/it.json"
+		},
+		{
+			"lang": "pt-BR",
+			"name": "Português do Brasil",
+			"path": "lang/pt-BR.json"
 		}
 	],
 	"grid": {
