@@ -34,22 +34,22 @@ Hooks.once('init', () => {
 
   CONFIG.Actor.documentClass = SymbaroumActor;
   CONFIG.Item.documentClass = SymbaroumItem;
-  Actors.unregisterSheet('core', ActorSheet);
-  Actors.registerSheet('symbaroum', PlayerSheet, { types: ['player'], makeDefault: true });
-  Actors.registerSheet('symbaroum', MonsterSheet, { types: ['monster'], makeDefault: true });
-  Actors.registerSheet('symbaroum', PlayerSheet, { types: ['monster'], makeDefault: false });
-  Items.unregisterSheet('core', ItemSheet);
-  Items.registerSheet('symbaroum', TraitSheet, { types: ['trait'], makeDefault: true });
-  Items.registerSheet('symbaroum', AbilitySheet, { types: ['ability'], makeDefault: true });
-  Items.registerSheet('symbaroum', MysticalPowerSheet, { types: ['mysticalPower'], makeDefault: true });
-  Items.registerSheet('symbaroum', RitualSheet, { types: ['ritual'], makeDefault: true });
-  Items.registerSheet('symbaroum', BurdenSheet, { types: ['burden'], makeDefault: true });
-  Items.registerSheet('symbaroum', BoonSheet, { types: ['boon'], makeDefault: true });
-  Items.registerSheet('symbaroum', WeaponSheet, { types: ['weapon'], makeDefault: true });
-  Items.registerSheet('symbaroum', ArmorSheet, { types: ['armor'], makeDefault: true });
-  Items.registerSheet('symbaroum', EquipmentSheet, { types: ['equipment'], makeDefault: true });
-  Items.registerSheet('symbaroum', ArtifactSheet, { types: ['artifact'], makeDefault: true });
-  Journal.registerSheet('symbaroum', SymbaroumWide, { label: game.i18n.localize("SYMBAROUM.OPTIONAL_CUSTOMSHEETJOURNAL"), makeDefault: false });
+  foundry.documents.collections.Actors.unregisterSheet('core', foundry.appv1.sheets.ActorSheet);
+  foundry.documents.collections.Actors.registerSheet('symbaroum', PlayerSheet, { types: ['player'], makeDefault: true });
+  foundry.documents.collections.Actors.registerSheet('symbaroum', MonsterSheet, { types: ['monster'], makeDefault: true });
+  foundry.documents.collections.Actors.registerSheet('symbaroum', PlayerSheet, { types: ['monster'], makeDefault: false });
+  foundry.documents.collections.Items.unregisterSheet('core', foundry.appv1.sheets.ItemSheet);
+  foundry.documents.collections.Items.registerSheet('symbaroum', TraitSheet, { types: ['trait'], makeDefault: true });
+  foundry.documents.collections.Items.registerSheet('symbaroum', AbilitySheet, { types: ['ability'], makeDefault: true });
+  foundry.documents.collections.Items.registerSheet('symbaroum', MysticalPowerSheet, { types: ['mysticalPower'], makeDefault: true });
+  foundry.documents.collections.Items.registerSheet('symbaroum', RitualSheet, { types: ['ritual'], makeDefault: true });
+  foundry.documents.collections.Items.registerSheet('symbaroum', BurdenSheet, { types: ['burden'], makeDefault: true });
+  foundry.documents.collections.Items.registerSheet('symbaroum', BoonSheet, { types: ['boon'], makeDefault: true });
+  foundry.documents.collections.Items.registerSheet('symbaroum', WeaponSheet, { types: ['weapon'], makeDefault: true });
+  foundry.documents.collections.Items.registerSheet('symbaroum', ArmorSheet, { types: ['armor'], makeDefault: true });
+  foundry.documents.collections.Items.registerSheet('symbaroum', EquipmentSheet, { types: ['equipment'], makeDefault: true });
+  foundry.documents.collections.Items.registerSheet('symbaroum', ArtifactSheet, { types: ['artifact'], makeDefault: true });
+  foundry.documents.collections.Journal.registerSheet('symbaroum', SymbaroumWide, { label: game.i18n.localize("SYMBAROUM.OPTIONAL_CUSTOMSHEETJOURNAL"), makeDefault: false });
 
   initializeHandlebars();
 
@@ -492,7 +492,7 @@ Hooks.on('preCreateChatMessage', (doc, message, options, userid) => {
 });
 
 /*Hook for the chatMessage that contain a button for the GM to apply status icons or damage to a token.*/
-Hooks.on('renderChatMessage', async (chatItem, html, data) => {
+Hooks.on('renderChatMessageHTML', async (chatItem, html, data) => {
   const flagDataArray = await chatItem.getFlag(game.system.id, 'applyEffects');
   
   if (flagDataArray && game.user.isGM) {

@@ -28,7 +28,7 @@ function preloadHandlebarsTemplates() {
     'systems/symbaroum/template/chat/combat.hbs',
     'systems/symbaroum/template/chat/applyEffectsButton.hbs',
   ];
-  return loadTemplates(templatePaths);
+  return foundry.applications.handlebars.loadTemplates(templatePaths);
 }
 function registerHandlebarsHelpers() {
   Handlebars.registerHelper('removeMarkup', function (text) {

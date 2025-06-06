@@ -1,4 +1,4 @@
-export class SymbaroumActorSheet extends ActorSheet {
+export class SymbaroumActorSheet extends foundry.appv1.sheets.ActorSheet {
   // nbrOfFailedDeathRoll = 0;
 
   activateListeners(html) {
@@ -225,7 +225,7 @@ export class SymbaroumActorSheet extends ActorSheet {
     for(let t = 0; t < fieldNameArr.length; t++ ) 
     {
       if(foundry.utils.hasProperty(data,fieldNameArr[t])) {
-        foundry.utils.setProperty(data, fieldNameArr[t], await TextEditor.enrichHTML(foundry.utils.getProperty(data,fieldNameArr[t]), { async:true}) );
+        foundry.utils.setProperty(data, fieldNameArr[t], await foundry.applications.ux.TextEditor.enrichHTML(foundry.utils.getProperty(data,fieldNameArr[t]), { async:true}) );
       }
     }
   }

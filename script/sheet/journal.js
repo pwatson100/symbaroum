@@ -1,4 +1,4 @@
-export class SymbaroumJournalSheet extends JournalSheet {
+export class SymbaroumJournalSheet extends foundry.appv1.sheets.JournalSheet {
     get journal() {
         return this.object;
     }

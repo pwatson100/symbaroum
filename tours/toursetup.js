@@ -4,7 +4,7 @@ export async function tourSetup()
 {
     try {        
         game.symbaroum.log("Loading tours");
-        const {files} = await FilePicker.browse("data", 'systems/symbaroum/tours');
+        const {files} = await foundry.applications.apps.FilePicker.browse("data", 'systems/symbaroum/tours');
         for(let i = 0; i < files.length; i++) {
             if(!files[i].endsWith(".json")) {
                 continue;

@@ -1,4 +1,4 @@
-export class SymbaroumItemSheet extends ItemSheet {
+export class SymbaroumItemSheet extends foundry.appv1.sheets.ItemSheet {
   activateListeners(html) {
     super.activateListeners(html);
     html.find(".activate-ability").click(async ev => await this._prepareActivateAbility(ev));
@@ -154,7 +154,7 @@ export class SymbaroumItemSheet extends ItemSheet {
     for(let t = 0; t < fieldNameArr.length; t++ ) 
     {
       if(foundry.utils.hasProperty(data,fieldNameArr[t])) {
-        foundry.utils.setProperty(data, fieldNameArr[t], await TextEditor.enrichHTML(foundry.utils.getProperty(data,fieldNameArr[t]), { async:true}) );
+        foundry.utils.setProperty(data, fieldNameArr[t], await foundry.applications.ux.TextEditor.enrichHTML(foundry.utils.getProperty(data,fieldNameArr[t]), { async:true}) );
       }
     };
   }
