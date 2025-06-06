@@ -232,9 +232,10 @@ export class PlayerSheet extends SymbaroumActorSheet {
 			}
 		}
 
-		new CMPowerMenu(html, ".symbaroum-contextmenu", symbaroumContextMenu, {
-			parent: this,
-		});
+		// TODO needs fixing
+		// new CMPowerMenu(html, ".symbaroum-contextmenu", symbaroumContextMenu, {
+		//	parent: this,
+		// });
 	}
 
 	_getHeaderButtons() {

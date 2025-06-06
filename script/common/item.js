@@ -24,11 +24,11 @@ export class SymbaroumItem extends Item {
    *                                   closed.
    * @memberof ClientDocumentMixin
    */
-  static async createDialog(data = {}, { parent = null, pack = null, types, ...options } = {}) {
+  static async createDialog(data = {},createOptions={}, {folders, types, template, ...dialogOptions}={}) {
     // Collect data
     console.log("createDialog", types);
     types = game.symbaroum.config.itemValid;
-    return super.createDialog(data, { parent, pack, types, options });
+    return super.createDialog(data, createOptions , { folders, types, template, dialogOptions });
   }
 
   static async create(data, options) {
