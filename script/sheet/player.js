@@ -179,8 +179,9 @@ export class PlayerSheet extends SymbaroumActorSheet {
 				callback: (elem) => this._itemDelete(elem),
 			},
 		];
+
 		class CMPowerMenu extends foundry.applications.ux.ContextMenu {
-			constructor(html, selector, menuItems, { eventName = 'contextmenu', onOpen, onClose, parent } = {}) {
+			constructor(html, selector, menuItems, { eventName = 'contextmenu', onOpen, onClose, jQuery, parent } = {}) {
 				super(html, selector, menuItems, {
 					eventName: eventName,
 					onOpen: onOpen,
@@ -207,12 +208,12 @@ export class PlayerSheet extends SymbaroumActorSheet {
 				console.log('closestWindow.get(0).getBoundingClientRect()', closestWindow.get(0).getBoundingClientRect());
 				*/
 				let yoffset = parentContainer.getBoundingClientRect().height / 2; // Bump it down half way the container as default?
-				// if (this.element.hasClass('expand-up') && !this.element.hasClass('expand-down')) {
 				if (this.element.classList.contains('expand-up') && !this.element.classList.contains('expand-down')) {
 					yoffset = -1 * this.element.getBoundingClientRect().height; // if it expands up wards, bump it up for the full length of the menu
 				}
-				this.element.css('top', parentContainer.position().top + closestWindow.position().top + yoffset);
-				this.element.css('left', parentContainer.getBoundingClientRect().x + closestWindow.getBoundingClientRect());
+				let coords = getCoords(parentContainer);
+				this.element.style.top = coords.bottom + yoffset + 'px';
+				this.element.style.left = coords.left + 'px';
 			}
 			render(html) {
 				let item = null;
@@ -238,6 +239,17 @@ export class PlayerSheet extends SymbaroumActorSheet {
 		new CMPowerMenu(html, '.symbaroum-contextmenu', symbaroumContextMenu, {
 			parent: this,
 		});
+
+		function getCoords(elem) {
+			let box = elem.getBoundingClientRect();
+
+			return {
+				top: box.top + window.pageYOffset,
+				right: box.right + window.pageXOffset,
+				bottom: box.bottom + window.pageYOffset,
+				left: box.left + window.pageXOffset,
+			};
+		}
 	}
 
 	_getHeaderButtons() {
@@ -286,7 +298,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
 		this._prepareRollWeapon(div);
 	}
 	async _prepareRollWeapon(div) {
-		const weapon = this.actor.system.weapons.filter((item) => item.id == div.data('itemId'))[0];
+		const weapon = this.actor.system.weapons.filter((item) => item.id == div.dataset.itemId)[0];
 		await this.actor.rollWeapon(weapon);
 	}
 
