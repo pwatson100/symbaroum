@@ -1,20 +1,20 @@
-import { SymbaroumActorSheet } from "./actor.js";
-import { prepareRollAttribute, prepareRollDeathTest } from "../common/dialog.js";
+import { SymbaroumActorSheet } from './actor.js';
+import { prepareRollAttribute, prepareRollDeathTest } from '../common/dialog.js';
 
 export class PlayerSheet extends SymbaroumActorSheet {
 	static get defaultOptions() {
 		return foundry.utils.mergeObject(super.defaultOptions, {
-			classes: ["symbaroum", "sheet", "actor", "player"],
-			template: "systems/symbaroum/template/sheet/player.hbs",
+			classes: ['symbaroum', 'sheet', 'actor', 'player'],
+			template: 'systems/symbaroum/template/sheet/player.hbs',
 			width: 800,
-			height: "auto",
+			height: 'auto',
 			resizable: true,
-			dragDrop: [{ dragSelector: ".item[data-item-id]", dropSelector: ".tab-content" }, { dragSelector: ".attrDragM[data-attribute]" }],
+			dragDrop: [{ dragSelector: '.item[data-item-id]', dropSelector: '.tab-content' }, { dragSelector: '.attrDragM[data-attribute]' }],
 			tabs: [
 				{
-					navSelector: ".sheet-tabs",
-					contentSelector: ".sheet-body",
-					initial: "main",
+					navSelector: '.sheet-tabs',
+					contentSelector: '.sheet-body',
+					initial: 'main',
 				},
 			],
 		});
@@ -30,12 +30,12 @@ export class PlayerSheet extends SymbaroumActorSheet {
 		};
 
 		let enrichedFields = [
-			"system.bio.appearance",
-			"system.bio.background",
-			"system.bio.personalGoal",
-			"system.bio.stigmas",
-			"system.bio.tactics",
-			"system.notes",
+			'system.bio.appearance',
+			'system.bio.background',
+			'system.bio.personalGoal',
+			'system.bio.stigmas',
+			'system.bio.tactics',
+			'system.notes',
 		];
 		await this._enrichTextFields(data, enrichedFields);
 
@@ -48,15 +48,15 @@ export class PlayerSheet extends SymbaroumActorSheet {
 		});
 
 		data.items = items;
-		data.cssClass = this.isEditable ? "editable" : "locked";
+		data.cssClass = this.isEditable ? 'editable' : 'locked';
 		data.editable = this.isEditable;
 
 		data.symbaroumOptions = {
 			isGM: game.user.isGM,
-			isNPC: this.actor.type === "monster",
-			showNpcModifiers: game.settings.get("symbaroum", "showNpcModifiers"),
+			isNPC: this.actor.type === 'monster',
+			showNpcModifiers: game.settings.get('symbaroum', 'showNpcModifiers'),
 		};
-        data.attribute_selection = game.symbaroum.config.ATTRIBUTE_SELECTION;
+		data.attribute_selection = game.symbaroum.config.ATTRIBUTE_SELECTION;
 		return data;
 	}
 
@@ -67,9 +67,9 @@ export class PlayerSheet extends SymbaroumActorSheet {
 				sceneId: this.actor.isToken ? canvas.scene?.id : null,
 				tokenId: this.actor.isToken ? this.actor.token.id : null,
 			};
-			dragData.type = "attribute";
+			dragData.type = 'attribute';
 			dragData.attribute = event.srcElement.dataset.attribute;
-			return event.dataTransfer.setData("text/plain", JSON.stringify(dragData));
+			return event.dataTransfer.setData('text/plain', JSON.stringify(dragData));
 		}
 		return super._onDragStart(event);
 	}
@@ -77,10 +77,10 @@ export class PlayerSheet extends SymbaroumActorSheet {
 	activateListeners(html) {
 		super.activateListeners(html);
 
-		html.find(".roll-attribute").click(async (ev) => await this._prepareRollAttribute(ev));
-		html.find(".roll-armor").click(async (ev) => await this._onPrepareRollArmor(ev));
-		html.find(".roll-weapon").click(async (ev) => await this._onPrepareRollWeapon(ev));
-		html.find(".modify-attributes").click(async (ev) => await this._modifyAttributes(ev));
+		html.find('.roll-attribute').click(async (ev) => await this._prepareRollAttribute(ev));
+		html.find('.roll-armor').click(async (ev) => await this._onPrepareRollArmor(ev));
+		html.find('.roll-weapon').click(async (ev) => await this._onPrepareRollWeapon(ev));
+		html.find('.modify-attributes').click(async (ev) => await this._modifyAttributes(ev));
 
 		const symbaroumContextMenu = [
 			{
@@ -93,7 +93,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
 				callback: (elem) => this._prepareActivateAbility(elem),
 			},
 			{
-				name: "TOOLTIP.USE_WEAPON",
+				name: 'TOOLTIP.USE_WEAPON',
 				icon: `<i class="fa-solid fa-hand-fist"></i>`,
 				isVisible: (elem) => {
 					return elem.system?.isWeapon && elem.system?.isActive;
@@ -103,7 +103,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
 				},
 			},
 			{
-				name: "TOOLTIP.USE_ARMOR",
+				name: 'TOOLTIP.USE_ARMOR',
 				icon: `<i class="fa-solid fa-shield"></i>`,
 				isVisible: (elem) => {
 					return elem == game.symbaroum.config.noArmorID || (elem.system.isArmor && elem.system.isActive);
@@ -113,7 +113,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
 				},
 			},
 			{
-				name: "TOOLTIP.INCREASE_COUNT",
+				name: 'TOOLTIP.INCREASE_COUNT',
 				icon: `<i class="fa-regular fa-square-plus"></i>`,
 				isVisible: (elem) => {
 					return elem.system?.isEquipment;
@@ -123,9 +123,9 @@ export class PlayerSheet extends SymbaroumActorSheet {
 				},
 			},
 			{
-				name: game.i18n.format("TOOLTIP.INCREASE_COUNT_DEFAULT", {
+				name: game.i18n.format('TOOLTIP.INCREASE_COUNT_DEFAULT', {
 					quantity: game.user.getFlag(game.system.id, game.symbaroum.config.CONTEXT_MENU.equipmentAddRemoveFlag),
-					sign: "+",
+					sign: '+',
 				}),
 				icon: `<i class="fa-regular fa-square-plus"></i>`,
 				isVisible: (elem) => {
@@ -137,7 +137,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
 				},
 			},
 			{
-				name: "TOOLTIP.DECREASE_COUNT",
+				name: 'TOOLTIP.DECREASE_COUNT',
 				icon: `<i class="fa-regular fa-square-minus"></i>`,
 				isVisible: (elem) => {
 					return elem.system?.isEquipment && elem.system?.number > 0;
@@ -147,9 +147,9 @@ export class PlayerSheet extends SymbaroumActorSheet {
 				},
 			},
 			{
-				name: game.i18n.format("TOOLTIP.DECREASE_COUNT_DEFAULT", {
+				name: game.i18n.format('TOOLTIP.DECREASE_COUNT_DEFAULT', {
 					quantity: game.user.getFlag(game.system.id, game.symbaroum.config.CONTEXT_MENU.equipmentAddRemoveFlag),
-					sign: "-",
+					sign: '-',
 				}),
 				icon: `<i class="fa-regular fa-square-minus"></i>`,
 				isVisible: (elem) => {
@@ -161,7 +161,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
 				},
 			},
 			{
-				name: "TOOLTIP.VIEW_ITEM",
+				name: 'TOOLTIP.VIEW_ITEM',
 				icon: `<i class="fa-regular fa-eye"></i>`,
 				isVisible: (elem) => {
 					return elem != game.symbaroum.config.noArmorID;
@@ -179,12 +179,14 @@ export class PlayerSheet extends SymbaroumActorSheet {
 				callback: (elem) => this._itemDelete(elem),
 			},
 		];
-		class CMPowerMenu extends ContextMenu {
-			constructor(html, selector, menuItems, { eventName = "contextmenu", onOpen, onClose, parent } = {}) {
+
+		class CMPowerMenu extends foundry.applications.ux.ContextMenu {
+			constructor(html, selector, menuItems, { eventName = 'contextmenu', onOpen, onClose, jQuery, parent } = {}) {
 				super(html, selector, menuItems, {
 					eventName: eventName,
 					onOpen: onOpen,
 					onClose: onClose,
+					jQuery: false,
 				});
 				this.myParent = parent;
 				this.originalMenuItems = [...menuItems];
@@ -192,8 +194,8 @@ export class PlayerSheet extends SymbaroumActorSheet {
 
 			activateListeners(html) {
 				super.activateListeners(html);
-				const parentContainer = this.menu.parent();
-				const closestWindow = parentContainer.closest(".app.window-app.symbaroum.sheet");
+				const parentContainer = this.element.parentElement;
+				const closestWindow = parentContainer.closest('.app.window-app.symbaroum.sheet');
 				/*
 				console.log('menu', this.menu);
 				console.log('menu.position()', this.menu.position());
@@ -204,21 +206,22 @@ export class PlayerSheet extends SymbaroumActorSheet {
 				console.log('closestWindow', closestWindow);
 				console.log('closestWindow.position()', closestWindow.position());
 				console.log('closestWindow.get(0).getBoundingClientRect()', closestWindow.get(0).getBoundingClientRect());
-				*/				
-				let yoffset = parentContainer.get(0).getBoundingClientRect().height / 2; // Bump it down half way the container as default?
-				if(this.menu.hasClass('expand-up') && !this.menu.hasClass('expand-down') ) {
-					yoffset = -1 * this.menu.get(0).getBoundingClientRect().height; // if it expands up wards, bump it up for the full length of the menu
+				*/
+				let yoffset = parentContainer.getBoundingClientRect().height / 2; // Bump it down half way the container as default?
+				if (this.element.classList.contains('expand-up') && !this.element.classList.contains('expand-down')) {
+					yoffset = -1 * this.element.getBoundingClientRect().height; // if it expands up wards, bump it up for the full length of the menu
 				}
-				this.menu.css("top", parentContainer.position().top + closestWindow.position().top + yoffset);
-				this.menu.css("left", parentContainer.get(0).getBoundingClientRect().x + closestWindow.get(0).getBoundingClientRect());
-			}			
-			render(...args) {
+				let coords = getCoords(parentContainer);
+				this.element.style.top = coords.bottom + yoffset + 'px';
+				this.element.style.left = coords.left + 'px';
+			}
+			render(html) {
 				let item = null;
-				if (args[0].data("itemId") == game.symbaroum.config.noArmorID) {
+				if (html.dataset.itemId == game.symbaroum.config.noArmorID) {
 					// special case
 					item = game.symbaroum.config.noArmorID;
 				} else {
-					item = this.myParent?.actor.items.get(args[0].data("itemId"));
+					item = this.myParent?.actor.items.get(html.dataset.itemId);
 				}
 				if (item) {
 					this.menuItems = this.originalMenuItems.filter((elem) => {
@@ -227,15 +230,26 @@ export class PlayerSheet extends SymbaroumActorSheet {
 				} else {
 					this.menuItems = this.originalMenuItems;
 				}
-				super.render(...args);
+				super.render(html);
 				// console.log($(args).find('nav#context-menu'));
 			}
 		}
 
 		// TODO needs fixing
-		// new CMPowerMenu(html, ".symbaroum-contextmenu", symbaroumContextMenu, {
-		//	parent: this,
-		// });
+		new CMPowerMenu(html, '.symbaroum-contextmenu', symbaroumContextMenu, {
+			parent: this,
+		});
+
+		function getCoords(elem) {
+			let box = elem.getBoundingClientRect();
+
+			return {
+				top: box.top + window.pageYOffset,
+				right: box.right + window.pageXOffset,
+				bottom: box.bottom + window.pageYOffset,
+				left: box.left + window.pageXOffset,
+			};
+		}
 	}
 
 	_getHeaderButtons() {
@@ -243,16 +257,16 @@ export class PlayerSheet extends SymbaroumActorSheet {
 		if (this.actor.isOwner) {
 			buttons = [
 				{
-					label: game.i18n.localize("BUTTON.DEATH"),
-					class: "death-roll",
-					icon: "fas fa-skull",
+					label: game.i18n.localize('BUTTON.DEATH'),
+					class: 'death-roll',
+					icon: 'fas fa-skull',
 					onclick: async (ev) => await this._prepareRollDeathTest(ev),
 				},
 				{
-					label: game.i18n.localize("BUTTON.RECOVER"),
-					class: "recover-death-roll",
-					icon: "fas fa-heart",
-					onclick: async (ev) => await this.actor.update({ "system.nbrOfFailedDeathRoll": 0 }),
+					label: game.i18n.localize('BUTTON.RECOVER'),
+					class: 'recover-death-roll',
+					icon: 'fas fa-heart',
+					onclick: async (ev) => await this.actor.update({ 'system.nbrOfFailedDeathRoll': 0 }),
 				},
 			].concat(buttons);
 		}
@@ -266,7 +280,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
 
 	async _prepareRollAttribute(event) {
 		event.preventDefault();
-		const attributeName = $(event.currentTarget).data("attribute");
+		const attributeName = $(event.currentTarget).data('attribute');
 		await prepareRollAttribute(this.actor, attributeName, null, null);
 	}
 
@@ -280,11 +294,11 @@ export class PlayerSheet extends SymbaroumActorSheet {
 
 	async _onPrepareRollWeapon(event) {
 		event.preventDefault();
-		const div = $(event.currentTarget).parents(".item");
+		const div = $(event.currentTarget).parents('.item');
 		this._prepareRollWeapon(div);
 	}
 	async _prepareRollWeapon(div) {
-		const weapon = this.actor.system.weapons.filter((item) => item.id == div.data("itemId"))[0];
+		const weapon = this.actor.system.weapons.filter((item) => item.id == div.dataset.itemId)[0];
 		await this.actor.rollWeapon(weapon);
 	}
 
@@ -293,11 +307,11 @@ export class PlayerSheet extends SymbaroumActorSheet {
 		let system = foundry.utils.deepClone(this.actor.system);
 		system.id = this.actor.id;
 
-		const html = await renderTemplate("systems/symbaroum/template/sheet/attributes.hbs", {
+		const html = await renderTemplate('systems/symbaroum/template/sheet/attributes.hbs', {
 			id: this.actor.id,
 			system: system,
 		});
-		let title = game.i18n.localize("TITLE.ATTRIBUTES");
+		let title = game.i18n.localize('TITLE.ATTRIBUTES');
 		let dialog = new Dialog({
 			//              label: "toto",
 			title: title,
@@ -305,20 +319,20 @@ export class PlayerSheet extends SymbaroumActorSheet {
 			buttons: {
 				confirm: {
 					icon: '<i class="fas fa-check"></i>',
-					label: game.i18n.localize("BUTTON.CONFIRM"),
+					label: game.i18n.localize('BUTTON.CONFIRM'),
 					callback: async (html) => {
 						for (var aKey in system.attributes) {
-							var base = "#" + system.id + "-" + [aKey] + "-value";
+							var base = '#' + system.id + '-' + [aKey] + '-value';
 							const stringValue = html.find(base)[0].value;
 
 							let newValue = parseInt(stringValue, 10);
 							if (!isNaN(newValue)) {
-								let link = "system.attributes." + [aKey] + ".value";
-								var mod = "#" + [aKey] + "-mod";
+								let link = 'system.attributes.' + [aKey] + '.value';
+								var mod = '#' + [aKey] + '-mod';
 								const stringMod = html.find(mod)[0].value;
 								let newModValue = parseInt(stringMod, 10);
 								if (!isNaN(newModValue)) {
-									let linkMod = "system.attributes." + [aKey] + ".temporaryMod";
+									let linkMod = 'system.attributes.' + [aKey] + '.temporaryMod';
 									await this.actor.update({
 										[link]: newValue,
 										[linkMod]: newModValue,
@@ -330,7 +344,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
 				},
 				cancel: {
 					icon: '<i class="fas fa-check"></i>',
-					label: game.i18n.localize("BUTTON.CANCEL"),
+					label: game.i18n.localize('BUTTON.CANCEL'),
 					callback: async (html) => {},
 				},
 			},
