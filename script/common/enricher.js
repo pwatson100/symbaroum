@@ -176,9 +176,7 @@ ${monster ? getTactics(actor) : ""}
 
     async function drawFromRollableTable(event) {
         event.preventDefault();
-        let currentNode = event.target.parentNode;
-        // const & var = globally defined
-        game.symbaroum.log("drawFromRollableTable",currentNode);
+        let currentNode = event.target.parentNode;        
         let uuid = currentNode.getAttribute("data-uuid");
         if (!uuid) {
             return;
@@ -226,7 +224,6 @@ ${monster ? getTactics(actor) : ""}
         }
     }
     document.addEventListener("click", (e) => {
-        game.symbaroum.log("Click",e)
         if(e.target.parentNode && e.target.parentNode.classList?.contains('draw-from-table') ) {            
             drawFromRollableTable(e);
         }

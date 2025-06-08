@@ -280,7 +280,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
 
 	async _prepareRollAttribute(event) {
 		event.preventDefault();
-		const attributeName = $(event.currentTarget).data('attribute');
+		const attributeName = event.target.dataset.attribute;
 		await prepareRollAttribute(this.actor, attributeName, null, null);
 	}
 
@@ -294,7 +294,9 @@ export class PlayerSheet extends SymbaroumActorSheet {
 
 	async _onPrepareRollWeapon(event) {
 		event.preventDefault();
-		const div = $(event.currentTarget).parents('.item');
+		// const div = $(event.currentTarget).parents('.item');
+		
+		const div = event.target.closest('.item');		
 		this._prepareRollWeapon(div);
 	}
 	async _prepareRollWeapon(div) {

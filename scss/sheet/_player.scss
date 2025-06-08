@@ -180,3 +180,9 @@
   display: block;
   /* visibility: visible; */
 }
+
+.symbaroum.sheet.actor.prosemirror menu, .symbaroum.sheet.actor prose-mirror menu {
+  	background: var(--title-color) repeat;
+    color: var(--color-title);
+    font-family: var(--font-text);
+}

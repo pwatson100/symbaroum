@@ -21,13 +21,19 @@ export async function tourSetup()
     }
     game.symbaroum.api.tourLink = tourLink;
 
-    $(document).on("click",".symbaroum-tour", tourLink);
-
+    document.addEventListener("click", (e) => {
+        
+        if(e.target.parentNode?.classList?.contains('symbaroum-tour') ) {
+            tourLink(e);
+        }
+    });
 } // game.symbaroum.tourLink(this);
 
 async function tourLink(event) {
     event.preventDefault();
-    let tourId = event.currentTarget.getAttribute("data-tour-id");
+    let currentNode = event.target.parentNode;
+    game.symbaroum.log("tourLink",currentNode);
+    let tourId = currentNode.getAttribute("data-tour-id");
     if(!tourId.includes('.')) {
         tourId = `symbaroum.${ tourId}`;
     }
