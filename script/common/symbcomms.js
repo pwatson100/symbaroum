@@ -5,7 +5,7 @@ export class SymbaroumCommsListener
     {
         if(game.user.isGM && comData.type === "GMMessage")
         {
-            const html = await renderTemplate("systems/symbaroum/template/chat/applyEffectsButton.hbs");
+            const html = await foundry.applications.handlebars.renderTemplate("systems/symbaroum/template/chat/applyEffectsButton.hbs");
             const flagKey = `flags.${game.system.id}.applyEffects`;
             const chatData = {
                 speaker: ChatMessage.getSpeaker({alias:game.i18n.localize("DIALOG.SYSTEM_MESSAGE")}),
@@ -21,7 +21,7 @@ export class SymbaroumCommsListener
                 introText: comData.data.introText,
                 mainText: comData.data.mainText
             }
-            const html = await renderTemplate("systems/symbaroum/template/chat/resistButton.hbs", templateData);
+            const html = await foundry.applications.handlebars.renderTemplate("systems/symbaroum/template/chat/resistButton.hbs", templateData);
             const flagKey = `flags.${game.system.id}.resistRoll`;
             const chatData = {
                 speaker: ChatMessage.getSpeaker({alias:game.i18n.localize("DIALOG.SYSTEM_MESSAGE")}),

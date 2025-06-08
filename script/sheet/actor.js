@@ -83,10 +83,9 @@ export class SymbaroumActorSheet extends foundry.appv1.sheets.ActorSheet {
 			buttons: {
 				yes: {
 					label: game.i18n.localize(`DIALOG.OK`),
-					callback: (html) =>
-						div.slideUp(200, () => {
-							this.actor.deleteEmbeddedDocuments('Item', [item.id], { render: true });
-						}),
+					callback: (html) => {
+						this.actor.deleteEmbeddedDocuments('Item', [item.id], { render: true });
+					}
 				},
 				no: {
 					label: game.i18n.localize(`DIALOG.CANCEL`),

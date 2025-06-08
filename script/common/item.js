@@ -2859,7 +2859,7 @@ async function checkCorruptionThreshold(actor, corruptionGained) {
     corruptionText: "",
   };
 
-  const html = await renderTemplate("systems/symbaroum/template/chat/ability.hbs", templateData);
+  const html = await foundry.applications.handlebars.renderTemplate("systems/symbaroum/template/chat/ability.hbs", templateData);
   const chatData = {
     user: game.user.id,
     content: html,
@@ -2950,7 +2950,7 @@ export async function modifierDialog(functionStuff) {
     targetAttributeName = functionStuff.targetData.resistAttributeName;
   }
   createLineDisplay(functionStuff, functionStuff.attackFromPC);
-  const html = await renderTemplate("systems/symbaroum/template/chat/dialog2.hbs", {
+  const html = await foundry.applications.handlebars.renderTemplate("systems/symbaroum/template/chat/dialog2.hbs", {
     hasTarget: hasTarget,
     askCastingAttribute: functionStuff.askCastingAttribute,
     askTargetAttribute: functionStuff.askTargetAttribute,
@@ -3545,7 +3545,7 @@ async function attackResult(rollData, functionStuff) {
     actorid = functionStuff.targetData?.actor.id;
   }
   // end Maestro support
-  const html = await renderTemplate("systems/symbaroum/template/chat/combat.hbs", templateData);
+  const html = await foundry.applications.handlebars.renderTemplate("systems/symbaroum/template/chat/combat.hbs", templateData);
   const chatData = {
     user: game.user.id,
     speaker: ChatMessage.getSpeaker({
@@ -3986,7 +3986,7 @@ async function standardPowerResult(rollData, functionStuff) {
   // End Maestro
 
   // Pick up roll system
-  const html = await renderTemplate("systems/symbaroum/template/chat/ability.hbs", templateData);
+  const html = await foundry.applications.handlebars.renderTemplate("systems/symbaroum/template/chat/ability.hbs", templateData);
   const chatData = {
     user: game.user.id,
     speaker: ChatMessage.getSpeaker({

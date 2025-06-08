@@ -88,7 +88,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
     critSuccess: rollResults.critSuccess,
     critFail: rollResults.critFail
   };
-  const html = await renderTemplate('systems/symbaroum/template/chat/roll.hbs', rollData);
+  const html = await foundry.applications.handlebars.renderTemplate('systems/symbaroum/template/chat/roll.hbs', rollData);
 
   let chatData = {
     user: game.user.id,
@@ -172,7 +172,7 @@ export async function rollDeathTest(actor, withFavour, modifier) {
     nbrOfFailure: nbrOfFailedDeathRoll,
     diceBreakdown: diceBreakdown
   };
-  const html = await renderTemplate('systems/symbaroum/template/chat/death.hbs', rollData);
+  const html = await foundry.applications.handlebars.renderTemplate('systems/symbaroum/template/chat/death.hbs', rollData);
   let chatData = {
     user: game.user.id,
     speaker: {
@@ -380,7 +380,7 @@ export async function createModifyTokenChatButton(actionsDataArray){
 
 export async function createResistRollChatButton(functionStuff){
   //inform the GM
-  const html = await renderTemplate("systems/symbaroum/template/chat/chatInfoMessage.hbs", {
+  const html = await foundry.applications.handlebars.renderTemplate("systems/symbaroum/template/chat/chatInfoMessage.hbs", {
     infoText: functionStuff.targetUserName + game.i18n.localize("CHAT.GM_INFO_RESIST")
   });
   const chatData = {

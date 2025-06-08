@@ -176,15 +176,17 @@ ${monster ? getTactics(actor) : ""}
 
     async function drawFromRollableTable(event) {
         event.preventDefault();
+        let currentNode = event.target.parentNode;
         // const & var = globally defined
-        let uuid = event.currentTarget.getAttribute("data-uuid");
+        game.symbaroum.log("drawFromRollableTable",currentNode);
+        let uuid = currentNode.getAttribute("data-uuid");
         if (!uuid) {
             return;
         }
         let table = await fromUuid(uuid);
         let myF = async function (uuid, modifier) {
             if (table instanceof RollTable) {
-                const formula = event.currentTarget.getAttribute("data-roll");
+                const formula = currentNode.getAttribute("data-roll");
                 const roll = formula ? new Roll(formula) : new Roll(`${table.formula} + ${modifier}`);
                 await table.draw({ roll });
             }
@@ -223,7 +225,12 @@ ${monster ? getTactics(actor) : ""}
             await myF(uuid, 0);
         }
     }
-    $(document).on("click", ".draw-from-table", drawFromRollableTable);
+    document.addEventListener("click", (e) => {
+        game.symbaroum.log("Click",e)
+        if(e.target.parentNode && e.target.parentNode.classList?.contains('draw-from-table') ) {            
+            drawFromRollableTable(e);
+        }
+    });
 }
 
 function getAttributes(actor, monster) {

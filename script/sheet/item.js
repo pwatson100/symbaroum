@@ -131,7 +131,7 @@ export class SymbaroumItemSheet extends foundry.appv1.sheets.ItemSheet {
     await this.enrichAllFields(itemData);
     await this._enrichTextFields(itemData,["enrichedName"]);
 
-    const html = await renderTemplate("systems/symbaroum/template/chat/item.hbs", itemData);
+    const html = await foundry.applications.handlebars.renderTemplate("systems/symbaroum/template/chat/item.hbs", itemData);
     const chatData = {
         user: game.user.id,
         speaker: ChatMessage.getSpeaker({ 

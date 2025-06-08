@@ -307,7 +307,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
 		let system = foundry.utils.deepClone(this.actor.system);
 		system.id = this.actor.id;
 
-		const html = await renderTemplate('systems/symbaroum/template/sheet/attributes.hbs', {
+		const html = await foundry.applications.handlebars.renderTemplate('systems/symbaroum/template/sheet/attributes.hbs', {
 			id: this.actor.id,
 			system: system,
 		});
