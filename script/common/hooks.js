@@ -485,7 +485,7 @@ Hooks.once('diceSoNiceReady', (dice3d) => {
 
 Hooks.on('combatStart', async (combat, ...args) => {
 	// let isFirstRound = combat.active && combat.current.round == 1 && combat.current.turn == 0 && combat.previous.turn == null;
-	if (game.user.isGM && game.settings.get('symbaroum', 'autoRollInitiative')) {
+	if (game.user.isActiveGM && game.settings.get('symbaroum', 'autoRollInitiative')) {
 		await combat.rollAll();
 	}
 });
