@@ -30,7 +30,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   if (hasArmor && !rollResults.hasSucceed) {
     if (armor.protectionPc !== '') {
       let prot = armor.protectionPc;
-      let armorRoll = await new Roll(prot, {}).evaluate({async:false});
+      let armorRoll = await new Roll(prot, {}).evaluate();
       rolls.push(armorRoll);
     
       armorResults.id = armor.id;
