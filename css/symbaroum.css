@@ -1476,6 +1476,12 @@
   background: var(--chat-background);
 }
 
+.symbaroum .prosemirror menu {
+  background: var(--title-color) repeat;
+  color: var(--color-title);
+  font-family: var(--font-text);
+}
+
 /* cyrillic-ext */
 @font-face {
   font-family: "Philosopher";
@@ -4517,12 +4523,6 @@ Monster Codex Stuff
 .symbaroum.sheet.actor .tooltip:hover .tooltiptext {
   display: block;
   /* visibility: visible; */
-}
-
-.symbaroum.sheet.actor.prosemirror menu, .symbaroum.sheet.actor prose-mirror menu {
-  background: var(--title-color) repeat;
-  color: var(--color-title);
-  font-family: var(--font-text);
 }
 
 .symbaroum.sheet.item .ritual {
