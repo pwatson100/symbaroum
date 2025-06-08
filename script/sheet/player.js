@@ -236,7 +236,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
 		}
 
 		// TODO needs fixing
-		new CMPowerMenu(html, '.symbaroum-contextmenu', symbaroumContextMenu, {
+		new CMPowerMenu(html[0], '.symbaroum-contextmenu', symbaroumContextMenu, {
 			parent: this,
 		});
 
