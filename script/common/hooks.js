@@ -169,7 +169,7 @@ Hooks.once('init', () => {
 	game.settings.register('symbaroum', 'saveCombatRoll', {
 		name: 'SYMBAROUM.OPTIONAL_SAVECOMBATROLL',
 		hint: 'SYMBAROUM.OPTIONAL_SAVECOMBATROLL_HINT',
-		scope: 'world',
+		scope: 'user',
 		type: Boolean,
 		default: false,
 		config: true,
@@ -177,7 +177,7 @@ Hooks.once('init', () => {
 	game.settings.register('symbaroum', 'saveAttributeRoll', {
 		name: 'SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL',
 		hint: 'SYMBAROUM.OPTIONAL_SAVEATTRIBUTEROLL_HINT',
-		scope: 'world',
+		scope: 'user',
 		type: Boolean,
 		default: false,
 		config: true,
