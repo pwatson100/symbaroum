@@ -25,7 +25,7 @@
                 <label for="{{../id}}-system.power.{{key}}.corruption">{{localize "ARTIFACT.CORRUPTION"}}</label>
                 <input name="system.power.{{key}}.corruption" type="text" id="{{../id}}-system.power.{{key}}.corruption" value="{{power.corruption}}" />
             </div>
-            {{editor this.description target=(keyIndex key) button=true owner=owner editable=true}}
+            {{editor this.description target=(keyIndex key) button=true owner=owner editable=true engine="prosemirror"}}
         </div>
         {{/each}}
         <div class="power-add">
