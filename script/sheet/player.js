@@ -231,7 +231,6 @@ export class PlayerSheet extends SymbaroumActorSheet {
 					this.menuItems = this.originalMenuItems;
 				}
 				super.render(html);
-				// console.log($(args).find('nav#context-menu'));
 			}
 		}
 
@@ -294,8 +293,6 @@ export class PlayerSheet extends SymbaroumActorSheet {
 
 	async _onPrepareRollWeapon(event) {
 		event.preventDefault();
-		// const div = $(event.currentTarget).parents('.item');
-		
 		const div = event.target.closest('.item');		
 		this._prepareRollWeapon(div);
 	}

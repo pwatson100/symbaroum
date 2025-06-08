@@ -56,7 +56,7 @@ export class SymbaroumActorSheet extends foundry.appv1.sheets.ActorSheet {
 
 	_onItemEdit(event) {
 		event.preventDefault();
-		const div = $(event.currentTarget).parents('.item');
+		const div = event.target.closest('.item');
 		this._itemEdit(div);
 	}
 
@@ -67,7 +67,7 @@ export class SymbaroumActorSheet extends foundry.appv1.sheets.ActorSheet {
 
 	_onItemDelete(event) {
 		event.preventDefault();
-		const div = $(event.currentTarget).parents('.item');
+		const div = event.target.closest('.item');
 		this._itemDelete(div);
 	}
 
@@ -99,12 +99,12 @@ export class SymbaroumActorSheet extends foundry.appv1.sheets.ActorSheet {
 	}
 
 	_onFocusIn(event) {
-		$(event.currentTarget).select();
+		event.target.select();
 	}
 
 	async _onItemStateUpdate(event) {
 		event.preventDefault();
-		const div = $(event.currentTarget).parents('.item');
+		const div = event.target.closest('.item');
 		this._itemStateUpdate(div);
 	}
 
@@ -189,7 +189,7 @@ export class SymbaroumActorSheet extends foundry.appv1.sheets.ActorSheet {
 
 	async _onPrepareActivateAbility(event) {
 		event.preventDefault();
-		const div = $(event.currentTarget).parents('.item');
+		const div = event.target.closest('.item');
 		this._prepareActivateAbility(div);
 	}
 
@@ -200,7 +200,7 @@ export class SymbaroumActorSheet extends foundry.appv1.sheets.ActorSheet {
 
 	async _onPrepareRollWeapon(event) {
 		event.preventDefault();
-		const div = $(event.currentTarget).parents('.item');
+		const div = event.target.closest('.item');
 		this._prepareRollWeapon(div);
 	}
 

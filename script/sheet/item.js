@@ -71,8 +71,9 @@ export class SymbaroumItemSheet extends foundry.appv1.sheets.ItemSheet {
   async _onPowerDelete(event) {
     this.updateOutstandingMCEValues();
 
-    const div = $(event.currentTarget).parents('.power-n');
-    let powerId = parseInt(div.data("powerId"));        
+    const div = event.target.closest('.power-n');
+    game.symbaroum.log('PowerID',div);
+    let powerId = parseInt(div.dataset.powerId);        
     if( isNaN(powerId) ) { 
       return;
     }
