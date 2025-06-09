@@ -84,9 +84,9 @@ export class SymbaroumActorSheet extends foundry.appv1.sheets.ActorSheet {
 				yes: {
 					label: game.i18n.localize(`DIALOG.OK`),
 					callback: (html) =>
-						div.slideUp(200, () => {
-							this.actor.deleteEmbeddedDocuments('Item', [item.id], { render: true });
-						}),
+						// div.slideUp(200, () => {
+{							this.actor.deleteEmbeddedDocuments('Item', [item.id], { render: true });
+}						// }),
 				},
 				no: {
 					label: game.i18n.localize(`DIALOG.CANCEL`),
@@ -110,7 +110,7 @@ export class SymbaroumActorSheet extends foundry.appv1.sheets.ActorSheet {
 	}
 
 	async _itemStateUpdate(div, newState) {
-		const item = this.actor.items.get(div.dataset.itemId);
+		const item = this.actor.items.get(div[0].dataset.itemId);
 
 		if (item === null || item === undefined || !item.system.isGear) {
 			return;

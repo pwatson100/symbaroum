@@ -1,6 +1,6 @@
-import { modifierDialog } from "./item.js";
-import { prepareRollAttribute } from "../common/dialog.js";
-import { baseRoll } from "./roll.js";
+import { modifierDialog } from './item.js';
+import { prepareRollAttribute } from '../common/dialog.js';
+import { baseRoll } from './roll.js';
 
 export class SymbaroumActor extends Actor {
 	prepareBaseData() {
@@ -8,11 +8,10 @@ export class SymbaroumActor extends Actor {
 		this._initializeData(this.system);
 	}
 
-	prepareDerivedData()
-	{
+	prepareDerivedData() {
 		// console.log("SymbaroumActor - prepareDerivedData");
 		this.system.numRituals = 0;
-		this.system["is" + this.type.capitalize()] = true;
+		this.system['is' + this.type.capitalize()] = true;
 
 		let items = this.items.contents.sort((a, b) => {
 			if (a.type == b.type) {
@@ -28,9 +27,9 @@ export class SymbaroumActor extends Actor {
 
 	_initializeData(system) {
 		let armorData = foundry.utils.deepClone(game.model.Item.armor);
-		armorData.baseProtection = "0";
+		armorData.baseProtection = '0';
 		armorData.id = null;
-		armorData.name = game.i18n.localize("ITEM.TypeArmor");
+		armorData.name = game.i18n.localize('ITEM.TypeArmor');
 		system.combat = armorData;
 
 		let bonus = foundry.utils.deepClone(game.model.Item.armor.bonus);
@@ -63,28 +62,28 @@ export class SymbaroumActor extends Actor {
 			system.attributes[aKey].total = system.attributes[aKey].value + system.attributes[aKey].bonus + system.attributes[aKey].temporaryMod;
 			system.attributes[aKey].modifier = 10 - system.attributes[aKey].total;
 			if (this.system.isMonster) {
-				let modSign = "";
+				let modSign = '';
 				if (system.attributes[aKey].modifier > 0) {
-					modSign = "+";
+					modSign = '+';
 				}
 				system.attributes[aKey].msg =
-					game.i18n.localize("TOOLTIP.BONUS_TOTAL") +
-					` ${system.attributes[aKey].total} (${modSign}${system.attributes[aKey].modifier})<br />${game.i18n.localize("ATTRIBUTE.BASE")}(${system.attributes[
+					game.i18n.localize('TOOLTIP.BONUS_TOTAL') +
+					` ${system.attributes[aKey].total} (${modSign}${system.attributes[aKey].modifier})<br />${game.i18n.localize('ATTRIBUTE.BASE')}(${system.attributes[
 						aKey
-					].value.toString()}) ${system.bonus[aKey + "_msg"] ?? ""}`;
+					].value.toString()}) ${system.bonus[aKey + '_msg'] ?? ''}`;
 			} else {
 				system.attributes[aKey].msg =
-					game.i18n.localize("TOOLTIP.BONUS_TOTAL") +
+					game.i18n.localize('TOOLTIP.BONUS_TOTAL') +
 					` ${system.attributes[aKey].total}` +
-					"<br />" +
-					game.i18n.localize("ATTRIBUTE.BASE") +
-					"(" +
+					'<br />' +
+					game.i18n.localize('ATTRIBUTE.BASE') +
+					'(' +
 					system.attributes[aKey].value.toString() +
-					")" +
-					`${system.bonus[aKey + "_msg"] ?? ""}`;
+					')' +
+					`${system.bonus[aKey + '_msg'] ?? ''}`;
 			}
 			if (system.attributes[aKey].temporaryMod != 0) {
-				system.attributes[aKey].msg += "<br />" + game.i18n.localize("ATTRIBUTE.MODIFIER") + "(" + system.attributes[aKey].temporaryMod.toString() + ")";
+				system.attributes[aKey].msg += '<br />' + game.i18n.localize('ATTRIBUTE.MODIFIER') + '(' + system.attributes[aKey].temporaryMod.toString() + ')';
 			}
 		}
 
@@ -104,7 +103,7 @@ export class SymbaroumActor extends Actor {
 		let abilitiesArray = this.items.filter((element) => element.system.isAbility);
 		for (let i = 0; i < abilitiesArray.length; i++) {
 			// build it
-			let defaultPack = abilitiesArray[i]._getPackageFormat("default");
+			let defaultPack = abilitiesArray[i]._getPackageFormat('default');
 			defaultPack.type = game.symbaroum.config.PACK_DEFAULT;
 			combatMods.abilities[abilitiesArray[i].id] = {
 				package: [defaultPack],
@@ -143,7 +142,7 @@ export class SymbaroumActor extends Actor {
 
 		for (let i = 0; i < allWeapons.length; i++) {
 			// build it
-			let defaultPack = allWeapons[i]._getPackageFormat("default");
+			let defaultPack = allWeapons[i]._getPackageFormat('default');
 			defaultPack.type = game.symbaroum.config.PACK_DEFAULT;
 			combatMods.weapons[allWeapons[i].id] = {
 				package: [defaultPack],
@@ -168,13 +167,13 @@ export class SymbaroumActor extends Actor {
 
 		for (let i = 0; i < allAbilities.length; i++) {
 			switch (allAbilities[i].type) {
-				case "ability":
+				case 'ability':
 					combatMods.abilities[allAbilities[i].id] = allAbilities[i].getAbilitiesConfig();
 					break;
-				case "mysticalPower":
+				case 'mysticalPower':
 					combatMods.abilities[allAbilities[i].id] = allAbilities[i].getMysticPowersConfig();
 					break;
-				case "trait":
+				case 'trait':
 					combatMods.abilities[allAbilities[i].id] = allAbilities[i].getTraitsConfig();
 					break;
 			}
@@ -192,7 +191,7 @@ export class SymbaroumActor extends Actor {
 		// activeArmor is the last active armor in the list of non-stackable armors
 
 		let totDefense = 0;
-		let defense = { attribute: "quick", defMsg: "No msg" };
+		let defense = { attribute: 'quick', defMsg: 'No msg' };
 		let damageProt = this._getDamageProtections();
 
 		let activeArmor = {};
@@ -216,7 +215,7 @@ export class SymbaroumActor extends Actor {
 		// suppleant our combat details for weaponModifiers
 		system.combat.combatMods = combatMods;
 
-		if (!game.settings.get("symbaroum", "manualInitValue")) {
+		if (!game.settings.get('symbaroum', 'manualInitValue')) {
 			this._getInitiativeAttribute(combatMods.initiative);
 		}
 
@@ -228,7 +227,7 @@ export class SymbaroumActor extends Actor {
 		system.initiative.value = system.attributes[attributeInit].total + system.attributes.vigilant.total / 100;
 		system.initiative.label = system.attributes[attributeInit].label;
 
-		let rrAbility = this.items.filter((item) => item.system.reference === "rapidreflexes");
+		let rrAbility = this.items.filter((item) => item.system.reference === 'rapidreflexes');
 		if (rrAbility.length != 0) {
 			if (rrAbility[0].system.master.isActive) system.initiative.value += game.symbaroum.config.RAPIREFLEXINIBONUS;
 		}
@@ -237,11 +236,11 @@ export class SymbaroumActor extends Actor {
 
 	_computePower(system, item) {
 		if (item.system.isRitual) {
-			item.system.actions = "Ritual";
+			item.system.actions = 'Ritual';
 			this.system.numRituals = this.system.numRituals + 1;
-			if (this.system.numRituals > game.symbaroum.config.expCosts.ritual["free"]) {
+			if (this.system.numRituals > game.symbaroum.config.expCosts.ritual['free']) {
 				// This needs to check if running with alternative rules for additional rituals, APG p.102
-				item.system.bonus.experience.cost = game.settings.get("symbaroum", "optionalMoreRituals") ? game.symbaroum.config.expCosts.ritual["cost"] : 0;
+				item.system.bonus.experience.cost = game.settings.get('symbaroum', 'optionalMoreRituals') ? game.symbaroum.config.expCosts.ritual['cost'] : 0;
 			}
 		}
 
@@ -282,7 +281,7 @@ export class SymbaroumActor extends Actor {
 			// baseDamage = roll formula or "0"
 			let baseProtection = item.system.baseProtection;
 			if (!baseProtection) {
-				baseProtection = "1d4"; // TODO move literal to config
+				baseProtection = '1d4'; // TODO move literal to config
 			}
 			let diceSides = 0;
 			if (!item.system.isStackableArmor && !item.isNoArmor && !item.system.isSkin) {
@@ -291,17 +290,17 @@ export class SymbaroumActor extends Actor {
 			// Start of with full damage from all
 			let damageProtection = this._getDamageProtections();
 			let defense = {
-				defMsg: "",
-				attribute: "quick", // TODO move literal to config
+				defMsg: '',
+				attribute: 'quick', // TODO move literal to config
 			};
 			let impeding = item.impeding;
 			let impedingMov = impeding;
 			let impedingMagic = impeding;
-			let tooltip = "";
+			let tooltip = '';
 			let totDefense = this.system.attributes[defense.attribute].total;
-			let allDefenseProt = "";
+			let allDefenseProt = '';
 			let allDefenseProtNPC = 0;
-			let unfavourPcProt = "";
+			let unfavourPcProt = '';
 
 			let armorModifiers = combatMods.armors[item.id];
 
@@ -382,22 +381,22 @@ export class SymbaroumActor extends Actor {
 			if (this.system.bonus.defense) {
 				totDefense = totDefense + this.system.bonus.defense;
 
-				defense.defMsg += `${game.i18n.localize("ATTRIBUTE.BONUS")} (${this.system.bonus.defense.toString()})<br/>`;
+				defense.defMsg += `${game.i18n.localize('ATTRIBUTE.BONUS')} (${this.system.bonus.defense.toString()})<br/>`;
 			}
 			// game.symbaroum.log(armorModifiers);
-			let diceRoller = "";
+			let diceRoller = '';
 			if ((item.isNoArmor || item.system.isSkin) && diceSides === 0) {
 				// allDefenseProtNPC contains a 0 if npc
-				diceRoller = this.system.isPlayer ? "0" : "";
+				diceRoller = this.system.isPlayer ? '0' : '';
 			} else if (!item.system.isStackableArmor) {
 				diceRoller = this.system.isPlayer ? `1d${diceSides}` : diceSides / 2;
 				unfavourPcProt = `2d${diceSides}kl${allDefenseProt}`;
 			}
-			let finalProtText = diceRoller + (this.system.isPlayer ? allDefenseProt : allDefenseProtNPC) + "";
+			let finalProtText = diceRoller + (this.system.isPlayer ? allDefenseProt : allDefenseProtNPC) + '';
 
 			if (isNaN(totDefense)) {
-				game.symbaroum.error("totDefense is NaN - resetting to 0 - investigate logs");
-				ui.notifications?.error("totDefense is NaN - resetting to 0 - investigate logs");
+				game.symbaroum.error('totDefense is NaN - resetting to 0 - investigate logs');
+				ui.notifications?.error('totDefense is NaN - resetting to 0 - investigate logs');
 				totDefense = 0;
 			}
 
@@ -407,10 +406,10 @@ export class SymbaroumActor extends Actor {
 				name: item.name,
 				base: item.system.baseProtection,
 				bonus: item.system.bonusProtection,
-				displayText: finalProtText.replace(/(d1\[[^\]]+\])/g, ""),
-				displayTextShort: finalProtText.replace(/(d1\[[^\]]+\])/g, "").replace(/\[[^\]]+\]/g, ""),
+				displayText: finalProtText.replace(/(d1\[[^\]]+\])/g, ''),
+				displayTextShort: finalProtText.replace(/(d1\[[^\]]+\])/g, '').replace(/\[[^\]]+\]/g, ''),
 				protectionPc: finalProtText,
-				protectionNpc: diceSides / 2 + allDefenseProtNPC + "",
+				protectionNpc: diceSides / 2 + allDefenseProtNPC + '',
 				unfavourPcProt: unfavourPcProt,
 				tooltip: tooltip,
 				impeding: impeding,
@@ -439,15 +438,15 @@ export class SymbaroumActor extends Actor {
 		let weaponArray = [];
 		for (let item of activeWeapons) {
 			let attribute = item.system.attribute;
-			let doAlternativeDamage = item.system.alternativeDamage !== "none";
-			let tooltip = "";
+			let doAlternativeDamage = item.system.alternativeDamage !== 'none';
+			let tooltip = '';
 			let baseDamage = item.system.baseDamage;
 			if (baseDamage === undefined) {
-				baseDamage = "1d8"; // TODO move literal to config
+				baseDamage = '1d8'; // TODO move literal to config
 			}
-			let bonusDamage = "";
+			let bonusDamage = '';
 			let damageFavour = 0;
-			let pcDamage = "";
+			let pcDamage = '';
 			let npcDamage = 0;
 			let attributeMod = 0;
 			let numAttacks = 1;
@@ -470,13 +469,13 @@ export class SymbaroumActor extends Actor {
 			for (let i = 0; i < weaponModifiers.attackModifiers?.length; i++) {
 				// weaponModifers.attribute[i].label
 				attributeMod += weaponModifiers.attackModifiers[i].modifier;
-				tooltip += game.symbaroum.htmlEscape(weaponModifiers.attackModifiers[i].label) + ", ";
+				tooltip += game.symbaroum.htmlEscape(weaponModifiers.attackModifiers[i].label) + ', ';
 			}
 
-			let displayText = "";
-			let firstAttack = "";
-			let plusAttacks = ""; // bonus for non-first attacks
-			let allAttacks = ""; // bonus for all attacks (including first & single)
+			let displayText = '';
+			let firstAttack = '';
+			let plusAttacks = ''; // bonus for non-first attacks
+			let allAttacks = ''; // bonus for all attacks (including first & single)
 			let singleAttack = [];
 
 			let firstAttackNPC = 0;
@@ -511,22 +510,22 @@ export class SymbaroumActor extends Actor {
                             }*/
 							if (alternatives[j].restrictions) {
 								if (alternatives[j].restrictions.includes(game.symbaroum.config.DAM_ACTIVE)) {
-									singleAttack.push(alternatives[j].damageMod + "[" + damChoice.label + "]");
+									singleAttack.push(alternatives[j].damageMod + '[' + damChoice.label + ']');
 									singleAttackNPC.push(alternatives[j].damageModNPC);
 								} else if (alternatives[j].restrictions.includes(game.symbaroum.config.DAM_1STATTACK)) {
-									firstAttack += alternatives[j].damageMod + "[" + damChoice.label + "]";
+									firstAttack += alternatives[j].damageMod + '[' + damChoice.label + ']';
 									firstAttackNPC += alternatives[j].damageModNPC;
 								} else if (alternatives[j].restrictions.includes(game.symbaroum.config.DAM_NOTACTIVE)) {
-									plusAttacks += alternatives[j].damageMod + "[" + damChoice.label + "]";
+									plusAttacks += alternatives[j].damageMod + '[' + damChoice.label + ']';
 									plusAttacksNPC += alternatives[j].damageModNPC;
 								} else {
 									// terminate
-									allAttacks += alternatives[j].damageMod + "[" + damChoice.label + "]";
+									allAttacks += alternatives[j].damageMod + '[' + damChoice.label + ']';
 									allAttacksNPC += alternatives[j].damageModNPC;
 								}
 							} else {
 								// terminate
-								allAttacks += alternatives[j].damageMod + "[" + damChoice.label + "]";
+								allAttacks += alternatives[j].damageMod + '[' + damChoice.label + ']';
 								allAttacksNPC += alternatives[j].damageModNPC;
 							}
 						}
@@ -541,27 +540,27 @@ export class SymbaroumActor extends Actor {
 			for (let i = 0; i < numAttacks; i++) {
 				let dam = diceSides / 2 + (i == 0 ? firstAttackNPC : 0) + plusAttacksNPC + allAttacksNPC;
 				displayText += dam;
-				if (!game.settings.get("symbaroum", "showNpcAttacks")) {
+				if (!game.settings.get('symbaroum', 'showNpcAttacks')) {
 					break;
 				}
 				if (i + 1 < numAttacks) {
 					// not last element
-					displayText += "/";
+					displayText += '/';
 				}
 			}
 			// Prefix with all single attacks, if any
-			let singleText = "";
-			if (game.settings.get("symbaroum", "showNpcAttacks")) {
+			let singleText = '';
+			if (game.settings.get('symbaroum', 'showNpcAttacks')) {
 				for (let i = 0; i < singleAttackNPC.length; i++) {
 					let dam = diceSides / 2 + firstAttackNPC + allAttacksNPC + singleAttackNPC[i];
-					singleText += dam + " ";
+					singleText += dam + ' ';
 					if (i + 1 < singleAttackNPC.length) {
 						// not last element
-						singleText += "| ";
+						singleText += '| ';
 					}
 				}
-				if (singleText !== "") {
-					singleText += ", ";
+				if (singleText !== '') {
+					singleText += ', ';
 				}
 			}
 			baseDamage = `1d${diceSides}`;
@@ -602,7 +601,7 @@ export class SymbaroumActor extends Actor {
 					npcBase: baseDamageNPC,
 					bonus: bonusDamage,
 					displayText: displayText,
-					displayTextShort: displayText.replace(/(d1\[[^\]]+\])/g, "").replace(/\[[^\]]+\]/g, ""),
+					displayTextShort: displayText.replace(/(d1\[[^\]]+\])/g, '').replace(/\[[^\]]+\]/g, ''),
 					pc: pcDamage,
 					npc: npcDamage,
 					damageFavour: damageFavour,
@@ -626,7 +625,7 @@ export class SymbaroumActor extends Actor {
 	}
 
 	_getInitiativeAttribute(initiativeSelection) {
-		let attributeInit = "quick";
+		let attributeInit = 'quick';
 		for (let i = 0; i < initiativeSelection.length; i++) {
 			// game.symbaroum.log("Initiative - compare",initiativeSelection[i].attribute, this.system.attributes[attributeInit].total, this.system.attributes[initiativeSelection[i].attribute].total)
 			if (this.system.attributes[attributeInit].total < this.system.attributes[initiativeSelection[i].attribute].total) {
@@ -703,9 +702,9 @@ export class SymbaroumActor extends Actor {
 		noArmor.impeding = 0;
 
 		noArmor.id = game.symbaroum.config.noArmorID;
-		noArmor.name = game.i18n.localize("ARMOR.NOARMOR_NAME");
-		noArmor.type = noArmor.type = "armor";
-		noArmor.img = "icons/equipment/chest/shirt-simple-white.webp";
+		noArmor.name = game.i18n.localize('ARMOR.NOARMOR_NAME');
+		noArmor.type = noArmor.type = 'armor';
+		noArmor.img = 'icons/equipment/chest/shirt-simple-white.webp';
 		noArmor.system.isArmor = true;
 		noArmor.system.isActive = true;
 		noArmor.system.isStackableArmor = false;
@@ -739,12 +738,12 @@ export class SymbaroumActor extends Actor {
 	}
 
 	_addBonusData(currentb, item, itemb, bonusType) {
-		if (currentb[bonusType + "_msg"] === undefined) {
-			currentb[bonusType + "_msg"] = "";
+		if (currentb[bonusType + '_msg'] === undefined) {
+			currentb[bonusType + '_msg'] = '';
 		}
 		if (itemb[bonusType] != 0) {
 			currentb[bonusType] += itemb[bonusType];
-			currentb[bonusType + "_msg"] += "<br />" + game.symbaroum.htmlEscape(item.name) + "(" + itemb[bonusType] + ")";
+			currentb[bonusType + '_msg'] += '<br />' + game.symbaroum.htmlEscape(item.name) + '(' + itemb[bonusType] + ')';
 		}
 	}
 
@@ -758,26 +757,24 @@ export class SymbaroumActor extends Actor {
 		let itemtBonusCorruption = itemBonus.corruption;
 		let itemBonusExperience = itemBonus.experience;
 
-		this._addBonusData(currentBonus, item, itemBonus, "defense");
+		this._addBonusData(currentBonus, item, itemBonus, 'defense');
 		game.symbaroum.config.attributes.forEach((value, index, arr) => {
 			this._addBonusData(currentBonus, item, itemBonus, value);
 		});
-		this._addBonusData(currentBonusToughness, item, itemBonusToughness, "max");
-		this._addBonusData(currentBonusToughness, item, itemBonusToughness, "threshold");
-		this._addBonusData(currentBonusCorruption, item, itemtBonusCorruption, "max");
-		this._addBonusData(currentBonusCorruption, item, itemtBonusCorruption, "threshold");
-		this._addBonusData(currentBonusExperience, item, itemBonusExperience, "cost");
-		this._addBonusData(currentBonusExperience, item, itemBonusExperience, "value");
+		this._addBonusData(currentBonusToughness, item, itemBonusToughness, 'max');
+		this._addBonusData(currentBonusToughness, item, itemBonusToughness, 'threshold');
+		this._addBonusData(currentBonusCorruption, item, itemtBonusCorruption, 'max');
+		this._addBonusData(currentBonusCorruption, item, itemtBonusCorruption, 'threshold');
+		this._addBonusData(currentBonusExperience, item, itemBonusExperience, 'cost');
+		this._addBonusData(currentBonusExperience, item, itemBonusExperience, 'value');
 	}
 
-	
-
 	async addCondition(effect, flagData) {
-		if (typeof effect === "string") {
+		if (typeof effect === 'string') {
 			effect = CONFIG.statusEffects.find((e) => e.id == effect);
 		}
-		if (!effect) return "No Effect Found";
-		if (!effect.id) return "Conditions require an id field";
+		if (!effect) return 'No Effect Found';
+		if (!effect.id) return 'Conditions require an id field';
 
 		let existing = this.hasCondition(effect.id);
 
@@ -785,32 +782,32 @@ export class SymbaroumActor extends Actor {
 			effect = foundry.utils.duplicate(effect);
 			effect.label = game.i18n.localize(effect.label)?.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase());
 			effect.name = game.i18n.localize(effect.name)?.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase());
-			if (foundry.utils.isNewerVersion('11', game.version) ) {
-				effect["flags.core.statusId"] = effect.id;
+			if (foundry.utils.isNewerVersion('11', game.version)) {
+				effect['flags.core.statusId'] = effect.id;
 			}
-			if( flagData ) {
+			if (flagData) {
 				effect[`flags.${game.system.id}.flagData`] = flagData;
 			}
-			effect["statuses"] = effect.id;
+			effect['statuses'] = effect.id;
 			delete effect.id;
-			return this.createEmbeddedDocuments("ActiveEffect", [effect]);
+			return this.createEmbeddedDocuments('ActiveEffect', [effect]);
 		}
 	}
 
 	async removeCondition(effect) {
-		if (typeof effect === "string") effect = CONFIG.statusEffects.find((e) => e.id == effect);
-		if (!effect) return "No Effect Found";
-		if (!effect.id) return "Conditions require an id field";
+		if (typeof effect === 'string') effect = CONFIG.statusEffects.find((e) => e.id == effect);
+		if (!effect) return 'No Effect Found';
+		if (!effect.id) return 'Conditions require an id field';
 		let existing = this.hasCondition(effect.id);
 		if (existing) {
-			return this.deleteEmbeddedDocuments("ActiveEffect", [existing._id]);
+			return this.deleteEmbeddedDocuments('ActiveEffect', [existing._id]);
 		}
 	}
 
 	hasCondition(conditionKey) {
-		let existing = "";
-		if (foundry.utils.isNewerVersion('11', game.version) ) {
-			existing = this.effects.find((i) => i.getFlag("core", "statusId") == conditionKey);
+		let existing = '';
+		if (foundry.utils.isNewerVersion('11', game.version)) {
+			existing = this.effects.find((i) => i.getFlag('core', 'statusId') == conditionKey);
 		} else {
 			existing = this.effects.find((effect) => effect.statuses.has(conditionKey));
 		}
@@ -822,27 +819,27 @@ export class SymbaroumActor extends Actor {
 		if (this.system.isThoroughlyCorrupt || functionStuff.corruption === game.symbaroum.config.TEMPCORRUPTION_NONE) {
 			return { value: 0 };
 		}
-		let corruptionFormula = functionStuff.corruptionFormula ?? "1d4"; // TODO move literal to config
+		let corruptionFormula = functionStuff.corruptionFormula ?? '1d4'; // TODO move literal to config
 		let sorceryRoll;
 		if (functionStuff.corruption === game.symbaroum.config.TEMPCORRUPTION_ONE) {
 			return { value: 1 };
 		} else if (functionStuff.corruption === game.symbaroum.config.TEMPCORRUPTION_TESTFORONE) {
-			sorceryRoll = await baseRoll(this, "resolute", null, null, 0, 0, false);
+			sorceryRoll = await baseRoll(this, 'resolute', null, null, 0, 0, false);
 			if (sorceryRoll.trueActorSucceeded) {
-				return { value: 1, tradition: "sorcery", sorceryRoll: sorceryRoll };
+				return { value: 1, tradition: 'sorcery', sorceryRoll: sorceryRoll };
 			}
 		} else if (functionStuff.corruption === game.symbaroum.config.TEMPCORRUPTION_FAVOUR) {
-			corruptionFormula = "2d4kl";
+			corruptionFormula = '2d4kl';
 		} else {
 			// Is this actually used anywhere?  If it is, should we extend this to allow for all the other options too?
 			for (let i = 0; i < this.system.combat.combatMods.corruption.length; i++) {
 				if (this.system.combat.combatMods.corruption[i].type === game.symbaroum.config.TEMPCORRUPTION_FAVOUR) {
-					corruptionFormula = "2d4kl";
+					corruptionFormula = '2d4kl';
 				}
 			}
 		}
-		game.symbaroum.log("getCorruption", corruptionFormula, functionStuff);
-		let corRoll = await (new Roll(corruptionFormula)).evaluate();
+		game.symbaroum.log('getCorruption', corruptionFormula, functionStuff);
+		let corRoll = await new Roll(corruptionFormula).evaluate();
 		return { value: corRoll.total, sorceryRoll: sorceryRoll, corruptionRoll: corRoll };
 	}
 
@@ -858,20 +855,20 @@ export class SymbaroumActor extends Actor {
 			if (!specificStuff.isScripted) return;
 			//need token?
 			if (specificStuff.needToken && !actingToken) {
-				ui.notifications.error(game.i18n.localize("ERROR.NO_TOKEN_SELECTED"));
+				ui.notifications.error(game.i18n.localize('ERROR.NO_TOKEN_SELECTED'));
 				return;
 			}
 			//casting attribute
 			if (specificStuff.attributes.length > 0) {
 				let castingAttribute = specificStuff.castingAttributeName;
 				let castingAttributeValue = this.system.attributes[castingAttribute].total;
-				let autoParams = "";
+				let autoParams = '';
 				for (let base of specificStuff.attributes) {
 					let alternateValue = this.system.attributes[base.attribute].total;
 					if (castingAttributeValue < alternateValue) {
 						castingAttribute = base.attribute;
 						castingAttributeValue = alternateValue;
-						autoParams = base.label + ", ";
+						autoParams = base.label + ', ';
 					}
 				}
 				specificStuff.castingAttributeName = castingAttribute;
@@ -911,16 +908,16 @@ export class SymbaroumActor extends Actor {
 			if (
 				specificStuff.targetData.hasTarget &&
 				specificStuff.targetData.actor.system.combat.damageReductions.length &&
-				specificStuff.targetResistAttribute === "resolute"
+				specificStuff.targetResistAttribute === 'resolute'
 			) {
 				for (let i = 0; i < specificStuff.targetData.actor.system.combat.damageReductions.length; i++) {
 					if (specificStuff.targetData.actor.system.combat.damageReductions[i].type === game.symbaroum.config.TYPE_ALT_RESIST_ATTR_RESOLUTE) {
-						let resistributeValue = specificStuff.targetData.actor.system.attributes["resolute"].total;
+						let resistributeValue = specificStuff.targetData.actor.system.attributes['resolute'].total;
 						let alternateValue =
 							specificStuff.targetData.actor.system.attributes[specificStuff.targetData.actor.system.combat.damageReductions[i].attribute].total;
 						if (resistributeValue < alternateValue) {
 							specificStuff.targetData.resistAttributeName = specificStuff.targetData.actor.system.combat.damageReductions[i].attribute;
-							specificStuff.targetData.autoParams += specificStuff.targetData.actor.system.combat.damageReductions[i].label + ", ";
+							specificStuff.targetData.autoParams += specificStuff.targetData.actor.system.combat.damageReductions[i].label + ', ';
 						}
 					}
 				}
@@ -944,11 +941,11 @@ export class SymbaroumActor extends Actor {
 
 	async rollArmor() {
 		const armor = this.system.combat;
-		return prepareRollAttribute(this, "defense", armor, null);
+		return prepareRollAttribute(this, 'defense', armor, null);
 	}
 
 	async rollWeapon(weapon) {
-		if (game.settings.get("symbaroum", "combatAutomation")) {
+		if (game.settings.get('symbaroum', 'combatAutomation')) {
 			return this.enhancedAttackRoll(weapon);
 		} else {
 			return prepareRollAttribute(this, weapon.attribute, null, weapon);
@@ -964,7 +961,7 @@ export class SymbaroumActor extends Actor {
 		let actingToken = api.getActorToken(this);
 		let targetData;
 		try {
-			targetData = getTarget("defense");
+			targetData = getTarget('defense');
 		} catch (error) {
 			ui.notifications.error(error);
 			return;
@@ -982,31 +979,31 @@ export class SymbaroumActor extends Actor {
 			askPoison: false,
 			numberofAttacks: 1,
 			attackFromPC: this.system.isPlayer,
-			autoParams: "",
+			autoParams: '',
 			checkMaintain: false,
 			combat: true,
 			corruption: false,
-			dmgModifier: "",
+			dmgModifier: '',
 			dmgModifierNPC: 0,
-			dmgModifierAttackSupp: "",
+			dmgModifierAttackSupp: '',
 			dmgModifierAttackSuppNPC: 0,
 			favour: 0,
 			modifier: 0,
 			poison: 0,
 			isMystical: weapon.qualities.mystical || weapon.isArtifact,
 			isAlternativeDamage: false,
-			alternativeDamageAttribute: "none",
-			introText: actingCharName + game.i18n.localize("COMBAT.CHAT_INTRO") + weapon.name,
+			alternativeDamageAttribute: 'none',
+			introText: actingCharName + game.i18n.localize('COMBAT.CHAT_INTRO') + weapon.name,
 			targetData: targetData,
-			targetText: game.i18n.localize("ABILITY.CHAT_TARGET_VICTIM"),
-			resistRollText: "",
-			corruptingattack: "",
+			targetText: game.i18n.localize('ABILITY.CHAT_TARGET_VICTIM'),
+			resistRollText: '',
+			corruptingattack: '',
 			ignoreArm: false,
 			castingAttributeName: weapon.attribute,
 			weapon: weapon,
 			damageOverTime: [],
 		};
-		let poisoner = this.items.filter((item) => item.system?.reference === "poisoner" || item.system?.reference === "poisonous");
+		let poisoner = this.items.filter((item) => item.system?.reference === 'poisoner' || item.system?.reference === 'poisonous');
 		functionStuff.askPoison = poisoner.length != 0;
 		return prepareRollAttribute(this, weapon.attribute, null, weapon, functionStuff);
 	}
@@ -1028,18 +1025,18 @@ export function getTarget(targetAttributeName) {
 export function getTargets(targetAttributeName, maxTargets = 1) {
 	let targets = Array.from(game.user.targets);
 	if (targets.length == 0 || targets.length > maxTargets) {
-		throw game.i18n.localize("ABILITY_ERROR.TARGET");
+		throw game.i18n.localize('ABILITY_ERROR.TARGET');
 	}
 	let targetsData = [];
 	for (let target of targets) {
 		let targetToken = target;
 		let targetActor = target.actor;
-		let autoParams = "";
+		let autoParams = '';
 		let leaderTarget = false;
 		let leaderEffect = targetToken?.actor.hasCondition('eye');
 		if (leaderEffect) {
 			leaderTarget = true;
-			autoParams += game.i18n.localize("COMBAT.CHAT_DMG_PARAMS_LEADER");
+			autoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
 		}
 		targetsData.push({
 			hasTarget: true,

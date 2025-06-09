@@ -71,6 +71,12 @@
 		"distance": 1,
 		"units": "m"
 	},
+		"flags": {
+		"hotReload": {
+			"extensions": ["css", "html", "mjs", "js", "hbs", "json"],
+			"paths": ["css", "lang", "templates"]
+		}
+	},
 	"primaryTokenAttribute": "health.toughness",
 	"secondaryTokenAttribute": "health.corruption",
 	"initiative": "1d20[tiebreaker]/100000 + @initiative.value",
