@@ -112,7 +112,7 @@
 
 .symbaroum.sheet.actor input[type='text'][disabled],
 .symbaroum.sheet.actor input[type='number'][disabled] {
-  background: var(--box-non-editable) repeat;
+  /* background: var(--box-non-editable) repeat; */
 }
 
 .symbaroum.sheet.actor .item-list {
