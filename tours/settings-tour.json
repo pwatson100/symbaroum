@@ -3,9 +3,9 @@
     "id": "settings-tour",
     "title": "SYMBAROUM.TOUR_CONFIG_TITLE",
     "canBeResumed": false,
-    "display": true,
+    "display": false,
     "permission": {
-        "GM":true,
+        "GM":false,
         "Players":false
     },
     "steps": [
@@ -18,21 +18,21 @@
         },
         {
             "id": "goto-configure",
-            "selector": "[data-action='configure']",
+            "selector": "[data-app='configure']",
             "title": "SYMBAROUM.TOUR_CONFIG_CONFIGURE",
             "content": "SYMBAROUM.TOUR_CONFIG_CONFIGURE_CONTENT",
             "action": "click"
         },
         {
             "id": "goto-symbaroumsettings",
-            "selector": "a.category-tab[data-tab='system']",
+            "selector": "button[data-tab='system']",
             "title": "SYMBAROUM.TOUR_CONFIG_SYSSETTINGS",
             "content": "SYMBAROUM.TOUR_CONFIG_SYSSETTINGS_CONTENT",
             "action": "click"
         },
         {
             "id": "goto-settingsymbSettings",
-            "selector": "[data-key='symbaroum.symbaroumSettings']",
+            "selector": "section[data-category='system'].plain",
             "title": "SYMBAROUM.TOUR_CONFIG_SYMBSETTINGS",
             "content": "SYMBAROUM.TOUR_CONFIG_SYMBSETTINGS_CONTENT"
         },
