@@ -315,6 +315,8 @@ SYMBAROUM.meleeWeapons = ["1handed", "short", "long", "shield", "unarmed", "heav
 
 SYMBAROUM.rangeWeapons = ["ranged", "thrown"];
 
+SYMBAROUM.baseHealDeathRollRecovery = '1d4';
+
 SYMBAROUM.baseDamage = "1d8";
 SYMBAROUM.baseProtection = "1d4";
 

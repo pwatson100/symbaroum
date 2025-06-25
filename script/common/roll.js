@@ -152,12 +152,12 @@ export async function rollDeathTest(actor, withFavour, modifier) {
   let finalMod = game.settings.get('symbaroum', 'enhancedDeathSaveBonus') ? modifier:0;
   let isCriticalSuccess = death.total <= (1+finalMod);
   let heal = null;
-  let nbrOfFailedDeathRoll = actor.system.nbrOfFailedDeathRoll;
+  let nbrOfFailedDeathRoll = actor.system.nbrOfFailedDeathRoll ?? 0;
   let rollResult = game.symbaroum.api.formatRollResult({favour: favour, diceResult: death.total, dicesResult: dicesResult});
   if (!hasSucceed) nbrOfFailedDeathRoll = Math.min(3, nbrOfFailedDeathRoll+1);
   if (isCriticalSuccess) {
     nbrOfFailedDeathRoll = 0;
-    heal = await new Roll('1d4', {}).evaluate();
+    heal = await new Roll(game.symbaroum.config.baseHealDeathRollRecovery, {}).evaluate();
     rolls.push(heal);
   }
   let diceBreakdown = formatDice(death.terms,"+");
