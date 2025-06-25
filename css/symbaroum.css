@@ -2493,7 +2493,7 @@ Monster Codex Stuff
 }
 
 .symbaroum.sheet.actor .player .bio .stigmas .editor {
-  height: 156px;
+  height: 154px;
 }
 
 .symbaroum.sheet.actor .player .bio .editor-content {
@@ -2579,12 +2579,12 @@ Monster Codex Stuff
 }
 
 .symbaroum.sheet.actor .gear .wrapper-left .armors {
-  height: 200px;
+  height: 203px;
 }
 
 .symbaroum.sheet.actor .gear .wrapper-left .weapons {
   height: 300px;
-  margin-top: 10px;
+  margin-top: 2px;
 }
 
 .symbaroum.sheet.actor .gear ol {
@@ -2651,11 +2651,10 @@ Monster Codex Stuff
 
 .symbaroum.sheet.actor .gear .wrapper-right .money {
   height: 159px;
-  margin-top: 10px;
 }
 
 .symbaroum.sheet.actor .gear .wrapper-right .equipments {
-  height: 585px;
+  height: 580px;
 }
 
 .symbaroum.sheet.actor .gear .wrapper-left .armors .item-header,
@@ -2770,6 +2769,7 @@ Monster Codex Stuff
 .symbaroum.sheet.actor .gear .wrapper-right .equipments {
   margin: 0;
   margin-top: 2px;
+  margin-bottom: 4px;
   padding: 0;
 }
 
@@ -3426,7 +3426,7 @@ Monster Codex Stuff
       flex-basis: 100%;
   border-top: none;
   margin-top: 10px;
-  height: 390px;
+  height: 370px;
 }
 
 .symbaroum.sheet.actor .player .main .abilities-powers .button.item-create {
@@ -3453,7 +3453,7 @@ Monster Codex Stuff
       flex-wrap: wrap;
   -ms-flex-preferred-size: 100%;
       flex-basis: 100%;
-  height: 350px;
+  height: 330px;
   overflow-y: scroll;
   -ms-flex-line-pack: baseline;
       align-content: baseline;
@@ -3559,7 +3559,7 @@ Monster Codex Stuff
   border-top: none;
   -ms-flex-preferred-size: 100%;
       flex-basis: 100%;
-  height: 754px;
+  height: 755px;
 }
 
 .symbaroum.sheet.actor .player .note .wrapper .editor,
@@ -3577,7 +3577,7 @@ Monster Codex Stuff
 .symbaroum.sheet.actor .player .note .wrapper .editor {
   margin: 10px;
   border: 1px solid var(--color-border);
-  height: 694px;
+  height: 695px;
 }
 
 .symbaroum.sheet.actor .player .note .wrapper .editor-content {
