@@ -5,7 +5,6 @@
     "canBeResumed": false,
     "display": true,
     "steps": [
-
         {
             "id": "goto-actortab",
             "selector": "[data-tab='actors']",
@@ -15,7 +14,8 @@
         },
         {
             "id": "goto-actorsheet-open",
-            "selector": "li[data-document-id='14xreF7lUoXqvHjh'] h4.document-name",
+            "selector": "li[data-entry-id='14xreF7lUoXqvHjh']",
+            "target": "li[data-entry-id='14xreF7lUoXqvHjh'] .entry-name",
             "title": "SYMBAROUM.TOUR_CHARACTER_SELECTACTOR",
             "content": "SYMBAROUM.TOUR_CHARACTER_SELECTACTOR_CONTENT",
             "action": "click"
