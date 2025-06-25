@@ -18,14 +18,15 @@
         },
         {
             "id": "goto-actortabcreate",
-            "selector": "section[data-tab=actors] button.create-document",
+            "selector": "section[data-tab=actors] button.create-entry",
             "title": "SYMBAROUM.TOUR_CHARACTER_ACTORTAB_CREATE",
             "content": "SYMBAROUM.TOUR_CHARACTER_ACTORTAB_CREATE_CONTENT",
             "action": "addActor"
         },
         {
             "id": "goto-actorsheet-open",
-            "selector": "li[data-document-id='14xreF7lUoXqvHjh'] h4.document-name",
+            "selector": "li[data-entry-id='14xreF7lUoXqvHjh']",
+            "target": "li[data-entry-id='14xreF7lUoXqvHjh'] .entry-name",
             "title": "SYMBAROUM.TOUR_CHARACTER_SELECTACTOR",
             "content": "SYMBAROUM.TOUR_CHARACTER_SELECTACTOR_CONTENT",
             "action": "click"
