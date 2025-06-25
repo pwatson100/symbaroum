@@ -37,7 +37,10 @@ function registerHandlebarsHelpers() {
   });
     
   Handlebars.registerHelper('removeStyling', function (text) {
-    const styling = /style="[^"]+"/gi;
+    if(!text) {
+      return '';
+    }
+    const styling = /style="[^"]+"/gi;    
     return new Handlebars.SafeString(text.replace(styling, ''));
   });
 
