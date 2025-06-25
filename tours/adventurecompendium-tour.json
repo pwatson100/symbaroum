@@ -19,13 +19,15 @@
         {
             "id": "goto-systemcompendium",
             "selector": "[data-pack='symbaroum.symbaroum']",
+            "target": "[data-pack='symbaroum.symbaroum'] .compendium-name",
             "title": "SYMBAROUM.TOUR_ACOMPENDIUM_SYSTEM",
             "content": "SYMBAROUM.TOUR_ACOMPENDIUM_SYSTEM_CONTENT",
             "action": "click-delay"
         },
         {
             "id": "goto-systembase-english",
-            "selector": "li[data-document-id='ftwXXmIBSABngqGy'] h4",
+            "selector": "li[data-entry-id='ftwXXmIBSABngqGy']",
+            "target": "li[data-entry-id='ftwXXmIBSABngqGy'] .entry-name",
             "title": "SYMBAROUM.TOUR_ACOMPENDIUM_SYSTEM_ENGLISH",
             "content": "SYMBAROUM.TOUR_ACOMPENDIUM_SYSTEM_ENGLISH_CONTENT",
             "action": "click"
