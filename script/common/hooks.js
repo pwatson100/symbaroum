@@ -407,6 +407,10 @@ Hooks.once('ready', () => {
 	setup3PartySettings();
 	// enrichTextEditors();
 	tourSetup();
+
+	if (!CONFIG.Combat.settings.turnMarker.src) {
+		CONFIG.Combat.settings.turnMarker.src = 'systems/symbaroum/asset/image/head.webp';
+	}
 });
 
 Hooks.on('preDocumentSheetRegistrarInit', (settings) => {
