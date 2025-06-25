@@ -462,6 +462,16 @@
           filter: sepia(0.5) contrast(0.75) opacity(0.4);
 }
 
+.symbaroum.chat.roll .dice-tooltip {
+  display: none;
+  text-align: center;
+}
+
+.symbaroum.chat.roll .expanded .dice-tooltip {
+  display: block;
+  text-align: center;
+}
+
 .symba-rolls.roll {
   display: inline-block;
   width: 24px;
