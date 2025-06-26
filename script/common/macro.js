@@ -716,11 +716,9 @@ export class SymbaroumMacros {
 
     /**********************************************
      * Macro: resetTemporaryCorruption
-     */
-/** 
- * Macro can be used by either selecting tokens on-screen or, if no tokens are selected, choosing which player characters (default all)
- * 
- */
+		 * Macro can be used by either selecting tokens on-screen or, if no tokens are selected, choosing which player characters (default all)
+ 		 * 
+		 */
 		async resetTemporaryCorruption()
 		{
 				let defaultCheck = "checked"; // set to unchecked
@@ -788,6 +786,8 @@ export class SymbaroumMacros {
     /**********************************************
      * Macro: 
      */
+
+		
     /**********************************************
      * Macro: 
      */
