@@ -540,7 +540,7 @@ export class SymbaroumMacros {
 	async change2PC(npcname)
 	{
     let myActor = game.actors.getName(npcname);
-    console.log(myActor);
+    
     if( myActor === null) {
         ui.notifications.error(`Could not find actor with name ${npcname}. Try again`);
         return;
@@ -621,8 +621,99 @@ export class SymbaroumMacros {
 				}
 		}
     /**********************************************
-     * Macro: 
+     * Macro: Pay for Re-Roll
+		 * 
      */
+		async payForReRoll()
+		{
+				let defaultCheck = "unchecked"; // set to unchecked
+				const actorslist = this.getPlayerList();
+				if(actorslist.length === 0) {
+						ui.notifications.info(`No actor available for you to apply re-roll cost`);
+						return;
+				} else if(actorslist.length === 1) {
+						defaultCheck = "checked";
+				}    
+
+				let allKeys = "";
+				actorslist.forEach(t => {
+						allKeys = allKeys.concat(`<div style="flex-basis: auto;flex-direction: row;display: flex;">
+										<div style="width:10em;min-width:10em;"><label for="${t.id}">${t.name}</label> </div>
+										<div><input id="${t.id}" type="radio" name="selection" value="${t.id}" ${defaultCheck}="${defaultCheck}"></div>
+								</div>`);
+				});
+
+				let dialog_content = `  
+				<div class="form-group">
+				<h2>Select player(s)</h2>
+				${allKeys}
+				<br />
+				<div>Select what was used for the re-roll</div>
+				<div style="flex-basis: auto;flex-direction: row;display: flex;">
+						<div style="width:10em;min-width:10em;"><label for="artifactrr">Experience</label> </div>
+						<div><input type="radio" id="artifactrr" value="artifactrr" name="costType"></div>
+				</div>
+				<div style="flex-basis: auto;flex-direction: row;display: flex;">
+						<div style="width:10em;min-width:10em;"><label for="permanent">Corruption (perm)</label></div>
+						<div><input type="radio" id="permanent" value="permanent" name="costType"></div>
+				</div>`;
+				dialog_content += `<br /></div>`;
+				let x = new Dialog({
+						title: "Pay the cost for re-roll",
+						content : dialog_content,
+						buttons : 
+						{
+								Ok :{ label : `Ok`, callback : async (html) => {             
+																								let tmp = html.find("input[name='selection']").get().filter(v => { if(v.checked) return true; }).map(e => { return e.value});
+																								let costType = html.find("input[name='costType']").get().filter(v => { if(v.checked) return true; }).map(e => { return e.value});
+
+																								await this.payCost(tmp,costType);
+																						}
+										},
+								Cancel : {label : `Cancel`}
+						}
+				});
+				
+				x.options.width = 200;
+				x.position.width = 300;
+				
+				x.render(true);
+		}
+
+		async payCost(actorids, costType)
+		{
+				let aexp = null;
+				let actorName = "";
+				
+				let message_content = "";
+
+				let updates = actorids.map(a => {
+						aexp = game.actors.get(a);
+						actorName = aexp.name;        
+						return {
+								_id: a,
+								"system.experience.artifactrr": aexp.system.experience.artifactrr + ( costType.includes("artifactrr")? 1:0),
+								"system.health.corruption.permanent": aexp.system.health.corruption.permanent + ( costType.includes("permanent")? 1:0),
+								"system.health.corruption.longterm": aexp.system.health.corruption.longterm + ( costType.includes("longterm")? dice.total:0)
+						};
+				});
+				// console.log(updates);
+				let chatOptions = {
+						speaker: 
+						{
+					actor: aexp._id
+						},
+						rollMode: game.settings.get("core", "rollMode")
+				};
+
+				// 
+				chatOptions["content"] = `<h2>Re-roll for ${ costType.includes("artifactrr") ? "experience":"permanent corruption" }</h2>
+						${actorName} paid 1 ${ costType.includes("artifactrr") ? "experience":"permanent corruption" } for a re-roll`
+				ChatMessage.create(chatOptions);     
+				await Actor.updateDocuments(updates);				
+				// Post results
+		}
+
     /**********************************************
      * Macro: 
      */
