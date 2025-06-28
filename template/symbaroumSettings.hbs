@@ -1,150 +1,148 @@
-<form autocomplete="off">
-  <div class="tab-active">
-    <div class="form-group">
-      <label for="charBGImage">{{localize 'SYMBAROUM.OPTIONAL_PC_CHAR_BG_IMGS'}}</label>
-      <select name="charBGImage" id="charBGImage">
-        <option value="url(../asset/image/background/blue_light.webp) repeat">Light Blue Image</option>
-        <option value="url(../asset/image/background/blue_square_light.webp) repeat">Light Blue Squares Image</option>
-        <option value="url(../asset/image/background/brown_dark.webp) repeat">Dark Brown Image</option>
-        <option value="url(../asset/image/background/brown_square_dark.webp) repeat">Dark Brown Square Image</option>
-        <option value="url(../asset/image/background/green_flower_dark.webp) repeat">Dark Green Flower Image</option>
-        <option value="url(../asset/image/background/green_flower_light.webp) repeat">Light Green Flower Image</option>
-        <option value="url(../asset/image/background/green_flower.webp) repeat">Green Flower Image</option>
-        <option value="url(../asset/image/background/green_gold_dark.webp) repeat">Green and Gold Dark Image</option>
-        <option value="url(../asset/image/background/orange_light.webp) repeat">Light Orange Image</option>
-        <option value="url(../asset/image/background/purple_flower_light.webp) repeat">Light Purple Flower Image</option>
-        <option value="url(../asset/image/background/red_compass_light.webp) repeat">Light Red Compass Image</option>
-        <option value="url(../asset/image/background/red_flower_light.webp) repeat">Light Red Flower Image</option>
-        <option value="url(../asset/image/background/red_square_light.webp) repeat">Light Red Square Image</option>
-        <option value="url(../asset/image/background/green-scales.webp) repeat">Green Scales Image</option>
-        <option value="none">{{localize 'SYMBAROUM.OPTIONAL_COLOR_PICKER'}}</option>
-      </select>
-    </div>
+<div class='tab-active'>
+	<div class='form-group'>
+		<label for='charBGImage'>{{localize 'SYMBAROUM.OPTIONAL_PC_CHAR_BG_IMGS'}}</label>
+		<select name='charBGImage' id='charBGImage'>
+			<option value='url(../asset/image/background/blue_light.webp) repeat'>Light Blue Image</option>
+			<option value='url(../asset/image/background/blue_square_light.webp) repeat'>Light Blue Squares Image</option>
+			<option value='url(../asset/image/background/brown_dark.webp) repeat'>Dark Brown Image</option>
+			<option value='url(../asset/image/background/brown_square_dark.webp) repeat'>Dark Brown Square Image</option>
+			<option value='url(../asset/image/background/green_flower_dark.webp) repeat'>Dark Green Flower Image</option>
+			<option value='url(../asset/image/background/green_flower_light.webp) repeat'>Light Green Flower Image</option>
+			<option value='url(../asset/image/background/green_flower.webp) repeat'>Green Flower Image</option>
+			<option value='url(../asset/image/background/green_gold_dark.webp) repeat'>Green and Gold Dark Image</option>
+			<option value='url(../asset/image/background/orange_light.webp) repeat'>Light Orange Image</option>
+			<option value='url(../asset/image/background/purple_flower_light.webp) repeat'>Light Purple Flower Image</option>
+			<option value='url(../asset/image/background/red_compass_light.webp) repeat'>Light Red Compass Image</option>
+			<option value='url(../asset/image/background/red_flower_light.webp) repeat'>Light Red Flower Image</option>
+			<option value='url(../asset/image/background/red_square_light.webp) repeat'>Light Red Square Image</option>
+			<option value='url(../asset/image/background/green-scales.webp) repeat'>Green Scales Image</option>
+			<option value='none'>{{localize 'SYMBAROUM.OPTIONAL_COLOR_PICKER'}}</option>
+		</select>
+	</div>
 
-    <div style="display:none" id="pcColPanel">
-      <input type="hidden" name="charBGColour" value="{{charBGColour}}" id="charBGColour" data-dtype="String" />
-      <label for="pcColPanel-ColourSelector">{{localize 'SYMBAROUM.OPTIONAL_PC_COLOUR_SELECTOR'}}</label>
-      <input id="pcColPanel-ColourSelector" type="color" name="ColourSelector" value="{{charBGColour}}" data-edit="charBGColour" />
-    </div>
+	<div style='display:none' id='pcColPanel'>
+		<input type='hidden' name='charBGColour' value='{{charBGColour}}' id='charBGColour' data-dtype='String' />
+		<label for='pcColPanel-ColourSelector'>{{localize 'SYMBAROUM.OPTIONAL_PC_COLOUR_SELECTOR'}}</label>
+		<input id='pcColPanel-ColourSelector' type='color' name='ColourSelector' value='{{charBGColour}}' data-edit='charBGColour' />
+	</div>
 
-    <hr>
+	<hr />
 
-    <div class="form-group">
-      <label for="npcBGImage">{{localize 'SYMBAROUM.OPTIONAL_NPC_CHAR_BG_IMGS'}}</label>
-      <select name="npcBGImage" id="npcBGImage">
-        <option value="url(../asset/image/background/blue_light.webp) repeat">Light Blue Image</option>
-        <option value="url(../asset/image/background/blue_square_light.webp) repeat">Light Blue Squares Image</option>
-        <option value="url(../asset/image/background/brown_dark.webp) repeat">Dark Brown Image</option>
-        <option value="url(../asset/image/background/brown_square_dark.webp) repeat">Dark Brown Square Image</option>
-        <option value="url(../asset/image/background/green_flower_dark.webp) repeat">Dark Green Flower Image</option>
-        <option value="url(../asset/image/background/green_flower_light.webp) repeat">Light Green Flower Image</option>
-        <option value="url(../asset/image/background/green_flower.webp) repeat">Green Flower Image</option>
-        <option value="url(../asset/image/background/green_gold_dark.webp) repeat">Green and Gold Dark Image</option>
-        <option value="url(../asset/image/background/orange_light.webp) repeat">Light Orange Image</option>
-        <option value="url(../asset/image/background/purple_flower_light.webp) repeat">Light Purple Flower Image</option>
-        <option value="url(../asset/image/background/red_compass_light.webp) repeat">Light Red Compass Image</option>
-        <option value="url(../asset/image/background/red_flower_light.webp) repeat">Light Red Flower Image</option>
-        <option value="url(../asset/image/background/red_square_light.webp) repeat">Light Red Square Image</option>
-        <option value="url(../asset/image/background/green-scales.webp) repeat">Green Scales Image</option>
-        <option value="none">{{localize 'SYMBAROUM.OPTIONAL_COLOR_PICKER'}}</option>
-      </select>
+	<div class='form-group'>
+		<label for='npcBGImage'>{{localize 'SYMBAROUM.OPTIONAL_NPC_CHAR_BG_IMGS'}}</label>
+		<select name='npcBGImage' id='npcBGImage'>
+			<option value='url(../asset/image/background/blue_light.webp) repeat'>Light Blue Image</option>
+			<option value='url(../asset/image/background/blue_square_light.webp) repeat'>Light Blue Squares Image</option>
+			<option value='url(../asset/image/background/brown_dark.webp) repeat'>Dark Brown Image</option>
+			<option value='url(../asset/image/background/brown_square_dark.webp) repeat'>Dark Brown Square Image</option>
+			<option value='url(../asset/image/background/green_flower_dark.webp) repeat'>Dark Green Flower Image</option>
+			<option value='url(../asset/image/background/green_flower_light.webp) repeat'>Light Green Flower Image</option>
+			<option value='url(../asset/image/background/green_flower.webp) repeat'>Green Flower Image</option>
+			<option value='url(../asset/image/background/green_gold_dark.webp) repeat'>Green and Gold Dark Image</option>
+			<option value='url(../asset/image/background/orange_light.webp) repeat'>Light Orange Image</option>
+			<option value='url(../asset/image/background/purple_flower_light.webp) repeat'>Light Purple Flower Image</option>
+			<option value='url(../asset/image/background/red_compass_light.webp) repeat'>Light Red Compass Image</option>
+			<option value='url(../asset/image/background/red_flower_light.webp) repeat'>Light Red Flower Image</option>
+			<option value='url(../asset/image/background/red_square_light.webp) repeat'>Light Red Square Image</option>
+			<option value='url(../asset/image/background/green-scales.webp) repeat'>Green Scales Image</option>
+			<option value='none'>{{localize 'SYMBAROUM.OPTIONAL_COLOR_PICKER'}}</option>
+		</select>
 
-    </div>
+	</div>
 
-    <div style="display:none" id="npcColPanel">
-      <input type="hidden" name="npcBGColour" value="{{npcBGColour}}" id="npcBGColour" data-dtype="String" />
-      <label for="npcColPanel-ColourSelector">{{localize "SYMBAROUM.OPTIONAL_NPC_COLOUR_SELECTOR"}}</label>
-      <input id="npcColPanel-ColourSelector" type="color" name="ColourSelector" value="{{npcBGColour}}" data-edit="npcBGColour" />
-    </div>
+	<div style='display:none' id='npcColPanel'>
+		<input type='hidden' name='npcBGColour' value='{{npcBGColour}}' id='npcBGColour' data-dtype='String' />
+		<label for='npcColPanel-ColourSelector'>{{localize 'SYMBAROUM.OPTIONAL_NPC_COLOUR_SELECTOR'}}</label>
+		<input id='npcColPanel-ColourSelector' type='color' name='ColourSelector' value='{{npcBGColour}}' data-edit='npcBGColour' />
+	</div>
 
-    <hr>
+	<hr />
 
-    <div class="form-group">
-      <label for="titleBGImage">{{localize 'SYMBAROUM.OPTIONAL_TITLE_BG_IMGS'}}</label>
-      <select name="titleBGImage" id="titleBGImage">
-        <option value="url(../asset/image/background/title.webp)">{{localize 'SYMBAROUM.OPTIONAL_DEFAULT_IMAGE'}}</option>
-        <option value="url(../asset/image/background/new_title.webp)">{{localize 'SYMBAROUM.OPTIONAL_NEW_IMAGE'}}</option>
-        <option value="none">{{localize 'SYMBAROUM.OPTIONAL_COLOR_PICKER'}}</option>
-      </select>
+	<div class='form-group'>
+		<label for='titleBGImage'>{{localize 'SYMBAROUM.OPTIONAL_TITLE_BG_IMGS'}}</label>
+		<select name='titleBGImage' id='titleBGImage'>
+			<option value='url(../asset/image/background/title.webp)'>{{localize 'SYMBAROUM.OPTIONAL_DEFAULT_IMAGE'}}</option>
+			<option value='url(../asset/image/background/new_title.webp)'>{{localize 'SYMBAROUM.OPTIONAL_NEW_IMAGE'}}</option>
+			<option value='none'>{{localize 'SYMBAROUM.OPTIONAL_COLOR_PICKER'}}</option>
+		</select>
 
-    </div>
+	</div>
 
-    <div style="display:none" id="titleColPanel">
-      <input type="hidden" name="titleBGColour" value="{{titleBGColour}}" id="titleBGColour" data-dtype="String" />
-      <label for="titleColPanel-ColourSelector">{{localize "SYMBAROUM.OPTIONAL_TITLE_COLOUR_SELECTOR"}}</label>
-      <input id="titleColPanel-ColourSelector" type="color" name="ColourSelector" value="{{titleBGColour}}" data-edit="titleBGColour" />
-    </div>
+	<div style='display:none' id='titleColPanel'>
+		<input type='hidden' name='titleBGColour' value='{{titleBGColour}}' id='titleBGColour' data-dtype='String' />
+		<label for='titleColPanel-ColourSelector'>{{localize 'SYMBAROUM.OPTIONAL_TITLE_COLOUR_SELECTOR'}}</label>
+		<input id='titleColPanel-ColourSelector' type='color' name='ColourSelector' value='{{titleBGColour}}' data-edit='titleBGColour' />
+	</div>
 
-    <hr>
+	<hr />
 
-    <div class="form-group">
-      <label for="editableImage">{{localize 'SYMBAROUM.OPTIONAL_EDITABLE_BG_IMGS'}}</label>
-      <select name="editableImage" id="editableImage">
-        <option value="url(../asset/image/background/editable.webp)">{{localize 'SYMBAROUM.OPTIONAL_DEFAULT_IMAGE'}}</option>
-        <option value="url(../asset/image/background/new-editable.webp)">{{localize 'SYMBAROUM.OPTIONAL_NEW_LIGHTER'}}</option>
-        <option value="none">{{localize 'SYMBAROUM.OPTIONAL_COLOR_PICKER'}}</option>
-      </select>
+	<div class='form-group'>
+		<label for='editableImage'>{{localize 'SYMBAROUM.OPTIONAL_EDITABLE_BG_IMGS'}}</label>
+		<select name='editableImage' id='editableImage'>
+			<option value='url(../asset/image/background/editable.webp)'>{{localize 'SYMBAROUM.OPTIONAL_DEFAULT_IMAGE'}}</option>
+			<option value='url(../asset/image/background/new-editable.webp)'>{{localize 'SYMBAROUM.OPTIONAL_NEW_LIGHTER'}}</option>
+			<option value='none'>{{localize 'SYMBAROUM.OPTIONAL_COLOR_PICKER'}}</option>
+		</select>
 
-    </div>
+	</div>
 
-    <div style="display:none" id="editableColPanel">
-      <input type="hidden" name="editableColour" value="{{editableColour}}" id="editableColour" data-dtype="String" />
-      <label for="editableColPanel-ColourSelector">{{localize "SYMBAROUM.OPTIONAL_EDITABLE_COLOUR_SELECTOR"}}</label>
-      <input id="editableColPanel-ColourSelector" type="color" name="ColourSelector" value="{{editableColour}}" data-edit="editableColour" />
-    </div>
+	<div style='display:none' id='editableColPanel'>
+		<input type='hidden' name='editableColour' value='{{editableColour}}' id='editableColour' data-dtype='String' />
+		<label for='editableColPanel-ColourSelector'>{{localize 'SYMBAROUM.OPTIONAL_EDITABLE_COLOUR_SELECTOR'}}</label>
+		<input id='editableColPanel-ColourSelector' type='color' name='ColourSelector' value='{{editableColour}}' data-edit='editableColour' />
+	</div>
 
+	<hr />
 
-    <hr>
+	<div class='form-group'>
+		<label for='nonEditableImage'>{{localize 'SYMBAROUM.OPTIONAL_NON_EDITABLE_BG_IMGS'}}</label>
+		<select name='nonEditableImage' id='nonEditableImage'>
+			<option value='url(../asset/image/background/not-editable.webp)'>{{localize 'SYMBAROUM.OPTIONAL_DEFAULT_IMAGE'}}</option>
+			<option value='url(../asset/image/background/new-not-editable.webp) repeat'>{{localize 'SYMBAROUM.OPTIONAL_NEW_LIGHTER'}}</option>
+			<option value='none'>{{localize 'SYMBAROUM.OPTIONAL_COLOR_PICKER'}}</option>
+		</select>
 
-    <div class="form-group">
-      <label for="nonEditableImage">{{localize 'SYMBAROUM.OPTIONAL_NON_EDITABLE_BG_IMGS'}}</label>
-      <select name="nonEditableImage" id="nonEditableImage">
-        <option value="url(../asset/image/background/not-editable.webp)">{{localize 'SYMBAROUM.OPTIONAL_DEFAULT_IMAGE'}}</option>
-        <option value="url(../asset/image/background/new-not-editable.webp) repeat">{{localize 'SYMBAROUM.OPTIONAL_NEW_LIGHTER'}}</option>
-        <option value="none">{{localize 'SYMBAROUM.OPTIONAL_COLOR_PICKER'}}</option>
-      </select>
+	</div>
 
-    </div>
+	<div style='display:none' id='noneditableColPanel'>
+		<input type='hidden' name='noneditableColour' value='{{noneditableColour}}' id='noneditableColour' data-dtype='String' />
+		<label for='noneditableColPanel-ColourSelector'>{{localize 'SYMBAROUM.OPTIONAL_EDITABLE_COLOUR_SELECTOR'}}</label>
+		<input id='noneditableColPanel-ColourSelector' type='color' name='ColourSelector' value='{{noneditableColour}}' data-edit='noneditableColour' />
+	</div>
 
-    <div style="display:none" id="noneditableColPanel">
-      <input type="hidden" name="noneditableColour" value="{{noneditableColour}}" id="noneditableColour" data-dtype="String" />
-      <label for="noneditableColPanel-ColourSelector">{{localize "SYMBAROUM.OPTIONAL_EDITABLE_COLOUR_SELECTOR"}}</label>
-      <input id="noneditableColPanel-ColourSelector" type="color" name="ColourSelector" value="{{noneditableColour}}" data-edit="noneditableColour" />
-    </div>
+	<hr />
+	<div class='form-group'>
+		<label for='chatBGImage'>{{localize 'SYMBAROUM.OPTIONAL_CHAT_BG_IMGS'}}</label>
+		<select name='chatBGImage' id='chatBGImage'>
+			<option value='url(../asset/image/background/editable.webp)'>{{localize 'SYMBAROUM.OPTIONAL_DEFAULT_IMAGE'}}</option>
+			<option value='url(../asset/image/background/new-editable.webp) repeat'>{{localize 'SYMBAROUM.OPTIONAL_NEW_LIGHTER'}}</option>
+			<option value='url(/ui/parchment.jpg) repeat'>{{localize 'SYMBAROUM.OPTIONAL_FOUNDRY_DEFAULT'}}</option>
+			<option value='none'>{{localize 'SYMBAROUM.OPTIONAL_COLOR_PICKER'}}</option>
+		</select>
+	</div>
 
-    <hr>    
-    <div class="form-group">
-      <label for="chatBGImage">{{localize 'SYMBAROUM.OPTIONAL_CHAT_BG_IMGS'}}</label>
-      <select name="chatBGImage" id="chatBGImage">
-        <option value="url(../asset/image/background/editable.webp)">{{localize 'SYMBAROUM.OPTIONAL_DEFAULT_IMAGE'}}</option>
-        <option value="url(../asset/image/background/new-editable.webp) repeat">{{localize 'SYMBAROUM.OPTIONAL_NEW_LIGHTER'}}</option>
-        <option value="url(/ui/parchment.jpg) repeat">{{localize 'SYMBAROUM.OPTIONAL_FOUNDRY_DEFAULT'}}</option>
-        <option value="none">{{localize 'SYMBAROUM.OPTIONAL_COLOR_PICKER'}}</option>
-      </select>
-    </div>
+	<div style='display:none' id='chatColPanel'>
+		<input type='hidden' name='chatBGColour' value='{{chatBGColour}}' id='chatBGColour' data-dtype='String' />
+		<label for='chatColPanel-ColourSelector'>{{localize 'SYMBAROUM.OPTIONAL_CHAT_COLOUR_SELECTOR'}}</label>
+		<input id='chatColPanel-ColourSelector' type='color' name='ColourSelector' value='{{chatBGColour}}' data-edit='chatBGColour' />
+	</div>
 
-    <div style="display:none" id="chatColPanel">
-      <input type="hidden" name="chatBGColour" value="{{chatBGColour}}" id="chatBGColour" data-dtype="String" />
-      <label for="chatColPanel-ColourSelector">{{localize 'SYMBAROUM.OPTIONAL_CHAT_COLOUR_SELECTOR'}}</label>
-      <input id="chatColPanel-ColourSelector" type="color" name="ColourSelector" value="{{chatBGColour}}" data-edit="chatBGColour" />
-    </div>
+	<hr />
+	<p><i style='font-size: smaller'>{{localize 'SYMBAROUM.OPTIONAL_RESET_NOTE'}}</i></p>
 
-    <hr>    
-    <p><i style="font-size: smaller">{{localize "SYMBAROUM.OPTIONAL_RESET_NOTE"}}</i></p>
-
-    <div class="form-group buttons-save">
-      <button type="submit" name="submit"><b>{{localize "SYMBAROUM.OPTIONAL_SUBMIT_BUTTON"}}</b></button>
-    </div>
-    <div class="form-group">
-      <button type="button" name="resetPC"><b>{{localize "SYMBAROUM.OPTIONAL_RESET_PC_BUTTON"}}</b></button>
-      <button type="button" name="resetNPC"><b>{{localize "SYMBAROUM.OPTIONAL_RESET_NPC_BUTTON"}}</b></button>
-    </div>
-    <div class="form-group">
-      <button type="button" name="resetTitle"><b>{{localize "SYMBAROUM.OPTIONAL_RESET_TITLE_BUTTON"}}</b></button>
-      <button type="button" name="resetEditable"><b>{{localize "SYMBAROUM.OPTIONAL_RESET_EDITABLE_BUTTON"}}</b></button>
-      <button type="button" name="resetNonEditable"><b>{{localize "SYMBAROUM.OPTIONAL_RESET_NON_EDITABLE_BUTTON"}}</b></button>
-    </div>
-    <div class="form-group ">
-      <button type="button" name="resetAll"><b>{{localize "SYMBAROUM.OPTIONAL_RESET_ALL_BUTTON"}}</b></button>
-    </div>
-</form>
+	<div class='form-group buttons-save'>
+		<button type='submit' data-action='submit'><b>{{localize 'SYMBAROUM.OPTIONAL_SUBMIT_BUTTON'}}</b></button>
+	</div>
+	<div class='form-group'>
+		<button type='button' data-action='resetPC'><b>{{localize 'SYMBAROUM.OPTIONAL_RESET_PC_BUTTON'}}</b></button>
+		<button type='button' data-action='resetNPC'><b>{{localize 'SYMBAROUM.OPTIONAL_RESET_NPC_BUTTON'}}</b></button>
+	</div>
+	<div class='form-group'>
+		<button type='button' data-action='resetTitle'><b>{{localize 'SYMBAROUM.OPTIONAL_RESET_TITLE_BUTTON'}}</b></button>
+		<button type='button' data-action='resetEditable'><b>{{localize 'SYMBAROUM.OPTIONAL_RESET_EDITABLE_BUTTON'}}</b></button>
+		<button type='button' data-action='resetNonEditable'><b>{{localize 'SYMBAROUM.OPTIONAL_RESET_NON_EDITABLE_BUTTON'}}</b></button>
+	</div>
+	<div class='form-group'>
+		<button type='button' data-action='resetAll'><b>{{localize 'SYMBAROUM.OPTIONAL_RESET_ALL_BUTTON'}}</b></button>
+	</div>
+</div>
