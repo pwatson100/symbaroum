@@ -1,6 +1,5 @@
 const { HandlebarsApplicationMixin: HandlebarsApplicationMixin$5, Application: Application$2 } = foundry.applications.api;
 export class SymbaroumConfig extends HandlebarsApplicationMixin$5(Application$2) {
-	// export class SymbaroumConfig extends FormApplication {
 	static get getDefaults() {
 		return {
 			addMenuButton: true,
@@ -9,24 +8,28 @@ export class SymbaroumConfig extends HandlebarsApplicationMixin$5(Application$2)
 
 	static DEFAULT_OPTIONS = {
 		classes: ['form'],
+		tag: 'form',
 		form: {
-			// handler: SymbaroumConfig.#updateObject,
+			handler: SymbaroumConfig.#submitHandler,
 			closeOnSubmit: true,
 			submitOnChange: false,
 		},
 		position: {
 			width: 700,
-			// height: 'auto',
 		},
 		timeout: null,
-		tag: 'form',
 		window: {
 			contentClasses: ['standard-form'],
-			// title: game.i18n.localize('SYMBAROUM.OPTIONAL_CONFIG_MENULABEL'),
+			title: 'SYMBAROUM.OPTIONAL_CONFIG_MENULABEL',
+			controls: [
+				{
+					icon: 'fas fa-cogs',
+				},
+			],
 		},
 
 		actions: {
-			submit: this.#updateObject,
+			// submit: this.#updateObject,
 			resetPC: this._onResetPC,
 			resetNPC: this._onResetNPC,
 			resetTitle: this._onResetTitle,
@@ -35,52 +38,6 @@ export class SymbaroumConfig extends HandlebarsApplicationMixin$5(Application$2)
 			resetAll: this._onResetAll,
 		},
 	};
-
-	// /* -------------------------------------------------- */
-
-	// /**
-	//  * Stored form data.
-	//  * @type {object|null}
-	//  */
-	// #config = null;
-
-	// /* -------------------------------------------------- */
-
-	// /**
-	//  * Stored form data.
-	//  * @type {object|null}
-	//  */
-	// get config() {
-	// 	return this.#config;
-	// }
-
-	// /**
-	//  * Handle form submission. The basic usage of this function is to set `#config`
-	//  * when the form is valid and submitted, thus returning `config: null` when
-	//  * cancelled, or non-`null` when successfully submitted. The `#config` property
-	//  * should not be used to store data across re-renders of this application.
-	//  * @this {DSApplication}
-	//  * @param {SubmitEvent} event           The submit event.
-	//  * @param {HTMLFormElement} form        The form element.
-	//  * @param {FormDataExtended} formData   The form data.
-	//  */
-	// static #submitHandler(event, form, formData) {
-	// 	this.#config = this._processFormData(event, form, formData);
-	// }
-
-	// static get defaultOptions() {
-	// 	return foundry.utils.mergeObject(super.defaultOptions, {
-	// 		classes: ['form'],
-	// 		title: game.i18n.localize('SYMBAROUM.OPTIONAL_CONFIG_MENULABEL'),
-	// 		id: 'symbaroumSettings',
-	// 		icon: 'fas fa-cogs',
-	// 		template: 'systems/symbaroum/template/symbaroumSettings.hbs',
-	// 		width: 700,
-	// 		closeOnSubmit: true,
-	// 		submitOnClose: false,
-	// 		submitOnChange: false,
-	// 	});
-	// }
 
 	/* -------------------------------------------- */
 
@@ -92,7 +49,7 @@ export class SymbaroumConfig extends HandlebarsApplicationMixin$5(Application$2)
 		},
 	};
 
-	_prepareContext(options) {
+	async _prepareContext(options) {
 		const newData = {
 			charBGChoice: game.settings.get('symbaroum', 'charBGChoice'),
 			npcBGChoice: game.settings.get('symbaroum', 'npcBGChoice'),
@@ -129,67 +86,69 @@ export class SymbaroumConfig extends HandlebarsApplicationMixin$5(Application$2)
 		if (game.settings.get('symbaroum', 'chatBGChoice').startsWith('#')) {
 			newData['chatBGColour'] = game.settings.get('symbaroum', 'chatBGChoice');
 		} else {
-			newData['chatBGColour'] = '#burlywood';
+			newData['chatBGColour'] = '#deb887';
 		}
-		return foundry.utils.mergeObject(newData);
+		return newData;
 	}
 
 	static async #submitHandler(event, form, formData) {
-		const settings = foundry.utils.expandObject(formData.object);
-		await game.settings.set('symbaroum', 'charBGChoice', formData.charBGImage);
-		await game.settings.set('symbaroum', 'npcBGChoice', formData.npcBGImage);
-		await game.settings.set('symbaroum', 'titleBGChoice', formData.titleBGImage);
-		await game.settings.set('symbaroum', 'editableChoice', formData.editableImage);
-		await game.settings.set('symbaroum', 'nonEditableChoice', formData.nonEditableImage);
-		await game.settings.set('symbaroum', 'chatBGChoice', formData.chatBGImage === 'none' ? formData.chatBGColour : formData.chatBGImage);
+		event.preventDefault();
+		// expand the formdata object so we can access the fields directly
+		const formFields = foundry.utils.expandObject(formData.object);
 
-		// return Promise.all(Object.entries(settings).map(([key, value]) => game.settings.set('symbaroum', key, value)));
-		return;
+		await game.settings.set('symbaroum', 'charBGChoice', formFields.charBGImage);
+		await game.settings.set('symbaroum', 'npcBGChoice', formFields.npcBGImage);
+		await game.settings.set('symbaroum', 'titleBGChoice', formFields.titleBGImage);
+		await game.settings.set('symbaroum', 'editableChoice', formFields.editableImage);
+		await game.settings.set('symbaroum', 'nonEditableChoice', formFields.nonEditableImage);
+		await game.settings.set('symbaroum', 'chatBGChoice', formFields.chatBGImage === 'none' ? formFields.chatBGColour : formFields.chatBGImage);
+		if (charBGImage.value === 'none') {
+			if (formFields.charBGColour.length > 0 && formFields.charBGColour[0] != '#') {
+				formFields.charBGColour = '#000000';
+			}
+			await game.settings.set('symbaroum', 'switchCharBGColour', formFields.charBGColour);
+		} else {
+			await game.settings.set('symbaroum', 'switchCharBGColour', formFields.charBGImage);
+		}
+
+		if (npcBGImage.value === 'none') {
+			if (formFields.npcBGColour.length > 0 && formFields.npcBGColour[0] != '#') {
+				formFields.npcBGColour = '#000000';
+			}
+			await game.settings.set('symbaroum', 'switchNpcBGColour', formFields.npcBGColour);
+		} else {
+			await game.settings.set('symbaroum', 'switchNpcBGColour', formFields.npcBGImage);
+		}
+		if (titleBGImage.value === 'none') {
+			if (formFields.titleBGColour.length > 0 && formFields.titleBGColour[0] != '#') {
+				formFields.titleBGColour = '#000000';
+			}
+			await game.settings.set('symbaroum', 'switchTitleColour', formFields.titleBGColour);
+		} else {
+			await game.settings.set('symbaroum', 'switchTitleColour', formFields.titleBGImage);
+		}
+
+		if (editableImage.value === 'none') {
+			if (formFields.editableColour.length > 0 && formFields.editableColour[0] != '#') {
+				formFields.editableColour = '#000000';
+			}
+			await game.settings.set('symbaroum', 'switchEditableColour', formFields.editableColour);
+		} else {
+			await game.settings.set('symbaroum', 'switchEditableColour', formFields.editableImage);
+		}
+
+		if (nonEditableImage.value === 'none') {
+			if (formFields.noneditableColour.length > 0 && formFields.noneditableColour[0] != '#') {
+				formFields.noneditableColour = '#000000';
+			}
+			await game.settings.set('symbaroum', 'switchNoNEditableColour', formFields.noneditableColour);
+		} else {
+			await game.settings.set('symbaroum', 'switchNoNEditableColour', formFields.nonEditableImage);
+		}
+
+		location.reload();
 	}
 
-	// getData(options) {
-	// 	const newData = {
-	// 		charBGChoice: game.settings.get('symbaroum', 'charBGChoice'),
-	// 		npcBGChoice: game.settings.get('symbaroum', 'npcBGChoice'),
-	// 		titleBGChoice: game.settings.get('symbaroum', 'titleBGChoice'),
-	// 		editableChoice: game.settings.get('symbaroum', 'editableChoice'),
-	// 		noneditableChoice: game.settings.get('symbaroum', 'nonEditableChoice'),
-	// 		chatBGChoice: game.settings.get('symbaroum', 'chatBGChoice'),
-	// 	};
-	// 	if (game.settings.get('symbaroum', 'charBGChoice') === 'none') {
-	// 		newData['charBGColour'] = game.settings.get('symbaroum', 'switchCharBGColour');
-	// 	} else {
-	// 		newData['charBGColour'] = '#000000';
-	// 	}
-	// 	if (game.settings.get('symbaroum', 'npcBGChoice') === 'none') {
-	// 		newData['npcBGColour'] = game.settings.get('symbaroum', 'switchNpcBGColour');
-	// 	} else {
-	// 		newData['npcBGColour'] = '#000000';
-	// 	}
-	// 	if (game.settings.get('symbaroum', 'titleBGChoice') === 'none') {
-	// 		newData['titleBGColour'] = game.settings.get('symbaroum', 'switchTitleColour');
-	// 	} else {
-	// 		newData['titleBGColour'] = '#000000';
-	// 	}
-	// 	if (game.settings.get('symbaroum', 'editableChoice') === 'none') {
-	// 		newData['editableColour'] = game.settings.get('symbaroum', 'switchEditableColour');
-	// 	} else {
-	// 		newData['editableColour'] = '#000000';
-	// 	}
-	// 	if (game.settings.get('symbaroum', 'nonEditableChoice') === 'none') {
-	// 		newData['noneditableColour'] = game.settings.get('symbaroum', 'switchNoNEditableColour');
-	// 	} else {
-	// 		newData['noneditableColour'] = '#000000';
-	// 	}
-	// 	if (game.settings.get('symbaroum', 'chatBGChoice').startsWith('#')) {
-	// 		newData['chatBGColour'] = game.settings.get('symbaroum', 'chatBGChoice');
-	// 	} else {
-	// 		newData['chatBGColour'] = '#burlywood';
-	// 	}
-	// 	return foundry.utils.mergeObject(newData);
-	// }
-
-	// activateListeners(html) {
 	_onRender(context, options) {
 		document.getElementById('charBGImage').addEventListener('change', (ev) => this._showColOption(ev, '#pcColPanel', charBGImage.value));
 		document.getElementById('npcBGImage').addEventListener('change', (ev) => this._showColOption(ev, '#npcColPanel', npcBGImage.value));
@@ -322,17 +281,6 @@ export class SymbaroumConfig extends HandlebarsApplicationMixin$5(Application$2)
 		} else {
 			await game.settings.set('symbaroum', 'switchNoNEditableColour', formData.nonEditableImage);
 		}
-
-		/*
-    if (chatBGImage.value === 'none') {
-      if (formData.chatBGColour.length > 0 && formData.chatBGColour[0] != '#') {
-        formData.chatBGColour = '';
-      }
-      await game.settings.set('symbaroum', 'chatBGChoice', formData.chatBGColour);
-    } else {
-      await game.settings.set('symbaroum', 'chatBGChoice', formData.chatBGImage);
-    }
-    */
 		location.reload();
 	}
 
