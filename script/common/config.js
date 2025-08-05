@@ -491,7 +491,7 @@ SYMBAROUM.weaponQualities = [
 
 SYMBAROUM.weaponCompatibilities = ["staffFightingCompatibility", "swordSaintCompatibility", "knifePlayCompatibility", "staffMagicCompatibility"];
 
-SYMBAROUM.armorQualities = ["flexible", "concealed", "cumbersome", "desecrated", "flaming", "hallowed", "mystical"];
+SYMBAROUM.armorQualities = ["flexible", "reinforced", "concealed", "cumbersome", "desecrated", "flaming", "hallowed", "mystical"];
 
 SYMBAROUM.armorCompatibilities = [];
 
