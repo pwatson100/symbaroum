@@ -1,3 +1,7 @@
+Version 5.1.1
+* Final V12 Release
+* Adjustments to the module css file to retain compatibility with FVTT V13 modules.
+
 Version 5.1
 
 * Fix for #656 removeCondition errors when a condition does not exist in statusEffects 
