@@ -1729,6 +1729,20 @@
   box-shadow: 3px 3px;
 }
 
+.symbaroum-mod .blockquoterightTable {
+  background-image: url(../asset/modules/foreground.jpg);
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  -moz-column-break-inside: avoid;
+       break-inside: avoid;
+  font-style: normal;
+  border: 5px double hsl(0, 0%, 0%);
+  border-radius: 25px;
+  box-shadow: 3px 3px;
+  /* border: none; */
+}
+
 .symbaroum-mod .blockquoteleft {
   background-image: url(../asset/modules/foreground.jpg);
   max-width: 35%;
