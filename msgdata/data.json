@@ -6,7 +6,7 @@
         },
         {
             "version":23,
-            "message":"<h1>Symbaroum updates to 6.0</h1><br /> This is the first release for Foundry VTT v13. There has been a few bug-fixes, so check out our <a href='https://raw.githubusercontent.com/pwatson100/symbaroum/refs/heads/master/Release_Notes.txt'>patch notes</a> for information, or even better, read the system guide in your journal folder."
+            "message":"<h1>Symbaroum updates to 6.0</h1><br /> This is the first release for Foundry VTT v13. There has been a few bug-fixes, so check out our <a href='https://raw.githubusercontent.com/pwatson100/symbaroum/refs/heads/master/Release_Notes.txt'>patch notes</a> for information - if you not done this before the upgrade, please check out the system guide in your journal folder for information."
         }
 
     ]    
