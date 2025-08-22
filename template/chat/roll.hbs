@@ -4,12 +4,12 @@
 		<h3>{{removeMarkup name}}</h3>
 		{{#if hasSucceed}}
 
-			<div class='dice-roll dice-total'>
+			<div class='dice-roll dice-total' data-action="expandRoll">
 				<div>
 					<h4>{{localize 'CHAT.SUCCEED'}} (<span class='symba-rolls roll d20 success'>{{diceResult}}</span>)</h4>
 					<h4>{{localize 'CHAT.MARGIN'}} {{margin}} <img class='moreinfo' src='systems/symbaroum/asset/image/orb-direction.svg' /></h4>
 				</div>
-				<div class='dice-tooltip' style='display:none; text-align: center;'>{{{diceBreakdown}}}<br />
+				<div class='dice-tooltip'>{{{diceBreakdown}}}<br />
 					{{localize 'CHAT.ATTRIBUTE_TARGET'}}
 					{{diceTarget}}
 					-
@@ -27,22 +27,22 @@
 
 				<img class='portrait' src='{{weapon.img}}' />
 				<p style='margin-top: 5px;text-align:center' data-item-id='{{weapon.id}}'>{{weapon.name}}</p>
-				<div class='dice-roll dice-total'>
-					<div class='dice-tooltip' style='display: none;'>{{{weapon.diceBreakdown}}}</div>
+				<div class='dice-roll dice-total' data-action="expandRoll">
+					<div class='dice-tooltip'>{{{weapon.diceBreakdown}}}</div>
 					<div class='baseinfo'><strong>{{localize 'WEAPON.DAMAGE'}}: {{weapon.value}}</strong><img
 							class='moreinfo'
-							src='systems/symbaroum/asset/image/orb-direction.svg'
+							src='systems/symbaroum/asset/image/orb-direction.svg'							
 						/></div>
 				</div>
 			{{/if}}
 		{{else}}
 
-			<div class='dice-roll dice-total'>
+			<div class='dice-roll dice-total' data-action="expandRoll">
 				<div>
 					<h4>{{localize 'CHAT.FAILED'}} (<span class='symba-rolls roll d20 failure'>{{diceResult}}</span>)</h4>
 					<h4>{{localize 'CHAT.MARGIN'}} {{margin}} <img class='moreinfo' src='systems/symbaroum/asset/image/orb-direction.svg' /></h4>
 				</div>
-				<div class='dice-tooltip' style='display:none; text-align: center;'>{{{diceBreakdown}}}<br />
+				<div class='dice-tooltip'>{{{diceBreakdown}}}<br />
 					{{localize 'CHAT.ATTRIBUTE_TARGET'}}
 					{{diceTarget}}
 					-
@@ -58,11 +58,11 @@
 			{{#if hasArmor}}
 				<img class='portrait' src='{{armor.img}}' />
 				<p style='margin-top: 5px;text-align:center' data-item-id='{{armor.id}}'>{{armor.name}}</p>
-				<div class='dice-roll dice-total'>
+				<div class='dice-roll dice-total' data-action="expandRoll">
 					<div class='baseinfo'><strong>{{localize 'ARMOR.PROTECTION'}}:
 							{{armor.value}}</strong>
 						<img class='moreinfo' src='systems/symbaroum/asset/image/orb-direction.svg' /></div>
-					<div class='dice-tooltip' style='display: none;'>{{{armor.diceBreakdown}}}</div>
+					<div class='dice-tooltip'>{{{armor.diceBreakdown}}}</div>
 				</div>
 			{{/if}}
 		{{/if}}

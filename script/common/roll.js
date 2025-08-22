@@ -30,7 +30,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   if (hasArmor && !rollResults.hasSucceed) {
     if (armor.protectionPc !== '') {
       let prot = armor.protectionPc;
-      let armorRoll = await new Roll(prot, {}).evaluate({async:false});
+      let armorRoll = await new Roll(prot, {}).evaluate();
       rolls.push(armorRoll);
     
       armorResults.id = armor.id;
@@ -88,7 +88,7 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
     critSuccess: rollResults.critSuccess,
     critFail: rollResults.critFail
   };
-  const html = await renderTemplate('systems/symbaroum/template/chat/roll.hbs', rollData);
+  const html = await foundry.applications.handlebars.renderTemplate('systems/symbaroum/template/chat/roll.hbs', rollData);
 
   let chatData = {
     user: game.user.id,
@@ -152,12 +152,12 @@ export async function rollDeathTest(actor, withFavour, modifier) {
   let finalMod = game.settings.get('symbaroum', 'enhancedDeathSaveBonus') ? modifier:0;
   let isCriticalSuccess = death.total <= (1+finalMod);
   let heal = null;
-  let nbrOfFailedDeathRoll = actor.system.nbrOfFailedDeathRoll;
+  let nbrOfFailedDeathRoll = actor.system.nbrOfFailedDeathRoll ?? 0;
   let rollResult = game.symbaroum.api.formatRollResult({favour: favour, diceResult: death.total, dicesResult: dicesResult});
   if (!hasSucceed) nbrOfFailedDeathRoll = Math.min(3, nbrOfFailedDeathRoll+1);
   if (isCriticalSuccess) {
     nbrOfFailedDeathRoll = 0;
-    heal = await new Roll('1d4', {}).evaluate();
+    heal = await new Roll(game.symbaroum.config.baseHealDeathRollRecovery, {}).evaluate();
     rolls.push(heal);
   }
   let diceBreakdown = formatDice(death.terms,"+");
@@ -172,7 +172,7 @@ export async function rollDeathTest(actor, withFavour, modifier) {
     nbrOfFailure: nbrOfFailedDeathRoll,
     diceBreakdown: diceBreakdown
   };
-  const html = await renderTemplate('systems/symbaroum/template/chat/death.hbs', rollData);
+  const html = await foundry.applications.handlebars.renderTemplate('systems/symbaroum/template/chat/death.hbs', rollData);
   let chatData = {
     user: game.user.id,
     speaker: {
@@ -380,7 +380,7 @@ export async function createModifyTokenChatButton(actionsDataArray){
 
 export async function createResistRollChatButton(functionStuff){
   //inform the GM
-  const html = await renderTemplate("systems/symbaroum/template/chat/chatInfoMessage.hbs", {
+  const html = await foundry.applications.handlebars.renderTemplate("systems/symbaroum/template/chat/chatInfoMessage.hbs", {
     infoText: functionStuff.targetUserName + game.i18n.localize("CHAT.GM_INFO_RESIST")
   });
   const chatData = {

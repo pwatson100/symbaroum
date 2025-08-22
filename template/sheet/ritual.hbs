@@ -25,7 +25,7 @@
                         <label for="{{id}}-system.tradition">{{localize "RITUAL.TRADITION"}}</label>
                         <input id="{{id}}-system.tradition" name="system.tradition" type="text" value="{{system.tradition}}"/>
                     </div>
-                    {{editor system.description target="system.description" button=true owner=owner editable=true}}
+                    {{editor system.description target="system.description" button=true owner=owner editable=true engine="prosemirror"}}
                 </div>
             </div>
             <div class="tab" data-group="primary" data-tab="bonus">

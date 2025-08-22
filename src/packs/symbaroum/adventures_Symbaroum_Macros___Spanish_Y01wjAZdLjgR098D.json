@@ -25,9 +25,7 @@
         "furnace": {
           "runAsGM": false
         },
-        "core": {
-          "sourceId": "Macro.Ib9lVNzgBhxjP5EZ"
-        }
+        "core": {}
       },
       "ownership": {
         "default": 0,
@@ -39,12 +37,13 @@
       "_stats": {
         "systemId": "symbaroum",
         "systemVersion": "4.5.0",
-        "coreVersion": "12.325",
+        "coreVersion": "13.344",
         "createdTime": 1664296881889,
         "modifiedTime": 1717742554635,
         "lastModifiedBy": "YsmQXJ6sqv5HM9Ov",
         "compendiumSource": "Macro.Ib9lVNzgBhxjP5EZ",
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "folder": "Rudp3WGY5YPx13VV",
       "sort": 100000,
@@ -58,9 +57,7 @@
       "scope": "global",
       "command": "/**\n * To use this macro, paste monster or player JSON data from symbaroum.fr\n * \n * Make sure you have all abilities, traits and powers in the \"Items\" in Foundry.\n * \n */\n\n(()=>{\n    let dialog_content = `  \n    <div class=\"symbaroum dialog\">\n        <div style=\"width:100%; text-align:center\">\n            <h3><a href=\"https://symbaroum.fr/#!/search\" target=\"_blank\">Symbaroum.fr</a> Character Importer</h3>\n        </div>\n        <div class=\"advantage\">\n            <label for=\"isplayer\">Player</label>\n            <span class=\"lblfavour\"><input type=\"checkbox\" id=\"isplayer\" name=\"isplayer\"></span>\n        </div>\n        <div class=\"advantage\">\n            <label for=\"npctext\">Paste json data</label>\n            <input name=\"npctext\" type=\"text\">\n        </div>\n    </div>`;\n\n    let x = new Dialog({\n        content : dialog_content,\n        buttons : \n        {\n            Ok : { label : `Ok`, \n            callback : \n            async (html)=> await extractAllData(html.find('[name=npctext]')[0].value.replace(/[\\r|\\n]/g, \"\"), html.find(\"#isplayer\")[0].checked)},\n            Cancel : {label : `Cancel`}\n        }\n    });\n    x.options.width = 400;\n    x.options.height = 400;\n    x.position.width = 400;\n    x.render(true);\n})();\n\nasync function extractAllData(json, player)\n{\n    // {\"nom\":\"Example for Bithir\",\"agi\":\"15\",\"forc\":\"13\",\"pre\":\"11\",\"vol\":\"10\",\"vig\":\"10\",\"dis\":\"9\",\"ast\":\"7\",\"per\":\"5\",\"ini\":\"\",\"typ\":\"Big Monster\",\"def\":\"15\",\"end\":\"13\",\"sd\":\"7\",\"sc\":\"5\",\"cp\":\"0\",\"deg\":\"Sword 1d8\",\"arm\":\"Light Armor 1d4\",\"notes\":\"Notes bout the character\",\"tactics\":\"Attack first, think last\",\"shadow\":\"Green with golden slashes\",\"equipment\":\"My equipment\",\"regles\":\"\",\"lang\":\"en\",\"epingles\":[\"Acrobatics\"],\"epinglesn\":[\"Bodyguard\"],\"epinglesa\":[\"Berserker\",\"Bodyguard\"],\"epinglesm\":[\"Iron fist\"]}\n    let symbfrJSON = null;\n    try {\n        symbfrJSON = JSON.parse(json);\n    } catch (err)\n    {\n        ui.notification.error(err);\n        return;\n    }\n    console.log(symbfrJSON, player);\n    let newValues = {\n        name: symbfrJSON.nom,\n        type: player ? \"player\": \"monster\",\n        folder: null,\n        sort: 12000,\n        data: {},\n        token: {},\n        items: [],\n        flags: {}        \n    }\n\n    setProperty(newValues, \"data.bio.manner\",\"\");\n\n    setProperty(newValues, \"data.bio.race\", symbfrJSON.typ);\n\n    setProperty(newValues, \"data.attributes.accurate.value\", parseInt(symbfrJSON.pre));\n    setProperty(newValues, \"data.attributes.cunning.value\", parseInt(symbfrJSON.ast));    \n    setProperty(newValues, \"data.attributes.discreet.value\", parseInt(symbfrJSON.dis));\n    setProperty(newValues, \"data.attributes.persuasive.value\", parseInt(symbfrJSON.per));\n    setProperty(newValues, \"data.attributes.quick.value\", parseInt(symbfrJSON.agi));\n    setProperty(newValues, \"data.attributes.resolute.value\", parseInt(symbfrJSON.vol));\n    setProperty(newValues, \"data.attributes.strong.value\", parseInt(symbfrJSON.forc));\n    setProperty(newValues, \"data.attributes.vigilant.value\", parseInt(symbfrJSON.vig));\n    setProperty(newValues, \"data.bio.shadow\", symbfrJSON.shadow);\n    setProperty(newValues, \"data.health.corruption.permanent\", parseInt(symbfrJSON.cp)); \n    setProperty(newValues, \"data.bio.tactics\", symbfrJSON.tactics);\n    setProperty(newValues, \"data.bio.background\", symbfrJSON.notes);\n\n    \n    let actor = await Actor.create(newValues);\n    console.log(actor);\n    let additionalInfo = \"\";\n    let items = [];\n    let itemIds = [];\n    additionalInfo += addPowers(symbfrJSON.epingles, items, 3, itemIds);\n    additionalInfo += addPowers(symbfrJSON.epinglesm, items, 3, itemIds);\n    additionalInfo += addPowers(symbfrJSON.epinglesa, items, 2, itemIds);\n    additionalInfo += addPowers(symbfrJSON.epinglesn, items, 1, itemIds);\n    // additionalInfo += addItems(symbfrJSON.equipment); - Just text\n    additionalInfo += addItems(symbfrJSON.deg, items, itemIds);\n    additionalInfo += addItems(symbfrJSON.arm, items, itemIds);\n\n    let updateObj = await actor.createEmbeddedDocuments(\"Item\", items);\n\n    let healMe = {_id:actor.id};\n    setProperty(healMe, \"data.health.toughness.value\", getProperty(actor, \"data.data.health.toughness.max\") );\n    await Actor.updateDocuments([healMe]);\n\n    let message = `Created ${actor.name}<br/>${additionalInfo}`;\n    ChatMessage.create({\n        speaker: ChatMessage.getSpeaker({alias: \"SymbFR Importer Macro\"}),\n        whisper: [game.user],\n        content: message\n    });\n\n\n    actor.sheet.render(true);\n}\n\nfunction addPowers(powernames, items, level, exclusions) {\n    let info = \"\";\n    for(let i = 0; i < powernames.length; i++) {\n        let powers = game.items.filter(element => element.name.trim().toLowerCase() === powernames[i].trim().toLowerCase() && element.data.isPower);\n        if(powers.length > 1) {\n            info += `Found more than one powers of ${powernames[i]}<br>`;\n        }    \n        for(let j = 0; j < powers.length; j++) {\n            let power = duplicate(powers[j].data);\n            if( exclusions.includes(power._id) ) {\n                continue;\n            }\n            console.log(\"Power\",powers[j]);\n            if(powers[j].data.hasLevels) {\n                if(level > 2)\n                    setProperty(power, \"data.master.isActive\",true);\n                if(level > 1)\n                    setProperty(power, \"data.adept.isActive\",true);\n                setProperty(power, \"data.novice.isActive\",true);\n            }\n            exclusions.push(power._id);\n            items.push(power);\n        }\n    }\n    return info;\n}\n\nfunction addItems(itemName, items, exclusions) {\n    // Exclusions ignored for now\n    let info = \"\";\n    itemName = itemName.replace(/([0-9]+d[0-9]+)/g,'').trim();\n    if( itemName == \"\") {\n        return;\n    }\n    let foundItems = game.items.filter(element => element.name.trim().toLowerCase() === itemName.toLowerCase() && !element.data.isPower);    \n    if(foundItems.length > 1) {\n        info += `Found more than one item of ${itemName}`;\n    }\n    for(let i = 0; i < foundItems.length; i++) {\n        let item = duplicate(foundItems[i].data);\n        items.push(item);\n    }\n    return info;\n}",
       "flags": {
-        "core": {
-          "sourceId": "Macro.UhAADqQtMSDxLa5X"
-        }
+        "core": {}
       },
       "ownership": {
         "default": 0,
@@ -72,12 +69,13 @@
       "_stats": {
         "systemId": "symbaroum",
         "systemVersion": "4.5.0",
-        "coreVersion": "12.325",
+        "coreVersion": "13.344",
         "createdTime": 1664296881889,
         "modifiedTime": 1717742554635,
         "lastModifiedBy": "YsmQXJ6sqv5HM9Ov",
         "compendiumSource": "Macro.UhAADqQtMSDxLa5X",
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "folder": "Rudp3WGY5YPx13VV",
       "sort": 200000,
@@ -97,9 +95,7 @@
         "combat-utility-belt": {
           "macroTrigger": ""
         },
-        "core": {
-          "sourceId": "Macro.rovDHjS4ZPvgmWZM"
-        }
+        "core": {}
       },
       "ownership": {
         "default": 0,
@@ -111,12 +107,13 @@
       "_stats": {
         "systemId": "symbaroum",
         "systemVersion": "4.5.0",
-        "coreVersion": "12.325",
+        "coreVersion": "13.344",
         "createdTime": 1664296881889,
         "modifiedTime": 1717742554635,
         "lastModifiedBy": "YsmQXJ6sqv5HM9Ov",
         "compendiumSource": "Macro.rovDHjS4ZPvgmWZM",
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "folder": "Rudp3WGY5YPx13VV",
       "sort": 300000,
@@ -136,9 +133,7 @@
         "furnace": {
           "runAsGM": false
         },
-        "core": {
-          "sourceId": "Macro.jqlw2EhoIe8KhTuu"
-        }
+        "core": {}
       },
       "ownership": {
         "default": 0,
@@ -150,12 +145,13 @@
       "_stats": {
         "systemId": "symbaroum",
         "systemVersion": "4.5.0",
-        "coreVersion": "12.325",
+        "coreVersion": "13.344",
         "createdTime": 1664296881889,
         "modifiedTime": 1717742554635,
         "lastModifiedBy": "YsmQXJ6sqv5HM9Ov",
         "compendiumSource": "Macro.jqlw2EhoIe8KhTuu",
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "folder": "Rudp3WGY5YPx13VV",
       "sort": 400000,
@@ -175,9 +171,7 @@
         "furnace": {
           "runAsGM": false
         },
-        "core": {
-          "sourceId": "Macro.8cLkjnA8FBNnVMOm"
-        }
+        "core": {}
       },
       "ownership": {
         "default": 0,
@@ -189,12 +183,13 @@
       "_stats": {
         "systemId": "symbaroum",
         "systemVersion": "4.5.0",
-        "coreVersion": "12.325",
+        "coreVersion": "13.344",
         "createdTime": 1664298196637,
         "modifiedTime": 1717742554635,
         "lastModifiedBy": "YsmQXJ6sqv5HM9Ov",
         "compendiumSource": "Macro.8cLkjnA8FBNnVMOm",
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "folder": "Rudp3WGY5YPx13VV",
       "sort": 600000,
@@ -214,9 +209,7 @@
         "combat-utility-belt": {
           "macroTrigger": ""
         },
-        "core": {
-          "sourceId": "Macro.rovDHjS4ZPvgmWZM"
-        }
+        "core": {}
       },
       "ownership": {
         "default": 0,
@@ -228,12 +221,13 @@
       "_stats": {
         "systemId": "symbaroum",
         "systemVersion": "4.5.0",
-        "coreVersion": "12.325",
+        "coreVersion": "13.344",
         "createdTime": 1664298196638,
         "modifiedTime": 1717742554635,
         "lastModifiedBy": "YsmQXJ6sqv5HM9Ov",
         "compendiumSource": "Macro.rovDHjS4ZPvgmWZM",
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "folder": "Rudp3WGY5YPx13VV",
       "sort": 700000,
@@ -250,9 +244,7 @@
         "furnace": {
           "runAsGM": false
         },
-        "core": {
-          "sourceId": "Macro.rfxvvcoQfLNQNd4L"
-        }
+        "core": {}
       },
       "ownership": {
         "default": 0,
@@ -264,12 +256,13 @@
       "_stats": {
         "systemId": "symbaroum",
         "systemVersion": "4.5.0",
-        "coreVersion": "12.325",
+        "coreVersion": "13.344",
         "createdTime": 1664298196639,
         "modifiedTime": 1717742554635,
         "lastModifiedBy": "YsmQXJ6sqv5HM9Ov",
         "compendiumSource": "Macro.rfxvvcoQfLNQNd4L",
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "folder": "Rudp3WGY5YPx13VV",
       "sort": 800000,
@@ -289,9 +282,7 @@
         "furnace": {
           "runAsGM": false
         },
-        "core": {
-          "sourceId": "Macro.pyfWvOpMN1B6lcLS"
-        }
+        "core": {}
       },
       "ownership": {
         "default": 0,
@@ -303,12 +294,13 @@
       "_stats": {
         "systemId": "symbaroum",
         "systemVersion": "4.5.0",
-        "coreVersion": "12.325",
+        "coreVersion": "13.344",
         "createdTime": 1664298196641,
         "modifiedTime": 1717742554635,
         "lastModifiedBy": "YsmQXJ6sqv5HM9Ov",
         "compendiumSource": "Macro.pyfWvOpMN1B6lcLS",
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "folder": "Rudp3WGY5YPx13VV",
       "sort": 900000,
@@ -328,9 +320,7 @@
         "furnace": {
           "runAsGM": false
         },
-        "core": {
-          "sourceId": "Macro.ZOmWDVLXwLd9aT1L"
-        }
+        "core": {}
       },
       "ownership": {
         "default": 0,
@@ -342,12 +332,13 @@
       "_stats": {
         "systemId": "symbaroum",
         "systemVersion": "4.5.0",
-        "coreVersion": "12.325",
+        "coreVersion": "13.344",
         "createdTime": 1664298196642,
         "modifiedTime": 1717742554635,
         "lastModifiedBy": "YsmQXJ6sqv5HM9Ov",
         "compendiumSource": "Macro.ZOmWDVLXwLd9aT1L",
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "folder": "Rudp3WGY5YPx13VV",
       "sort": 1000000,
@@ -364,9 +355,7 @@
         "furnace": {
           "runAsGM": false
         },
-        "core": {
-          "sourceId": "Macro.M2pRCm23Siqt61qp"
-        }
+        "core": {}
       },
       "ownership": {
         "default": 0,
@@ -378,12 +367,13 @@
       "_stats": {
         "systemId": "symbaroum",
         "systemVersion": "4.5.0",
-        "coreVersion": "12.325",
+        "coreVersion": "13.344",
         "createdTime": 1664296878863,
         "modifiedTime": 1717742554635,
         "lastModifiedBy": "YsmQXJ6sqv5HM9Ov",
         "compendiumSource": "Macro.M2pRCm23Siqt61qp",
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "folder": "Rudp3WGY5YPx13VV",
       "sort": 500000,
@@ -402,19 +392,18 @@
       "sort": 200000,
       "color": null,
       "flags": {
-        "core": {
-          "sourceId": "Folder.Rudp3WGY5YPx13VV"
-        }
+        "core": {}
       },
       "_stats": {
         "systemId": "symbaroum",
         "systemVersion": "4.5.0",
-        "coreVersion": "12.325",
+        "coreVersion": "13.344",
         "createdTime": 1717742554652,
         "modifiedTime": 1717742554652,
         "lastModifiedBy": "YsmQXJ6sqv5HM9Ov",
         "compendiumSource": "Folder.Rudp3WGY5YPx13VV",
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "_id": "Rudp3WGY5YPx13VV"
     }
@@ -424,12 +413,13 @@
   "_stats": {
     "systemId": "symbaroum",
     "systemVersion": "4.0.1",
-    "coreVersion": "12.325",
+    "coreVersion": "13.344",
     "createdTime": 1664298357158,
     "modifiedTime": 1717742785853,
     "lastModifiedBy": "YsmQXJ6sqv5HM9Ov",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "folder": null,
   "_key": "!adventures!Y01wjAZdLjgR098D"

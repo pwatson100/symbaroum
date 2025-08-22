@@ -1,4 +1,4 @@
-export class SymbaroumTour extends Tour {
+export class SymbaroumTour extends foundry.nue.Tour {
 
 	constructor(config) {
 		super(config);

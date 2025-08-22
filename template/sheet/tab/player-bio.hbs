@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="wrapper-right">
-            {{editor system.bio.appearance target="system.bio.appearance" button=true owner=owner editable=true}}
+            {{editor system.bio.appearance target="system.bio.appearance" button=true owner=owner editable=true engine="prosemirror"}}
         </div>
         {{#ife actor.type 'player'}}
 
@@ -32,23 +32,23 @@
     {{#ifNotLimited actor}}
         <div class="background foreground border">
             <h1>{{localize "BIO.BACKGROUND"}}</h1>
-            {{editor system.bio.background target="system.bio.background" button=true owner=owner editable=true}}
+            {{editor system.bio.background target="system.bio.background" button=true owner=owner editable=true engine="prosemirror"}}
         </div>
         <div class="personal-goal foreground border">
             <h1>{{localize "BIO.GOAL"}}</h1>
-            {{editor system.bio.personalGoal target="system.bio.personalGoal" button=true owner=owner editable=true}}
+            {{editor system.bio.personalGoal target="system.bio.personalGoal" button=true owner=owner editable=true engine="prosemirror"}}
         </div>
         {{#ife actor.type 'player'}}
             <div class="stigmas foreground border">
                 <h1>{{localize "BIO.STIGMAS"}}</h1>
-                {{editor system.bio.stigmas target="system.bio.stigmas" button=true owner=owner editable=true}}
+                {{editor system.bio.stigmas target="system.bio.stigmas" button=true owner=owner editable=true engine="prosemirror"}}
             </div>
         {{/ife}}
 
         {{#ife actor.type 'monster'}}
             <div class="stigmas foreground border">
                 <h1>{{localize "BIO.TACTICS"}}</h1>
-                {{editor system.bio.tactics target="system.bio.tactics" button=true owner=owner editable=true}}
+                {{editor system.bio.tactics target="system.bio.tactics" button=true owner=owner editable=true engine="prosemirror"}}
             </div>
         {{/ife}}
     {{/ifNotLimited}}

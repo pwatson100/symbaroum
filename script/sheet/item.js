@@ -1,4 +1,4 @@
-export class SymbaroumItemSheet extends ItemSheet {
+export class SymbaroumItemSheet extends foundry.appv1.sheets.ItemSheet {
   activateListeners(html) {
     super.activateListeners(html);
     html.find(".activate-ability").click(async ev => await this._prepareActivateAbility(ev));
@@ -71,8 +71,9 @@ export class SymbaroumItemSheet extends ItemSheet {
   async _onPowerDelete(event) {
     this.updateOutstandingMCEValues();
 
-    const div = $(event.currentTarget).parents('.power-n');
-    let powerId = parseInt(div.data("powerId"));        
+    const div = event.target.closest('.power-n');
+    game.symbaroum.log('PowerID',div);
+    let powerId = parseInt(div.dataset.powerId);        
     if( isNaN(powerId) ) { 
       return;
     }
@@ -131,7 +132,7 @@ export class SymbaroumItemSheet extends ItemSheet {
     await this.enrichAllFields(itemData);
     await this._enrichTextFields(itemData,["enrichedName"]);
 
-    const html = await renderTemplate("systems/symbaroum/template/chat/item.hbs", itemData);
+    const html = await foundry.applications.handlebars.renderTemplate("systems/symbaroum/template/chat/item.hbs", itemData);
     const chatData = {
         user: game.user.id,
         speaker: ChatMessage.getSpeaker({ 
@@ -154,7 +155,7 @@ export class SymbaroumItemSheet extends ItemSheet {
     for(let t = 0; t < fieldNameArr.length; t++ ) 
     {
       if(foundry.utils.hasProperty(data,fieldNameArr[t])) {
-        foundry.utils.setProperty(data, fieldNameArr[t], await TextEditor.enrichHTML(foundry.utils.getProperty(data,fieldNameArr[t]), { async:true}) );
+        foundry.utils.setProperty(data, fieldNameArr[t], await foundry.applications.ux.TextEditor.enrichHTML(foundry.utils.getProperty(data,fieldNameArr[t]), { async:true}) );
       }
     };
   }

@@ -28,7 +28,7 @@ function preloadHandlebarsTemplates() {
     'systems/symbaroum/template/chat/combat.hbs',
     'systems/symbaroum/template/chat/applyEffectsButton.hbs',
   ];
-  return loadTemplates(templatePaths);
+  return foundry.applications.handlebars.loadTemplates(templatePaths);
 }
 function registerHandlebarsHelpers() {
   Handlebars.registerHelper('removeMarkup', function (text) {
@@ -37,7 +37,10 @@ function registerHandlebarsHelpers() {
   });
     
   Handlebars.registerHelper('removeStyling', function (text) {
-    const styling = /style="[^"]+"/gi;
+    if(!text) {
+      return '';
+    }
+    const styling = /style="[^"]+"/gi;    
     return new Handlebars.SafeString(text.replace(styling, ''));
   });
 

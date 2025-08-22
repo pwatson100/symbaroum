@@ -336,6 +336,7 @@ export class SymbaroumActor extends Actor {
 					for (let j = 0; j < alternatives.length; j++) {
 						allDefenseProt += `${alternatives[j].protectionMod}[${game.symbaroum.htmlEscape(protChoice.label)}]`;
 						allDefenseProtNPC += alternatives[j].protectionModNPC;
+						// tooltip += `${game.symbaroum.htmlEscape(protChoice.label)}</br>`;
 						tooltip += `${game.symbaroum.htmlEscape(protChoice.label)}</br>`;
 					}
 				}

@@ -1,3 +1,46 @@
+Version 6.0
+
+Note that some of these fixes are for v13 only
+
+* Fix for #703 toggleConfigutationButton not showing
+* Fix for #702 Toggle player/monster macro move to macro.js
+* Fix for #701 Reset Temporary Corruption macro move to macro.js
+* Fix for #700 Pay for re-roll macro move to macro.js
+* Fix for #699 CRB Character Importer move to macro.js
+* Fix for #698 Alternate Damage Macro Move to macro.js
+* Fix for #697 Death roll NaN's
+* Fix for #693 Shift to ProseMirror for sheets
+* Fix for #692 Tours not working 
+* Fix for #688 CMPowerMenu is now activating on pretty much "everything"
+* Fix for #687 Death saves are not behaving correctly (releated to #697)
+* Fix for #686 Many data-tooltips are not working 
+* Fix for #685 Right click's do not work anywhere  (releated to #688)
+* Fix for #684 Radio Buttons do not show up correctly in the attack screen 
+* Fix for #683 Move (or add) game.symbaroum.config to CONFIG.symbaroum 
+* Fix for #682 Armor rolls still using async:false keyword 
+* Fix for #681 Expansion fields in Chat can't be expanded 
+* Fix for #680 Override for item creation dialog shows "Artifact" again
+* Fix for #679 Chat Message H2 does not display correctly in all scenarios 
+* Fix for #678 Text areas inside buttons are rendered with bold 
+* Fix for #677 Pause icon defaults to the default not the system one 
+* Fix for #676 Notifications namespace 
+* Fix for #675 TinyMCE in evaluation mode (fixed by the foundry vtt team, related to #693)
+* Fix for #674 Dialog window CSS is broken 
+* Fix for #673 renderChatMessage Hook 
+* Fix for #672 user#isGM > User#isActiveGM 
+* Fix for #671 Cannot Adjust the Character Sheet's Height 
+* Fix for #670 Move saveCombatRoll and saveAttributeRoll to client settings 
+
+
+
+
+
+
+
+
+
+
+
 Version 5.1
 
 * Fix for #656 removeCondition errors when a condition does not exist in statusEffects 

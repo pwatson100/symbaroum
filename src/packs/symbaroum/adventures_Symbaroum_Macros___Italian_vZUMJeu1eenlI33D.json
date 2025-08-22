@@ -25,9 +25,7 @@
         "combat-utility-belt": {
           "macroTrigger": ""
         },
-        "core": {
-          "sourceId": "Macro.rovDHjS4ZPvgmWZM"
-        }
+        "core": {}
       },
       "ownership": {
         "default": 0,
@@ -38,12 +36,13 @@
       "_stats": {
         "systemId": "symbaroum",
         "systemVersion": "4.5.0",
-        "coreVersion": "12.325",
+        "coreVersion": "13.344",
         "createdTime": 1664296886774,
         "modifiedTime": 1717742552516,
         "lastModifiedBy": "YsmQXJ6sqv5HM9Ov",
         "compendiumSource": "Macro.rovDHjS4ZPvgmWZM",
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "folder": "Sp4tJC2h4XUNxWtv",
       "sort": 0,
@@ -60,9 +59,7 @@
         "furnace": {
           "runAsGM": false
         },
-        "core": {
-          "sourceId": "Macro.rfxvvcoQfLNQNd4L"
-        }
+        "core": {}
       },
       "ownership": {
         "default": 0,
@@ -73,12 +70,13 @@
       "_stats": {
         "systemId": "symbaroum",
         "systemVersion": "4.5.0",
-        "coreVersion": "12.325",
+        "coreVersion": "13.344",
         "createdTime": 1664296886773,
         "modifiedTime": 1717742552516,
         "lastModifiedBy": "YsmQXJ6sqv5HM9Ov",
         "compendiumSource": "Macro.rfxvvcoQfLNQNd4L",
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "folder": "Sp4tJC2h4XUNxWtv",
       "sort": 0,
@@ -98,9 +96,7 @@
         "furnace": {
           "runAsGM": false
         },
-        "core": {
-          "sourceId": "Macro.jqlw2EhoIe8KhTuu"
-        }
+        "core": {}
       },
       "ownership": {
         "default": 0,
@@ -111,12 +107,13 @@
       "_stats": {
         "systemId": "symbaroum",
         "systemVersion": "4.5.0",
-        "coreVersion": "12.325",
+        "coreVersion": "13.344",
         "createdTime": 1664296886773,
         "modifiedTime": 1717742552516,
         "lastModifiedBy": "YsmQXJ6sqv5HM9Ov",
         "compendiumSource": "Macro.jqlw2EhoIe8KhTuu",
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "folder": "Sp4tJC2h4XUNxWtv",
       "sort": 0,
@@ -136,9 +133,7 @@
         "furnace": {
           "runAsGM": false
         },
-        "core": {
-          "sourceId": "Macro.Ib9lVNzgBhxjP5EZ"
-        }
+        "core": {}
       },
       "ownership": {
         "default": 0,
@@ -149,12 +144,13 @@
       "_stats": {
         "systemId": "symbaroum",
         "systemVersion": "4.5.0",
-        "coreVersion": "12.325",
+        "coreVersion": "13.344",
         "createdTime": 1664296886773,
         "modifiedTime": 1717742552516,
         "lastModifiedBy": "YsmQXJ6sqv5HM9Ov",
         "compendiumSource": "Macro.Ib9lVNzgBhxjP5EZ",
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "folder": "Sp4tJC2h4XUNxWtv",
       "sort": 0,
@@ -174,9 +170,7 @@
         "furnace": {
           "runAsGM": false
         },
-        "core": {
-          "sourceId": "Macro.ZOmWDVLXwLd9aT1L"
-        }
+        "core": {}
       },
       "ownership": {
         "default": 0,
@@ -187,12 +181,13 @@
       "_stats": {
         "systemId": "symbaroum",
         "systemVersion": "4.5.0",
-        "coreVersion": "12.325",
+        "coreVersion": "13.344",
         "createdTime": 1664296886772,
         "modifiedTime": 1717742552516,
         "lastModifiedBy": "YsmQXJ6sqv5HM9Ov",
         "compendiumSource": "Macro.ZOmWDVLXwLd9aT1L",
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "folder": "Sp4tJC2h4XUNxWtv",
       "sort": 0,
@@ -209,9 +204,7 @@
         "furnace": {
           "runAsGM": false
         },
-        "core": {
-          "sourceId": "Macro.M2pRCm23Siqt61qp"
-        }
+        "core": {}
       },
       "ownership": {
         "default": 0,
@@ -222,12 +215,13 @@
       "_stats": {
         "systemId": "symbaroum",
         "systemVersion": "4.5.0",
-        "coreVersion": "12.325",
+        "coreVersion": "13.344",
         "createdTime": 1664296886773,
         "modifiedTime": 1717742552516,
         "lastModifiedBy": "YsmQXJ6sqv5HM9Ov",
         "compendiumSource": "Macro.M2pRCm23Siqt61qp",
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "folder": "Sp4tJC2h4XUNxWtv",
       "sort": 0,
@@ -247,9 +241,7 @@
         "furnace": {
           "runAsGM": false
         },
-        "core": {
-          "sourceId": "Macro.8cLkjnA8FBNnVMOm"
-        }
+        "core": {}
       },
       "ownership": {
         "default": 0,
@@ -260,12 +252,13 @@
       "_stats": {
         "systemId": "symbaroum",
         "systemVersion": "4.5.0",
-        "coreVersion": "12.325",
+        "coreVersion": "13.344",
         "createdTime": 1664296886773,
         "modifiedTime": 1717742552516,
         "lastModifiedBy": "YsmQXJ6sqv5HM9Ov",
         "compendiumSource": "Macro.8cLkjnA8FBNnVMOm",
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "folder": "Sp4tJC2h4XUNxWtv",
       "sort": 0,
@@ -285,9 +278,7 @@
         "furnace": {
           "runAsGM": false
         },
-        "core": {
-          "sourceId": "Macro.ZOmWDVLXwLd9aT1L"
-        }
+        "core": {}
       },
       "ownership": {
         "default": 0,
@@ -298,12 +289,13 @@
       "_stats": {
         "systemId": "symbaroum",
         "systemVersion": "4.5.0",
-        "coreVersion": "12.325",
+        "coreVersion": "13.344",
         "createdTime": 1664298202056,
         "modifiedTime": 1717742552516,
         "lastModifiedBy": "YsmQXJ6sqv5HM9Ov",
         "compendiumSource": "Macro.ZOmWDVLXwLd9aT1L",
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "folder": "Sp4tJC2h4XUNxWtv",
       "sort": 0,
@@ -323,9 +315,7 @@
         "furnace": {
           "runAsGM": false
         },
-        "core": {
-          "sourceId": "Macro.8cLkjnA8FBNnVMOm"
-        }
+        "core": {}
       },
       "ownership": {
         "default": 0,
@@ -336,12 +326,13 @@
       "_stats": {
         "systemId": "symbaroum",
         "systemVersion": "4.5.0",
-        "coreVersion": "12.325",
+        "coreVersion": "13.344",
         "createdTime": 1664298202056,
         "modifiedTime": 1717742552516,
         "lastModifiedBy": "YsmQXJ6sqv5HM9Ov",
         "compendiumSource": "Macro.8cLkjnA8FBNnVMOm",
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "folder": "Sp4tJC2h4XUNxWtv",
       "sort": 0,
@@ -361,9 +352,7 @@
         "furnace": {
           "runAsGM": false
         },
-        "core": {
-          "sourceId": "Macro.jqlw2EhoIe8KhTuu"
-        }
+        "core": {}
       },
       "ownership": {
         "default": 0,
@@ -374,12 +363,13 @@
       "_stats": {
         "systemId": "symbaroum",
         "systemVersion": "4.5.0",
-        "coreVersion": "12.325",
+        "coreVersion": "13.344",
         "createdTime": 1664298202057,
         "modifiedTime": 1717742552516,
         "lastModifiedBy": "YsmQXJ6sqv5HM9Ov",
         "compendiumSource": "Macro.jqlw2EhoIe8KhTuu",
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "folder": "Sp4tJC2h4XUNxWtv",
       "sort": 0,
@@ -396,9 +386,7 @@
         "furnace": {
           "runAsGM": false
         },
-        "core": {
-          "sourceId": "Macro.M2pRCm23Siqt61qp"
-        }
+        "core": {}
       },
       "ownership": {
         "default": 0,
@@ -409,12 +397,13 @@
       "_stats": {
         "systemId": "symbaroum",
         "systemVersion": "4.5.0",
-        "coreVersion": "12.325",
+        "coreVersion": "13.344",
         "createdTime": 1664298202057,
         "modifiedTime": 1717742552516,
         "lastModifiedBy": "YsmQXJ6sqv5HM9Ov",
         "compendiumSource": "Macro.M2pRCm23Siqt61qp",
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "folder": "Sp4tJC2h4XUNxWtv",
       "sort": 0,
@@ -431,9 +420,7 @@
         "furnace": {
           "runAsGM": false
         },
-        "core": {
-          "sourceId": "Macro.rfxvvcoQfLNQNd4L"
-        }
+        "core": {}
       },
       "ownership": {
         "default": 0,
@@ -444,12 +431,13 @@
       "_stats": {
         "systemId": "symbaroum",
         "systemVersion": "4.5.0",
-        "coreVersion": "12.325",
+        "coreVersion": "13.344",
         "createdTime": 1664298202057,
         "modifiedTime": 1717742552516,
         "lastModifiedBy": "YsmQXJ6sqv5HM9Ov",
         "compendiumSource": "Macro.rfxvvcoQfLNQNd4L",
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "folder": "Sp4tJC2h4XUNxWtv",
       "sort": 0,
@@ -469,9 +457,7 @@
         "furnace": {
           "runAsGM": false
         },
-        "core": {
-          "sourceId": "Macro.Ib9lVNzgBhxjP5EZ"
-        }
+        "core": {}
       },
       "ownership": {
         "default": 0,
@@ -482,12 +468,13 @@
       "_stats": {
         "systemId": "symbaroum",
         "systemVersion": "4.5.0",
-        "coreVersion": "12.325",
+        "coreVersion": "13.344",
         "createdTime": 1664298202057,
         "modifiedTime": 1717742552516,
         "lastModifiedBy": "YsmQXJ6sqv5HM9Ov",
         "compendiumSource": "Macro.Ib9lVNzgBhxjP5EZ",
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "folder": "Sp4tJC2h4XUNxWtv",
       "sort": 0,
@@ -507,9 +494,7 @@
         "combat-utility-belt": {
           "macroTrigger": ""
         },
-        "core": {
-          "sourceId": "Macro.rovDHjS4ZPvgmWZM"
-        }
+        "core": {}
       },
       "ownership": {
         "default": 0,
@@ -520,12 +505,13 @@
       "_stats": {
         "systemId": "symbaroum",
         "systemVersion": "4.5.0",
-        "coreVersion": "12.325",
+        "coreVersion": "13.344",
         "createdTime": 1664298202058,
         "modifiedTime": 1717742552516,
         "lastModifiedBy": "YsmQXJ6sqv5HM9Ov",
         "compendiumSource": "Macro.rovDHjS4ZPvgmWZM",
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "folder": "Sp4tJC2h4XUNxWtv",
       "sort": 0,
@@ -544,19 +530,18 @@
       "sort": 0,
       "color": null,
       "flags": {
-        "core": {
-          "sourceId": "Folder.Sp4tJC2h4XUNxWtv"
-        }
+        "core": {}
       },
       "_stats": {
         "systemId": "symbaroum",
         "systemVersion": "4.5.0",
-        "coreVersion": "12.325",
+        "coreVersion": "13.344",
         "createdTime": 1717742552548,
         "modifiedTime": 1717742552548,
         "lastModifiedBy": "YsmQXJ6sqv5HM9Ov",
         "compendiumSource": "Folder.Sp4tJC2h4XUNxWtv",
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "_id": "Sp4tJC2h4XUNxWtv"
     }
@@ -566,12 +551,13 @@
   "_stats": {
     "systemId": "symbaroum",
     "systemVersion": "4.0.0",
-    "coreVersion": "12.325",
+    "coreVersion": "13.344",
     "createdTime": 1664298421068,
     "modifiedTime": 1717742768438,
     "lastModifiedBy": "YsmQXJ6sqv5HM9Ov",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "folder": null,
   "_key": "!adventures!vZUMJeu1eenlI33D"

@@ -19,6 +19,12 @@
   background: var(--chat-background);
 }
 
+.symbaroum .prosemirror menu {
+  	background: var(--title-color) repeat;
+    color: var(--color-title);
+    font-family: var(--font-text);
+}
+
 // override the V2 Journal stuff
 // .journal-sheet .journal-sheet-container {
 //   //   grid-template-columns: unset;

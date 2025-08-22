@@ -10,7 +10,7 @@ export async function prepareRollDeathTest(actor, showDialogue) {
     return;
   }
   let attri_defaults = getRollDefaults("deathtest",false, false);
-  const html = await renderTemplate('systems/symbaroum/template/chat/dialog-deathtest.hbs', {  
+  const html = await foundry.applications.handlebars.renderTemplate('systems/symbaroum/template/chat/dialog-deathtest.hbs', {  
     "choices": { "0": "DIALOG.FAVOUR_NORMAL", "-1":"DIALOG.FAVOUR_DISFAVOUR", "1":"DIALOG.FAVOUR_FAVOUR"},
     "roll_defaults":attri_defaults,
     "groupName" : "favour",
@@ -119,7 +119,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
     id: "custom",
     label: game.i18n.localize(`WEAPON.NONE`),
   };
-  const html = await renderTemplate('systems/symbaroum/template/chat/dialog.hbs', {
+  const html = await foundry.applications.handlebars.renderTemplate('systems/symbaroum/template/chat/dialog.hbs', {
     "askTargetAttribute": askTargetAttribute,
     "askPoison": askPoison,
     "isWeaponRoll" : weapon !== null,
