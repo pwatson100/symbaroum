@@ -1,3 +1,7 @@
+Version 6.1
+
+* Fix for #709 applyEffects does not work
+
 Version 6.0
 
 Note that some of these fixes are for v13 only
