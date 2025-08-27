@@ -207,8 +207,8 @@ ${monster ? getTactics(actor) : ""}
                 buttons:
                 {
                     Ok: {
-                        label: game.i18n.localize("DIALOG.OK"), callback: async ([html]) => {
-                            let modifier = Number(html.querySelector("input[name='modifier'").value);
+                        label: game.i18n.localize("DIALOG.OK"), callback: async (html) => {
+                            let modifier = Number(html[0].querySelector("input[name='modifier'").value);
                             if (isNaN(modifier)) { modifier = 0; }
                             await myF(uuid, modifier);
                         }

@@ -507,7 +507,7 @@ Hooks.on('renderChatMessageHTML', async (chatItem, html, data) => {
 	const flagDataArray = await chatItem.getFlag(game.system.id, 'applyEffects');
 
 	if (flagDataArray && game.user.isGM) {
-		html.querySelector('#applyEffect').addEventListener("click",async () => {
+		html[0].querySelector('#applyEffect').addEventListener("click",async () => {
 			console.log('Applying effects');
 			for (let flagData of flagDataArray) {
 				if (!flagData.tokenId && !flagData.actorId) {
@@ -552,7 +552,7 @@ Hooks.on('renderChatMessageHTML', async (chatItem, html, data) => {
 	}
 	const functionStuff = await chatItem.getFlag(game.system.id, 'resistRoll');
 	if (functionStuff) {
-		html.querySelector('#applyEffect').addEventListener("click",async () => {
+		html[0].querySelector('#applyEffect').addEventListener("click",async () => {
 			let tok = canvas.tokens.objects.children.find((token) => token.id === functionStuff.tokenId);
 			let targetToken = canvas.tokens.objects.children.find((token) => token.id === functionStuff.targetData.tokenId);
 			if (tok === undefined || targetToken === undefined) {
@@ -576,7 +576,7 @@ Hooks.on('renderPause', (_app, html, options) => {
 });
 //V13 Code
 Hooks.on('renderGamePause', (_app, html, options) => {
-	document.getElementById('pause').innerHTML = `<img src=\"systems/symbaroum/asset/image/head.webp\" class=\"fa-spin\"><figcaption>Dvaokar Sleeps</figcaption>`;
+	document.getElementById('pause').innerHTML = `<img src=\"systems/symbaroum/asset/image/head.webp\" class=\"fa-spin\"><figcaption>Davokar Sleeps</figcaption>`;
 });
 
 function setup3PartySettings() {
