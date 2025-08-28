@@ -256,25 +256,17 @@ export class SymbaroumMacros {
 				Ok: {
 					label: game.i18n.localize("DIALOG.OK"),
 					callback: async (html) => {
-						let tmp = html
-							.find("input[name='selection']")
-							.get()
-							.filter((v) => {
-								if (v.checked) return true;
-							})
-							.map((e) => {
-								return e.value;
-							});
-						let exp = parseInt(
-							html.find("input[name='experience'")[0].value
-						);
-						if (isNaN(exp) || tmp.length == 0) {
+						let tmp = html[0].querySelectorAll("input[name='selection']")
+						let nodeList = Array.from(tmp)
+						let Atmp = nodeList.filter((v) => {if (v.checked) return true;}).map((e) => {return e.value;});
+						let exp = parseInt(html[0].querySelector("input[name='experience'").value);
+						if (isNaN(exp) || Atmp.length == 0) {
 							ui.notifications.error(
 								game.i18n.localize("MACRO.ADDEXP_NUMBER")
 							);
 							return;
 						}
-						this.addExperience(tmp, exp);
+						this.addExperience(Atmp, exp);
 					},
 				},
 				Cancel: { label: game.i18n.localize("DIALOG.CANCEL") },
@@ -346,8 +338,8 @@ export class SymbaroumMacros {
 					label: `Apply Damage`,
 					callback: async (html) => {
 						await dealDamage(
-							html.find("#vision-type")[0].value,
-							html.find("#altdam")[0].value
+							html[0].querySelector("#vision-type").value,
+							html[0].querySelector("#altdam").value
 						);
 					},
 				},
@@ -437,8 +429,9 @@ export class SymbaroumMacros {
             {
             Ok : { 
                 label : game.i18n.localize("DIALOG.OK"), callback : async (html)=> {
-                    let actorids = html.find("input[name='selection']").get().filter(v => { if(v.checked) return true; }).map(e => { return e.value});
-                    let attribute = html.find('#attribute')[0].value;
+                    let actorTemp= Array.from(html[0].querySelectorAll("input[name='selection']"));
+										let actorids = actorTemp.filter(v => { if(v.checked) return true; }).map(e => { return e.value});
+                    let attribute = html[0].querySelector('#attribute').value;
                     actorids.map(a => {
                         let aexp = game.actors.get(a);
                         aexp.rollAttribute(attribute, null, null);
@@ -487,7 +480,7 @@ export class SymbaroumMacros {
 			alternatives: keys,
 			buttons : 
 			{
-				Ok : { label : `Ok`, callback : async (html)=> await this.generateNameChat(html.find('#category')[0].value, allNames)},
+				Ok : { label : `Ok`, callback : async (html)=> await this.generateNameChat(html[0].querySelector('#category').value, allNames)},
 				Cancel : {label : `Cancel`}
 			}
 		});
@@ -526,7 +519,7 @@ export class SymbaroumMacros {
       content : dialog_content,
       buttons : 
       {
-        Ok : { label : `Ok`, callback : async (html)=> await this.change2PC(html.find('[name=npctext]')[0].value.replace(/[\r|\n]/g, ""))},
+        Ok : { label : `Ok`, callback : async (html)=> await this.change2PC(html[0].querySelector('[name=npctext]').value.replace(/[\r|\n]/g, ""))},
         Cancel : {label : `Cancel`}
       }
     });
@@ -587,7 +580,7 @@ export class SymbaroumMacros {
 						icon: "<i class='fas fa-check'></i>",
 						label: `Apply Damage`,
 						callback: async (html)=> {
-								await this.dealDamage(html.find("#vision-type")[0].value, html.find('#altdam')[0].value);
+								await this.dealDamage(html[0].querySelector("#vision-type").value, html[0].querySelector('#altdam').value);
 							}
 					},
 					no: {
@@ -663,9 +656,11 @@ export class SymbaroumMacros {
 						content : dialog_content,
 						buttons : 
 						{
-								Ok :{ label : `Ok`, callback : async (html) => {             
-																								let tmp = html.find("input[name='selection']").get().filter(v => { if(v.checked) return true; }).map(e => { return e.value});
-																								let costType = html.find("input[name='costType']").get().filter(v => { if(v.checked) return true; }).map(e => { return e.value});
+								Ok :{ label : `Ok`, callback : async (html) => {  
+																								let  selTmp= Array.from(html[0].querySelectorAll("input[name='selection']"));
+																								let tmp = selTmp.filter(v => { if(v.checked) return true; }).map(e => { return e.value});
+																								let costTmp  = Array.from(html[0].querySelectorAll("input[name='costType']"));
+																							  let	costType = costTmp.filter(v => { if(v.checked) return true; }).map(e => { return e.value});
 
 																								await this.payCost(tmp,costType);
 																						}
@@ -742,8 +737,9 @@ export class SymbaroumMacros {
 						content : dialog_content,
 						buttons : 
 						{
-								Ok :{ label : `Ok`, callback : async (html) => {             
-																								let tmp = html.find("input[name='selection']").get().filter(v => { if(v.checked) return true; }).map(e => { return e.value});                                            
+								Ok :{ label : `Ok`, callback : async (html) => {   
+																								let selTemp = Array.from(html[0].querySelectorAll("input[name='selection']"));
+																								let tmp = selTemp.filter(v => { if(v.checked) return true; }).map(e => { return e.value});                                            
 																								if(tmp.length == 0) {
 																										ui.notifications.error("Need a valid number of players");
 																										return;
@@ -816,7 +812,7 @@ export class SymbaroumMacros {
 						content : dialog_content,
 						buttons : 
 						{
-								Ok : { label : `Ok`, callback : async (html)=> await this.extractAllData(html.find('[name=npctext]')[0].value.replace(/[\r|\n]/g, ""), html.find("#isplayer")[0].checked)},
+								Ok : { label : `Ok`, callback : async (html)=> await this.extractAllData(html[0].querySelector('[name=npctext]').value.replace(/[\r|\n]/g, ""), html[0].querySelector("#isplayer").checked)},
 								Cancel : {label : `Cancel`}
 						}
 				});
@@ -1049,7 +1045,7 @@ export class SymbaroumMacros {
 					content : dialog_content,
 					buttons : 
 					{
-							Ok : { label : `Ok`, callback : async (html)=> await this.extractAllDataStartSet(html.find('[name=npctext]')[0].value, html.find("#isplayer")[0].checked)},
+							Ok : { label : `Ok`, callback : async (html)=> await this.extractAllDataStartSet(html[0].querySelector('[name=npctext]').value, html[0].querySelector("#isplayer").checked)},
 							Cancel : {label : `Cancel`}
 					}
 			});

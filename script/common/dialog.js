@@ -23,15 +23,15 @@ export async function prepareRollDeathTest(actor, showDialogue) {
         icon: '<i class="fas fa-check"></i>',
         label: game.i18n.localize('BUTTON.ROLL'),
         callback: async (html) => {
-          let favours = html.find("input[name='favour']");
-          let fvalue = 0;
-          for ( let f of favours) {						
-            if( f.checked ) fvalue = f.value;
-          }
-          attri_defaults.selectedFavour = ""+fvalue;
-          const favour = fvalue;
-          
-          let modifier = parseInt(html.find("#modifier")[0].value);   
+					let favours = html[0].querySelectorAll("input[name='favour']");
+					let fvalue = 0;
+					for (let f of favours) {
+						if (f.checked) fvalue = f.value;
+					}
+					attri_defaults.selectedFavour = '' + fvalue;
+					const favour = fvalue;
+
+					let modifier = Number(html[0].querySelector('#modifier').value);
           if(isNaN(modifier)) {
             modifier = 0;
           }
@@ -57,12 +57,13 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
   const CombatDialog = class extends Dialog {
     activateListeners (html) {
       super.activateListeners(html);
-      html.find(".packageInfo").click(function(ev) {
-        if(ev.target.className === 'packageDetail') {
-          let checkbox = $(ev.currentTarget).find('input[type="checkbox"]');
-          checkbox.prop('checked', !checkbox.prop('checked'));
-        }
-      });
+    //   // TODO: PW - Need to work out what this is doing !!
+    //   html.find(".packageInfo").click(function(ev) {
+    //     if(ev.target.className === 'packageDetail') {
+    //       let checkbox = $(ev.currentTarget).querySelector('input[type="checkbox"]');
+    //       checkbox.prop('checked', !checkbox.prop('checked'));
+    //     }
+    //   });
     }
   }
   let targetTokens = Array.from(game.user.targets);
@@ -148,8 +149,8 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
         callback: async (html) => {
           let dummyMod = "custom";
           if(askTargetAttribute){	
-            if( html.find("#targetAttribute").length > 0) {
-              dummyMod = html.find("#targetAttribute")[0].value;											
+            if( html[0].querySelector("#targetAttribute").length > 0) {
+              dummyMod = html[0].querySelector("#targetAttribute").value;											
             }
             if(game.settings.get('symbaroum', 'combatAutomation') && weapon !== null){
               ecData.targetData.resistAttributeName = dummyMod;
@@ -158,16 +159,16 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
           }
           attri_defaults.targetAttributeName = dummyMod;
           const targetAttributeName = dummyMod;
-          let modifier = parseInt(html.find("#modifier")[0].value);   
+          let modifier = Number(html[0].querySelector("#modifier").value);   
           if(isNaN(modifier)) {
             modifier = 0;
           }
           attri_defaults.modifier = modifier;
           ecData.modifier = modifier;
-          let hasAdvantage = html.find("#advantage").length > 0;
+          let hasAdvantage = html[0].querySelectorAll("#advantage").length > 0;
           if( hasAdvantage ) {
             // Note that this turns into disadvantage for Defense rolls
-            hasAdvantage = html.find("#advantage")[0].checked;
+            hasAdvantage = html[0].querySelectorAll("#advantage").checked;
           }
           attri_defaults.advantage = hasAdvantage ? "checked":"";
           const advantage = hasAdvantage; 
@@ -179,16 +180,16 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
                   ecData.castingAttributeName = "discreet";
               }
           }
-          let hasDamModifier = html.find("#dammodifier").length > 0;
+          let hasDamModifier = html[0].querySelectorAll("#dammodifier").length > 0;
           let damModifier = "";
           let damModifierNPC = 0;
           let damModifierAttSup ="";
           let damModifierAttSupNPC=0;
           if(hasDamModifier) {
-            let damString = html.find("#dammodifier")[0].value;            
+
+            let damString = html[0].querySelector("#dammodifier")?.value;            
             // Save - it is a string
             damString = damString.trim();
-            
             if(damString.length) {
               attri_defaults.additionalModifier = damString; // Regardless if valid or not, set it as attri_defaults
               let plus = '+';
@@ -259,7 +260,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
                 }
               } else if(pack.type === game.symbaroum.config.PACK_CHECK) {
                 // Find if the box is checked
-                let ticked = html.find(`#${pack.id}`);              
+                let ticked = html[0].querySelector(`#${pack.id}`);              
                 if( ticked.length > 0 && ticked[0].checked ){
                   ecData.autoParams += ", "+pack.label;
                   for(let member of pack.member) {
@@ -297,7 +298,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
                 }
               } else if( pack.type === game.symbaroum.config.PACK_RADIO) {
                 if(pack.member[0].type === game.symbaroum.config.DAM_RADIO){
-                  let radioSelection = html.find(`input[name='${pack.id}']`);
+                  let radioSelection = html[0].querySelectorAll(`input[name='${pack.id}']`);
                   for( let f of radioSelection) {
                     if( f.checked ){
                       damModifier += `${f.value}[${pack.label}]`;
@@ -315,7 +316,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
             }
           }
 
-          let favours = html.find("input[name='favour']");
+          let favours = html[0].querySelectorAll("input[name='favour']");
           let fvalue = 0;
           for ( let f of favours) {						
             if( f.checked ) fvalue = f.value;
@@ -325,20 +326,20 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
           ecData.favour += parseInt(fvalue);
 
           if(askImpeding){
-            if(html.find("#impeding")[0].checked){
+            if(html[0].querySelector("#impeding").checked){
               modifier = modifier - actor.system.combat.impeding;
               ecData.modifier += -ecData.impeding;
               ecData.autoParams += game.i18n.localize("ARMOR.IMPEDINGLONG") + ", ";
             }            
-            attri_defaults.impeding = html.find("#impeding")[0].checked ? "checked":"";
+            attri_defaults.impeding = html[0].querySelector("#impeding").checked ? "checked":"";
           }
           if(askIgnoreArmor){
-            ignoreArm = html.find("#ignarm")[0].checked;
+            ignoreArm = html[0].querySelector("#ignarm").checked;
             ecData.ignoreArm = ignoreArm;
             if(ignoreArm) ecData.autoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_IGN_ARMOR') + ", ";
           }
           if(askAttackNb){
-            let radioSelection = html.find(`input[name='attNbRadio']`);
+            let radioSelection = html[0].querySelectorAll(`input[name='attNbRadio']`);
             for( let f of radioSelection) {
               if( f.checked ){
                 ecData.numberofAttacks = parseInt(f.value);
@@ -346,10 +347,10 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
             }
           }
           if(askPoison){
-            ecData.poison = Number(html.find("#poison")[0].value);
+            ecData.poison = Number(html[0].querySelector("#poison").value);
           }
           if(askCorruptedTarget){
-            ecData.targetFullyCorrupted = html.find("#targetCorrupt")[0].checked;
+            ecData.targetFullyCorrupted = html[0].querySelector("#targetCorrupt").checked;
           }
           if(weapon && game.settings.get('symbaroum', 'combatAutomation')){
             attackFromPC = actor.type !== "monster" || ecData.targetData.actor.type === "monster";

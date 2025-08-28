@@ -133,20 +133,20 @@ export function createRollData(rolls)
 
 export async function rollDeathTest(actor, withFavour, modifier) {
   let rolls = [];
-  let death = new Roll('1d20', {});
+  let death = await new Roll('1d20', {}).evaluate();
   let favour = 0;
   let dicesResult;
   if( withFavour === "1") {
     favour = 1;
-    death = new Roll('2d20kl', {});
+    death = await new Roll('2d20kl', {}).evaluate();
+    // await death.evaluate();
     dicesResult= [death.terms[0].results[0].result, death.terms[0].results[1].result];
   } else if( withFavour === "-1") {
     favour = -1;
-    death = new Roll('2d20kh', {});
+    death = await new Roll('2d20kh', {}).evaluate();
     dicesResult= [death.terms[0].results[0].result, death.terms[0].results[1].result];
   }
 
-  await death.evaluate();
   rolls.push(death);
   let hasSucceed = death.total <= 10+modifier;
   let finalMod = game.settings.get('symbaroum', 'enhancedDeathSaveBonus') ? modifier:0;

@@ -1,9 +1,9 @@
 export class SymbaroumItemSheet extends foundry.appv1.sheets.ItemSheet {
   activateListeners(html) {
     super.activateListeners(html);
-    html.find(".activate-ability").click(async ev => await this._prepareActivateAbility(ev));
-    html.find('.power-delete').click((ev) => this._onPowerDelete(ev));
-    html.find('.power-create').click((ev) => this._onPowerCreate(ev));
+    html[0].querySelector(".activate-ability")?.addEventListener('click', async  (ev) => await this._prepareActivateAbility(ev));
+    html[0].querySelector('.power-delete')?.addEventListener('click', (ev) => this._onPowerDelete(ev));
+    html[0].querySelector('.power-create')?.addEventListener('click',  (ev) => this._onPowerCreate(ev));
   }
 
   async enrichAllFields(data)

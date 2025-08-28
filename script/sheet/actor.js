@@ -3,18 +3,51 @@ export class SymbaroumActorSheet extends foundry.appv1.sheets.ActorSheet {
 
 	activateListeners(html) {
 		super.activateListeners(html);
-		html.find('.item-create').click((ev) => this._onItemCreate(ev));
-		html.find('.item-edit').click((ev) => this._onItemEdit(ev));
+
+		const addItem = html[0].querySelectorAll('.item-create');
+		for (const s of addItem) {
+			s.addEventListener('click', (ev) => {
+				this._onItemCreate(ev);
+			});
+		}
+		const editItem = html[0].querySelectorAll('.item-edit');
+		for (const s of editItem) {
+			s.addEventListener('click', (ev) => {
+				this._onItemEdit(ev);
+			});
+		}
+		const dataInput = html[0].querySelectorAll('focusin');
+		for (const s of dataInput) {
+			s.addEventListener('focusin', (ev) => {
+				this._onFocusIn(ev);
+			});
+		}
+		const itemState = html[0].querySelectorAll('.item-state');
+		for (const s of itemState) {
+			s.addEventListener('click', (ev) => {
+				this._onItemStateUpdate(ev);
+			});
+		}
+		const activateAbility = html[0].querySelectorAll('.activate-ability');
+		for (const s of activateAbility) {
+			s.addEventListener('click', (ev) => {
+				this.activateAbility(ev);
+			});
+		}
+
+
+		// html[0].querySelector('.item-create')?.addEventListener('click', (ev) => this._onItemCreate(ev));
+		// html[0].querySelector('.item-edit')?.addEventListener('click',  (ev) => this._onItemEdit(ev));
 		// html.find('.item-delete').click((ev) => this._onItemDelete(ev));
-		html.find('input').focusin((ev) => this._onFocusIn(ev));
-		html.find('.item-state').click(async (ev) => await this._onItemStateUpdate(ev));
-		html.find('.activate-ability').click(async (ev) => await this._onPrepareActivateAbility(ev));
+		// html[0].querySelector('input')?.addEventListener('focusin',(ev) => this._onFocusIn(ev));
+		// html[0].querySelector('.item-state')?.addEventListener('click', async (ev) => await this._onItemStateUpdate(ev));
+		// html[0].querySelector('.activate-ability')?.addEventListener('click', async (ev) => await this.activateAbility(ev));
 
 		// Drag events for macros.
 		if (this.actor.owner) {
 			let handler = (ev) => this._onDragStart(ev);
 			// Find all items on the character sheet.
-			html.find('li.trait').each((i, li) => {
+			html[0].querySelectorAll('li.trait').each((i, li) => {
 				// Ignore for the header row.
 				if (li.classList.contains('item-header')) return;
 				// Add draggable attribute and dragstart listener.
@@ -165,12 +198,12 @@ export class SymbaroumActorSheet extends foundry.appv1.sheets.ActorSheet {
 					Ok: {
 						label: game.i18n.localize('DIALOG.OK'),
 						callback: async (html) => {
-							let quantity = parseInt(html.find("input[name='changeQuantity'")[0].value);
+							let quantity = parseInt(html[0].querySelector("input[name='changeQuantity'").value);
 							if (isNaN(quantity)) {
 								ui.notifications.error(game.i18n.localize('MACRO.ADDEXP_NUMBER'));
 								return;
 							}
-							if (html.find("input[name='setDefault']")[0].checked && quantity > 0) {
+							if (html[0].querySelector("input[name='setDefault']").checked && quantity > 0) {
 								await game.user.setFlag(game.system.id, game.symbaroum.config.CONTEXT_MENU.equipmentAddRemoveFlag, quantity);
 							}
 							item.update({ 'system.number': Math.max(0, item.system.number + quantity * (increase ? 1 : -1)) });

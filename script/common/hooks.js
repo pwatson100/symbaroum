@@ -507,76 +507,83 @@ Hooks.on('renderChatMessageHTML', async (chatItem, html, data) => {
 	const flagDataArray = await chatItem.getFlag(game.system.id, 'applyEffects');
 
 	if (flagDataArray && game.user.isGM) {
-		html.find('#applyEffect').click(async () => {
-			console.log('Applying effects');
-			for (let flagData of flagDataArray) {
-				if (!flagData.tokenId && !flagData.actorId) {
-					continue;
-				}
-				let token = flagData.tokenId ? canvas.tokens.objects.children.find((token) => token.id === flagData.tokenId) : null;
-				let actor = token?.actor ?? game.actors.get(flagData.actorId);
-				if (!actor) {
-					continue;
-				}
-				if (flagData.addEffect) {
-					await actor.addCondition(flagData.addEffect);
-				} else if (flagData.removeEffect) {
-					await actor.removeCondition(flagData.removeEffect);
-				}
-				if (flagData.defeated && ui.combat.viewed && token) {
-					let effect = foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id == 'dead'));
-					await token.toggleEffect(effect, { overlay: true, active: true });
-				}
+		const listenArea = html.querySelectorAll('#applyEffect');
+		for (const s of listenArea) {
+			s.addEventListener('click', async () => {
+				console.log('Applying effects');
+				for (let flagData of flagDataArray) {
+					if (!flagData.tokenId && !flagData.actorId) {
+						continue;
+					}
+					let token = flagData.tokenId ? canvas.tokens.objects.children.find((token) => token.id === flagData.tokenId) : null;
+					let actor = token?.actor ?? game.actors.get(flagData.actorId);
+					if (!actor) {
+						continue;
+					}
+					if (flagData.addEffect) {
+						await actor.addCondition(flagData.addEffect);
+					} else if (flagData.removeEffect) {
+						await actor.removeCondition(flagData.removeEffect);
+					}
+					if (flagData.defeated && ui.combat.viewed && token) {
+						let effect = foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id == 'dead'));
+						await token.toggleEffect(effect, { overlay: true, active: true });
+					}
 
-				if (flagData.toughnessChange) {
-					let newToughness = Math.max(0, Math.min(actor.system.health.toughness.max, actor.system.health.toughness.value + flagData.toughnessChange));
-					await actor.update({ 'system.health.toughness.value': newToughness });
+					if (flagData.toughnessChange) {
+						let newToughness = Math.max(0, Math.min(actor.system.health.toughness.max, actor.system.health.toughness.value + flagData.toughnessChange));
+						await actor.update({ 'system.health.toughness.value': newToughness });
+					}
+					if (flagData.attributeChange) {
+						let newMod = actor.system.attributes[flagData.attributeName].temporaryMod + flagData.attributeChange;
+						let linkMod = 'system.attributes.' + flagData.attributeName + '.temporaryMod';
+						await actor.update({ [linkMod]: newMod });
+					}
+					if (flagData.corruptionChange) {
+						let newCorruption = actor.system.health.corruption.temporary + flagData.corruptionChange;
+						await actor.update({ 'system.health.corruption.temporary': newCorruption });
+					}
+					if (flagData.addObject == 'blessedshield') {
+						await createBlessedShield(actor, flagData.protection);
+					}
 				}
-				if (flagData.attributeChange) {
-					let newMod = actor.system.attributes[flagData.attributeName].temporaryMod + flagData.attributeChange;
-					let linkMod = 'system.attributes.' + flagData.attributeName + '.temporaryMod';
-					await actor.update({ [linkMod]: newMod });
-				}
-				if (flagData.corruptionChange) {
-					let newCorruption = actor.system.health.corruption.temporary + flagData.corruptionChange;
-					await actor.update({ 'system.health.corruption.temporary': newCorruption });
-				}
-				if (flagData.addObject == 'blessedshield') {
-					await createBlessedShield(actor, flagData.protection);
-				}
-			}
-			await chatItem.unsetFlag(game.system.id, 'applyEffects');
-			await chatItem.delete();
-			return;
-		});
-	}
-	const functionStuff = await chatItem.getFlag(game.system.id, 'resistRoll');
-	if (functionStuff) {
-		html.find('#applyEffect').click(async () => {
-			let tok = canvas.tokens.objects.children.find((token) => token.id === functionStuff.tokenId);
-			let targetToken = canvas.tokens.objects.children.find((token) => token.id === functionStuff.targetData.tokenId);
-			if (tok === undefined || targetToken === undefined) {
-				ui.notifications.error("Can't find token.");
+				await chatItem.unsetFlag(game.system.id, 'applyEffects');
+				await chatItem.delete();
 				return;
+			});
+		}
+		const functionStuff = await chatItem.getFlag(game.system.id, 'resistRoll');
+		if (functionStuff) {
+			const listenArea = html.querySelectorAll('#applyEffect');
+			for (const s of listenArea) {
+				s.addEventListener('click', async () => {
+					let tok = canvas.tokens.objects.children.find((token) => token.id === functionStuff.tokenId);
+					let targetToken = canvas.tokens.objects.children.find((token) => token.id === functionStuff.targetData.tokenId);
+					if (tok === undefined || targetToken === undefined) {
+						ui.notifications.error("Can't find token.");
+						return;
+					}
+					functionStuff.token = tok;
+					functionStuff.actor = tok.actor;
+					functionStuff.targetData.token = targetToken;
+					functionStuff.targetData.actor = targetToken.actor;
+					// game.symbaroum.log("from hook: ", functionStuff);
+					buildRolls(functionStuff);
+					await chatItem.unsetFlag(game.system.id, 'resistRoll');
+					return;
+				});
 			}
-			functionStuff.token = tok;
-			functionStuff.actor = tok.actor;
-			functionStuff.targetData.token = targetToken;
-			functionStuff.targetData.actor = targetToken.actor;
-			// game.symbaroum.log("from hook: ", functionStuff);
-			buildRolls(functionStuff);
-			await chatItem.unsetFlag(game.system.id, 'resistRoll');
-			return;
-		});
+		}
 	}
 });
+
 // V12 code
 Hooks.on('renderPause', (_app, html, options) => {
 	html.find('img[src="icons/svg/clockwork.svg"]').attr('src', 'systems/symbaroum/asset/image/head.webp');
 });
 //V13 Code
 Hooks.on('renderGamePause', (_app, html, options) => {
-	document.getElementById('pause').innerHTML = `<img src=\"systems/symbaroum/asset/image/head.webp\" class=\"fa-spin\"><figcaption>Dvaokar Sleeps</figcaption>`;
+	document.getElementById('pause').innerHTML = `<img src=\"systems/symbaroum/asset/image/head.webp\" class=\"fa-spin\"><figcaption>Davokar Sleeps</figcaption>`;
 });
 
 function setup3PartySettings() {

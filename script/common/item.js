@@ -266,6 +266,8 @@ export class SymbaroumItem extends Item {
 
   /* affect reference on this item */
   async affectReference() {
+
+    // TOTO: Unable to test as the calling function _prepareRegisterAbility(event) in item.js is not called???
     let list;
     if (this.type === "ability") {
       list = game.symbaroum.config.abilitiesList;
@@ -294,7 +296,7 @@ export class SymbaroumItem extends Item {
         validate: {
           label: "Validate",
           callback: (html) => {
-            let selectedRef = html.find("#reference")[0].value;
+            let selectedRef = html[0].querySelector("#reference").value;
             this.update({ "system.reference": selectedRef });
             return selectedRef;
           },
@@ -2996,7 +2998,7 @@ export async function modifierDialog(functionStuff) {
         label: game.i18n.localize("BUTTON.ROLL"),
         callback: async (html) => {
           if (functionStuff.askWeapon) {
-            let wepID = html.find("#weapon")[0].value;
+            let wepID = html[0].querySelector("#weapon")[0].value;
             functionStuff.weapon = functionStuff.actor.items.find((item) => item.id == wepID);
             functionStuff.castingAttributeName = functionStuff.weapon.system.attribute;
             if (functionStuff.weapon.system.qualities.precise) {
@@ -3006,24 +3008,24 @@ export async function modifierDialog(functionStuff) {
           }
           // acting attribute for d20roll
           if (functionStuff.askCastingAttribute) {
-            functionStuff.castingAttributeName = html.find("#castAt")[0].value;
+            functionStuff.castingAttributeName = html[0].querySelector("#castAt").value;
           }
 
           //resist attribute for d20roll
           if (functionStuff.askTargetAttribute) {
-            if (html.find("#resistAtt").length > 0) {
-              targetAttributeName = html.find("#resistAtt")[0].value;
+            if (html[0].querySelector("#resistAtt").length > 0) {
+              targetAttributeName = html[0].querySelector("#resistAtt").value;
               functionStuff.targetData.resistAttributeName = targetAttributeName;
               functionStuff.targetData.resistAttributeValue = getAttributeValue(functionStuff.targetData.actor, targetAttributeName);
             }
           }
           if (hasRoll) {
             //custom modifier for d20roll
-            const bonus = html.find("#bonus")[0].value;
+            const bonus = html[0].querySelector("#bonus").value;
             let modifierCustom = parseInt(bonus, 10);
             functionStuff.modifier = modifierCustom;
             //Favour (2d20 keep best) or disfavour(2d20 keep worst)
-            let favours = html.find("input[name='favour']");
+            let favours = html[0].querySelectorAll("input[name='favour']");
             let fvalue = 0;
             for (let f of favours) {
               if (f.checked) fvalue = parseInt(f.value, 10);
@@ -3032,26 +3034,26 @@ export async function modifierDialog(functionStuff) {
           }
 
           //Power/Ability has already been started and is maintained or chained
-          if (html.find("#maintain").length > 0) {
-            let valueM = html.find("#maintain")[0].value;
+          if (html[0].querySelectorAll("#maintain").length > 0) {
+            let valueM = html[0].querySelector("#maintain").value;
             if (valueM === "M") {
               functionStuff.isMaintained = true;
             }
           }
           if (askImpeding) {
-            if (html.find("#impeding")[0].checked) {
+            if (html[0].querySelector("#impeding").checked) {
               functionStuff.modifier += -impedingValue;
               functionStuff.autoParams += game.i18n.localize("ARMOR.IMPEDINGLONG") + ", ";
             }
           }
           if (targetImpeding) {
-            if (html.find("#impTarget")[0].checked) {
+            if (html[0].querySelector("#impTarget").checked) {
               functionStuff.modifier += functionStuff.targetImpeding;
               functionStuff.autoParams += game.i18n.localize("ARMOR.IMPEDING_TARGET") + ", ";
             }
           }
           if (askCorruptedTargetDefaultYes || askCorruptedTargetDefaultNo) {
-            functionStuff.targetFullyCorrupted = html.find("#targetCorrupt")[0].checked;
+            functionStuff.targetFullyCorrupted = html[0].querySelector("#targetCorrupt").checked;
             if (functionStuff.targetFullyCorrupted) {
               functionStuff = Object.assign({}, functionStuff, functionStuff.targetFullyCorruptedFSmod);
               functionStuff.targetData.autoParams += game.i18n.localize("TOOLTIP.HEALTH.CORRUPTION_NA_TEXT");
@@ -3059,16 +3061,16 @@ export async function modifierDialog(functionStuff) {
           }
           //combat roll stuff
           if (functionStuff.hasDamage) {
-            functionStuff.hasAdvantage = html.find("#advantage")[0].checked;
+            functionStuff.hasAdvantage = html[0].querySelector("#advantage").checked;
             if (functionStuff.hasAdvantage) {
               functionStuff.modifier += 2;
               functionStuff.autoParams += game.i18n.localize("DIALOG.ADVANTAGE") + ", ";
             }
-            let hasDamModifier = html.find("#dammodifier").length > 0;
+            let hasDamModifier = html[0].querySelector("#dammodifier").length > 0;
             let damModifier = "";
             let damModifierNPC = 0;
             if (hasDamModifier) {
-              let damString = html.find("#dammodifier")[0].value;
+              let damString = html[0].querySelector("#dammodifier").value;
               // Save - it is a string
               damString = damString.trim();
 
@@ -3103,7 +3105,7 @@ export async function modifierDialog(functionStuff) {
             for (let pack of functionStuff.package) {
               if (pack.type === game.symbaroum.config.PACK_CHECK) {
                 // Find if the box is checked
-                let ticked = html.find(`#${pack.id}`);
+                let ticked = html[0].querySelector(`#${pack.id}`);
                 if (ticked.length > 0 && ticked[0].checked) {
                   functionStuff.autoParams += ", " + pack.label;
                   for (let member of pack.member) {
@@ -3122,15 +3124,15 @@ export async function modifierDialog(functionStuff) {
             }
           }
           if (isWeaponRoll) {
-            functionStuff.ignoreArm = html.find("#ignarm")[0].checked;
+            functionStuff.ignoreArm = html[0].querySelector("#ignarm").checked;
             if (functionStuff.ignoreArm) functionStuff.autoParams += game.i18n.localize("COMBAT.CHAT_DMG_PARAMS_IGN_ARMOR") + ", ";
-            functionStuff.poison = Number(html.find("#poison")[0].value);
+            functionStuff.poison = Number(html[0].querySelector("#poison").value);
           }
           if (medicus) {
             if (hasTarget) {
-              functionStuff.herbalCure = html.find("#herbalcure")[0].checked;
-              functionStuff.medicusExam = html.find("#exam")[0].checked;
-              let customHealingFormula = html.find("#customhealing")[0].value;
+              functionStuff.herbalCure = html[0].querySelector("#herbalcure").checked;
+              functionStuff.medicusExam = html[0].querySelector("#exam").checked;
+              let customHealingFormula = html[0].querySelector("#customhealing").value;
               if (customHealingFormula.length > 0) {
                 functionStuff.healFormulaSucceed = customHealingFormula;
               } else if (functionStuff.herbalCure) {
@@ -3153,7 +3155,7 @@ export async function modifierDialog(functionStuff) {
             } else functionStuff.medicusExam = true;
           }
           if (poisoner) {
-            functionStuff.poison = Number(html.find("#poisoner")[0].value);
+            functionStuff.poison = Number(html[0].querySelector("#poisoner").value);
           }
           functionStuff.notResisted =
             functionStuff.notResisted ??

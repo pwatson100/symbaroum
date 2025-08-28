@@ -77,10 +77,36 @@ export class PlayerSheet extends SymbaroumActorSheet {
 	activateListeners(html) {
 		super.activateListeners(html);
 
-		html.find('.roll-attribute').click(async (ev) => await this._prepareRollAttribute(ev));
-		html.find('.roll-armor').click(async (ev) => await this._onPrepareRollArmor(ev));
-		html.find('.roll-weapon').click(async (ev) => await this._onPrepareRollWeapon(ev));
-		html.find('.modify-attributes').click(async (ev) => await this._modifyAttributes(ev));
+		const rollAttrib = html[0].querySelectorAll('.roll-attribute');
+		for (const s of rollAttrib) {
+			s.addEventListener('click', (ev) => {
+				this._prepareRollAttribute(ev);
+			});
+		}
+		const rollArmor = html[0].querySelectorAll('.roll-armor');
+		for (const s of rollArmor) {
+			s.addEventListener('click', (ev) => {
+				this._onPrepareRollArmor(ev);
+			});
+		}
+		const rollWeapon = html[0].querySelectorAll('.roll-weapon');
+		for (const s of rollWeapon) {
+			s.addEventListener('click', (ev) => {
+				this._onPrepareRollWeapon(ev);
+			});
+		}
+		const modAttrib = html[0].querySelectorAll('.modify-attributes');
+		for (const s of modAttrib) {
+			s.addEventListener('click', (ev) => {
+				this._modifyAttributes(ev);
+			});
+		}
+
+
+		// document.querySelector('.roll-attribute').addEventListener('click', async (ev) => await this._prepareRollAttribute(ev));
+		// document.querySelector('.roll-armor').addEventListener('click', async (ev) => await this._onPrepareRollArmor(ev));
+		// document.querySelector('.roll-weapon').addEventListener('click', async (ev) => await this._onPrepareRollWeapon(ev));
+		// document.querySelector('.modify-attributes').addEventListener('click', async (ev) => await this._modifyAttributes(ev));
 
 		const symbaroumContextMenu = [
 			{
@@ -322,13 +348,13 @@ export class PlayerSheet extends SymbaroumActorSheet {
 					callback: async (html) => {
 						for (var aKey in system.attributes) {
 							var base = '#' + system.id + '-' + [aKey] + '-value';
-							const stringValue = html.find(base)[0].value;
+							const stringValue = html[0].querySelector(base).value;
 
 							let newValue = parseInt(stringValue, 10);
 							if (!isNaN(newValue)) {
 								let link = 'system.attributes.' + [aKey] + '.value';
 								var mod = '#' + [aKey] + '-mod';
-								const stringMod = html.find(mod)[0].value;
+								const stringMod = html[0].querySelector(mod).value;
 								let newModValue = parseInt(stringMod, 10);
 								if (!isNaN(newModValue)) {
 									let linkMod = 'system.attributes.' + [aKey] + '.temporaryMod';
