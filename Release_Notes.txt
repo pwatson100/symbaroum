@@ -1,6 +1,14 @@
 Version 6.1
 
 * Fix for #709 applyEffects does not work
+* Fix for #711 JQuery .find purge - common/dialog.js
+* Fix for #713 JQuery .find purge - common/item.js
+* Fix for #714 JQuery .find purge - common/macro.js
+* Fix for #715 JQuery .find purge - sheet/actor.js
+* Fix for #716 JQuery .find purge - sheet/items.js
+* Fix for #717 JQuery .find purge - sheet/player.js
+* Fix for #719 Davokar misspelled in the pause text.
+
 
 Version 6.0
 
@@ -34,14 +42,6 @@ Note that some of these fixes are for v13 only
 * Fix for #672 user#isGM > User#isActiveGM 
 * Fix for #671 Cannot Adjust the Character Sheet's Height 
 * Fix for #670 Move saveCombatRoll and saveAttributeRoll to client settings 
-
-
-
-
-
-
-
-
 
 
 
