@@ -186,10 +186,10 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
           let damModifierAttSup ="";
           let damModifierAttSupNPC=0;
           if(hasDamModifier) {
-            let damString = html[0].querySelectorAll("#dammodifier").value;            
+
+            let damString = html[0].querySelector("#dammodifier")?.value;            
             // Save - it is a string
-            // TODO:    Double check this is working correctly without the Trim
-            // damString = damString.trim();
+            damString = damString.trim();
             if(damString.length) {
               attri_defaults.additionalModifier = damString; // Regardless if valid or not, set it as attri_defaults
               let plus = '+';

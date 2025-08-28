@@ -657,7 +657,6 @@ export class SymbaroumMacros {
 						buttons : 
 						{
 								Ok :{ label : `Ok`, callback : async (html) => {  
-// TODO: This is WIP           
 																								let  selTmp= Array.from(html[0].querySelectorAll("input[name='selection']"));
 																								let tmp = selTmp.filter(v => { if(v.checked) return true; }).map(e => { return e.value});
 																								let costTmp  = Array.from(html[0].querySelectorAll("input[name='costType']"));
@@ -739,8 +738,6 @@ export class SymbaroumMacros {
 						buttons : 
 						{
 								Ok :{ label : `Ok`, callback : async (html) => {   
-// TODO: This is WIP           
-          
 																								let selTemp = Array.from(html[0].querySelectorAll("input[name='selection']"));
 																								let tmp = selTemp.filter(v => { if(v.checked) return true; }).map(e => { return e.value});                                            
 																								if(tmp.length == 0) {
