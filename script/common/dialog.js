@@ -261,7 +261,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
               } else if(pack.type === game.symbaroum.config.PACK_CHECK) {
                 // Find if the box is checked
                 let ticked = html[0].querySelector(`#${pack.id}`);              
-                if( ticked.length > 0 && ticked[0].checked ){
+                if( ticked?.checked ){
                   ecData.autoParams += ", "+pack.label;
                   for(let member of pack.member) {
                     if(member.type == game.symbaroum.config.DAM_MOD) {

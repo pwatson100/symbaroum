@@ -1,3 +1,9 @@
+Version 6.1.1
+
+ * Fix for #721
+ * Fix for #720
+ 
+
 Version 6.1
 
 * Fix for #709 applyEffects does not work
