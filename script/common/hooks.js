@@ -552,27 +552,27 @@ Hooks.on('renderChatMessageHTML', async (chatItem, html, data) => {
 				return;
 			});
 		}
-		const functionStuff = await chatItem.getFlag(game.system.id, 'resistRoll');
-		if (functionStuff) {
-			const listenArea = html.querySelectorAll('#applyEffect');
-			for (const s of listenArea) {
-				s.addEventListener('click', async () => {
-					let tok = canvas.tokens.objects.children.find((token) => token.id === functionStuff.tokenId);
-					let targetToken = canvas.tokens.objects.children.find((token) => token.id === functionStuff.targetData.tokenId);
-					if (tok === undefined || targetToken === undefined) {
-						ui.notifications.error("Can't find token.");
-						return;
-					}
-					functionStuff.token = tok;
-					functionStuff.actor = tok.actor;
-					functionStuff.targetData.token = targetToken;
-					functionStuff.targetData.actor = targetToken.actor;
-					// game.symbaroum.log("from hook: ", functionStuff);
-					buildRolls(functionStuff);
-					await chatItem.unsetFlag(game.system.id, 'resistRoll');
+	}
+	const functionStuff = await chatItem.getFlag(game.system.id, 'resistRoll');
+	if (functionStuff) {
+		const listenArea = html.querySelectorAll('#applyEffect');
+		for (const s of listenArea) {
+			s.addEventListener('click', async () => {
+				let tok = canvas.tokens.objects.children.find((token) => token.id === functionStuff.tokenId);
+				let targetToken = canvas.tokens.objects.children.find((token) => token.id === functionStuff.targetData.tokenId);
+				if (tok === undefined || targetToken === undefined) {
+					ui.notifications.error("Can't find token.");
 					return;
-				});
-			}
+				}
+				functionStuff.token = tok;
+				functionStuff.actor = tok.actor;
+				functionStuff.targetData.token = targetToken;
+				functionStuff.targetData.actor = targetToken.actor;
+				// game.symbaroum.log("from hook: ", functionStuff);
+				buildRolls(functionStuff);
+				await chatItem.unsetFlag(game.system.id, 'resistRoll');
+				return;
+			});
 		}
 	}
 });
