@@ -159,17 +159,15 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
           }
           attri_defaults.targetAttributeName = dummyMod;
           const targetAttributeName = dummyMod;
+          // TODO  - NOT UNIQUE ID - BAD IDEA
           let modifier = Number(html[0].querySelector("#modifier").value);   
           if(isNaN(modifier)) {
             modifier = 0;
           }
           attri_defaults.modifier = modifier;
           ecData.modifier = modifier;
-          let hasAdvantage = html[0].querySelectorAll("#advantage").length > 0;
-          if( hasAdvantage ) {
-            // Note that this turns into disadvantage for Defense rolls
-            hasAdvantage = html[0].querySelectorAll("#advantage").checked;
-          }
+          // TODO  - NOT UNIQUE ID - BAD IDEA
+          let hasAdvantage = html[0].querySelector("#advantage")?.checked ?? false;
           attri_defaults.advantage = hasAdvantage ? "checked":"";
           const advantage = hasAdvantage; 
           ecData.hasAdvantage = advantage;
@@ -180,7 +178,8 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
                   ecData.castingAttributeName = "discreet";
               }
           }
-          let hasDamModifier = html[0].querySelectorAll("#dammodifier").length > 0;
+          // TODO Not unique ID
+          let hasDamModifier = html[0].querySelector("#dammodifier")?.value.length > 0;
           let damModifier = "";
           let damModifierNPC = 0;
           let damModifierAttSup ="";
@@ -202,11 +201,10 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
               }
               damModifier = `${plus}${damString}${damSource}`;
 
-              try {
                 // Validate string as valid roll object              
-                let r = await (new Roll(damModifier,{})).evaluate();
-              } catch (err) {
-                  ui.notifications.error(`The ${game.i18n.localize("DIALOG.DAMAGE_MODIFIER")} can't be used for rolling damage ${err}`);
+              let r = Roll.validate(damModifier);
+              if(!r) {
+                  ui.notifications.error(`The ${html[0].querySelector("#dammodifier")?.value} ${game.i18n.localize("DIALOG.DAMAGE_MODIFIER")} can't be used for rolling damage`);
                   reject("invalid");
                   return;
               }
