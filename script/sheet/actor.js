@@ -31,7 +31,7 @@ export class SymbaroumActorSheet extends foundry.appv1.sheets.ActorSheet {
 		const activateAbility = html[0].querySelectorAll('.activate-ability');
 		for (const s of activateAbility) {
 			s.addEventListener('click', (ev) => {
-				this.activateAbility(ev);
+				this._onPrepareActivateAbility(ev);
 			});
 		}
 
