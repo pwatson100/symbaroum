@@ -30,7 +30,7 @@ export function enrichTextEditors() {
                     game.symbaroum.log("Illegal link attempted");
                     return;
                 }
-                const response =  await fetch(match[1]);
+                const response =  await fetch(foundry.utils.getRoute(match[1]));
                 const myData = await response.text();
                 const doc = document.createElement("span");
                 doc.innerHTML = myData;
