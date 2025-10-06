@@ -38,7 +38,7 @@
       },
       "flags": {
         "core": {
-          "sheetClass": "core.JournalTextTinyMCESheet"
+          "sheetClass": ""
         }
       },
       "_stats": {
