@@ -24,10 +24,14 @@ export function enrichTextEditors() {
         {
             pattern: /@RAW\[(.+?)\]/gm,
             enricher: async (match, options) => {
-                const myData = await $.ajax({
-                    url: match[1],
-                    type: 'GET',
-                });
+                const preventRegex = /(https?\:\/\/|javascript\:).*/gi;
+                // Prevent outside access
+                if(match[1].match(preventRegex)) { 
+                    game.symbaroum.log("Illegal link attempted");
+                    return;
+                }
+                const response =  await fetch(foundry.utils.getRoute(match[1]));
+                const myData = await response.text();
                 const doc = document.createElement("span");
                 doc.innerHTML = myData;
                 return doc;

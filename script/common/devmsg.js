@@ -1,36 +1,31 @@
 
-export function sendDevMessage() 
+export async function sendDevMessage() 
 {
     if( game.user.isGM ) {
-        let jqxhr = $.getJSON( "https://raw.githubusercontent.com/pwatson100/symbaroum/master/msgdata/data.json", function(data) 
-        {                    
-            let latestVersion = game.settings.get('symbaroum', 'symbaroumDevMessageVersionNumber');
-            if(isNaN(latestVersion)) {
-                latestVersion = 0;
-            }
-            if(data.messages === undefined || data.messages === null || data.messages.length === undefined) {
-                return;
-            }
+        let data = await foundry.utils.fetchJsonWithTimeout( "https://raw.githubusercontent.com/pwatson100/symbaroum/master/msgdata/data.json");
+        let latestVersion = game.settings.get('symbaroum', 'symbaroumDevMessageVersionNumber');
+        if(isNaN(latestVersion)) {
+            latestVersion = 0;
+        }
+        if(data.messages === undefined || data.messages === null || data.messages.length === undefined) {
+            return;
+        }
 
-            for(let i = 0; i < data.messages.length; i++)
+        for(let i = 0; i < data.messages.length; i++)
+        {
+            let msgenvelope = data.messages[i];
+            if( msgenvelope.version > latestVersion )
             {
-                let msgenvelope = data.messages[i];
-                if( msgenvelope.version > latestVersion )
+                ChatMessage.create(
                 {
-                    ChatMessage.create(
-                    {
-                        speaker: ChatMessage.getSpeaker({alias: "Symbaroum News"}),
-                        whisper: [game.user], // ChatMessage.getWhisperRecipients('GM'),
-                        content: msgenvelope.message        
-                    });        
-                }
-                latestVersion = Math.max(latestVersion, msgenvelope.version);
+                    speaker: ChatMessage.getSpeaker({alias: "Symbaroum News"}),
+                    whisper: [game.user], // ChatMessage.getWhisperRecipients('GM'),
+                    content: msgenvelope.message        
+                });        
             }
-            game.symbaroum.info("Message system - latestVersion message after "+latestVersion);
-            game.settings.set('symbaroum', 'symbaroumDevMessageVersionNumber', latestVersion);
-        })
-        .fail(function(data) {
-            game.symbaroum.error("Could not retreive Symbaroum news Message:"+JSON.stringify(data));
-        });
+            latestVersion = Math.max(latestVersion, msgenvelope.version);
+        }
+        game.symbaroum.info("Message system - latestVersion message after "+latestVersion);
+        game.settings.set('symbaroum', 'symbaroumDevMessageVersionNumber', latestVersion);
     }    
 }

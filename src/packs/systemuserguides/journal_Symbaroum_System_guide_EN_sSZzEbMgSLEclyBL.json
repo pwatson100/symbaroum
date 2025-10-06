@@ -21,7 +21,7 @@
       },
       "text": {
         "format": 1,
-        "content": "<p>@RAW[/systems/symbaroum/template/user-guide-en.html]</p>",
+        "content": "<p>@RAW[systems/symbaroum/template/user-guide-en.html]</p>",
         "markdown": ""
       },
       "_id": "umdXR1sEdBrsqwkJ",
@@ -38,7 +38,7 @@
       },
       "flags": {
         "core": {
-          "sheetClass": "core.JournalTextTinyMCESheet"
+          "sheetClass": ""
         }
       },
       "_stats": {
