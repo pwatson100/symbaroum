@@ -9,15 +9,17 @@ export async function prepareRollDeathTest(actor, showDialogue) {
     await rollDeathTest(actor, "0", 0);
     return;
   }
+  const did = `${actor.id}${foundry.utils.randomID(20)}`; // dialogue ID - ensured unique IDs in form
   let attri_defaults = getRollDefaults("deathtest",false, false);
-  const html = await foundry.applications.handlebars.renderTemplate('systems/symbaroum/template/chat/dialog-deathtest.hbs', {  
+  const dialoghtml = await foundry.applications.handlebars.renderTemplate('systems/symbaroum/template/chat/dialog-deathtest.hbs', {  
+    "did":did,
     "choices": { "0": "DIALOG.FAVOUR_NORMAL", "-1":"DIALOG.FAVOUR_DISFAVOUR", "1":"DIALOG.FAVOUR_FAVOUR"},
     "roll_defaults":attri_defaults,
     "groupName" : "favour",
   });
   let dialog = new Dialog({
     title: "Death Test",
-    content: html,
+    content: dialoghtml,
     buttons: {
       roll: {
         icon: '<i class="fas fa-check"></i>',
@@ -31,7 +33,7 @@ export async function prepareRollDeathTest(actor, showDialogue) {
 					attri_defaults.selectedFavour = '' + fvalue;
 					const favour = fvalue;
 
-					let modifier = Number(html[0].querySelector('#modifier').value);
+					let modifier = Number(html[0].querySelector('#modifier-'+did).value);
           if(isNaN(modifier)) {
             modifier = 0;
           }
@@ -120,7 +122,9 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
     id: "custom",
     label: game.i18n.localize(`WEAPON.NONE`),
   };
-  const html = await foundry.applications.handlebars.renderTemplate('systems/symbaroum/template/chat/dialog.hbs', {
+  const did = `${actor.id}${foundry.utils.randomID(20)}`; // dialogue ID - ensured unique IDs in form
+  const dialoghtml = await foundry.applications.handlebars.renderTemplate('systems/symbaroum/template/chat/dialog.hbs', {
+    "did":did,
     "askTargetAttribute": askTargetAttribute,
     "askPoison": askPoison,
     "isWeaponRoll" : weapon !== null,
@@ -139,18 +143,19 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
     "targetAttribute_selection":targetAttribute_selection
   });
 
-  let dialog = new CombatDialog({
+  const dialog = new CombatDialog({
     title: game.symbaroum.api.getAttributeLabel(actor, attributeName),
-    content: html,
+    content: dialoghtml,
     buttons: {
       roll: {
         icon: '<i class="fas fa-check"></i>',
         label: game.i18n.localize('BUTTON.ROLL'),
-        callback: async (html) => {
+        callback: async (html) => {          
+
           let dummyMod = "custom";
           if(askTargetAttribute){	
-            if( html[0].querySelector("#targetAttribute").length > 0) {
-              dummyMod = html[0].querySelector("#targetAttribute").value;											
+            if( html[0].querySelector("#targetAttribute-"+did).length > 0) {
+              dummyMod = html[0].querySelector("#targetAttribute-"+did).value;											
             }
             if(game.settings.get('symbaroum', 'combatAutomation') && weapon !== null){
               ecData.targetData.resistAttributeName = dummyMod;
@@ -160,14 +165,14 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
           attri_defaults.targetAttributeName = dummyMod;
           const targetAttributeName = dummyMod;
           // TODO  - NOT UNIQUE ID - BAD IDEA
-          let modifier = Number(html[0].querySelector("#modifier").value);   
+          let modifier = Number(html[0].querySelector("#modifier-"+did).value);   
           if(isNaN(modifier)) {
             modifier = 0;
           }
           attri_defaults.modifier = modifier;
           ecData.modifier = modifier;
           // TODO  - NOT UNIQUE ID - BAD IDEA
-          let hasAdvantage = html[0].querySelector("#advantage")?.checked ?? false;
+          let hasAdvantage = html[0].querySelector("#advantage-"+did)?.checked ?? false;
           attri_defaults.advantage = hasAdvantage ? "checked":"";
           const advantage = hasAdvantage; 
           ecData.hasAdvantage = advantage;
@@ -179,14 +184,14 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
               }
           }
           // TODO Not unique ID
-          let hasDamModifier = html[0].querySelector("#dammodifier")?.value.length > 0;
+          let hasDamModifier = html[0].querySelector("#dammodifier-"+did)?.value.length > 0;
           let damModifier = "";
           let damModifierNPC = 0;
           let damModifierAttSup ="";
           let damModifierAttSupNPC=0;
           if(hasDamModifier) {
 
-            let damString = html[0].querySelector("#dammodifier")?.value;            
+            let damString = html[0].querySelector("#dammodifier-"+did)?.value;            
             // Save - it is a string
             damString = damString.trim();
             if(damString.length) {
@@ -204,7 +209,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
                 // Validate string as valid roll object              
               let r = Roll.validate(damModifier);
               if(!r) {
-                  ui.notifications.error(`The ${html[0].querySelector("#dammodifier")?.value} ${game.i18n.localize("DIALOG.DAMAGE_MODIFIER")} can't be used for rolling damage`);
+                  ui.notifications.error(`The ${html[0].querySelector("#dammodifier-"+did)?.value} ${game.i18n.localize("DIALOG.DAMAGE_MODIFIER")} can't be used for rolling damage`);
                   reject("invalid");
                   return;
               }
@@ -258,7 +263,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
                 }
               } else if(pack.type === game.symbaroum.config.PACK_CHECK) {
                 // Find if the box is checked
-                let ticked = html[0].querySelector(`#${pack.id}`);              
+                let ticked = html[0].querySelector(`#pgkid-${did}-${pack.id}`);              
                 if( ticked?.checked ){
                   ecData.autoParams += ", "+pack.label;
                   for(let member of pack.member) {
@@ -324,15 +329,15 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
           ecData.favour += parseInt(fvalue);
 
           if(askImpeding){
-            if(html[0].querySelector("#impeding").checked){
+            if(html[0].querySelector("#impeding-"+did).checked){
               modifier = modifier - actor.system.combat.impeding;
               ecData.modifier += -ecData.impeding;
               ecData.autoParams += game.i18n.localize("ARMOR.IMPEDINGLONG") + ", ";
             }            
-            attri_defaults.impeding = html[0].querySelector("#impeding").checked ? "checked":"";
+            attri_defaults.impeding = html[0].querySelector("#impeding-"+did).checked ? "checked":"";
           }
           if(askIgnoreArmor){
-            ignoreArm = html[0].querySelector("#ignarm").checked;
+            ignoreArm = html[0].querySelector("#ignarm-"+did).checked;
             ecData.ignoreArm = ignoreArm;
             if(ignoreArm) ecData.autoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_IGN_ARMOR') + ", ";
           }
@@ -345,10 +350,10 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
             }
           }
           if(askPoison){
-            ecData.poison = Number(html[0].querySelector("#poison").value);
+            ecData.poison = Number(html[0].querySelector("#poison-"+did).value);
           }
           if(askCorruptedTarget){
-            ecData.targetFullyCorrupted = html[0].querySelector("#targetCorrupt").checked;
+            ecData.targetFullyCorrupted = html[0].querySelector("#targetCorrupt-"+did).checked;
           }
           if(weapon && game.settings.get('symbaroum', 'combatAutomation')){
             attackFromPC = actor.type !== "monster" || ecData.targetData.actor.type === "monster";

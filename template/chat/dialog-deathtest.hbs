@@ -1,7 +1,7 @@
 <div class="symbaroum dialog">
     <div class="bonus">
-        <label for="modifier">{{localize "DIALOG.MODIFIER"}}</label>
-        <input id="modifier" value="{{roll_defaults.modifier}}" type="number" data-dtype="Number"/>
+        <label for="modifier-{{did}}">{{localize "DIALOG.MODIFIER"}}</label>
+        <input id="modifier-{{did}}" value="{{roll_defaults.modifier}}" type="number" data-dtype="Number"/>
     </div>    
     <div class="favour">
         <label class="lblfavour">{{radioBoxes groupName choices checked=roll_defaults.selectedFavour localize=true}}</label>
