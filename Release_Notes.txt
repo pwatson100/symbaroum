@@ -1,3 +1,7 @@
+Version 6.1.6
+
+* Fix for #743
+
 Version 6.1.5
 
 * Fix for #740
