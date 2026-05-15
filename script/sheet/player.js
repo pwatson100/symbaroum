@@ -347,13 +347,13 @@ export class PlayerSheet extends SymbaroumActorSheet {
 					label: game.i18n.localize('BUTTON.CONFIRM'),
 					callback: async (html) => {
 						for (var aKey in system.attributes) {
-							var base = '#' + system.id + '-' + [aKey] + '-value';
+							var base = '#attr-' + system.id + '-' + [aKey] + '-value';
 							const stringValue = html[0].querySelector(base).value;
 
 							let newValue = parseInt(stringValue, 10);
 							if (!isNaN(newValue)) {
 								let link = 'system.attributes.' + [aKey] + '.value';
-								var mod = '#' + [aKey] + '-mod';
+								var mod = '#attr-' + [aKey] + '-mod';
 								const stringMod = html[0].querySelector(mod).value;
 								let newModValue = parseInt(stringMod, 10);
 								if (!isNaN(newModValue)) {
