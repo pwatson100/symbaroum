@@ -24,17 +24,23 @@ export class SymbaroumItem extends Item {
    *                                   closed.
    * @memberof ClientDocumentMixin
    */
-  static async createDialog(data = {},createOptions={}, {folders, types, template, ...dialogOptions}={}) {
+
+  static async createDialog(data = {}, createOptions = {}, { folders, types, template, ...dialogOptions } = {}) {
     // Collect data
     console.log("createDialog", types);
     types = game.symbaroum.config.itemValid;
-    return super.createDialog(data, createOptions , { folders, types, template, dialogOptions });
+    return super.createDialog(data, createOptions, { folders, types, template, dialogOptions });
   }
 
   static async create(data, options) {
     if (!data.img) {
-      if (data.type in game.symbaroum.config.itemImages) data.img = game.i18n.format(game.symbaroum.config.imageRef, { filename: game.symbaroum.config.itemImages[data.type] });
-      else data.img = game.i18n.format(game.symbaroum.config.imageRef, { filename: "unknown-item.png" });
+      if (data.type in game.symbaroum.config.itemImages) {
+        data.img = "systems/symbaroum/asset/image/" + game.symbaroum.config.itemImages[data.type];
+        // data.img = game.i18n.format(game.symbaroum.config.imageRef, { filename: game.symbaroum.config.itemImages[data.type] });
+      } else {
+        // data.img = game.i18n.format(game.symbaroum.config.imageRef, { filename: "unknown-item.png" });
+        data.img = "systems/symbaroum/asset/image/" + "unknown-item.png";
+      }
     }
     return super.create(data, options);
   }
@@ -43,8 +49,7 @@ export class SymbaroumItem extends Item {
     // We do nothing for now
   }
 
-  prepareDerivedData()
-	{
+  prepareDerivedData() {
     this._initializeData(this);
     this._computeCombatData(this.system);
   }
@@ -266,7 +271,6 @@ export class SymbaroumItem extends Item {
 
   /* affect reference on this item */
   async affectReference() {
-
     // TOTO: Unable to test as the calling function _prepareRegisterAbility(event) in item.js is not called???
     let list;
     if (this.type === "ability") {
@@ -940,7 +944,10 @@ export class SymbaroumItem extends Item {
     if (lvl.level == 0) return;
     if (lvl.level > 1) {
       for (let i = 0; i < abilities.length; i++) {
-        if (combatMods.abilities[abilities[i].id].type === "mysticalPower" && combatMods.abilities[abilities[i].id].traditions.includes(game.symbaroum.config.TRAD_BLESSINGS)) {
+        if (
+          combatMods.abilities[abilities[i].id].type === "mysticalPower" &&
+          combatMods.abilities[abilities[i].id].traditions.includes(game.symbaroum.config.TRAD_BLESSINGS)
+        ) {
           combatMods.abilities[abilities[i].id].corruption = game.symbaroum.config.TEMPCORRUPTION_ONE;
           if (lvl.level > 2) {
             combatMods.abilities[abilities[i].id].healingBonus += "+1d4[" + this.name + "]";
@@ -1157,13 +1164,13 @@ export class SymbaroumItem extends Item {
       if (lvl.level > 1) {
         let baseDmg = this._getBaseFormat();
         baseDmg.type = game.symbaroum.config.DAM_MOD;
-        (baseDmg.value = "+1d4"),
+        ((baseDmg.value = "+1d4"),
           (baseDmg.alternatives = [
             {
               damageMod: "+1d4",
               damageModNPC: 2,
             },
-          ]);
+          ]));
         pack.member.push(baseDmg);
       }
       this.system.isIntegrated = true;
@@ -1457,13 +1464,13 @@ export class SymbaroumItem extends Item {
       }
       let base = this._getBaseFormat();
       base.type = game.symbaroum.config.DAM_MOD;
-      (base.value = lvl.level > 2 ? "+1d8" : "+1d4"),
+      ((base.value = lvl.level > 2 ? "+1d8" : "+1d4"),
         (base.alternatives = [
           {
             damageMod: lvl.level > 2 ? "+1d8" : "+1d4",
             damageModNPC: lvl.level > 2 ? 4 : 2,
           },
-        ]);
+        ]));
       this.system.isIntegrated = true;
       combatMods.weapons[weapons[i].id].package[0].member.push(base);
     }
@@ -1603,7 +1610,10 @@ export class SymbaroumItem extends Item {
     if (lvl.level == 0) return;
     if (lvl.level > 1) {
       for (let i = 0; i < abilities.length; i++) {
-        if (combatMods.abilities[abilities[i].id].type === "mysticalPower" && combatMods.abilities[abilities[i].id].corruption == game.symbaroum.config.TEMPCORRUPTION_NORMAL) {
+        if (
+          combatMods.abilities[abilities[i].id].type === "mysticalPower" &&
+          combatMods.abilities[abilities[i].id].corruption == game.symbaroum.config.TEMPCORRUPTION_NORMAL
+        ) {
           combatMods.abilities[abilities[i].id].corruption = game.symbaroum.config.TEMPCORRUPTION_TESTFORONE;
         }
       }
@@ -1648,7 +1658,10 @@ export class SymbaroumItem extends Item {
     let haveStaffEquipped = this.actor.items.filter((element) => element.system.isWeapon && element.system.qualities.long && element.system.isActive);
     if (haveStaffEquipped.length) {
       let mod = 1;
-      if (this.actor.items.filter((element) => element.system.isWeapon && element.system.isActive && element.system.qualities.staffFightingCompatibility).length) mod = 2;
+      if (
+        this.actor.items.filter((element) => element.system.isWeapon && element.system.isActive && element.system.qualities.staffFightingCompatibility).length
+      )
+        mod = 2;
       for (let i = 0; i < armors.length; i++) {
         if (armors[i].system.isStackableArmor) {
           continue;
@@ -1684,8 +1697,12 @@ export class SymbaroumItem extends Item {
     }
     if (lvl.level > 1 && activeStaff) {
       for (let j = 0; j < abilities.length; j++) {
-        if (combatMods.abilities[abilities[j].id].type === "mysticalPower" && combatMods.abilities[abilities[j].id].traditions.includes(game.symbaroum.config.TRAD_STAFFM)) {
-          combatMods.abilities[abilities[j].id].corruption = lvl.level == 2 ? game.symbaroum.config.TEMPCORRUPTION_FAVOUR : game.symbaroum.config.TEMPCORRUPTION_NONE;
+        if (
+          combatMods.abilities[abilities[j].id].type === "mysticalPower" &&
+          combatMods.abilities[abilities[j].id].traditions.includes(game.symbaroum.config.TRAD_STAFFM)
+        ) {
+          combatMods.abilities[abilities[j].id].corruption =
+            lvl.level == 2 ? game.symbaroum.config.TEMPCORRUPTION_FAVOUR : game.symbaroum.config.TEMPCORRUPTION_NONE;
         }
       }
     }
@@ -1872,7 +1889,10 @@ export class SymbaroumItem extends Item {
     if (lvl.level == 0) return;
     if (lvl.level > 1) {
       for (let i = 0; i < abilities.length; i++) {
-        if (combatMods.abilities[abilities[i].id].type === "mysticalPower" && combatMods.abilities[abilities[i].id].traditions.includes(game.symbaroum.config.TRAD_THEURGY)) {
+        if (
+          combatMods.abilities[abilities[i].id].type === "mysticalPower" &&
+          combatMods.abilities[abilities[i].id].traditions.includes(game.symbaroum.config.TRAD_THEURGY)
+        ) {
           combatMods.abilities[abilities[i].id].corruption = game.symbaroum.config.TEMPCORRUPTION_ONE;
           if (lvl.level > 2) {
             combatMods.abilities[abilities[i].id].healingBonus += "+1d4[" + this.name + "]";
@@ -2016,7 +2036,10 @@ export class SymbaroumItem extends Item {
     if (lvl.level == 0) return;
     if (lvl.level > 1) {
       for (let i = 0; i < abilities.length; i++) {
-        if (combatMods.abilities[abilities[i].id].type === "mysticalPower" && combatMods.abilities[abilities[i].id].traditions.includes(game.symbaroum.config.TRAD_WITCHCRAFT)) {
+        if (
+          combatMods.abilities[abilities[i].id].type === "mysticalPower" &&
+          combatMods.abilities[abilities[i].id].traditions.includes(game.symbaroum.config.TRAD_WITCHCRAFT)
+        ) {
           combatMods.abilities[abilities[i].id].corruption = game.symbaroum.config.TEMPCORRUPTION_ONE;
         }
       }
@@ -2072,7 +2095,10 @@ export class SymbaroumItem extends Item {
     if (lvl.level == 0) return;
     if (lvl.level > 1) {
       for (let i = 0; i < abilities.length; i++) {
-        if (combatMods.abilities[abilities[i].id].type === "mysticalPower" && combatMods.abilities[abilities[i].id].traditions.includes(game.symbaroum.config.TRAD_WIZARDRY)) {
+        if (
+          combatMods.abilities[abilities[i].id].type === "mysticalPower" &&
+          combatMods.abilities[abilities[i].id].traditions.includes(game.symbaroum.config.TRAD_WIZARDRY)
+        ) {
           combatMods.abilities[abilities[i].id].corruption = game.symbaroum.config.TEMPCORRUPTION_ONE;
           if (lvl.level > 2) {
             let pack = this._getPackageFormat();
@@ -2359,7 +2385,10 @@ export class SymbaroumItem extends Item {
     base.healFormulaSucceed = "1d6";
     if (base.powerLvl.level > 1) {
       base.healFormulaSucceed = "1d8";
-      base.removeTargetEffect = [foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "poison")), foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "bleeding"))];
+      base.removeTargetEffect = [
+        foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "poison")),
+        foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "bleeding")),
+      ];
     }
     base.healedToken = game.symbaroum.config.TARGET_TOKEN;
     base.targetText = game.i18n.localize("ABILITY_MEDICUS.CHAT_TARGET");
@@ -2602,7 +2631,7 @@ export class SymbaroumItem extends Item {
   }
 
   abilitySetupMedicus(base) {
-    (base.castingAttributeName = "cunning"), (base.getTarget = true);
+    ((base.castingAttributeName = "cunning"), (base.getTarget = true));
     base.healFormulaSucceed = "1d4";
     base.medicusExam = true;
     base.targetPresentFSmod = {
@@ -2675,7 +2704,7 @@ export class SymbaroumItem extends Item {
     base.newStuffIfMaintain = {
       castingAttributeName: "cunning",
       targetResistAttribute: "cunning",
-      askCastingAttribute: false
+      askCastingAttribute: false,
     };
     return base;
   }
@@ -2969,7 +2998,11 @@ export async function modifierDialog(functionStuff) {
     contextualDamage: functionStuff.hasDamage,
     d8: d8,
     d4: d4,
-    choices: { 0: game.i18n.localize("DIALOG.FAVOUR_NORMAL"), "-1": game.i18n.localize("DIALOG.FAVOUR_DISFAVOUR"), 1: game.i18n.localize("DIALOG.FAVOUR_FAVOUR") },
+    choices: {
+      0: game.i18n.localize("DIALOG.FAVOUR_NORMAL"),
+      "-1": game.i18n.localize("DIALOG.FAVOUR_DISFAVOUR"),
+      1: game.i18n.localize("DIALOG.FAVOUR_FAVOUR"),
+    },
     groupName: "favour",
     defaultFavour: "0",
     defaultModifier: functionStuff.modifier,
@@ -3167,7 +3200,7 @@ export async function modifierDialog(functionStuff) {
             let targetResMod = checkSpecialResistanceMod(
               functionStuff.targetData.actor.system.combat.damageReductions,
               functionStuff.targetData.autoParams,
-              functionStuff.ability.reference
+              functionStuff.ability.reference,
             );
             functionStuff.favour += targetResMod.favour;
             functionStuff.modifier += -1 * targetResMod.modifier;
@@ -3227,8 +3260,8 @@ export async function buildRolls(functionStuff) {
           functionStuff.targetData.resistAttributeName,
           functionStuff.favour,
           functionStuff.modifier,
-          functionStuff.resistRoll
-        )
+          functionStuff.resistRoll,
+        ),
       );
     }
   } else if (functionStuff.targetData.hasTarget && !functionStuff.notResisted) {
@@ -3240,11 +3273,21 @@ export async function buildRolls(functionStuff) {
         functionStuff.targetData.resistAttributeName,
         functionStuff.favour,
         functionStuff.modifier,
-        functionStuff.resistRoll
-      )
+        functionStuff.resistRoll,
+      ),
     );
   } else {
-    rollData.push(await baseRoll(functionStuff.actor, functionStuff.castingAttributeName, null, null, functionStuff.favour, functionStuff.modifier, functionStuff.resistRoll));
+    rollData.push(
+      await baseRoll(
+        functionStuff.actor,
+        functionStuff.castingAttributeName,
+        null,
+        null,
+        functionStuff.favour,
+        functionStuff.modifier,
+        functionStuff.resistRoll,
+      ),
+    );
   }
   if (isWeaponRoll) {
     return await attackResult(rollData, functionStuff);
@@ -3489,10 +3532,22 @@ async function attackResult(rollData, functionStuff) {
   }
 
   if (functionStuff.poison > 0 && !targetDies && damageTot > 0 && functionStuff.targetData.actor.system.combat.damageProt.poison) {
-    let targetResMod = checkSpecialResistanceMod(functionStuff.targetData.actor.system.combat.damageReductions, functionStuff.targetData.autoParams, "poisoner");
+    let targetResMod = checkSpecialResistanceMod(
+      functionStuff.targetData.actor.system.combat.damageReductions,
+      functionStuff.targetData.autoParams,
+      "poisoner",
+    );
     let poisonFavour = targetResMod.favour;
     functionStuff.targetData.autoParams += targetResMod.autoParams;
-    let poisonRoll = await baseRoll(functionStuff.actor, "cunning", functionStuff.targetData.actor, "strong", poisonFavour, -1 * targetResMod.modifier, functionStuff.resistRoll);
+    let poisonRoll = await baseRoll(
+      functionStuff.actor,
+      "cunning",
+      functionStuff.targetData.actor,
+      "strong",
+      poisonFavour,
+      -1 * targetResMod.modifier,
+      functionStuff.resistRoll,
+    );
     let poisonFunctionStuff = Object.assign(functionStuff, { modifier: -1 * targetResMod.modifier, favour: poisonFavour });
     let poisonRes = await poisonCalc(poisonFunctionStuff, poisonRoll);
     rolls.push(poisonRes.roll);
@@ -3584,7 +3639,7 @@ async function healing(healFormula, targetToken, attackFromPC) {
   let damageTooltip = "";
   if (attackFromPC) {
     healRoll = await new Roll(healFormula).evaluate();
-    (totalResult = healRoll.total), (damageTooltip = new Handlebars.SafeString(await healRoll.getTooltip()));
+    ((totalResult = healRoll.total), (damageTooltip = new Handlebars.SafeString(await healRoll.getTooltip())));
   } else {
     healRoll = await new Roll(healFormula).evaluate({ maximize: true });
     totalResult = Math.ceil(healRoll.total / 2);
@@ -3674,7 +3729,8 @@ async function standardPowerResult(rollData, functionStuff) {
     functionStuff = Object.assign({}, functionStuff, functionStuff.rollFailedFSmod);
   }
   let flagData =
-    functionStuff.actor.getFlag(game.system.id, functionStuff.flagTest) ?? functionStuff.actor.hasCondition(functionStuff.flagTest)?.getFlag(game.system.id, "flagData");
+    functionStuff.actor.getFlag(game.system.id, functionStuff.flagTest) ??
+    functionStuff.actor.hasCondition(functionStuff.flagTest)?.getFlag(game.system.id, "flagData");
 
   game.symbaroum.log("Flag data", flagData);
 
@@ -3685,7 +3741,7 @@ async function standardPowerResult(rollData, functionStuff) {
       await functionStuff.actor.unsetFlag(game.system.id, functionStuff.flagTest);
       await functionStuff.actor.removeCondition(functionStuff.flagTest);
       functionStuff = Object.assign({}, functionStuff, functionStuff.flagPresentFSmod);
-    } else {      
+    } else {
       await functionStuff.actor.addCondition(functionStuff.flagTest, functionStuff.flagNotPresentFSmod.flagData);
       functionStuff = Object.assign({}, functionStuff, functionStuff.flagNotPresentFSmod);
     }
@@ -3766,7 +3822,7 @@ async function standardPowerResult(rollData, functionStuff) {
             tokenId: target.tokenId,
             addObject: "blessedshield",
             protection: protectionFormula,
-          }
+          },
         );
         finalText += ", " + game.i18n.format(game.i18n.localize("POWER_BLESSEDSHIELD.PROTECTED"), { actorname: target.name });
       }
@@ -3957,7 +4013,7 @@ async function standardPowerResult(rollData, functionStuff) {
               {
                 tokenId: functionStuff.targetData.tokenId,
                 removeEffect: pEffect,
-              }
+              },
             );
           }
           const bEffect = foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "bleeding"));
@@ -3975,7 +4031,7 @@ async function standardPowerResult(rollData, functionStuff) {
               {
                 tokenId: functionStuff.targetData.tokenId,
                 removeEffect: bEffect,
-              }
+              },
             );
           }
         }
@@ -4004,7 +4060,7 @@ async function standardPowerResult(rollData, functionStuff) {
       chatData.whisper = gmList;
     }
   } else if (rolls.length > 0) {
-    // Only shows rolls if they are displayed to  
+    // Only shows rolls if they are displayed to
     chatData.rolls = [createRollData(rolls)];
   }
   ChatMessage.applyRollMode(chatData, "roll");
