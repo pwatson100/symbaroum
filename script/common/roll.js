@@ -1,3 +1,4 @@
+import { applyChatMode, getChatModeData, localize } from './compatibility.js';
 
 export async function rollAttribute(actor, actingAttributeName, targetActor, targetAttributeName, favour, modifier, armor, weapon, advantage, damModifier) {
   const api = game.symbaroum.api;
@@ -44,8 +45,8 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
   if (hasWeapon && rollResults.hasSucceed) {
     dam = `${weapon.damage.base}[${weapon.name}]`;
     if (dam !== '') {
-      if ( advantage ) { dam += "+1d4["+game.i18n.localize('ROLL.ADVANTAGESHORT')+"]"; }
-      if ( rollResults.critSuccess ) { dam += "+1d6["+game.i18n.localize('ROLL.CRITSHORT')+"]"; }
+      if ( advantage ) { dam += "+1d4["+localize('ROLL.ADVANTAGESHORT')+"]"; }
+      if ( rollResults.critSuccess ) { dam += "+1d6["+localize('ROLL.CRITSHORT')+"]"; }
       if( damModifier !== '') { dam = dam+"+"+damModifier; }
       
 
@@ -97,15 +98,15 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
       actor: actor.id
     }),
     rolls: [createRollData(rolls)],
-    rollMode: game.settings.get('core', 'rollMode'),
+    ...getChatModeData(),
     content: html,
   };
-  if (['gmroll', 'blindroll'].includes(chatData.rollMode)) {
+  if (['gm', 'blind'].includes(chatData.messageMode)) {
     chatData.whisper = ChatMessage.getWhisperRecipients('GM');
-  } else if (chatData.rollMode === 'selfroll') {
+  } else if (chatData.messageMode === 'self') {
     chatData.whisper = [game.user];
   }
-  ChatMessage.applyRollMode(chatData, "roll");
+  applyChatMode(chatData);
   ChatMessage.create(chatData);
   return(rollData);
 }
@@ -179,15 +180,15 @@ export async function rollDeathTest(actor, withFavour, modifier) {
 			actor: actor.id
     },
     rolls: createRollData(rolls),
-    rollMode: game.settings.get('core', 'rollMode'),
+    ...getChatModeData(),
     content: html,
   };
-  if (['gmroll', 'blindroll'].includes(chatData.rollMode)) {
+  if (['gm', 'blind'].includes(chatData.messageMode)) {
     chatData.whisper = ChatMessage.getWhisperRecipients('GM');
-  } else if (chatData.rollMode === 'selfroll') {
+  } else if (chatData.messageMode === 'self') {
     chatData.whisper = [game.user];
   }
-  ChatMessage.applyRollMode(chatData, "roll");
+  applyChatMode(chatData);
   ChatMessage.create(chatData);
   if(actor.system.nbrOfFailedDeathRoll != nbrOfFailedDeathRoll) {
     await actor.update({"system.nbrOfFailedDeathRoll":nbrOfFailedDeathRoll });
@@ -381,10 +382,10 @@ export async function createModifyTokenChatButton(actionsDataArray){
 export async function createResistRollChatButton(functionStuff){
   //inform the GM
   const html = await foundry.applications.handlebars.renderTemplate("systems/symbaroum/template/chat/chatInfoMessage.hbs", {
-    infoText: functionStuff.targetUserName + game.i18n.localize("CHAT.GM_INFO_RESIST")
+    infoText: functionStuff.targetUserName + localize("CHAT.GM_INFO_RESIST")
   });
   const chatData = {
-      speaker: ChatMessage.getSpeaker({alias:game.i18n.localize("DIALOG.SYSTEM_MESSAGE")}),
+      speaker: ChatMessage.getSpeaker({alias:localize("DIALOG.SYSTEM_MESSAGE")}),
       whisper: [game.user],
       content: html
   };
@@ -392,7 +393,7 @@ export async function createResistRollChatButton(functionStuff){
   //send data message to the player session
   
   const emitData = Object.assign({}, functionStuff);
-  emitData.mainText= functionStuff.targetData.name + game.i18n.localize("CHAT.RESIST_TEXT_BUTTON") + game.symbaroum.api.getAttributeLabel(functionStuff.targetData.actor, functionStuff.targetData.resistAttributeName);
+  emitData.mainText= functionStuff.targetData.name + localize("CHAT.RESIST_TEXT_BUTTON") + game.symbaroum.api.getAttributeLabel(functionStuff.targetData.actor, functionStuff.targetData.resistAttributeName);
   emitData.actor = null;
   emitData.token = null;
   emitData.targetData.token = null;
@@ -463,23 +464,23 @@ export async function damageRollWithDiceParams(functionStuff, critSuccess, attac
     damageModNPC = functionStuff.dmgModifierAttackSuppNPC ?? 0;
   }
   if(functionStuff.hasAdvantage){
-    damageModFormula += " +1d4"+game.i18n.localize("COMBAT.CHAT_DMG_PARAMS_ADVANTAGE");
-    damageAutoParams += ", " +game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_ADVANTAGE');
+    damageModFormula += " +1d4"+localize("COMBAT.CHAT_DMG_PARAMS_ADVANTAGE");
+    damageAutoParams += ", " +localize('COMBAT.CHAT_DMG_PARAMS_ADVANTAGE');
     damageModNPC += 2;
   }
   if(functionStuff.targetData.leaderTarget){
-    damageModFormula += " +1d4" + game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
-    damageAutoParams += ", " + game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
+    damageModFormula += " +1d4" + localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
+    damageAutoParams += ", " + localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
     damageModNPC += 2;
   }
   if(critSuccess) {
     //critSuccess is in the attackers perspective, so it always add damage.
     damageModFormula += " +1d6[crit.]";
-    damageAutoParams += ", " + game.i18n.localize('CHAT.CRITICAL_SUCCESS');
+    damageAutoParams += ", " + localize('CHAT.CRITICAL_SUCCESS');
     damageModNPC += 3;
   }
   if(functionStuff.ignoreArm){
-    damageAutoParams += ", " + game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_IGN_ARMOR');
+    damageAutoParams += ", " + localize('COMBAT.CHAT_DMG_PARAMS_IGN_ARMOR');
   }
     // If the attack is made by a PC, roll damage and substract static value for armor (=max armor/2)
     if(functionStuff.attackFromPC || functionStuff.targetData.actor.type === "monster"){  
@@ -522,10 +523,10 @@ export async function simpleDamageRoll(functionStuff, damageFormula){
     damageFormula += functionStuff.dmgModifier;
   }
   if(functionStuff.hasAdvantage){
-    damageFormula += " + 1d4"+game.i18n.localize("COMBAT.CHAT_DMG_PARAMS_ADVANTAGE");
+    damageFormula += " + 1d4"+localize("COMBAT.CHAT_DMG_PARAMS_ADVANTAGE");
   }
   if(functionStuff.targetData.leaderTarget){
-    damageFormula += " + 1d4" + game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
+    damageFormula += " + 1d4" + localize('COMBAT.CHAT_DMG_PARAMS_LEADER');
   }
   // If the attack is made by a PC, roll damage and substract static value for armor (=max armor/2)
   let newRollDmgString = "";

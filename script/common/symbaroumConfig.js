@@ -1,3 +1,4 @@
+import { localize } from './compatibility.js';
 const { HandlebarsApplicationMixin: HandlebarsApplicationMixin$5, Application: Application$2 } = foundry.applications.api;
 export class SymbaroumConfig extends HandlebarsApplicationMixin$5(Application$2) {
 	static get getDefaults() {
@@ -312,7 +313,7 @@ export class SymbaroumConfig extends HandlebarsApplicationMixin$5(Application$2)
 		if (button) button.remove();
 
 		if (shown) {
-			const title = game.i18n.localize('SYMBAROUM.OPTIONAL_CONFIG_MENULABEL');
+			const title = localize('SYMBAROUM.OPTIONAL_CONFIG_MENULABEL');
 			// Find the settings Selection
 
 			let findConfigButton = document.getElementById('settings').children[1];

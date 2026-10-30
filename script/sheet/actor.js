@@ -1,3 +1,4 @@
+import { localize } from '../common/compatibility.js';
 export class SymbaroumActorSheet extends foundry.appv1.sheets.ActorSheet {
   // nbrOfFailedDeathRoll = 0;
 
@@ -16,7 +17,7 @@ export class SymbaroumActorSheet extends foundry.appv1.sheets.ActorSheet {
         this._onItemEdit(ev);
       });
     }
-    const dataInput = html[0].querySelectorAll("focusin");
+    const dataInput = html[0].querySelectorAll("input, select, textarea");
     for (const s of dataInput) {
       s.addEventListener("focusin", (ev) => {
         this._onFocusIn(ev);
@@ -46,7 +47,7 @@ export class SymbaroumActorSheet extends foundry.appv1.sheets.ActorSheet {
     if (this.actor.owner) {
       let handler = (ev) => this._onDragStart(ev);
       // Find all items on the character sheet.
-      html[0].querySelectorAll("li.trait").each((i, li) => {
+      html[0].querySelectorAll("li.trait").forEach((li) => {
         // Ignore for the header row.
         if (li.classList.contains("item-header")) return;
         // Add draggable attribute and dragstart listener.
@@ -66,14 +67,12 @@ export class SymbaroumActorSheet extends foundry.appv1.sheets.ActorSheet {
   _onItemCreate(event) {
     event.preventDefault();
     let header = event.currentTarget;
-    let data = foundry.utils.duplicate(header.dataset);
+    let data = foundry.utils.deepClone(header.dataset);
     data["name"] = `New ${data.type.capitalize()}`;
     if (data.type in game.symbaroum.config.itemImages) {
-      data.img = "systems/symbaroum/asset/image/" + game.symbaroum.config.itemImages[data.type];
-      // data.img = game.i18n.format(game.symbaroum.config.imageRef, { filename: game.symbaroum.config.itemImages[data.type] });
+      data.img = `systems/symbaroum/asset/image/${game.symbaroum.config.itemImages[data.type]}`;
     } else {
-      data.img = "systems/symbaroum/asset/image/" + "unknown-item.png";
-      // data.img = game.i18n.format(game.symbaroum.config.imageRef, { filename: "unknown-item.png" });
+      data.img = "systems/symbaroum/asset/image/unknown-item.png";
     }
 
     let itemData = {
@@ -112,18 +111,18 @@ export class SymbaroumActorSheet extends foundry.appv1.sheets.ActorSheet {
       return;
     }
     let b = new Dialog({
-      content: `${game.i18n.localize("TOOLTIP.DELETE_ITEM")} ${item.name}`,
+      content: `${localize("TOOLTIP.DELETE_ITEM")} ${item.name}`,
       rejectClose: false,
       default: "no",
       buttons: {
         yes: {
-          label: game.i18n.localize(`DIALOG.OK`),
+          label: localize(`DIALOG.OK`),
           callback: (html) => {
             this.actor.deleteEmbeddedDocuments("Item", [item.id], { render: true });
           },
         },
         no: {
-          label: game.i18n.localize(`DIALOG.CANCEL`),
+          label: localize(`DIALOG.CANCEL`),
           callback: (html) => {},
         },
       },
@@ -175,34 +174,34 @@ export class SymbaroumActorSheet extends foundry.appv1.sheets.ActorSheet {
     if (useDefault) {
       let quantity = game.user.getFlag(game.system.id, game.symbaroum.config.CONTEXT_MENU.equipmentAddRemoveFlag);
       if (isNaN(quantity)) {
-        ui.notifications.error(game.i18n.localize("MACRO.ADDEXP_NUMBER"));
+        ui.notifications.error(localize("MACRO.ADDEXP_NUMBER"));
       }
       item.update({ "system.number": Math.max(0, item.system.number + quantity * (increase ? 1 : -1)) });
     } else {
       let dialog_content = `  
       <div class="form-group">
       <div style="flex-basis: auto;flex-direction: row;display: flex;">
-        <div style="width:10em;min-width:10em;"><label for="${item.id}-changeQuantity" style="width:10em;min-width:10em">${game.i18n.localize(
+        <div style="width:10em;min-width:10em;"><label for="${item.id}-changeQuantity" style="width:10em;min-width:10em">${localize(
           increase ? "TOOLTIP.INCREASE_COUNT_TITLE" : "TOOLTIP.DECREASE_COUNT_TITLE",
         )}</label></div><div><input id="${item.id}-changeQuantity" type="text" name="changeQuantity" value="1" style="width:5em"></div>
       </div>
       <div style="flex-basis: auto;flex-direction: row;display: flex;">
-        <div style="width:10em;min-width:10em;"><label for="${item.id}-setDefault" style="width:10em;min-width:10em">${game.i18n.localize(
+        <div style="width:10em;min-width:10em;"><label for="${item.id}-setDefault" style="width:10em;min-width:10em">${localize(
           "TOOLTIP.QUANTITY_SETDEFAULT",
         )}</label></div><div><input id="${item.id}-setDefault" class='checkbox' type='checkbox' name='setDefault'></div>
       </div>      
       <br/>
       </div>`;
       let x = new Dialog({
-        title: game.i18n.localize(increase ? "TOOLTIP.INCREASE_COUNT_TITLE" : "TOOLTIP.DECREASE_COUNT_TITLE"),
+        title: localize(increase ? "TOOLTIP.INCREASE_COUNT_TITLE" : "TOOLTIP.DECREASE_COUNT_TITLE"),
         content: dialog_content,
         buttons: {
           Ok: {
-            label: game.i18n.localize("DIALOG.OK"),
+            label: localize("DIALOG.OK"),
             callback: async (html) => {
               let quantity = parseInt(html[0].querySelector("input[name='changeQuantity'").value);
               if (isNaN(quantity)) {
-                ui.notifications.error(game.i18n.localize("MACRO.ADDEXP_NUMBER"));
+                ui.notifications.error(localize("MACRO.ADDEXP_NUMBER"));
                 return;
               }
               if (html[0].querySelector("input[name='setDefault']").checked && quantity > 0) {
@@ -211,7 +210,7 @@ export class SymbaroumActorSheet extends foundry.appv1.sheets.ActorSheet {
               item.update({ "system.number": Math.max(0, item.system.number + quantity * (increase ? 1 : -1)) });
             },
           },
-          Cancel: { label: game.i18n.localize("DIALOG.CANCEL") },
+          Cancel: { label: localize("DIALOG.CANCEL") },
         },
       });
 

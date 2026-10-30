@@ -1,3 +1,4 @@
+import { localize } from './compatibility.js';
 import { getOwnerPlayer, createResistRollChatButton, rollDeathTest } from './roll.js';
 import { buildRolls } from './item.js';
 
@@ -23,7 +24,7 @@ export async function prepareRollDeathTest(actor, showDialogue) {
     buttons: {
       roll: {
         icon: '<i class="fas fa-check"></i>',
-        label: game.i18n.localize('BUTTON.ROLL'),
+        label: localize('BUTTON.ROLL'),
         callback: async (html) => {
 					let favours = html[0].querySelectorAll("input[name='favour']");
 					let fvalue = 0;
@@ -44,7 +45,7 @@ export async function prepareRollDeathTest(actor, showDialogue) {
       },
       cancel: {
           icon: '<i class="fas fa-times"></i>',
-          label: game.i18n.localize('BUTTON.CANCEL'),
+          label: localize('BUTTON.CANCEL'),
           callback: () => {},
       },
     },
@@ -108,10 +109,10 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
       askAttackNb = weaponModifiers.maxAttackNb > 1;
     }
   }
-  let targetAttribute_selection = foundry.utils.duplicate(game.symbaroum.config.ATTRIBUTE_SELECTION);
+  let targetAttribute_selection = foundry.utils.deepClone(game.symbaroum.config.ATTRIBUTE_SELECTION);
   targetAttribute_selection.defense = {
     id: "defense",
-    label: game.i18n.localize(`ARMOR.DEFENSE`),
+    label: localize(`ARMOR.DEFENSE`),
   };
   if(attri_mods?.show){
     for (const [key, value] of Object.entries(targetAttribute_selection)) {
@@ -120,7 +121,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
   }
   targetAttribute_selection.custom = {
     id: "custom",
-    label: game.i18n.localize(`WEAPON.NONE`),
+    label: localize(`WEAPON.NONE`),
   };
   const did = `${actor.id}${foundry.utils.randomID(20)}`; // dialogue ID - ensured unique IDs in form
   const dialoghtml = await foundry.applications.handlebars.renderTemplate('systems/symbaroum/template/chat/dialog.hbs', {
@@ -134,7 +135,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
     "weaponModifiers" : weaponModifiers,
     "isArmorRoll" : armor !== null,
     "askImpeding" : askImpeding,
-    "choices": { "0": game.i18n.localize("DIALOG.FAVOUR_NORMAL"), "-1":game.i18n.localize("DIALOG.FAVOUR_DISFAVOUR"), "1":game.i18n.localize("DIALOG.FAVOUR_FAVOUR")},
+    "choices": { "0": localize("DIALOG.FAVOUR_NORMAL"), "-1":localize("DIALOG.FAVOUR_DISFAVOUR"), "1":localize("DIALOG.FAVOUR_FAVOUR")},
     "groupName":"favour",
     "attri_mods" : attri_mods,
     "roll_defaults": attri_defaults,
@@ -149,7 +150,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
     buttons: {
       roll: {
         icon: '<i class="fas fa-check"></i>',
-        label: game.i18n.localize('BUTTON.ROLL'),
+        label: localize('BUTTON.ROLL'),
         callback: async (html) => {          
 
           let dummyMod = "custom";
@@ -178,7 +179,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
           ecData.hasAdvantage = advantage;
           if(advantage){
               ecData.modifier += 2;
-              ecData.autoParams += game.i18n.localize('DIALOG.ADVANTAGE') + ", ";
+              ecData.autoParams += localize('DIALOG.ADVANTAGE') + ", ";
               if(ecData.askBackstab && ecData.actor.system.attributes.discreet.total > ecData.actor.system.attributes[ecData.castingAttributeName].total){
                   ecData.castingAttributeName = "discreet";
               }
@@ -197,7 +198,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
             if(damString.length) {
               attri_defaults.additionalModifier = damString; // Regardless if valid or not, set it as attri_defaults
               let plus = '+';
-              let damSource = "["+game.i18n.localize("DIALOG.DAMAGE_MODIFIER")+"] ";
+              let damSource = "["+localize("DIALOG.DAMAGE_MODIFIER")+"] ";
               if(damString.charAt(0)=== "+" ) {
                 plus = ""; // If it already has plus, do not add another
               }
@@ -209,7 +210,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
                 // Validate string as valid roll object              
               let r = Roll.validate(damModifier);
               if(!r) {
-                  ui.notifications.error(`The ${html[0].querySelector("#dammodifier-"+did)?.value} ${game.i18n.localize("DIALOG.DAMAGE_MODIFIER")} can't be used for rolling damage`);
+                  ui.notifications.error(`The ${html[0].querySelector("#dammodifier-"+did)?.value} ${localize("DIALOG.DAMAGE_MODIFIER")} can't be used for rolling damage`);
                   reject("invalid");
                   return;
               }
@@ -332,14 +333,14 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
             if(html[0].querySelector("#impeding-"+did).checked){
               modifier = modifier - actor.system.combat.impeding;
               ecData.modifier += -ecData.impeding;
-              ecData.autoParams += game.i18n.localize("ARMOR.IMPEDINGLONG") + ", ";
+              ecData.autoParams += localize("ARMOR.IMPEDINGLONG") + ", ";
             }            
             attri_defaults.impeding = html[0].querySelector("#impeding-"+did).checked ? "checked":"";
           }
           if(askIgnoreArmor){
             ignoreArm = html[0].querySelector("#ignarm-"+did).checked;
             ecData.ignoreArm = ignoreArm;
-            if(ignoreArm) ecData.autoParams += game.i18n.localize('COMBAT.CHAT_DMG_PARAMS_IGN_ARMOR') + ", ";
+            if(ignoreArm) ecData.autoParams += localize('COMBAT.CHAT_DMG_PARAMS_IGN_ARMOR') + ", ";
           }
           if(askAttackNb){
             let radioSelection = html[0].querySelectorAll(`input[name='attNbRadio']`);
@@ -370,7 +371,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
                   buildRolls(ecData).then(val => resolve(val));
               } else {
                 ecData.resistRoll = true;
-                ecData.resistRollText = (weapon !== null) ? ecData.targetData.name+game.i18n.localize('COMBAT.DEFENSE_ROLL') : ecData.targetData.name+game.i18n.localize('ABILITY.RESIST_ROLL');
+                ecData.resistRollText = (weapon !== null) ? ecData.targetData.name+localize('COMBAT.DEFENSE_ROLL') : ecData.targetData.name+localize('ABILITY.RESIST_ROLL');
                 let userArray = await getOwnerPlayer(ecData.targetData.actor);
                 if(userArray.length>0 && game.settings.get('symbaroum', 'playerResistButton')){
                     ecData.targetUserId=userArray[0].id;
@@ -392,7 +393,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
       },
       cancel: {
           icon: '<i class="fas fa-times"></i>',
-          label: game.i18n.localize('BUTTON.CANCEL'),
+          label: localize('BUTTON.CANCEL'),
           callback: () => {reject("Cancelled")},
       },
     },
@@ -462,7 +463,7 @@ export function createLineDisplay(weaponModifiers, attackFromPC)
   if(weaponModifiers.maxAttackNb > 1){
     let radioAttacks = {};
     for(let j = 1; j <= weaponModifiers.maxAttackNb; j++){
-      radioAttacks[j] = j.toString()+"x"+game.i18n.localize("DIALOG.ATTACK");
+      radioAttacks[j] = j.toString()+"x"+localize("DIALOG.ATTACK");
     }
     weaponModifiers.radioAttacks = radioAttacks;
   }
@@ -487,7 +488,7 @@ export function createLineDisplay(weaponModifiers, attackFromPC)
             member.value = member.damageNPC.toString();
           }
         } else if(member.type == game.symbaroum.config.TYPE_ATTRIBUTE) {
-          member.value = `${game.i18n.localize(game.symbaroum.config.attributeLabels[member.attribute])}`;
+          member.value = `${localize(game.symbaroum.config.attributeLabels[member.attribute])}`;
         }
       });
       if(pack.type === game.symbaroum.config.PACK_CHECK)

@@ -1,3 +1,4 @@
+import { applyChatMode, getChatModeData, localize } from '../common/compatibility.js';
 export class SymbaroumItemSheet extends foundry.appv1.sheets.ItemSheet {
   activateListeners(html) {
     super.activateListeners(html);
@@ -48,7 +49,7 @@ export class SymbaroumItemSheet extends foundry.appv1.sheets.ItemSheet {
     let buttons = super._getHeaderButtons();
     buttons = [
       {
-        label: game.i18n.localize("BUTTON.POST_ITEM"),
+        label: localize("BUTTON.POST_ITEM"),
         class: "item-post",
         icon: "fas fa-comment",
         onclick: (ev) => this.sendToChat(),
@@ -121,7 +122,7 @@ export class SymbaroumItemSheet extends foundry.appv1.sheets.ItemSheet {
 
   async sendToChat() {
     const itemData = {};
-    itemData.system = foundry.utils.duplicate(this.item.system);
+    itemData.system = foundry.utils.deepClone(this.item.system);
     game.symbaroum.log("sendToChat data:",itemData);
     itemData.img = this.item.img;
     itemData.name = this.item.name;
@@ -139,14 +140,15 @@ export class SymbaroumItemSheet extends foundry.appv1.sheets.ItemSheet {
             alias: this.item.actor?.name ?? game.user.name,
             actor: this.item.actor?.id
         }),            
-        rollMode: game.settings.get("core", "rollMode"),
+        ...getChatModeData(),
         content: html,
     };
-    if (["gmroll", "blindroll"].includes(chatData.rollMode)) {
+    if (["gm", "blind"].includes(chatData.messageMode)) {
         chatData.whisper = ChatMessage.getWhisperRecipients("GM");
-    } else if (chatData.rollMode === "selfroll") {
+    } else if (chatData.messageMode === "self") {
         chatData.whisper = [game.user];
     }
+    applyChatMode(chatData);
     ChatMessage.create(chatData);
 }
 

@@ -1,3 +1,4 @@
+import { localize } from './compatibility.js';
 export const initializeHandlebars = () => {
   registerHandlebarsHelpers();
   preloadHandlebarsTemplates();
@@ -49,11 +50,11 @@ function registerHandlebarsHelpers() {
   });
 
   Handlebars.registerHelper('localizeabbr', function (text) {  
-    return game.i18n.localize(text+"ABBR");
+    return localize(text+"ABBR");
   });
 
   Handlebars.registerHelper('qualitylocalize', function (text) {  
-    return game.i18n.localize(`QUALITY.${text.toUpperCase()}`);
+    return localize(`QUALITY.${text.toUpperCase()}`);
   });
 
 

@@ -1,3 +1,4 @@
+import { localize } from '../common/compatibility.js';
 import { SymbaroumItemSheet } from "./item.js";
 
 export class WeaponSheet extends SymbaroumItemSheet {
@@ -26,7 +27,7 @@ export class WeaponSheet extends SymbaroumItemSheet {
     data.alternative_selection = game.symbaroum.config.ATTRIBUTE_SELECTION;
     data.alternative_selection.none = {
       id: "none",
-      label: game.i18n.localize(`WEAPON.NONE`),
+      label: localize(`WEAPON.NONE`),
     };
     data.attribute_selection = game.symbaroum.config.ATTRIBUTE_SELECTION;
     data.weapon_damage_selection = game.symbaroum.config.WEAPON_DAMAGE_SELECTION;

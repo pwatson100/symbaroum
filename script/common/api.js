@@ -1,3 +1,4 @@
+import { localize } from './compatibility.js';
 import { baseRoll, rollAttribute } from './roll.js';
 
 export class SymbaroumAPI
@@ -128,12 +129,12 @@ export class SymbaroumAPI
      * @returns {string} the formated and localized string
      */
     formatRollResult(rollDataElement){
-        let rollResult = game.i18n.localize('ABILITY.ROLL_RESULT') + rollDataElement.diceResult.toString();
+        let rollResult = localize('ABILITY.ROLL_RESULT') + rollDataElement.diceResult.toString();
         if(rollDataElement.favour != 0){
             rollResult += "  (" + rollDataElement.dicesResult[0].toString() + " , " + rollDataElement.dicesResult[1].toString() + ")";
         }
         if(rollDataElement.secondRollResult){
-            rollResult += " - " + game.i18n.localize('ABILITY.SECOND_ROLL_RESULT') + rollDataElement.secondRollResult.toString();
+            rollResult += " - " + localize('ABILITY.SECOND_ROLL_RESULT') + rollDataElement.secondRollResult.toString();
         }
         return rollResult;
     }
@@ -146,11 +147,11 @@ export class SymbaroumAPI
      */
     getAttributeLabel(actor, attributeName) {
         if (attributeName === 'custom') {
-            return game.i18n.localize("ATTRIBUTE.CUSTOM");
+            return localize("ATTRIBUTE.CUSTOM");
         } else if (attributeName === 'defense') {
-            return game.i18n.localize("ARMOR.DEFENSE");
+            return localize("ARMOR.DEFENSE");
         } else {
-            return game.i18n.localize(actor.system.attributes[attributeName].label);
+            return localize(actor.system.attributes[attributeName].label);
         }
     }
 

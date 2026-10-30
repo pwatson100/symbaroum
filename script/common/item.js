@@ -1,3 +1,12 @@
+import { applyChatMode, getChatModeData, getStatusEffect, localize } from './compatibility.js';
+// Substitute parameters in system-generated text without requiring a translation key.
+// Translation keys use localize() directly.
+function formatSystemText(text, values = {}) {
+  return String(text ?? "").replace(/\{([^{}]+)\}/g, (match, key) =>
+    Object.prototype.hasOwnProperty.call(values, key) ? String(values[key] ?? "") : match,
+  );
+}
+
 import {
   baseRoll,
   createRollData,
@@ -35,11 +44,9 @@ export class SymbaroumItem extends Item {
   static async create(data, options) {
     if (!data.img) {
       if (data.type in game.symbaroum.config.itemImages) {
-        data.img = "systems/symbaroum/asset/image/" + game.symbaroum.config.itemImages[data.type];
-        // data.img = game.i18n.format(game.symbaroum.config.imageRef, { filename: game.symbaroum.config.itemImages[data.type] });
+        data.img = `systems/symbaroum/asset/image/${game.symbaroum.config.itemImages[data.type]}`;
       } else {
-        // data.img = game.i18n.format(game.symbaroum.config.imageRef, { filename: "unknown-item.png" });
-        data.img = "systems/symbaroum/asset/image/" + "unknown-item.png";
+        data.img = "systems/symbaroum/asset/image/unknown-item.png";
       }
     }
     return super.create(data, options);
@@ -76,13 +83,13 @@ export class SymbaroumItem extends Item {
 
     if (system.isTrait && system.reference && system.reference !== "") {
       let label = game.symbaroum.config.traitsList[system.reference];
-      if (label) system.itemLabel = game.i18n.localize(label);
+      if (label) system.itemLabel = localize(label);
     } else if (system.isAbility) {
       let label = game.symbaroum.config.abilitiesList[system.reference];
-      if (label) system.itemLabel = game.i18n.localize(label);
+      if (label) system.itemLabel = localize(label);
     } else if (system.isMysticalPower) {
       let label = game.symbaroum.config.powersList[system.reference];
-      if (label) system.itemLabel = game.i18n.localize(label);
+      if (label) system.itemLabel = localize(label);
     }
 
     if (system.isGear) {
@@ -284,17 +291,17 @@ export class SymbaroumItem extends Item {
     }
     let referenceOptions = "";
     for (let [key, label] of Object.entries(list)) {
-      referenceOptions += `<option value=${key}>${game.i18n.localize(label)} </option>`;
+      referenceOptions += `<option value=${key}>${localize(label)} </option>`;
     }
 
     let htmlTemplate = `
-        <h1> ${game.i18n.localize("ABILITYREF.DIALOG_TITLE")} </h1>
-        <p> ${game.i18n.localize("ABILITYREF.DIALOG")}</p>
+        <h1> ${localize("ABILITYREF.DIALOG_TITLE")} </h1>
+        <p> ${localize("ABILITYREF.DIALOG")}</p>
         <div style="display:flex">
         <div  style="flex:1"><select id="reference">${referenceOptions}</select></div>
         </div>`;
     new Dialog({
-      title: game.i18n.localize("ABILITYREF.DIALOG_TITLE"),
+      title: localize("ABILITYREF.DIALOG_TITLE"),
       content: htmlTemplate,
       buttons: {
         validate: {
@@ -317,16 +324,16 @@ export class SymbaroumItem extends Item {
       return { level: 0, lvlName: null };
     }
     let powerLvl = 0;
-    let lvlName = game.i18n.localize("ABILITY.NOT_LEARNED");
+    let lvlName = localize("ABILITY.NOT_LEARNED");
     if (this.system.master.isActive) {
       powerLvl = 3;
-      lvlName = game.i18n.localize("ABILITY.MASTER");
+      lvlName = localize("ABILITY.MASTER");
     } else if (this.system.adept.isActive) {
       powerLvl = 2;
-      lvlName = game.i18n.localize("ABILITY.ADEPT");
+      lvlName = localize("ABILITY.ADEPT");
     } else if (this.system.novice.isActive) {
       powerLvl = 1;
-      lvlName = game.i18n.localize("ABILITY.NOVICE");
+      lvlName = localize("ABILITY.NOVICE");
     }
     return { level: powerLvl, lvlName: lvlName };
   }
@@ -355,7 +362,7 @@ export class SymbaroumItem extends Item {
       casting: game.symbaroum.config.CASTING,
       maintain: game.symbaroum.config.MAINTAIN_NOT,
       castingAttributeName: "cunning",
-      targetText: game.i18n.localize("ABILITY.CHAT_TARGET_VICTIM"),
+      targetText: localize("ABILITY.CHAT_TARGET_VICTIM"),
       package: [],
       autoParams: "",
     };
@@ -383,7 +390,7 @@ export class SymbaroumItem extends Item {
       healingBonus: "",
       attributes: [],
       castingAttributeName: "resolute",
-      targetText: game.i18n.localize("ABILITY.CHAT_TARGET_VICTIM"),
+      targetText: localize("ABILITY.CHAT_TARGET_VICTIM"),
       package: [],
       autoParams: "",
     };
@@ -411,7 +418,7 @@ export class SymbaroumItem extends Item {
       powerLvl: this.getLevel(),
       attributes: [],
       castingAttributeName: "quick",
-      targetText: game.i18n.localize("ABILITY.CHAT_TARGET_VICTIM"),
+      targetText: localize("ABILITY.CHAT_TARGET_VICTIM"),
       package: [],
       autoParams: "",
     };
@@ -485,7 +492,7 @@ export class SymbaroumItem extends Item {
         }
         if (!this.system.isStackableArmor && this.system.qualities.reinforced) {
           let base = this._getBaseFormat();
-          base.label = `${this.name}: ${game.i18n.localize("QUALITY.REINFORCED")}`;
+          base.label = `${this.name}: ${localize("QUALITY.REINFORCED")}`;
           base.type = game.symbaroum.config.DAM_FIXED;
           base.alternatives = [
             {
@@ -498,19 +505,19 @@ export class SymbaroumItem extends Item {
         if (!this.system.isStackableArmor) {
           if (this.system.qualities.flexible) {
             let base = this._getBaseFormat();
-            base.label = `${this.name}: ${game.i18n.localize("QUALITY.FLEXIBLE")}`;
+            base.label = `${this.name}: ${localize("QUALITY.FLEXIBLE")}`;
             base.modifier = 0; // Already calculated in total
             combatMods.armors[armors[i].id].impedingModifiers.push(base);
           }
           if (this.system.qualities.cumbersome) {
             let base = this._getBaseFormat();
-            base.label = `${this.name}: ${game.i18n.localize("QUALITY.CUMBERSOME")}`;
+            base.label = `${this.name}: ${localize("QUALITY.CUMBERSOME")}`;
             base.modifier = 0; // Already calcualted in total
             combatMods.armors[armors[i].id].impedingModifiers.push(base);
           }
           if (this.system.bonus.impeding) {
             let base = this._getBaseFormat();
-            base.label = `${this.name}: ${game.i18n.localize("BONUS.IMPEDING_REDUCTION")}`;
+            base.label = `${this.name}: ${localize("BONUS.IMPEDING_REDUCTION")}`;
             base.modifier = 0; // Already calcualted in total
             combatMods.armors[armors[i].id].impedingModifiers.push(base);
           }
@@ -568,7 +575,7 @@ export class SymbaroumItem extends Item {
       }
       if (this.system.bonusDamage && this.system.bonusDamage !== "") {
         let base = this._getBaseFormat();
-        base.display = game.i18n.localize("WEAPON.BONUS_DAMAGE") + ": ";
+        base.display = localize("WEAPON.BONUS_DAMAGE") + ": ";
         let plus = "+";
         if (this.system.bonusDamage.charAt(0) === "+") {
           plus = "";
@@ -594,7 +601,7 @@ export class SymbaroumItem extends Item {
       if (this.system.qualities.deepImpact) {
         // Add 1
         let base = this._getBaseFormat();
-        base.label = game.i18n.localize("QUALITY.DEEPIMPACT");
+        base.label = localize("QUALITY.DEEPIMPACT");
         base.type = game.symbaroum.config.DAM_MOD;
         base.value = "+1";
         base.alternatives = [
@@ -609,7 +616,7 @@ export class SymbaroumItem extends Item {
       if (this.system.qualities.precise) {
         // Add 1
         let base = this._getBaseFormat();
-        base.label = game.i18n.localize("QUALITY.PRECISE");
+        base.label = localize("QUALITY.PRECISE");
         base.type = game.symbaroum.config.TYPE_ROLL_MOD;
         base.modifier = 1;
         base.value = "1";
@@ -618,21 +625,21 @@ export class SymbaroumItem extends Item {
       }
       if (this.system.qualities.flaming) {
         let base = this._getBaseFormat();
-        base.label = game.i18n.localize("QUALITY.FLAMING");
-        base.value = game.i18n.localize("QUALITY.FLAMING");
+        base.label = localize("QUALITY.FLAMING");
+        base.value = localize("QUALITY.FLAMING");
         base.type = game.symbaroum.config.STATUS_DOT;
         base.damagePerRound = "1d4";
         base.damagePerRoundNPC = 2;
         base.duration = "1d4";
         base.durationNPC = 2;
-        base.effectIcon = foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "burning"));
+        base.effectIcon = foundry.utils.deepClone(getStatusEffect('burning'));
         this.system.isIntegrated = true;
         combatMods.weapons[weapons[i].id].package[0].member.push(base);
       }
       if (this.system.qualities.massive) {
         let base = this._getBaseFormat();
-        base.label = game.i18n.localize("QUALITY.MASSIVE");
-        base.value = game.i18n.localize("DIALOG.FAVOUR_FAVOUR");
+        base.label = localize("QUALITY.MASSIVE");
+        base.value = localize("DIALOG.FAVOUR_FAVOUR");
         base.type = game.symbaroum.config.DAM_FAVOUR;
         this.system.isIntegrated = true;
         combatMods.weapons[weapons[i].id].package[0].member.push(base);
@@ -640,7 +647,7 @@ export class SymbaroumItem extends Item {
       }
       if (this.system.alternativeDamage !== "none") {
         let base = this._getBaseFormat();
-        base.label = game.i18n.localize("ATTRIBUTE.MODIFIER") + " (" + game.i18n.localize("QUALITY.PRECISE") + "): ";
+        base.label = localize("ATTRIBUTE.MODIFIER") + " (" + localize("QUALITY.PRECISE") + "): ";
         base.type = game.symbaroum.config.TYPE_ALTERNATIVE_DAMAGE;
         base.AltDmgAttribute = this.system.alternativeDamage;
         base.value = this.system.alternativeDamage;
@@ -653,7 +660,7 @@ export class SymbaroumItem extends Item {
             continue;
           }
           let base = this._getBaseFormat();
-          base.label = `${this.name}: ${game.i18n.localize("QUALITY.BALANCED")}`;
+          base.label = `${this.name}: ${localize("QUALITY.BALANCED")}`;
           base.modifier = 1;
           this.system.isIntegrated = true;
           combatMods.armors[armors[i].id].defenseModifiers.push(base);
@@ -822,13 +829,13 @@ export class SymbaroumItem extends Item {
 
       if (lvl.level > 1) {
         let baseBleed = this._getBaseFormat();
-        baseBleed.value = game.i18n.localize("COMBAT.BLEED");
+        baseBleed.value = localize("COMBAT.BLEED");
         baseBleed.type = game.symbaroum.config.STATUS_DOT;
         baseBleed.damagePerRound = "1d4";
         baseBleed.damagePerRoundNPC = 2;
         baseBleed.duration = "";
         baseBleed.durationNPC = 0;
-        baseBleed.effectIcon = foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "bleeding"));
+        baseBleed.effectIcon = foundry.utils.deepClone(getStatusEffect('bleeding'));
         if (lvl.level == 2) {
           baseBleed.restrictions = [game.symbaroum.config.DAM_1STATTACK];
         }
@@ -1005,7 +1012,7 @@ export class SymbaroumItem extends Item {
         continue;
       }
       let base = this._getBaseFormat();
-      base.label = game.i18n.localize("QUALITY.MASSIVE");
+      base.label = localize("QUALITY.MASSIVE");
       base.type = game.symbaroum.config.DAM_FAVOUR;
       this.system.isIntegrated = true;
       combatMods.weapons[weapons[i].id].package[0].member.push(base);
@@ -1013,7 +1020,7 @@ export class SymbaroumItem extends Item {
       if (lvl.level > 1) {
         let base2 = this._getBaseFormat();
         base2.type = game.symbaroum.config.TYPE_FAVOUR;
-        base2.value = game.i18n.localize("DIALOG.FAVOUR_FAVOUR");
+        base2.value = localize("DIALOG.FAVOUR_FAVOUR");
         base2.favourMod = 1;
         this.system.isIntegrated = true;
         combatMods.weapons[weapons[i].id].package[0].member.push(base2);
@@ -1030,7 +1037,7 @@ export class SymbaroumItem extends Item {
         continue;
       }
       let base = this._getBaseFormat();
-      base.label = game.i18n.localize("TRAIT_LABEL.CORRUPTINGATTACK");
+      base.label = localize("TRAIT_LABEL.CORRUPTINGATTACK");
       base.type = game.symbaroum.config.CORRUPTION_DAMAGE;
       base.damage = "1d" + ((1 + lvl.level) * 2).toString();
       base.damageNPC = 1 + lvl.level;
@@ -1105,7 +1112,7 @@ export class SymbaroumItem extends Item {
         let base2 = this._getBaseFormat();
         base2.type = game.symbaroum.config.TYPE_FAVOUR;
         base2.condition = "conditionFeatofStrength";
-        base2.value = game.i18n.localize("DIALOG.FAVOUR_FAVOUR");
+        base2.value = localize("DIALOG.FAVOUR_FAVOUR");
         base2.favourMod = 1;
         this.system.isIntegrated = true;
         combatMods.weapons[weapons[i].id].package[0].member.push(base2);
@@ -1158,7 +1165,7 @@ export class SymbaroumItem extends Item {
       let pack = this._getPackageFormat();
       let baseFav = this._getBaseFormat();
       baseFav.type = game.symbaroum.config.TYPE_FAVOUR;
-      baseFav.value = game.i18n.localize("DIALOG.FAVOUR_FAVOUR");
+      baseFav.value = localize("DIALOG.FAVOUR_FAVOUR");
       baseFav.favourMod = 1;
       pack.member.push(baseFav);
       if (lvl.level > 1) {
@@ -1208,7 +1215,7 @@ export class SymbaroumItem extends Item {
       }
       if (lvl.level == 3) {
         let pack = this._getPackageFormat();
-        pack.label = game.i18n.localize("ABILITY_LABEL.IRON_FIST");
+        pack.label = localize("ABILITY_LABEL.IRON_FIST");
         pack.type = game.symbaroum.config.PACK_RADIO;
         let base = this._getBaseFormat();
         base.type = game.symbaroum.config.DAM_RADIO;
@@ -1219,13 +1226,13 @@ export class SymbaroumItem extends Item {
         }
         base.alternatives = [
           {
-            label: game.i18n.localize("ABILITY_LABEL.IRON_FIST"),
+            label: localize("ABILITY_LABEL.IRON_FIST"),
             damageMod: "+1d8",
             damageModNPC: 4,
             restrictions: [game.symbaroum.config.DAM_ACTIVE],
           },
           {
-            label: game.i18n.localize("ABILITY_LABEL.IRON_FIST"),
+            label: localize("ABILITY_LABEL.IRON_FIST"),
             damageMod: "+1d4",
             damageModNPC: 2,
             restrictions: [game.symbaroum.config.DAM_NOTACTIVE],
@@ -1724,7 +1731,7 @@ export class SymbaroumItem extends Item {
       let base = this._getBaseFormat();
       base.lvl = lvl;
       base.type = game.symbaroum.config.TYPE_FAVOUR;
-      base.value = game.i18n.localize("DIALOG.FAVOUR_FAVOUR");
+      base.value = localize("DIALOG.FAVOUR_FAVOUR");
       base.favourMod = -1;
       base.powers = game.symbaroum.config.steadFastNovResistList;
       if (lvl.level > 1) {
@@ -2061,7 +2068,7 @@ export class SymbaroumItem extends Item {
         continue;
       }
       let pack = this._getPackageFormat();
-      pack.label = game.i18n.localize("POWER_LABEL.WITCH_HAMMER");
+      pack.label = localize("POWER_LABEL.WITCH_HAMMER");
       pack.type = game.symbaroum.config.PACK_RADIO;
       let base = this._getBaseFormat();
       base.type = game.symbaroum.config.DAM_RADIO;
@@ -2072,13 +2079,13 @@ export class SymbaroumItem extends Item {
       }
       base.alternatives = [
         {
-          label: game.i18n.localize("POWER_LABEL.WITCH_HAMMER"),
+          label: localize("POWER_LABEL.WITCH_HAMMER"),
           damageMod: "+1d4",
           damageModNPC: 2,
           restrictions: [game.symbaroum.config.DAM_ACTIVE],
         },
         {
-          label: game.i18n.localize("POWER_LABEL.WITCH_HAMMER"),
+          label: localize("POWER_LABEL.WITCH_HAMMER"),
           damageMod: "+1d" + (4 + lvl.level * 2).toString(),
           damageModNPC: 2 + lvl.level,
           restrictions: [game.symbaroum.config.DAM_NOTACTIVE],
@@ -2104,7 +2111,7 @@ export class SymbaroumItem extends Item {
             let pack = this._getPackageFormat();
             let base = this._getBaseFormat();
             base.type = game.symbaroum.config.TYPE_FAVOUR;
-            base.value = game.i18n.localize("DIALOG.FAVOUR_FAVOUR");
+            base.value = localize("DIALOG.FAVOUR_FAVOUR");
             base.favourMod = 1;
             pack.member.push(base);
             this.system.isIntegrated = true;
@@ -2126,9 +2133,9 @@ export class SymbaroumItem extends Item {
     base.getTarget = true;
     base.targetMandatory = true;
     base.targetResistAttribute = "resolute";
-    base.introText = game.i18n.localize("POWER_ANATHEMA.CHAT_INTRO");
-    base.resultTextSuccess = game.i18n.localize("POWER_ANATHEMA.CHAT_SUCCESS");
-    base.resultTextFail = game.i18n.localize("POWER_ANATHEMA.CHAT_FAILURE");
+    base.introText = localize("POWER_ANATHEMA.CHAT_INTRO");
+    base.resultTextSuccess = localize("POWER_ANATHEMA.CHAT_SUCCESS");
+    base.resultTextFail = localize("POWER_ANATHEMA.CHAT_FAILURE");
     base.maintain = game.symbaroum.config.MAINTAIN_NOT;
     base.casting = game.symbaroum.config.CASTING_RES;
 
@@ -2148,10 +2155,10 @@ export class SymbaroumItem extends Item {
     base.targetMandatory = true;
     base.targetResistAttribute = "quick";
     base.targetImpeding = true;
-    base.introText = game.i18n.localize("POWER_BRIMSTONECASC.CHAT_INTRO");
-    base.introTextMaintain = game.i18n.localize("POWER_BRIMSTONECASC.CHAT_INTRO");
-    base.resultTextSuccess = game.i18n.localize("POWER_BRIMSTONECASC.CHAT_SUCCESS");
-    base.resultTextFail = game.i18n.localize("POWER_BRIMSTONECASC.CHAT_FAILURE");
+    base.introText = localize("POWER_BRIMSTONECASC.CHAT_INTRO");
+    base.introTextMaintain = localize("POWER_BRIMSTONECASC.CHAT_INTRO");
+    base.resultTextSuccess = localize("POWER_BRIMSTONECASC.CHAT_SUCCESS");
+    base.resultTextFail = localize("POWER_BRIMSTONECASC.CHAT_FAILURE");
     base.casting = game.symbaroum.config.CASTING_RES;
     if (base.powerLvl.level > 1) base.chain = game.symbaroum.config.CHAIN;
     base.rollFailedFSmod = {
@@ -2168,11 +2175,11 @@ export class SymbaroumItem extends Item {
     base.targetMandatory = true;
     base.casting = game.symbaroum.config.CASTING_RES;
     base.maintain = game.symbaroum.config.MAINTAIN_RES;
-    base.activelyMaintainedTargetEffect = [foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "bendwill"))];
-    base.introText = game.i18n.localize("POWER_BENDWILL.CHAT_INTRO");
-    base.introTextMaintain = game.i18n.localize("POWER_BENDWILL.CHAT_INTRO_M");
-    base.resultTextSuccess = game.i18n.localize("POWER_BENDWILL.CHAT_SUCCESS");
-    base.resultTextFail = game.i18n.localize("POWER_BENDWILL.CHAT_FAILURE");
+    base.activelyMaintainedTargetEffect = [foundry.utils.deepClone(getStatusEffect('bendwill'))];
+    base.introText = localize("POWER_BENDWILL.CHAT_INTRO");
+    base.introTextMaintain = localize("POWER_BENDWILL.CHAT_INTRO_M");
+    base.resultTextSuccess = localize("POWER_BENDWILL.CHAT_SUCCESS");
+    base.resultTextFail = localize("POWER_BENDWILL.CHAT_FAILURE");
     base.finalText = "";
     return base;
   }
@@ -2184,15 +2191,15 @@ export class SymbaroumItem extends Item {
     base.getTarget = true;
     base.targetMandatory = true;
     base.targetImpeding = true;
-    base.introText = game.i18n.localize("POWER_BLACKBOLT.CHAT_INTRO");
-    base.introTextMaintain = game.i18n.localize("POWER_BLACKBOLT.CHAT_INTRO");
-    base.resultTextSuccessT = game.i18n.localize("POWER_BLACKBOLT.CHAT_SUCCESS");
-    base.resultTextFailT = game.i18n.localize("POWER_BLACKBOLT.CHAT_FAILURE");
+    base.introText = localize("POWER_BLACKBOLT.CHAT_INTRO");
+    base.introTextMaintain = localize("POWER_BLACKBOLT.CHAT_INTRO");
+    base.resultTextSuccessT = localize("POWER_BLACKBOLT.CHAT_SUCCESS");
+    base.resultTextFailT = localize("POWER_BLACKBOLT.CHAT_FAILURE");
     base.damageDice = "1d6";
     base.damageType = {
       mystic: true,
     };
-    base.addTargetEffect = [foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "paralysis"))];
+    base.addTargetEffect = [foundry.utils.deepClone(getStatusEffect('paralysis'))];
     base.ignoreArm = true;
     base.maintain = game.symbaroum.config.MAINTAIN_RES;
     base.casting = game.symbaroum.config.CASTING_RES;
@@ -2204,10 +2211,10 @@ export class SymbaroumItem extends Item {
   mysticPowerSetupBlessedshield(base) {
     base.casting = game.symbaroum.config.CASTING;
     base.traditions = [game.symbaroum.config.TRAD_THEURGY];
-    base.addCasterEffect = [foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "holyShield"))];
-    base.introText = game.i18n.localize("POWER_BLESSEDSHIELD.CHAT_INTRO");
-    base.resultTextSuccess = game.i18n.localize("POWER_BLESSEDSHIELD.CHAT_SUCCESS");
-    base.resultTextFail = game.i18n.localize("POWER_BLESSEDSHIELD.CHAT_FAILURE");
+    base.addCasterEffect = [foundry.utils.deepClone(getStatusEffect('holyShield'))];
+    base.introText = localize("POWER_BLESSEDSHIELD.CHAT_INTRO");
+    base.resultTextSuccess = localize("POWER_BLESSEDSHIELD.CHAT_SUCCESS");
+    base.resultTextFail = localize("POWER_BLESSEDSHIELD.CHAT_FAILURE");
     if (base.powerLvl.level > 1) {
       base.multipleTargets = true;
       base.multipleTargetsNb = base.powerLvl.level - 1;
@@ -2223,7 +2230,7 @@ export class SymbaroumItem extends Item {
     base.maintain = game.symbaroum.config.MAINTAIN_RES;
     base.casting = game.symbaroum.config.CASTING_RES;
     base.confusion = true;
-    base.activelyMaintainedTargetEffect = [foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "confusion"))];
+    base.activelyMaintainedTargetEffect = [foundry.utils.deepClone(getStatusEffect('confusion'))];
     return base;
   }
 
@@ -2232,20 +2239,20 @@ export class SymbaroumItem extends Item {
     base.getTarget = true;
     base.targetMandatory = true;
     base.traditions = [game.symbaroum.config.TRAD_WITCHCRAFT];
-    base.resultText = game.i18n.localize("POWER_CURSE.CHAT_SUCCESS_N");
+    base.resultText = localize("POWER_CURSE.CHAT_SUCCESS_N");
     if (base.powerLvl.level == 2) {
-      base.resultText = game.i18n.localize("POWER_CURSE.CHAT_SUCCESS_A");
+      base.resultText = localize("POWER_CURSE.CHAT_SUCCESS_A");
     } else if (base.powerLvl.level == 3) {
-      base.resultText = game.i18n.localize("POWER_CURSE.CHAT_SUCCESS_M");
+      base.resultText = localize("POWER_CURSE.CHAT_SUCCESS_M");
     }
     base.maintain = game.symbaroum.config.MAINTAIN;
-    base.introText = game.i18n.localize("POWER_CURSE.CHAT_INTRO");
-    base.introTextMaintain = game.i18n.localize("POWER_CURSE.CHAT_INTRO_M");
+    base.introText = localize("POWER_CURSE.CHAT_INTRO");
+    base.introTextMaintain = localize("POWER_CURSE.CHAT_INTRO_M");
     base.resultTextSuccess = base.resultText;
-    base.resultTextFail = game.i18n.localize("POWER_CURSE.CHAT_FAILURE");
-    base.activelyMaintainedTargetEffect = [foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "curse"))];
+    base.resultTextFail = localize("POWER_CURSE.CHAT_FAILURE");
+    base.activelyMaintainedTargetEffect = [foundry.utils.deepClone(getStatusEffect('curse'))];
     base.rollFailedFSmod = {
-      finalText: game.i18n.localize("POWER_CURSE.CHAT_FAIL_FINAL"),
+      finalText: localize("POWER_CURSE.CHAT_FAIL_FINAL"),
     };
     return base;
   }
@@ -2257,16 +2264,16 @@ export class SymbaroumItem extends Item {
     base.gmOnlyChatResultNPC = true;
     base.flagTest = "dancingweapon";
     base.flagPresentFSmod = {
-      introText: game.i18n.localize("POWER_DANCINGWEAPON.CHAT_DEACTIVATE"),
-      resultTextSuccess: game.i18n.localize("POWER_DANCINGWEAPON.CHAT_RESULT_DEACTIVATE"),
+      introText: localize("POWER_DANCINGWEAPON.CHAT_DEACTIVATE"),
+      resultTextSuccess: localize("POWER_DANCINGWEAPON.CHAT_RESULT_DEACTIVATE"),
       corruption: game.symbaroum.config.TEMPCORRUPTION_NONE,
-      removeCasterEffect: [foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "dancingweapon"))],
+      removeCasterEffect: [foundry.utils.deepClone(getStatusEffect('dancingweapon'))],
     };
     base.flagNotPresentFSmod = {
       flagData: base.powerLvl.level,
-      introText: game.i18n.localize("POWER_DANCINGWEAPON.CHAT_ACTIVATE"),
-      resultTextSuccess: game.i18n.localize("POWER_DANCINGWEAPON.CHAT_RESULT_ACTIVATE"),
-      addCasterEffect: [foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "dancingweapon"))],
+      introText: localize("POWER_DANCINGWEAPON.CHAT_ACTIVATE"),
+      resultTextSuccess: localize("POWER_DANCINGWEAPON.CHAT_RESULT_ACTIVATE"),
+      addCasterEffect: [foundry.utils.deepClone(getStatusEffect('dancingweapon'))],
     };
     return base;
   }
@@ -2299,10 +2306,10 @@ export class SymbaroumItem extends Item {
     base.damageType = {
       mysticIgnArm: true,
     };
-    base.introTextMaintain = game.i18n.localize("POWER_ENTANGLINGVINES.CHAT_INTRO_M");
-    base.resultTextSuccess = game.i18n.localize("POWER_ENTANGLINGVINES.CHAT_SUCCESS");
-    base.resultTextFail = game.i18n.localize("POWER_ENTANGLINGVINES.CHAT_FAILURE");
-    base.activelyMaintainedTargetEffect = [foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "entanglingvines"))];
+    base.introTextMaintain = localize("POWER_ENTANGLINGVINES.CHAT_INTRO_M");
+    base.resultTextSuccess = localize("POWER_ENTANGLINGVINES.CHAT_SUCCESS");
+    base.resultTextFail = localize("POWER_ENTANGLINGVINES.CHAT_FAILURE");
+    base.activelyMaintainedTargetEffect = [foundry.utils.deepClone(getStatusEffect('entanglingvines'))];
     base.ignoreArm = true;
     return base;
   }
@@ -2318,11 +2325,11 @@ export class SymbaroumItem extends Item {
     base.casting = game.symbaroum.config.CASTING;
     base.traditions = [game.symbaroum.config.TRAD_THEURGY];
     base.maintain = game.symbaroum.config.MAINTAIN;
-    base.introText = game.i18n.localize("POWER_HOLYAURA.CHAT_INTRO");
-    base.introTextMaintain = game.i18n.localize("POWER_HOLYAURA.CHAT_INTRO");
-    base.resultTextSuccess = game.i18n.localize("POWER_HOLYAURA.CHAT_SUCCESS");
-    base.resultTextFail = game.i18n.localize("POWER_HOLYAURA.CHAT_FAILURE");
-    base.activelyMaintaninedCasterEffect = [foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "holyaura"))];
+    base.introText = localize("POWER_HOLYAURA.CHAT_INTRO");
+    base.introTextMaintain = localize("POWER_HOLYAURA.CHAT_INTRO");
+    base.resultTextSuccess = localize("POWER_HOLYAURA.CHAT_SUCCESS");
+    base.resultTextFail = localize("POWER_HOLYAURA.CHAT_FAILURE");
+    base.activelyMaintaninedCasterEffect = [foundry.utils.deepClone(getStatusEffect('holyaura'))];
     let auraDamage = "1d6";
     let auraHeal = "1d4";
     if (base.powerLvl.level == 2) {
@@ -2331,9 +2338,9 @@ export class SymbaroumItem extends Item {
       auraDamage = "1d10";
       auraHeal = "1d6";
     }
-    base.finalTextSucceed = game.i18n.localize("COMBAT.DAMAGE") + auraDamage;
+    base.finalTextSucceed = localize("COMBAT.DAMAGE") + auraDamage;
     if (base.powerLvl.level > 1) {
-      base.finalTextSucceed += game.i18n.localize("POWER_HOLYAURA.HEALING") + auraHeal;
+      base.finalTextSucceed += localize("POWER_HOLYAURA.HEALING") + auraHeal;
     }
     return base;
   }
@@ -2345,14 +2352,14 @@ export class SymbaroumItem extends Item {
     base.targetMandatory = true;
     base.traditions = [game.symbaroum.config.TRAD_WITCHCRAFT, game.symbaroum.config.TRAD_THEURGY];
     base.healedToken = game.symbaroum.config.TARGET_TOKEN;
-    base.introText = game.i18n.localize("POWER_INHERITWOUND.CHAT_INTRO");
-    base.resultTextSuccess = game.i18n.localize("POWER_INHERITWOUND.CHAT_SUCCESS");
-    base.resultTextFail = game.i18n.localize("POWER_INHERITWOUND.CHAT_FAILURE");
+    base.introText = localize("POWER_INHERITWOUND.CHAT_INTRO");
+    base.resultTextSuccess = localize("POWER_INHERITWOUND.CHAT_SUCCESS");
+    base.resultTextFail = localize("POWER_INHERITWOUND.CHAT_FAILURE");
     base.healFormulaSucceed = base.powerLvl.level > 1 ? "1d8" : "1d6";
     base.damageType = {
       mysticIgnArm: true,
     };
-    base.targetText = game.i18n.localize("ABILITY_MEDICUS.CHAT_TARGET");
+    base.targetText = localize("ABILITY_MEDICUS.CHAT_TARGET");
     return base;
   }
 
@@ -2368,11 +2375,11 @@ export class SymbaroumItem extends Item {
     base.damageType = {
       mysticIgnArm: true,
     };
-    base.introText = game.i18n.localize("POWER_LARVAEBOILS.CHAT_INTRO");
-    base.introTextMaintain = game.i18n.localize("POWER_LARVAEBOILS.CHAT_INTRO_M");
-    base.resultTextSuccess = game.i18n.localize("POWER_LARVAEBOILS.CHAT_SUCCESS");
-    base.resultTextFail = game.i18n.localize("POWER_LARVAEBOILS.CHAT_FAILURE");
-    base.activelyMaintainedTargetEffect = [foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "larvaeboils"))];
+    base.introText = localize("POWER_LARVAEBOILS.CHAT_INTRO");
+    base.introTextMaintain = localize("POWER_LARVAEBOILS.CHAT_INTRO_M");
+    base.resultTextSuccess = localize("POWER_LARVAEBOILS.CHAT_SUCCESS");
+    base.resultTextFail = localize("POWER_LARVAEBOILS.CHAT_FAILURE");
+    base.activelyMaintainedTargetEffect = [foundry.utils.deepClone(getStatusEffect('larvaeboils'))];
     base.ignoreArm = true;
     return base;
   }
@@ -2386,12 +2393,12 @@ export class SymbaroumItem extends Item {
     if (base.powerLvl.level > 1) {
       base.healFormulaSucceed = "1d8";
       base.removeTargetEffect = [
-        foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "poison")),
-        foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "bleeding")),
+        foundry.utils.deepClone(getStatusEffect('poison')),
+        foundry.utils.deepClone(getStatusEffect('bleeding')),
       ];
     }
     base.healedToken = game.symbaroum.config.TARGET_TOKEN;
-    base.targetText = game.i18n.localize("ABILITY_MEDICUS.CHAT_TARGET");
+    base.targetText = localize("ABILITY_MEDICUS.CHAT_TARGET");
 
     if (base.powerLvl.level > 2) {
       base.preDialogFunction = preDialogLayonHands;
@@ -2403,12 +2410,12 @@ export class SymbaroumItem extends Item {
     base.casting = game.symbaroum.config.CASTING;
     base.traditions = [game.symbaroum.config.TRAD_WIZARDRY, game.symbaroum.config.TRAD_THEURGY];
     base.maintain = game.symbaroum.config.MAINTAIN;
-    base.addCasterEffect = [foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "fly"))];
+    base.addCasterEffect = [foundry.utils.deepClone(getStatusEffect('fly'))];
     if (base.powerLvl.level > 1) {
       base.getTarget = true;
       base.targetResistAttribute = "strong";
       base.casting = game.symbaroum.config.CASTING_RES;
-      base.addTargetEffect = [foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "fly"))];
+      base.addTargetEffect = [foundry.utils.deepClone(getStatusEffect('fly'))];
     }
     return base;
   }
@@ -2420,7 +2427,7 @@ export class SymbaroumItem extends Item {
     base.casting = game.symbaroum.config.CASTING_RES;
     base.maintain = game.symbaroum.config.MAINTAIN_RES;
     base.targetResistAttribute = "resolute";
-    base.activelyMaintainedTargetEffect = [foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "maltransformation"))];
+    base.activelyMaintainedTargetEffect = [foundry.utils.deepClone(getStatusEffect('maltransformation'))];
     return base;
   }
 
@@ -2449,7 +2456,7 @@ export class SymbaroumItem extends Item {
     base.targetMandatory = true;
     base.maintain = game.symbaroum.config.MAINTAIN;
     base.traditions = [game.symbaroum.config.TRAD_THEURGY];
-    base.introText = game.i18n.localize("POWER_PRIOSBURNINGGLASS.CHAT_INTRO");
+    base.introText = localize("POWER_PRIOSBURNINGGLASS.CHAT_INTRO");
     base.hasDamage = true;
     base.askCorruptedTarget = true;
     if (base.powerLvl.level === 1) {
@@ -2468,7 +2475,7 @@ export class SymbaroumItem extends Item {
       mysticArm: true,
     };
     if (base.powerLvl.level === 3) {
-      base.targetFullyCorruptedFSmod.finalTextSucceed = game.i18n.localize("POWER_PRIOSBURNINGGLASS.CHAT_EXTRA");
+      base.targetFullyCorruptedFSmod.finalTextSucceed = localize("POWER_PRIOSBURNINGGLASS.CHAT_EXTRA");
     }
     return base;
   }
@@ -2478,17 +2485,17 @@ export class SymbaroumItem extends Item {
     base.gmOnlyChatResultNPC = true;
     base.flagTest = "revenantstrike";
     base.flagPresentFSmod = {
-      introText: game.i18n.localize("POWER_REVENANTSTRIKE.CHAT_DEACTIVATE"),
-      resultTextSuccess: game.i18n.localize("POWER_REVENANTSTRIKE.CHAT_RESULT_DEACTIVATE"),
+      introText: localize("POWER_REVENANTSTRIKE.CHAT_DEACTIVATE"),
+      resultTextSuccess: localize("POWER_REVENANTSTRIKE.CHAT_RESULT_DEACTIVATE"),
       corruption: game.symbaroum.config.TEMPCORRUPTION_NONE,
-      removeCasterEffect: [foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "revenantstrike"))],
+      removeCasterEffect: [foundry.utils.deepClone(getStatusEffect('revenantstrike'))],
     };
     base.flagNotPresentFSmod = {
       flagData: base.powerLvl.level,
-      introText: game.i18n.localize("POWER_REVENANTSTRIKE.CHAT_ACTIVATE"),
-      addCasterEffect: [foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "revenantstrike"))],
+      introText: localize("POWER_REVENANTSTRIKE.CHAT_ACTIVATE"),
+      addCasterEffect: [foundry.utils.deepClone(getStatusEffect('revenantstrike'))],
     };
-    base.flagNotPresentFSmod.resultTextSuccess = game.i18n.localize("POWER_REVENANTSTRIKE.CHAT_RESULT");
+    base.flagNotPresentFSmod.resultTextSuccess = localize("POWER_REVENANTSTRIKE.CHAT_RESULT");
     return base;
   }
 
@@ -2500,11 +2507,11 @@ export class SymbaroumItem extends Item {
     base.traditions = [game.symbaroum.config.TRAD_WITCHCRAFT];
     base.isAlternativeDamage = true;
     base.alternativeDamageAttribute = "resolute";
-    base.introText = game.i18n.localize("POWER_TORMENTINGSPIRITS.CHAT_INTRO");
-    base.introTextMaintain = game.i18n.localize("POWER_TORMENTINGSPIRITS.CHAT_INTRO_M");
-    base.resultTextSuccess = game.i18n.localize("POWER_TORMENTINGSPIRITS.CHAT_SUCCESS");
-    base.resultTextFail = game.i18n.localize("POWER_TORMENTINGSPIRITS.CHAT_FAILURE");
-    base.activelyMaintainedTargetEffect = [foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "tormentingspirits"))];
+    base.introText = localize("POWER_TORMENTINGSPIRITS.CHAT_INTRO");
+    base.introTextMaintain = localize("POWER_TORMENTINGSPIRITS.CHAT_INTRO_M");
+    base.resultTextSuccess = localize("POWER_TORMENTINGSPIRITS.CHAT_SUCCESS");
+    base.resultTextFail = localize("POWER_TORMENTINGSPIRITS.CHAT_FAILURE");
+    base.activelyMaintainedTargetEffect = [foundry.utils.deepClone(getStatusEffect('tormentingspirits'))];
 
     if (base.powerLvl.level > 1) {
       base.hasDamage = true;
@@ -2521,7 +2528,7 @@ export class SymbaroumItem extends Item {
     base.casting = game.symbaroum.config.CASTING;
     base.traditions = [game.symbaroum.config.TRAD_WIZARDRY, game.symbaroum.config.TRAD_THEURGY];
     base.gmOnlyChatResultNPC = true;
-    base.addCasterEffect = [foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "unnoticeable"))];
+    base.addCasterEffect = [foundry.utils.deepClone(getStatusEffect('unnoticeable'))];
     return base;
   }
 
@@ -2531,17 +2538,17 @@ export class SymbaroumItem extends Item {
     base.flagTest = "witchhammer";
     base.traditions = [game.symbaroum.config.TRAD_THEURGY];
     base.flagPresentFSmod = {
-      introText: game.i18n.localize("POWER_WITCHHAMMER.CHAT_DEACTIVATE"),
-      resultTextSuccess: game.i18n.localize("POWER_WITCHHAMMER.CHAT_RESULT_DEACTIVATE"),
+      introText: localize("POWER_WITCHHAMMER.CHAT_DEACTIVATE"),
+      resultTextSuccess: localize("POWER_WITCHHAMMER.CHAT_RESULT_DEACTIVATE"),
       corruption: game.symbaroum.config.TEMPCORRUPTION_NONE,
-      removeCasterEffect: [foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "witchhammer"))],
+      removeCasterEffect: [foundry.utils.deepClone(getStatusEffect('witchhammer'))],
     };
     base.flagNotPresentFSmod = {
       flagData: base.powerLvl.level,
-      introText: game.i18n.localize("POWER_WITCHHAMMER.CHAT_ACTIVATE"),
-      addCasterEffect: [foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "witchhammer"))],
+      introText: localize("POWER_WITCHHAMMER.CHAT_ACTIVATE"),
+      addCasterEffect: [foundry.utils.deepClone(getStatusEffect('witchhammer'))],
     };
-    base.flagNotPresentFSmod.resultTextSuccess = game.i18n.localize("POWER_WITCHHAMMER.CHAT_RESULT");
+    base.flagNotPresentFSmod.resultTextSuccess = localize("POWER_WITCHHAMMER.CHAT_RESULT");
     return base;
   }
 
@@ -2570,18 +2577,18 @@ export class SymbaroumItem extends Item {
     base.gmOnlyChatResultNPC = true;
     base.flagTest = "berserker";
     base.flagPresentFSmod = {
-      introText: game.i18n.localize("ABILITY_BERSERKER.CHAT_DEACTIVATE"),
-      resultTextSuccess: game.i18n.localize("ABILITY_BERSERKER.CHAT_RESULT_DEACTIVATE"),
-      removeCasterEffect: [foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "berserker"))],
+      introText: localize("ABILITY_BERSERKER.CHAT_DEACTIVATE"),
+      resultTextSuccess: localize("ABILITY_BERSERKER.CHAT_RESULT_DEACTIVATE"),
+      removeCasterEffect: [foundry.utils.deepClone(getStatusEffect('berserker'))],
     };
     base.flagNotPresentFSmod = {
       flagData: base.powerLvl.level,
-      introText: game.i18n.localize("ABILITY_BERSERKER.CHAT_ACTIVATE"),
-      addCasterEffect: [foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "berserker"))],
+      introText: localize("ABILITY_BERSERKER.CHAT_ACTIVATE"),
+      addCasterEffect: [foundry.utils.deepClone(getStatusEffect('berserker'))],
     };
-    if (base.powerLvl.level == 2) base.flagNotPresentFSmod.resultTextSuccess = game.i18n.localize("ABILITY_BERSERKER.CHAT_RESULT_LVL2");
-    else if (base.powerLvl.level > 2) base.flagNotPresentFSmod.resultTextSuccess = game.i18n.localize("ABILITY_BERSERKER.CHAT_RESULT_LVL3");
-    else base.flagNotPresentFSmod.resultTextSuccess = game.i18n.localize("ABILITY_BERSERKER.CHAT_RESULT_LVL1");
+    if (base.powerLvl.level == 2) base.flagNotPresentFSmod.resultTextSuccess = localize("ABILITY_BERSERKER.CHAT_RESULT_LVL2");
+    else if (base.powerLvl.level > 2) base.flagNotPresentFSmod.resultTextSuccess = localize("ABILITY_BERSERKER.CHAT_RESULT_LVL3");
+    else base.flagNotPresentFSmod.resultTextSuccess = localize("ABILITY_BERSERKER.CHAT_RESULT_LVL1");
     return base;
   }
 
@@ -2598,14 +2605,14 @@ export class SymbaroumItem extends Item {
       base.casting = game.symbaroum.config.CASTING_RES;
       base.castingAttributeName = "persuasive";
       base.targetResistAttribute = "resolute";
-      base.addTargetEffect = [foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "fear"))];
+      base.addTargetEffect = [foundry.utils.deepClone(getStatusEffect('fear'))];
     }
     if (base.powerLvl.level == 2) {
-      base.introText = game.i18n.localize("ABILITY_DOMINATE_ADEPT.CHAT_INTRO");
-      base.resultTextSuccess = game.i18n.localize("ABILITY_DOMINATE_ADEPT.CHAT_SUCCESS");
+      base.introText = localize("ABILITY_DOMINATE_ADEPT.CHAT_INTRO");
+      base.resultTextSuccess = localize("ABILITY_DOMINATE_ADEPT.CHAT_SUCCESS");
     } else {
-      base.introText = game.i18n.localize("ABILITY_DOMINATE_MASTER.CHAT_INTRO");
-      base.resultTextSuccess = game.i18n.localize("ABILITY_DOMINATE_MASTER.CHAT_SUCCESS");
+      base.introText = localize("ABILITY_DOMINATE_MASTER.CHAT_INTRO");
+      base.resultTextSuccess = localize("ABILITY_DOMINATE_MASTER.CHAT_SUCCESS");
     }
     return base;
   }
@@ -2617,16 +2624,16 @@ export class SymbaroumItem extends Item {
       base.getTarget = true;
       base.targetMandatory = true;
       base.casting = game.symbaroum.config.CASTING_NOT;
-      base.resultTextSuccess = game.i18n.localize("ABILITY_LEADER.CHAT_SUCCESS");
-      base.addTargetEffect = [foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "eye"))];
+      base.resultTextSuccess = localize("ABILITY_LEADER.CHAT_SUCCESS");
+      base.addTargetEffect = [foundry.utils.deepClone(getStatusEffect('eye'))];
     }
     return base;
   }
 
   abilitySetupLoremaster(base) {
-    base.introText = game.i18n.localize("ABILITY_LOREMASTER.CHAT_INTRO");
-    base.resultTextSuccess = game.i18n.localize("ABILITY_LOREMASTER.CHAT_SUCCESS");
-    base.resultTextFail = game.i18n.localize("ABILITY_LOREMASTER.CHAT_FAILURE");
+    base.introText = localize("ABILITY_LOREMASTER.CHAT_INTRO");
+    base.resultTextSuccess = localize("ABILITY_LOREMASTER.CHAT_SUCCESS");
+    base.resultTextFail = localize("ABILITY_LOREMASTER.CHAT_FAILURE");
     return base;
   }
 
@@ -2637,7 +2644,7 @@ export class SymbaroumItem extends Item {
     base.targetPresentFSmod = {
       medicusExam: false,
       healedToken: game.symbaroum.config.TARGET_TOKEN,
-      targetText: game.i18n.localize("ABILITY_MEDICUS.CHAT_TARGET"),
+      targetText: localize("ABILITY_MEDICUS.CHAT_TARGET"),
       subText: base.label + " (" + base.powerLvl.lvlName + ")",
       medicus: true,
     };
@@ -2693,11 +2700,11 @@ export class SymbaroumItem extends Item {
     base.targetResistAttribute = "cunning";
     base.askCastingAttribute = false;
     base.impeding = game.symbaroum.config.IMPEDING_MOVE;
-    base.introText = game.i18n.localize("ABILITY_STRANGLER.CHAT_INTRO");
-    base.introTextMaintain = game.i18n.localize("ABILITY_STRANGLER.CHAT_INTRO_M");
-    base.resultTextSuccess = game.i18n.localize("ABILITY_STRANGLER.CHAT_SUCCESS");
-    base.resultTextFail = game.i18n.localize("ABILITY_STRANGLER.CHAT_FAILURE");
-    base.activelyMaintainedTargetEffect = [foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "strangler"))];
+    base.introText = localize("ABILITY_STRANGLER.CHAT_INTRO");
+    base.introTextMaintain = localize("ABILITY_STRANGLER.CHAT_INTRO_M");
+    base.resultTextSuccess = localize("ABILITY_STRANGLER.CHAT_SUCCESS");
+    base.resultTextFail = localize("ABILITY_STRANGLER.CHAT_FAILURE");
+    base.activelyMaintainedTargetEffect = [foundry.utils.deepClone(getStatusEffect('strangler'))];
     base.hasDamage = true;
     base.ignoreArm = true;
     base.damageDice = "1d6";
@@ -2721,9 +2728,9 @@ export class SymbaroumItem extends Item {
     } else if (base.powerLvl.level > 2) {
       base.corruption = game.symbaroum.config.TEMPCORRUPTION_D6;
     } else base.corruption = game.symbaroum.config.TEMPCORRUPTION_ONE;
-    base.introText = game.i18n.localize("ABILITY_WITCHSIGHT.CHAT_INTRO");
-    base.resultTextSuccess = game.i18n.localize("ABILITY_WITCHSIGHT.CHAT_SUCCESS");
-    base.resultTextFail = game.i18n.localize("ABILITY_WITCHSIGHT.CHAT_FAILURE");
+    base.introText = localize("ABILITY_WITCHSIGHT.CHAT_INTRO");
+    base.resultTextSuccess = localize("ABILITY_WITCHSIGHT.CHAT_SUCCESS");
+    base.resultTextFail = localize("ABILITY_WITCHSIGHT.CHAT_FAILURE");
     return base;
   }
 
@@ -2741,7 +2748,7 @@ export class SymbaroumItem extends Item {
   }
 
   traitSetupRegeneration(base) {
-    base.introText = game.i18n.localize("TRAIT_REGENERATION.CHAT_ACTION");
+    base.introText = localize("TRAIT_REGENERATION.CHAT_ACTION");
     base.casting = game.symbaroum.config.CASTING_NOT;
     base.healedToken = game.symbaroum.config.ACTING_TOKEN;
 
@@ -2798,10 +2805,10 @@ export class SymbaroumItem extends Item {
       activelyMaintaninedCasterEffect: [],
       removeTargetEffect: [],
       removeCasterEffect: [],
-      introText: game.i18n.localize("POWER.CHAT_INTRO") + this.name + ' ".',
-      introTextMaintain: game.i18n.localize("POWER.CHAT_INTRO_M") + this.name + ' ".',
-      resultTextSuccess: game.i18n.localize("POWER.CHAT_SUCCESS"),
-      resultTextFail: game.i18n.localize("POWER.CHAT_FAILURE"),
+      introText: localize("POWER.CHAT_INTRO") + this.name + ' ".',
+      introTextMaintain: localize("POWER.CHAT_INTRO_M") + this.name + ' ".',
+      resultTextSuccess: localize("POWER.CHAT_SUCCESS"),
+      resultTextFail: localize("POWER.CHAT_FAILURE"),
       resistRollText: "",
       hasDamage: false,
       isAlternativeDamage: false,
@@ -2816,57 +2823,57 @@ export class SymbaroumItem extends Item {
 async function weaponTypeLabel(weapon) {
   switch (weapon.reference) {
     case "1handed":
-      return game.i18n.localize("WEAPON_CLASS.1HANDED");
+      return localize("WEAPON_CLASS.1HANDED");
     case "short":
-      return game.i18n.localize("WEAPON_CLASS.SHORT");
+      return localize("WEAPON_CLASS.SHORT");
     case "long":
-      return game.i18n.localize("WEAPON_CLASS.LONG");
+      return localize("WEAPON_CLASS.LONG");
     case "unarmed":
-      return game.i18n.localize("WEAPON_CLASS.UNARMED");
+      return localize("WEAPON_CLASS.UNARMED");
     case "heavy":
-      return game.i18n.localize("WEAPON_CLASS.HEAVY");
+      return localize("WEAPON_CLASS.HEAVY");
     case "ranged":
-      return game.i18n.localize("WEAPON_CLASS.RANGED");
+      return localize("WEAPON_CLASS.RANGED");
     case "thrown":
-      return game.i18n.localize("WEAPON_CLASS.THROWN");
+      return localize("WEAPON_CLASS.THROWN");
     case "shield":
-      return game.i18n.localize("WEAPON_CLASS.SHIELD");
+      return localize("WEAPON_CLASS.SHIELD");
     case "other":
-      return game.i18n.localize("GEAR.OTHER");
+      return localize("GEAR.OTHER");
   }
-  return game.i18n.localize("GEAR.OTHER");
+  return localize("GEAR.OTHER");
 }
 
 /* format the string to print the roll result, including the 2 dice if favour was involved, and the second roll when the option rare crits is enabled
 @returns:  {string} the formated and localized string*/
 export function formatRollResult(rollDataElement) {
-  let rollResult = game.i18n.localize("ABILITY.ROLL_RESULT") + rollDataElement.diceResult.toString();
+  let rollResult = localize("ABILITY.ROLL_RESULT") + rollDataElement.diceResult.toString();
   if (rollDataElement.favour != 0) {
     rollResult += "  (" + rollDataElement.dicesResult[0].toString() + " , " + rollDataElement.dicesResult[1].toString() + ")";
   }
   if (rollDataElement.secondRollResult) {
-    rollResult += " - " + game.i18n.localize("ABILITY.SECOND_ROLL_RESULT") + rollDataElement.secondRollResult.toString();
+    rollResult += " - " + localize("ABILITY.SECOND_ROLL_RESULT") + rollDataElement.secondRollResult.toString();
   }
   return rollResult;
 }
 
 async function checkCorruptionThreshold(actor, corruptionGained) {
   let img = "icons/magic/air/wind-vortex-swirl-purple.webp";
-  let introText = actor.name + game.i18n.localize("CORRUPTION.CHAT_WARNING");
-  let finalText = actor.name + game.i18n.localize("CORRUPTION.CHAT_WARNING");
+  let introText = actor.name + localize("CORRUPTION.CHAT_WARNING");
+  let finalText = actor.name + localize("CORRUPTION.CHAT_WARNING");
   if (!actor.system.health.corruption.threshold) return;
   else if (actor.system.health.corruption.value < actor.system.health.corruption.threshold) {
     if (actor.system.health.corruption.value + corruptionGained >= actor.system.health.corruption.threshold) {
-      introText = actor.name + game.i18n.localize("CORRUPTION.CHAT_INTRO");
-      finalText = actor.name + game.i18n.localize("CORRUPTION.CHAT_THRESHOLD");
+      introText = actor.name + localize("CORRUPTION.CHAT_INTRO");
+      finalText = actor.name + localize("CORRUPTION.CHAT_THRESHOLD");
       img = "icons/magic/acid/dissolve-arm-flesh.webp";
     } else if (actor.system.health.corruption.value + corruptionGained != actor.system.health.corruption.threshold - 1) {
       return;
     }
   } else if (actor.system.health.corruption.value < actor.system.health.corruption.max) {
     if (actor.system.health.corruption.value + corruptionGained >= actor.system.health.corruption.max) {
-      introText = actor.name + game.i18n.localize("CORRUPTION.CHAT_INTRO");
-      finalText = actor.name + game.i18n.localize("CORRUPTION.CHAT_MAX");
+      introText = actor.name + localize("CORRUPTION.CHAT_INTRO");
+      finalText = actor.name + localize("CORRUPTION.CHAT_MAX");
       img = "icons/creatures/unholy/demon-horned-winged-laughing.webp";
     } else if (actor.system.health.corruption.value + corruptionGained != actor.system.health.corruption.max - 1) {
       return;
@@ -2986,7 +2993,7 @@ export async function modifierDialog(functionStuff) {
     askCastingAttribute: functionStuff.askCastingAttribute,
     askTargetAttribute: functionStuff.askTargetAttribute,
     isWeaponRoll: isWeaponRoll,
-    autoparamsText: game.i18n.localize("DIALOG.AUTOPARAMS") + functionStuff.autoParams + functionStuff.targetData.autoParams,
+    autoparamsText: localize("DIALOG.AUTOPARAMS") + functionStuff.autoParams + functionStuff.targetData.autoParams,
     isArmorRoll: null,
     ignoreArmor: functionStuff.ignoreArm,
     leaderTarget: leaderTarget,
@@ -2999,9 +3006,9 @@ export async function modifierDialog(functionStuff) {
     d8: d8,
     d4: d4,
     choices: {
-      0: game.i18n.localize("DIALOG.FAVOUR_NORMAL"),
-      "-1": game.i18n.localize("DIALOG.FAVOUR_DISFAVOUR"),
-      1: game.i18n.localize("DIALOG.FAVOUR_FAVOUR"),
+      0: localize("DIALOG.FAVOUR_NORMAL"),
+      "-1": localize("DIALOG.FAVOUR_DISFAVOUR"),
+      1: localize("DIALOG.FAVOUR_FAVOUR"),
     },
     groupName: "favour",
     defaultFavour: "0",
@@ -3028,7 +3035,7 @@ export async function modifierDialog(functionStuff) {
     buttons: {
       roll: {
         icon: '<i class="fas fa-check"></i>',
-        label: game.i18n.localize("BUTTON.ROLL"),
+        label: localize("BUTTON.ROLL"),
         callback: async (html) => {
           if (functionStuff.askWeapon) {
             let wepID = html[0].querySelector("#weapon")[0].value;
@@ -3036,7 +3043,7 @@ export async function modifierDialog(functionStuff) {
             functionStuff.castingAttributeName = functionStuff.weapon.system.attribute;
             if (functionStuff.weapon.system.qualities.precise) {
               functionStuff.modifier += 1;
-              functionStuff.autoParams += game.i18n.localize("COMBAT.PARAMS_PRECISE");
+              functionStuff.autoParams += localize("COMBAT.PARAMS_PRECISE");
             }
           }
           // acting attribute for d20roll
@@ -3076,20 +3083,20 @@ export async function modifierDialog(functionStuff) {
           if (askImpeding) {
             if (html[0].querySelector("#impeding").checked) {
               functionStuff.modifier += -impedingValue;
-              functionStuff.autoParams += game.i18n.localize("ARMOR.IMPEDINGLONG") + ", ";
+              functionStuff.autoParams += localize("ARMOR.IMPEDINGLONG") + ", ";
             }
           }
           if (targetImpeding) {
             if (html[0].querySelector("#impTarget").checked) {
               functionStuff.modifier += functionStuff.targetImpeding;
-              functionStuff.autoParams += game.i18n.localize("ARMOR.IMPEDING_TARGET") + ", ";
+              functionStuff.autoParams += localize("ARMOR.IMPEDING_TARGET") + ", ";
             }
           }
           if (askCorruptedTargetDefaultYes || askCorruptedTargetDefaultNo) {
             functionStuff.targetFullyCorrupted = html[0].querySelector("#targetCorrupt").checked;
             if (functionStuff.targetFullyCorrupted) {
               functionStuff = Object.assign({}, functionStuff, functionStuff.targetFullyCorruptedFSmod);
-              functionStuff.targetData.autoParams += game.i18n.localize("TOOLTIP.HEALTH.CORRUPTION_NA_TEXT");
+              functionStuff.targetData.autoParams += localize("TOOLTIP.HEALTH.CORRUPTION_NA_TEXT");
             }
           }
           //combat roll stuff
@@ -3097,7 +3104,7 @@ export async function modifierDialog(functionStuff) {
             functionStuff.hasAdvantage = html[0].querySelector("#advantage").checked;
             if (functionStuff.hasAdvantage) {
               functionStuff.modifier += 2;
-              functionStuff.autoParams += game.i18n.localize("DIALOG.ADVANTAGE") + ", ";
+              functionStuff.autoParams += localize("DIALOG.ADVANTAGE") + ", ";
             }
             let hasDamModifier = html[0].querySelector("#dammodifier").length > 0;
             let damModifier = "";
@@ -3110,7 +3117,7 @@ export async function modifierDialog(functionStuff) {
               if (damString.length) {
                 functionStuff.additionalModifier = damString; // Regardless if valid or not, set it as attri_defaults
                 let plus = "+";
-                let damSource = "[" + game.i18n.localize("DIALOG.DAMAGE_MODIFIER") + "] ";
+                let damSource = "[" + localize("DIALOG.DAMAGE_MODIFIER") + "] ";
                 if (damString.charAt(0) === "+") {
                   plus = ""; // If it already has plus, do not add another
                 }
@@ -3123,7 +3130,7 @@ export async function modifierDialog(functionStuff) {
                   // Validate string as valid roll object
                   let r = await new Roll(damModifier, {}).evaluate();
                 } catch (err) {
-                  ui.notifications.error(`The ${game.i18n.localize("DIALOG.DAMAGE_MODIFIER")} can't be used for rolling damage ${err}`);
+                  ui.notifications.error(`The ${localize("DIALOG.DAMAGE_MODIFIER")} can't be used for rolling damage ${err}`);
                   return;
                 }
                 // damModifierAttSup = damModifier;
@@ -3158,7 +3165,7 @@ export async function modifierDialog(functionStuff) {
           }
           if (isWeaponRoll) {
             functionStuff.ignoreArm = html[0].querySelector("#ignarm").checked;
-            if (functionStuff.ignoreArm) functionStuff.autoParams += game.i18n.localize("COMBAT.CHAT_DMG_PARAMS_IGN_ARMOR") + ", ";
+            if (functionStuff.ignoreArm) functionStuff.autoParams += localize("COMBAT.CHAT_DMG_PARAMS_IGN_ARMOR") + ", ";
             functionStuff.poison = Number(html[0].querySelector("#poison").value);
           }
           if (medicus) {
@@ -3169,7 +3176,7 @@ export async function modifierDialog(functionStuff) {
               if (customHealingFormula.length > 0) {
                 functionStuff.healFormulaSucceed = customHealingFormula;
               } else if (functionStuff.herbalCure) {
-                functionStuff.subText += ", " + game.i18n.localize("ABILITY_MEDICUS.HERBALCURE");
+                functionStuff.subText += ", " + localize("ABILITY_MEDICUS.HERBALCURE");
                 if (functionStuff.powerLvl.level == 1) {
                   functionStuff.healFormulaSucceed = "1d6";
                 } else if (functionStuff.powerLvl.level == 2) {
@@ -3178,12 +3185,12 @@ export async function modifierDialog(functionStuff) {
                   functionStuff.healFormulaSucceed = "1d10";
                   functionStuff.healFormulaFailed = "1d6";
                 }
-              } else functionStuff.subText += ", " + game.i18n.localize("ABILITY_MEDICUS.NOHERBALCURE");
+              } else functionStuff.subText += ", " + localize("ABILITY_MEDICUS.NOHERBALCURE");
               if (!functionStuff.medicusExam) {
                 functionStuff.removeTargetEffect = ["icons/svg/blood.svg"];
-                functionStuff.introText = game.i18n.localize("ABILITY_MEDICUS.CHAT_INTRO");
-                functionStuff.resultTextFail = game.i18n.localize("ABILITY_MEDICUS.CHAT_FAILURE");
-                functionStuff.resultTextSuccess = game.i18n.localize("ABILITY_MEDICUS.CHAT_SUCCESS");
+                functionStuff.introText = localize("ABILITY_MEDICUS.CHAT_INTRO");
+                functionStuff.resultTextFail = localize("ABILITY_MEDICUS.CHAT_FAILURE");
+                functionStuff.resultTextSuccess = localize("ABILITY_MEDICUS.CHAT_SUCCESS");
               }
             } else functionStuff.medicusExam = true;
           }
@@ -3214,8 +3221,8 @@ export async function modifierDialog(functionStuff) {
             } else {
               functionStuff.resistRoll = true;
               functionStuff.resistRollText = isWeaponRoll
-                ? functionStuff.targetData.name + game.i18n.localize("COMBAT.DEFENSE_ROLL")
-                : functionStuff.targetData.name + game.i18n.localize("ABILITY.RESIST_ROLL");
+                ? functionStuff.targetData.name + localize("COMBAT.DEFENSE_ROLL")
+                : functionStuff.targetData.name + localize("ABILITY.RESIST_ROLL");
               let userArray = await getOwnerPlayer(functionStuff.targetData.actor);
               if (userArray.length > 0 && game.settings.get("symbaroum", "playerResistButton")) {
                 functionStuff.targetUserId = userArray[0].id;
@@ -3232,7 +3239,7 @@ export async function modifierDialog(functionStuff) {
       },
       cancel: {
         icon: '<i class="fas fa-times"></i>',
-        label: game.i18n.localize("BUTTON.CANCEL"),
+        label: localize("BUTTON.CANCEL"),
         callback: () => {},
       },
     },
@@ -3377,7 +3384,7 @@ async function attackResult(rollData, functionStuff) {
   let corruptionChatResult = "";
   let corruptionTooltip = "";
   let targetValue = functionStuff.targetData.actor.system.health.toughness.value;
-  let targetText = game.i18n.format(functionStuff.targetText ?? "", namesForText);
+  let targetText = formatSystemText(functionStuff.targetText ?? "", namesForText);
   if (functionStuff.isAlternativeDamage) {
     targetValue = getAttributeValue(functionStuff.targetData.actor, functionStuff.alternativeDamageAttribute);
   }
@@ -3387,17 +3394,17 @@ async function attackResult(rollData, functionStuff) {
     rolls = rolls.concat(rollDataElement.rolls);
 
     rollDataElement.finalText = "";
-    rollDataElement.resultText = functionStuff.actingCharName + game.i18n.localize("COMBAT.CHAT_SUCCESS") + functionStuff.targetData.name;
+    rollDataElement.resultText = functionStuff.actingCharName + localize("COMBAT.CHAT_SUCCESS") + functionStuff.targetData.name;
     if (rollDataElement.critSuccess) {
       if (functionStuff.resistRoll) {
         //critSuccess is in the attackers perspective.
-        rollDataElement.resultText += " - " + game.i18n.localize("CHAT.CRITICAL_FAILURE");
+        rollDataElement.resultText += " - " + localize("CHAT.CRITICAL_FAILURE");
       } else {
-        rollDataElement.resultText += " - " + game.i18n.localize("CHAT.CRITICAL_SUCCESS");
+        rollDataElement.resultText += " - " + localize("CHAT.CRITICAL_SUCCESS");
       }
     }
     if (functionStuff.weapon.qualities.jointed && !rollDataElement.trueActorSucceeded && rollDataElement.diceResult % 2 != 0) {
-      rollDataElement.resultText = game.i18n.localize("COMBAT.CHAT_JOINTED_SECONDARY");
+      rollDataElement.resultText = localize("COMBAT.CHAT_JOINTED_SECONDARY");
     } else if (rollDataElement.trueActorSucceeded) {
       hasDamage = true;
       rollDataElement.hasDamage = true;
@@ -3405,9 +3412,9 @@ async function attackResult(rollData, functionStuff) {
       rolls.push(damage.roll);
 
       attackNumber += 1;
-      rollDataElement.dmgFormula = game.i18n.localize("WEAPON.DAMAGE") + ": " + damage.roll._formula;
+      rollDataElement.dmgFormula = localize("WEAPON.DAMAGE") + ": " + damage.roll._formula;
       rollDataElement.damageTooltip = new Handlebars.SafeString(await damage.roll.getTooltip());
-      damageRollMod = game.i18n.localize("COMBAT.CHAT_DMG_PARAMS") + damage.autoParams;
+      damageRollMod = localize("COMBAT.CHAT_DMG_PARAMS") + damage.autoParams;
       hasDmgMod = damage.autoParams.length > 0 ? true : false;
       //damage reduction (Undead trait, swarm...)
       let finalDmg = await mathDamageProt(functionStuff.targetData.actor, damage.roll.total, { mysticalWeapon: mysticalWeapon });
@@ -3420,26 +3427,26 @@ async function attackResult(rollData, functionStuff) {
         corruptionDmgFormula += functionStuff.corruptingattack;
         printCorruption = true;
       }
-      rollDataElement.damageText = functionStuff.targetData.name + game.i18n.localize("COMBAT.CHAT_DAMAGE") + rollDataElement.dmg.toString();
+      rollDataElement.damageText = functionStuff.targetData.name + localize("COMBAT.CHAT_DAMAGE") + rollDataElement.dmg.toString();
       damageTot += rollDataElement.dmg;
       if (functionStuff.isAlternativeDamage) {
         rollDataElement.damageText += " (" + game.symbaroum.api.getAttributeLabel(functionStuff.actor, functionStuff.alternativeDamageAttribute) + ")";
       }
     } else {
-      rollDataElement.resultText = functionStuff.actingCharName + game.i18n.localize("COMBAT.CHAT_FAILURE");
+      rollDataElement.resultText = functionStuff.actingCharName + localize("COMBAT.CHAT_FAILURE");
       if (rollDataElement.critFail) {
         //critFail is in the attackers perspective, so it means the defenser gets a free attack
         if (functionStuff.resistRoll) {
-          rollDataElement.resultText += " - " + game.i18n.localize("CHAT.CRITICAL_SUCCESS") + " : " + game.i18n.localize("CHAT.CRITICAL_FREEATTACK");
+          rollDataElement.resultText += " - " + localize("CHAT.CRITICAL_SUCCESS") + " : " + localize("CHAT.CRITICAL_FREEATTACK");
         } else {
-          rollDataElement.resultText += " - " + game.i18n.localize("CHAT.CRITICAL_FAILURE") + " : " + game.i18n.localize("CHAT.CRITICAL_FAILURE_FREEATTACK");
+          rollDataElement.resultText += " - " + localize("CHAT.CRITICAL_FAILURE") + " : " + localize("CHAT.CRITICAL_FAILURE_FREEATTACK");
         }
       }
     }
   }
   if (damageTot <= 0) {
     damageTot = 0;
-    damageFinalText = functionStuff.targetData.name + game.i18n.localize("COMBAT.CHAT_DAMAGE_NUL");
+    damageFinalText = functionStuff.targetData.name + localize("COMBAT.CHAT_DAMAGE_NUL");
   } else {
     if (damageTot >= targetValue) {
       targetDies = true;
@@ -3451,17 +3458,17 @@ async function attackResult(rollData, functionStuff) {
       } else {
         flagDataArray.push({
           tokenId: functionStuff.targetData.tokenId,
-          addEffect: foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "dead")),
+          addEffect: foundry.utils.deepClone(getStatusEffect('dead')),
           overlay: true,
           effectDuration: 1,
         });
       }
-      damageFinalText = functionStuff.targetData.name + game.i18n.localize("COMBAT.CHAT_DAMAGE_DYING");
+      damageFinalText = functionStuff.targetData.name + localize("COMBAT.CHAT_DAMAGE_DYING");
     } else if (pain) {
-      damageFinalText = functionStuff.targetData.name + game.i18n.localize("COMBAT.CHAT_DAMAGE_PAIN");
+      damageFinalText = functionStuff.targetData.name + localize("COMBAT.CHAT_DAMAGE_PAIN");
       flagDataArray.push({
         tokenId: functionStuff.targetData.tokenId,
-        addEffect: foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "prone")),
+        addEffect: foundry.utils.deepClone(getStatusEffect('prone')),
         effectDuration: 1,
       });
     }
@@ -3482,7 +3489,7 @@ async function attackResult(rollData, functionStuff) {
   if (printCorruption) {
     let corruptionRoll = await new Roll(corruptionDmgFormula).evaluate();
     rolls.push(corruptionRoll);
-    corruptionChatResult = game.i18n.localize("COMBAT.CHAT_CORRUPTED_ATTACK") + corruptionRoll.total.toString();
+    corruptionChatResult = localize("COMBAT.CHAT_CORRUPTED_ATTACK") + corruptionRoll.total.toString();
     corruptionTooltip = new Handlebars.SafeString(await corruptionRoll.getTooltip());
     checkCorruptionThreshold(functionStuff.targetData.actor, corruptionRoll.total);
     flagDataArray.push({
@@ -3559,7 +3566,7 @@ async function attackResult(rollData, functionStuff) {
       templateData.printBleed = true;
       let bleedDamage = doTime.damagePerRound;
       if (!functionStuff.attackFromPC) bleedDamage = doTime.damagePerRoundNPC.toString();
-      templateData.bleedChat = functionStuff.targetData.name + game.i18n.localize("COMBAT.CHAT_BLEED") + bleedDamage;
+      templateData.bleedChat = functionStuff.targetData.name + localize("COMBAT.CHAT_BLEED") + bleedDamage;
       let finalbleedDmg = await mathDamageProt(functionStuff.targetData.actor, 2, { bleeding: true });
       templateData.bleedChat += finalbleedDmg.text;
       flagDataArray.push({
@@ -3584,9 +3591,9 @@ async function attackResult(rollData, functionStuff) {
       templateData.printFlaming = true;
       templateData.flamingChat =
         functionStuff.targetData.name +
-        game.i18n.localize("COMBAT.CHAT_FLAMING_SUCCESS1") +
+        localize("COMBAT.CHAT_FLAMING_SUCCESS1") +
         flamingDamage +
-        game.i18n.localize("COMBAT.CHAT_POISON_SUCCESS2") +
+        localize("COMBAT.CHAT_POISON_SUCCESS2") +
         flamingRounds.toString();
       let finalburningDmg = await mathDamageProt(functionStuff.targetData.actor, 2, { elemental: true });
       templateData.flamingChat += finalburningDmg.text;
@@ -3611,9 +3618,9 @@ async function attackResult(rollData, functionStuff) {
     }),
     content: html,
     rolls: [createRollData(rolls)],
-    rollMode: game.settings.get("core", "rollMode"),
+    ...getChatModeData(),
   };
-  ChatMessage.applyRollMode(chatData, "roll");
+  applyChatMode(chatData);
   let NewMessage = await ChatMessage.create(chatData);
   if (flagDataArray.length > 0) {
     await createModifyTokenChatButton(flagDataArray);
@@ -3628,7 +3635,7 @@ async function formatRollString(rollDataElement, hasTarget, modifier) {
     rollString += `  ⬅  ${rollDataElement.targetAttributeLabel} : (${attributeMod})`;
   }
   if (modifier) {
-    rollString += "  " + game.i18n.localize("COMBAT.CHAT_MODIFIER") + modifier.toString();
+    rollString += "  " + localize("COMBAT.CHAT_MODIFIER") + modifier.toString();
   }
   return rollString;
 }
@@ -3649,8 +3656,8 @@ async function healing(healFormula, targetToken, attackFromPC) {
     hasDamage: true,
     roll: healRoll,
     healed: healed,
-    dmgFormula: game.i18n.localize("POWER_LAYONHANDS.CHAT_FINAL") + healFormula,
-    damageText: game.i18n.localize("POWER_LAYONHANDS.CHAT_FINAL") + healed.toString(),
+    dmgFormula: localize("POWER_LAYONHANDS.CHAT_FINAL") + healFormula,
+    damageText: localize("POWER_LAYONHANDS.CHAT_FINAL") + healed.toString(),
     damageTooltip: damageTooltip,
     flagData: {
       tokenId: targetToken.id,
@@ -3662,14 +3669,14 @@ async function healing(healFormula, targetToken, attackFromPC) {
 async function poisonCalc(functionStuff, poisonRoll) {
   let poisonRes = {};
   poisonRes.printPoison = false;
-  poisonRes.poisonChatIntro = functionStuff.actingCharName + game.i18n.localize("COMBAT.CHAT_POISON") + functionStuff.targetData.name;
+  poisonRes.poisonChatIntro = functionStuff.actingCharName + localize("COMBAT.CHAT_POISON") + functionStuff.targetData.name;
   let poisonDamage = "0";
   let poisonedTimeLeft = 0;
-  const effect = foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "poison"));
-  poisonRes.poisonResistRollText = functionStuff.targetData.name + game.i18n.localize("ABILITY.RESIST_ROLL");
+  const effect = foundry.utils.deepClone(getStatusEffect('poison'));
+  poisonRes.poisonResistRollText = functionStuff.targetData.name + localize("ABILITY.RESIST_ROLL");
 
   if (!poisonRoll.trueActorSucceeded) {
-    poisonRes.poisonChatResult = game.i18n.localize("COMBAT.CHAT_POISON_FAILURE");
+    poisonRes.poisonChatResult = localize("COMBAT.CHAT_POISON_FAILURE");
   } else {
     if (functionStuff.attackFromPC || functionStuff.targetData.actor.type === "monster") {
       poisonDamage = "1d" + (2 * functionStuff.poison + 2).toString();
@@ -3683,7 +3690,7 @@ async function poisonCalc(functionStuff, poisonRoll) {
     let poisonedEffectCounter = functionStuff.targetData.token.actor?.hasCondition(effect.id);
     if (poisonedEffectCounter) {
       //target already poisoned
-      poisonRes.poisonChatResult = game.i18n.localize("COMBAT.CHAT_POISON_NOTEXTEND");
+      poisonRes.poisonChatResult = localize("COMBAT.CHAT_POISON_NOTEXTEND");
     } else {
       //new poisoning
       poisonRes.flagData = {
@@ -3693,9 +3700,9 @@ async function poisonCalc(functionStuff, poisonRoll) {
       };
       poisonRes.poisonChatResult =
         functionStuff.targetData.name +
-        game.i18n.localize("COMBAT.CHAT_POISON_SUCCESS1") +
+        localize("COMBAT.CHAT_POISON_SUCCESS1") +
         poisonDamage +
-        game.i18n.localize("COMBAT.CHAT_POISON_SUCCESS2") +
+        localize("COMBAT.CHAT_POISON_SUCCESS2") +
         NewPoisonRounds.toString();
     }
   }
@@ -3757,11 +3764,11 @@ async function standardPowerResult(rollData, functionStuff) {
     targetname: functionStuff.targetData?.name ?? "",
     targetshadow: functionStuff.targetData?.actor?.system.bio.shadow ?? "",
   };
-  let targetText = game.i18n.format(functionStuff.targetText ?? "", namesForText);
+  let targetText = formatSystemText(functionStuff.targetText ?? "", namesForText);
   if (!functionStuff.isMaintained && functionStuff.corruption !== game.symbaroum.config.TEMPCORRUPTION_NONE) {
     haveCorruption = true;
     corruption = await functionStuff.actor.getCorruption(functionStuff);
-    corruptionText = game.i18n.localize("POWER.CHAT_CORRUPTION") + corruption.value;
+    corruptionText = localize("POWER.CHAT_CORRUPTION") + corruption.value;
     if (corruption.sorceryRoll) corruptionText += " (sorcery roll result:" + corruption.sorceryRoll.diceResult + ")";
     checkCorruptionThreshold(functionStuff.actor, corruption.value);
     flagDataArray.push({
@@ -3774,11 +3781,11 @@ async function standardPowerResult(rollData, functionStuff) {
   if (functionStuff.resultRolls !== undefined && functionStuff.resultRolls !== null) {
     rolls = rolls.concat(functionStuff.resultRolls);
   }
-  let resultText = game.i18n.format(trueActorSucceeded ? functionStuff.resultTextSuccess : functionStuff.resultTextFail, namesForText);
-  let finalText = game.i18n.format(functionStuff.finalText ?? "", namesForText);
+  let resultText = formatSystemText(trueActorSucceeded ? functionStuff.resultTextSuccess : functionStuff.resultTextFail, namesForText);
+  let finalText = formatSystemText(functionStuff.finalText ?? "", namesForText);
   let subText = functionStuff.subText ?? functionStuff.abilityName + " (" + functionStuff.powerLvl.lvlName + ")";
-  let introText = game.i18n.format(functionStuff.isMaintained ? functionStuff.introTextMaintain : functionStuff.introText, namesForText);
-  if (functionStuff.finalTextSucceed && trueActorSucceeded) finalText = game.i18n.format(functionStuff.finalTextSucceed, namesForText);
+  let introText = formatSystemText(functionStuff.isMaintained ? functionStuff.introTextMaintain : functionStuff.introText, namesForText);
+  if (functionStuff.finalTextSucceed && trueActorSucceeded) finalText = formatSystemText(functionStuff.finalTextSucceed, namesForText);
   else if (functionStuff.targetData.hasTarget && functionStuff.targetData.autoParams != "") {
     targetText += ": " + functionStuff.targetData.autoParams;
   }
@@ -3796,7 +3803,7 @@ async function standardPowerResult(rollData, functionStuff) {
 
   if (damageDice === "0d0") {
     doDamage = false;
-    resultText = game.i18n.format(game.i18n.localize("POWER_BRIMSTONECASC.CHAT_FAILURE_RR"), namesForText);
+    resultText = localize("POWER_BRIMSTONECASC.CHAT_FAILURE_RR", namesForText);
   }
   if (functionStuff.ability.reference === "blessedshield" && trueActorSucceeded) {
     let protectionFormula = "1d" + (2 + 2 * functionStuff.powerLvl.level);
@@ -3807,11 +3814,11 @@ async function standardPowerResult(rollData, functionStuff) {
       addObject: "blessedshield",
       protection: protectionFormula,
     });
-    finalText = game.i18n.format(game.i18n.localize("POWER_BLESSEDSHIELD.PROTECTED"), namesForText) + " (" + protectionFormula + ")";
+    finalText = localize("POWER_BLESSEDSHIELD.PROTECTED", namesForText) + " (" + protectionFormula + ")";
 
     if (functionStuff.targets) {
       for (let target of functionStuff.targets) {
-        let effect = foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "holyShield"));
+        let effect = foundry.utils.deepClone(getStatusEffect('holyShield'));
         flagDataArray.push(
           {
             tokenId: target.tokenId,
@@ -3824,7 +3831,7 @@ async function standardPowerResult(rollData, functionStuff) {
             protection: protectionFormula,
           },
         );
-        finalText += ", " + game.i18n.format(game.i18n.localize("POWER_BLESSEDSHIELD.PROTECTED"), { actorname: target.name });
+        finalText += ", " + localize("POWER_BLESSEDSHIELD.PROTECTED", { actorname: target.name });
       }
     }
   }
@@ -3835,11 +3842,11 @@ async function standardPowerResult(rollData, functionStuff) {
 
     finalText = confusionRoll.total.toString() + ": ";
     if (confusionRoll.total < 3) {
-      finalText += game.i18n.format(game.i18n.localize("POWER_CONFUSION.EFFECT12"), namesForText);
+      finalText += localize("POWER_CONFUSION.EFFECT12", namesForText);
     } else if (confusionRoll.total < 5) {
-      finalText += game.i18n.format(game.i18n.localize("POWER_CONFUSION.EFFECT34"), namesForText);
+      finalText += localize("POWER_CONFUSION.EFFECT34", namesForText);
     } else {
-      finalText += game.i18n.format(game.i18n.localize("POWER_CONFUSION.EFFECT56"), namesForText);
+      finalText += localize("POWER_CONFUSION.EFFECT56", namesForText);
     }
   }
 
@@ -3857,7 +3864,7 @@ async function standardPowerResult(rollData, functionStuff) {
   }
 
   if (functionStuff.ability.reference === "witchsight" && functionStuff.targetData?.hasTarget && trueActorSucceeded) {
-    finalText = game.i18n.format(game.i18n.localize("ABILITY_WITCHSIGHT.CHAT_FINAL"), namesForText);
+    finalText = localize("ABILITY_WITCHSIGHT.CHAT_FINAL", namesForText);
   }
 
   if (doDamage) {
@@ -3869,7 +3876,7 @@ async function standardPowerResult(rollData, functionStuff) {
     rolls.push(damage.roll);
 
     damageRollResult += await formatRollResult(damage);
-    dmgFormula = game.i18n.localize("WEAPON.DAMAGE") + ": " + damage.roll._formula;
+    dmgFormula = localize("WEAPON.DAMAGE") + ": " + damage.roll._formula;
 
     //damage reduction (Undead trait, swarm...)
     let finalDmg = await mathDamageProt(functionStuff.targetData.actor, damage.roll.total, functionStuff.damageType);
@@ -3878,7 +3885,7 @@ async function standardPowerResult(rollData, functionStuff) {
     damageTot = finalDmg.damage;
     dmgFormula += finalDmg.text;
 
-    damageText = functionStuff.targetData.name + game.i18n.localize("COMBAT.CHAT_DAMAGE") + damageTot.toString();
+    damageText = functionStuff.targetData.name + localize("COMBAT.CHAT_DAMAGE") + damageTot.toString();
     damageTooltip = new Handlebars.SafeString(await damage.roll.getTooltip());
 
     if (functionStuff.isAlternativeDamage) {
@@ -3887,11 +3894,11 @@ async function standardPowerResult(rollData, functionStuff) {
     }
     if (damageTot <= 0) {
       damageTot = 0;
-      damageText = functionStuff.targetData.name + game.i18n.localize("COMBAT.CHAT_DAMAGE_NUL");
+      damageText = functionStuff.targetData.name + localize("COMBAT.CHAT_DAMAGE_NUL");
     } else {
       if (damageTot >= targetValue) {
         targetDies = true;
-        damageFinalText = functionStuff.targetData.name + game.i18n.localize("COMBAT.CHAT_DAMAGE_DYING");
+        damageFinalText = functionStuff.targetData.name + localize("COMBAT.CHAT_DAMAGE_DYING");
         if (ui.combat.viewed && ui.combat.viewed.getCombatantByToken(functionStuff.targetData.tokenId)) {
           flagDataArray.push({
             tokenId: functionStuff.targetData.tokenId,
@@ -3900,16 +3907,16 @@ async function standardPowerResult(rollData, functionStuff) {
         } else {
           flagDataArray.push({
             tokenId: functionStuff.targetData.tokenId,
-            addEffect: foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "dead")),
+            addEffect: foundry.utils.deepClone(getStatusEffect('dead')),
             overlay: true,
             effectDuration: 1,
           });
         }
       } else if (pain) {
-        damageFinalText = functionStuff.targetData.name + game.i18n.localize("COMBAT.CHAT_DAMAGE_PAIN");
+        damageFinalText = functionStuff.targetData.name + localize("COMBAT.CHAT_DAMAGE_PAIN");
         flagDataArray.push({
           tokenId: functionStuff.targetData.tokenId,
-          addEffect: foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "prone")),
+          addEffect: foundry.utils.deepClone(getStatusEffect('prone')),
           effectDuration: 1,
         });
       }
@@ -3986,18 +3993,18 @@ async function standardPowerResult(rollData, functionStuff) {
       if (functionStuff.ability.reference === "inheritwound") {
         let inheritDamage = functionStuff.powerLvl.level > 1 ? Math.ceil(healResult.healed / 2) : healResult.healed;
         templateData.finalText +=
-          game.i18n.format(game.i18n.localize("POWER_INHERITWOUND.CHAT_HEALED"), namesForText) +
+          localize("POWER_INHERITWOUND.CHAT_HEALED", namesForText) +
           healResult.healed.toString() +
           "; " +
-          game.i18n.format(game.i18n.localize("POWER_INHERITWOUND.CHAT_DAMAGE"), namesForText) +
+          localize("POWER_INHERITWOUND.CHAT_DAMAGE", namesForText) +
           inheritDamage.toString();
         flagDataArray.push({
           tokenId: functionStuff.tokenId,
           toughnessChange: inheritDamage * -1,
         });
         if (functionStuff.powerLvl.level > 1) {
-          templateData.finalText += game.i18n.localize("POWER_INHERITWOUND.CHAT_REDIRECT");
-          const pEffect = foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "poison"));
+          templateData.finalText += localize("POWER_INHERITWOUND.CHAT_REDIRECT");
+          const pEffect = foundry.utils.deepClone(getStatusEffect('poison'));
           let poisonedEffectCounter = functionStuff.targetData.token?.actor.hasCondition(pEffect.id);
           if (poisonedEffectCounter) {
             //target  poisoned
@@ -4016,7 +4023,7 @@ async function standardPowerResult(rollData, functionStuff) {
               },
             );
           }
-          const bEffect = foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id === "bleeding"));
+          const bEffect = foundry.utils.deepClone(getStatusEffect('bleeding'));
           let bleedEffectCounter = functionStuff.targetData.token?.actor.hasCondition(bEffect.id);
           if (bleedEffectCounter) {
             //get the number of rounds left
@@ -4051,7 +4058,7 @@ async function standardPowerResult(rollData, functionStuff) {
       alias: game.user.name,
       actor: actorid,
     }),
-    rollMode: game.settings.get("core", "rollMode"),
+    ...getChatModeData(),
     content: html,
   };
   if (functionStuff.gmOnlyChatResultNPC && !functionStuff.attackFromPC) {
@@ -4063,7 +4070,7 @@ async function standardPowerResult(rollData, functionStuff) {
     // Only shows rolls if they are displayed to
     chatData.rolls = [createRollData(rolls)];
   }
-  ChatMessage.applyRollMode(chatData, "roll");
+  applyChatMode(chatData);
   let NewMessage = await ChatMessage.create(chatData);
   if (trueActorSucceeded && functionStuff.addTargetEffect.length > 0) {
     for (let effect of functionStuff.addTargetEffect) {
@@ -4157,14 +4164,14 @@ async function standardPowerResult(rollData, functionStuff) {
 
 async function preDialogLayonHands(functionStuff) {
   let layHandsDialogTemplate = `
-    <h1> ${game.i18n.localize("POWER_LAYONHANDS.DIALOG")} </h1>
+    <h1> ${localize("POWER_LAYONHANDS.DIALOG")} </h1>
     `;
   new Dialog({
-    title: game.i18n.localize("POWER_LABEL.LAY_ON_HAND"),
+    title: localize("POWER_LABEL.LAY_ON_HAND"),
     content: layHandsDialogTemplate,
     buttons: {
       touch: {
-        label: game.i18n.localize("POWER_LAYONHANDS.TOUCH"),
+        label: localize("POWER_LAYONHANDS.TOUCH"),
         callback: (html) => {
           functionStuff.healFormulaSucceed = "1d12";
           functionStuff.touch = true;
@@ -4173,7 +4180,7 @@ async function preDialogLayonHands(functionStuff) {
       },
 
       lineofSight: {
-        label: game.i18n.localize("POWER_LAYONHANDS.REMOTE"),
+        label: localize("POWER_LAYONHANDS.REMOTE"),
         callback: (html) => {
           functionStuff.touch = false;
           modifierDialog(functionStuff);

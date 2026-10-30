@@ -1,3 +1,4 @@
+import { applyChatMode, getChatModeData, localize } from './compatibility.js';
 import { prepareRollAttribute } from "../common/dialog.js";
 
 export class SymbaroumMacros {
@@ -54,8 +55,8 @@ export class SymbaroumMacros {
 		const actor = game.actors.get(data.actorId);
 		if (!actor) return;
 
-		const commmandName = game.i18n.format("MACRO.MAKETEST", {
-			testtype: game.i18n.localize(
+		const commmandName = localize("MACRO.MAKETEST", {
+			testtype: localize(
 				actor.system.attributes[data.attribute].label
 			),
 		});
@@ -74,12 +75,7 @@ export class SymbaroumMacros {
 			macro = await Macro.create({
 				name: commmandName,
 				type: "script",
-				img: game.i18n.format(game.symbaroum.config.imageRef, {
-					filename:
-						game.symbaroum.config.attributeImages[
-							data.attribute
-						],
-				}),
+				img: `systems/symbaroum/asset/image/${game.symbaroum.config.attributeImages[data.attribute]}`,
 				command: command,
 				flags: { "symbaroum.attributeMacro": true },
 				folder: folder?.id,
@@ -138,7 +134,7 @@ export class SymbaroumMacros {
 		if (!actor) actor = game.actors.get(speaker.actor);
 		if (!actor) {
 			return ui.notifications.warn(
-				game.i18n.localize("ERROR.MACRO_NO_OBJECT") + speaker
+				localize("ERROR.MACRO_NO_OBJECT") + speaker
 			);
 		}
 		prepareRollAttribute(actor, attribute, null, null);
@@ -162,7 +158,7 @@ export class SymbaroumMacros {
 			: null;
 		if (!item)
 			return ui.notifications.warn(
-				game.i18n.localize("ERROR.MACRO_NO_OBJECT") + itemName
+				localize("ERROR.MACRO_NO_OBJECT") + itemName
 			);
 
 		if (item.system.isWeapon) {
@@ -181,7 +177,7 @@ export class SymbaroumMacros {
 				return actor.usePower(item);
 			} else
 				return ui.notifications.warn(
-					itemName + game.i18n.localize("ERROR.MACRO_NO_SCRIPT")
+					itemName + localize("ERROR.MACRO_NO_SCRIPT")
 				);
 		} else return;
 	}
@@ -241,20 +237,20 @@ export class SymbaroumMacros {
 
 		let dialog_content = `  
         <div class="form-group">
-        <h2>${game.i18n.localize("MACRO.SELECTPLAYERS")}</h2>
+        <h2>${localize("MACRO.SELECTPLAYERS")}</h2>
         ${allKeys}
         <br />
         <div style="flex-basis: auto;flex-direction: row;display: flex;">
-                    <div style="width:10em;min-width:10em;"><label for="experience" style="width:10em;min-width:10em">${game.i18n.localize("MACRO.EXPERIENCE")}</label></div><div><input type="text" name="experience" value="1" style="width:5em"></div>
+                    <div style="width:10em;min-width:10em;"><label for="experience" style="width:10em;min-width:10em">${localize("MACRO.EXPERIENCE")}</label></div><div><input type="text" name="experience" value="1" style="width:5em"></div>
         </div>
         <br/>
         </div>`;
 		let x = new Dialog({
-			title: game.i18n.localize("MACRO.ADDEXP_TITLE"),
+			title: localize("MACRO.ADDEXP_TITLE"),
 			content: dialog_content,
 			buttons: {
 				Ok: {
-					label: game.i18n.localize("DIALOG.OK"),
+					label: localize("DIALOG.OK"),
 					callback: async (html) => {
 						let tmp = html[0].querySelectorAll("input[name='selection']")
 						let nodeList = Array.from(tmp)
@@ -262,14 +258,14 @@ export class SymbaroumMacros {
 						let exp = parseInt(html[0].querySelector("input[name='experience'").value);
 						if (isNaN(exp) || Atmp.length == 0) {
 							ui.notifications.error(
-								game.i18n.localize("MACRO.ADDEXP_NUMBER")
+								localize("MACRO.ADDEXP_NUMBER")
 							);
 							return;
 						}
 						this.addExperience(Atmp, exp);
 					},
 				},
-				Cancel: { label: game.i18n.localize("DIALOG.CANCEL") },
+				Cancel: { label: localize("DIALOG.CANCEL") },
 			},
 		});
 
@@ -294,11 +290,12 @@ export class SymbaroumMacros {
 
 		Actor.updateDocuments(updates);
 		let chatOptions = {
-			rollMode: game.settings.get("core", "rollMode"),
-			content: `<h2>${game.i18n.localize("MACRO.ADDEXP_CHANGE")}</h2> 
-						${game.i18n.format("MACRO.ADDEXP_CHANGE_LONG", {actorNames:actorNames, exp:exp })}`
+			...getChatModeData(),
+			content: `<h2>${localize("MACRO.ADDEXP_CHANGE")}</h2> 
+						${localize("MACRO.ADDEXP_CHANGE_LONG", {actorNames:actorNames, exp:exp })}`
 			/// The following actors:<ul> ${actorNames}</ul> were awarded ${exp} experience`,
 		};
+		applyChatMode(chatOptions);
 		ChatMessage.create(chatOptions);
 	}
 
@@ -316,14 +313,14 @@ export class SymbaroumMacros {
             <div style="display:flex">
             <label style="min-width:15em" for="damagetype">Damage type:</label>
             <select id="vision-type" style="min-width:10em" name="damagetype">
-            <option value="accurate">${game.i18n.localize("ATTRIBUTE.ACCURATE")}</option>
-            <option value="cunning">${game.i18n.localize("ATTRIBUTE.CUNNING")}</option>
-            <option value="discreet">${game.i18n.localize("ATTRIBUTE.DISCREET")}</option>
-            <option value="persuasive">${game.i18n.localize("ATTRIBUTE.PERSUASIVE")}</option>
-            <option value="quick">${game.i18n.localize("ATTRIBUTE.QUICK")}</option>
-            <option value="resolute">${game.i18n.localize("ATTRIBUTE.RESOLUTE")}</option>
-            <option value="strong">${game.i18n.localize("ATTRIBUTE.STRONG")}</option>
-            <option value="vigilant">${game.i18n.localize("ATTRIBUTE.VIGILANT")}</option>    
+            <option value="accurate">${localize("ATTRIBUTE.ACCURATE")}</option>
+            <option value="cunning">${localize("ATTRIBUTE.CUNNING")}</option>
+            <option value="discreet">${localize("ATTRIBUTE.DISCREET")}</option>
+            <option value="persuasive">${localize("ATTRIBUTE.PERSUASIVE")}</option>
+            <option value="quick">${localize("ATTRIBUTE.QUICK")}</option>
+            <option value="resolute">${localize("ATTRIBUTE.RESOLUTE")}</option>
+            <option value="strong">${localize("ATTRIBUTE.STRONG")}</option>
+            <option value="vigilant">${localize("ATTRIBUTE.VIGILANT")}</option>    
             </select>
             </div>
             <div style="display:flex; margin-top:5px; margin-bottom:5px">
@@ -408,7 +405,7 @@ export class SymbaroumMacros {
         let keys = Object.keys(actorslist[0].system.attributes);
         let allKeys = "";
         keys.forEach(t => {
-            allKeys = allKeys.concat(`<option value="${t}">${game.i18n.localize(actorslist[0].system.attributes[t].label)}`);
+            allKeys = allKeys.concat(`<option value="${t}">${localize(actorslist[0].system.attributes[t].label)}`);
         });
     
         let dialog_content = `  
@@ -417,7 +414,7 @@ export class SymbaroumMacros {
         ${allActors}
         <br />
         <div style="flex-basis: auto;flex-direction: row;display: flex;">
-        <div style="width:10em;min-width:10em;"><label for="attribute" style="min-width:10em">${game.i18n.localize("DIALOG.ATTRIBUTE")}</label> </div>
+        <div style="width:10em;min-width:10em;"><label for="attribute" style="min-width:10em">${localize("DIALOG.ATTRIBUTE")}</label> </div>
         <div style="width:10em;min-width:10em;"><select id="attribute" name="category">${allKeys}</select></div>
         </div><br/>
         </div>`;
@@ -428,7 +425,7 @@ export class SymbaroumMacros {
             buttons : 
             {
             Ok : { 
-                label : game.i18n.localize("DIALOG.OK"), callback : async (html)=> {
+                label : localize("DIALOG.OK"), callback : async (html)=> {
                     let actorTemp= Array.from(html[0].querySelectorAll("input[name='selection']"));
 										let actorids = actorTemp.filter(v => { if(v.checked) return true; }).map(e => { return e.value});
                     let attribute = html[0].querySelector('#attribute').value;
@@ -438,7 +435,7 @@ export class SymbaroumMacros {
                     });
                 }
             },
-            Cancel : {label : game.i18n.localize("DIALOG.CANCEL")}
+            Cancel : {label : localize("DIALOG.CANCEL")}
             }
         });
         
@@ -559,14 +556,14 @@ export class SymbaroumMacros {
 					<div style="display:flex">
 					<label style="min-width:15em" for="damagetype">Damage type:</label>
 					<select id="vision-type" style="min-width:10em" name="damagetype">
-					<option value="accurate">${game.i18n.localize("ATTRIBUTE.ACCURATE")}</option>
-					<option value="cunning">${game.i18n.localize("ATTRIBUTE.CUNNING")}</option>
-					<option value="discreet">${game.i18n.localize("ATTRIBUTE.DISCREET")}</option>
-					<option value="persuasive">${game.i18n.localize("ATTRIBUTE.PERSUASIVE")}</option>
-					<option value="quick">${game.i18n.localize("ATTRIBUTE.QUICK")}</option>
-					<option value="resolute">${game.i18n.localize("ATTRIBUTE.RESOLUTE")}</option>
-					<option value="strong">${game.i18n.localize("ATTRIBUTE.STRONG")}</option>
-					<option value="vigilant">${game.i18n.localize("ATTRIBUTE.VIGILANT")}</option>    
+					<option value="accurate">${localize("ATTRIBUTE.ACCURATE")}</option>
+					<option value="cunning">${localize("ATTRIBUTE.CUNNING")}</option>
+					<option value="discreet">${localize("ATTRIBUTE.DISCREET")}</option>
+					<option value="persuasive">${localize("ATTRIBUTE.PERSUASIVE")}</option>
+					<option value="quick">${localize("ATTRIBUTE.QUICK")}</option>
+					<option value="resolute">${localize("ATTRIBUTE.RESOLUTE")}</option>
+					<option value="strong">${localize("ATTRIBUTE.STRONG")}</option>
+					<option value="vigilant">${localize("ATTRIBUTE.VIGILANT")}</option>    
 					</select>
 					</div>
 					<div style="display:flex; margin-top:5px; margin-bottom:5px">
@@ -609,7 +606,7 @@ export class SymbaroumMacros {
 						let modification = {        };
 						setProperty(modification, `system.attributes.${type}.temporaryMod`, tot);        
 						await actor.update(modification);
-						ui.notifications.info(`${actor.name} takes ${damage} damage to ${game.i18n.localize(actor.system.attributes[type].label)}.`);
+						ui.notifications.info(`${actor.name} takes ${damage} damage to ${localize(actor.system.attributes[type].label)}.`);
 
 				}
 		}
@@ -698,12 +695,13 @@ export class SymbaroumMacros {
 						{
 					actor: aexp._id
 						},
-						rollMode: game.settings.get("core", "rollMode")
+						...getChatModeData()
 				};
 
 				// 
 				chatOptions["content"] = `<h2>Re-roll for ${ costType.includes("artifactrr") ? "experience":"permanent corruption" }</h2>
 						${actorName} paid 1 ${ costType.includes("artifactrr") ? "experience":"permanent corruption" } for a re-roll`
+				applyChatMode(chatOptions);
 				ChatMessage.create(chatOptions);     
 				await Actor.updateDocuments(updates);				
 				// Post results
@@ -773,10 +771,11 @@ export class SymbaroumMacros {
 				
 				Actor.updateDocuments(updates);
 				let chatOptions = {
-						rollMode: game.settings.get('core', 'rollMode'),        
+						...getChatModeData(),        
 						content: `<h2>Temporary corruption was washed away</h2> 
 												The following actors:<ul> ${actorNames}</ul> is now at zero temporary corruption`
 				};
+				applyChatMode(chatOptions);
 				ChatMessage.create(chatOptions);
 		}		
     /**********************************************
@@ -839,7 +838,7 @@ export class SymbaroumMacros {
 										{
 												// game.symbaroum.log("ability="+JSON.stringify(ability));
 
-												ability = duplicate(ability[0]);
+												ability = foundry.utils.deepClone(ability[0]);
 												let abilityAction = "";
 
 												// Master ability
@@ -1072,7 +1071,7 @@ export class SymbaroumMacros {
 									{
 											// game.symbaroum.log("ability="+JSON.stringify(ability));
 
-											ability = duplicate(ability[0].data);
+											ability = foundry.utils.deepClone(ability[0].data);
 											let abilityAction = "";
 
 											// Master ability
