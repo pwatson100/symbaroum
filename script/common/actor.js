@@ -1,3 +1,5 @@
+import { isFoundryV14 } from './compatibility.js';
+import { getStatusEffect, localize } from './compatibility.js';
 import { modifierDialog } from "./item.js";
 import { prepareRollAttribute } from "../common/dialog.js";
 import { baseRoll } from "./roll.js";
@@ -29,7 +31,7 @@ export class SymbaroumActor extends Actor {
     let armorData = foundry.utils.deepClone(game.model.Item.armor);
     armorData.baseProtection = "0";
     armorData.id = null;
-    armorData.name = game.i18n.localize("ITEM.TypeArmor");
+    armorData.name = localize("ITEM.TypeArmor");
     system.combat = armorData;
 
     let bonus = foundry.utils.deepClone(game.model.Item.armor.bonus);
@@ -67,23 +69,23 @@ export class SymbaroumActor extends Actor {
           modSign = "+";
         }
         system.attributes[aKey].msg =
-          game.i18n.localize("TOOLTIP.BONUS_TOTAL") +
-          ` ${system.attributes[aKey].total} (${modSign}${system.attributes[aKey].modifier})<br />${game.i18n.localize("ATTRIBUTE.BASE")}(${system.attributes[
+          localize("TOOLTIP.BONUS_TOTAL") +
+          ` ${system.attributes[aKey].total} (${modSign}${system.attributes[aKey].modifier})<br />${localize("ATTRIBUTE.BASE")}(${system.attributes[
             aKey
           ].value.toString()}) ${system.bonus[aKey + "_msg"] ?? ""}`;
       } else {
         system.attributes[aKey].msg =
-          game.i18n.localize("TOOLTIP.BONUS_TOTAL") +
+          localize("TOOLTIP.BONUS_TOTAL") +
           ` ${system.attributes[aKey].total}` +
           "<br />" +
-          game.i18n.localize("ATTRIBUTE.BASE") +
+          localize("ATTRIBUTE.BASE") +
           "(" +
           system.attributes[aKey].value.toString() +
           ")" +
           `${system.bonus[aKey + "_msg"] ?? ""}`;
       }
       if (system.attributes[aKey].temporaryMod != 0) {
-        system.attributes[aKey].msg += "<br />" + game.i18n.localize("ATTRIBUTE.MODIFIER") + "(" + system.attributes[aKey].temporaryMod.toString() + ")";
+        system.attributes[aKey].msg += "<br />" + localize("ATTRIBUTE.MODIFIER") + "(" + system.attributes[aKey].temporaryMod.toString() + ")";
       }
     }
 
@@ -382,7 +384,7 @@ export class SymbaroumActor extends Actor {
       if (this.system.bonus.defense) {
         totDefense = totDefense + this.system.bonus.defense;
 
-        defense.defMsg += `${game.i18n.localize("ATTRIBUTE.BONUS")} (${this.system.bonus.defense.toString()})<br/>`;
+        defense.defMsg += `${localize("ATTRIBUTE.BONUS")} (${this.system.bonus.defense.toString()})<br/>`;
       }
       // game.symbaroum.log(armorModifiers);
       let diceRoller = "";
@@ -703,7 +705,7 @@ export class SymbaroumActor extends Actor {
     noArmor.impeding = 0;
 
     noArmor.id = game.symbaroum.config.noArmorID;
-    noArmor.name = game.i18n.localize("ARMOR.NOARMOR_NAME");
+    noArmor.name = localize("ARMOR.NOARMOR_NAME");
     noArmor.type = noArmor.type = "armor";
     noArmor.img = "icons/equipment/chest/shirt-simple-white.webp";
     noArmor.system.isArmor = true;
@@ -772,7 +774,7 @@ export class SymbaroumActor extends Actor {
 
   async addCondition(effect, flagData) {
     if (typeof effect === "string") {
-      effect = CONFIG.statusEffects[effect];
+      effect = getStatusEffect(effect);
     }
     if (!effect) return "No Effect Found";
     if (!effect.id) return "Conditions require an id field";
@@ -782,13 +784,18 @@ export class SymbaroumActor extends Actor {
     if (!existing) {
       effect = foundry.utils.deepClone(effect);
       effect.img = effect.img ?? effect.icon;
-      effect.label = game.i18n.localize(effect.label)?.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase());
-      effect.name = game.i18n.localize(effect.name)?.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase());
+      effect.label = localize(effect.label)?.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase());
+      effect.name = localize(effect.name)?.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase());
       if (foundry.utils.isNewerVersion("11", game.version)) {
         effect["flags.core.statusId"] = effect.id;
       }
       if (flagData) {
         effect[`flags.${game.system.id}.flagData`] = flagData;
+      }
+      // Preserve V13 effect fields alongside the V14 representation.
+      if (!isFoundryV14()) {
+        effect.icon = effect.icon ?? effect.img;
+        effect.label = effect.label ?? effect.name;
       }
       effect["statuses"] = [effect.id];
       delete effect.id;
@@ -797,7 +804,7 @@ export class SymbaroumActor extends Actor {
   }
 
   async removeCondition(effect) {
-    if (typeof effect === "string") effect = CONFIG.statusEffects[effect];
+    if (typeof effect === "string") effect = getStatusEffect(effect);
     if (!effect) return "No Effect Found";
     if (!effect.id) return "Conditions require an id field";
     let existing = this.hasCondition(effect.id);
@@ -857,7 +864,7 @@ export class SymbaroumActor extends Actor {
       if (!specificStuff.isScripted) return;
       //need token?
       if (specificStuff.needToken && !actingToken) {
-        ui.notifications.error(game.i18n.localize("ERROR.NO_TOKEN_SELECTED"));
+        ui.notifications.error(localize("ERROR.NO_TOKEN_SELECTED"));
         return;
       }
       //casting attribute
@@ -995,9 +1002,9 @@ export class SymbaroumActor extends Actor {
       isMystical: weapon.qualities.mystical || weapon.isArtifact,
       isAlternativeDamage: false,
       alternativeDamageAttribute: "none",
-      introText: actingCharName + game.i18n.localize("COMBAT.CHAT_INTRO") + weapon.name,
+      introText: actingCharName + localize("COMBAT.CHAT_INTRO") + weapon.name,
       targetData: targetData,
-      targetText: game.i18n.localize("ABILITY.CHAT_TARGET_VICTIM"),
+      targetText: localize("ABILITY.CHAT_TARGET_VICTIM"),
       resistRollText: "",
       corruptingattack: "",
       ignoreArm: false,
@@ -1027,7 +1034,7 @@ export function getTarget(targetAttributeName) {
 export function getTargets(targetAttributeName, maxTargets = 1) {
   let targets = Array.from(game.user.targets);
   if (targets.length == 0 || targets.length > maxTargets) {
-    throw game.i18n.localize("ABILITY_ERROR.TARGET");
+    throw localize("ABILITY_ERROR.TARGET");
   }
   let targetsData = [];
   for (let target of targets) {
@@ -1038,7 +1045,7 @@ export function getTargets(targetAttributeName, maxTargets = 1) {
     let leaderEffect = targetToken?.actor.hasCondition("eye");
     if (leaderEffect) {
       leaderTarget = true;
-      autoParams += game.i18n.localize("COMBAT.CHAT_DMG_PARAMS_LEADER");
+      autoParams += localize("COMBAT.CHAT_DMG_PARAMS_LEADER");
     }
     targetsData.push({
       hasTarget: true,

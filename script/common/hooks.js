@@ -1,3 +1,4 @@
+import { getStatusEffect, isFoundryV14, localize, registerStatusEffect } from './compatibility.js';
 import { initializeHandlebars } from './handlebars.js';
 import { SYMBAROUM } from './config.js';
 import { sendDevMessage } from './devmsg.js';
@@ -33,6 +34,11 @@ Hooks.once('init', () => {
 
 	CONFIG.Actor.documentClass = SymbaroumActor;
 	CONFIG.Item.documentClass = SymbaroumItem;
+	// Foundry V13 registers core sheets; V14 no longer requires unregistering them.
+	if (!isFoundryV14()) {
+		foundry.documents.collections.Actors.unregisterSheet('core', foundry.appv1.sheets.ActorSheet);
+		foundry.documents.collections.Items.unregisterSheet('core', foundry.appv1.sheets.ItemSheet);
+	}
 	foundry.documents.collections.Actors.registerSheet('symbaroum', PlayerSheet, { types: ['player'], makeDefault: true });
 	foundry.documents.collections.Actors.registerSheet('symbaroum', MonsterSheet, { types: ['monster'], makeDefault: true });
 	foundry.documents.collections.Actors.registerSheet('symbaroum', PlayerSheet, { types: ['monster'], makeDefault: false });
@@ -47,7 +53,7 @@ Hooks.once('init', () => {
 	foundry.documents.collections.Items.registerSheet('symbaroum', EquipmentSheet, { types: ['equipment'], makeDefault: true });
 	foundry.documents.collections.Items.registerSheet('symbaroum', ArtifactSheet, { types: ['artifact'], makeDefault: true });
 	foundry.documents.collections.Journal.registerSheet('symbaroum', SymbaroumWide, {
-		label: game.i18n.localize('SYMBAROUM.OPTIONAL_CUSTOMSHEETJOURNAL'),
+		label: localize('SYMBAROUM.OPTIONAL_CUSTOMSHEETJOURNAL'),
 		makeDefault: false,
 	});
 
@@ -501,11 +507,11 @@ Hooks.on('preCreateChatMessage', (doc, message, options, userid) => {
 });
 
 /*Hook for the chatMessage that contain a button for the GM to apply status icons or damage to a token.*/
-Hooks.on('renderChatMessageHTML', async (chatItem, html, data) => {
+Hooks.on(isFoundryV14() ? 'renderChatMessageHTML' : 'renderChatMessage', async (chatItem, html, data) => {
 	const flagDataArray = await chatItem.getFlag(game.system.id, 'applyEffects');
 
 	if (flagDataArray && game.user.isGM) {
-		const listenArea = html.querySelectorAll('#applyEffect');
+		const listenArea = (isFoundryV14() ? html : html[0]).querySelectorAll('#applyEffect');
 		for (const s of listenArea) {
 			s.addEventListener('click', async () => {
 				console.log('Applying effects');
@@ -524,7 +530,7 @@ Hooks.on('renderChatMessageHTML', async (chatItem, html, data) => {
 						await actor.removeCondition(flagData.removeEffect);
 					}
 					if (flagData.defeated && ui.combat.viewed && token) {
-						let effect = foundry.utils.deepClone(CONFIG.statusEffects['dead']);
+						let effect = foundry.utils.deepClone(getStatusEffect('dead'));
 						await token.toggleEffect(effect, { overlay: true, active: true });
 					}
 
@@ -553,7 +559,7 @@ Hooks.on('renderChatMessageHTML', async (chatItem, html, data) => {
 	}
 	const functionStuff = await chatItem.getFlag(game.system.id, 'resistRoll');
 	if (functionStuff) {
-		const listenArea = html.querySelectorAll('#applyEffect');
+		const listenArea = (isFoundryV14() ? html : html[0]).querySelectorAll('#applyEffect');
 		for (const s of listenArea) {
 			s.addEventListener('click', async () => {
 				let tok = canvas.tokens.objects.children.find((token) => token.id === functionStuff.tokenId);
@@ -606,10 +612,10 @@ async function setupConfigOptions() {
 	await r.style.setProperty('--chat-background', game.settings.get('symbaroum', 'chatBGChoice'));
 }
 
-// this add new status effect to the foundry list
+// this adds system status effects by id for Foundry V14
 async function setupStatusEffects() {
 	for (const effect of game.symbaroum.config.systemConditionEffects) {
-		CONFIG.statusEffects[effect.id] = { ...effect, img: effect.img ?? effect.icon };
+		registerStatusEffect(effect);
 	}
 }
 
@@ -617,7 +623,7 @@ async function createBlessedShield(actor, protection = '1d4') {
 	let blessedShield = {};
 	blessedShield.system = foundry.utils.deepClone(game.model.Item.armor);
 
-	blessedShield.name = game.i18n.localize('POWER_LABEL.BLESSED_SHIELD');
+	blessedShield.name = localize('POWER_LABEL.BLESSED_SHIELD');
 	blessedShield.type = 'armor';
 	(blessedShield.img = 'icons/svg/holy-shield.svg'),
 		(blessedShield.system.baseProtection = '0'),
@@ -707,7 +713,7 @@ function preLocalizeConfig() {
 	const localizeConfigObject = (obj, keys) => {
 		for (let o of Object.values(obj)) {
 			for (let k of keys) {
-				o[k] = game.i18n.localize(o[k]);
+				o[k] = localize(o[k]);
 				console.log(o[k]);
 			}
 		}

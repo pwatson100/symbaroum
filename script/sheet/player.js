@@ -1,3 +1,4 @@
+import { localize } from '../common/compatibility.js';
 import { SymbaroumActorSheet } from './actor.js';
 import { prepareRollAttribute, prepareRollDeathTest } from '../common/dialog.js';
 
@@ -149,7 +150,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
 				},
 			},
 			{
-				name: game.i18n.localize('TOOLTIP.INCREASE_COUNT_DEFAULT', {
+				name: localize('TOOLTIP.INCREASE_COUNT_DEFAULT', {
 					quantity: game.user.getFlag(game.system.id, game.symbaroum.config.CONTEXT_MENU.equipmentAddRemoveFlag),
 					sign: '+',
 				}),
@@ -173,7 +174,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
 				},
 			},
 			{
-				name: game.i18n.localize('TOOLTIP.DECREASE_COUNT_DEFAULT', {
+				name: localize('TOOLTIP.DECREASE_COUNT_DEFAULT', {
 					quantity: game.user.getFlag(game.system.id, game.symbaroum.config.CONTEXT_MENU.equipmentAddRemoveFlag),
 					sign: '-',
 				}),
@@ -282,13 +283,13 @@ export class PlayerSheet extends SymbaroumActorSheet {
 		if (this.actor.isOwner) {
 			buttons = [
 				{
-					label: game.i18n.localize('BUTTON.DEATH'),
+					label: localize('BUTTON.DEATH'),
 					class: 'death-roll',
 					icon: 'fas fa-skull',
 					onclick: async (ev) => await this._prepareRollDeathTest(ev),
 				},
 				{
-					label: game.i18n.localize('BUTTON.RECOVER'),
+					label: localize('BUTTON.RECOVER'),
 					class: 'recover-death-roll',
 					icon: 'fas fa-heart',
 					onclick: async (ev) => await this.actor.update({ 'system.nbrOfFailedDeathRoll': 0 }),
@@ -336,7 +337,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
 			id: this.actor.id,
 			system: system,
 		});
-		let title = game.i18n.localize('TITLE.ATTRIBUTES');
+		let title = localize('TITLE.ATTRIBUTES');
 		let dialog = new Dialog({
 			//              label: "toto",
 			title: title,
@@ -344,7 +345,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
 			buttons: {
 				confirm: {
 					icon: '<i class="fas fa-check"></i>',
-					label: game.i18n.localize('BUTTON.CONFIRM'),
+					label: localize('BUTTON.CONFIRM'),
 					callback: async (html) => {
 						for (var aKey in system.attributes) {
 							var base = '#attr-' + system.id + '-' + [aKey] + '-value';
@@ -369,7 +370,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
 				},
 				cancel: {
 					icon: '<i class="fas fa-check"></i>',
-					label: game.i18n.localize('BUTTON.CANCEL'),
+					label: localize('BUTTON.CANCEL'),
 					callback: async (html) => {},
 				},
 			},

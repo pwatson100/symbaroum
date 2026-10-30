@@ -1,3 +1,4 @@
+import { localize } from './compatibility.js';
 export function enrichTextEditors() {
     // With permission from @mcglintlock
     // e.g., @DRAW[Compendium.cy-borg-core.random-tables.vX47Buopuq9t0x9r]{Names}
@@ -10,7 +11,7 @@ export function enrichTextEditors() {
         const roll = match[3];
         const elem = document.createElement("span");
         elem.className = "draw-from-table";
-        elem.setAttribute("data-tooltip", `Draw from ${tableName}. <br> ${game.i18n.localize("TOOLTIP.DIALOG.ROLLONTABLE")}`);
+        elem.setAttribute("data-tooltip", `Draw from ${tableName}. <br> ${localize("TOOLTIP.DIALOG.ROLLONTABLE")}`);
         elem.setAttribute("data-uuid", uuid);
         if (roll) {
             elem.setAttribute("data-roll", roll);
@@ -128,33 +129,33 @@ export function enrichTextEditors() {
 </tr>
 ${getAttributes(actor, monster)}
 <tr style="border-top: solid 1px;">
-<td style="width: 25%; text-align: center; border-right: solid 1px;" colspan="2"><strong>${game.i18n.localize("ARMOR.DEFENSE")}</strong><br />${monster ? actor.system.combat.defmod : actor.system.combat.defense}</td>
-<td style="width: 25%; text-align: center; border-right: solid 1px;" colspan="2"><strong>${game.i18n.localize("ITEM.ARMOR")}</strong><br />${actor.system.combat.name} ${actor.system.combat.displayTextShort}</td>
-<td style="width: 25%; text-align: center; border-right: solid 1px;" colspan="2"><strong>${game.i18n.localize("HEALTH.TOUGHNESS")}</strong><br />${actor.system.health.toughness.value}</td>
-<td style="width: 25%; text-align: center;" colspan="2"><strong>${game.i18n.localize("HEALTH.TOUGHNESS_THRESHOLD_FULL")}</strong><br />${actor.system.health.toughness.threshold}</td>
+<td style="width: 25%; text-align: center; border-right: solid 1px;" colspan="2"><strong>${localize("ARMOR.DEFENSE")}</strong><br />${monster ? actor.system.combat.defmod : actor.system.combat.defense}</td>
+<td style="width: 25%; text-align: center; border-right: solid 1px;" colspan="2"><strong>${localize("ITEM.ARMOR")}</strong><br />${actor.system.combat.name} ${actor.system.combat.displayTextShort}</td>
+<td style="width: 25%; text-align: center; border-right: solid 1px;" colspan="2"><strong>${localize("HEALTH.TOUGHNESS")}</strong><br />${actor.system.health.toughness.value}</td>
+<td style="width: 25%; text-align: center;" colspan="2"><strong>${localize("HEALTH.TOUGHNESS_THRESHOLD_FULL")}</strong><br />${actor.system.health.toughness.threshold}</td>
 </tr>
 <tr>
-<td style="width: 15%;" colspan="2"><strong>${game.i18n.localize("WEAPON.HEADER")}</strong><br />${weapons.length > 0 ? game.i18n.localize(`ATTRIBUTE.${weapons[0].system.attribute.toUpperCase()}`) : ""}</td>
+<td style="width: 15%;" colspan="2"><strong>${localize("WEAPON.HEADER")}</strong><br />${weapons.length > 0 ? localize(`ATTRIBUTE.${weapons[0].system.attribute.toUpperCase()}`) : ""}</td>
 <td style="width: 85%;" colspan="6">${displayWeaponFacts(actor, weapons)}</td>
 </tr>
 <tr>
-<td style="width: 15%; font-weight: bold;" colspan="2">${game.i18n.localize("ABILITY.HEADER")}</td>
+<td style="width: 15%; font-weight: bold;" colspan="2">${localize("ABILITY.HEADER")}</td>
 <td style="width: 85%;" colspan="6">${getAbilities(actor, monster, abilities)}</td>
 </tr>
 <tr>
-<td style="width: 15%; font-weight: bold;" colspan="2">${game.i18n.localize("TRAIT.HEADER")}</td>
+<td style="width: 15%; font-weight: bold;" colspan="2">${localize("TRAIT.HEADER")}</td>
 <td style="width: 85%;" colspan="6">${getAbilities(actor, monster, traits)}</td>
 </tr>
 <tr>
-<td style="width: 15%; font-weight: bold;" colspan="2">${game.i18n.localize("ENRICHER.INTEGRATED_HEADER")}</td>
+<td style="width: 15%; font-weight: bold;" colspan="2">${localize("ENRICHER.INTEGRATED_HEADER")}</td>
 <td style="width: 85%;" colspan="6">${getAbilities(actor, monster, integrated)}</td>
 </tr>
 <tr>
-<td style="width: 15%; font-weight: bold;" colspan="2">${game.i18n.localize("ITEM.TypeEquipment")}</td>
+<td style="width: 15%; font-weight: bold;" colspan="2">${localize("ITEM.TypeEquipment")}</td>
 <td style="width: 85%;" colspan="6">${getMoney(actor)} ${getEquipment(actor)}</td>
 </tr>
 <tr>
-<td style="width: 15%; font-weight: bold;" colspan="2">${game.i18n.localize("BIO.SHADOW")}</td>
+<td style="width: 15%; font-weight: bold;" colspan="2">${localize("BIO.SHADOW")}</td>
 <td style="width: 85%;" colspan="6">${actor.system.bio.shadow} (${getCorruption(actor)})</td>
 </tr>
 ${monster ? getTactics(actor) : ""}
@@ -194,30 +195,30 @@ ${monster ? getTactics(actor) : ""}
             }
         };
         if (event.ctrlKey) {
-            let dialog_content = `<p>${game.i18n.localize("DIALOG.ROLLONTABLE", {
+            let dialog_content = `<p>${localize("DIALOG.ROLLONTABLE", {
                 tablename: table.name
             })}</p>
             <form>
                 <div class="form-group">
-                    <label>${game.i18n.localize("DIALOG.MODIFIER")}</label>
+                    <label>${localize("DIALOG.MODIFIER")}</label>
                     <input type="text" id="modifier" name="modifier" value="0" autofocus="autofocus" />
                 </div>
             </form>`;
             let x = new Dialog({
-                title: game.i18n.localize("DIALOG.ROLLONTABLE", {
+                title: localize("DIALOG.ROLLONTABLE", {
                     tablename: table.name
                 }),
                 content: dialog_content,
                 buttons:
                 {
                     Ok: {
-                        label: game.i18n.localize("DIALOG.OK"), callback: async (html) => {
+                        label: localize("DIALOG.OK"), callback: async (html) => {
                             let modifier = Number(html[0].querySelector("input[name='modifier'").value);
                             if (isNaN(modifier)) { modifier = 0; }
                             await myF(uuid, modifier);
                         }
                     },
-                    Cancel: { label: game.i18n.localize("DIALOG.CANCEL") }
+                    Cancel: { label: localize("DIALOG.CANCEL") }
                 }
             });
             x.options.width = 200;
@@ -238,7 +239,7 @@ function getAttributes(actor, monster) {
     let abbrv = '';
     let values = '';
     for (var aKey in actor.system.attributes) {
-        abbrv += `<td class="newstatheader"><strong>${game.i18n.localize(actor.system.attributes[aKey].label + 'ABBR')}</strong></td>`;
+        abbrv += `<td class="newstatheader"><strong>${localize(actor.system.attributes[aKey].label + 'ABBR')}</strong></td>`;
         values += `<td class="newstatheader">${monster ? 10 - actor.system.attributes[aKey].total : actor.system.attributes[aKey].total}</td>`;
 
     }
@@ -285,7 +286,7 @@ function getAbilities(actor, monster, abilityList) {
 }
 
 function getTactics(actor) {
-    return `<tr><td style="width: 15%; font-weight: bold;" colspan="2">${game.i18n.localize("BIO.TACTICS")}</td>
+    return `<tr><td style="width: 15%; font-weight: bold;" colspan="2">${localize("BIO.TACTICS")}</td>
     <td style="width: 15%;" colspan="6">${actor.system.bio.tactics}</td>
     </tr>`;
 }
@@ -293,9 +294,9 @@ function getTactics(actor) {
 function getCorruption(actor) {
     let info = "";
     if (actor.system.isThoroughlyCorrupt) {
-        info += `${game.i18n.localize("HEALTH.CORRUPTION_THROUGHLY")}`;
+        info += `${localize("HEALTH.CORRUPTION_THROUGHLY")}`;
     } else {
-        info += `<span style="text-transform:lowercase">${game.i18n.localize("HEALTH.CORRUPTION")}</span>: ${actor.system.health.corruption.value}`;
+        info += `<span style="text-transform:lowercase">${localize("HEALTH.CORRUPTION")}</span>: ${actor.system.health.corruption.value}`;
     }
     return info;
 }
@@ -303,19 +304,19 @@ function getCorruption(actor) {
 function getMoney(actor) {
     let monies = "";
     if (actor.system.money.thaler > 0) {
-        monies += `${actor.system.money.thaler} ${game.i18n.localize("MONEY.THALER")}`;
+        monies += `${actor.system.money.thaler} ${localize("MONEY.THALER")}`;
     }
     if (actor.system.money.shilling > 0) {
         if (actor.system.money.thaler > 0) {
             monies += ", ";
         }
-        monies += `${actor.system.money.shilling} ${game.i18n.localize("MONEY.SHILLING")}`;
+        monies += `${actor.system.money.shilling} ${localize("MONEY.SHILLING")}`;
     }
     if (actor.system.money.orteg > 0) {
         if (actor.system.money.thaler > 0 || actor.system.money.shilling > 0) {
             monies += ", ";
         }
-        monies += `${actor.system.money.orteg} ${game.i18n.localize("MONEY.ORTEG")}`;
+        monies += `${actor.system.money.orteg} ${localize("MONEY.ORTEG")}`;
     }
     return monies;
 }
@@ -348,8 +349,8 @@ function getAbilityLevelName(actor, monster, item) {
         if (item.system.reference == "ritualist") {
             let rituals = Array.prototype.map.call(actor.items.filter(itm => { return itm.system.isRitual; }), tmp => { return tmp.name; }).join(", ");
 
-            return `${game.i18n.localize(item.getLevel().lvlName)}, ${rituals}`;
+            return `${localize(item.getLevel().lvlName)}, ${rituals}`;
         }
-        return game.i18n.localize(item.getLevel().lvlName);
+        return localize(item.getLevel().lvlName);
     }
 }

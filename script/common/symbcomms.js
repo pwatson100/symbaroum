@@ -1,3 +1,4 @@
+import { localize } from './compatibility.js';
 
 export class SymbaroumCommsListener
 {
@@ -8,7 +9,7 @@ export class SymbaroumCommsListener
             const html = await foundry.applications.handlebars.renderTemplate("systems/symbaroum/template/chat/applyEffectsButton.hbs");
             const flagKey = `flags.${game.system.id}.applyEffects`;
             const chatData = {
-                speaker: ChatMessage.getSpeaker({alias:game.i18n.localize("DIALOG.SYSTEM_MESSAGE")}),
+                speaker: ChatMessage.getSpeaker({alias:localize("DIALOG.SYSTEM_MESSAGE")}),
                 whisper: [game.user],
                 content: html             
             };
@@ -24,7 +25,7 @@ export class SymbaroumCommsListener
             const html = await foundry.applications.handlebars.renderTemplate("systems/symbaroum/template/chat/resistButton.hbs", templateData);
             const flagKey = `flags.${game.system.id}.resistRoll`;
             const chatData = {
-                speaker: ChatMessage.getSpeaker({alias:game.i18n.localize("DIALOG.SYSTEM_MESSAGE")}),
+                speaker: ChatMessage.getSpeaker({alias:localize("DIALOG.SYSTEM_MESSAGE")}),
                 whisper: [game.user],
                 content: html
             };

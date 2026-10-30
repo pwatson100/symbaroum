@@ -4,7 +4,7 @@
   "description": "Twilight falls. Davokar darkens.",
   "version": "6.1.7",
   "compatibility": {
-    "minimum": 14,
+    "minimum": 13,
     "verified": 14,
     "maximum": 14
   },
