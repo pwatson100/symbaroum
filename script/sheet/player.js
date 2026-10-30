@@ -149,7 +149,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
 				},
 			},
 			{
-				name: game.i18n.format('TOOLTIP.INCREASE_COUNT_DEFAULT', {
+				name: game.i18n.localize('TOOLTIP.INCREASE_COUNT_DEFAULT', {
 					quantity: game.user.getFlag(game.system.id, game.symbaroum.config.CONTEXT_MENU.equipmentAddRemoveFlag),
 					sign: '+',
 				}),
@@ -173,7 +173,7 @@ export class PlayerSheet extends SymbaroumActorSheet {
 				},
 			},
 			{
-				name: game.i18n.format('TOOLTIP.DECREASE_COUNT_DEFAULT', {
+				name: game.i18n.localize('TOOLTIP.DECREASE_COUNT_DEFAULT', {
 					quantity: game.user.getFlag(game.system.id, game.symbaroum.config.CONTEXT_MENU.equipmentAddRemoveFlag),
 					sign: '-',
 				}),

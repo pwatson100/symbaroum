@@ -108,7 +108,7 @@ export async function prepareRollAttribute(actor, attributeName, armor, weapon, 
       askAttackNb = weaponModifiers.maxAttackNb > 1;
     }
   }
-  let targetAttribute_selection = foundry.utils.duplicate(game.symbaroum.config.ATTRIBUTE_SELECTION);
+  let targetAttribute_selection = foundry.utils.deepClone(game.symbaroum.config.ATTRIBUTE_SELECTION);
   targetAttribute_selection.defense = {
     id: "defense",
     label: game.i18n.localize(`ARMOR.DEFENSE`),

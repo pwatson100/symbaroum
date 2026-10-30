@@ -125,14 +125,14 @@ const migrateItemData = (item, worldSystemVersion) => {
 
 export const migrateSceneData = function (scene) {
     const tokens = scene.tokens.map(token => {
-        const t = foundry.utils.duplicate(token.document);
+        const t = foundry.utils.deepClone(token.document);
         if (!t.actorId || t.actorLink) {
             t.actorData = {};
         } else if (!game.actors.has(t.actorId)) {
             t.actorId = null;
             t.actorData = {};
         } else if (!t.actorLink) {
-            const actorData = foundry.utils.duplicate(t.actorData ?? t.delta);
+            const actorData = foundry.utils.deepClone(t.actorData ?? t.delta);
             actorData.type = token.actor?.type;
             const update = migrateActorData(actorData);
             ['items', 'effects'].forEach(embeddedName => {

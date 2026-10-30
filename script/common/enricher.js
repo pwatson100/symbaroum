@@ -194,7 +194,7 @@ ${monster ? getTactics(actor) : ""}
             }
         };
         if (event.ctrlKey) {
-            let dialog_content = `<p>${game.i18n.format("DIALOG.ROLLONTABLE", {
+            let dialog_content = `<p>${game.i18n.localize("DIALOG.ROLLONTABLE", {
                 tablename: table.name
             })}</p>
             <form>
@@ -204,7 +204,7 @@ ${monster ? getTactics(actor) : ""}
                 </div>
             </form>`;
             let x = new Dialog({
-                title: game.i18n.format("DIALOG.ROLLONTABLE", {
+                title: game.i18n.localize("DIALOG.ROLLONTABLE", {
                     tablename: table.name
                 }),
                 content: dialog_content,

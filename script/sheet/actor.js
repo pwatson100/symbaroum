@@ -16,7 +16,7 @@ export class SymbaroumActorSheet extends foundry.appv1.sheets.ActorSheet {
         this._onItemEdit(ev);
       });
     }
-    const dataInput = html[0].querySelectorAll("focusin");
+    const dataInput = html[0].querySelectorAll("input, select, textarea");
     for (const s of dataInput) {
       s.addEventListener("focusin", (ev) => {
         this._onFocusIn(ev);
@@ -46,7 +46,7 @@ export class SymbaroumActorSheet extends foundry.appv1.sheets.ActorSheet {
     if (this.actor.owner) {
       let handler = (ev) => this._onDragStart(ev);
       // Find all items on the character sheet.
-      html[0].querySelectorAll("li.trait").each((i, li) => {
+      html[0].querySelectorAll("li.trait").forEach((li) => {
         // Ignore for the header row.
         if (li.classList.contains("item-header")) return;
         // Add draggable attribute and dragstart listener.
@@ -66,14 +66,12 @@ export class SymbaroumActorSheet extends foundry.appv1.sheets.ActorSheet {
   _onItemCreate(event) {
     event.preventDefault();
     let header = event.currentTarget;
-    let data = foundry.utils.duplicate(header.dataset);
+    let data = foundry.utils.deepClone(header.dataset);
     data["name"] = `New ${data.type.capitalize()}`;
     if (data.type in game.symbaroum.config.itemImages) {
-      data.img = "systems/symbaroum/asset/image/" + game.symbaroum.config.itemImages[data.type];
-      // data.img = game.i18n.format(game.symbaroum.config.imageRef, { filename: game.symbaroum.config.itemImages[data.type] });
+      data.img = `systems/symbaroum/asset/image/${game.symbaroum.config.itemImages[data.type]}`;
     } else {
-      data.img = "systems/symbaroum/asset/image/" + "unknown-item.png";
-      // data.img = game.i18n.format(game.symbaroum.config.imageRef, { filename: "unknown-item.png" });
+      data.img = "systems/symbaroum/asset/image/unknown-item.png";
     }
 
     let itemData = {

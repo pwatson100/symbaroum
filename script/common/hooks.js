@@ -33,11 +33,9 @@ Hooks.once('init', () => {
 
 	CONFIG.Actor.documentClass = SymbaroumActor;
 	CONFIG.Item.documentClass = SymbaroumItem;
-	foundry.documents.collections.Actors.unregisterSheet('core', foundry.appv1.sheets.ActorSheet);
 	foundry.documents.collections.Actors.registerSheet('symbaroum', PlayerSheet, { types: ['player'], makeDefault: true });
 	foundry.documents.collections.Actors.registerSheet('symbaroum', MonsterSheet, { types: ['monster'], makeDefault: true });
 	foundry.documents.collections.Actors.registerSheet('symbaroum', PlayerSheet, { types: ['monster'], makeDefault: false });
-	foundry.documents.collections.Items.unregisterSheet('core', foundry.appv1.sheets.ItemSheet);
 	foundry.documents.collections.Items.registerSheet('symbaroum', TraitSheet, { types: ['trait'], makeDefault: true });
 	foundry.documents.collections.Items.registerSheet('symbaroum', AbilitySheet, { types: ['ability'], makeDefault: true });
 	foundry.documents.collections.Items.registerSheet('symbaroum', MysticalPowerSheet, { types: ['mysticalPower'], makeDefault: true });
@@ -526,7 +524,7 @@ Hooks.on('renderChatMessageHTML', async (chatItem, html, data) => {
 						await actor.removeCondition(flagData.removeEffect);
 					}
 					if (flagData.defeated && ui.combat.viewed && token) {
-						let effect = foundry.utils.duplicate(CONFIG.statusEffects.find((e) => e.id == 'dead'));
+						let effect = foundry.utils.deepClone(CONFIG.statusEffects['dead']);
 						await token.toggleEffect(effect, { overlay: true, active: true });
 					}
 
@@ -610,7 +608,9 @@ async function setupConfigOptions() {
 
 // this add new status effect to the foundry list
 async function setupStatusEffects() {
-	CONFIG.statusEffects.push(...game.symbaroum.config.systemConditionEffects);
+	for (const effect of game.symbaroum.config.systemConditionEffects) {
+		CONFIG.statusEffects[effect.id] = { ...effect, img: effect.img ?? effect.icon };
+	}
 }
 
 async function createBlessedShield(actor, protection = '1d4') {

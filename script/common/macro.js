@@ -54,7 +54,7 @@ export class SymbaroumMacros {
 		const actor = game.actors.get(data.actorId);
 		if (!actor) return;
 
-		const commmandName = game.i18n.format("MACRO.MAKETEST", {
+		const commmandName = game.i18n.localize("MACRO.MAKETEST", {
 			testtype: game.i18n.localize(
 				actor.system.attributes[data.attribute].label
 			),
@@ -74,12 +74,7 @@ export class SymbaroumMacros {
 			macro = await Macro.create({
 				name: commmandName,
 				type: "script",
-				img: game.i18n.format(game.symbaroum.config.imageRef, {
-					filename:
-						game.symbaroum.config.attributeImages[
-							data.attribute
-						],
-				}),
+				img: `systems/symbaroum/asset/image/${game.symbaroum.config.attributeImages[data.attribute]}`,
 				command: command,
 				flags: { "symbaroum.attributeMacro": true },
 				folder: folder?.id,
@@ -294,11 +289,12 @@ export class SymbaroumMacros {
 
 		Actor.updateDocuments(updates);
 		let chatOptions = {
-			rollMode: game.settings.get("core", "rollMode"),
+			messageMode: game.settings.get("core", "messageMode"),
 			content: `<h2>${game.i18n.localize("MACRO.ADDEXP_CHANGE")}</h2> 
-						${game.i18n.format("MACRO.ADDEXP_CHANGE_LONG", {actorNames:actorNames, exp:exp })}`
+						${game.i18n.localize("MACRO.ADDEXP_CHANGE_LONG", {actorNames:actorNames, exp:exp })}`
 			/// The following actors:<ul> ${actorNames}</ul> were awarded ${exp} experience`,
 		};
+		ChatMessage.applyMode(chatOptions, chatOptions.messageMode);
 		ChatMessage.create(chatOptions);
 	}
 
@@ -698,12 +694,13 @@ export class SymbaroumMacros {
 						{
 					actor: aexp._id
 						},
-						rollMode: game.settings.get("core", "rollMode")
+						messageMode: game.settings.get("core", "messageMode")
 				};
 
 				// 
 				chatOptions["content"] = `<h2>Re-roll for ${ costType.includes("artifactrr") ? "experience":"permanent corruption" }</h2>
 						${actorName} paid 1 ${ costType.includes("artifactrr") ? "experience":"permanent corruption" } for a re-roll`
+				ChatMessage.applyMode(chatOptions, chatOptions.messageMode);
 				ChatMessage.create(chatOptions);     
 				await Actor.updateDocuments(updates);				
 				// Post results
@@ -773,10 +770,11 @@ export class SymbaroumMacros {
 				
 				Actor.updateDocuments(updates);
 				let chatOptions = {
-						rollMode: game.settings.get('core', 'rollMode'),        
+						messageMode: game.settings.get("core", "messageMode"),        
 						content: `<h2>Temporary corruption was washed away</h2> 
 												The following actors:<ul> ${actorNames}</ul> is now at zero temporary corruption`
 				};
+				ChatMessage.applyMode(chatOptions, chatOptions.messageMode);
 				ChatMessage.create(chatOptions);
 		}		
     /**********************************************
@@ -839,7 +837,7 @@ export class SymbaroumMacros {
 										{
 												// game.symbaroum.log("ability="+JSON.stringify(ability));
 
-												ability = duplicate(ability[0]);
+												ability = foundry.utils.deepClone(ability[0]);
 												let abilityAction = "";
 
 												// Master ability

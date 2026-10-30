@@ -97,15 +97,15 @@ export async function rollAttribute(actor, actingAttributeName, targetActor, tar
       actor: actor.id
     }),
     rolls: [createRollData(rolls)],
-    rollMode: game.settings.get('core', 'rollMode'),
+    messageMode: game.settings.get("core", "messageMode"),
     content: html,
   };
-  if (['gmroll', 'blindroll'].includes(chatData.rollMode)) {
+  if (['gm', 'blind'].includes(chatData.messageMode)) {
     chatData.whisper = ChatMessage.getWhisperRecipients('GM');
-  } else if (chatData.rollMode === 'selfroll') {
+  } else if (chatData.messageMode === 'self') {
     chatData.whisper = [game.user];
   }
-  ChatMessage.applyRollMode(chatData, "roll");
+  ChatMessage.applyMode(chatData, chatData.messageMode);
   ChatMessage.create(chatData);
   return(rollData);
 }
@@ -179,15 +179,15 @@ export async function rollDeathTest(actor, withFavour, modifier) {
 			actor: actor.id
     },
     rolls: createRollData(rolls),
-    rollMode: game.settings.get('core', 'rollMode'),
+    messageMode: game.settings.get("core", "messageMode"),
     content: html,
   };
-  if (['gmroll', 'blindroll'].includes(chatData.rollMode)) {
+  if (['gm', 'blind'].includes(chatData.messageMode)) {
     chatData.whisper = ChatMessage.getWhisperRecipients('GM');
-  } else if (chatData.rollMode === 'selfroll') {
+  } else if (chatData.messageMode === 'self') {
     chatData.whisper = [game.user];
   }
-  ChatMessage.applyRollMode(chatData, "roll");
+  ChatMessage.applyMode(chatData, chatData.messageMode);
   ChatMessage.create(chatData);
   if(actor.system.nbrOfFailedDeathRoll != nbrOfFailedDeathRoll) {
     await actor.update({"system.nbrOfFailedDeathRoll":nbrOfFailedDeathRoll });

@@ -772,7 +772,7 @@ export class SymbaroumActor extends Actor {
 
   async addCondition(effect, flagData) {
     if (typeof effect === "string") {
-      effect = CONFIG.statusEffects.find((e) => e.id == effect);
+      effect = CONFIG.statusEffects[effect];
     }
     if (!effect) return "No Effect Found";
     if (!effect.id) return "Conditions require an id field";
@@ -780,7 +780,8 @@ export class SymbaroumActor extends Actor {
     let existing = this.hasCondition(effect.id);
 
     if (!existing) {
-      effect = foundry.utils.duplicate(effect);
+      effect = foundry.utils.deepClone(effect);
+      effect.img = effect.img ?? effect.icon;
       effect.label = game.i18n.localize(effect.label)?.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase());
       effect.name = game.i18n.localize(effect.name)?.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase());
       if (foundry.utils.isNewerVersion("11", game.version)) {
@@ -789,14 +790,14 @@ export class SymbaroumActor extends Actor {
       if (flagData) {
         effect[`flags.${game.system.id}.flagData`] = flagData;
       }
-      effect["statuses"] = effect.id;
+      effect["statuses"] = [effect.id];
       delete effect.id;
       return this.createEmbeddedDocuments("ActiveEffect", [effect]);
     }
   }
 
   async removeCondition(effect) {
-    if (typeof effect === "string") effect = CONFIG.statusEffects.find((e) => e.id == effect);
+    if (typeof effect === "string") effect = CONFIG.statusEffects[effect];
     if (!effect) return "No Effect Found";
     if (!effect.id) return "Conditions require an id field";
     let existing = this.hasCondition(effect.id);

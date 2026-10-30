@@ -121,7 +121,7 @@ export class SymbaroumItemSheet extends foundry.appv1.sheets.ItemSheet {
 
   async sendToChat() {
     const itemData = {};
-    itemData.system = foundry.utils.duplicate(this.item.system);
+    itemData.system = foundry.utils.deepClone(this.item.system);
     game.symbaroum.log("sendToChat data:",itemData);
     itemData.img = this.item.img;
     itemData.name = this.item.name;
@@ -139,14 +139,15 @@ export class SymbaroumItemSheet extends foundry.appv1.sheets.ItemSheet {
             alias: this.item.actor?.name ?? game.user.name,
             actor: this.item.actor?.id
         }),            
-        rollMode: game.settings.get("core", "rollMode"),
+        messageMode: game.settings.get("core", "messageMode"),
         content: html,
     };
-    if (["gmroll", "blindroll"].includes(chatData.rollMode)) {
+    if (["gm", "blind"].includes(chatData.messageMode)) {
         chatData.whisper = ChatMessage.getWhisperRecipients("GM");
-    } else if (chatData.rollMode === "selfroll") {
+    } else if (chatData.messageMode === "self") {
         chatData.whisper = [game.user];
     }
+    ChatMessage.applyMode(chatData, chatData.messageMode);
     ChatMessage.create(chatData);
 }
 
